@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    class BetaResponseMcpListToolsFailedEvent = Beta::BetaResponseMcpListToolsFailedEvent
+
+    module Beta
+      type beta_response_mcp_list_tools_failed_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.mcp_list_tools.failed",
+          agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?
+        }
+
+      class BetaResponseMcpListToolsFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.mcp_list_tools.failed"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?
+
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?,
+          ?type: :"response.mcp_list_tools.failed"
+        ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.mcp_list_tools.failed",
+          agent: OpenAI::Beta::BetaResponseMcpListToolsFailedEvent::Agent?
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Realtime
+      type response_mcp_call_failed =
+        {
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          type: :"response.mcp_call.failed"
+        }
+
+      class ResponseMcpCallFailed < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor type: :"response.mcp_call.failed"
+
+        def initialize: (
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          ?type: :"response.mcp_call.failed"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          item_id: String,
+          output_index: Integer,
+          type: :"response.mcp_call.failed"
+        }
+      end
+    end
+  end
+end

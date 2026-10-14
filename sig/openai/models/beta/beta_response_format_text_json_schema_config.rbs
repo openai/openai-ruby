@@ -1,0 +1,46 @@
+module OpenAI
+  module Models
+    class BetaResponseFormatTextJSONSchemaConfig = Beta::BetaResponseFormatTextJSONSchemaConfig
+
+    module Beta
+      type beta_response_format_text_json_schema_config =
+        {
+          name: String,
+          schema: ::Hash[Symbol, top],
+          type: :json_schema,
+          description: String,
+          strict: bool?
+        }
+
+      class BetaResponseFormatTextJSONSchemaConfig < OpenAI::Internal::Type::BaseModel
+        attr_accessor name: String
+
+        attr_accessor schema: ::Hash[Symbol, top]
+
+        attr_accessor type: :json_schema
+
+        attr_reader description: String?
+
+        def description=: (String) -> String
+
+        attr_accessor strict: bool?
+
+        def initialize: (
+          name: String,
+          schema: ::Hash[Symbol, top],
+          ?description: String,
+          ?strict: bool?,
+          ?type: :json_schema
+        ) -> void
+
+        def to_hash: -> {
+          name: String,
+          schema: ::Hash[Symbol, top],
+          type: :json_schema,
+          description: String,
+          strict: bool?
+        }
+      end
+    end
+  end
+end

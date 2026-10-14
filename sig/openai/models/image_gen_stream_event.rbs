@@ -1,0 +1,12 @@
+module OpenAI
+  module Models
+    type image_gen_stream_event =
+      OpenAI::ImageGenPartialImageEvent | OpenAI::ImageGenCompletedEvent
+
+    module ImageGenStreamEvent
+      extend OpenAI::Internal::Type::Union
+
+      def self?.variants: -> ::Array[OpenAI::Models::image_gen_stream_event]
+    end
+  end
+end

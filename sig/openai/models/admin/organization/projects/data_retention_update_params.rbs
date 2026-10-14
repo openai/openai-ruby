@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type data_retention_update_params =
+            {
+              project_id: String,
+              retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type
+            }
+            & OpenAI::Internal::Type::request_parameters
+
+          class DataRetentionUpdateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            attr_accessor retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type
+
+            def initialize: (
+              project_id: String,
+              retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type,
+              request_options: OpenAI::RequestOptions
+            }
+
+            type retention_type =
+              :organization_default
+              | :none
+              | :zero_data_retention
+              | :modified_abuse_monitoring
+              | :enhanced_zero_data_retention
+              | :enhanced_modified_abuse_monitoring
+
+            module RetentionType
+              extend OpenAI::Internal::Type::Enum
+
+              ORGANIZATION_DEFAULT: :organization_default
+              NONE: :none
+              ZERO_DATA_RETENTION: :zero_data_retention
+              MODIFIED_ABUSE_MONITORING: :modified_abuse_monitoring
+              ENHANCED_ZERO_DATA_RETENTION: :enhanced_zero_data_retention
+              ENHANCED_MODIFIED_ABUSE_MONITORING: :enhanced_modified_abuse_monitoring
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type]
+            end
+          end
+        end
+      end
+    end
+  end
+end

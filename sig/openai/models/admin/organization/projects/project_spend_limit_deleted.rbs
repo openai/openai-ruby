@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectSpendLimitDeleted = Projects::ProjectSpendLimitDeleted
+
+        module Projects
+          type project_spend_limit_deleted =
+            { deleted: bool, object: :"project.spend_limit.deleted" }
+
+          class ProjectSpendLimitDeleted < OpenAI::Internal::Type::BaseModel
+            attr_accessor deleted: bool
+
+            attr_accessor object: :"project.spend_limit.deleted"
+
+            def initialize: (
+              deleted: bool,
+              ?object: :"project.spend_limit.deleted"
+            ) -> void
+
+            def to_hash: -> {
+              deleted: bool,
+              object: :"project.spend_limit.deleted"
+            }
+          end
+        end
+      end
+    end
+  end
+end

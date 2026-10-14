@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    class ChatCompletionAllowedToolChoice = Chat::ChatCompletionAllowedToolChoice
+
+    module Chat
+      type chat_completion_allowed_tool_choice =
+        {
+          allowed_tools: OpenAI::Chat::ChatCompletionAllowedTools,
+          type: :allowed_tools
+        }
+
+      class ChatCompletionAllowedToolChoice < OpenAI::Internal::Type::BaseModel
+        attr_accessor allowed_tools: OpenAI::Chat::ChatCompletionAllowedTools
+
+        attr_accessor type: :allowed_tools
+
+        def initialize: (
+          allowed_tools: OpenAI::Chat::ChatCompletionAllowedTools,
+          ?type: :allowed_tools
+        ) -> void
+
+        def to_hash: -> {
+          allowed_tools: OpenAI::Chat::ChatCompletionAllowedTools,
+          type: :allowed_tools
+        }
+      end
+    end
+  end
+end

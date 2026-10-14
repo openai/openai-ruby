@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Realtime
+      type call_accept_params =
+        { call_id: String } & OpenAI::Internal::Type::request_parameters
+
+      class CallAcceptParams < OpenAI::Models::Realtime::RealtimeSessionCreateRequest
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        def call_id: -> String
+
+        def call_id=: (String _) -> String
+
+        def initialize: (
+          call_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          call_id: String,
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

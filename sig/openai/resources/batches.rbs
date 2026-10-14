@@ -1,0 +1,32 @@
+module OpenAI
+  module Resources
+    class Batches
+      def create: (
+        completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+        endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+        input_file_id: String,
+        ?metadata: OpenAI::Models::metadata?,
+        ?output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Batch
+
+      def retrieve: (
+        String batch_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Batch
+
+      def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Batch]
+
+      def cancel: (
+        String batch_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Batch
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

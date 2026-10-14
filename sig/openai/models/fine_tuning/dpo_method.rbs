@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module FineTuning
+      type dpo_method =
+        { hyperparameters: OpenAI::FineTuning::DpoHyperparameters }
+
+      class DpoMethod < OpenAI::Internal::Type::BaseModel
+        attr_reader hyperparameters: OpenAI::FineTuning::DpoHyperparameters?
+
+        def hyperparameters=: (
+          OpenAI::FineTuning::DpoHyperparameters
+        ) -> OpenAI::FineTuning::DpoHyperparameters
+
+        def initialize: (
+          ?hyperparameters: OpenAI::FineTuning::DpoHyperparameters
+        ) -> void
+
+        def to_hash: -> {
+          hyperparameters: OpenAI::FineTuning::DpoHyperparameters
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    class BetaToolChoiceTypes = Beta::BetaToolChoiceTypes
+
+    module Beta
+      type beta_tool_choice_types =
+        { type: OpenAI::Models::Beta::BetaToolChoiceTypes::type_ }
+
+      class BetaToolChoiceTypes < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: OpenAI::Models::Beta::BetaToolChoiceTypes::type_
+
+        def initialize: (
+          type: OpenAI::Models::Beta::BetaToolChoiceTypes::type_
+        ) -> void
+
+        def to_hash: -> {
+          type: OpenAI::Models::Beta::BetaToolChoiceTypes::type_
+        }
+
+        type type_ =
+          :file_search
+          | :web_search_preview
+          | :computer
+          | :computer_use_preview
+          | :computer_use
+          | :web_search_preview_2025_03_11
+          | :image_generation
+          | :code_interpreter
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          FILE_SEARCH: :file_search
+          WEB_SEARCH_PREVIEW: :web_search_preview
+          COMPUTER: :computer
+          COMPUTER_USE_PREVIEW: :computer_use_preview
+          COMPUTER_USE: :computer_use
+          WEB_SEARCH_PREVIEW_2025_03_11: :web_search_preview_2025_03_11
+          IMAGE_GENERATION: :image_generation
+          CODE_INTERPRETER: :code_interpreter
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaToolChoiceTypes::type_]
+        end
+      end
+    end
+  end
+end

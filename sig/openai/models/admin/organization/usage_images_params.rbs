@@ -1,0 +1,170 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type usage_images_params =
+          {
+            start_time: Integer,
+            api_key_ids: ::Array[String],
+            bucket_width: OpenAI::Models::Admin::Organization::UsageImagesParams::bucket_width,
+            end_time: Integer,
+            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::group_by],
+            limit: Integer,
+            models: ::Array[String],
+            page: String,
+            project_ids: ::Array[String],
+            sizes: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::size],
+            sources: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::source],
+            user_ids: ::Array[String]
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class UsageImagesParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor start_time: Integer
+
+          attr_reader api_key_ids: ::Array[String]?
+
+          def api_key_ids=: (::Array[String]) -> ::Array[String]
+
+          attr_reader bucket_width: OpenAI::Models::Admin::Organization::UsageImagesParams::bucket_width?
+
+          def bucket_width=: (
+            OpenAI::Models::Admin::Organization::UsageImagesParams::bucket_width
+          ) -> OpenAI::Models::Admin::Organization::UsageImagesParams::bucket_width
+
+          attr_reader end_time: Integer?
+
+          def end_time=: (Integer) -> Integer
+
+          attr_reader group_by: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::group_by]?
+
+          def group_by=: (
+            ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::group_by]
+          ) -> ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::group_by]
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          attr_reader models: ::Array[String]?
+
+          def models=: (::Array[String]) -> ::Array[String]
+
+          attr_reader page: String?
+
+          def page=: (String) -> String
+
+          attr_reader project_ids: ::Array[String]?
+
+          def project_ids=: (::Array[String]) -> ::Array[String]
+
+          attr_reader sizes: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::size]?
+
+          def sizes=: (
+            ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::size]
+          ) -> ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::size]
+
+          attr_reader sources: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::source]?
+
+          def sources=: (
+            ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::source]
+          ) -> ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::source]
+
+          attr_reader user_ids: ::Array[String]?
+
+          def user_ids=: (::Array[String]) -> ::Array[String]
+
+          def initialize: (
+            start_time: Integer,
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageImagesParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::group_by],
+            ?limit: Integer,
+            ?models: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?sizes: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::size],
+            ?sources: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::source],
+            ?user_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            start_time: Integer,
+            api_key_ids: ::Array[String],
+            bucket_width: OpenAI::Models::Admin::Organization::UsageImagesParams::bucket_width,
+            end_time: Integer,
+            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::group_by],
+            limit: Integer,
+            models: ::Array[String],
+            page: String,
+            project_ids: ::Array[String],
+            sizes: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::size],
+            sources: ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::source],
+            user_ids: ::Array[String],
+            request_options: OpenAI::RequestOptions
+          }
+
+          type bucket_width = :"1m" | :"1h" | :"1d"
+
+          module BucketWidth
+            extend OpenAI::Internal::Type::Enum
+
+            BUCKET_WIDTH_1M: :"1m"
+            BUCKET_WIDTH_1H: :"1h"
+            BUCKET_WIDTH_1D: :"1d"
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::bucket_width]
+          end
+
+          type group_by =
+            :project_id | :user_id | :api_key_id | :model | :size | :source
+
+          module GroupBy
+            extend OpenAI::Internal::Type::Enum
+
+            PROJECT_ID: :project_id
+            USER_ID: :user_id
+            API_KEY_ID: :api_key_id
+            MODEL: :model
+            SIZE: :size
+            SOURCE: :source
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::group_by]
+          end
+
+          type size =
+            :"256x256" | :"512x512" | :"1024x1024" | :"1792x1792" | :"1024x1792"
+
+          module Size
+            extend OpenAI::Internal::Type::Enum
+
+            SIZE_256X256: :"256x256"
+            SIZE_512X512: :"512x512"
+            SIZE_1024X1024: :"1024x1024"
+            SIZE_1792X1792: :"1792x1792"
+            SIZE_1024X1792: :"1024x1792"
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::size]
+          end
+
+          type source = :"image.generation" | :"image.edit" | :"image.variation"
+
+          module Source
+            extend OpenAI::Internal::Type::Enum
+
+            IMAGE_GENERATION: :"image.generation"
+            IMAGE_EDIT: :"image.edit"
+            IMAGE_VARIATION: :"image.variation"
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageImagesParams::source]
+          end
+        end
+      end
+    end
+  end
+end

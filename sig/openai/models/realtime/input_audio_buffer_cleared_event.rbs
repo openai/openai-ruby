@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Realtime
+      type input_audio_buffer_cleared_event =
+        { event_id: String, type: :"input_audio_buffer.cleared" }
+
+      class InputAudioBufferClearedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor type: :"input_audio_buffer.cleared"
+
+        def initialize: (
+          event_id: String,
+          ?type: :"input_audio_buffer.cleared"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          type: :"input_audio_buffer.cleared"
+        }
+      end
+    end
+  end
+end

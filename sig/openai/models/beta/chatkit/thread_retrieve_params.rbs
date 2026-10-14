@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type thread_retrieve_params =
+          { thread_id: String } & OpenAI::Internal::Type::request_parameters
+
+        class ThreadRetrieveParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor thread_id: String
+
+          def initialize: (
+            thread_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            thread_id: String,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

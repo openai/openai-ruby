@@ -1,0 +1,7 @@
+module OpenAI
+  module Models
+    module Conversations
+      class RefusalContent = OpenAI::Models::Responses::ResponseOutputRefusal
+    end
+  end
+end

@@ -1,0 +1,21 @@
+module OpenAI
+  module Resources
+    class Models
+      def retrieve: (
+        String model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Model
+
+      def list: (
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::Page[OpenAI::Model]
+
+      def delete: (
+        String model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::ModelDeleted
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

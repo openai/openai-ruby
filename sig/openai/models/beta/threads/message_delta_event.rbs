@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type message_delta_event =
+          {
+            id: String,
+            delta: OpenAI::Beta::Threads::MessageDelta,
+            object: :"thread.message.delta"
+          }
+
+        class MessageDeltaEvent < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor delta: OpenAI::Beta::Threads::MessageDelta
+
+          attr_accessor object: :"thread.message.delta"
+
+          def initialize: (
+            id: String,
+            delta: OpenAI::Beta::Threads::MessageDelta,
+            ?object: :"thread.message.delta"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            delta: OpenAI::Beta::Threads::MessageDelta,
+            object: :"thread.message.delta"
+          }
+        end
+      end
+    end
+  end
+end

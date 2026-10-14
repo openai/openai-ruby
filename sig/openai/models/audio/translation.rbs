@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Audio
+      type translation = { text: String }
+
+      class Translation < OpenAI::Internal::Type::BaseModel
+        attr_accessor text: String
+
+        def initialize: (text: String) -> void
+
+        def to_hash: -> { text: String }
+      end
+    end
+  end
+end

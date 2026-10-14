@@ -1,0 +1,25 @@
+module OpenAI
+  module Resources
+    class Beta
+      class ChatKit
+        class Sessions
+          def create: (
+            user: String,
+            workflow: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam,
+            ?chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam,
+            ?expires_after: OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam,
+            ?rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::ChatKit::ChatSession
+
+          def cancel: (
+            String session_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::ChatKit::ChatSession
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

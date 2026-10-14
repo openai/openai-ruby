@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_translation_session_created_event =
+        {
+          event_id: String,
+          session: OpenAI::Realtime::RealtimeTranslationSession,
+          type: :"session.created"
+        }
+
+      class RealtimeTranslationSessionCreatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor session: OpenAI::Realtime::RealtimeTranslationSession
+
+        attr_accessor type: :"session.created"
+
+        def initialize: (
+          event_id: String,
+          session: OpenAI::Realtime::RealtimeTranslationSession,
+          ?type: :"session.created"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          session: OpenAI::Realtime::RealtimeTranslationSession,
+          type: :"session.created"
+        }
+      end
+    end
+  end
+end

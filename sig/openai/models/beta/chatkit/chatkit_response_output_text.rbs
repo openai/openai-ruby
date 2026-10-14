@@ -1,0 +1,114 @@
+module OpenAI
+  module Models
+    module Beta
+      class ChatKitResponseOutputText = ChatKit::ChatKitResponseOutputText
+
+      module ChatKit
+        type chatkit_response_output_text =
+          {
+            annotations: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation],
+            text: String,
+            type: :output_text
+          }
+
+        class ChatKitResponseOutputText < OpenAI::Internal::Type::BaseModel
+          attr_accessor annotations: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation]
+
+          attr_accessor text: String
+
+          attr_accessor type: :output_text
+
+          def initialize: (
+            annotations: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation],
+            text: String,
+            ?type: :output_text
+          ) -> void
+
+          def to_hash: -> {
+            annotations: ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation],
+            text: String,
+            type: :output_text
+          }
+
+          type annotation =
+            OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File
+            | OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL
+
+          module Annotation
+            extend OpenAI::Internal::Type::Union
+
+            type file =
+              {
+                source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source,
+                type: :file
+              }
+
+            class File < OpenAI::Internal::Type::BaseModel
+              attr_accessor source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source
+
+              attr_accessor type: :file
+
+              def initialize: (
+                source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source,
+                ?type: :file
+              ) -> void
+
+              def to_hash: -> {
+                source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::File::Source,
+                type: :file
+              }
+
+              type source = { filename: String, type: :file }
+
+              class Source < OpenAI::Internal::Type::BaseModel
+                attr_accessor filename: String
+
+                attr_accessor type: :file
+
+                def initialize: (filename: String, ?type: :file) -> void
+
+                def to_hash: -> { filename: String, type: :file }
+              end
+            end
+
+            type url =
+              {
+                source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source,
+                type: :url
+              }
+
+            class URL < OpenAI::Internal::Type::BaseModel
+              attr_accessor source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source
+
+              attr_accessor type: :url
+
+              def initialize: (
+                source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source,
+                ?type: :url
+              ) -> void
+
+              def to_hash: -> {
+                source: OpenAI::Beta::ChatKit::ChatKitResponseOutputText::Annotation::URL::Source,
+                type: :url
+              }
+
+              type source = { type: :url, url: String }
+
+              class Source < OpenAI::Internal::Type::BaseModel
+                attr_accessor type: :url
+
+                attr_accessor url: String
+
+                def initialize: (url: String, ?type: :url) -> void
+
+                def to_hash: -> { type: :url, url: String }
+              end
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitResponseOutputText::annotation]
+          end
+        end
+      end
+    end
+  end
+end

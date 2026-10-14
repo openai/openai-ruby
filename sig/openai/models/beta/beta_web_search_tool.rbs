@@ -1,0 +1,127 @@
+module OpenAI
+  module Models
+    class BetaWebSearchTool = Beta::BetaWebSearchTool
+
+    module Beta
+      type beta_web_search_tool =
+        {
+          type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
+          filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
+          search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
+          user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
+        }
+
+      class BetaWebSearchTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: OpenAI::Models::Beta::BetaWebSearchTool::type_
+
+        attr_accessor filters: OpenAI::Beta::BetaWebSearchTool::Filters?
+
+        attr_reader search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size?
+
+        def search_context_size=: (
+          OpenAI::Models::Beta::BetaWebSearchTool::search_context_size
+        ) -> OpenAI::Models::Beta::BetaWebSearchTool::search_context_size
+
+        attr_accessor user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
+
+        def initialize: (
+          type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
+          ?filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
+          ?search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
+          ?user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
+        ) -> void
+
+        def to_hash: -> {
+          type: OpenAI::Models::Beta::BetaWebSearchTool::type_,
+          filters: OpenAI::Beta::BetaWebSearchTool::Filters?,
+          search_context_size: OpenAI::Models::Beta::BetaWebSearchTool::search_context_size,
+          user_location: OpenAI::Beta::BetaWebSearchTool::UserLocation?
+        }
+
+        type type_ = :web_search | :web_search_2025_08_26
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          WEB_SEARCH: :web_search
+          WEB_SEARCH_2025_08_26: :web_search_2025_08_26
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaWebSearchTool::type_]
+        end
+
+        type filters = { allowed_domains: ::Array[String]? }
+
+        class Filters < OpenAI::Internal::Type::BaseModel
+          attr_accessor allowed_domains: ::Array[String]?
+
+          def initialize: (?allowed_domains: ::Array[String]?) -> void
+
+          def to_hash: -> { allowed_domains: ::Array[String]? }
+        end
+
+        type search_context_size = :low | :medium | :high
+
+        module SearchContextSize
+          extend OpenAI::Internal::Type::Enum
+
+          LOW: :low
+          MEDIUM: :medium
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaWebSearchTool::search_context_size]
+        end
+
+        type user_location =
+          {
+            city: String?,
+            country: String?,
+            region: String?,
+            timezone: String?,
+            type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
+          }
+
+        class UserLocation < OpenAI::Internal::Type::BaseModel
+          attr_accessor city: String?
+
+          attr_accessor country: String?
+
+          attr_accessor region: String?
+
+          attr_accessor timezone: String?
+
+          attr_reader type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_?
+
+          def type=: (
+            OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
+          ) -> OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
+
+          def initialize: (
+            ?city: String?,
+            ?country: String?,
+            ?region: String?,
+            ?timezone: String?,
+            ?type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
+          ) -> void
+
+          def to_hash: -> {
+            city: String?,
+            country: String?,
+            region: String?,
+            timezone: String?,
+            type: OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_
+          }
+
+          type type_ = :approximate
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            APPROXIMATE: :approximate
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::type_]
+          end
+        end
+      end
+    end
+  end
+end

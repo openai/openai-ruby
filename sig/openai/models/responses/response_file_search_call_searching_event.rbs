@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_file_search_call_searching_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.file_search_call.searching"
+        }
+
+      class ResponseFileSearchCallSearchingEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.file_search_call.searching"
+
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.file_search_call.searching"
+        ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.file_search_call.searching"
+        }
+      end
+    end
+  end
+end

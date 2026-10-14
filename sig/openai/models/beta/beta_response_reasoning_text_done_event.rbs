@@ -1,0 +1,64 @@
+module OpenAI
+  module Models
+    class BetaResponseReasoningTextDoneEvent = Beta::BetaResponseReasoningTextDoneEvent
+
+    module Beta
+      type beta_response_reasoning_text_done_event =
+        {
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          text: String,
+          type: :"response.reasoning_text.done",
+          agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?
+        }
+
+      class BetaResponseReasoningTextDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor text: String
+
+        attr_accessor type: :"response.reasoning_text.done"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?
+
+        def initialize: (
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          text: String,
+          ?agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?,
+          ?type: :"response.reasoning_text.done"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          text: String,
+          type: :"response.reasoning_text.done",
+          agent: OpenAI::Beta::BetaResponseReasoningTextDoneEvent::Agent?
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

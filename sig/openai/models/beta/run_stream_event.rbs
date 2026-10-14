@@ -1,0 +1,216 @@
+module OpenAI
+  module Models
+    module Beta
+      type run_stream_event =
+        OpenAI::Beta::RunStreamEvent::ThreadRunCreated
+        | OpenAI::Beta::RunStreamEvent::ThreadRunQueued
+        | OpenAI::Beta::RunStreamEvent::ThreadRunInProgress
+        | OpenAI::Beta::RunStreamEvent::ThreadRunRequiresAction
+        | OpenAI::Beta::RunStreamEvent::ThreadRunCompleted
+        | OpenAI::Beta::RunStreamEvent::ThreadRunIncomplete
+        | OpenAI::Beta::RunStreamEvent::ThreadRunFailed
+        | OpenAI::Beta::RunStreamEvent::ThreadRunCancelling
+        | OpenAI::Beta::RunStreamEvent::ThreadRunCancelled
+        | OpenAI::Beta::RunStreamEvent::ThreadRunExpired
+
+      module RunStreamEvent
+        extend OpenAI::Internal::Type::Union
+
+        type thread_run_created =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.created" }
+
+        class ThreadRunCreated < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.created"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.created"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.created"
+          }
+        end
+
+        type thread_run_queued =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.queued" }
+
+        class ThreadRunQueued < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.queued"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.queued"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.queued"
+          }
+        end
+
+        type thread_run_in_progress =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.in_progress" }
+
+        class ThreadRunInProgress < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.in_progress"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.in_progress"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.in_progress"
+          }
+        end
+
+        type thread_run_requires_action =
+          {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.requires_action"
+          }
+
+        class ThreadRunRequiresAction < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.requires_action"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.requires_action"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.requires_action"
+          }
+        end
+
+        type thread_run_completed =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.completed" }
+
+        class ThreadRunCompleted < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.completed"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.completed"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.completed"
+          }
+        end
+
+        type thread_run_incomplete =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.incomplete" }
+
+        class ThreadRunIncomplete < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.incomplete"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.incomplete"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.incomplete"
+          }
+        end
+
+        type thread_run_failed =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.failed" }
+
+        class ThreadRunFailed < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.failed"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.failed"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.failed"
+          }
+        end
+
+        type thread_run_cancelling =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.cancelling" }
+
+        class ThreadRunCancelling < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.cancelling"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.cancelling"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.cancelling"
+          }
+        end
+
+        type thread_run_cancelled =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.cancelled" }
+
+        class ThreadRunCancelled < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.cancelled"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.cancelled"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.cancelled"
+          }
+        end
+
+        type thread_run_expired =
+          { data: OpenAI::Beta::Threads::Run, event: :"thread.run.expired" }
+
+        class ThreadRunExpired < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Run
+
+          attr_accessor event: :"thread.run.expired"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Run,
+            ?event: :"thread.run.expired"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Run,
+            event: :"thread.run.expired"
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::run_stream_event]
+      end
+    end
+  end
+end

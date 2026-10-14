@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    class ChatCompletionPredictionContent = Chat::ChatCompletionPredictionContent
+
+    module Chat
+      type chat_completion_prediction_content =
+        {
+          content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content,
+          type: :content
+        }
+
+      class ChatCompletionPredictionContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content
+
+        attr_accessor type: :content
+
+        def initialize: (
+          content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content,
+          ?type: :content
+        ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::Chat::ChatCompletionPredictionContent::content,
+          type: :content
+        }
+
+        type content =
+          String | ::Array[OpenAI::Chat::ChatCompletionContentPartText]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletionPredictionContent::content]
+
+          ChatCompletionContentPartTextArray: OpenAI::Internal::Type::Converter
+        end
+      end
+    end
+  end
+end

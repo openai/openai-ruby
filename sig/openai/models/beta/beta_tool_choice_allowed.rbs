@@ -1,0 +1,45 @@
+module OpenAI
+  module Models
+    class BetaToolChoiceAllowed = Beta::BetaToolChoiceAllowed
+
+    module Beta
+      type beta_tool_choice_allowed =
+        {
+          mode: OpenAI::Models::Beta::BetaToolChoiceAllowed::mode,
+          tools: ::Array[::Hash[Symbol, top]],
+          type: :allowed_tools
+        }
+
+      class BetaToolChoiceAllowed < OpenAI::Internal::Type::BaseModel
+        attr_accessor mode: OpenAI::Models::Beta::BetaToolChoiceAllowed::mode
+
+        attr_accessor tools: ::Array[::Hash[Symbol, top]]
+
+        attr_accessor type: :allowed_tools
+
+        def initialize: (
+          mode: OpenAI::Models::Beta::BetaToolChoiceAllowed::mode,
+          tools: ::Array[::Hash[Symbol, top]],
+          ?type: :allowed_tools
+        ) -> void
+
+        def to_hash: -> {
+          mode: OpenAI::Models::Beta::BetaToolChoiceAllowed::mode,
+          tools: ::Array[::Hash[Symbol, top]],
+          type: :allowed_tools
+        }
+
+        type mode = :auto | :required
+
+        module Mode
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          REQUIRED: :required
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaToolChoiceAllowed::mode]
+        end
+      end
+    end
+  end
+end

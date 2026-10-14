@@ -1,0 +1,55 @@
+module OpenAI
+  module Models
+    module Beta
+      type chatkit_workflow =
+        {
+          id: String,
+          state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKitWorkflow::state_variable]?,
+          tracing: OpenAI::Beta::ChatKitWorkflow::Tracing,
+          version: String?
+        }
+
+      class ChatKitWorkflow < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKitWorkflow::state_variable]?
+
+        attr_accessor tracing: OpenAI::Beta::ChatKitWorkflow::Tracing
+
+        attr_accessor version: String?
+
+        def initialize: (
+          id: String,
+          state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKitWorkflow::state_variable]?,
+          tracing: OpenAI::Beta::ChatKitWorkflow::Tracing,
+          version: String?
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKitWorkflow::state_variable]?,
+          tracing: OpenAI::Beta::ChatKitWorkflow::Tracing,
+          version: String?
+        }
+
+        type state_variable = String | bool | Float
+
+        module StateVariable
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKitWorkflow::state_variable]
+        end
+
+        type tracing = { enabled: bool }
+
+        class Tracing < OpenAI::Internal::Type::BaseModel
+          attr_accessor enabled: bool
+
+          def initialize: (enabled: bool) -> void
+
+          def to_hash: -> { enabled: bool }
+        end
+      end
+    end
+  end
+end

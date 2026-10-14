@@ -1,0 +1,44 @@
+module OpenAI
+  module Models
+    module FineTuning
+      type reinforcement_method =
+        {
+          grader: OpenAI::Models::FineTuning::ReinforcementMethod::grader,
+          hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters
+        }
+
+      class ReinforcementMethod < OpenAI::Internal::Type::BaseModel
+        attr_accessor grader: OpenAI::Models::FineTuning::ReinforcementMethod::grader
+
+        attr_reader hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters?
+
+        def hyperparameters=: (
+          OpenAI::FineTuning::ReinforcementHyperparameters
+        ) -> OpenAI::FineTuning::ReinforcementHyperparameters
+
+        def initialize: (
+          grader: OpenAI::Models::FineTuning::ReinforcementMethod::grader,
+          ?hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters
+        ) -> void
+
+        def to_hash: -> {
+          grader: OpenAI::Models::FineTuning::ReinforcementMethod::grader,
+          hyperparameters: OpenAI::FineTuning::ReinforcementHyperparameters
+        }
+
+        type grader =
+          OpenAI::Graders::StringCheckGrader
+          | OpenAI::Graders::TextSimilarityGrader
+          | OpenAI::Graders::PythonGrader
+          | OpenAI::Graders::ScoreModelGrader
+          | OpenAI::Graders::MultiGrader
+
+        module Grader
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::FineTuning::ReinforcementMethod::grader]
+        end
+      end
+    end
+  end
+end

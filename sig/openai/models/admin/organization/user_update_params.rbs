@@ -1,0 +1,50 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type user_update_params =
+          {
+            user_id: String,
+            developer_persona: String?,
+            role: String?,
+            role_id: String?,
+            technical_level: String?
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class UserUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor user_id: String
+
+          attr_accessor developer_persona: String?
+
+          attr_accessor role: String?
+
+          attr_accessor role_id: String?
+
+          attr_accessor technical_level: String?
+
+          def initialize: (
+            user_id: String,
+            ?developer_persona: String?,
+            ?role: String?,
+            ?role_id: String?,
+            ?technical_level: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            user_id: String,
+            developer_persona: String?,
+            role: String?,
+            role_id: String?,
+            technical_level: String?,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,159 @@
+module OpenAI
+  module Models
+    type content_provenance_check =
+      {
+        created_at: Integer,
+        object: OpenAI::Models::ContentProvenanceCheck::object,
+        results: ::Array[OpenAI::Models::ContentProvenanceCheck::result]
+      }
+
+    class ContentProvenanceCheck < OpenAI::Internal::Type::BaseModel
+      attr_accessor created_at: Integer
+
+      attr_accessor object: OpenAI::Models::ContentProvenanceCheck::object
+
+      attr_accessor results: ::Array[OpenAI::Models::ContentProvenanceCheck::result]
+
+      def initialize: (
+        created_at: Integer,
+        object: OpenAI::Models::ContentProvenanceCheck::object,
+        results: ::Array[OpenAI::Models::ContentProvenanceCheck::result]
+      ) -> void
+
+      def to_hash: -> {
+        created_at: Integer,
+        object: OpenAI::Models::ContentProvenanceCheck::object,
+        results: ::Array[OpenAI::Models::ContentProvenanceCheck::result]
+      }
+
+      type object = :content_provenance_check
+
+      module Object
+        extend OpenAI::Internal::Type::Enum
+
+        CONTENT_PROVENANCE_CHECK: :content_provenance_check
+
+        def self?.values: -> ::Array[OpenAI::Models::ContentProvenanceCheck::object]
+      end
+
+      type result =
+        OpenAI::ContentProvenanceCheck::Result::C2PA
+        | OpenAI::ContentProvenanceCheck::Result::SynthID
+
+      module Result
+        extend OpenAI::Internal::Type::Union
+
+        type c2pa =
+          {
+            generated_at: String?,
+            issuer: String?,
+            model: String?,
+            outcome: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::outcome,
+            type: :c2pa,
+            validation_state: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::validation_state
+          }
+
+        class C2PA < OpenAI::Internal::Type::BaseModel
+          attr_accessor generated_at: String?
+
+          attr_accessor issuer: String?
+
+          attr_accessor model: String?
+
+          attr_accessor outcome: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::outcome
+
+          attr_accessor type: :c2pa
+
+          attr_accessor validation_state: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::validation_state
+
+          def initialize: (
+            generated_at: String?,
+            issuer: String?,
+            model: String?,
+            outcome: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::outcome,
+            validation_state: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::validation_state,
+            ?type: :c2pa
+          ) -> void
+
+          def to_hash: -> {
+            generated_at: String?,
+            issuer: String?,
+            model: String?,
+            outcome: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::outcome,
+            type: :c2pa,
+            validation_state: OpenAI::Models::ContentProvenanceCheck::Result::C2PA::validation_state
+          }
+
+          type outcome = :detected | :not_detected
+
+          module Outcome
+            extend OpenAI::Internal::Type::Enum
+
+            DETECTED: :detected
+            NOT_DETECTED: :not_detected
+
+            def self?.values: -> ::Array[OpenAI::Models::ContentProvenanceCheck::Result::C2PA::outcome]
+          end
+
+          type validation_state = :trusted | :valid | :invalid | :not_present
+
+          module ValidationState
+            extend OpenAI::Internal::Type::Enum
+
+            TRUSTED: :trusted
+            VALID: :valid
+            INVALID: :invalid
+            NOT_PRESENT: :not_present
+
+            def self?.values: -> ::Array[OpenAI::Models::ContentProvenanceCheck::Result::C2PA::validation_state]
+          end
+        end
+
+        type synthid =
+          {
+            generated_at: String?,
+            model: String?,
+            outcome: OpenAI::Models::ContentProvenanceCheck::Result::SynthID::outcome,
+            type: :synthid
+          }
+
+        class SynthID < OpenAI::Internal::Type::BaseModel
+          attr_accessor generated_at: String?
+
+          attr_accessor model: String?
+
+          attr_accessor outcome: OpenAI::Models::ContentProvenanceCheck::Result::SynthID::outcome
+
+          attr_accessor type: :synthid
+
+          def initialize: (
+            generated_at: String?,
+            model: String?,
+            outcome: OpenAI::Models::ContentProvenanceCheck::Result::SynthID::outcome,
+            ?type: :synthid
+          ) -> void
+
+          def to_hash: -> {
+            generated_at: String?,
+            model: String?,
+            outcome: OpenAI::Models::ContentProvenanceCheck::Result::SynthID::outcome,
+            type: :synthid
+          }
+
+          type outcome = :detected | :not_detected
+
+          module Outcome
+            extend OpenAI::Internal::Type::Enum
+
+            DETECTED: :detected
+            NOT_DETECTED: :not_detected
+
+            def self?.values: -> ::Array[OpenAI::Models::ContentProvenanceCheck::Result::SynthID::outcome]
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::ContentProvenanceCheck::result]
+      end
+    end
+  end
+end

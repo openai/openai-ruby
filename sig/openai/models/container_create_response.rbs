@@ -1,0 +1,160 @@
+module OpenAI
+  module Models
+    type container_create_response =
+      {
+        id: String,
+        created_at: Integer,
+        name: String,
+        object: String,
+        status: String,
+        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter,
+        last_active_at: Integer,
+        memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit,
+        network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy
+      }
+
+    class ContainerCreateResponse < OpenAI::Internal::Type::BaseModel
+      attr_accessor id: String
+
+      attr_accessor created_at: Integer
+
+      attr_accessor name: String
+
+      attr_accessor object: String
+
+      attr_accessor status: String
+
+      attr_reader expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter?
+
+      def expires_after=: (
+        OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+      ) -> OpenAI::Models::ContainerCreateResponse::ExpiresAfter
+
+      attr_reader last_active_at: Integer?
+
+      def last_active_at=: (Integer) -> Integer
+
+      attr_reader memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit?
+
+      def memory_limit=: (
+        OpenAI::Models::ContainerCreateResponse::memory_limit
+      ) -> OpenAI::Models::ContainerCreateResponse::memory_limit
+
+      attr_reader network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy?
+
+      def network_policy=: (
+        OpenAI::Models::ContainerCreateResponse::NetworkPolicy
+      ) -> OpenAI::Models::ContainerCreateResponse::NetworkPolicy
+
+      def initialize: (
+        id: String,
+        created_at: Integer,
+        name: String,
+        object: String,
+        status: String,
+        ?expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter,
+        ?last_active_at: Integer,
+        ?memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit,
+        ?network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy
+      ) -> void
+
+      def to_hash: -> {
+        id: String,
+        created_at: Integer,
+        name: String,
+        object: String,
+        status: String,
+        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter,
+        last_active_at: Integer,
+        memory_limit: OpenAI::Models::ContainerCreateResponse::memory_limit,
+        network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy
+      }
+
+      type expires_after =
+        {
+          anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          minutes: Integer
+        }
+
+      class ExpiresAfter < OpenAI::Internal::Type::BaseModel
+        attr_reader anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor?
+
+        def anchor=: (
+          OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor
+        ) -> OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor
+
+        attr_reader minutes: Integer?
+
+        def minutes=: (Integer) -> Integer
+
+        def initialize: (
+          ?anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          ?minutes: Integer
+        ) -> void
+
+        def to_hash: -> {
+          anchor: OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor,
+          minutes: Integer
+        }
+
+        type anchor = :last_active_at
+
+        module Anchor
+          extend OpenAI::Internal::Type::Enum
+
+          LAST_ACTIVE_AT: :last_active_at
+
+          def self?.values: -> ::Array[OpenAI::Models::ContainerCreateResponse::ExpiresAfter::anchor]
+        end
+      end
+
+      type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
+
+      module MemoryLimit
+        extend OpenAI::Internal::Type::Enum
+
+        MEMORY_LIMIT_1G: :"1g"
+        MEMORY_LIMIT_4G: :"4g"
+        MEMORY_LIMIT_16G: :"16g"
+        MEMORY_LIMIT_64G: :"64g"
+
+        def self?.values: -> ::Array[OpenAI::Models::ContainerCreateResponse::memory_limit]
+      end
+
+      type network_policy =
+        {
+          type: OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_,
+          allowed_domains: ::Array[String]
+        }
+
+      class NetworkPolicy < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_
+
+        attr_reader allowed_domains: ::Array[String]?
+
+        def allowed_domains=: (::Array[String]) -> ::Array[String]
+
+        def initialize: (
+          type: OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_,
+          ?allowed_domains: ::Array[String]
+        ) -> void
+
+        def to_hash: -> {
+          type: OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_,
+          allowed_domains: ::Array[String]
+        }
+
+        type type_ = :allowlist | :disabled
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          ALLOWLIST: :allowlist
+          DISABLED: :disabled
+
+          def self?.values: -> ::Array[OpenAI::Models::ContainerCreateResponse::NetworkPolicy::type_]
+        end
+      end
+    end
+  end
+end

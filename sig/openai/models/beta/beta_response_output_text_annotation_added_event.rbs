@@ -1,0 +1,69 @@
+module OpenAI
+  module Models
+    class BetaResponseOutputTextAnnotationAddedEvent = Beta::BetaResponseOutputTextAnnotationAddedEvent
+
+    module Beta
+      type beta_response_output_text_annotation_added_event =
+        {
+          annotation: top,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_text.annotation.added",
+          agent: OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent?
+        }
+
+      class BetaResponseOutputTextAnnotationAddedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor annotation: top
+
+        attr_accessor annotation_index: Integer
+
+        attr_accessor content_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.output_text.annotation.added"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent?
+
+        def initialize: (
+          annotation: top,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent?,
+          ?type: :"response.output_text.annotation.added"
+        ) -> void
+
+        def to_hash: -> {
+          annotation: top,
+          annotation_index: Integer,
+          content_index: Integer,
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_text.annotation.added",
+          agent: OpenAI::Beta::BetaResponseOutputTextAnnotationAddedEvent::Agent?
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

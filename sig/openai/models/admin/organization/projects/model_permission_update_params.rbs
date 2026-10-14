@@ -1,0 +1,53 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type model_permission_update_params =
+            {
+              project_id: String,
+              mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode,
+              model_ids: ::Array[String]
+            }
+            & OpenAI::Internal::Type::request_parameters
+
+          class ModelPermissionUpdateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            attr_accessor mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode
+
+            attr_accessor model_ids: ::Array[String]
+
+            def initialize: (
+              project_id: String,
+              mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode,
+              model_ids: ::Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              mode: OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode,
+              model_ids: ::Array[String],
+              request_options: OpenAI::RequestOptions
+            }
+
+            type mode = :allow_list | :deny_list
+
+            module Mode
+              extend OpenAI::Internal::Type::Enum
+
+              ALLOW_LIST: :allow_list
+              DENY_LIST: :deny_list
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ModelPermissionUpdateParams::mode]
+            end
+          end
+        end
+      end
+    end
+  end
+end

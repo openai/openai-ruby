@@ -1,0 +1,53 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type rate_limit_list_rate_limits_params =
+            {
+              project_id: String,
+              after: String,
+              before: String,
+              limit: Integer
+            }
+            & OpenAI::Internal::Type::request_parameters
+
+          class RateLimitListRateLimitsParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            attr_reader after: String?
+
+            def after=: (String) -> String
+
+            attr_reader before: String?
+
+            def before=: (String) -> String
+
+            attr_reader limit: Integer?
+
+            def limit=: (Integer) -> Integer
+
+            def initialize: (
+              project_id: String,
+              ?after: String,
+              ?before: String,
+              ?limit: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              after: String,
+              before: String,
+              limit: Integer,
+              request_options: OpenAI::RequestOptions
+            }
+          end
+        end
+      end
+    end
+  end
+end

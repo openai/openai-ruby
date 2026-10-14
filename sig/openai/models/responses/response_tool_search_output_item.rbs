@@ -1,0 +1,77 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_tool_search_output_item =
+        {
+          id: String,
+          call_id: String?,
+          execution: OpenAI::Models::Responses::ResponseToolSearchOutputItem::execution,
+          status: OpenAI::Models::Responses::ResponseToolSearchOutputItem::status,
+          tools: ::Array[OpenAI::Models::Responses::tool],
+          type: :tool_search_output,
+          created_by: String
+        }
+
+      class ResponseToolSearchOutputItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String?
+
+        attr_accessor execution: OpenAI::Models::Responses::ResponseToolSearchOutputItem::execution
+
+        attr_accessor status: OpenAI::Models::Responses::ResponseToolSearchOutputItem::status
+
+        attr_accessor tools: ::Array[OpenAI::Models::Responses::tool]
+
+        attr_accessor type: :tool_search_output
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          call_id: String?,
+          execution: OpenAI::Models::Responses::ResponseToolSearchOutputItem::execution,
+          status: OpenAI::Models::Responses::ResponseToolSearchOutputItem::status,
+          tools: ::Array[OpenAI::Models::Responses::tool],
+          ?created_by: String,
+          ?type: :tool_search_output
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String?,
+          execution: OpenAI::Models::Responses::ResponseToolSearchOutputItem::execution,
+          status: OpenAI::Models::Responses::ResponseToolSearchOutputItem::status,
+          tools: ::Array[OpenAI::Models::Responses::tool],
+          type: :tool_search_output,
+          created_by: String
+        }
+
+        type execution = :server | :client
+
+        module Execution
+          extend OpenAI::Internal::Type::Enum
+
+          SERVER: :server
+          CLIENT: :client
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseToolSearchOutputItem::execution]
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseToolSearchOutputItem::status]
+        end
+      end
+    end
+  end
+end

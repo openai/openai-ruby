@@ -1,0 +1,161 @@
+module OpenAI
+  module Models
+    class BetaResponseFunctionShellToolCall = Beta::BetaResponseFunctionShellToolCall
+
+    module Beta
+      type beta_response_function_shell_tool_call =
+        {
+          id: String,
+          action: OpenAI::Beta::BetaResponseFunctionShellToolCall::Action,
+          call_id: String,
+          environment: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::environment?,
+          status: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::status,
+          type: :shell_call,
+          agent: OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent,
+          caller_: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_?,
+          created_by: String
+        }
+
+      class BetaResponseFunctionShellToolCall < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor action: OpenAI::Beta::BetaResponseFunctionShellToolCall::Action
+
+        attr_accessor call_id: String
+
+        attr_accessor environment: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::environment?
+
+        attr_accessor status: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::status
+
+        attr_accessor type: :shell_call
+
+        attr_reader agent: OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent?
+
+        def agent=: (
+          OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent
+        ) -> OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent
+
+        attr_accessor caller_: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_?
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          action: OpenAI::Beta::BetaResponseFunctionShellToolCall::Action,
+          call_id: String,
+          environment: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::environment?,
+          status: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::status,
+          ?agent: OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent,
+          ?caller_: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_?,
+          ?created_by: String,
+          ?type: :shell_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          action: OpenAI::Beta::BetaResponseFunctionShellToolCall::Action,
+          call_id: String,
+          environment: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::environment?,
+          status: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::status,
+          type: :shell_call,
+          agent: OpenAI::Beta::BetaResponseFunctionShellToolCall::Agent,
+          caller_: OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_?,
+          created_by: String
+        }
+
+        type action =
+          {
+            commands: ::Array[String],
+            max_output_length: Integer?,
+            timeout_ms: Integer?
+          }
+
+        class Action < OpenAI::Internal::Type::BaseModel
+          attr_accessor commands: ::Array[String]
+
+          attr_accessor max_output_length: Integer?
+
+          attr_accessor timeout_ms: Integer?
+
+          def initialize: (
+            commands: ::Array[String],
+            max_output_length: Integer?,
+            timeout_ms: Integer?
+          ) -> void
+
+          def to_hash: -> {
+            commands: ::Array[String],
+            max_output_length: Integer?,
+            timeout_ms: Integer?
+          }
+        end
+
+        type environment =
+          OpenAI::Beta::BetaResponseLocalEnvironment
+          | OpenAI::Beta::BetaResponseContainerReference
+
+        module Environment
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::environment]
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::status]
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+
+        type caller_ =
+          OpenAI::Beta::BetaResponseFunctionShellToolCall::Caller::Direct
+          | OpenAI::Beta::BetaResponseFunctionShellToolCall::Caller::Program
+
+        module Caller
+          extend OpenAI::Internal::Type::Union
+
+          type direct = { type: :direct }
+
+          class Direct < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :direct
+
+            def initialize: (?type: :direct) -> void
+
+            def to_hash: -> { type: :direct }
+          end
+
+          type program = { caller_id: String, type: :program }
+
+          class Program < OpenAI::Internal::Type::BaseModel
+            attr_accessor caller_id: String
+
+            attr_accessor type: :program
+
+            def initialize: (caller_id: String, ?type: :program) -> void
+
+            def to_hash: -> { caller_id: String, type: :program }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseFunctionShellToolCall::caller_]
+        end
+      end
+    end
+  end
+end

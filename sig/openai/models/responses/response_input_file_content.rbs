@@ -1,0 +1,78 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_input_file_content =
+        {
+          type: :input_file,
+          detail: OpenAI::Models::Responses::ResponseInputFileContent::detail,
+          file_data: String?,
+          file_id: String?,
+          file_url: String?,
+          filename: String?,
+          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
+        }
+
+      class ResponseInputFileContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :input_file
+
+        attr_reader detail: OpenAI::Models::Responses::ResponseInputFileContent::detail?
+
+        def detail=: (
+          OpenAI::Models::Responses::ResponseInputFileContent::detail
+        ) -> OpenAI::Models::Responses::ResponseInputFileContent::detail
+
+        attr_accessor file_data: String?
+
+        attr_accessor file_id: String?
+
+        attr_accessor file_url: String?
+
+        attr_accessor filename: String?
+
+        attr_accessor prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
+
+        def initialize: (
+          ?detail: OpenAI::Models::Responses::ResponseInputFileContent::detail,
+          ?file_data: String?,
+          ?file_id: String?,
+          ?file_url: String?,
+          ?filename: String?,
+          ?prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?,
+          ?type: :input_file
+        ) -> void
+
+        def to_hash: -> {
+          type: :input_file,
+          detail: OpenAI::Models::Responses::ResponseInputFileContent::detail,
+          file_data: String?,
+          file_id: String?,
+          file_url: String?,
+          filename: String?,
+          prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
+        }
+
+        type detail = :auto | :low | :high
+
+        module Detail
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          LOW: :low
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputFileContent::detail]
+        end
+
+        type prompt_cache_breakpoint = { mode: :explicit }
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: :explicit
+
+          def initialize: (?mode: :explicit) -> void
+
+          def to_hash: -> { mode: :explicit }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,52 @@
+module OpenAI
+  module Models
+    module Responses
+      type tool_search_tool =
+        {
+          type: :tool_search,
+          description: String?,
+          execution: OpenAI::Models::Responses::ToolSearchTool::execution,
+          parameters: top?
+        }
+
+      class ToolSearchTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :tool_search
+
+        attr_accessor description: String?
+
+        attr_reader execution: OpenAI::Models::Responses::ToolSearchTool::execution?
+
+        def execution=: (
+          OpenAI::Models::Responses::ToolSearchTool::execution
+        ) -> OpenAI::Models::Responses::ToolSearchTool::execution
+
+        attr_accessor parameters: top?
+
+        def initialize: (
+          ?description: String?,
+          ?execution: OpenAI::Models::Responses::ToolSearchTool::execution,
+          ?parameters: top?,
+          ?type: :tool_search
+        ) -> void
+
+        def to_hash: -> {
+          type: :tool_search,
+          description: String?,
+          execution: OpenAI::Models::Responses::ToolSearchTool::execution,
+          parameters: top?
+        }
+
+        type execution = :server | :client
+
+        module Execution
+          extend OpenAI::Internal::Type::Enum
+
+          SERVER: :server
+          CLIENT: :client
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ToolSearchTool::execution]
+        end
+      end
+    end
+  end
+end

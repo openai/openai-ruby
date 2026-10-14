@@ -1,0 +1,30 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        # @see OpenAI::Resources::Beta::Threads::Runs#retrieve
+        class RunRetrieveParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          # @!attribute thread_id
+          #
+          #   @return [String]
+          required :thread_id, String
+
+          # @!attribute run_id
+          #
+          #   @return [String]
+          required :run_id, String
+
+          # @!method initialize(thread_id:, run_id:, request_options: {})
+          #   @param thread_id [String]
+          #   @param run_id [String]
+          #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+        end
+      end
+    end
+  end
+end

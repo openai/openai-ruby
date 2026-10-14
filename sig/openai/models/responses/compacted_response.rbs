@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Responses
+      type compacted_response =
+        {
+          id: String,
+          created_at: Integer,
+          object: :"response.compaction",
+          output: ::Array[OpenAI::Models::Responses::response_output_item],
+          usage: OpenAI::Responses::ResponseUsage
+        }
+
+      class CompactedResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor object: :"response.compaction"
+
+        attr_accessor output: ::Array[OpenAI::Models::Responses::response_output_item]
+
+        attr_accessor usage: OpenAI::Responses::ResponseUsage
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          output: ::Array[OpenAI::Models::Responses::response_output_item],
+          usage: OpenAI::Responses::ResponseUsage,
+          ?object: :"response.compaction"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          object: :"response.compaction",
+          output: ::Array[OpenAI::Models::Responses::response_output_item],
+          usage: OpenAI::Responses::ResponseUsage
+        }
+      end
+    end
+  end
+end

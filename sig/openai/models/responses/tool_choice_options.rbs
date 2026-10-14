@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Responses
+      type tool_choice_options = :none | :auto | :required
+
+      module ToolChoiceOptions
+        extend OpenAI::Internal::Type::Enum
+
+        NONE: :none
+        AUTO: :auto
+        REQUIRED: :required
+
+        def self?.values: -> ::Array[OpenAI::Models::Responses::tool_choice_options]
+      end
+    end
+  end
+end

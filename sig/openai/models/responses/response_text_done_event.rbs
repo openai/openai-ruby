@@ -1,0 +1,99 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_text_done_event =
+        {
+          content_index: Integer,
+          item_id: String,
+          logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob],
+          output_index: Integer,
+          sequence_number: Integer,
+          text: String,
+          type: :"response.output_text.done"
+        }
+
+      class ResponseTextDoneEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor item_id: String
+
+        attr_accessor logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob]
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor text: String
+
+        attr_accessor type: :"response.output_text.done"
+
+        def initialize: (
+          content_index: Integer,
+          item_id: String,
+          logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob],
+          output_index: Integer,
+          sequence_number: Integer,
+          text: String,
+          ?type: :"response.output_text.done"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          item_id: String,
+          logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob],
+          output_index: Integer,
+          sequence_number: Integer,
+          text: String,
+          type: :"response.output_text.done"
+        }
+
+        type logprob =
+          {
+            token: String,
+            logprob: Float,
+            top_logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob]
+          }
+
+        class Logprob < OpenAI::Internal::Type::BaseModel
+          attr_accessor token: String
+
+          attr_accessor logprob: Float
+
+          attr_reader top_logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob]?
+
+          def top_logprobs=: (
+            ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob]
+          ) -> ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob]
+
+          def initialize: (
+            token: String,
+            logprob: Float,
+            ?top_logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob]
+          ) -> void
+
+          def to_hash: -> {
+            token: String,
+            logprob: Float,
+            top_logprobs: ::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob]
+          }
+
+          type top_logprob = { token: String, logprob: Float }
+
+          class TopLogprob < OpenAI::Internal::Type::BaseModel
+            attr_reader token: String?
+
+            def token=: (String) -> String
+
+            attr_reader logprob: Float?
+
+            def logprob=: (Float) -> Float
+
+            def initialize: (?token: String, ?logprob: Float) -> void
+
+            def to_hash: -> { token: String, logprob: Float }
+          end
+        end
+      end
+    end
+  end
+end

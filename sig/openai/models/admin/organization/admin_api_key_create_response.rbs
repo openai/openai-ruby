@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type admin_api_key_create_response = { value: String }
+
+        class AdminAPIKeyCreateResponse < OpenAI::Models::Admin::Organization::AdminAPIKey
+          def value: -> String
+
+          def value=: (String _) -> String
+
+          def initialize: (value: String) -> void
+
+          def to_hash: -> { value: String }
+        end
+      end
+    end
+  end
+end

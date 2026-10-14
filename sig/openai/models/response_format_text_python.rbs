@@ -1,0 +1,13 @@
+module OpenAI
+  module Models
+    type response_format_text_python = { type: :python }
+
+    class ResponseFormatTextPython < OpenAI::Internal::Type::BaseModel
+      attr_accessor type: :python
+
+      def initialize: (?type: :python) -> void
+
+      def to_hash: -> { type: :python }
+    end
+  end
+end

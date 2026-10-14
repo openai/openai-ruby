@@ -1,0 +1,38 @@
+module OpenAI
+  module Models
+    module Chat
+      type chat_completion_allowed_tools =
+        {
+          mode: OpenAI::Models::Chat::ChatCompletionAllowedTools::mode,
+          tools: ::Array[::Hash[Symbol, top]]
+        }
+
+      class ChatCompletionAllowedTools < OpenAI::Internal::Type::BaseModel
+        attr_accessor mode: OpenAI::Models::Chat::ChatCompletionAllowedTools::mode
+
+        attr_accessor tools: ::Array[::Hash[Symbol, top]]
+
+        def initialize: (
+          mode: OpenAI::Models::Chat::ChatCompletionAllowedTools::mode,
+          tools: ::Array[::Hash[Symbol, top]]
+        ) -> void
+
+        def to_hash: -> {
+          mode: OpenAI::Models::Chat::ChatCompletionAllowedTools::mode,
+          tools: ::Array[::Hash[Symbol, top]]
+        }
+
+        type mode = :auto | :required
+
+        module Mode
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          REQUIRED: :required
+
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAllowedTools::mode]
+        end
+      end
+    end
+  end
+end

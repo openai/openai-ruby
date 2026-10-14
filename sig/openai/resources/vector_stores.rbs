@@ -1,0 +1,57 @@
+module OpenAI
+  module Resources
+    class VectorStores
+      attr_reader files: OpenAI::Resources::VectorStores::Files
+
+      attr_reader file_batches: OpenAI::Resources::VectorStores::FileBatches
+
+      def create: (
+        ?chunking_strategy: OpenAI::Models::file_chunking_strategy_param,
+        ?description: String,
+        ?expires_after: OpenAI::VectorStoreCreateParams::ExpiresAfter,
+        ?file_ids: ::Array[String],
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::VectorStore
+
+      def retrieve: (
+        String vector_store_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::VectorStore
+
+      def update: (
+        String vector_store_id,
+        ?expires_after: OpenAI::VectorStoreUpdateParams::ExpiresAfter?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::VectorStore
+
+      def list: (
+        ?after: String,
+        ?before: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::VectorStoreListParams::order,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::CursorPage[OpenAI::VectorStore]
+
+      def delete: (
+        String vector_store_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::VectorStoreDeleted
+
+      def search: (
+        String vector_store_id,
+        query: OpenAI::Models::VectorStoreSearchParams::query,
+        ?filters: OpenAI::Models::VectorStoreSearchParams::filters,
+        ?max_num_results: Integer,
+        ?ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions,
+        ?rewrite_query: bool,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::Page[OpenAI::Models::VectorStoreSearchResponse]
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

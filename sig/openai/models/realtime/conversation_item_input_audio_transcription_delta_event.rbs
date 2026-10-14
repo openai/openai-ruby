@@ -1,0 +1,51 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_input_audio_transcription_delta_event =
+        {
+          event_id: String,
+          item_id: String,
+          type: :"conversation.item.input_audio_transcription.delta",
+          content_index: Integer,
+          delta: String,
+          logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+        }
+
+      class ConversationItemInputAudioTranscriptionDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor type: :"conversation.item.input_audio_transcription.delta"
+
+        attr_reader content_index: Integer?
+
+        def content_index=: (Integer) -> Integer
+
+        attr_reader delta: String?
+
+        def delta=: (String) -> String
+
+        attr_accessor logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+
+        def initialize: (
+          event_id: String,
+          item_id: String,
+          ?content_index: Integer,
+          ?delta: String,
+          ?logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?,
+          ?type: :"conversation.item.input_audio_transcription.delta"
+        ) -> void
+
+        def to_hash: -> {
+          event_id: String,
+          item_id: String,
+          type: :"conversation.item.input_audio_transcription.delta",
+          content_index: Integer,
+          delta: String,
+          logprobs: ::Array[OpenAI::Realtime::LogProbProperties]?
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,69 @@
+module OpenAI
+  module Resources
+    class Videos
+      def create: (
+        prompt: String,
+        ?input_reference: OpenAI::Models::VideoCreateParams::input_reference,
+        ?model: OpenAI::Models::video_model,
+        ?seconds: OpenAI::Models::video_seconds,
+        ?size: OpenAI::Models::video_size,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Video
+
+      def retrieve: (
+        String video_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Video
+
+      def list: (
+        ?after: String,
+        ?limit: Integer,
+        ?order: OpenAI::Models::VideoListParams::order,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Video]
+
+      def delete: (
+        String video_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::VideoDeleteResponse
+
+      def create_character: (
+        name: String,
+        video: OpenAI::Internal::file_input,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::VideoCreateCharacterResponse
+
+      def download_content: (
+        String video_id,
+        ?variant: OpenAI::Models::VideoDownloadContentParams::variant,
+        ?request_options: OpenAI::request_opts
+      ) -> StringIO
+
+      def edit: (
+        prompt: String,
+        video: OpenAI::Models::VideoEditParams::video,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Video
+
+      def extend_: (
+        prompt: String,
+        seconds: OpenAI::Models::video_seconds,
+        video: OpenAI::Models::VideoExtendParams::video,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Video
+
+      def get_character: (
+        String character_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::VideoGetCharacterResponse
+
+      def remix: (
+        String video_id,
+        prompt: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Video
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    class BetaResponseConversationParam = Beta::BetaResponseConversationParam
+
+    module Beta
+      type beta_response_conversation_param = { id: String }
+
+      class BetaResponseConversationParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        def initialize: (id: String) -> void
+
+        def to_hash: -> { id: String }
+      end
+    end
+  end
+end

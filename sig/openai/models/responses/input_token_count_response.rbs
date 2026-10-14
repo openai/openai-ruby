@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Responses
+      type input_token_count_response =
+        { input_tokens: Integer, object: :"response.input_tokens" }
+
+      class InputTokenCountResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor input_tokens: Integer
+
+        attr_accessor object: :"response.input_tokens"
+
+        def initialize: (
+          input_tokens: Integer,
+          ?object: :"response.input_tokens"
+        ) -> void
+
+        def to_hash: -> {
+          input_tokens: Integer,
+          object: :"response.input_tokens"
+        }
+      end
+    end
+  end
+end

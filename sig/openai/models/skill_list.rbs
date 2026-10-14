@@ -1,0 +1,40 @@
+module OpenAI
+  module Models
+    type skill_list =
+      {
+        data: ::Array[OpenAI::Skill],
+        first_id: String?,
+        has_more: bool,
+        last_id: String?,
+        object: :list
+      }
+
+    class SkillList < OpenAI::Internal::Type::BaseModel
+      attr_accessor data: ::Array[OpenAI::Skill]
+
+      attr_accessor first_id: String?
+
+      attr_accessor has_more: bool
+
+      attr_accessor last_id: String?
+
+      attr_accessor object: :list
+
+      def initialize: (
+        data: ::Array[OpenAI::Skill],
+        first_id: String?,
+        has_more: bool,
+        last_id: String?,
+        ?object: :list
+      ) -> void
+
+      def to_hash: -> {
+        data: ::Array[OpenAI::Skill],
+        first_id: String?,
+        has_more: bool,
+        last_id: String?,
+        object: :list
+      }
+    end
+  end
+end

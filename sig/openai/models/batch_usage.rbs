@@ -1,0 +1,60 @@
+module OpenAI
+  module Models
+    type batch_usage =
+      {
+        input_tokens: Integer,
+        input_tokens_details: OpenAI::BatchUsage::InputTokensDetails,
+        output_tokens: Integer,
+        output_tokens_details: OpenAI::BatchUsage::OutputTokensDetails,
+        total_tokens: Integer
+      }
+
+    class BatchUsage < OpenAI::Internal::Type::BaseModel
+      attr_accessor input_tokens: Integer
+
+      attr_accessor input_tokens_details: OpenAI::BatchUsage::InputTokensDetails
+
+      attr_accessor output_tokens: Integer
+
+      attr_accessor output_tokens_details: OpenAI::BatchUsage::OutputTokensDetails
+
+      attr_accessor total_tokens: Integer
+
+      def initialize: (
+        input_tokens: Integer,
+        input_tokens_details: OpenAI::BatchUsage::InputTokensDetails,
+        output_tokens: Integer,
+        output_tokens_details: OpenAI::BatchUsage::OutputTokensDetails,
+        total_tokens: Integer
+      ) -> void
+
+      def to_hash: -> {
+        input_tokens: Integer,
+        input_tokens_details: OpenAI::BatchUsage::InputTokensDetails,
+        output_tokens: Integer,
+        output_tokens_details: OpenAI::BatchUsage::OutputTokensDetails,
+        total_tokens: Integer
+      }
+
+      type input_tokens_details = { cached_tokens: Integer }
+
+      class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+        attr_accessor cached_tokens: Integer
+
+        def initialize: (cached_tokens: Integer) -> void
+
+        def to_hash: -> { cached_tokens: Integer }
+      end
+
+      type output_tokens_details = { reasoning_tokens: Integer }
+
+      class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
+        attr_accessor reasoning_tokens: Integer
+
+        def initialize: (reasoning_tokens: Integer) -> void
+
+        def to_hash: -> { reasoning_tokens: Integer }
+      end
+    end
+  end
+end

@@ -1,0 +1,97 @@
+module OpenAI
+  module Models
+    class BetaResponseOutputMessage = Beta::BetaResponseOutputMessage
+
+    module Beta
+      type beta_response_output_message =
+        {
+          id: String,
+          content: ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::content],
+          role: :assistant,
+          status: OpenAI::Models::Beta::BetaResponseOutputMessage::status,
+          type: :message,
+          agent: OpenAI::Beta::BetaResponseOutputMessage::Agent?,
+          phase: OpenAI::Models::Beta::BetaResponseOutputMessage::phase?
+        }
+
+      class BetaResponseOutputMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor content: ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::content]
+
+        attr_accessor role: :assistant
+
+        attr_accessor status: OpenAI::Models::Beta::BetaResponseOutputMessage::status
+
+        attr_accessor type: :message
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseOutputMessage::Agent?
+
+        attr_accessor phase: OpenAI::Models::Beta::BetaResponseOutputMessage::phase?
+
+        def initialize: (
+          id: String,
+          content: ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::content],
+          status: OpenAI::Models::Beta::BetaResponseOutputMessage::status,
+          ?agent: OpenAI::Beta::BetaResponseOutputMessage::Agent?,
+          ?phase: OpenAI::Models::Beta::BetaResponseOutputMessage::phase?,
+          ?role: :assistant,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::content],
+          role: :assistant,
+          status: OpenAI::Models::Beta::BetaResponseOutputMessage::status,
+          type: :message,
+          agent: OpenAI::Beta::BetaResponseOutputMessage::Agent?,
+          phase: OpenAI::Models::Beta::BetaResponseOutputMessage::phase?
+        }
+
+        type content =
+          OpenAI::Beta::BetaResponseOutputText
+          | OpenAI::Beta::BetaResponseOutputRefusal
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::content]
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::status]
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY: :commentary
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseOutputMessage::phase]
+        end
+      end
+    end
+  end
+end

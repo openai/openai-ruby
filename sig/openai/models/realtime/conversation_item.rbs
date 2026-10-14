@@ -1,0 +1,22 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item =
+        OpenAI::Realtime::RealtimeConversationItemSystemMessage
+        | OpenAI::Realtime::RealtimeConversationItemUserMessage
+        | OpenAI::Realtime::RealtimeConversationItemAssistantMessage
+        | OpenAI::Realtime::RealtimeConversationItemFunctionCall
+        | OpenAI::Realtime::RealtimeConversationItemFunctionCallOutput
+        | OpenAI::Realtime::RealtimeMcpApprovalResponse
+        | OpenAI::Realtime::RealtimeMcpListTools
+        | OpenAI::Realtime::RealtimeMcpToolCall
+        | OpenAI::Realtime::RealtimeMcpApprovalRequest
+
+      module ConversationItem
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Realtime::conversation_item]
+      end
+    end
+  end
+end

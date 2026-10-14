@@ -1,0 +1,47 @@
+module OpenAI
+  module Models
+    class RealtimeTranscriptionSessionTurnDetection = Realtime::RealtimeTranscriptionSessionTurnDetection
+
+    module Realtime
+      type realtime_transcription_session_turn_detection =
+        {
+          prefix_padding_ms: Integer,
+          silence_duration_ms: Integer,
+          threshold: Float,
+          type: String
+        }
+
+      class RealtimeTranscriptionSessionTurnDetection < OpenAI::Internal::Type::BaseModel
+        attr_reader prefix_padding_ms: Integer?
+
+        def prefix_padding_ms=: (Integer) -> Integer
+
+        attr_reader silence_duration_ms: Integer?
+
+        def silence_duration_ms=: (Integer) -> Integer
+
+        attr_reader threshold: Float?
+
+        def threshold=: (Float) -> Float
+
+        attr_reader type: String?
+
+        def type=: (String) -> String
+
+        def initialize: (
+          ?prefix_padding_ms: Integer,
+          ?silence_duration_ms: Integer,
+          ?threshold: Float,
+          ?type: String
+        ) -> void
+
+        def to_hash: -> {
+          prefix_padding_ms: Integer,
+          silence_duration_ms: Integer,
+          threshold: Float,
+          type: String
+        }
+      end
+    end
+  end
+end

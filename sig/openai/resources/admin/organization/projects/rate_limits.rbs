@@ -1,0 +1,33 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class RateLimits
+            def list_rate_limits: (
+              String project_id,
+              ?after: String,
+              ?before: String,
+              ?limit: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectRateLimit]
+
+            def update_rate_limit: (
+              String rate_limit_id,
+              project_id: String,
+              ?batch_1_day_max_input_tokens: Integer,
+              ?max_audio_megabytes_per_1_minute: Integer,
+              ?max_images_per_1_minute: Integer,
+              ?max_requests_per_1_day: Integer,
+              ?max_requests_per_1_minute: Integer,
+              ?max_tokens_per_1_minute: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectRateLimit
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

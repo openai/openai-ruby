@@ -1,0 +1,85 @@
+# typed: strong
+
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::ProjectListParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # A cursor for use in pagination. `after` is an object ID that defines your place
+          # in the list. For instance, if you make a list request and receive 100 objects,
+          # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          # fetch the next page of the list.
+          sig { returns(T.nilable(String)) }
+          attr_reader :after
+
+          sig { params(after: String).void }
+          attr_writer :after
+
+          # If `true` returns all projects including those that have been `archived`.
+          # Archived projects are not included by default.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :include_archived
+
+          sig { params(include_archived: T::Boolean).void }
+          attr_writer :include_archived
+
+          # A limit on the number of objects to be returned. Limit can range between 1 and
+          # 100, and the default is 20.
+          sig { returns(T.nilable(Integer)) }
+          attr_reader :limit
+
+          sig { params(limit: Integer).void }
+          attr_writer :limit
+
+          sig do
+            params(
+              after: String,
+              include_archived: T::Boolean,
+              limit: Integer,
+              request_options: OpenAI::RequestOptions::OrHash
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # A cursor for use in pagination. `after` is an object ID that defines your place
+            # in the list. For instance, if you make a list request and receive 100 objects,
+            # ending with obj_foo, your subsequent call can include after=obj_foo in order to
+            # fetch the next page of the list.
+            after: nil,
+            # If `true` returns all projects including those that have been `archived`.
+            # Archived projects are not included by default.
+            include_archived: nil,
+            # A limit on the number of objects to be returned. Limit can range between 1 and
+            # 100, and the default is 20.
+            limit: nil,
+            request_options: {}
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                after: String,
+                include_archived: T::Boolean,
+                limit: Integer,
+                request_options: OpenAI::RequestOptions
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+      end
+    end
+  end
+end

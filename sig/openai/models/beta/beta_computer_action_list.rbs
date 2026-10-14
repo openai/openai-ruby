@@ -1,0 +1,12 @@
+module OpenAI
+  module Models
+    BetaComputerActionList: OpenAI::Internal::Type::Converter
+
+    module Beta
+      type beta_computer_action_list =
+        ::Array[OpenAI::Models::Beta::beta_computer_action]
+
+      BetaComputerActionList: OpenAI::Internal::Type::Converter
+    end
+  end
+end

@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session_history = { enabled: bool, recent_threads: Integer? }
+
+        class ChatSessionHistory < OpenAI::Internal::Type::BaseModel
+          attr_accessor enabled: bool
+
+          attr_accessor recent_threads: Integer?
+
+          def initialize: (enabled: bool, recent_threads: Integer?) -> void
+
+          def to_hash: -> { enabled: bool, recent_threads: Integer? }
+        end
+      end
+    end
+  end
+end

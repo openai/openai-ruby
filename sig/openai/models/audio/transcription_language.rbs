@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Audio
+      type transcription_language = { code: String }
+
+      class TranscriptionLanguage < OpenAI::Internal::Type::BaseModel
+        attr_accessor code: String
+
+        def initialize: (code: String) -> void
+
+        def to_hash: -> { code: String }
+      end
+    end
+  end
+end

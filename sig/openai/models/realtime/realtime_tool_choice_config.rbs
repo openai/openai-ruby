@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_tool_choice_config =
+        OpenAI::Models::Responses::tool_choice_options
+        | OpenAI::Responses::ToolChoiceFunction
+        | OpenAI::Responses::ToolChoiceMcp
+
+      module RealtimeToolChoiceConfig
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Realtime::realtime_tool_choice_config]
+      end
+    end
+  end
+end

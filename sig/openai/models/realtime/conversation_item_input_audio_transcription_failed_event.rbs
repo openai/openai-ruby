@@ -1,0 +1,77 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_input_audio_transcription_failed_event =
+        {
+          content_index: Integer,
+          error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error,
+          event_id: String,
+          item_id: String,
+          type: :"conversation.item.input_audio_transcription.failed"
+        }
+
+      class ConversationItemInputAudioTranscriptionFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor type: :"conversation.item.input_audio_transcription.failed"
+
+        def initialize: (
+          content_index: Integer,
+          error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error,
+          event_id: String,
+          item_id: String,
+          ?type: :"conversation.item.input_audio_transcription.failed"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          error: OpenAI::Realtime::ConversationItemInputAudioTranscriptionFailedEvent::Error,
+          event_id: String,
+          item_id: String,
+          type: :"conversation.item.input_audio_transcription.failed"
+        }
+
+        type error =
+          { code: String, message: String, param: String, type: String }
+
+        class Error < OpenAI::Internal::Type::BaseModel
+          attr_reader code: String?
+
+          def code=: (String) -> String
+
+          attr_reader message: String?
+
+          def message=: (String) -> String
+
+          attr_reader param: String?
+
+          def param=: (String) -> String
+
+          attr_reader type: String?
+
+          def type=: (String) -> String
+
+          def initialize: (
+            ?code: String,
+            ?message: String,
+            ?param: String,
+            ?type: String
+          ) -> void
+
+          def to_hash: -> {
+            code: String,
+            message: String,
+            param: String,
+            type: String
+          }
+        end
+      end
+    end
+  end
+end

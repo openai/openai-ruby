@@ -1,0 +1,97 @@
+module OpenAI
+  module Models
+    type batch_create_params =
+      {
+        completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+        endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+        input_file_id: String,
+        metadata: OpenAI::Models::metadata?,
+        output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter
+      }
+      & OpenAI::Internal::Type::request_parameters
+
+    class BatchCreateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor completion_window: OpenAI::Models::BatchCreateParams::completion_window
+
+      attr_accessor endpoint: OpenAI::Models::BatchCreateParams::endpoint
+
+      attr_accessor input_file_id: String
+
+      attr_accessor metadata: OpenAI::Models::metadata?
+
+      attr_reader output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter?
+
+      def output_expires_after=: (
+        OpenAI::BatchCreateParams::OutputExpiresAfter
+      ) -> OpenAI::BatchCreateParams::OutputExpiresAfter
+
+      def initialize: (
+        completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+        endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+        input_file_id: String,
+        ?metadata: OpenAI::Models::metadata?,
+        ?output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        completion_window: OpenAI::Models::BatchCreateParams::completion_window,
+        endpoint: OpenAI::Models::BatchCreateParams::endpoint,
+        input_file_id: String,
+        metadata: OpenAI::Models::metadata?,
+        output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type completion_window = :"24h"
+
+      module CompletionWindow
+        extend OpenAI::Internal::Type::Enum
+
+        COMPLETION_WINDOW_24H: :"24h"
+
+        def self?.values: -> ::Array[OpenAI::Models::BatchCreateParams::completion_window]
+      end
+
+      type endpoint =
+        :"/v1/responses"
+        | :"/v1/chat/completions"
+        | :"/v1/embeddings"
+        | :"/v1/completions"
+        | :"/v1/moderations"
+        | :"/v1/images/generations"
+        | :"/v1/images/edits"
+        | :"/v1/videos"
+
+      module Endpoint
+        extend OpenAI::Internal::Type::Enum
+
+        V1_RESPONSES: :"/v1/responses"
+        V1_CHAT_COMPLETIONS: :"/v1/chat/completions"
+        V1_EMBEDDINGS: :"/v1/embeddings"
+        V1_COMPLETIONS: :"/v1/completions"
+        V1_MODERATIONS: :"/v1/moderations"
+        V1_IMAGES_GENERATIONS: :"/v1/images/generations"
+        V1_IMAGES_EDITS: :"/v1/images/edits"
+        V1_VIDEOS: :"/v1/videos"
+
+        def self?.values: -> ::Array[OpenAI::Models::BatchCreateParams::endpoint]
+      end
+
+      type output_expires_after = { anchor: :created_at, seconds: Integer }
+
+      class OutputExpiresAfter < OpenAI::Internal::Type::BaseModel
+        attr_accessor anchor: :created_at
+
+        attr_accessor seconds: Integer
+
+        def initialize: (seconds: Integer, ?anchor: :created_at) -> void
+
+        def to_hash: -> { anchor: :created_at, seconds: Integer }
+      end
+    end
+  end
+end

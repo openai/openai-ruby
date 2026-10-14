@@ -1,0 +1,593 @@
+# typed: strong
+
+module OpenAI
+  module Models
+    BetaComputerAction = Beta::BetaComputerAction
+
+    module Beta
+      # A click action.
+      module BetaComputerAction
+        extend OpenAI::Internal::Type::Union
+
+        Variants =
+          T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaComputerAction::Click,
+              OpenAI::Beta::BetaComputerAction::DoubleClick,
+              OpenAI::Beta::BetaComputerAction::Drag,
+              OpenAI::Beta::BetaComputerAction::Keypress,
+              OpenAI::Beta::BetaComputerAction::Move,
+              OpenAI::Beta::BetaComputerAction::Screenshot,
+              OpenAI::Beta::BetaComputerAction::Scroll,
+              OpenAI::Beta::BetaComputerAction::Type,
+              OpenAI::Beta::BetaComputerAction::Wait
+            )
+          end
+
+        class Click < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::Click,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Indicates which mouse button was pressed during the click. One of `left`,
+          # `right`, `wheel`, `back`, or `forward`.
+          sig do
+            returns(OpenAI::Beta::BetaComputerAction::Click::Button::OrSymbol)
+          end
+          attr_accessor :button
+
+          # Specifies the event type. For a click action, this property is always `click`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The x-coordinate where the click occurred.
+          sig { returns(Integer) }
+          attr_accessor :x
+
+          # The y-coordinate where the click occurred.
+          sig { returns(Integer) }
+          attr_accessor :y_
+
+          # The keys being held while clicking.
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_accessor :keys
+
+          # A click action.
+          sig do
+            params(
+              button: OpenAI::Beta::BetaComputerAction::Click::Button::OrSymbol,
+              x: Integer,
+              y_: Integer,
+              keys: T.nilable(T::Array[String]),
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # Indicates which mouse button was pressed during the click. One of `left`,
+            # `right`, `wheel`, `back`, or `forward`.
+            button:,
+            # The x-coordinate where the click occurred.
+            x:,
+            # The y-coordinate where the click occurred.
+            y_:,
+            # The keys being held while clicking.
+            keys: nil,
+            # Specifies the event type. For a click action, this property is always `click`.
+            type: :click
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                button:
+                  OpenAI::Beta::BetaComputerAction::Click::Button::OrSymbol,
+                type: Symbol,
+                x: Integer,
+                y_: Integer,
+                keys: T.nilable(T::Array[String])
+              }
+            )
+          end
+          def to_hash
+          end
+
+          # Indicates which mouse button was pressed during the click. One of `left`,
+          # `right`, `wheel`, `back`, or `forward`.
+          module Button
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol =
+              T.type_alias do
+                T.all(Symbol, OpenAI::Beta::BetaComputerAction::Click::Button)
+              end
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            LEFT =
+              T.let(
+                :left,
+                OpenAI::Beta::BetaComputerAction::Click::Button::TaggedSymbol
+              )
+            RIGHT =
+              T.let(
+                :right,
+                OpenAI::Beta::BetaComputerAction::Click::Button::TaggedSymbol
+              )
+            WHEEL =
+              T.let(
+                :wheel,
+                OpenAI::Beta::BetaComputerAction::Click::Button::TaggedSymbol
+              )
+            BACK =
+              T.let(
+                :back,
+                OpenAI::Beta::BetaComputerAction::Click::Button::TaggedSymbol
+              )
+            FORWARD =
+              T.let(
+                :forward,
+                OpenAI::Beta::BetaComputerAction::Click::Button::TaggedSymbol
+              )
+
+            sig do
+              override.returns(
+                T::Array[
+                  OpenAI::Beta::BetaComputerAction::Click::Button::TaggedSymbol
+                ]
+              )
+            end
+            def self.values
+            end
+          end
+        end
+
+        class DoubleClick < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::DoubleClick,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The keys being held while double-clicking.
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_accessor :keys
+
+          # Specifies the event type. For a double click action, this property is always set
+          # to `double_click`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The x-coordinate where the double click occurred.
+          sig { returns(Integer) }
+          attr_accessor :x
+
+          # The y-coordinate where the double click occurred.
+          sig { returns(Integer) }
+          attr_accessor :y_
+
+          # A double click action.
+          sig do
+            params(
+              keys: T.nilable(T::Array[String]),
+              x: Integer,
+              y_: Integer,
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The keys being held while double-clicking.
+            keys:,
+            # The x-coordinate where the double click occurred.
+            x:,
+            # The y-coordinate where the double click occurred.
+            y_:,
+            # Specifies the event type. For a double click action, this property is always set
+            # to `double_click`.
+            type: :double_click
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                keys: T.nilable(T::Array[String]),
+                type: Symbol,
+                x: Integer,
+                y_: Integer
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class Drag < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::Drag,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # An array of coordinates representing the path of the drag action. Coordinates
+          # will appear as an array of objects, eg
+          #
+          # ```
+          # [
+          #   { x: 100, y: 200 },
+          #   { x: 200, y: 300 }
+          # ]
+          # ```
+          sig do
+            returns(T::Array[OpenAI::Beta::BetaComputerAction::Drag::Path])
+          end
+          attr_accessor :path
+
+          # Specifies the event type. For a drag action, this property is always set to
+          # `drag`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The keys being held while dragging the mouse.
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_accessor :keys
+
+          # A drag action.
+          sig do
+            params(
+              path:
+                T::Array[OpenAI::Beta::BetaComputerAction::Drag::Path::OrHash],
+              keys: T.nilable(T::Array[String]),
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # An array of coordinates representing the path of the drag action. Coordinates
+            # will appear as an array of objects, eg
+            #
+            # ```
+            # [
+            #   { x: 100, y: 200 },
+            #   { x: 200, y: 300 }
+            # ]
+            # ```
+            path:,
+            # The keys being held while dragging the mouse.
+            keys: nil,
+            # Specifies the event type. For a drag action, this property is always set to
+            # `drag`.
+            type: :drag
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                path: T::Array[OpenAI::Beta::BetaComputerAction::Drag::Path],
+                type: Symbol,
+                keys: T.nilable(T::Array[String])
+              }
+            )
+          end
+          def to_hash
+          end
+
+          class Path < OpenAI::Internal::Type::BaseModel
+            OrHash =
+              T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaComputerAction::Drag::Path,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+            # The x-coordinate.
+            sig { returns(Integer) }
+            attr_accessor :x
+
+            # The y-coordinate.
+            sig { returns(Integer) }
+            attr_accessor :y_
+
+            # An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.
+            sig { params(x: Integer, y_: Integer).returns(T.attached_class) }
+            def self.new(
+              # The x-coordinate.
+              x:,
+              # The y-coordinate.
+              y_:
+            )
+            end
+
+            sig { override.returns({ x: Integer, y_: Integer }) }
+            def to_hash
+            end
+          end
+        end
+
+        class Keypress < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::Keypress,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The combination of keys the model is requesting to be pressed. This is an array
+          # of strings, each representing a key.
+          sig { returns(T::Array[String]) }
+          attr_accessor :keys
+
+          # Specifies the event type. For a keypress action, this property is always set to
+          # `keypress`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # A collection of keypresses the model would like to perform.
+          sig do
+            params(keys: T::Array[String], type: Symbol).returns(
+              T.attached_class
+            )
+          end
+          def self.new(
+            # The combination of keys the model is requesting to be pressed. This is an array
+            # of strings, each representing a key.
+            keys:,
+            # Specifies the event type. For a keypress action, this property is always set to
+            # `keypress`.
+            type: :keypress
+          )
+          end
+
+          sig { override.returns({ keys: T::Array[String], type: Symbol }) }
+          def to_hash
+          end
+        end
+
+        class Move < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::Move,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Specifies the event type. For a move action, this property is always set to
+          # `move`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The x-coordinate to move to.
+          sig { returns(Integer) }
+          attr_accessor :x
+
+          # The y-coordinate to move to.
+          sig { returns(Integer) }
+          attr_accessor :y_
+
+          # The keys being held while moving the mouse.
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_accessor :keys
+
+          # A mouse move action.
+          sig do
+            params(
+              x: Integer,
+              y_: Integer,
+              keys: T.nilable(T::Array[String]),
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The x-coordinate to move to.
+            x:,
+            # The y-coordinate to move to.
+            y_:,
+            # The keys being held while moving the mouse.
+            keys: nil,
+            # Specifies the event type. For a move action, this property is always set to
+            # `move`.
+            type: :move
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                type: Symbol,
+                x: Integer,
+                y_: Integer,
+                keys: T.nilable(T::Array[String])
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class Screenshot < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::Screenshot,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Specifies the event type. For a screenshot action, this property is always set
+          # to `screenshot`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # A screenshot action.
+          sig { params(type: Symbol).returns(T.attached_class) }
+          def self.new(
+            # Specifies the event type. For a screenshot action, this property is always set
+            # to `screenshot`.
+            type: :screenshot
+          )
+          end
+
+          sig { override.returns({ type: Symbol }) }
+          def to_hash
+          end
+        end
+
+        class Scroll < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::Scroll,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The horizontal scroll distance.
+          sig { returns(Integer) }
+          attr_accessor :scroll_x
+
+          # The vertical scroll distance.
+          sig { returns(Integer) }
+          attr_accessor :scroll_y
+
+          # Specifies the event type. For a scroll action, this property is always set to
+          # `scroll`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The x-coordinate where the scroll occurred.
+          sig { returns(Integer) }
+          attr_accessor :x
+
+          # The y-coordinate where the scroll occurred.
+          sig { returns(Integer) }
+          attr_accessor :y_
+
+          # The keys being held while scrolling.
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_accessor :keys
+
+          # A scroll action.
+          sig do
+            params(
+              scroll_x: Integer,
+              scroll_y: Integer,
+              x: Integer,
+              y_: Integer,
+              keys: T.nilable(T::Array[String]),
+              type: Symbol
+            ).returns(T.attached_class)
+          end
+          def self.new(
+            # The horizontal scroll distance.
+            scroll_x:,
+            # The vertical scroll distance.
+            scroll_y:,
+            # The x-coordinate where the scroll occurred.
+            x:,
+            # The y-coordinate where the scroll occurred.
+            y_:,
+            # The keys being held while scrolling.
+            keys: nil,
+            # Specifies the event type. For a scroll action, this property is always set to
+            # `scroll`.
+            type: :scroll
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                scroll_x: Integer,
+                scroll_y: Integer,
+                type: Symbol,
+                x: Integer,
+                y_: Integer,
+                keys: T.nilable(T::Array[String])
+              }
+            )
+          end
+          def to_hash
+          end
+        end
+
+        class Type < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::Type,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # The text to type.
+          sig { returns(String) }
+          attr_accessor :text
+
+          # Specifies the event type. For a type action, this property is always set to
+          # `type`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # An action to type in text.
+          sig { params(text: String, type: Symbol).returns(T.attached_class) }
+          def self.new(
+            # The text to type.
+            text:,
+            # Specifies the event type. For a type action, this property is always set to
+            # `type`.
+            type: :type
+          )
+          end
+
+          sig { override.returns({ text: String, type: Symbol }) }
+          def to_hash
+          end
+        end
+
+        class Wait < OpenAI::Internal::Type::BaseModel
+          OrHash =
+            T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaComputerAction::Wait,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+          # Specifies the event type. For a wait action, this property is always set to
+          # `wait`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # A wait action.
+          sig { params(type: Symbol).returns(T.attached_class) }
+          def self.new(
+            # Specifies the event type. For a wait action, this property is always set to
+            # `wait`.
+            type: :wait
+          )
+          end
+
+          sig { override.returns({ type: Symbol }) }
+          def to_hash
+          end
+        end
+
+        sig do
+          override.returns(T::Array[OpenAI::Beta::BetaComputerAction::Variants])
+        end
+        def self.variants
+        end
+      end
+    end
+  end
+end

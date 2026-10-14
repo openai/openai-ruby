@@ -1,0 +1,107 @@
+module OpenAI
+  module Models
+    class BetaResponseComputerToolCallOutputItem = Beta::BetaResponseComputerToolCallOutputItem
+
+    module Beta
+      type beta_response_computer_tool_call_output_item =
+        {
+          id: String,
+          call_id: String,
+          output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
+          status: OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::status,
+          type: :computer_call_output,
+          acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?,
+          created_by: String
+        }
+
+      class BetaResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String
+
+        attr_accessor output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot
+
+        attr_accessor status: OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::status
+
+        attr_accessor type: :computer_call_output
+
+        attr_reader acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]?
+
+        def acknowledged_safety_checks=: (
+          ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
+        ) -> ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          call_id: String,
+          output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
+          status: OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::status,
+          ?acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          ?agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?,
+          ?created_by: String,
+          ?type: :computer_call_output
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          output: OpenAI::Beta::BetaResponseComputerToolCallOutputScreenshot,
+          status: OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::status,
+          type: :computer_call_output,
+          acknowledged_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          agent: OpenAI::Beta::BetaResponseComputerToolCallOutputItem::Agent?,
+          created_by: String
+        }
+
+        type status = :completed | :incomplete | :failed | :in_progress
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          FAILED: :failed
+          IN_PROGRESS: :in_progress
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem::status]
+        end
+
+        type acknowledged_safety_check =
+          { id: String, code: String?, message: String? }
+
+        class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor code: String?
+
+          attr_accessor message: String?
+
+          def initialize: (
+            id: String,
+            ?code: String?,
+            ?message: String?
+          ) -> void
+
+          def to_hash: -> { id: String, code: String?, message: String? }
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

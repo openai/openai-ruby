@@ -1,0 +1,117 @@
+module OpenAI
+  module Resources
+    class Responses
+      attr_reader input_items: OpenAI::Resources::Responses::InputItems
+
+      attr_reader input_tokens: OpenAI::Resources::Responses::InputTokens
+
+      def create: (
+        ?background: bool?,
+        ?context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
+        ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
+        ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+        ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
+        ?instructions: String?,
+        ?max_output_tokens: Integer?,
+        ?max_tool_calls: Integer?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?model: OpenAI::Models::responses_model,
+        ?moderation: OpenAI::Responses::ResponseCreateParams::Moderation?,
+        ?parallel_tool_calls: bool?,
+        ?previous_response_id: String?,
+        ?prompt: OpenAI::Responses::ResponsePrompt?,
+        ?prompt_cache_key: String?,
+        ?prompt_cache_options: OpenAI::Responses::ResponseCreateParams::PromptCacheOptions,
+        ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?,
+        ?reasoning: OpenAI::Reasoning?,
+        ?safety_identifier: String?,
+        ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
+        ?store: bool?,
+        ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
+        ?temperature: Float?,
+        ?text: OpenAI::Responses::ResponseTextConfig,
+        ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+        ?tools: ::Array[OpenAI::Models::Responses::tool],
+        ?top_logprobs: Integer?,
+        ?top_p: Float?,
+        ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Responses::Response
+
+      def stream_raw: (
+        ?background: bool?,
+        ?context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
+        ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
+        ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
+        ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
+        ?instructions: String?,
+        ?max_output_tokens: Integer?,
+        ?max_tool_calls: Integer?,
+        ?metadata: OpenAI::Models::metadata?,
+        ?model: OpenAI::Models::responses_model,
+        ?moderation: OpenAI::Responses::ResponseCreateParams::Moderation?,
+        ?parallel_tool_calls: bool?,
+        ?previous_response_id: String?,
+        ?prompt: OpenAI::Responses::ResponsePrompt?,
+        ?prompt_cache_key: String?,
+        ?prompt_cache_options: OpenAI::Responses::ResponseCreateParams::PromptCacheOptions,
+        ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCreateParams::prompt_cache_retention?,
+        ?reasoning: OpenAI::Reasoning?,
+        ?safety_identifier: String?,
+        ?service_tier: OpenAI::Models::Responses::ResponseCreateParams::service_tier?,
+        ?store: bool?,
+        ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
+        ?temperature: Float?,
+        ?text: OpenAI::Responses::ResponseTextConfig,
+        ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+        ?tools: ::Array[OpenAI::Models::Responses::tool],
+        ?top_logprobs: Integer?,
+        ?top_p: Float?,
+        ?truncation: OpenAI::Models::Responses::ResponseCreateParams::truncation?,
+        ?user: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
+
+      def retrieve: (
+        String response_id,
+        ?include: ::Array[OpenAI::Models::Responses::response_includable],
+        ?include_obfuscation: bool,
+        ?starting_after: Integer,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Responses::Response
+
+      def retrieve_streaming: (
+        String response_id,
+        ?include: ::Array[OpenAI::Models::Responses::response_includable],
+        ?include_obfuscation: bool,
+        ?starting_after: Integer,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::Stream[OpenAI::Models::Responses::response_stream_event]
+
+      def delete: (
+        String response_id,
+        ?request_options: OpenAI::request_opts
+      ) -> nil
+
+      def cancel: (
+        String response_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Responses::Response
+
+      def compact: (
+        model: OpenAI::Models::Responses::ResponseCompactParams::model?,
+        ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
+        ?instructions: String?,
+        ?previous_response_id: String?,
+        ?prompt_cache_key: String?,
+        ?prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
+        ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+        ?service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Responses::CompactedResponse
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

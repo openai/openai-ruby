@@ -1,0 +1,174 @@
+module OpenAI
+  module Models
+    module Beta
+      type run_step_stream_event =
+        OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCreated
+        | OpenAI::Beta::RunStepStreamEvent::ThreadRunStepInProgress
+        | OpenAI::Beta::RunStepStreamEvent::ThreadRunStepDelta
+        | OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCompleted
+        | OpenAI::Beta::RunStepStreamEvent::ThreadRunStepFailed
+        | OpenAI::Beta::RunStepStreamEvent::ThreadRunStepCancelled
+        | OpenAI::Beta::RunStepStreamEvent::ThreadRunStepExpired
+
+      module RunStepStreamEvent
+        extend OpenAI::Internal::Type::Union
+
+        type thread_run_step_created =
+          {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.created"
+          }
+
+        class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
+
+          attr_accessor event: :"thread.run.step.created"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.created"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.created"
+          }
+        end
+
+        type thread_run_step_in_progress =
+          {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.in_progress"
+          }
+
+        class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
+
+          attr_accessor event: :"thread.run.step.in_progress"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.in_progress"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.in_progress"
+          }
+        end
+
+        type thread_run_step_delta =
+          {
+            data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
+            event: :"thread.run.step.delta"
+          }
+
+        class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent
+
+          attr_accessor event: :"thread.run.step.delta"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
+            ?event: :"thread.run.step.delta"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
+            event: :"thread.run.step.delta"
+          }
+        end
+
+        type thread_run_step_completed =
+          {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.completed"
+          }
+
+        class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
+
+          attr_accessor event: :"thread.run.step.completed"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.completed"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.completed"
+          }
+        end
+
+        type thread_run_step_failed =
+          {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.failed"
+          }
+
+        class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
+
+          attr_accessor event: :"thread.run.step.failed"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.failed"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.failed"
+          }
+        end
+
+        type thread_run_step_cancelled =
+          {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.cancelled"
+          }
+
+        class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
+
+          attr_accessor event: :"thread.run.step.cancelled"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.cancelled"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.cancelled"
+          }
+        end
+
+        type thread_run_step_expired =
+          {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.expired"
+          }
+
+        class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
+          attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
+
+          attr_accessor event: :"thread.run.step.expired"
+
+          def initialize: (
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            ?event: :"thread.run.step.expired"
+          ) -> void
+
+          def to_hash: -> {
+            data: OpenAI::Beta::Threads::Runs::RunStep,
+            event: :"thread.run.step.expired"
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::run_step_stream_event]
+      end
+    end
+  end
+end

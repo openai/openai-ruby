@@ -1,0 +1,90 @@
+module OpenAI
+  module Models
+    class BetaResponseInputFile = Beta::BetaResponseInputFile
+
+    module Beta
+      type beta_response_input_file =
+        {
+          type: :input_file,
+          detail: OpenAI::Models::Beta::BetaResponseInputFile::detail,
+          file_data: String,
+          file_id: String?,
+          file_url: String,
+          filename: String,
+          prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint
+        }
+
+      class BetaResponseInputFile < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :input_file
+
+        attr_reader detail: OpenAI::Models::Beta::BetaResponseInputFile::detail?
+
+        def detail=: (
+          OpenAI::Models::Beta::BetaResponseInputFile::detail
+        ) -> OpenAI::Models::Beta::BetaResponseInputFile::detail
+
+        attr_reader file_data: String?
+
+        def file_data=: (String) -> String
+
+        attr_accessor file_id: String?
+
+        attr_reader file_url: String?
+
+        def file_url=: (String) -> String
+
+        attr_reader filename: String?
+
+        def filename=: (String) -> String
+
+        attr_reader prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint?
+
+        def prompt_cache_breakpoint=: (
+          OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint
+        ) -> OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint
+
+        def initialize: (
+          ?detail: OpenAI::Models::Beta::BetaResponseInputFile::detail,
+          ?file_data: String,
+          ?file_id: String?,
+          ?file_url: String,
+          ?filename: String,
+          ?prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint,
+          ?type: :input_file
+        ) -> void
+
+        def to_hash: -> {
+          type: :input_file,
+          detail: OpenAI::Models::Beta::BetaResponseInputFile::detail,
+          file_data: String,
+          file_id: String?,
+          file_url: String,
+          filename: String,
+          prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputFile::PromptCacheBreakpoint
+        }
+
+        type detail = :auto | :low | :high
+
+        module Detail
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          LOW: :low
+          HIGH: :high
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputFile::detail]
+        end
+
+        type prompt_cache_breakpoint = { mode: :explicit }
+
+        class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+          attr_accessor mode: :explicit
+
+          def initialize: (?mode: :explicit) -> void
+
+          def to_hash: -> { mode: :explicit }
+        end
+      end
+    end
+  end
+end

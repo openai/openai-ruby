@@ -1,0 +1,70 @@
+module OpenAI
+  module Models
+    module Beta
+      type response_retrieve_params =
+        {
+          response_id: String,
+          include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+          include_obfuscation: bool,
+          starting_after: Integer,
+          betas: ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta]
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class ResponseRetrieveParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor response_id: String
+
+        attr_reader include: ::Array[OpenAI::Models::Beta::beta_response_includable]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Beta::beta_response_includable]
+        ) -> ::Array[OpenAI::Models::Beta::beta_response_includable]
+
+        attr_reader include_obfuscation: bool?
+
+        def include_obfuscation=: (bool) -> bool
+
+        attr_reader starting_after: Integer?
+
+        def starting_after=: (Integer) -> Integer
+
+        attr_reader betas: ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta]?
+
+        def betas=: (
+          ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta]
+        ) -> ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta]
+
+        def initialize: (
+          response_id: String,
+          ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+          ?include_obfuscation: bool,
+          ?starting_after: Integer,
+          ?betas: ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta],
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          response_id: String,
+          include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+          include_obfuscation: bool,
+          starting_after: Integer,
+          betas: ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta],
+          request_options: OpenAI::RequestOptions
+        }
+
+        type beta = :"responses_multi_agent=v1"
+
+        module Beta
+          extend OpenAI::Internal::Type::Enum
+
+          RESPONSES_MULTI_AGENT_V1: :"responses_multi_agent=v1"
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta]
+        end
+      end
+    end
+  end
+end

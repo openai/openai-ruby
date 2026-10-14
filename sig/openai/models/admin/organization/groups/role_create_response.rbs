@@ -1,0 +1,73 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Groups
+          type role_create_response =
+            {
+              group: OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse::Group,
+              object: :"group.role",
+              role: OpenAI::Admin::Organization::Role
+            }
+
+          class RoleCreateResponse < OpenAI::Internal::Type::BaseModel
+            attr_accessor group: OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse::Group
+
+            attr_accessor object: :"group.role"
+
+            attr_accessor role: OpenAI::Admin::Organization::Role
+
+            def initialize: (
+              group: OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse::Group,
+              role: OpenAI::Admin::Organization::Role,
+              ?object: :"group.role"
+            ) -> void
+
+            def to_hash: -> {
+              group: OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse::Group,
+              object: :"group.role",
+              role: OpenAI::Admin::Organization::Role
+            }
+
+            type group =
+              {
+                id: String,
+                created_at: Integer,
+                name: String,
+                object: :group,
+                scim_managed: bool
+              }
+
+            class Group < OpenAI::Internal::Type::BaseModel
+              attr_accessor id: String
+
+              attr_accessor created_at: Integer
+
+              attr_accessor name: String
+
+              attr_accessor object: :group
+
+              attr_accessor scim_managed: bool
+
+              def initialize: (
+                id: String,
+                created_at: Integer,
+                name: String,
+                scim_managed: bool,
+                ?object: :group
+              ) -> void
+
+              def to_hash: -> {
+                id: String,
+                created_at: Integer,
+                name: String,
+                object: :group,
+                scim_managed: bool
+              }
+            end
+          end
+        end
+      end
+    end
+  end
+end

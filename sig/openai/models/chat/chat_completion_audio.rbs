@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    class ChatCompletionAudio = Chat::ChatCompletionAudio
+
+    module Chat
+      type chat_completion_audio =
+        { id: String, data: String, expires_at: Integer, transcript: String }
+
+      class ChatCompletionAudio < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor data: String
+
+        attr_accessor expires_at: Integer
+
+        attr_accessor transcript: String
+
+        def initialize: (
+          id: String,
+          data: String,
+          expires_at: Integer,
+          transcript: String
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          data: String,
+          expires_at: Integer,
+          transcript: String
+        }
+      end
+    end
+  end
+end

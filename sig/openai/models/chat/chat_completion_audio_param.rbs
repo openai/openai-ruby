@@ -1,0 +1,85 @@
+module OpenAI
+  module Models
+    class ChatCompletionAudioParam = Chat::ChatCompletionAudioParam
+
+    module Chat
+      type chat_completion_audio_param =
+        {
+          format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
+          voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+        }
+
+      class ChatCompletionAudioParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_
+
+        attr_accessor voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+
+        def initialize: (
+          format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
+          voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+        ) -> void
+
+        def to_hash: -> {
+          format_: OpenAI::Models::Chat::ChatCompletionAudioParam::format_,
+          voice: OpenAI::Models::Chat::ChatCompletionAudioParam::voice
+        }
+
+        type format_ = :wav | :aac | :mp3 | :flac | :opus | :pcm16
+
+        module Format
+          extend OpenAI::Internal::Type::Enum
+
+          WAV: :wav
+          AAC: :aac
+          MP3: :mp3
+          FLAC: :flac
+          OPUS: :opus
+          PCM16: :pcm16
+
+          def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::format_]
+        end
+
+        type voice =
+          String
+          | :alloy
+          | :ash
+          | :ballad
+          | :coral
+          | :echo
+          | :sage
+          | :shimmer
+          | :verse
+          | :marin
+          | :cedar
+          | OpenAI::Chat::ChatCompletionAudioParam::Voice::ID
+
+        module Voice
+          extend OpenAI::Internal::Type::Union
+
+          type id = { id: String }
+
+          class ID < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            def initialize: (id: String) -> void
+
+            def to_hash: -> { id: String }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletionAudioParam::voice]
+
+          ALLOY: :alloy
+          ASH: :ash
+          BALLAD: :ballad
+          CORAL: :coral
+          ECHO: :echo
+          SAGE: :sage
+          SHIMMER: :shimmer
+          VERSE: :verse
+          MARIN: :marin
+          CEDAR: :cedar
+        end
+      end
+    end
+  end
+end

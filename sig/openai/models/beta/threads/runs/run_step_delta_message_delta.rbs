@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        class RunStepDeltaMessageDelta = Runs::RunStepDeltaMessageDelta
+
+        module Runs
+          type run_step_delta_message_delta =
+            {
+              type: :message_creation,
+              message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+            }
+
+          class RunStepDeltaMessageDelta < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :message_creation
+
+            attr_reader message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation?
+
+            def message_creation=: (
+              OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+            ) -> OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+
+            def initialize: (
+              ?message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation,
+              ?type: :message_creation
+            ) -> void
+
+            def to_hash: -> {
+              type: :message_creation,
+              message_creation: OpenAI::Beta::Threads::Runs::RunStepDeltaMessageDelta::MessageCreation
+            }
+
+            type message_creation = { message_id: String }
+
+            class MessageCreation < OpenAI::Internal::Type::BaseModel
+              attr_reader message_id: String?
+
+              def message_id=: (String) -> String
+
+              def initialize: (?message_id: String) -> void
+
+              def to_hash: -> { message_id: String }
+            end
+          end
+        end
+      end
+    end
+  end
+end

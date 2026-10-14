@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_reasoning =
+        { effort: OpenAI::Models::Realtime::realtime_reasoning_effort }
+
+      class RealtimeReasoning < OpenAI::Internal::Type::BaseModel
+        attr_reader effort: OpenAI::Models::Realtime::realtime_reasoning_effort?
+
+        def effort=: (
+          OpenAI::Models::Realtime::realtime_reasoning_effort
+        ) -> OpenAI::Models::Realtime::realtime_reasoning_effort
+
+        def initialize: (
+          ?effort: OpenAI::Models::Realtime::realtime_reasoning_effort
+        ) -> void
+
+        def to_hash: -> {
+          effort: OpenAI::Models::Realtime::realtime_reasoning_effort
+        }
+      end
+    end
+  end
+end

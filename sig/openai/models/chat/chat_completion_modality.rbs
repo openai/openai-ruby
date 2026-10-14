@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    module ChatCompletionModality = Chat::ChatCompletionModality
+
+    module Chat
+      type chat_completion_modality = :text | :audio
+
+      module ChatCompletionModality
+        extend OpenAI::Internal::Type::Enum
+
+        TEXT: :text
+        AUDIO: :audio
+
+        def self?.values: -> ::Array[OpenAI::Models::Chat::chat_completion_modality]
+      end
+    end
+  end
+end

@@ -1,0 +1,24 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class DataRetention
+            def retrieve: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectDataRetention
+
+            def update: (
+              String project_id,
+              retention_type: OpenAI::Models::Admin::Organization::Projects::DataRetentionUpdateParams::retention_type,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectDataRetention
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

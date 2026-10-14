@@ -1,0 +1,298 @@
+module OpenAI
+  module Models
+    class BetaFileSearchTool = Beta::BetaFileSearchTool
+
+    module Beta
+      type beta_file_search_tool =
+        {
+          type: :file_search,
+          vector_store_ids: ::Array[String],
+          filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?,
+          max_num_results: Integer,
+          ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions
+        }
+
+      class BetaFileSearchTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :file_search
+
+        attr_accessor vector_store_ids: ::Array[String]
+
+        attr_accessor filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?
+
+        attr_reader max_num_results: Integer?
+
+        def max_num_results=: (Integer) -> Integer
+
+        attr_reader ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions?
+
+        def ranking_options=: (
+          OpenAI::Beta::BetaFileSearchTool::RankingOptions
+        ) -> OpenAI::Beta::BetaFileSearchTool::RankingOptions
+
+        def initialize: (
+          vector_store_ids: ::Array[String],
+          ?filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?,
+          ?max_num_results: Integer,
+          ?ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions,
+          ?type: :file_search
+        ) -> void
+
+        def to_hash: -> {
+          type: :file_search,
+          vector_store_ids: ::Array[String],
+          filters: OpenAI::Models::Beta::BetaFileSearchTool::filters?,
+          max_num_results: Integer,
+          ranking_options: OpenAI::Beta::BetaFileSearchTool::RankingOptions
+        }
+
+        type filters =
+          OpenAI::Beta::BetaFileSearchTool::Filters::ComparisonFilter
+          | OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter
+
+        module Filters
+          extend OpenAI::Internal::Type::Union
+
+          type comparison_filter =
+            {
+              key: String,
+              type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::type_,
+              value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::value
+            }
+
+          class ComparisonFilter < OpenAI::Internal::Type::BaseModel
+            attr_accessor key: String
+
+            attr_accessor type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::type_
+
+            attr_accessor value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::value
+
+            def initialize: (
+              key: String,
+              type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::type_,
+              value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::value
+            ) -> void
+
+            def to_hash: -> {
+              key: String,
+              type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::type_,
+              value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::value
+            }
+
+            type type_ = :eq | :ne | :gt | :gte | :lt | :lte | :in | :nin
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              EQ: :eq
+              NE: :ne
+              GT: :gt
+              GTE: :gte
+              LT: :lt
+              LTE: :lte
+              IN: :in
+              NIN: :nin
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::type_]
+            end
+
+            type value =
+              String
+              | Float
+              | bool
+              | ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::Value::union_member3]
+
+            module Value
+              extend OpenAI::Internal::Type::Union
+
+              type union_member3 = String | Float
+
+              module UnionMember3
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::Value::union_member3]
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::ComparisonFilter::value]
+
+              UnionMember3Array: OpenAI::Internal::Type::Converter
+            end
+          end
+
+          type compound_filter =
+            {
+              filters: ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::filter],
+              type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::type_
+            }
+
+          class CompoundFilter < OpenAI::Internal::Type::BaseModel
+            attr_accessor filters: ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::filter]
+
+            attr_accessor type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::type_
+
+            def initialize: (
+              filters: ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::filter],
+              type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::type_
+            ) -> void
+
+            def to_hash: -> {
+              filters: ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::filter],
+              type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::type_
+            }
+
+            type filter =
+              OpenAI::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter
+              | top
+
+            module Filter
+              extend OpenAI::Internal::Type::Union
+
+              type comparison_filter =
+                {
+                  key: String,
+                  type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::type_,
+                  value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::value
+                }
+
+              class ComparisonFilter < OpenAI::Internal::Type::BaseModel
+                attr_accessor key: String
+
+                attr_accessor type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::type_
+
+                attr_accessor value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::value
+
+                def initialize: (
+                  key: String,
+                  type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::type_,
+                  value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::value
+                ) -> void
+
+                def to_hash: -> {
+                  key: String,
+                  type: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::type_,
+                  value: OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::value
+                }
+
+                type type_ = :eq | :ne | :gt | :gte | :lt | :lte | :in | :nin
+
+                module Type
+                  extend OpenAI::Internal::Type::Enum
+
+                  EQ: :eq
+                  NE: :ne
+                  GT: :gt
+                  GTE: :gte
+                  LT: :lt
+                  LTE: :lte
+                  IN: :in
+                  NIN: :nin
+
+                  def self?.values: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::type_]
+                end
+
+                type value =
+                  String
+                  | Float
+                  | bool
+                  | ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Value::union_member3]
+
+                module Value
+                  extend OpenAI::Internal::Type::Union
+
+                  type union_member3 = String | Float
+
+                  module UnionMember3
+                    extend OpenAI::Internal::Type::Union
+
+                    def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::Value::union_member3]
+                  end
+
+                  def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::Filter::ComparisonFilter::value]
+
+                  UnionMember3Array: OpenAI::Internal::Type::Converter
+                end
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::filter]
+            end
+
+            type type_ = :and | :or
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              AND: :and
+              OR: :or
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::Filters::CompoundFilter::type_]
+            end
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::filters]
+        end
+
+        type ranking_options =
+          {
+            hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch,
+            ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker,
+            score_threshold: Float
+          }
+
+        class RankingOptions < OpenAI::Internal::Type::BaseModel
+          attr_reader hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch?
+
+          def hybrid_search=: (
+            OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch
+          ) -> OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch
+
+          attr_reader ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker?
+
+          def ranker=: (
+            OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker
+          ) -> OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker
+
+          attr_reader score_threshold: Float?
+
+          def score_threshold=: (Float) -> Float
+
+          def initialize: (
+            ?hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch,
+            ?ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker,
+            ?score_threshold: Float
+          ) -> void
+
+          def to_hash: -> {
+            hybrid_search: OpenAI::Beta::BetaFileSearchTool::RankingOptions::HybridSearch,
+            ranker: OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker,
+            score_threshold: Float
+          }
+
+          type hybrid_search = { embedding_weight: Float, text_weight: Float }
+
+          class HybridSearch < OpenAI::Internal::Type::BaseModel
+            attr_accessor embedding_weight: Float
+
+            attr_accessor text_weight: Float
+
+            def initialize: (
+              embedding_weight: Float,
+              text_weight: Float
+            ) -> void
+
+            def to_hash: -> { embedding_weight: Float, text_weight: Float }
+          end
+
+          type ranker = :auto | :"default-2024-11-15"
+
+          module Ranker
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            DEFAULT_2024_11_15: :"default-2024-11-15"
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaFileSearchTool::RankingOptions::ranker]
+          end
+        end
+      end
+    end
+  end
+end

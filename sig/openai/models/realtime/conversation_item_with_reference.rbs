@@ -1,0 +1,207 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_with_reference =
+        {
+          id: String,
+          arguments: String,
+          call_id: String,
+          content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content],
+          name: String,
+          object: OpenAI::Models::Realtime::ConversationItemWithReference::object,
+          output: String,
+          role: OpenAI::Models::Realtime::ConversationItemWithReference::role,
+          status: OpenAI::Models::Realtime::ConversationItemWithReference::status,
+          type: OpenAI::Models::Realtime::ConversationItemWithReference::type_
+        }
+
+      class ConversationItemWithReference < OpenAI::Internal::Type::BaseModel
+        attr_reader id: String?
+
+        def id=: (String) -> String
+
+        attr_reader arguments: String?
+
+        def arguments=: (String) -> String
+
+        attr_reader call_id: String?
+
+        def call_id=: (String) -> String
+
+        attr_reader content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content]?
+
+        def content=: (
+          ::Array[OpenAI::Realtime::ConversationItemWithReference::Content]
+        ) -> ::Array[OpenAI::Realtime::ConversationItemWithReference::Content]
+
+        attr_reader name: String?
+
+        def name=: (String) -> String
+
+        attr_reader object: OpenAI::Models::Realtime::ConversationItemWithReference::object?
+
+        def object=: (
+          OpenAI::Models::Realtime::ConversationItemWithReference::object
+        ) -> OpenAI::Models::Realtime::ConversationItemWithReference::object
+
+        attr_reader output: String?
+
+        def output=: (String) -> String
+
+        attr_reader role: OpenAI::Models::Realtime::ConversationItemWithReference::role?
+
+        def role=: (
+          OpenAI::Models::Realtime::ConversationItemWithReference::role
+        ) -> OpenAI::Models::Realtime::ConversationItemWithReference::role
+
+        attr_reader status: OpenAI::Models::Realtime::ConversationItemWithReference::status?
+
+        def status=: (
+          OpenAI::Models::Realtime::ConversationItemWithReference::status
+        ) -> OpenAI::Models::Realtime::ConversationItemWithReference::status
+
+        attr_reader type: OpenAI::Models::Realtime::ConversationItemWithReference::type_?
+
+        def type=: (
+          OpenAI::Models::Realtime::ConversationItemWithReference::type_
+        ) -> OpenAI::Models::Realtime::ConversationItemWithReference::type_
+
+        def initialize: (
+          ?id: String,
+          ?arguments: String,
+          ?call_id: String,
+          ?content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content],
+          ?name: String,
+          ?object: OpenAI::Models::Realtime::ConversationItemWithReference::object,
+          ?output: String,
+          ?role: OpenAI::Models::Realtime::ConversationItemWithReference::role,
+          ?status: OpenAI::Models::Realtime::ConversationItemWithReference::status,
+          ?type: OpenAI::Models::Realtime::ConversationItemWithReference::type_
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          arguments: String,
+          call_id: String,
+          content: ::Array[OpenAI::Realtime::ConversationItemWithReference::Content],
+          name: String,
+          object: OpenAI::Models::Realtime::ConversationItemWithReference::object,
+          output: String,
+          role: OpenAI::Models::Realtime::ConversationItemWithReference::role,
+          status: OpenAI::Models::Realtime::ConversationItemWithReference::status,
+          type: OpenAI::Models::Realtime::ConversationItemWithReference::type_
+        }
+
+        type content =
+          {
+            id: String,
+            audio: String,
+            text: String,
+            transcript: String,
+            type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
+          }
+
+        class Content < OpenAI::Internal::Type::BaseModel
+          attr_reader id: String?
+
+          def id=: (String) -> String
+
+          attr_reader audio: String?
+
+          def audio=: (String) -> String
+
+          attr_reader text: String?
+
+          def text=: (String) -> String
+
+          attr_reader transcript: String?
+
+          def transcript=: (String) -> String
+
+          attr_reader type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_?
+
+          def type=: (
+            OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
+          ) -> OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
+
+          def initialize: (
+            ?id: String,
+            ?audio: String,
+            ?text: String,
+            ?transcript: String,
+            ?type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            audio: String,
+            text: String,
+            transcript: String,
+            type: OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_
+          }
+
+          type type_ = :input_text | :input_audio | :item_reference | :text
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            INPUT_TEXT: :input_text
+            INPUT_AUDIO: :input_audio
+            ITEM_REFERENCE: :item_reference
+            TEXT: :text
+
+            def self?.values: -> ::Array[OpenAI::Models::Realtime::ConversationItemWithReference::Content::type_]
+          end
+        end
+
+        type object = :"realtime.item"
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          REALTIME_ITEM: :"realtime.item"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::ConversationItemWithReference::object]
+        end
+
+        type role = :user | :assistant | :system
+
+        module Role
+          extend OpenAI::Internal::Type::Enum
+
+          USER: :user
+          ASSISTANT: :assistant
+          SYSTEM: :system
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::ConversationItemWithReference::role]
+        end
+
+        type status = :completed | :incomplete | :in_progress
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          IN_PROGRESS: :in_progress
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::ConversationItemWithReference::status]
+        end
+
+        type type_ =
+          :message | :function_call | :function_call_output | :item_reference
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+          FUNCTION_CALL: :function_call
+          FUNCTION_CALL_OUTPUT: :function_call_output
+          ITEM_REFERENCE: :item_reference
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::ConversationItemWithReference::type_]
+        end
+      end
+    end
+  end
+end

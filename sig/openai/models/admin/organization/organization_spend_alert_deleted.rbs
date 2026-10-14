@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module Admin
+      class OrganizationSpendAlertDeleted = Organization::OrganizationSpendAlertDeleted
+
+      module Organization
+        type organization_spend_alert_deleted =
+          {
+            id: String,
+            deleted: bool,
+            object: :"organization.spend_alert.deleted"
+          }
+
+        class OrganizationSpendAlertDeleted < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor deleted: bool
+
+          attr_accessor object: :"organization.spend_alert.deleted"
+
+          def initialize: (
+            id: String,
+            deleted: bool,
+            ?object: :"organization.spend_alert.deleted"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            deleted: bool,
+            object: :"organization.spend_alert.deleted"
+          }
+        end
+      end
+    end
+  end
+end

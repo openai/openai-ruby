@@ -1,0 +1,118 @@
+module OpenAI
+  module Models
+    class BetaResponseComputerToolCall = Beta::BetaResponseComputerToolCall
+
+    module Beta
+      type beta_response_computer_tool_call =
+        {
+          id: String,
+          call_id: String,
+          pending_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck],
+          status: OpenAI::Models::Beta::BetaResponseComputerToolCall::status,
+          type: OpenAI::Models::Beta::BetaResponseComputerToolCall::type_,
+          action: OpenAI::Models::Beta::beta_computer_action,
+          actions: OpenAI::Models::Beta::beta_computer_action_list,
+          agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
+        }
+
+      class BetaResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String
+
+        attr_accessor pending_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck]
+
+        attr_accessor status: OpenAI::Models::Beta::BetaResponseComputerToolCall::status
+
+        attr_accessor type: OpenAI::Models::Beta::BetaResponseComputerToolCall::type_
+
+        attr_reader action: OpenAI::Models::Beta::beta_computer_action?
+
+        def action=: (
+          OpenAI::Models::Beta::beta_computer_action
+        ) -> OpenAI::Models::Beta::beta_computer_action
+
+        attr_reader actions: OpenAI::Models::Beta::beta_computer_action_list?
+
+        def actions=: (
+          OpenAI::Models::Beta::beta_computer_action_list
+        ) -> OpenAI::Models::Beta::beta_computer_action_list
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
+
+        def initialize: (
+          id: String,
+          call_id: String,
+          pending_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck],
+          status: OpenAI::Models::Beta::BetaResponseComputerToolCall::status,
+          type: OpenAI::Models::Beta::BetaResponseComputerToolCall::type_,
+          ?action: OpenAI::Models::Beta::beta_computer_action,
+          ?actions: OpenAI::Models::Beta::beta_computer_action_list,
+          ?agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          pending_safety_checks: ::Array[OpenAI::Beta::BetaResponseComputerToolCall::PendingSafetyCheck],
+          status: OpenAI::Models::Beta::BetaResponseComputerToolCall::status,
+          type: OpenAI::Models::Beta::BetaResponseComputerToolCall::type_,
+          action: OpenAI::Models::Beta::beta_computer_action,
+          actions: OpenAI::Models::Beta::beta_computer_action_list,
+          agent: OpenAI::Beta::BetaResponseComputerToolCall::Agent?
+        }
+
+        type pending_safety_check =
+          { id: String, code: String?, message: String? }
+
+        class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor code: String?
+
+          attr_accessor message: String?
+
+          def initialize: (
+            id: String,
+            ?code: String?,
+            ?message: String?
+          ) -> void
+
+          def to_hash: -> { id: String, code: String?, message: String? }
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseComputerToolCall::status]
+        end
+
+        type type_ = :computer_call
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          COMPUTER_CALL: :computer_call
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseComputerToolCall::type_]
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

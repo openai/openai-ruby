@@ -1,0 +1,9 @@
+module OpenAI
+  module Internal
+    extend OpenAI::Internal::Util::SorbetRuntimeSupport
+
+    type file_input = Pathname | StringIO | IO | String | OpenAI::FilePart
+
+    OMIT: Object
+  end
+end

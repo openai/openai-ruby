@@ -1,0 +1,90 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_computer_tool_call_output_item =
+        {
+          id: String,
+          call_id: String,
+          output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
+          status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
+          type: :computer_call_output,
+          acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          created_by: String
+        }
+
+      class ResponseComputerToolCallOutputItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor call_id: String
+
+        attr_accessor output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot
+
+        attr_accessor status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status
+
+        attr_accessor type: :computer_call_output
+
+        attr_reader acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]?
+
+        def acknowledged_safety_checks=: (
+          ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
+        ) -> ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck]
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          call_id: String,
+          output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
+          status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
+          ?acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          ?created_by: String,
+          ?type: :computer_call_output
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          call_id: String,
+          output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
+          status: OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status,
+          type: :computer_call_output,
+          acknowledged_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCallOutputItem::AcknowledgedSafetyCheck],
+          created_by: String
+        }
+
+        type status = :completed | :incomplete | :failed | :in_progress
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          FAILED: :failed
+          IN_PROGRESS: :in_progress
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCallOutputItem::status]
+        end
+
+        type acknowledged_safety_check =
+          { id: String, code: String?, message: String? }
+
+        class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor code: String?
+
+          attr_accessor message: String?
+
+          def initialize: (
+            id: String,
+            ?code: String?,
+            ?message: String?
+          ) -> void
+
+          def to_hash: -> { id: String, code: String?, message: String? }
+        end
+      end
+    end
+  end
+end

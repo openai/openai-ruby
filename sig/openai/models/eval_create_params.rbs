@@ -1,0 +1,336 @@
+module OpenAI
+  module Models
+    type eval_create_params =
+      {
+        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
+        testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
+        metadata: OpenAI::Models::metadata?,
+        name: String
+      }
+      & OpenAI::Internal::Type::request_parameters
+
+    class EvalCreateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor data_source_config: OpenAI::Models::EvalCreateParams::data_source_config
+
+      attr_accessor testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion]
+
+      attr_accessor metadata: OpenAI::Models::metadata?
+
+      attr_reader name: String?
+
+      def name=: (String) -> String
+
+      def initialize: (
+        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
+        testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
+        ?metadata: OpenAI::Models::metadata?,
+        ?name: String,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
+        testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
+        metadata: OpenAI::Models::metadata?,
+        name: String,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type data_source_config =
+        OpenAI::EvalCreateParams::DataSourceConfig::Custom
+        | OpenAI::EvalCreateParams::DataSourceConfig::Logs
+        | OpenAI::EvalCreateParams::DataSourceConfig::StoredCompletions
+
+      module DataSourceConfig
+        extend OpenAI::Internal::Type::Union
+
+        type custom =
+          {
+            item_schema: ::Hash[Symbol, top],
+            type: :custom,
+            include_sample_schema: bool
+          }
+
+        class Custom < OpenAI::Internal::Type::BaseModel
+          attr_accessor item_schema: ::Hash[Symbol, top]
+
+          attr_accessor type: :custom
+
+          attr_reader include_sample_schema: bool?
+
+          def include_sample_schema=: (bool) -> bool
+
+          def initialize: (
+            item_schema: ::Hash[Symbol, top],
+            ?include_sample_schema: bool,
+            ?type: :custom
+          ) -> void
+
+          def to_hash: -> {
+            item_schema: ::Hash[Symbol, top],
+            type: :custom,
+            include_sample_schema: bool
+          }
+        end
+
+        type logs = { type: :logs, metadata: ::Hash[Symbol, top] }
+
+        class Logs < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :logs
+
+          attr_reader metadata: ::Hash[Symbol, top]?
+
+          def metadata=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
+
+          def initialize: (?metadata: ::Hash[Symbol, top], ?type: :logs) -> void
+
+          def to_hash: -> { type: :logs, metadata: ::Hash[Symbol, top] }
+        end
+
+        type stored_completions =
+          { type: :stored_completions, metadata: ::Hash[Symbol, top] }
+
+        class StoredCompletions < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :stored_completions
+
+          attr_reader metadata: ::Hash[Symbol, top]?
+
+          def metadata=: (::Hash[Symbol, top]) -> ::Hash[Symbol, top]
+
+          def initialize: (
+            ?metadata: ::Hash[Symbol, top],
+            ?type: :stored_completions
+          ) -> void
+
+          def to_hash: -> {
+            type: :stored_completions,
+            metadata: ::Hash[Symbol, top]
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::EvalCreateParams::data_source_config]
+      end
+
+      type testing_criterion =
+        OpenAI::EvalCreateParams::TestingCriterion::LabelModel
+        | OpenAI::Graders::StringCheckGrader
+        | OpenAI::EvalCreateParams::TestingCriterion::TextSimilarity
+        | OpenAI::EvalCreateParams::TestingCriterion::Python
+        | OpenAI::EvalCreateParams::TestingCriterion::ScoreModel
+
+      module TestingCriterion
+        extend OpenAI::Internal::Type::Union
+
+        type label_model =
+          {
+            input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input],
+            labels: ::Array[String],
+            model: String,
+            name: String,
+            passing_labels: ::Array[String],
+            type: :label_model
+          }
+
+        class LabelModel < OpenAI::Internal::Type::BaseModel
+          attr_accessor input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input]
+
+          attr_accessor labels: ::Array[String]
+
+          attr_accessor model: String
+
+          attr_accessor name: String
+
+          attr_accessor passing_labels: ::Array[String]
+
+          attr_accessor type: :label_model
+
+          def initialize: (
+            input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input],
+            labels: ::Array[String],
+            model: String,
+            name: String,
+            passing_labels: ::Array[String],
+            ?type: :label_model
+          ) -> void
+
+          def to_hash: -> {
+            input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input],
+            labels: ::Array[String],
+            model: String,
+            name: String,
+            passing_labels: ::Array[String],
+            type: :label_model
+          }
+
+          type input =
+            OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::SimpleInputMessage
+            | OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem
+
+          module Input
+            extend OpenAI::Internal::Type::Union
+
+            type simple_input_message = { content: String, role: String }
+
+            class SimpleInputMessage < OpenAI::Internal::Type::BaseModel
+              attr_accessor content: String
+
+              attr_accessor role: String
+
+              def initialize: (content: String, role: String) -> void
+
+              def to_hash: -> { content: String, role: String }
+            end
+
+            type eval_item =
+              {
+                content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
+                role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
+                type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+              }
+
+            class EvalItem < OpenAI::Internal::Type::BaseModel
+              attr_accessor content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content
+
+              attr_accessor role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role
+
+              attr_reader type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_?
+
+              def type=: (
+                OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+              ) -> OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+
+              def initialize: (
+                content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
+                role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
+                ?type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+              ) -> void
+
+              def to_hash: -> {
+                content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
+                role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
+                type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
+              }
+
+              type content =
+                String
+                | OpenAI::Responses::ResponseInputText
+                | OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::OutputText
+                | OpenAI::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::Content::InputImage
+                | OpenAI::Responses::ResponseInputAudio
+                | OpenAI::Models::Graders::grader_inputs
+
+              module Content
+                extend OpenAI::Internal::Type::Union
+
+                type output_text = { text: String, type: :output_text }
+
+                class OutputText < OpenAI::Internal::Type::BaseModel
+                  attr_accessor text: String
+
+                  attr_accessor type: :output_text
+
+                  def initialize: (text: String, ?type: :output_text) -> void
+
+                  def to_hash: -> { text: String, type: :output_text }
+                end
+
+                type input_image =
+                  { image_url: String, type: :input_image, detail: String }
+
+                class InputImage < OpenAI::Internal::Type::BaseModel
+                  attr_accessor image_url: String
+
+                  attr_accessor type: :input_image
+
+                  attr_reader detail: String?
+
+                  def detail=: (String) -> String
+
+                  def initialize: (
+                    image_url: String,
+                    ?detail: String,
+                    ?type: :input_image
+                  ) -> void
+
+                  def to_hash: -> {
+                    image_url: String,
+                    type: :input_image,
+                    detail: String
+                  }
+                end
+
+                def self?.variants: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content]
+              end
+
+              type role = :user | :assistant | :system | :developer
+
+              module Role
+                extend OpenAI::Internal::Type::Enum
+
+                USER: :user
+                ASSISTANT: :assistant
+                SYSTEM: :system
+                DEVELOPER: :developer
+
+                def self?.values: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role]
+              end
+
+              type type_ = :message
+
+              module Type
+                extend OpenAI::Internal::Type::Enum
+
+                MESSAGE: :message
+
+                def self?.values: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_]
+              end
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input]
+          end
+        end
+
+        type text_similarity = { pass_threshold: Float }
+
+        class TextSimilarity < OpenAI::Models::Graders::TextSimilarityGrader
+          def pass_threshold: -> Float
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (pass_threshold: Float) -> void
+
+          def to_hash: -> { pass_threshold: Float }
+        end
+
+        type python = { pass_threshold: Float }
+
+        class Python < OpenAI::Models::Graders::PythonGrader
+          def pass_threshold: -> Float?
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (?pass_threshold: Float) -> void
+
+          def to_hash: -> { pass_threshold: Float }
+        end
+
+        type score_model = { pass_threshold: Float }
+
+        class ScoreModel < OpenAI::Models::Graders::ScoreModelGrader
+          def pass_threshold: -> Float?
+
+          def pass_threshold=: (Float _) -> Float
+
+          def initialize: (?pass_threshold: Float) -> void
+
+          def to_hash: -> { pass_threshold: Float }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::EvalCreateParams::testing_criterion]
+      end
+    end
+  end
+end

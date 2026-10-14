@@ -1,0 +1,60 @@
+module OpenAI
+  module Models
+    class BetaResponseCompactionItem = Beta::BetaResponseCompactionItem
+
+    module Beta
+      type beta_response_compaction_item =
+        {
+          id: String,
+          encrypted_content: String,
+          type: :compaction,
+          agent: OpenAI::Beta::BetaResponseCompactionItem::Agent,
+          created_by: String
+        }
+
+      class BetaResponseCompactionItem < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor encrypted_content: String
+
+        attr_accessor type: :compaction
+
+        attr_reader agent: OpenAI::Beta::BetaResponseCompactionItem::Agent?
+
+        def agent=: (
+          OpenAI::Beta::BetaResponseCompactionItem::Agent
+        ) -> OpenAI::Beta::BetaResponseCompactionItem::Agent
+
+        attr_reader created_by: String?
+
+        def created_by=: (String) -> String
+
+        def initialize: (
+          id: String,
+          encrypted_content: String,
+          ?agent: OpenAI::Beta::BetaResponseCompactionItem::Agent,
+          ?created_by: String,
+          ?type: :compaction
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          encrypted_content: String,
+          type: :compaction,
+          agent: OpenAI::Beta::BetaResponseCompactionItem::Agent,
+          created_by: String
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

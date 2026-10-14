@@ -1,0 +1,96 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_code_interpreter_tool_call =
+        {
+          id: String,
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?,
+          status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
+          type: :code_interpreter_call
+        }
+
+      class ResponseCodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor code: String?
+
+        attr_accessor container_id: String
+
+        attr_accessor outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?
+
+        attr_accessor status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status
+
+        attr_accessor type: :code_interpreter_call
+
+        def initialize: (
+          id: String,
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?,
+          status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
+          ?type: :code_interpreter_call
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          code: String?,
+          container_id: String,
+          outputs: ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]?,
+          status: OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status,
+          type: :code_interpreter_call
+        }
+
+        type output =
+          OpenAI::Responses::ResponseCodeInterpreterToolCall::Output::Logs
+          | OpenAI::Responses::ResponseCodeInterpreterToolCall::Output::Image
+
+        module Output
+          extend OpenAI::Internal::Type::Union
+
+          type logs = { logs: String, type: :logs }
+
+          class Logs < OpenAI::Internal::Type::BaseModel
+            attr_accessor logs: String
+
+            attr_accessor type: :logs
+
+            def initialize: (logs: String, ?type: :logs) -> void
+
+            def to_hash: -> { logs: String, type: :logs }
+          end
+
+          type image = { type: :image, url: String }
+
+          class Image < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :image
+
+            attr_accessor url: String
+
+            def initialize: (url: String, ?type: :image) -> void
+
+            def to_hash: -> { type: :image, url: String }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::output]
+        end
+
+        type status =
+          :in_progress | :completed | :incomplete | :interpreting | :failed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+          INTERPRETING: :interpreting
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCodeInterpreterToolCall::status]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,38 @@
+module OpenAI
+  module Resources
+    class Conversations
+      class Items
+        def create: (
+          String conversation_id,
+          items: ::Array[OpenAI::Models::Responses::response_input_item],
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Conversations::ConversationItemList
+
+        def retrieve: (
+          String item_id,
+          conversation_id: String,
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Conversations::conversation_item
+
+        def list: (
+          String conversation_id,
+          ?after: String,
+          ?include: ::Array[OpenAI::Models::Responses::response_includable],
+          ?limit: Integer,
+          ?order: OpenAI::Models::Conversations::ItemListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Conversations::conversation_item]
+
+        def delete: (
+          String item_id,
+          conversation_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Conversations::Conversation
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

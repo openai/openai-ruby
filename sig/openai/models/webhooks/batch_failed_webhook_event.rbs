@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type batch_failed_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::BatchFailedWebhookEvent::Data,
+          type: :"batch.failed",
+          object: OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object
+        }
+
+      class BatchFailedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::BatchFailedWebhookEvent::Data
+
+        attr_accessor type: :"batch.failed"
+
+        attr_reader object: OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::BatchFailedWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object,
+          ?type: :"batch.failed"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::BatchFailedWebhookEvent::Data,
+          type: :"batch.failed",
+          object: OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::BatchFailedWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

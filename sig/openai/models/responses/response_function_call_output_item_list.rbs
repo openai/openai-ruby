@@ -1,0 +1,10 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_function_call_output_item_list =
+        ::Array[OpenAI::Models::Responses::response_function_call_output_item]
+
+      ResponseFunctionCallOutputItemList: OpenAI::Internal::Type::Converter
+    end
+  end
+end

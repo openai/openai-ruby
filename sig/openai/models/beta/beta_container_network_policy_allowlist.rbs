@@ -1,0 +1,38 @@
+module OpenAI
+  module Models
+    class BetaContainerNetworkPolicyAllowlist = Beta::BetaContainerNetworkPolicyAllowlist
+
+    module Beta
+      type beta_container_network_policy_allowlist =
+        {
+          allowed_domains: ::Array[String],
+          type: :allowlist,
+          domain_secrets: ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret]
+        }
+
+      class BetaContainerNetworkPolicyAllowlist < OpenAI::Internal::Type::BaseModel
+        attr_accessor allowed_domains: ::Array[String]
+
+        attr_accessor type: :allowlist
+
+        attr_reader domain_secrets: ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret]?
+
+        def domain_secrets=: (
+          ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret]
+        ) -> ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret]
+
+        def initialize: (
+          allowed_domains: ::Array[String],
+          ?domain_secrets: ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret],
+          ?type: :allowlist
+        ) -> void
+
+        def to_hash: -> {
+          allowed_domains: ::Array[String],
+          type: :allowlist,
+          domain_secrets: ::Array[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret]
+        }
+      end
+    end
+  end
+end

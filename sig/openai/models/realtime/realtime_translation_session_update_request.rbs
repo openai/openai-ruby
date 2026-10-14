@@ -1,0 +1,115 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_translation_session_update_request =
+        {
+          audio: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio
+        }
+
+      class RealtimeTranslationSessionUpdateRequest < OpenAI::Internal::Type::BaseModel
+        attr_reader audio: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio?
+
+        def audio=: (
+          OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio
+        ) -> OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio
+
+        def initialize: (
+          ?audio: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio
+        ) -> void
+
+        def to_hash: -> {
+          audio: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio
+        }
+
+        type audio =
+          {
+            input: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input,
+            output: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Output
+          }
+
+        class Audio < OpenAI::Internal::Type::BaseModel
+          attr_reader input: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input?
+
+          def input=: (
+            OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input
+          ) -> OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input
+
+          attr_reader output: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Output?
+
+          def output=: (
+            OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Output
+          ) -> OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Output
+
+          def initialize: (
+            ?input: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input,
+            ?output: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Output
+          ) -> void
+
+          def to_hash: -> {
+            input: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input,
+            output: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Output
+          }
+
+          type input =
+            {
+              noise_reduction: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input::NoiseReduction?,
+              transcription: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input::Transcription?
+            }
+
+          class Input < OpenAI::Internal::Type::BaseModel
+            attr_accessor noise_reduction: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input::NoiseReduction?
+
+            attr_accessor transcription: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input::Transcription?
+
+            def initialize: (
+              ?noise_reduction: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input::NoiseReduction?,
+              ?transcription: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input::Transcription?
+            ) -> void
+
+            def to_hash: -> {
+              noise_reduction: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input::NoiseReduction?,
+              transcription: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest::Audio::Input::Transcription?
+            }
+
+            type noise_reduction =
+              { type: OpenAI::Models::Realtime::noise_reduction_type }
+
+            class NoiseReduction < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: OpenAI::Models::Realtime::noise_reduction_type
+
+              def initialize: (
+                type: OpenAI::Models::Realtime::noise_reduction_type
+              ) -> void
+
+              def to_hash: -> {
+                type: OpenAI::Models::Realtime::noise_reduction_type
+              }
+            end
+
+            type transcription = { model: String }
+
+            class Transcription < OpenAI::Internal::Type::BaseModel
+              attr_accessor model: String
+
+              def initialize: (model: String) -> void
+
+              def to_hash: -> { model: String }
+            end
+          end
+
+          type output = { language: String }
+
+          class Output < OpenAI::Internal::Type::BaseModel
+            attr_reader language: String?
+
+            def language=: (String) -> String
+
+            def initialize: (?language: String) -> void
+
+            def to_hash: -> { language: String }
+          end
+        end
+      end
+    end
+  end
+end

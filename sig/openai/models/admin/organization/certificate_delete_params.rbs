@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type certificate_delete_params =
+          { certificate_id: String }
+          & OpenAI::Internal::Type::request_parameters
+
+        class CertificateDeleteParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor certificate_id: String
+
+          def initialize: (
+            certificate_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            certificate_id: String,
+            request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

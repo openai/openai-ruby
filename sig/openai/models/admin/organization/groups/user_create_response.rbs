@@ -1,0 +1,32 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Groups
+          type user_create_response =
+            { group_id: String, object: :"group.user", user_id: String }
+
+          class UserCreateResponse < OpenAI::Internal::Type::BaseModel
+            attr_accessor group_id: String
+
+            attr_accessor object: :"group.user"
+
+            attr_accessor user_id: String
+
+            def initialize: (
+              group_id: String,
+              user_id: String,
+              ?object: :"group.user"
+            ) -> void
+
+            def to_hash: -> {
+              group_id: String,
+              object: :"group.user",
+              user_id: String
+            }
+          end
+        end
+      end
+    end
+  end
+end

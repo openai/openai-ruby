@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module ChatCompletionTool = Chat::ChatCompletionTool
+
+    module Chat
+      type chat_completion_tool =
+        OpenAI::Chat::ChatCompletionFunctionTool
+        | OpenAI::Chat::ChatCompletionCustomTool
+
+      module ChatCompletionTool
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Chat::chat_completion_tool]
+      end
+    end
+  end
+end

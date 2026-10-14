@@ -1,0 +1,84 @@
+module OpenAI
+  module Models
+    class BetaResponseInjectFailedEvent = Beta::BetaResponseInjectFailedEvent
+
+    module Beta
+      type beta_response_inject_failed_event =
+        {
+          error: OpenAI::Beta::BetaResponseInjectFailedEvent::Error,
+          input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
+          response_id: String,
+          sequence_number: Integer,
+          type: :"response.inject.failed",
+          stream_id: String
+        }
+
+      class BetaResponseInjectFailedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor error: OpenAI::Beta::BetaResponseInjectFailedEvent::Error
+
+        attr_accessor input: ::Array[OpenAI::Models::Beta::beta_response_input_item]
+
+        attr_accessor response_id: String
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.inject.failed"
+
+        attr_reader stream_id: String?
+
+        def stream_id=: (String) -> String
+
+        def initialize: (
+          error: OpenAI::Beta::BetaResponseInjectFailedEvent::Error,
+          input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
+          response_id: String,
+          sequence_number: Integer,
+          ?stream_id: String,
+          ?type: :"response.inject.failed"
+        ) -> void
+
+        def to_hash: -> {
+          error: OpenAI::Beta::BetaResponseInjectFailedEvent::Error,
+          input: ::Array[OpenAI::Models::Beta::beta_response_input_item],
+          response_id: String,
+          sequence_number: Integer,
+          type: :"response.inject.failed",
+          stream_id: String
+        }
+
+        type error =
+          {
+            code: OpenAI::Models::Beta::BetaResponseInjectFailedEvent::Error::code,
+            message: String
+          }
+
+        class Error < OpenAI::Internal::Type::BaseModel
+          attr_accessor code: OpenAI::Models::Beta::BetaResponseInjectFailedEvent::Error::code
+
+          attr_accessor message: String
+
+          def initialize: (
+            code: OpenAI::Models::Beta::BetaResponseInjectFailedEvent::Error::code,
+            message: String
+          ) -> void
+
+          def to_hash: -> {
+            code: OpenAI::Models::Beta::BetaResponseInjectFailedEvent::Error::code,
+            message: String
+          }
+
+          type code = :response_already_completed | :response_not_found
+
+          module Code
+            extend OpenAI::Internal::Type::Enum
+
+            RESPONSE_ALREADY_COMPLETED: :response_already_completed
+            RESPONSE_NOT_FOUND: :response_not_found
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInjectFailedEvent::Error::code]
+          end
+        end
+      end
+    end
+  end
+end

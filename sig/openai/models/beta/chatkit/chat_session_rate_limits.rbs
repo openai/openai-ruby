@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session_rate_limits =
+          { :max_requests_per_1_minute => Integer }
+
+        class ChatSessionRateLimits < OpenAI::Internal::Type::BaseModel
+          attr_accessor max_requests_per_1_minute: Integer
+
+          def initialize: (max_requests_per_1_minute: Integer) -> void
+
+          def to_hash: -> { :max_requests_per_1_minute => Integer }
+        end
+      end
+    end
+  end
+end

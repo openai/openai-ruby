@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    class BetaResponseCreatedEvent = Beta::BetaResponseCreatedEvent
+
+    module Beta
+      type beta_response_created_event =
+        {
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          type: :"response.created",
+          agent: OpenAI::Beta::BetaResponseCreatedEvent::Agent?
+        }
+
+      class BetaResponseCreatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor response: OpenAI::Beta::BetaResponse
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.created"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseCreatedEvent::Agent?
+
+        def initialize: (
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseCreatedEvent::Agent?,
+          ?type: :"response.created"
+        ) -> void
+
+        def to_hash: -> {
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          type: :"response.created",
+          agent: OpenAI::Beta::BetaResponseCreatedEvent::Agent?
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

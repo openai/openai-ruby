@@ -1,0 +1,119 @@
+module OpenAI
+  module Models
+    module Responses
+      type file_search_tool =
+        {
+          type: :file_search,
+          vector_store_ids: ::Array[String],
+          filters: OpenAI::Models::Responses::FileSearchTool::filters?,
+          max_num_results: Integer,
+          ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
+        }
+
+      class FileSearchTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :file_search
+
+        attr_accessor vector_store_ids: ::Array[String]
+
+        attr_accessor filters: OpenAI::Models::Responses::FileSearchTool::filters?
+
+        attr_reader max_num_results: Integer?
+
+        def max_num_results=: (Integer) -> Integer
+
+        attr_reader ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions?
+
+        def ranking_options=: (
+          OpenAI::Responses::FileSearchTool::RankingOptions
+        ) -> OpenAI::Responses::FileSearchTool::RankingOptions
+
+        def initialize: (
+          vector_store_ids: ::Array[String],
+          ?filters: OpenAI::Models::Responses::FileSearchTool::filters?,
+          ?max_num_results: Integer,
+          ?ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions,
+          ?type: :file_search
+        ) -> void
+
+        def to_hash: -> {
+          type: :file_search,
+          vector_store_ids: ::Array[String],
+          filters: OpenAI::Models::Responses::FileSearchTool::filters?,
+          max_num_results: Integer,
+          ranking_options: OpenAI::Responses::FileSearchTool::RankingOptions
+        }
+
+        type filters = OpenAI::ComparisonFilter | OpenAI::CompoundFilter
+
+        module Filters
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::FileSearchTool::filters]
+        end
+
+        type ranking_options =
+          {
+            hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
+            ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
+            score_threshold: Float
+          }
+
+        class RankingOptions < OpenAI::Internal::Type::BaseModel
+          attr_reader hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch?
+
+          def hybrid_search=: (
+            OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch
+          ) -> OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch
+
+          attr_reader ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker?
+
+          def ranker=: (
+            OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker
+          ) -> OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker
+
+          attr_reader score_threshold: Float?
+
+          def score_threshold=: (Float) -> Float
+
+          def initialize: (
+            ?hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
+            ?ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
+            ?score_threshold: Float
+          ) -> void
+
+          def to_hash: -> {
+            hybrid_search: OpenAI::Responses::FileSearchTool::RankingOptions::HybridSearch,
+            ranker: OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker,
+            score_threshold: Float
+          }
+
+          type hybrid_search = { embedding_weight: Float, text_weight: Float }
+
+          class HybridSearch < OpenAI::Internal::Type::BaseModel
+            attr_accessor embedding_weight: Float
+
+            attr_accessor text_weight: Float
+
+            def initialize: (
+              embedding_weight: Float,
+              text_weight: Float
+            ) -> void
+
+            def to_hash: -> { embedding_weight: Float, text_weight: Float }
+          end
+
+          type ranker = :auto | :"default-2024-11-15"
+
+          module Ranker
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            DEFAULT_2024_11_15: :"default-2024-11-15"
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::FileSearchTool::RankingOptions::ranker]
+          end
+        end
+      end
+    end
+  end
+end

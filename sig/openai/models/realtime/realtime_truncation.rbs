@@ -1,0 +1,26 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_truncation =
+        OpenAI::Models::Realtime::RealtimeTruncation::realtime_truncation_strategy
+        | OpenAI::Realtime::RealtimeTruncationRetentionRatio
+
+      module RealtimeTruncation
+        extend OpenAI::Internal::Type::Union
+
+        type realtime_truncation_strategy = :auto | :disabled
+
+        module RealtimeTruncationStrategy
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DISABLED: :disabled
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeTruncation::realtime_truncation_strategy]
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Realtime::realtime_truncation]
+      end
+    end
+  end
+end

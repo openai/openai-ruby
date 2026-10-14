@@ -1,0 +1,46 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type required_action_function_tool_call =
+          {
+            id: String,
+            function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
+            type: :function
+          }
+
+        class RequiredActionFunctionToolCall < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function
+
+          attr_accessor type: :function
+
+          def initialize: (
+            id: String,
+            function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
+            ?type: :function
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            function: OpenAI::Beta::Threads::RequiredActionFunctionToolCall::Function,
+            type: :function
+          }
+
+          type function = { arguments: String, name: String }
+
+          class Function < OpenAI::Internal::Type::BaseModel
+            attr_accessor arguments: String
+
+            attr_accessor name: String
+
+            def initialize: (arguments: String, name: String) -> void
+
+            def to_hash: -> { arguments: String, name: String }
+          end
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,28 @@
+module OpenAI
+  module Models
+    module Conversations
+      type conversation_deleted =
+        { id: String, deleted: bool, object: :"conversation.deleted" }
+
+      class ConversationDeleted < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor deleted: bool
+
+        attr_accessor object: :"conversation.deleted"
+
+        def initialize: (
+          id: String,
+          deleted: bool,
+          ?object: :"conversation.deleted"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          deleted: bool,
+          object: :"conversation.deleted"
+        }
+      end
+    end
+  end
+end

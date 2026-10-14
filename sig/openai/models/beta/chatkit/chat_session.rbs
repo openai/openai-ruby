@@ -1,0 +1,69 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session =
+          {
+            id: String,
+            chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration,
+            client_secret: String,
+            expires_at: Integer,
+            :max_requests_per_1_minute => Integer,
+            object: :"chatkit.session",
+            rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits,
+            status: OpenAI::Models::Beta::ChatKit::chat_session_status,
+            user: String,
+            workflow: OpenAI::Beta::ChatKitWorkflow
+          }
+
+        class ChatSession < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration
+
+          attr_accessor client_secret: String
+
+          attr_accessor expires_at: Integer
+
+          attr_accessor max_requests_per_1_minute: Integer
+
+          attr_accessor object: :"chatkit.session"
+
+          attr_accessor rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits
+
+          attr_accessor status: OpenAI::Models::Beta::ChatKit::chat_session_status
+
+          attr_accessor user: String
+
+          attr_accessor workflow: OpenAI::Beta::ChatKitWorkflow
+
+          def initialize: (
+            id: String,
+            chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration,
+            client_secret: String,
+            expires_at: Integer,
+            max_requests_per_1_minute: Integer,
+            rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits,
+            status: OpenAI::Models::Beta::ChatKit::chat_session_status,
+            user: String,
+            workflow: OpenAI::Beta::ChatKitWorkflow,
+            ?object: :"chatkit.session"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfiguration,
+            client_secret: String,
+            expires_at: Integer,
+            :max_requests_per_1_minute => Integer,
+            object: :"chatkit.session",
+            rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimits,
+            status: OpenAI::Models::Beta::ChatKit::chat_session_status,
+            user: String,
+            workflow: OpenAI::Beta::ChatKitWorkflow
+          }
+        end
+      end
+    end
+  end
+end

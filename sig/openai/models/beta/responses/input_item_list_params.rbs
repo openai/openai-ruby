@@ -1,0 +1,92 @@
+module OpenAI
+  module Models
+    module Beta
+      module Responses
+        type input_item_list_params =
+          {
+            response_id: String,
+            after: String,
+            include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+            limit: Integer,
+            order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
+            betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class InputItemListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor response_id: String
+
+          attr_reader after: String?
+
+          def after=: (String) -> String
+
+          attr_reader include: ::Array[OpenAI::Models::Beta::beta_response_includable]?
+
+          def include=: (
+            ::Array[OpenAI::Models::Beta::beta_response_includable]
+          ) -> ::Array[OpenAI::Models::Beta::beta_response_includable]
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          attr_reader order: OpenAI::Models::Beta::Responses::InputItemListParams::order?
+
+          def order=: (
+            OpenAI::Models::Beta::Responses::InputItemListParams::order
+          ) -> OpenAI::Models::Beta::Responses::InputItemListParams::order
+
+          attr_reader betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]?
+
+          def betas=: (
+            ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]
+          ) -> ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]
+
+          def initialize: (
+            response_id: String,
+            ?after: String,
+            ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            response_id: String,
+            after: String,
+            include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+            limit: Integer,
+            order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
+            betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
+            request_options: OpenAI::RequestOptions
+          }
+
+          type order = :asc | :desc
+
+          module Order
+            extend OpenAI::Internal::Type::Enum
+
+            ASC: :asc
+            DESC: :desc
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::order]
+          end
+
+          type beta = :"responses_multi_agent=v1"
+
+          module Beta
+            extend OpenAI::Internal::Type::Enum
+
+            RESPONSES_MULTI_AGENT_V1: :"responses_multi_agent=v1"
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]
+          end
+        end
+      end
+    end
+  end
+end

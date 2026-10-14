@@ -1,0 +1,11 @@
+module OpenAI
+  module Models
+    GraderInputs: OpenAI::Internal::Type::Converter
+
+    module Graders
+      type grader_inputs = ::Array[OpenAI::Models::Graders::grader_input_item]
+
+      GraderInputs: OpenAI::Internal::Type::Converter
+    end
+  end
+end

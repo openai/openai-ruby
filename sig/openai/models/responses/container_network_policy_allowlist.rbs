@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module Responses
+      type container_network_policy_allowlist =
+        {
+          allowed_domains: ::Array[String],
+          type: :allowlist,
+          domain_secrets: ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]
+        }
+
+      class ContainerNetworkPolicyAllowlist < OpenAI::Internal::Type::BaseModel
+        attr_accessor allowed_domains: ::Array[String]
+
+        attr_accessor type: :allowlist
+
+        attr_reader domain_secrets: ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]?
+
+        def domain_secrets=: (
+          ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]
+        ) -> ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]
+
+        def initialize: (
+          allowed_domains: ::Array[String],
+          ?domain_secrets: ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret],
+          ?type: :allowlist
+        ) -> void
+
+        def to_hash: -> {
+          allowed_domains: ::Array[String],
+          type: :allowlist,
+          domain_secrets: ::Array[OpenAI::Responses::ContainerNetworkPolicyDomainSecret]
+        }
+      end
+    end
+  end
+end

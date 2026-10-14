@@ -1,0 +1,58 @@
+module OpenAI
+  module Models
+    type moderation_create_params =
+      {
+        input: OpenAI::Models::ModerationCreateParams::input,
+        model: OpenAI::Models::ModerationCreateParams::model
+      }
+      & OpenAI::Internal::Type::request_parameters
+
+    class ModerationCreateParams < OpenAI::Internal::Type::BaseModel
+      extend OpenAI::Internal::Type::RequestParameters::Converter
+      include OpenAI::Internal::Type::RequestParameters
+
+      attr_accessor input: OpenAI::Models::ModerationCreateParams::input
+
+      attr_reader model: OpenAI::Models::ModerationCreateParams::model?
+
+      def model=: (
+        OpenAI::Models::ModerationCreateParams::model
+      ) -> OpenAI::Models::ModerationCreateParams::model
+
+      def initialize: (
+        input: OpenAI::Models::ModerationCreateParams::input,
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::request_opts
+      ) -> void
+
+      def to_hash: -> {
+        input: OpenAI::Models::ModerationCreateParams::input,
+        model: OpenAI::Models::ModerationCreateParams::model,
+        request_options: OpenAI::RequestOptions
+      }
+
+      type input =
+        String
+        | ::Array[String]
+        | ::Array[OpenAI::Models::moderation_multi_modal_input]
+
+      module Input
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::ModerationCreateParams::input]
+
+        StringArray: OpenAI::Internal::Type::Converter
+
+        ModerationMultiModalInputArray: OpenAI::Internal::Type::Converter
+      end
+
+      type model = String | OpenAI::Models::moderation_model
+
+      module Model
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::ModerationCreateParams::model]
+      end
+    end
+  end
+end

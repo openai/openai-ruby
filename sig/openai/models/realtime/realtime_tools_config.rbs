@@ -1,0 +1,10 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_tools_config =
+        ::Array[OpenAI::Models::Realtime::realtime_tools_config_union]
+
+      RealtimeToolsConfig: OpenAI::Internal::Type::Converter
+    end
+  end
+end

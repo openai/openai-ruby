@@ -1,0 +1,231 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_response =
+        {
+          id: String,
+          audio: OpenAI::Realtime::RealtimeResponse::Audio,
+          conversation_id: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens,
+          metadata: OpenAI::Models::metadata?,
+          object: OpenAI::Models::Realtime::RealtimeResponse::object,
+          output: ::Array[OpenAI::Models::Realtime::conversation_item],
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality],
+          status: OpenAI::Models::Realtime::RealtimeResponse::status,
+          status_details: OpenAI::Realtime::RealtimeResponseStatus,
+          usage: OpenAI::Realtime::RealtimeResponseUsage
+        }
+
+      class RealtimeResponse < OpenAI::Internal::Type::BaseModel
+        attr_reader id: String?
+
+        def id=: (String) -> String
+
+        attr_reader audio: OpenAI::Realtime::RealtimeResponse::Audio?
+
+        def audio=: (
+          OpenAI::Realtime::RealtimeResponse::Audio
+        ) -> OpenAI::Realtime::RealtimeResponse::Audio
+
+        attr_reader conversation_id: String?
+
+        def conversation_id=: (String) -> String
+
+        attr_reader max_output_tokens: OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens?
+
+        def max_output_tokens=: (
+          OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens
+        ) -> OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        attr_reader object: OpenAI::Models::Realtime::RealtimeResponse::object?
+
+        def object=: (
+          OpenAI::Models::Realtime::RealtimeResponse::object
+        ) -> OpenAI::Models::Realtime::RealtimeResponse::object
+
+        attr_reader output: ::Array[OpenAI::Models::Realtime::conversation_item]?
+
+        def output=: (
+          ::Array[OpenAI::Models::Realtime::conversation_item]
+        ) -> ::Array[OpenAI::Models::Realtime::conversation_item]
+
+        attr_reader output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality]?
+
+        def output_modalities=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality]
+
+        attr_reader status: OpenAI::Models::Realtime::RealtimeResponse::status?
+
+        def status=: (
+          OpenAI::Models::Realtime::RealtimeResponse::status
+        ) -> OpenAI::Models::Realtime::RealtimeResponse::status
+
+        attr_reader status_details: OpenAI::Realtime::RealtimeResponseStatus?
+
+        def status_details=: (
+          OpenAI::Realtime::RealtimeResponseStatus
+        ) -> OpenAI::Realtime::RealtimeResponseStatus
+
+        attr_reader usage: OpenAI::Realtime::RealtimeResponseUsage?
+
+        def usage=: (
+          OpenAI::Realtime::RealtimeResponseUsage
+        ) -> OpenAI::Realtime::RealtimeResponseUsage
+
+        def initialize: (
+          ?id: String,
+          ?audio: OpenAI::Realtime::RealtimeResponse::Audio,
+          ?conversation_id: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens,
+          ?metadata: OpenAI::Models::metadata?,
+          ?object: OpenAI::Models::Realtime::RealtimeResponse::object,
+          ?output: ::Array[OpenAI::Models::Realtime::conversation_item],
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality],
+          ?status: OpenAI::Models::Realtime::RealtimeResponse::status,
+          ?status_details: OpenAI::Realtime::RealtimeResponseStatus,
+          ?usage: OpenAI::Realtime::RealtimeResponseUsage
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          audio: OpenAI::Realtime::RealtimeResponse::Audio,
+          conversation_id: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens,
+          metadata: OpenAI::Models::metadata?,
+          object: OpenAI::Models::Realtime::RealtimeResponse::object,
+          output: ::Array[OpenAI::Models::Realtime::conversation_item],
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality],
+          status: OpenAI::Models::Realtime::RealtimeResponse::status,
+          status_details: OpenAI::Realtime::RealtimeResponseStatus,
+          usage: OpenAI::Realtime::RealtimeResponseUsage
+        }
+
+        type audio =
+          { output: OpenAI::Realtime::RealtimeResponse::Audio::Output }
+
+        class Audio < OpenAI::Internal::Type::BaseModel
+          attr_reader output: OpenAI::Realtime::RealtimeResponse::Audio::Output?
+
+          def output=: (
+            OpenAI::Realtime::RealtimeResponse::Audio::Output
+          ) -> OpenAI::Realtime::RealtimeResponse::Audio::Output
+
+          def initialize: (
+            ?output: OpenAI::Realtime::RealtimeResponse::Audio::Output
+          ) -> void
+
+          def to_hash: -> {
+            output: OpenAI::Realtime::RealtimeResponse::Audio::Output
+          }
+
+          type output =
+            {
+              format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              voice: OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
+            }
+
+          class Output < OpenAI::Internal::Type::BaseModel
+            attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
+
+            def format_=: (
+              OpenAI::Models::Realtime::realtime_audio_formats
+            ) -> OpenAI::Models::Realtime::realtime_audio_formats
+
+            attr_reader voice: OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice?
+
+            def voice=: (
+              OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
+            ) -> OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
+
+            def initialize: (
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?voice: OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
+            ) -> void
+
+            def to_hash: -> {
+              format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              voice: OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice
+            }
+
+            type voice =
+              String
+              | :alloy
+              | :ash
+              | :ballad
+              | :coral
+              | :echo
+              | :sage
+              | :shimmer
+              | :verse
+              | :marin
+              | :cedar
+
+            module Voice
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponse::Audio::Output::voice]
+
+              ALLOY: :alloy
+              ASH: :ash
+              BALLAD: :ballad
+              CORAL: :coral
+              ECHO: :echo
+              SAGE: :sage
+              SHIMMER: :shimmer
+              VERSE: :verse
+              MARIN: :marin
+              CEDAR: :cedar
+            end
+          end
+        end
+
+        type max_output_tokens = Integer | :inf
+
+        module MaxOutputTokens
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeResponse::max_output_tokens]
+        end
+
+        type object = :"realtime.response"
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          REALTIME_RESPONSE: :"realtime.response"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponse::object]
+        end
+
+        type output_modality = :text | :audio
+
+        module OutputModality
+          extend OpenAI::Internal::Type::Enum
+
+          TEXT: :text
+          AUDIO: :audio
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponse::output_modality]
+        end
+
+        type status =
+          :completed | :cancelled | :failed | :incomplete | :in_progress
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          COMPLETED: :completed
+          CANCELLED: :cancelled
+          FAILED: :failed
+          INCOMPLETE: :incomplete
+          IN_PROGRESS: :in_progress
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeResponse::status]
+        end
+      end
+    end
+  end
+end

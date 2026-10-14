@@ -1,0 +1,38 @@
+module OpenAI
+  module Resources
+    class Containers
+      class Files
+        attr_reader content: OpenAI::Resources::Containers::Files::Content
+
+        def create: (
+          String container_id,
+          ?file: OpenAI::Internal::file_input,
+          ?file_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Containers::FileCreateResponse
+
+        def retrieve: (
+          String file_id,
+          container_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Models::Containers::FileRetrieveResponse
+
+        def list: (
+          String container_id,
+          ?after: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::Containers::FileListParams::order,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Containers::FileListResponse]
+
+        def delete: (
+          String file_id,
+          container_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> nil
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Conversations
+      type text_content = { text: String, type: :text }
+
+      class TextContent < OpenAI::Internal::Type::BaseModel
+        attr_accessor text: String
+
+        attr_accessor type: :text
+
+        def initialize: (text: String, ?type: :text) -> void
+
+        def to_hash: -> { text: String, type: :text }
+      end
+    end
+  end
+end

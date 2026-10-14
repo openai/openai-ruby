@@ -1,0 +1,69 @@
+module OpenAI
+  module Models
+    type comparison_filter =
+      {
+        key: String,
+        type: OpenAI::Models::ComparisonFilter::type_,
+        value: OpenAI::Models::ComparisonFilter::value
+      }
+
+    class ComparisonFilter < OpenAI::Internal::Type::BaseModel
+      attr_accessor key: String
+
+      attr_accessor type: OpenAI::Models::ComparisonFilter::type_
+
+      attr_accessor value: OpenAI::Models::ComparisonFilter::value
+
+      def initialize: (
+        key: String,
+        type: OpenAI::Models::ComparisonFilter::type_,
+        value: OpenAI::Models::ComparisonFilter::value
+      ) -> void
+
+      def to_hash: -> {
+        key: String,
+        type: OpenAI::Models::ComparisonFilter::type_,
+        value: OpenAI::Models::ComparisonFilter::value
+      }
+
+      type type_ = :eq | :ne | :gt | :gte | :lt | :lte | :in | :nin
+
+      module Type
+        extend OpenAI::Internal::Type::Enum
+
+        EQ: :eq
+        NE: :ne
+        GT: :gt
+        GTE: :gte
+        LT: :lt
+        LTE: :lte
+        IN: :in
+        NIN: :nin
+
+        def self?.values: -> ::Array[OpenAI::Models::ComparisonFilter::type_]
+      end
+
+      type value =
+        String
+        | Float
+        | bool
+        | ::Array[OpenAI::Models::ComparisonFilter::Value::union_member3]
+
+      module Value
+        extend OpenAI::Internal::Type::Union
+
+        type union_member3 = String | Float
+
+        module UnionMember3
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::ComparisonFilter::Value::union_member3]
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::ComparisonFilter::value]
+
+        UnionMember3Array: OpenAI::Internal::Type::Converter
+      end
+    end
+  end
+end

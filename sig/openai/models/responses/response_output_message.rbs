@@ -1,0 +1,80 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_output_message =
+        {
+          id: String,
+          content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
+          role: :assistant,
+          status: OpenAI::Models::Responses::ResponseOutputMessage::status,
+          type: :message,
+          phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
+        }
+
+      class ResponseOutputMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content]
+
+        attr_accessor role: :assistant
+
+        attr_accessor status: OpenAI::Models::Responses::ResponseOutputMessage::status
+
+        attr_accessor type: :message
+
+        attr_accessor phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
+
+        def initialize: (
+          id: String,
+          content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
+          status: OpenAI::Models::Responses::ResponseOutputMessage::status,
+          ?phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?,
+          ?role: :assistant,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content],
+          role: :assistant,
+          status: OpenAI::Models::Responses::ResponseOutputMessage::status,
+          type: :message,
+          phase: OpenAI::Models::Responses::ResponseOutputMessage::phase?
+        }
+
+        type content =
+          OpenAI::Responses::ResponseOutputText
+          | OpenAI::Responses::ResponseOutputRefusal
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::content]
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::status]
+        end
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY: :commentary
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseOutputMessage::phase]
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,66 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type batch_completed_webhook_event =
+        {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::BatchCompletedWebhookEvent::Data,
+          type: :"batch.completed",
+          object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
+        }
+
+      class BatchCompletedWebhookEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor data: OpenAI::Webhooks::BatchCompletedWebhookEvent::Data
+
+        attr_accessor type: :"batch.completed"
+
+        attr_reader object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object?
+
+        def object=: (
+          OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
+        ) -> OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::BatchCompletedWebhookEvent::Data,
+          ?object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object,
+          ?type: :"batch.completed"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          data: OpenAI::Webhooks::BatchCompletedWebhookEvent::Data,
+          type: :"batch.completed",
+          object: OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object
+        }
+
+        type data = { id: String }
+
+        class Data < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          def initialize: (id: String) -> void
+
+          def to_hash: -> { id: String }
+        end
+
+        type object = :event
+
+        module Object
+          extend OpenAI::Internal::Type::Enum
+
+          EVENT: :event
+
+          def self?.values: -> ::Array[OpenAI::Models::Webhooks::BatchCompletedWebhookEvent::object]
+        end
+      end
+    end
+  end
+end

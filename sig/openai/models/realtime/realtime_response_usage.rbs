@@ -1,0 +1,56 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_response_usage =
+        {
+          input_token_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails,
+          input_tokens: Integer,
+          output_token_details: OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
+          output_tokens: Integer,
+          total_tokens: Integer
+        }
+
+      class RealtimeResponseUsage < OpenAI::Internal::Type::BaseModel
+        attr_reader input_token_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails?
+
+        def input_token_details=: (
+          OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails
+        ) -> OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails
+
+        attr_reader input_tokens: Integer?
+
+        def input_tokens=: (Integer) -> Integer
+
+        attr_reader output_token_details: OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails?
+
+        def output_token_details=: (
+          OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails
+        ) -> OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails
+
+        attr_reader output_tokens: Integer?
+
+        def output_tokens=: (Integer) -> Integer
+
+        attr_reader total_tokens: Integer?
+
+        def total_tokens=: (Integer) -> Integer
+
+        def initialize: (
+          ?input_token_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails,
+          ?input_tokens: Integer,
+          ?output_token_details: OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
+          ?output_tokens: Integer,
+          ?total_tokens: Integer
+        ) -> void
+
+        def to_hash: -> {
+          input_token_details: OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails,
+          input_tokens: Integer,
+          output_token_details: OpenAI::Realtime::RealtimeResponseUsageOutputTokenDetails,
+          output_tokens: Integer,
+          total_tokens: Integer
+        }
+      end
+    end
+  end
+end

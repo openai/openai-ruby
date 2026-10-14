@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Realtime
+      type conversation_item_truncated_event =
+        {
+          audio_end_ms: Integer,
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          type: :"conversation.item.truncated"
+        }
+
+      class ConversationItemTruncatedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor audio_end_ms: Integer
+
+        attr_accessor content_index: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor type: :"conversation.item.truncated"
+
+        def initialize: (
+          audio_end_ms: Integer,
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          ?type: :"conversation.item.truncated"
+        ) -> void
+
+        def to_hash: -> {
+          audio_end_ms: Integer,
+          content_index: Integer,
+          event_id: String,
+          item_id: String,
+          type: :"conversation.item.truncated"
+        }
+      end
+    end
+  end
+end

@@ -1,0 +1,116 @@
+module OpenAI
+  module Models
+    class BetaResponseTextDeltaEvent = Beta::BetaResponseTextDeltaEvent
+
+    module Beta
+      type beta_response_text_delta_event =
+        {
+          content_index: Integer,
+          delta: String,
+          item_id: String,
+          logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob],
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_text.delta",
+          agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?
+        }
+
+      class BetaResponseTextDeltaEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor content_index: Integer
+
+        attr_accessor delta: String
+
+        attr_accessor item_id: String
+
+        attr_accessor logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob]
+
+        attr_accessor output_index: Integer
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.output_text.delta"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?
+
+        def initialize: (
+          content_index: Integer,
+          delta: String,
+          item_id: String,
+          logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob],
+          output_index: Integer,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?,
+          ?type: :"response.output_text.delta"
+        ) -> void
+
+        def to_hash: -> {
+          content_index: Integer,
+          delta: String,
+          item_id: String,
+          logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob],
+          output_index: Integer,
+          sequence_number: Integer,
+          type: :"response.output_text.delta",
+          agent: OpenAI::Beta::BetaResponseTextDeltaEvent::Agent?
+        }
+
+        type logprob =
+          {
+            token: String,
+            logprob: Float,
+            top_logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
+          }
+
+        class Logprob < OpenAI::Internal::Type::BaseModel
+          attr_accessor token: String
+
+          attr_accessor logprob: Float
+
+          attr_reader top_logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]?
+
+          def top_logprobs=: (
+            ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
+          ) -> ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
+
+          def initialize: (
+            token: String,
+            logprob: Float,
+            ?top_logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
+          ) -> void
+
+          def to_hash: -> {
+            token: String,
+            logprob: Float,
+            top_logprobs: ::Array[OpenAI::Beta::BetaResponseTextDeltaEvent::Logprob::TopLogprob]
+          }
+
+          type top_logprob = { token: String, logprob: Float }
+
+          class TopLogprob < OpenAI::Internal::Type::BaseModel
+            attr_reader token: String?
+
+            def token=: (String) -> String
+
+            attr_reader logprob: Float?
+
+            def logprob=: (Float) -> Float
+
+            def initialize: (?token: String, ?logprob: Float) -> void
+
+            def to_hash: -> { token: String, logprob: Float }
+          end
+        end
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

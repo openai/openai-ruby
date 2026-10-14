@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session_status = :active | :expired | :cancelled
+
+        module ChatSessionStatus
+          extend OpenAI::Internal::Type::Enum
+
+          ACTIVE: :active
+          EXPIRED: :expired
+          CANCELLED: :cancelled
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::ChatKit::chat_session_status]
+        end
+      end
+    end
+  end
+end

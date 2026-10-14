@@ -1,0 +1,805 @@
+module OpenAI
+  module Models
+    class RealtimeSessionCreateResponse = Realtime::RealtimeSessionCreateResponse
+
+    module Realtime
+      type realtime_session_create_response =
+        {
+          id: String,
+          object: :"realtime.session",
+          type: :realtime,
+          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+          expires_at: Integer,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
+          instructions: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
+          model: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model,
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
+          prompt: OpenAI::Responses::ResponsePrompt?,
+          reasoning: OpenAI::Realtime::RealtimeReasoning,
+          tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
+          tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
+          tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
+          truncation: OpenAI::Models::Realtime::realtime_truncation
+        }
+
+      class RealtimeSessionCreateResponse < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor object: :"realtime.session"
+
+        attr_accessor type: :realtime
+
+        attr_reader audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio?
+
+        def audio=: (
+          OpenAI::Realtime::RealtimeSessionCreateResponse::Audio
+        ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio
+
+        attr_reader expires_at: Integer?
+
+        def expires_at=: (Integer) -> Integer
+
+        attr_reader include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]?
+
+        def include=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]
+
+        attr_reader instructions: String?
+
+        def instructions=: (String) -> String
+
+        attr_reader max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens?
+
+        def max_output_tokens=: (
+          OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens
+        ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens
+
+        attr_reader model: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model?
+
+        def model=: (
+          OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model
+        ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model
+
+        attr_reader output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality]?
+
+        def output_modalities=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality]
+
+        attr_accessor prompt: OpenAI::Responses::ResponsePrompt?
+
+        attr_reader reasoning: OpenAI::Realtime::RealtimeReasoning?
+
+        def reasoning=: (
+          OpenAI::Realtime::RealtimeReasoning
+        ) -> OpenAI::Realtime::RealtimeReasoning
+
+        attr_reader tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice?
+
+        def tool_choice=: (
+          OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice
+        ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice
+
+        attr_reader tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool]?
+
+        def tools=: (
+          ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool]
+        ) -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool]
+
+        attr_accessor tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?
+
+        attr_reader truncation: OpenAI::Models::Realtime::realtime_truncation?
+
+        def truncation=: (
+          OpenAI::Models::Realtime::realtime_truncation
+        ) -> OpenAI::Models::Realtime::realtime_truncation
+
+        def initialize: (
+          id: String,
+          ?audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+          ?expires_at: Integer,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
+          ?instructions: String,
+          ?max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
+          ?model: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model,
+          ?output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
+          ?prompt: OpenAI::Responses::ResponsePrompt?,
+          ?reasoning: OpenAI::Realtime::RealtimeReasoning,
+          ?tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
+          ?tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
+          ?truncation: OpenAI::Models::Realtime::realtime_truncation,
+          ?object: :"realtime.session",
+          ?type: :realtime
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          object: :"realtime.session",
+          type: :realtime,
+          audio: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio,
+          expires_at: Integer,
+          include: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_],
+          instructions: String,
+          max_output_tokens: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens,
+          model: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model,
+          output_modalities: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality],
+          prompt: OpenAI::Responses::ResponsePrompt?,
+          reasoning: OpenAI::Realtime::RealtimeReasoning,
+          tool_choice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice,
+          tools: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool],
+          tracing: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing?,
+          truncation: OpenAI::Models::Realtime::realtime_truncation
+        }
+
+        type audio =
+          {
+            input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
+            output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+          }
+
+        class Audio < OpenAI::Internal::Type::BaseModel
+          attr_reader input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input?
+
+          def input=: (
+            OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input
+          ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input
+
+          attr_reader output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output?
+
+          def output=: (
+            OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+          ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+
+          def initialize: (
+            ?input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
+            ?output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+          ) -> void
+
+          def to_hash: -> {
+            input: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input,
+            output: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output
+          }
+
+          type input =
+            {
+              format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
+              transcription: OpenAI::Realtime::AudioTranscription,
+              turn_detection: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection?
+            }
+
+          class Input < OpenAI::Internal::Type::BaseModel
+            attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
+
+            def format_=: (
+              OpenAI::Models::Realtime::realtime_audio_formats
+            ) -> OpenAI::Models::Realtime::realtime_audio_formats
+
+            attr_reader noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction?
+
+            def noise_reduction=: (
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction
+            ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction
+
+            attr_reader transcription: OpenAI::Realtime::AudioTranscription?
+
+            def transcription=: (
+              OpenAI::Realtime::AudioTranscription
+            ) -> OpenAI::Realtime::AudioTranscription
+
+            attr_accessor turn_detection: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection?
+
+            def initialize: (
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
+              ?transcription: OpenAI::Realtime::AudioTranscription,
+              ?turn_detection: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection?
+            ) -> void
+
+            def to_hash: -> {
+              format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              noise_reduction: OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction,
+              transcription: OpenAI::Realtime::AudioTranscription,
+              turn_detection: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection?
+            }
+
+            type noise_reduction =
+              { type: OpenAI::Models::Realtime::noise_reduction_type }
+
+            class NoiseReduction < OpenAI::Internal::Type::BaseModel
+              attr_reader type: OpenAI::Models::Realtime::noise_reduction_type?
+
+              def type=: (
+                OpenAI::Models::Realtime::noise_reduction_type
+              ) -> OpenAI::Models::Realtime::noise_reduction_type
+
+              def initialize: (
+                ?type: OpenAI::Models::Realtime::noise_reduction_type
+              ) -> void
+
+              def to_hash: -> {
+                type: OpenAI::Models::Realtime::noise_reduction_type
+              }
+            end
+
+            type turn_detection =
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad
+              | OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad
+
+            module TurnDetection
+              extend OpenAI::Internal::Type::Union
+
+              type server_vad =
+                {
+                  type: :server_vad,
+                  create_response: bool,
+                  idle_timeout_ms: Integer?,
+                  interrupt_response: bool,
+                  prefix_padding_ms: Integer,
+                  silence_duration_ms: Integer,
+                  threshold: Float
+                }
+
+              class ServerVad < OpenAI::Internal::Type::BaseModel
+                attr_accessor type: :server_vad
+
+                attr_reader create_response: bool?
+
+                def create_response=: (bool) -> bool
+
+                attr_accessor idle_timeout_ms: Integer?
+
+                attr_reader interrupt_response: bool?
+
+                def interrupt_response=: (bool) -> bool
+
+                attr_reader prefix_padding_ms: Integer?
+
+                def prefix_padding_ms=: (Integer) -> Integer
+
+                attr_reader silence_duration_ms: Integer?
+
+                def silence_duration_ms=: (Integer) -> Integer
+
+                attr_reader threshold: Float?
+
+                def threshold=: (Float) -> Float
+
+                def initialize: (
+                  ?create_response: bool,
+                  ?idle_timeout_ms: Integer?,
+                  ?interrupt_response: bool,
+                  ?prefix_padding_ms: Integer,
+                  ?silence_duration_ms: Integer,
+                  ?threshold: Float,
+                  ?type: :server_vad
+                ) -> void
+
+                def to_hash: -> {
+                  type: :server_vad,
+                  create_response: bool,
+                  idle_timeout_ms: Integer?,
+                  interrupt_response: bool,
+                  prefix_padding_ms: Integer,
+                  silence_duration_ms: Integer,
+                  threshold: Float
+                }
+              end
+
+              type semantic_vad =
+                {
+                  type: :semantic_vad,
+                  create_response: bool,
+                  eagerness: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness,
+                  interrupt_response: bool
+                }
+
+              class SemanticVad < OpenAI::Internal::Type::BaseModel
+                attr_accessor type: :semantic_vad
+
+                attr_reader create_response: bool?
+
+                def create_response=: (bool) -> bool
+
+                attr_reader eagerness: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness?
+
+                def eagerness=: (
+                  OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness
+                ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness
+
+                attr_reader interrupt_response: bool?
+
+                def interrupt_response=: (bool) -> bool
+
+                def initialize: (
+                  ?create_response: bool,
+                  ?eagerness: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness,
+                  ?interrupt_response: bool,
+                  ?type: :semantic_vad
+                ) -> void
+
+                def to_hash: -> {
+                  type: :semantic_vad,
+                  create_response: bool,
+                  eagerness: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness,
+                  interrupt_response: bool
+                }
+
+                type eagerness = :low | :medium | :high | :auto
+
+                module Eagerness
+                  extend OpenAI::Internal::Type::Enum
+
+                  LOW: :low
+                  MEDIUM: :medium
+                  HIGH: :high
+                  AUTO: :auto
+
+                  def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::eagerness]
+                end
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::turn_detection]
+            end
+          end
+
+          type output =
+            {
+              format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              speed: Float,
+              voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+            }
+
+          class Output < OpenAI::Internal::Type::BaseModel
+            attr_reader format_: OpenAI::Models::Realtime::realtime_audio_formats?
+
+            def format_=: (
+              OpenAI::Models::Realtime::realtime_audio_formats
+            ) -> OpenAI::Models::Realtime::realtime_audio_formats
+
+            attr_reader speed: Float?
+
+            def speed=: (Float) -> Float
+
+            attr_reader voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice?
+
+            def voice=: (
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+            ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+
+            def initialize: (
+              ?format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              ?speed: Float,
+              ?voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+            ) -> void
+
+            def to_hash: -> {
+              format_: OpenAI::Models::Realtime::realtime_audio_formats,
+              speed: Float,
+              voice: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice
+            }
+
+            type voice =
+              String
+              | :alloy
+              | :ash
+              | :ballad
+              | :coral
+              | :echo
+              | :sage
+              | :shimmer
+              | :verse
+              | :marin
+              | :cedar
+
+            module Voice
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::voice]
+
+              ALLOY: :alloy
+              ASH: :ash
+              BALLAD: :ballad
+              CORAL: :coral
+              ECHO: :echo
+              SAGE: :sage
+              SHIMMER: :shimmer
+              VERSE: :verse
+              MARIN: :marin
+              CEDAR: :cedar
+            end
+          end
+        end
+
+        type include_ = :"item.input_audio_transcription.logprobs"
+
+        module Include
+          extend OpenAI::Internal::Type::Enum
+
+          ITEM_INPUT_AUDIO_TRANSCRIPTION_LOGPROBS: :"item.input_audio_transcription.logprobs"
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::include_]
+        end
+
+        type max_output_tokens = Integer | :inf
+
+        module MaxOutputTokens
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::max_output_tokens]
+        end
+
+        type model =
+          String
+          | :"gpt-realtime"
+          | :"gpt-realtime-1.5"
+          | :"gpt-realtime-2"
+          | :"gpt-realtime-2.1"
+          | :"gpt-realtime-2.1-mini"
+          | :"gpt-realtime-2025-08-28"
+          | :"gpt-4o-realtime-preview"
+          | :"gpt-4o-realtime-preview-2024-10-01"
+          | :"gpt-4o-realtime-preview-2024-12-17"
+          | :"gpt-4o-realtime-preview-2025-06-03"
+          | :"gpt-4o-mini-realtime-preview"
+          | :"gpt-4o-mini-realtime-preview-2024-12-17"
+          | :"gpt-realtime-mini"
+          | :"gpt-realtime-mini-2025-10-06"
+          | :"gpt-realtime-mini-2025-12-15"
+          | :"gpt-audio-1.5"
+          | :"gpt-audio-mini"
+          | :"gpt-audio-mini-2025-10-06"
+          | :"gpt-audio-mini-2025-12-15"
+
+        module Model
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::model]
+
+          GPT_REALTIME: :"gpt-realtime"
+          GPT_REALTIME_1_5: :"gpt-realtime-1.5"
+          GPT_REALTIME_2: :"gpt-realtime-2"
+          GPT_REALTIME_2_1: :"gpt-realtime-2.1"
+          GPT_REALTIME_2_1_MINI: :"gpt-realtime-2.1-mini"
+          GPT_REALTIME_2025_08_28: :"gpt-realtime-2025-08-28"
+          GPT_4O_REALTIME_PREVIEW: :"gpt-4o-realtime-preview"
+          GPT_4O_REALTIME_PREVIEW_2024_10_01: :"gpt-4o-realtime-preview-2024-10-01"
+          GPT_4O_REALTIME_PREVIEW_2024_12_17: :"gpt-4o-realtime-preview-2024-12-17"
+          GPT_4O_REALTIME_PREVIEW_2025_06_03: :"gpt-4o-realtime-preview-2025-06-03"
+          GPT_4O_MINI_REALTIME_PREVIEW: :"gpt-4o-mini-realtime-preview"
+          GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17: :"gpt-4o-mini-realtime-preview-2024-12-17"
+          GPT_REALTIME_MINI: :"gpt-realtime-mini"
+          GPT_REALTIME_MINI_2025_10_06: :"gpt-realtime-mini-2025-10-06"
+          GPT_REALTIME_MINI_2025_12_15: :"gpt-realtime-mini-2025-12-15"
+          GPT_AUDIO_1_5: :"gpt-audio-1.5"
+          GPT_AUDIO_MINI: :"gpt-audio-mini"
+          GPT_AUDIO_MINI_2025_10_06: :"gpt-audio-mini-2025-10-06"
+          GPT_AUDIO_MINI_2025_12_15: :"gpt-audio-mini-2025-12-15"
+        end
+
+        type output_modality = :text | :audio
+
+        module OutputModality
+          extend OpenAI::Internal::Type::Enum
+
+          TEXT: :text
+          AUDIO: :audio
+
+          def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::output_modality]
+        end
+
+        type tool_choice =
+          OpenAI::Models::Responses::tool_choice_options
+          | OpenAI::Responses::ToolChoiceFunction
+          | OpenAI::Responses::ToolChoiceMcp
+
+        module ToolChoice
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool_choice]
+        end
+
+        type tool =
+          OpenAI::Realtime::RealtimeFunctionTool
+          | OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool
+
+        module Tool
+          extend OpenAI::Internal::Type::Union
+
+          type mcp_tool =
+            {
+              server_label: String,
+              type: :mcp,
+              allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
+              allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
+              authorization: String,
+              connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
+              defer_loading: bool,
+              headers: ::Hash[Symbol, String]?,
+              require_approval: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval?,
+              server_description: String,
+              server_url: String,
+              tunnel_id: String
+            }
+
+          class McpTool < OpenAI::Internal::Type::BaseModel
+            attr_accessor server_label: String
+
+            attr_accessor type: :mcp
+
+            attr_accessor allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?
+
+            attr_accessor allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?
+
+            attr_reader authorization: String?
+
+            def authorization=: (String) -> String
+
+            attr_reader connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id?
+
+            def connector_id=: (
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id
+            ) -> OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id
+
+            attr_reader defer_loading: bool?
+
+            def defer_loading=: (bool) -> bool
+
+            attr_accessor headers: ::Hash[Symbol, String]?
+
+            attr_accessor require_approval: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval?
+
+            attr_reader server_description: String?
+
+            def server_description=: (String) -> String
+
+            attr_reader server_url: String?
+
+            def server_url=: (String) -> String
+
+            attr_reader tunnel_id: String?
+
+            def tunnel_id=: (String) -> String
+
+            def initialize: (
+              server_label: String,
+              ?allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
+              ?allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
+              ?authorization: String,
+              ?connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
+              ?defer_loading: bool,
+              ?headers: ::Hash[Symbol, String]?,
+              ?require_approval: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval?,
+              ?server_description: String,
+              ?server_url: String,
+              ?tunnel_id: String,
+              ?type: :mcp
+            ) -> void
+
+            def to_hash: -> {
+              server_label: String,
+              type: :mcp,
+              allowed_callers: ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]?,
+              allowed_tools: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools?,
+              authorization: String,
+              connector_id: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id,
+              defer_loading: bool,
+              headers: ::Hash[Symbol, String]?,
+              require_approval: OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval?,
+              server_description: String,
+              server_url: String,
+              tunnel_id: String
+            }
+
+            type allowed_caller = :direct | :programmatic
+
+            module AllowedCaller
+              extend OpenAI::Internal::Type::Enum
+
+              DIRECT: :direct
+              PROGRAMMATIC: :programmatic
+
+              def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_caller]
+            end
+
+            type allowed_tools =
+              ::Array[String]
+              | OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter
+
+            module AllowedTools
+              extend OpenAI::Internal::Type::Union
+
+              type mcp_tool_filter =
+                { read_only: bool, tool_names: ::Array[String] }
+
+              class McpToolFilter < OpenAI::Internal::Type::BaseModel
+                attr_reader read_only: bool?
+
+                def read_only=: (bool) -> bool
+
+                attr_reader tool_names: ::Array[String]?
+
+                def tool_names=: (::Array[String]) -> ::Array[String]
+
+                def initialize: (
+                  ?read_only: bool,
+                  ?tool_names: ::Array[String]
+                ) -> void
+
+                def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::allowed_tools]
+
+              StringArray: OpenAI::Internal::Type::Converter
+            end
+
+            type connector_id =
+              :connector_dropbox
+              | :connector_gmail
+              | :connector_googlecalendar
+              | :connector_googledrive
+              | :connector_microsoftteams
+              | :connector_outlookcalendar
+              | :connector_outlookemail
+              | :connector_sharepoint
+
+            module ConnectorID
+              extend OpenAI::Internal::Type::Enum
+
+              CONNECTOR_DROPBOX: :connector_dropbox
+              CONNECTOR_GMAIL: :connector_gmail
+              CONNECTOR_GOOGLECALENDAR: :connector_googlecalendar
+              CONNECTOR_GOOGLEDRIVE: :connector_googledrive
+              CONNECTOR_MICROSOFTTEAMS: :connector_microsoftteams
+              CONNECTOR_OUTLOOKCALENDAR: :connector_outlookcalendar
+              CONNECTOR_OUTLOOKEMAIL: :connector_outlookemail
+              CONNECTOR_SHAREPOINT: :connector_sharepoint
+
+              def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::connector_id]
+            end
+
+            type require_approval =
+              OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter
+              | OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::mcp_tool_approval_setting
+
+            module RequireApproval
+              extend OpenAI::Internal::Type::Union
+
+              type mcp_tool_approval_filter =
+                {
+                  always: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
+                  never: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                }
+
+              class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+                attr_reader always: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always?
+
+                def always=: (
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always
+                ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always
+
+                attr_reader never: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never?
+
+                def never=: (
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                ) -> OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+
+                def initialize: (
+                  ?always: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
+                  ?never: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                ) -> void
+
+                def to_hash: -> {
+                  always: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always,
+                  never: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                }
+
+                type always = { read_only: bool, tool_names: ::Array[String] }
+
+                class Always < OpenAI::Internal::Type::BaseModel
+                  attr_reader read_only: bool?
+
+                  def read_only=: (bool) -> bool
+
+                  attr_reader tool_names: ::Array[String]?
+
+                  def tool_names=: (::Array[String]) -> ::Array[String]
+
+                  def initialize: (
+                    ?read_only: bool,
+                    ?tool_names: ::Array[String]
+                  ) -> void
+
+                  def to_hash: -> {
+                    read_only: bool,
+                    tool_names: ::Array[String]
+                  }
+                end
+
+                type never = { read_only: bool, tool_names: ::Array[String] }
+
+                class Never < OpenAI::Internal::Type::BaseModel
+                  attr_reader read_only: bool?
+
+                  def read_only=: (bool) -> bool
+
+                  attr_reader tool_names: ::Array[String]?
+
+                  def tool_names=: (::Array[String]) -> ::Array[String]
+
+                  def initialize: (
+                    ?read_only: bool,
+                    ?tool_names: ::Array[String]
+                  ) -> void
+
+                  def to_hash: -> {
+                    read_only: bool,
+                    tool_names: ::Array[String]
+                  }
+                end
+              end
+
+              type mcp_tool_approval_setting = :always | :never
+
+              module McpToolApprovalSetting
+                extend OpenAI::Internal::Type::Enum
+
+                ALWAYS: :always
+                NEVER: :never
+
+                def self?.values: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::mcp_tool_approval_setting]
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::require_approval]
+            end
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tool]
+        end
+
+        type tracing =
+          :auto
+          | OpenAI::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration
+
+        module Tracing
+          extend OpenAI::Internal::Type::Union
+
+          type tracing_configuration =
+            { group_id: String, metadata: top, workflow_name: String }
+
+          class TracingConfiguration < OpenAI::Internal::Type::BaseModel
+            attr_reader group_id: String?
+
+            def group_id=: (String) -> String
+
+            attr_reader metadata: top?
+
+            def metadata=: (top) -> top
+
+            attr_reader workflow_name: String?
+
+            def workflow_name=: (String) -> String
+
+            def initialize: (
+              ?group_id: String,
+              ?metadata: top,
+              ?workflow_name: String
+            ) -> void
+
+            def to_hash: -> {
+              group_id: String,
+              metadata: top,
+              workflow_name: String
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Realtime::RealtimeSessionCreateResponse::tracing]
+        end
+      end
+    end
+  end
+end

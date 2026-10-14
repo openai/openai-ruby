@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    class BetaInlineSkill = Beta::BetaInlineSkill
+
+    module Beta
+      type beta_inline_skill =
+        {
+          description: String,
+          name: String,
+          source: OpenAI::Beta::BetaInlineSkillSource,
+          type: :inline
+        }
+
+      class BetaInlineSkill < OpenAI::Internal::Type::BaseModel
+        attr_accessor description: String
+
+        attr_accessor name: String
+
+        attr_accessor source: OpenAI::Beta::BetaInlineSkillSource
+
+        attr_accessor type: :inline
+
+        def initialize: (
+          description: String,
+          name: String,
+          source: OpenAI::Beta::BetaInlineSkillSource,
+          ?type: :inline
+        ) -> void
+
+        def to_hash: -> {
+          description: String,
+          name: String,
+          source: OpenAI::Beta::BetaInlineSkillSource,
+          type: :inline
+        }
+      end
+    end
+  end
+end

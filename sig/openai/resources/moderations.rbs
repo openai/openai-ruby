@@ -1,0 +1,13 @@
+module OpenAI
+  module Resources
+    class Moderations
+      def create: (
+        input: OpenAI::Models::ModerationCreateParams::input,
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::ModerationCreateResponse
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

@@ -1,0 +1,28 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Responses
+        class InputTokens
+          def count: (
+            ?conversation: OpenAI::Models::Beta::Responses::InputTokenCountParams::conversation?,
+            ?input: OpenAI::Models::Beta::Responses::InputTokenCountParams::input?,
+            ?instructions: String?,
+            ?model: String?,
+            ?parallel_tool_calls: bool?,
+            ?personality: OpenAI::Models::Beta::Responses::InputTokenCountParams::personality,
+            ?previous_response_id: String?,
+            ?reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
+            ?text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
+            ?tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
+            ?tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
+            ?truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta],
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::Responses::InputTokenCountResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Realtime
+      type input_audio_buffer_speech_stopped_event =
+        {
+          audio_end_ms: Integer,
+          event_id: String,
+          item_id: String,
+          type: :"input_audio_buffer.speech_stopped"
+        }
+
+      class InputAudioBufferSpeechStoppedEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor audio_end_ms: Integer
+
+        attr_accessor event_id: String
+
+        attr_accessor item_id: String
+
+        attr_accessor type: :"input_audio_buffer.speech_stopped"
+
+        def initialize: (
+          audio_end_ms: Integer,
+          event_id: String,
+          item_id: String,
+          ?type: :"input_audio_buffer.speech_stopped"
+        ) -> void
+
+        def to_hash: -> {
+          audio_end_ms: Integer,
+          event_id: String,
+          item_id: String,
+          type: :"input_audio_buffer.speech_stopped"
+        }
+      end
+    end
+  end
+end

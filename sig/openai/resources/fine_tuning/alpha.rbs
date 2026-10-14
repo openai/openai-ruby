@@ -1,0 +1,11 @@
+module OpenAI
+  module Resources
+    class FineTuning
+      class Alpha
+        attr_reader graders: OpenAI::Resources::FineTuning::Alpha::Graders
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

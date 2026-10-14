@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    class BetaResponseIncompleteEvent = Beta::BetaResponseIncompleteEvent
+
+    module Beta
+      type beta_response_incomplete_event =
+        {
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          type: :"response.incomplete",
+          agent: OpenAI::Beta::BetaResponseIncompleteEvent::Agent?
+        }
+
+      class BetaResponseIncompleteEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor response: OpenAI::Beta::BetaResponse
+
+        attr_accessor sequence_number: Integer
+
+        attr_accessor type: :"response.incomplete"
+
+        attr_accessor agent: OpenAI::Beta::BetaResponseIncompleteEvent::Agent?
+
+        def initialize: (
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          ?agent: OpenAI::Beta::BetaResponseIncompleteEvent::Agent?,
+          ?type: :"response.incomplete"
+        ) -> void
+
+        def to_hash: -> {
+          response: OpenAI::Beta::BetaResponse,
+          sequence_number: Integer,
+          type: :"response.incomplete",
+          agent: OpenAI::Beta::BetaResponseIncompleteEvent::Agent?
+        }
+
+        type agent = { agent_name: String }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          attr_accessor agent_name: String
+
+          def initialize: (agent_name: String) -> void
+
+          def to_hash: -> { agent_name: String }
+        end
+      end
+    end
+  end
+end

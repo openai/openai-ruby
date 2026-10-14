@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Realtime
+      type realtime_mcphttp_error =
+        { code: Integer, message: String, type: :http_error }
+
+      class RealtimeMcphttpError < OpenAI::Internal::Type::BaseModel
+        attr_accessor code: Integer
+
+        attr_accessor message: String
+
+        attr_accessor type: :http_error
+
+        def initialize: (
+          code: Integer,
+          message: String,
+          ?type: :http_error
+        ) -> void
+
+        def to_hash: -> { code: Integer, message: String, type: :http_error }
+      end
+    end
+  end
+end

@@ -1,0 +1,634 @@
+module OpenAI
+  module Models
+    module BetaTool = Beta::BetaTool
+
+    module Beta
+      type beta_tool =
+        OpenAI::Beta::BetaFunctionTool
+        | OpenAI::Beta::BetaFileSearchTool
+        | OpenAI::Beta::BetaComputerTool
+        | OpenAI::Beta::BetaComputerUsePreviewTool
+        | OpenAI::Beta::BetaTool::Mcp
+        | OpenAI::Beta::BetaTool::CodeInterpreter
+        | OpenAI::Beta::BetaTool::ProgrammaticToolCalling
+        | OpenAI::Beta::BetaTool::ImageGeneration
+        | OpenAI::Beta::BetaTool::LocalShell
+        | OpenAI::Beta::BetaFunctionShellTool
+        | OpenAI::Beta::BetaCustomTool
+        | OpenAI::Beta::BetaNamespaceTool
+        | OpenAI::Beta::BetaToolSearchTool
+        | OpenAI::Beta::BetaApplyPatchTool
+        | OpenAI::Beta::BetaWebSearchTool
+        | OpenAI::Beta::BetaWebSearchPreviewTool
+
+      module BetaTool
+        extend OpenAI::Internal::Type::Union
+
+        type mcp =
+          {
+            server_label: String,
+            type: :mcp,
+            allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::Mcp::allowed_caller]?,
+            allowed_tools: OpenAI::Models::Beta::BetaTool::Mcp::allowed_tools?,
+            authorization: String,
+            connector_id: OpenAI::Models::Beta::BetaTool::Mcp::connector_id,
+            defer_loading: bool,
+            headers: ::Hash[Symbol, String]?,
+            require_approval: OpenAI::Models::Beta::BetaTool::Mcp::require_approval?,
+            server_description: String,
+            server_url: String,
+            tunnel_id: String
+          }
+
+        class Mcp < OpenAI::Internal::Type::BaseModel
+          attr_accessor server_label: String
+
+          attr_accessor type: :mcp
+
+          attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::Mcp::allowed_caller]?
+
+          attr_accessor allowed_tools: OpenAI::Models::Beta::BetaTool::Mcp::allowed_tools?
+
+          attr_reader authorization: String?
+
+          def authorization=: (String) -> String
+
+          attr_reader connector_id: OpenAI::Models::Beta::BetaTool::Mcp::connector_id?
+
+          def connector_id=: (
+            OpenAI::Models::Beta::BetaTool::Mcp::connector_id
+          ) -> OpenAI::Models::Beta::BetaTool::Mcp::connector_id
+
+          attr_reader defer_loading: bool?
+
+          def defer_loading=: (bool) -> bool
+
+          attr_accessor headers: ::Hash[Symbol, String]?
+
+          attr_accessor require_approval: OpenAI::Models::Beta::BetaTool::Mcp::require_approval?
+
+          attr_reader server_description: String?
+
+          def server_description=: (String) -> String
+
+          attr_reader server_url: String?
+
+          def server_url=: (String) -> String
+
+          attr_reader tunnel_id: String?
+
+          def tunnel_id=: (String) -> String
+
+          def initialize: (
+            server_label: String,
+            ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::Mcp::allowed_caller]?,
+            ?allowed_tools: OpenAI::Models::Beta::BetaTool::Mcp::allowed_tools?,
+            ?authorization: String,
+            ?connector_id: OpenAI::Models::Beta::BetaTool::Mcp::connector_id,
+            ?defer_loading: bool,
+            ?headers: ::Hash[Symbol, String]?,
+            ?require_approval: OpenAI::Models::Beta::BetaTool::Mcp::require_approval?,
+            ?server_description: String,
+            ?server_url: String,
+            ?tunnel_id: String,
+            ?type: :mcp
+          ) -> void
+
+          def to_hash: -> {
+            server_label: String,
+            type: :mcp,
+            allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::Mcp::allowed_caller]?,
+            allowed_tools: OpenAI::Models::Beta::BetaTool::Mcp::allowed_tools?,
+            authorization: String,
+            connector_id: OpenAI::Models::Beta::BetaTool::Mcp::connector_id,
+            defer_loading: bool,
+            headers: ::Hash[Symbol, String]?,
+            require_approval: OpenAI::Models::Beta::BetaTool::Mcp::require_approval?,
+            server_description: String,
+            server_url: String,
+            tunnel_id: String
+          }
+
+          type allowed_caller = :direct | :programmatic
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            DIRECT: :direct
+            PROGRAMMATIC: :programmatic
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::Mcp::allowed_caller]
+          end
+
+          type allowed_tools =
+            ::Array[String]
+            | OpenAI::Beta::BetaTool::Mcp::AllowedTools::McpToolFilter
+
+          module AllowedTools
+            extend OpenAI::Internal::Type::Union
+
+            type mcp_tool_filter =
+              { read_only: bool, tool_names: ::Array[String] }
+
+            class McpToolFilter < OpenAI::Internal::Type::BaseModel
+              attr_reader read_only: bool?
+
+              def read_only=: (bool) -> bool
+
+              attr_reader tool_names: ::Array[String]?
+
+              def tool_names=: (::Array[String]) -> ::Array[String]
+
+              def initialize: (
+                ?read_only: bool,
+                ?tool_names: ::Array[String]
+              ) -> void
+
+              def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaTool::Mcp::allowed_tools]
+
+            StringArray: OpenAI::Internal::Type::Converter
+          end
+
+          type connector_id =
+            :connector_dropbox
+            | :connector_gmail
+            | :connector_googlecalendar
+            | :connector_googledrive
+            | :connector_microsoftteams
+            | :connector_outlookcalendar
+            | :connector_outlookemail
+            | :connector_sharepoint
+
+          module ConnectorID
+            extend OpenAI::Internal::Type::Enum
+
+            CONNECTOR_DROPBOX: :connector_dropbox
+            CONNECTOR_GMAIL: :connector_gmail
+            CONNECTOR_GOOGLECALENDAR: :connector_googlecalendar
+            CONNECTOR_GOOGLEDRIVE: :connector_googledrive
+            CONNECTOR_MICROSOFTTEAMS: :connector_microsoftteams
+            CONNECTOR_OUTLOOKCALENDAR: :connector_outlookcalendar
+            CONNECTOR_OUTLOOKEMAIL: :connector_outlookemail
+            CONNECTOR_SHAREPOINT: :connector_sharepoint
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::Mcp::connector_id]
+          end
+
+          type require_approval =
+            OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter
+            | OpenAI::Models::Beta::BetaTool::Mcp::RequireApproval::mcp_tool_approval_setting
+
+          module RequireApproval
+            extend OpenAI::Internal::Type::Union
+
+            type mcp_tool_approval_filter =
+              {
+                always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+              }
+
+            class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
+              attr_reader always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always?
+
+              def always=: (
+                OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always
+              ) -> OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always
+
+              attr_reader never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never?
+
+              def never=: (
+                OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+              ) -> OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+
+              def initialize: (
+                ?always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                ?never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+              ) -> void
+
+              def to_hash: -> {
+                always: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Always,
+                never: OpenAI::Beta::BetaTool::Mcp::RequireApproval::McpToolApprovalFilter::Never
+              }
+
+              type always = { read_only: bool, tool_names: ::Array[String] }
+
+              class Always < OpenAI::Internal::Type::BaseModel
+                attr_reader read_only: bool?
+
+                def read_only=: (bool) -> bool
+
+                attr_reader tool_names: ::Array[String]?
+
+                def tool_names=: (::Array[String]) -> ::Array[String]
+
+                def initialize: (
+                  ?read_only: bool,
+                  ?tool_names: ::Array[String]
+                ) -> void
+
+                def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+              end
+
+              type never = { read_only: bool, tool_names: ::Array[String] }
+
+              class Never < OpenAI::Internal::Type::BaseModel
+                attr_reader read_only: bool?
+
+                def read_only=: (bool) -> bool
+
+                attr_reader tool_names: ::Array[String]?
+
+                def tool_names=: (::Array[String]) -> ::Array[String]
+
+                def initialize: (
+                  ?read_only: bool,
+                  ?tool_names: ::Array[String]
+                ) -> void
+
+                def to_hash: -> { read_only: bool, tool_names: ::Array[String] }
+              end
+            end
+
+            type mcp_tool_approval_setting = :always | :never
+
+            module McpToolApprovalSetting
+              extend OpenAI::Internal::Type::Enum
+
+              ALWAYS: :always
+              NEVER: :never
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::Mcp::RequireApproval::mcp_tool_approval_setting]
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaTool::Mcp::require_approval]
+          end
+        end
+
+        type code_interpreter =
+          {
+            container: OpenAI::Models::Beta::BetaTool::CodeInterpreter::container,
+            type: :code_interpreter,
+            allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::allowed_caller]?
+          }
+
+        class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+          attr_accessor container: OpenAI::Models::Beta::BetaTool::CodeInterpreter::container
+
+          attr_accessor type: :code_interpreter
+
+          attr_accessor allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::allowed_caller]?
+
+          def initialize: (
+            container: OpenAI::Models::Beta::BetaTool::CodeInterpreter::container,
+            ?allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::allowed_caller]?,
+            ?type: :code_interpreter
+          ) -> void
+
+          def to_hash: -> {
+            container: OpenAI::Models::Beta::BetaTool::CodeInterpreter::container,
+            type: :code_interpreter,
+            allowed_callers: ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::allowed_caller]?
+          }
+
+          type container =
+            String
+            | OpenAI::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto
+
+          module Container
+            extend OpenAI::Internal::Type::Union
+
+            type code_interpreter_tool_auto =
+              {
+                type: :auto,
+                file_ids: ::Array[String],
+                memory_limit: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                network_policy: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
+              }
+
+            class CodeInterpreterToolAuto < OpenAI::Internal::Type::BaseModel
+              attr_accessor type: :auto
+
+              attr_reader file_ids: ::Array[String]?
+
+              def file_ids=: (::Array[String]) -> ::Array[String]
+
+              attr_accessor memory_limit: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?
+
+              attr_reader network_policy: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy?
+
+              def network_policy=: (
+                OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
+              ) -> OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
+
+              def initialize: (
+                ?file_ids: ::Array[String],
+                ?memory_limit: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                ?network_policy: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy,
+                ?type: :auto
+              ) -> void
+
+              def to_hash: -> {
+                type: :auto,
+                file_ids: ::Array[String],
+                memory_limit: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit?,
+                network_policy: OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy
+              }
+
+              type memory_limit = :"1g" | :"4g" | :"16g" | :"64g"
+
+              module MemoryLimit
+                extend OpenAI::Internal::Type::Enum
+
+                MEMORY_LIMIT_1G: :"1g"
+                MEMORY_LIMIT_4G: :"4g"
+                MEMORY_LIMIT_16G: :"16g"
+                MEMORY_LIMIT_64G: :"64g"
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::memory_limit]
+              end
+
+              type network_policy =
+                OpenAI::Beta::BetaContainerNetworkPolicyDisabled
+                | OpenAI::Beta::BetaContainerNetworkPolicyAllowlist
+
+              module NetworkPolicy
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::Container::CodeInterpreterToolAuto::network_policy]
+              end
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::container]
+          end
+
+          type allowed_caller = :direct | :programmatic
+
+          module AllowedCaller
+            extend OpenAI::Internal::Type::Enum
+
+            DIRECT: :direct
+            PROGRAMMATIC: :programmatic
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::CodeInterpreter::allowed_caller]
+          end
+        end
+
+        type programmatic_tool_calling = { type: :programmatic_tool_calling }
+
+        class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :programmatic_tool_calling
+
+          def initialize: (?type: :programmatic_tool_calling) -> void
+
+          def to_hash: -> { type: :programmatic_tool_calling }
+        end
+
+        type image_generation =
+          {
+            type: :image_generation,
+            action: OpenAI::Models::Beta::BetaTool::ImageGeneration::action,
+            background: OpenAI::Models::Beta::BetaTool::ImageGeneration::background,
+            input_fidelity: OpenAI::Models::Beta::BetaTool::ImageGeneration::input_fidelity?,
+            input_image_mask: OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask,
+            model: OpenAI::Models::Beta::BetaTool::ImageGeneration::model,
+            moderation: OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation,
+            output_compression: Integer,
+            output_format: OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format,
+            partial_images: Integer,
+            quality: OpenAI::Models::Beta::BetaTool::ImageGeneration::quality,
+            size: OpenAI::Models::Beta::BetaTool::ImageGeneration::size
+          }
+
+        class ImageGeneration < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :image_generation
+
+          attr_reader action: OpenAI::Models::Beta::BetaTool::ImageGeneration::action?
+
+          def action=: (
+            OpenAI::Models::Beta::BetaTool::ImageGeneration::action
+          ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::action
+
+          attr_reader background: OpenAI::Models::Beta::BetaTool::ImageGeneration::background?
+
+          def background=: (
+            OpenAI::Models::Beta::BetaTool::ImageGeneration::background
+          ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::background
+
+          attr_accessor input_fidelity: OpenAI::Models::Beta::BetaTool::ImageGeneration::input_fidelity?
+
+          attr_reader input_image_mask: OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask?
+
+          def input_image_mask=: (
+            OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask
+          ) -> OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask
+
+          attr_reader model: OpenAI::Models::Beta::BetaTool::ImageGeneration::model?
+
+          def model=: (
+            OpenAI::Models::Beta::BetaTool::ImageGeneration::model
+          ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::model
+
+          attr_reader moderation: OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation?
+
+          def moderation=: (
+            OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation
+          ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation
+
+          attr_reader output_compression: Integer?
+
+          def output_compression=: (Integer) -> Integer
+
+          attr_reader output_format: OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format?
+
+          def output_format=: (
+            OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format
+          ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format
+
+          attr_reader partial_images: Integer?
+
+          def partial_images=: (Integer) -> Integer
+
+          attr_reader quality: OpenAI::Models::Beta::BetaTool::ImageGeneration::quality?
+
+          def quality=: (
+            OpenAI::Models::Beta::BetaTool::ImageGeneration::quality
+          ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::quality
+
+          attr_reader size: OpenAI::Models::Beta::BetaTool::ImageGeneration::size?
+
+          def size=: (
+            OpenAI::Models::Beta::BetaTool::ImageGeneration::size
+          ) -> OpenAI::Models::Beta::BetaTool::ImageGeneration::size
+
+          def initialize: (
+            ?action: OpenAI::Models::Beta::BetaTool::ImageGeneration::action,
+            ?background: OpenAI::Models::Beta::BetaTool::ImageGeneration::background,
+            ?input_fidelity: OpenAI::Models::Beta::BetaTool::ImageGeneration::input_fidelity?,
+            ?input_image_mask: OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask,
+            ?model: OpenAI::Models::Beta::BetaTool::ImageGeneration::model,
+            ?moderation: OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation,
+            ?output_compression: Integer,
+            ?output_format: OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format,
+            ?partial_images: Integer,
+            ?quality: OpenAI::Models::Beta::BetaTool::ImageGeneration::quality,
+            ?size: OpenAI::Models::Beta::BetaTool::ImageGeneration::size,
+            ?type: :image_generation
+          ) -> void
+
+          def to_hash: -> {
+            type: :image_generation,
+            action: OpenAI::Models::Beta::BetaTool::ImageGeneration::action,
+            background: OpenAI::Models::Beta::BetaTool::ImageGeneration::background,
+            input_fidelity: OpenAI::Models::Beta::BetaTool::ImageGeneration::input_fidelity?,
+            input_image_mask: OpenAI::Beta::BetaTool::ImageGeneration::InputImageMask,
+            model: OpenAI::Models::Beta::BetaTool::ImageGeneration::model,
+            moderation: OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation,
+            output_compression: Integer,
+            output_format: OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format,
+            partial_images: Integer,
+            quality: OpenAI::Models::Beta::BetaTool::ImageGeneration::quality,
+            size: OpenAI::Models::Beta::BetaTool::ImageGeneration::size
+          }
+
+          type action = :generate | :edit | :auto
+
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            GENERATE: :generate
+            EDIT: :edit
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::ImageGeneration::action]
+          end
+
+          type background = :transparent | :opaque | :auto
+
+          module Background
+            extend OpenAI::Internal::Type::Enum
+
+            TRANSPARENT: :transparent
+            OPAQUE: :opaque
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::ImageGeneration::background]
+          end
+
+          type input_fidelity = :high | :low
+
+          module InputFidelity
+            extend OpenAI::Internal::Type::Enum
+
+            HIGH: :high
+            LOW: :low
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::ImageGeneration::input_fidelity]
+          end
+
+          type input_image_mask = { file_id: String, image_url: String }
+
+          class InputImageMask < OpenAI::Internal::Type::BaseModel
+            attr_reader file_id: String?
+
+            def file_id=: (String) -> String
+
+            attr_reader image_url: String?
+
+            def image_url=: (String) -> String
+
+            def initialize: (?file_id: String, ?image_url: String) -> void
+
+            def to_hash: -> { file_id: String, image_url: String }
+          end
+
+          type model =
+            String
+            | :"gpt-image-1"
+            | :"gpt-image-1-mini"
+            | :"gpt-image-2"
+            | :"gpt-image-2-2026-04-21"
+            | :"gpt-image-1.5"
+            | :"chatgpt-image-latest"
+
+          module Model
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaTool::ImageGeneration::model]
+
+            GPT_IMAGE_1: :"gpt-image-1"
+            GPT_IMAGE_1_MINI: :"gpt-image-1-mini"
+            GPT_IMAGE_2: :"gpt-image-2"
+            GPT_IMAGE_2_2026_04_21: :"gpt-image-2-2026-04-21"
+            GPT_IMAGE_1_5: :"gpt-image-1.5"
+            CHATGPT_IMAGE_LATEST: :"chatgpt-image-latest"
+          end
+
+          type moderation = :auto | :low
+
+          module Moderation
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            LOW: :low
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::ImageGeneration::moderation]
+          end
+
+          type output_format = :png | :webp | :jpeg
+
+          module OutputFormat
+            extend OpenAI::Internal::Type::Enum
+
+            PNG: :png
+            WEBP: :webp
+            JPEG: :jpeg
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::ImageGeneration::output_format]
+          end
+
+          type quality = :low | :medium | :high | :auto
+
+          module Quality
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaTool::ImageGeneration::quality]
+          end
+
+          type size =
+            String | :"1024x1024" | :"1024x1536" | :"1536x1024" | :auto
+
+          module Size
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaTool::ImageGeneration::size]
+
+            SIZE_1024X1024: :"1024x1024"
+            SIZE_1024X1536: :"1024x1536"
+            SIZE_1536X1024: :"1536x1024"
+            AUTO: :auto
+          end
+        end
+
+        type local_shell = { type: :local_shell }
+
+        class LocalShell < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: :local_shell
+
+          def initialize: (?type: :local_shell) -> void
+
+          def to_hash: -> { type: :local_shell }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::beta_tool]
+      end
+    end
+  end
+end

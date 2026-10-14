@@ -1,0 +1,28 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module VectorStores
+      # @see OpenAI::Resources::VectorStores::FileBatches#cancel
+      class FileBatchCancelParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        # @!attribute vector_store_id
+        #
+        #   @return [String]
+        required :vector_store_id, String
+
+        # @!attribute batch_id
+        #
+        #   @return [String]
+        required :batch_id, String
+
+        # @!method initialize(vector_store_id:, batch_id:, request_options: {})
+        #   @param vector_store_id [String]
+        #   @param batch_id [String]
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+      end
+    end
+  end
+end

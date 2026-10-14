@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    class BetaToolSearchTool = Beta::BetaToolSearchTool
+
+    module Beta
+      type beta_tool_search_tool =
+        {
+          type: :tool_search,
+          description: String?,
+          execution: OpenAI::Models::Beta::BetaToolSearchTool::execution,
+          parameters: top?
+        }
+
+      class BetaToolSearchTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor type: :tool_search
+
+        attr_accessor description: String?
+
+        attr_reader execution: OpenAI::Models::Beta::BetaToolSearchTool::execution?
+
+        def execution=: (
+          OpenAI::Models::Beta::BetaToolSearchTool::execution
+        ) -> OpenAI::Models::Beta::BetaToolSearchTool::execution
+
+        attr_accessor parameters: top?
+
+        def initialize: (
+          ?description: String?,
+          ?execution: OpenAI::Models::Beta::BetaToolSearchTool::execution,
+          ?parameters: top?,
+          ?type: :tool_search
+        ) -> void
+
+        def to_hash: -> {
+          type: :tool_search,
+          description: String?,
+          execution: OpenAI::Models::Beta::BetaToolSearchTool::execution,
+          parameters: top?
+        }
+
+        type execution = :server | :client
+
+        module Execution
+          extend OpenAI::Internal::Type::Enum
+
+          SERVER: :server
+          CLIENT: :client
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::BetaToolSearchTool::execution]
+        end
+      end
+    end
+  end
+end

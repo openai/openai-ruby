@@ -1,0 +1,17 @@
+module OpenAI
+  module Resources
+    class Skills
+      class Versions
+        class Content
+          def retrieve: (
+            String version,
+            skill_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> StringIO
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

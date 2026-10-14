@@ -1,0 +1,20 @@
+module OpenAI
+  module Models
+    module Beta
+      module ChatKit
+        type chat_session_expires_after_param =
+          { anchor: :created_at, seconds: Integer }
+
+        class ChatSessionExpiresAfterParam < OpenAI::Internal::Type::BaseModel
+          attr_accessor anchor: :created_at
+
+          attr_accessor seconds: Integer
+
+          def initialize: (seconds: Integer, ?anchor: :created_at) -> void
+
+          def to_hash: -> { anchor: :created_at, seconds: Integer }
+        end
+      end
+    end
+  end
+end

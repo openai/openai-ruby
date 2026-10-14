@@ -1,0 +1,15 @@
+module OpenAI
+  module Resources
+    class Uploads
+      class Parts
+        def create: (
+          String upload_id,
+          data: OpenAI::Internal::file_input,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Uploads::UploadPart
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

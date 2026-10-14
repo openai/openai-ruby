@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Conversations
+      type conversation_create_params =
+        {
+          items: ::Array[OpenAI::Models::Responses::response_input_item]?,
+          metadata: OpenAI::Models::metadata?
+        }
+        & OpenAI::Internal::Type::request_parameters
+
+      class ConversationCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor items: ::Array[OpenAI::Models::Responses::response_input_item]?
+
+        attr_accessor metadata: OpenAI::Models::metadata?
+
+        def initialize: (
+          ?items: ::Array[OpenAI::Models::Responses::response_input_item]?,
+          ?metadata: OpenAI::Models::metadata?,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          items: ::Array[OpenAI::Models::Responses::response_input_item]?,
+          metadata: OpenAI::Models::metadata?,
+          request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

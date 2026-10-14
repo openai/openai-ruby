@@ -1,0 +1,124 @@
+module OpenAI
+  module Models
+    module Conversations
+      type message =
+        {
+          id: String,
+          content: ::Array[OpenAI::Models::Conversations::Message::content],
+          role: OpenAI::Models::Conversations::Message::role,
+          status: OpenAI::Models::Conversations::Message::status,
+          type: :message,
+          phase: OpenAI::Models::Conversations::Message::phase?
+        }
+
+      class Message < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor content: ::Array[OpenAI::Models::Conversations::Message::content]
+
+        attr_accessor role: OpenAI::Models::Conversations::Message::role
+
+        attr_accessor status: OpenAI::Models::Conversations::Message::status
+
+        attr_accessor type: :message
+
+        attr_accessor phase: OpenAI::Models::Conversations::Message::phase?
+
+        def initialize: (
+          id: String,
+          content: ::Array[OpenAI::Models::Conversations::Message::content],
+          role: OpenAI::Models::Conversations::Message::role,
+          status: OpenAI::Models::Conversations::Message::status,
+          ?phase: OpenAI::Models::Conversations::Message::phase?,
+          ?type: :message
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: ::Array[OpenAI::Models::Conversations::Message::content],
+          role: OpenAI::Models::Conversations::Message::role,
+          status: OpenAI::Models::Conversations::Message::status,
+          type: :message,
+          phase: OpenAI::Models::Conversations::Message::phase?
+        }
+
+        type content =
+          OpenAI::Responses::ResponseInputText
+          | OpenAI::Responses::ResponseOutputText
+          | OpenAI::Conversations::TextContent
+          | OpenAI::Conversations::SummaryTextContent
+          | OpenAI::Conversations::Message::Content::ReasoningText
+          | OpenAI::Responses::ResponseOutputRefusal
+          | OpenAI::Responses::ResponseInputImage
+          | OpenAI::Conversations::ComputerScreenshotContent
+          | OpenAI::Responses::ResponseInputFile
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          type reasoning_text = { text: String, type: :reasoning_text }
+
+          class ReasoningText < OpenAI::Internal::Type::BaseModel
+            attr_accessor text: String
+
+            attr_accessor type: :reasoning_text
+
+            def initialize: (text: String, ?type: :reasoning_text) -> void
+
+            def to_hash: -> { text: String, type: :reasoning_text }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Conversations::Message::content]
+        end
+
+        type role =
+          :unknown
+          | :user
+          | :assistant
+          | :system
+          | :critic
+          | :discriminator
+          | :developer
+          | :tool
+
+        module Role
+          extend OpenAI::Internal::Type::Enum
+
+          UNKNOWN: :unknown
+          USER: :user
+          ASSISTANT: :assistant
+          SYSTEM: :system
+          CRITIC: :critic
+          DISCRIMINATOR: :discriminator
+          DEVELOPER: :developer
+          TOOL: :tool
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::Message::role]
+        end
+
+        type status = :in_progress | :completed | :incomplete
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          IN_PROGRESS: :in_progress
+          COMPLETED: :completed
+          INCOMPLETE: :incomplete
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::Message::status]
+        end
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY: :commentary
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::Conversations::Message::phase]
+        end
+      end
+    end
+  end
+end

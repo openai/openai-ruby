@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    module Responses
+      type local_skill = { description: String, name: String, path: String }
+
+      class LocalSkill < OpenAI::Internal::Type::BaseModel
+        attr_accessor description: String
+
+        attr_accessor name: String
+
+        attr_accessor path: String
+
+        def initialize: (
+          description: String,
+          name: String,
+          path: String
+        ) -> void
+
+        def to_hash: -> { description: String, name: String, path: String }
+      end
+    end
+  end
+end

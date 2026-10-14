@@ -1,0 +1,67 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          attr_reader users: OpenAI::Resources::Admin::Organization::Projects::Users
+
+          attr_reader service_accounts: OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts
+
+          attr_reader api_keys: OpenAI::Resources::Admin::Organization::Projects::APIKeys
+
+          attr_reader rate_limits: OpenAI::Resources::Admin::Organization::Projects::RateLimits
+
+          attr_reader model_permissions: OpenAI::Resources::Admin::Organization::Projects::ModelPermissions
+
+          attr_reader hosted_tool_permissions: OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions
+
+          attr_reader groups: OpenAI::Resources::Admin::Organization::Projects::Groups
+
+          attr_reader roles: OpenAI::Resources::Admin::Organization::Projects::Roles
+
+          attr_reader data_retention: OpenAI::Resources::Admin::Organization::Projects::DataRetention
+
+          attr_reader spend_limit: OpenAI::Resources::Admin::Organization::Projects::SpendLimit
+
+          attr_reader spend_alerts: OpenAI::Resources::Admin::Organization::Projects::SpendAlerts
+
+          attr_reader certificates: OpenAI::Resources::Admin::Organization::Projects::Certificates
+
+          def create: (
+            name: String,
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Project
+
+          def retrieve: (
+            String project_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Project
+
+          def update: (
+            String project_id,
+            ?external_key_id: String?,
+            ?geography: String?,
+            ?name: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Project
+
+          def list: (
+            ?after: String,
+            ?include_archived: bool,
+            ?limit: Integer,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Project]
+
+          def archive: (
+            String project_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::Project
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

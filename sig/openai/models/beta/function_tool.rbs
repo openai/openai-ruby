@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Beta
+      type function_tool =
+        { function: OpenAI::FunctionDefinition, type: :function }
+
+      class FunctionTool < OpenAI::Internal::Type::BaseModel
+        attr_accessor function: OpenAI::FunctionDefinition
+
+        attr_accessor type: :function
+
+        def initialize: (
+          function: OpenAI::FunctionDefinition,
+          ?type: :function
+        ) -> void
+
+        def to_hash: -> {
+          function: OpenAI::FunctionDefinition,
+          type: :function
+        }
+      end
+    end
+  end
+end

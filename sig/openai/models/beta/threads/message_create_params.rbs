@@ -1,0 +1,121 @@
+module OpenAI
+  module Models
+    module Beta
+      module Threads
+        type message_create_params =
+          {
+            thread_id: String,
+            content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
+            role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
+            attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
+            metadata: OpenAI::Models::metadata?
+          }
+          & OpenAI::Internal::Type::request_parameters
+
+        class MessageCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor thread_id: String
+
+          attr_accessor content: OpenAI::Models::Beta::Threads::MessageCreateParams::content
+
+          attr_accessor role: OpenAI::Models::Beta::Threads::MessageCreateParams::role
+
+          attr_accessor attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?
+
+          attr_accessor metadata: OpenAI::Models::metadata?
+
+          def initialize: (
+            thread_id: String,
+            content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
+            role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
+            ?attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
+            ?metadata: OpenAI::Models::metadata?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            thread_id: String,
+            content: OpenAI::Models::Beta::Threads::MessageCreateParams::content,
+            role: OpenAI::Models::Beta::Threads::MessageCreateParams::role,
+            attachments: ::Array[OpenAI::Beta::Threads::MessageCreateParams::Attachment]?,
+            metadata: OpenAI::Models::metadata?,
+            request_options: OpenAI::RequestOptions
+          }
+
+          type content =
+            String
+            | ::Array[OpenAI::Models::Beta::Threads::message_content_part_param]
+
+          module Content
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::content]
+
+            MessageContentPartParamArray: OpenAI::Internal::Type::Converter
+          end
+
+          type role = :user | :assistant
+
+          module Role
+            extend OpenAI::Internal::Type::Enum
+
+            USER: :user
+            ASSISTANT: :assistant
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::role]
+          end
+
+          type attachment =
+            {
+              file_id: String,
+              tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+            }
+
+          class Attachment < OpenAI::Internal::Type::BaseModel
+            attr_reader file_id: String?
+
+            def file_id=: (String) -> String
+
+            attr_reader tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]?
+
+            def tools=: (
+              ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+            ) -> ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+
+            def initialize: (
+              ?file_id: String,
+              ?tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+            ) -> void
+
+            def to_hash: -> {
+              file_id: String,
+              tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+            }
+
+            type tool =
+              OpenAI::Beta::CodeInterpreterTool
+              | OpenAI::Beta::Threads::MessageCreateParams::Attachment::Tool::FileSearch
+
+            module Tool
+              extend OpenAI::Internal::Type::Union
+
+              type file_search = { type: :file_search }
+
+              class FileSearch < OpenAI::Internal::Type::BaseModel
+                attr_accessor type: :file_search
+
+                def initialize: (?type: :file_search) -> void
+
+                def to_hash: -> { type: :file_search }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+            end
+          end
+        end
+      end
+    end
+  end
+end
