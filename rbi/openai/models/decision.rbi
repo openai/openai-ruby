@@ -12,12 +12,17 @@ module OpenAI
         )
       end
 
+      # Answers in question order. Any question can return a refusal instead of an
+      # answer; other questions can still receive answers. A refusal has
+      # `type: "refusal"` and the question's `name`, or `null` if it was unnamed.
       sig { returns(T::Array[OpenAI::Decision::Answer::Variants]) }
       attr_accessor :answers
 
+      # The model used.
       sig { returns(String) }
       attr_accessor :model
 
+      # Token usage for the request.
       sig { returns(OpenAI::Decision::Usage) }
       attr_reader :usage
 
@@ -44,9 +49,15 @@ module OpenAI
       end
       def self.new(
 
+        # Answers in question order. Any question can return a refusal instead of an
+        # answer; other questions can still receive answers. A refusal has
+        # `type: "refusal"` and the question's `name`, or `null` if it was unnamed.
         answers:,
 
+        # The model used.
         model:,
+
+        # Token usage for the request.
 
         usage:
       )
@@ -462,6 +473,7 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :total_tokens
 
+        # Token usage for the request.
         sig do
           params(
 

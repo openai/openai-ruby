@@ -22,9 +22,12 @@ module OpenAI
       sig { returns(OpenAI::DecisionCreateParams::Input::Variants) }
       attr_accessor :input
 
+      # The model to use. Only `gpt-6-luna` is supported.
       sig { returns(String) }
       attr_accessor :model
 
+      # Ask 1–200 questions about the input. Each question can be a predicate, choice,
+      # or score. Answers come back in the same order.
       sig {
         returns(
           T::Array[
@@ -72,8 +75,11 @@ module OpenAI
         # one request. Files, audio, tools, and item references are not supported.
         input:,
 
+        # The model to use. Only `gpt-6-luna` is supported.
         model:,
 
+        # Ask 1–200 questions about the input. Each question can be a predicate, choice,
+        # or score. Answers come back in the same order.
         questions:,
 
         # Opaque caller-provided end-user identifier, scoped by the verified org. Match

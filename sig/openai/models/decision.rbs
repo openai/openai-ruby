@@ -8,12 +8,25 @@ module OpenAI
       }
 
     class Decision < OpenAI::Internal::Type::BaseModel
+      # Answers in question order. Any question can return a refusal instead of an
+      # answer; other questions can still receive answers. A refusal has
+      # `type: "refusal"` and the question's `name`, or `null` if it was unnamed.
       attr_accessor answers: ::Array[OpenAI::Models::Decision::answer]
 
+      # The model used.
       attr_accessor model: String
 
+      # Token usage for the request.
       attr_accessor usage: OpenAI::Decision::Usage
 
+      # @param answers
+      #   Answers in question order. Any question can return a refusal instead of an
+      #   answer; other questions can still receive answers. A refusal has
+      #   `type: "refusal"` and the question's `name`, or `null` if it was unnamed.
+      # @param model
+      #   The model used.
+      # @param usage
+      #   Token usage for the request.
       def initialize: (
         answers: ::Array[OpenAI::Models::Decision::answer],
         model: String,
