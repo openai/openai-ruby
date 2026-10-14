@@ -305,6 +305,12 @@ module OpenAI
             nil?: true
           )
 
+          # @!attribute error
+          #   Details of a moderation failure, when available.
+          #
+          #   @return [OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error, nil]
+          optional :error, -> { OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error }
+
           # @!attribute output_format
           #   The output format used for generation.
           #
@@ -344,7 +350,7 @@ module OpenAI
             nil?: true
           )
 
-          # @!method initialize(id:, result:, status:, action: nil, background: nil, output_format: nil, quality: nil, revised_prompt: nil, size: nil, type: :image_generation_call)
+          # @!method initialize(id:, result:, status:, action: nil, background: nil, error: nil, output_format: nil, quality: nil, revised_prompt: nil, size: nil, type: :image_generation_call)
           #   An image generation request made by the model.
           #
           #   @param id [String]
@@ -361,6 +367,9 @@ module OpenAI
           #
           #   @param background [Symbol, OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Background, nil]
           #     The background setting used for generation.
+          #
+          #   @param error [OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error]
+          #     Details of a moderation failure, when available.
           #
           #   @param output_format [Symbol, OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::OutputFormat, nil]
           #     The output format used for generation.
@@ -419,6 +428,103 @@ module OpenAI
 
             # @!method self.values
             #   @return [Array<Symbol>]
+          end
+
+          # @see OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall#error
+          class Error < OpenAI::Internal::Type::BaseModel
+            # @!attribute code
+            #   The error code.
+            #
+            #   @return [String, nil]
+            required :code, String, nil?: true
+
+            # @!attribute message
+            #   A description of the error.
+            #
+            #   @return [String]
+            required :message, String
+
+            # @!attribute param
+            #   The related request parameter.
+            #
+            #   @return [String, nil]
+            required :param, String, nil?: true
+
+            # @!attribute type
+            #   The error type.
+            #
+            #   @return [String]
+            required :type, String
+
+            # @!attribute moderation_details
+            #   Public details for a `moderation_blocked` error, when available.
+            #
+            #   @return [OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails, nil]
+            optional(
+              :moderation_details,
+              -> { OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails }
+            )
+
+            # @!method initialize(code:, message:, param:, type:, moderation_details: nil)
+            #   Details of a moderation failure, when available.
+            #
+            #   @param code [String, nil]
+            #     The error code.
+            #
+            #   @param message [String]
+            #     A description of the error.
+            #
+            #   @param param [String, nil]
+            #     The related request parameter.
+            #
+            #   @param type [String]
+            #     The error type.
+            #
+            #   @param moderation_details [OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails]
+            #     Public details for a `moderation_blocked` error, when available.
+
+            # @see OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error#moderation_details
+            class ModerationDetails < OpenAI::Internal::Type::BaseModel
+              # @!attribute categories
+              #   Public moderation categories. New category values may be added over time.
+              #
+              #   @return [Array<String>]
+              required :categories, OpenAI::Internal::Type::ArrayOf[String]
+
+              # @!attribute moderation_stage
+              #   The stage where moderation blocked the image generation call.
+              #
+              #   @return [Symbol, OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage]
+              required(
+                :moderation_stage,
+                enum: -> {
+                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage
+                }
+              )
+
+              # @!method initialize(categories:, moderation_stage:)
+              #   Public details for a `moderation_blocked` error, when available.
+              #
+              #   @param categories [Array<String>]
+              #     Public moderation categories. New category values may be added over time.
+              #
+              #   @param moderation_stage [Symbol, OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage]
+              #     The stage where moderation blocked the image generation call.
+
+              # The stage where moderation blocked the image generation call.
+              #
+              # @see OpenAI::Models::Responses::ResponseOutputItem::ImageGenerationCall::Error::ModerationDetails#moderation_stage
+              module ModerationStage
+                extend OpenAI::Internal::Type::Enum
+
+                INPUT = :input
+                OUTPUT = :output
+                UNKNOWN = :unknown
+
+                # @!method self.values
+                #   @return [Array<Symbol>]
+              end
+            end
           end
 
           # The output format used for generation.

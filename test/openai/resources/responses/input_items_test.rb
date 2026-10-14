@@ -129,6 +129,7 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
             status: OpenAI::Responses::ResponseItem::ImageGenerationCall::Status,
             action: OpenAI::Responses::ResponseItem::ImageGenerationCall::Action | nil,
             background: OpenAI::Responses::ResponseItem::ImageGenerationCall::Background | nil,
+            error: OpenAI::Responses::ResponseItem::ImageGenerationCall::Error | nil,
             output_format: OpenAI::Responses::ResponseItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Responses::ResponseItem::ImageGenerationCall::Quality | nil,
             revised_prompt: String | nil,
