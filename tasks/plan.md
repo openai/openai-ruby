@@ -40,9 +40,9 @@ lines. This replaces the earlier inventory taken from an older checkout.
 | 3 | Extract Responses `output_text` into a handwritten model extension with RBI/RBS | Existing output-text tests and type declarations pass; same owner/visibility and empty/mixed output behavior | 2 |
 | 4 | Extract Chat parsed-result fields into handwritten model extensions | Existing parsing/streaming and Sorbet tests pass; response-only fields keep serialization semantics | 3 |
 | 5 | Extract Responses parsed-result fields into handwritten model extensions | Existing response parsing/streaming tests pass; same runtime/type API | 4 |
-| 6a | Preserve schema-converter input typing through native compiler support or typed extension points | Chat schema/tool examples and type tests pass without generated patches | 5 |
-| 6b | Apply the same contract to Responses schema/tool inputs | Responses schema/tool examples and type tests pass | 6a |
-| 7a | Extract Agents file conveniences | Same upload/download methods and RBI/RBS; synthetic transport tests pass | 6b |
+| 6a | Generate the existing schema-converter RBI input contract for annotated model parameters (including Responses text) | Preserve reader, constructor, response-model and RBS types; test enabled/disabled annotations, inheritance, streaming and Stainless parity | 5 |
+| 6b | Preserve remaining Chat/Responses schema and tool union inputs through native compiler support or typed extension points | Both APIs' schema/tool examples, parsing/streaming and type tests pass without generated patches | 6a |
+| 7a | Extract Agents file conveniences (independent; brought forward alongside 6a) | Same upload/download methods and RBI/RBS; synthetic transport tests pass | 5 |
 | 7b | Extract Agents session streaming conveniences | Same signatures, streaming/result/error semantics, and block cleanup | 7a |
 | 8a | Extract Chat structured-output resource wrappers and stream helper | Create/stream public-entrypoint, tool parsing, and type tests pass | 7b |
 | 8b | Extract Responses structured-output resource wrappers and stream helper | Creation/resumption, structured tools, unknown events, and type tests pass | 8a |
@@ -59,6 +59,8 @@ lines. This replaces the earlier inventory taken from an older checkout.
 | 14 | Separate budget-only PR ratcheting the ceiling to zero | Only `.castiron-ratchet.json` changes; zero usage already established | 13 |
 
 Compiler-backed slices may need a compiler PR followed by an SDK regeneration PR.
+Slice 7a can proceed while 6a is under compiler review: its additive file/artifact
+methods and declarations do not depend on structured-output input conversion.
 Refine implementation details using code evidence, but do not silently enlarge a
 PR to absorb another feature or skip a compatibility gate. Each checkpoint records
 measured counts, test results, and review links in `tasks/todo.md`.

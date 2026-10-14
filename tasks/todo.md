@@ -21,7 +21,12 @@
   33 mixed files / 1,952 lines remain.
 - [ ] PRs 6a/6b: schema-converter input contracts.
 - [ ] Checkpoint: structured output and streaming compatibility.
-- [ ] PRs 7a/7b: Agents file/session helpers.
+- [x] PR 7a implementation: Agents file/artifact helpers and RBI/RBS extracted into existing handwritten helper files.
+  Brought forward independently of compiler input typing; generated loading positions and public method owners/parameters remain intact.
+  Original tests pass before and after (26 / 155 assertions); with subclass/owner checks, 27 / 166 pass.
+  Combined runtime/exported RBI merge: 29 tests / 172 assertions passed. Sorbet passed; all 1,623 RBS files validate; formatting passes.
+  Verified reporter: 27 mixed files / 1,855 patch lines remain (six files restored, net 97 patch lines removed).
+- [ ] PR 7b: Agents session helpers.
 - [ ] PRs 8a/8b: Chat/Responses resource helpers.
 - [ ] PRs 9a/9b: webhook redaction/verification.
 - [ ] Checkpoint: transport, streaming, and webhook compatibility.

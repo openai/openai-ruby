@@ -8,12 +8,6 @@ module OpenAI
       class Agents
         class Sessions
           class Artifacts
-            # Access artifacts from exactly this completed turn (beta).
-            # @return [OpenAI::Helpers::Beta::Agents::ResultArtifacts]
-            def for_result(result)
-              OpenAI::Helpers::Beta::Agents::ResultArtifacts.new(artifacts: self, client: @client, result: result)
-            end
-
             # Retrieves immutable metadata for one durable session artifact. See
             # [session artifacts](https://developers.openai.com/api/docs/guides/agents-api/environments/files#openai-hosted-artifacts).
             #

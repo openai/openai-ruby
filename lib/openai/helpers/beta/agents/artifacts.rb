@@ -70,3 +70,21 @@ module OpenAI
     end
   end
 end
+
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Sessions
+          class Artifacts
+            # Access artifacts from exactly this completed turn (beta).
+            # @return [OpenAI::Helpers::Beta::Agents::ResultArtifacts]
+            def for_result(result)
+              OpenAI::Helpers::Beta::Agents::ResultArtifacts.new(artifacts: self, client: @client, result: result)
+            end
+          end
+        end
+      end
+    end
+  end
+end

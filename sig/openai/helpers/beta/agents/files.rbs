@@ -39,3 +39,33 @@ module OpenAI
     end
   end
 end
+
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Environments
+          class Files
+            # Beta file helpers.
+            def prepare: (
+              Hash[String, String | Pathname] files,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Helpers::Beta::Agents::PreparedFiles
+            def prepare_directory: (
+              String | Pathname directory,
+              destination: String,
+              include: Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Helpers::Beta::Agents::PreparedFiles
+            def upload: (
+              String environment_id,
+              file: String | Pathname,
+              path: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Helpers::Beta::Agents::PreparedFiles
+          end
+        end
+      end
+    end
+  end
+end
