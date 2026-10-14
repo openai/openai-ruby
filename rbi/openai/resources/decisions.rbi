@@ -5,17 +5,8 @@ module OpenAI
 
     class Decisions
 
-      # Use this endpoint to ask classification or scoring questions about the same
-      # input. You’ll get the answers back in the order you asked the questions.
-      #
-      # For text, you can pass a string. You can also send user messages containing
-      # `input_text` and `input_image` parts, with up to 128 images per request. Images
-      # can be base64 data URLs or publicly accessible HTTP(S) URLs. File IDs aren’t
-      # accepted. Other message roles, function calls, files, audio, and item references
-      # aren’t supported.
-      #
-      # Sometimes a question returns a refusal instead of an answer. The result has type
-      # `refusal` and includes the question’s name, or `null` if you didn’t give it one.
+      # Use this endpoint to quickly answer classification or scoring questions about
+      # some input. You can ask multiple questions in one request.
       sig {
         params(
           input: OpenAI::DecisionCreateParams::Input::Variants,
@@ -38,7 +29,10 @@ module OpenAI
         # accessible HTTP(S) URLs; at most 128 images are allowed across all messages in
         # one request. Files, audio, tools, and item references are not supported.
         input:,
+        # The model to use. Only `gpt-6-luna` is supported.
         model:,
+        # Ask 1–200 questions about the input. Each question can be a predicate, choice,
+        # or score. Answers come back in the same order.
         questions:,
         # Opaque caller-provided end-user identifier, scoped by the verified org. Match
         # Responses' limit; this is never the authenticated user identity.
