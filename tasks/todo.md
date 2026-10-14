@@ -26,7 +26,12 @@
   Original tests pass before and after (26 / 155 assertions); with subclass/owner checks, 27 / 166 pass.
   Combined runtime/exported RBI merge: 29 tests / 172 assertions passed. Sorbet passed; all 1,623 RBS files validate; formatting passes.
   Verified reporter: 27 mixed files / 1,855 patch lines remain (six files restored, net 97 patch lines removed).
-- [ ] PR 7b: Agents session helpers.
+- [x] PR 7b implementation: move the additive `Sessions#stream` method unchanged into its existing handwritten helper.
+  Public method ownership/parameters, consumer subclass super dispatch and block cleanup are covered by a focused regression.
+  Existing RBI/RBS declarations and root loading already reside in handwritten extension points; no signature or require changes.
+  Validation: 133 runtime tests / 1,171 assertions; exported RBI merge 2 / 6; RBS consumer fixtures 1 / 3; Sorbet, rubyfmt and RuboCop passed.
+  Verified reporter: 27 mixed files / 1,806 patch lines remain, removing exactly 49 lines without changing policy or metadata.
+- [ ] PR 7c: compiler-supported Agents creation-stream contract; naive RBI reopening conflicts with generated signatures.
 - [ ] PRs 8a/8b: Chat/Responses resource helpers.
 - [ ] PRs 9a/9b: webhook redaction/verification.
 - [ ] Checkpoint: transport, streaming, and webhook compatibility.

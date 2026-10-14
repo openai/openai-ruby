@@ -118,6 +118,43 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
     )
   end
 
+  def test_resource_extension_preserves_public_signature_and_subclass_super
+    resource = OpenAI::Resources::Beta::Agents::Sessions
+    method = @sessions.public_method(:stream)
+    assert_equal(resource, method.owner)
+    assert_equal(
+      [
+        [:req, :session_id],
+        [:keyreq, :input],
+        [:key, :tool_handlers],
+        [:key, :on_tool_error],
+        [:key, :idempotency_key],
+        [:key, :output_type],
+        [:key, :request_options]
+      ],
+      method.parameters
+    )
+
+    subclass = Class.new(resource) do
+      attr_reader(:stream_called)
+
+      def stream(...)
+        @stream_called = true
+        super
+      end
+    end
+
+    sessions = subclass.new(client: @client)
+    assert_equal(resource, sessions.public_method(:stream).super_method.owner)
+    yielded = nil
+    result = sessions.stream("session_test", input: "Hello") { |stream| yielded = stream }
+    assert(sessions.stream_called)
+    assert_instance_of(OpenAI::Helpers::Agents::SessionStream, result)
+    assert_same(yielded, result)
+    assert(@server.body.closed)
+    assert_equal(1, @server.submissions.size)
+  end
+
   def test_failed_and_cancelled_turns_remain_visible
     %w[failed cancelled].each do |kind|
       configure([turn("created"), turn(kind), idle])
