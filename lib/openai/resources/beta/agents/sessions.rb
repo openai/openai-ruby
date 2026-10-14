@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../../helpers/agents/session_stream_resource"
+
 module OpenAI
   module Resources
     class Beta
