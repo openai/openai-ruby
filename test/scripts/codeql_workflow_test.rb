@@ -53,6 +53,9 @@ class CodeQLWorkflowTest < Minitest::Test
     )
     assert_includes(workflow.fetch(true), "pull_request")
     assert_includes(workflow.fetch(true), "merge_group")
+    %w[push pull_request].each do |event|
+      assert_equal(%w[main next], workflow.fetch(true).fetch(event).fetch("branches"))
+    end
   end
 
   def test_codeql_preserves_published_security_results
