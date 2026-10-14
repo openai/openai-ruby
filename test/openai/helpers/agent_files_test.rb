@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "open3"
 require "tmpdir"
 require "socket"
 require "timeout"
@@ -8,6 +9,52 @@ require_relative "../test_helper"
 
 class OpenAI::Test::AgentFilesTest < Minitest::Test
   extend Minitest::Serial
+
+  def test_direct_resource_requires_preserve_existing_helpers
+    scripts = [
+      <<~RUBY,
+        require "openai/resources/beta/agents/sessions/artifacts"
+        resource = OpenAI::Resources::Beta::Agents::Sessions::Artifacts
+        subclass = Class.new(resource) { def for_result(result); super; end }
+        result = Struct.new(:session_id, :turn_id).new("session_fake", "turn_fake")
+        [resource, subclass].each do |klass|
+          helper = klass.new(client: Object.new).for_result(result)
+          raise "missing result helper" unless helper.is_a?(OpenAI::Helpers::Beta::Agents::ResultArtifacts)
+        end
+      RUBY
+          <<~RUBY
+        require "openai/errors"
+        require "pathname"
+        require "openai/resources/beta/agents/environments/files"
+        resource = OpenAI::Resources::Beta::Agents::Environments::Files
+        subclass = Class.new(resource) do
+          def prepare(...); super; end
+          def prepare_directory(...); super; end
+        end
+        [resource, subclass].each do |klass|
+          files = klass.new(client: Object.new)
+          raise "missing prepare helper" unless files.prepare({}).files.empty?
+          Dir.mktmpdir do |directory|
+            prepared = files.prepare_directory(directory, destination: "/workspace", include: ["**/*"])
+            raise "missing directory helper" unless prepared.files.empty?
+          end
+          raise "missing upload helper" unless files.respond_to?(:upload)
+        end
+      RUBY
+    ]
+    root = File.expand_path("../../..", __dir__)
+    scripts.each do |source|
+      ["", "require \"openai\"\n"].each do |prefix|
+        stdout, stderr, status = Open3.capture3(
+          RbConfig.ruby,
+          "-I#{root}/lib",
+          "-e",
+          prefix + source
+        )
+        assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
+      end
+    end
+  end
 
   class Body
     attr_reader :closed, :reads
