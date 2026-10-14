@@ -6,20 +6,29 @@ module OpenAI
           {
             permissions: ::Array[String],
             role_name: String,
-            description: String?
+            ?description: String?,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class RoleCreateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Permissions to grant to the role.
           attr_accessor permissions: ::Array[String]
 
+          # Unique name for the role.
           attr_accessor role_name: String
 
+          # Optional description of the role.
           attr_accessor description: String?
 
+          # @param permissions
+          #   Permissions to grant to the role.
+          # @param role_name
+          #   Unique name for the role.
+          # @param description
+          #   Optional description of the role.
           def initialize: (
             permissions: ::Array[String],
             role_name: String,
@@ -30,8 +39,8 @@ module OpenAI
           def to_hash: -> {
             permissions: ::Array[String],
             role_name: String,
-            description: String?,
-            request_options: OpenAI::RequestOptions
+            ?description: String?,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

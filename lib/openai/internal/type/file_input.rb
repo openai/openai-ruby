@@ -41,7 +41,7 @@ module OpenAI
         class << self
           # @api private
           #
-          # @param value [StringIO, String, Object]
+          # @param value [Pathname, StringIO, IO, String, OpenAI::FilePart, Object]
           #
           # @param state [Hash{Symbol=>Object}] .
           #
@@ -55,14 +55,14 @@ module OpenAI
           #
           #   @option state [Integer] :branched
           #
-          # @return [StringIO, Object]
+          # @return [Pathname, StringIO, IO, OpenAI::FilePart, Object]
           def coerce(value, state:)
             exactness = state.fetch(:exactness)
             case value
             in String
               exactness[:yes] += 1
               StringIO.new(value)
-            in StringIO
+            in Pathname | StringIO | IO | OpenAI::FilePart
               exactness[:yes] += 1
               value
             else

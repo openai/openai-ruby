@@ -19,16 +19,20 @@ module OpenAI
         def get_token
           File.read(@token_path).strip
         rescue SystemCallError => e
-          raise OpenAI::Errors::SubjectTokenProviderError.new(
-            message: "Failed to read Kubernetes service account token from #{@token_path}: #{e.message}",
-            provider: "kubernetes",
-            cause: e
+          raise(
+            OpenAI::Errors::SubjectTokenProviderError.new(
+              message: "Failed to read Kubernetes service account token from #{@token_path}: #{e.message}",
+              provider: "kubernetes",
+              cause: e
+            )
           )
         rescue StandardError => e
-          raise OpenAI::Errors::SubjectTokenProviderError.new(
-            message: "Unexpected error reading Kubernetes token: #{e.message}",
-            provider: "kubernetes",
-            cause: e
+          raise(
+            OpenAI::Errors::SubjectTokenProviderError.new(
+              message: "Unexpected error reading Kubernetes token: #{e.message}",
+              provider: "kubernetes",
+              cause: e
+            )
           )
         end
       end

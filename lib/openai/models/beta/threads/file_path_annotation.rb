@@ -42,9 +42,11 @@ module OpenAI
           #
           #   @param start_index [Integer]
           #
-          #   @param text [String] The text in the message content that needs to be replaced.
+          #   @param text [String]
+          #     The text in the message content that needs to be replaced.
           #
-          #   @param type [Symbol, :file_path] Always `file_path`.
+          #   @param type [Symbol, :file_path]
+          #     Always `file_path`.
 
           # @see OpenAI::Models::Beta::Threads::FilePathAnnotation#file_path
           class FilePath < OpenAI::Internal::Type::BaseModel
@@ -55,7 +57,8 @@ module OpenAI
             required :file_id, String
 
             # @!method initialize(file_id:)
-            #   @param file_id [String] The ID of the file that was generated.
+            #   @param file_id [String]
+            #     The ID of the file that was generated.
           end
         end
       end

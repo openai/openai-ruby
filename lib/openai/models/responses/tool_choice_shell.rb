@@ -13,7 +13,8 @@ module OpenAI
         # @!method initialize(type: :shell)
         #   Forces the model to call the shell tool when a tool call is required.
         #
-        #   @param type [Symbol, :shell] The tool to call. Always `shell`.
+        #   @param type [Symbol, :shell]
+        #     The tool to call. Always `shell`.
       end
     end
   end

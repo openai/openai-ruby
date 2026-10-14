@@ -5,7 +5,7 @@ module OpenAI
     # @generic Elem
     #
     # @example
-    #   if next_cursor_page.has_next?
+    #   if next_cursor_page.next_page?
     #     next_cursor_page = next_cursor_page.next_page
     #   end
     #
@@ -35,7 +35,7 @@ module OpenAI
       def next_page
         unless next_page?
           message = "No more pages available. Please check #next_page? before calling ##{__method__}"
-          raise RuntimeError.new(message)
+          raise message
         end
 
         req = OpenAI::Internal::Util.deep_merge(@req, {query: {after: next_}})
@@ -63,9 +63,9 @@ module OpenAI
       #
       # @param client [OpenAI::Internal::Transport::BaseClient]
       # @param req [Hash{Symbol=>Object}]
-      # @param headers [Hash{String=>String}]
+      # @param response_metadata [OpenAI::ResponseMetadata]
       # @param page_data [Hash{Symbol=>Object}]
-      def initialize(client:, req:, headers:, page_data:)
+      def initialize(client:, req:, response_metadata:, page_data:)
         super
 
         case page_data
@@ -73,6 +73,7 @@ module OpenAI
           @data = data.map { OpenAI::Internal::Type::Converter.coerce(@model, _1) }
         else
         end
+
         @has_more = page_data[:has_more]
         @next_ = page_data[:next]
       end
@@ -81,11 +82,9 @@ module OpenAI
       #
       # @return [String]
       def inspect
-        # rubocop:disable Layout/LineLength
         model = OpenAI::Internal::Type::Converter.inspect(@model, depth: 1)
 
         "#<#{self.class}[#{model}]:0x#{object_id.to_s(16)} has_more=#{has_more.inspect} next_=#{next_.inspect}>"
-        # rubocop:enable Layout/LineLength
       end
     end
   end

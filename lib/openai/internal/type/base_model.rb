@@ -28,9 +28,12 @@ module OpenAI
           # @api private
           #
           # @return [Hash{Symbol=>Hash{Symbol=>Object}}]
-          def fields
+          def fields(state: nil)
             known_fields.transform_values do |field|
-              {**field.except(:type_fn), type: field.fetch(:type_fn).call}
+              {
+                **field.except(:type_fn),
+                type: OpenAI::Internal::Type::Converter.resolve_type(field.fetch(:type_fn), state: state)
+              }
             end
           end
 
@@ -53,13 +56,12 @@ module OpenAI
           #   @option spec [Boolean] :"nil?"
           private def add_field(name_sym, required:, type_info:, spec:)
             meta = OpenAI::Internal::Type::Converter.meta_info(type_info, spec)
-            type_fn, info =
-              case type_info
-              in Proc | OpenAI::Internal::Type::Converter | Class
-                [OpenAI::Internal::Type::Converter.type_info({**spec, union: type_info}), spec]
-              in Hash
-                [OpenAI::Internal::Type::Converter.type_info(type_info), type_info]
-              end
+            type_fn, info = case type_info
+            in Proc | OpenAI::Internal::Type::Converter | Class
+              [OpenAI::Internal::Type::Converter.type_info({**spec, union: type_info}), spec]
+            in Hash
+              [OpenAI::Internal::Type::Converter.type_info(type_info), type_info]
+            end
 
             setter = :"#{name_sym}="
             api_name = info.fetch(:api_name, name_sym)
@@ -68,34 +70,36 @@ module OpenAI
 
             [name_sym, setter].each { undef_method(_1) } if known_fields.key?(name_sym)
 
-            known_fields[name_sym] =
-              {
-                mode: @mode,
-                api_name: api_name,
-                required: required,
-                nilable: nilable,
-                const: const,
-                type_fn: type_fn,
-                meta: meta
-              }
+            known_fields[name_sym] = {
+              mode: @mode,
+              api_name: api_name,
+              required: required,
+              nilable: nilable,
+              const: const,
+              type_fn: type_fn,
+              meta: meta
+            }
 
             define_method(setter) do |value|
-              target = type_fn.call
-              state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
-              coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
-              error = @coerced.store(name_sym, state.fetch(:error) || true)
-              stored =
-                case [target, error]
+              if nil.equal?(value) && nilable
+                @coerced.store(name_sym, true)
+                @data.store(name_sym, nil)
+              else
+                target = type_fn.call
+                state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
+                coerced = OpenAI::Internal::Type::Converter.coerce(target, value, state: state)
+                error = @coerced.store(name_sym, state.fetch(:error) || true)
+                stored = case [target, error]
                 in [OpenAI::Internal::Type::Converter | Symbol, nil]
                   coerced
                 else
                   value
                 end
-              @data.store(name_sym, stored)
+
+                @data.store(name_sym, stored)
+              end
             end
 
-            # rubocop:disable Style/CaseEquality
-            # rubocop:disable Metrics/BlockLength
             define_method(name_sym) do
               target = type_fn.call
 
@@ -103,37 +107,42 @@ module OpenAI
               in true | false if OpenAI::Internal::Type::Converter === target
                 @data.fetch(name_sym)
               in ::StandardError => e
-                raise OpenAI::Errors::ConversionError.new(
-                  on: self.class,
-                  method: __method__,
-                  target: target,
-                  value: @data.fetch(name_sym),
-                  cause: e
+                raise(
+                  OpenAI::Errors::ConversionError.new(
+                    on: self.class,
+                    method: __method__,
+                    target: target,
+                    value: @data.fetch(name_sym),
+                    cause: e
+                  )
                 )
               else
                 Kernel.then do
                   value = @data.fetch(name_sym) { const == OpenAI::Internal::OMIT ? nil : const }
                   state = OpenAI::Internal::Type::Converter.new_coerce_state(translate_names: false)
-                  if (nilable || !required) && value.nil?
+                  if (nilable || !required) && nil.equal?(value)
                     nil
                   else
                     OpenAI::Internal::Type::Converter.coerce(
-                      target, value, state: state
+                      target,
+                      value,
+                      state: state
                     )
                   end
+
                 rescue StandardError => e
-                  raise OpenAI::Errors::ConversionError.new(
-                    on: self.class,
-                    method: __method__,
-                    target: target,
-                    value: value,
-                    cause: e
+                  raise(
+                    OpenAI::Errors::ConversionError.new(
+                      on: self.class,
+                      method: __method__,
+                      target: target,
+                      value: value,
+                      cause: e
+                    )
                   )
                 end
               end
             end
-            # rubocop:enable Metrics/BlockLength
-            # rubocop:enable Style/CaseEquality
           end
 
           # @api private
@@ -226,6 +235,32 @@ module OpenAI
         # @return [Integer]
         def hash = [self.class, @data].hash
 
+        # The ID of the API request, returned via the `x-request-id` response
+        # header. This is only populated on top-level response objects returned
+        # by the client.
+        #
+        # @api public
+        #
+        # @return [String, nil]
+        def _request_id = @last_response&.request_id
+
+        # Metadata from the HTTP response that produced this model. This is
+        # only populated on top-level response objects returned by the client.
+        #
+        # @api public
+        #
+        # @return [OpenAI::ResponseMetadata, nil]
+        attr_reader :last_response
+
+        # @api private
+        #
+        # @param response [OpenAI::ResponseMetadata]
+        # @return [self]
+        def _set_last_response(response)
+          @last_response = response
+          self
+        end
+
         class << self
           # @api private
           #
@@ -247,7 +282,7 @@ module OpenAI
           def coerce(value, state:)
             exactness = state.fetch(:exactness)
 
-            if value.is_a?(self.class)
+            if value.is_a?(self)
               exactness[:yes] += 1
               return value
             end
@@ -257,6 +292,7 @@ module OpenAI
               state[:error] = TypeError.new("#{value.class} can't be coerced into #{Hash}")
               return value
             end
+
             exactness[:yes] += 1
 
             keys = val.keys.to_set
@@ -264,11 +300,14 @@ module OpenAI
             data = instance.to_h
             viability = instance.instance_variable_get(:@coerced)
 
-            # rubocop:disable Metrics/BlockLength
-            fields.each do |name, field|
+            fields(state: state).each do |name, field|
               mode, required, target = field.fetch_values(:mode, :required, :type)
               api_name, nilable, const = field.fetch_values(:api_name, :nilable, :const)
               src_name = state.fetch(:translate_names) ? api_name : name
+              if state[:request_only] && mode == :coerce
+                keys.delete(src_name)
+                next
+              end
 
               unless val.key?(src_name)
                 if required && mode != :dump && const == OpenAI::Internal::OMIT
@@ -276,6 +315,7 @@ module OpenAI
                 else
                   exactness[:yes] += 1
                 end
+
                 next
               end
 
@@ -283,24 +323,22 @@ module OpenAI
               keys.delete(src_name)
 
               state[:error] = nil
-              converted =
-                if item.nil? && (nilable || !required)
-                  exactness[nilable ? :yes : :maybe] += 1
-                  nil
+              converted = if nil.equal?(item) && (nilable || !required)
+                exactness[nilable ? :yes : :maybe] += 1
+                nil
+              else
+                coerced = OpenAI::Internal::Type::Converter.coerce(target, item, state: state)
+                case target
+                in OpenAI::Internal::Type::Converter | Symbol
+                  coerced
                 else
-                  coerced = OpenAI::Internal::Type::Converter.coerce(target, item, state: state)
-                  case target
-                  in OpenAI::Internal::Type::Converter | Symbol
-                    coerced
-                  else
-                    item
-                  end
+                  item
                 end
+              end
 
               viability.store(name, state.fetch(:error) || true)
               data.store(name, converted)
             end
-            # rubocop:enable Metrics/BlockLength
 
             keys.each { data.store(_1, val.fetch(_1)) }
             instance
@@ -364,7 +402,7 @@ module OpenAI
           #
           # @return [Hash{Symbol=>Object}]
           def recursively_to_h(model, convert:)
-            rec = ->(x) do
+            rec = -> (x) do
               case x
               in OpenAI::Internal::Type::BaseModel
                 if convert
@@ -377,6 +415,7 @@ module OpenAI
                 else
                   rec.call(x.to_h)
                 end
+
               in Hash
                 x.transform_values(&rec)
               in Array
@@ -385,6 +424,7 @@ module OpenAI
                 x
               end
             end
+
             rec.call(model)
           end
         end
@@ -470,12 +510,24 @@ module OpenAI
         # @return [String]
         def to_yaml(*a) = OpenAI::Internal::Type::Converter.dump(self.class, self).to_yaml(*a)
 
+        # Keep transport metadata outside Psych's object serialization path.
+        #
+        # @api private
+        #
+        # @param coder [Psych::Coder]
+        # @return [void]
+        def encode_with(coder)
+          coder["data"] = @data
+          coder["coerced"] = @coerced
+        end
+
         # Create a new instance of a model.
         #
         # @param data [Hash{Symbol=>Object}, self]
         def initialize(data = {})
           @data = {}
           @coerced = {}
+          @last_response = nil
           OpenAI::Internal::Util.coerce_hash!(data).each do
             if self.class.known_fields.key?(_1)
               public_send(:"#{_1}=", _2)

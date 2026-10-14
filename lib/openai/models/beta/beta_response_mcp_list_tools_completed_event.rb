@@ -37,15 +37,20 @@ module OpenAI
         # @!method initialize(item_id:, output_index:, sequence_number:, agent: nil, type: :"response.mcp_list_tools.completed")
         #   Emitted when the list of available MCP tools has been successfully retrieved.
         #
-        #   @param item_id [String] The ID of the MCP tool call item that produced this output.
+        #   @param item_id [String]
+        #     The ID of the MCP tool call item that produced this output.
         #
-        #   @param output_index [Integer] The index of the output item that was processed.
+        #   @param output_index [Integer]
+        #     The index of the output item that was processed.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseMcpListToolsCompletedEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseMcpListToolsCompletedEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.mcp_list_tools.completed"] The type of the event. Always 'response.mcp_list_tools.completed'.
+        #   @param type [Symbol, :"response.mcp_list_tools.completed"]
+        #     The type of the event. Always 'response.mcp_list_tools.completed'.
 
         # @see OpenAI::Models::Beta::BetaResponseMcpListToolsCompletedEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -58,7 +63,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

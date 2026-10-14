@@ -4,8 +4,11 @@ module OpenAI
       type transcription_language = { code: String }
 
       class TranscriptionLanguage < OpenAI::Internal::Type::BaseModel
+        # The code of a language detected in the audio.
         attr_accessor code: String
 
+        # @param code
+        #   The code of a language detected in the audio.
         def initialize: (code: String) -> void
 
         def to_hash: -> { code: String }

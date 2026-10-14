@@ -30,14 +30,18 @@ module OpenAI
       optional :name, String
 
       # @!method initialize(eval_id:, metadata: nil, name: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::EvalUpdateParams} for more details.
-      #
       #   @param eval_id [String]
       #
-      #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+      #   @param metadata [Hash{Symbol=>String}, nil]
+      #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+      #     for storing additional information about the object in a structured format, and
+      #     querying for objects via API or the dashboard.
       #
-      #   @param name [String] Rename the evaluation.
+      #     Keys are strings with a maximum length of 64 characters. Values are strings with
+      #     a maximum length of 512 characters.
+      #
+      #   @param name [String]
+      #     Rename the evaluation.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
     end

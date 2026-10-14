@@ -2,17 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaResponseOutputAudio = Beta::BetaResponseOutputAudio
 
     module Beta
+
       class BetaResponseOutputAudio < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Beta::BetaResponseOutputAudio,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaResponseOutputAudio,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Base64-encoded audio data from the model.
         sig { returns(String) }
@@ -28,26 +30,41 @@ module OpenAI
 
         # An audio output from the model.
         sig do
-          params(data: String, transcript: String, type: Symbol).returns(
-            T.attached_class
+          params(
+
+            data: String,
+
+            transcript: String,
+
+            type: Symbol
           )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Base64-encoded audio data from the model.
           data:,
+
           # The transcript of the audio data from the model.
           transcript:,
+
           # The type of the output audio. Always `output_audio`.
+
           type: :output_audio
         )
         end
 
         sig do
-          override.returns({ data: String, transcript: String, type: Symbol })
+          override.returns(
+            {data: String, transcript: String, type: Symbol}
+          )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

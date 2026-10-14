@@ -8,8 +8,8 @@ module OpenAI
           {
             method: Symbol,
             path: String | ::Array[String],
-            query: ::Hash[String, (::Array[String] | String)?]?,
-            headers: ::Hash[String, (String
+            query: ::Hash[(String | Symbol), (::Array[String] | String)?]?,
+            headers: ::Hash[(String | Symbol), (String
             | Integer
             | ::Array[(String | Integer)?])?]?,
             body: top?,
@@ -20,7 +20,7 @@ module OpenAI
             page: Class?,
             stream: Class?,
             model: OpenAI::Internal::Type::Converter::input?,
-            security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }?,
+            security: ::Hash[(:bearer_auth | :admin_api_key_auth), bool]?,
             options: OpenAI::request_opts?
           }
         type request_input =
@@ -30,7 +30,7 @@ module OpenAI
             headers: ::Hash[String, String],
             body: top,
             max_retries: Integer,
-            timeout: Float,
+            timeout: Float?,
             :follow_redirects? => bool,
             :provider_auth? => Symbol
           }
@@ -48,6 +48,8 @@ module OpenAI
           headers: ::Hash[String, String]
         ) -> bool
 
+        def self.request_body_replayable?: (top body) -> bool
+
         def self.follow_redirect: (
           OpenAI::Internal::Transport::BaseClient::request_input request,
           status: Integer,
@@ -61,7 +63,7 @@ module OpenAI
 
         attr_reader base_url: URI::Generic
 
-        attr_reader timeout: Float
+        attr_reader timeout: Float?
 
         attr_reader max_retries: Integer
 
@@ -73,19 +75,29 @@ module OpenAI
 
         attr_reader idempotency_header: String?
 
+        attr_reader logger: OpenAI::_Logger?
+
+        attr_reader log_level: Symbol
+
+        attr_reader on_retry: (^(OpenAI::RetryEvent) -> void)?
+
         # @api private
-        attr_reader requester: OpenAI::Internal::Transport::PooledNetRequester
+        attr_reader requester: OpenAI::_HTTPClient
 
         def initialize: (
           base_url: String,
-          ?timeout: Float,
+          ?timeout: Float?,
           ?max_retries: Integer,
           ?initial_retry_delay: Float,
           ?max_retry_delay: Float,
           ?headers: ::Hash[String, (String
           | Integer
           | ::Array[(String | Integer)?])?],
-          ?idempotency_header: String?
+          ?idempotency_header: String?,
+          ?http_client: OpenAI::_HTTPClient?,
+          ?logger: OpenAI::_Logger?,
+          ?log_level: (Symbol | String)?,
+          ?on_retry: (^(OpenAI::RetryEvent) -> void)?
         ) -> void
 
         private def auth_headers: -> ::Hash[String, String]
@@ -94,6 +106,11 @@ module OpenAI
           OpenAI::Internal::Transport::BaseClient::request_input request,
           redirect_count: Integer,
           retry_count: Integer
+        ) -> OpenAI::Internal::Transport::BaseClient::request_input
+
+        private def validate_prepared_request: (
+          OpenAI::Internal::Transport::BaseClient::request_input request,
+          original_request: OpenAI::Internal::Transport::BaseClient::request_input
         ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
         private def user_agent: -> String
@@ -105,10 +122,24 @@ module OpenAI
           OpenAI::request_options opts
         ) -> OpenAI::Internal::Transport::BaseClient::request_input
 
+        private def request_replayable?: (
+          OpenAI::Internal::Transport::BaseClient::request_input request
+        ) -> bool
+
+        private def request_retryable_after_connection_error?: (
+          OpenAI::Internal::Transport::BaseClient::request_input request,
+          error: OpenAI::Errors::APIConnectionError
+        ) -> bool
+
         private def retry_delay: (
           ::Hash[String, String] headers,
           retry_count: Integer
         ) -> Float
+
+        private def validate_retry_delay!: (
+          OpenAI::Internal::Transport::BaseClient::request_input request,
+          delay: Float
+        ) -> void
 
         private def raise_status_error!: (
           url: URI::Generic,
@@ -123,25 +154,43 @@ module OpenAI
           redirect_count: Integer,
           retry_count: Integer,
           send_retry_header: bool
-        ) -> [Integer, top, Enumerable[String]]
+        ) {
+          -> OpenAI::Internal::Logging::Context
+        } -> OpenAI::HTTPClient::Response
 
         def request: (
-          Symbol method,
-          String | ::Array[String] path,
-          ?query: ::Hash[String, (::Array[String] | String)?]?,
-          ?headers: ::Hash[String, (String
-          | Integer
-          | ::Array[(String | Integer)?])?]?,
-          ?body: top?,
-          ?unwrap: (Symbol
-          | Integer
-          | ::Array[(Symbol | Integer)]
-          | (^(top arg0) -> top))?,
-          ?page: Class?,
-          ?stream: Class?,
-          ?model: OpenAI::Internal::Type::Converter::input?,
-          ?security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }?,
-          ?options: OpenAI::request_opts?
+          OpenAI::Internal::Transport::BaseClient::request_components req
+        ) -> top
+
+        # @api private
+        def request_streaming_body: (
+          request_components req,
+          ?(^-> untyped)? on_response
+        ) {
+          (String chunk) -> untyped
+        } -> void
+
+        private def perform_request: (
+          OpenAI::Internal::Transport::BaseClient::request_components req
+        ) ?{
+          (
+            OpenAI::HTTPClient::Response response,
+            URI::Generic url,
+            URI::Generic response_url
+          ) -> void
+        } -> [URI::Generic, OpenAI::HTTPClient::Response, OpenAI::Internal::Logging::Context]
+
+        private def finish_request: (
+          OpenAI::Internal::Logging::Context log_context,
+          OpenAI::HTTPClient::Response response
+        ) {
+          -> top
+        } -> top
+
+        private def parse_response: (
+          OpenAI::Internal::Transport::BaseClient::request_components req,
+          url: URI::Generic,
+          response: OpenAI::HTTPClient::Response
         ) -> top
 
         def inspect: -> String

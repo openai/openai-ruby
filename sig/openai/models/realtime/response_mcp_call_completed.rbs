@@ -6,18 +6,30 @@ module OpenAI
           event_id: String,
           item_id: String,
           output_index: Integer,
-          type: :"response.mcp_call.completed"
+          ?type: :"response.mcp_call.completed"
         }
 
       class ResponseMcpCallCompleted < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the server event.
         attr_accessor event_id: String
 
+        # The ID of the MCP tool call item.
         attr_accessor item_id: String
 
+        # The index of the output item in the response.
         attr_accessor output_index: Integer
 
+        # The event type, must be `response.mcp_call.completed`.
         attr_accessor type: :"response.mcp_call.completed"
 
+        # @param event_id
+        #   The unique ID of the server event.
+        # @param item_id
+        #   The ID of the MCP tool call item.
+        # @param output_index
+        #   The index of the output item in the response.
+        # @param type
+        #   The event type, must be `response.mcp_call.completed`.
         def initialize: (
           event_id: String,
           item_id: String,
@@ -29,7 +41,7 @@ module OpenAI
           event_id: String,
           item_id: String,
           output_index: Integer,
-          type: :"response.mcp_call.completed"
+          ?type: :"response.mcp_call.completed"
         }
       end
     end

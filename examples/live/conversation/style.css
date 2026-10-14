@@ -1,0 +1,15 @@
+:root { color-scheme: light dark; --surface: #faf9f6; --text: #202723; --muted: #4e5952; --accent: #146340; --line: #a4afa7; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface); color: var(--text); font: 1rem/1.6 system-ui, sans-serif; }
+main { max-width: 42rem; margin: 8vh auto; padding: 1.5rem; }
+h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.15; letter-spacing: -.03em; }
+.eyebrow { color: var(--accent); font-weight: 650; }
+.note { color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+button { font: inherit; font-weight: 600; padding: .75rem 1rem; border: 1px solid var(--line); border-radius: .5rem; cursor: pointer; }
+#start { background: var(--accent); color: white; border-color: var(--accent); }
+button:disabled { opacity: .55; cursor: default; }
+button:focus-visible, audio:focus-visible { outline: 3px solid var(--accent); outline-offset: .25rem; }
+#status { min-height: 3.5rem; }
+audio { width: 100%; }
+@media (prefers-color-scheme: dark) { :root { --surface: #17201b; --text: #f1f4f2; --muted: #bac6be; --accent: #248458; --line: #789182; } .eyebrow { color: #94d4ae; } }

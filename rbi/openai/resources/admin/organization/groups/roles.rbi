@@ -2,20 +2,21 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Groups
+
           class Roles
+
             # Assigns an organization role to a group within the organization.
-            sig do
-              params(
-                group_id: String,
-                role_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(group_id: String, role_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Groups::RoleCreateResponse
               )
-            end
+            }
             def create(
               # The ID of the group that should receive the organization role.
               group_id,
@@ -26,15 +27,11 @@ module OpenAI
             end
 
             # Retrieves an organization role assigned to a group.
-            sig do
-              params(
-                role_id: String,
-                group_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(role_id: String, group_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse
               )
-            end
+            }
             def retrieve(
               # The ID of the organization role to retrieve for the group.
               role_id,
@@ -45,20 +42,18 @@ module OpenAI
             end
 
             # Lists the organization roles assigned to a group within the organization.
-            sig do
+            sig {
               params(
                 group_id: String,
                 after: String,
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Groups::RoleListParams::Order::OrSymbol,
+                order: OpenAI::Admin::Organization::Groups::RoleListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::NextCursorPage[
-                  OpenAI::Models::Admin::Organization::Groups::RoleListResponse
-                ]
               )
-            end
+                .returns(
+                  OpenAI::Internal::NextCursorPage[OpenAI::Models::Admin::Organization::Groups::RoleListResponse]
+                )
+            }
             def list(
               # The ID of the group whose organization role assignments you want to list.
               group_id,
@@ -74,15 +69,11 @@ module OpenAI
             end
 
             # Unassigns an organization role from a group within the organization.
-            sig do
-              params(
-                role_id: String,
-                group_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(role_id: String, group_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Groups::RoleDeleteResponse
               )
-            end
+            }
             def delete(
               # The ID of the organization role to remove from the group.
               role_id,
@@ -97,8 +88,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

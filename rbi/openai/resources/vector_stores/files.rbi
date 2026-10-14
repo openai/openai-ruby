@@ -2,37 +2,34 @@
 
 module OpenAI
   module Resources
+
     class VectorStores
+
       class Files
+
         # Create a vector store file by attaching a
-        # [File](https://platform.openai.com/docs/api-reference/files) to a
-        # [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object).
-        sig do
+        # [File](https://developers.openai.com/api/reference/resources/files) to a
+        # [vector store](https://developers.openai.com/api/reference/resources/vector_stores).
+        sig {
           params(
             vector_store_id: String,
             file_id: String,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(T::Hash[Symbol, OpenAI::VectorStores::FileCreateParams::Attribute::Variants]),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
-        end
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFile)
+        }
         def create(
           # The ID of the vector store for which to create a File.
           vector_store_id,
-          # A [File](https://platform.openai.com/docs/api-reference/files) ID that the
-          # vector store should use. Useful for tools like `file_search` that can access
+          # A [File](https://developers.openai.com/api/reference/resources/files) ID that
+          # the vector store should use. Useful for tools like `file_search` that can access
           # files. For multi-file ingestion, we recommend
-          # [`file_batches`](https://platform.openai.com/docs/api-reference/vector-stores-file-batches/createBatch)
+          # [`file_batches`](https://developers.openai.com/api/reference/resources/vector_stores/subresources/file_batches/methods/create)
           # to minimize per-vector-store write requests.
           file_id:,
           # Set of 16 key-value pairs that can be attached to an object. This can be useful
@@ -49,13 +46,11 @@ module OpenAI
         end
 
         # Retrieves a vector store file.
-        sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
-        end
+        sig {
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::VectorStores::VectorStoreFile
+          )
+        }
         def retrieve(
           # The ID of the file being retrieved.
           file_id,
@@ -66,20 +61,15 @@ module OpenAI
         end
 
         # Update attributes on a vector store file.
-        sig do
+        sig {
           params(
             file_id: String,
             vector_store_id: String,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileUpdateParams::Attribute::Variants
-                ]
-              ),
+            attributes: T.nilable(T::Hash[Symbol, OpenAI::VectorStores::FileUpdateParams::Attribute::Variants]),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFile)
-        end
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFile)
+        }
         def update(
           # Path param: The ID of the file to update attributes.
           file_id,
@@ -96,7 +86,7 @@ module OpenAI
         end
 
         # Returns a list of vector store files.
-        sig do
+        sig {
           params(
             vector_store_id: String,
             after: String,
@@ -105,10 +95,9 @@ module OpenAI
             limit: Integer,
             order: OpenAI::VectorStores::FileListParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile])
+        }
         def list(
           # The ID of the vector store that the files belong to.
           vector_store_id,
@@ -136,15 +125,13 @@ module OpenAI
 
         # Delete a vector store file. This will remove the file from the vector store but
         # the file itself will not be deleted. To delete the file, use the
-        # [delete file](https://platform.openai.com/docs/api-reference/files/delete)
+        # [delete file](https://developers.openai.com/api/reference/resources/files/methods/delete)
         # endpoint.
-        sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileDeleted)
-        end
+        sig {
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::VectorStores::VectorStoreFileDeleted
+          )
+        }
         def delete(
           # The ID of the file to delete.
           file_id,
@@ -155,17 +142,11 @@ module OpenAI
         end
 
         # Retrieve the parsed contents of a vector store file.
-        sig do
-          params(
-            file_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::Page[
-              OpenAI::Models::VectorStores::FileContentResponse
-            ]
+        sig {
+          params(file_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Internal::Page[OpenAI::Models::VectorStores::FileContentResponse]
           )
-        end
+        }
         def content(
           # The ID of the file within the vector store.
           file_id,
@@ -180,6 +161,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

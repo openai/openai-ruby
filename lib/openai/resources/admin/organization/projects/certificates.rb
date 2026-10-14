@@ -6,21 +6,26 @@ module OpenAI
       class Organization
         class Projects
           class Certificates
-            # Some parameter documentations has been truncated, see
-            # {OpenAI::Models::Admin::Organization::Projects::CertificateListParams} for more
-            # details.
-            #
             # List certificates for this project.
             #
             # @overload list(project_id, after: nil, limit: nil, order: nil, request_options: {})
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
-            # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+            # @param after [String]
+            #   A cursor for use in pagination. `after` is an object ID that defines your place
+            #   in the list. For instance, if you make a list request and receive 100 objects,
+            #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+            #   fetch the next page of the list.
             #
-            # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+            # @param limit [Integer]
+            #   A limit on the number of objects to be returned. Limit can range between 1 and
+            #   100, and the default is 20.
             #
-            # @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::CertificateListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+            # @param order [Symbol, OpenAI::Models::Admin::Organization::Projects::CertificateListParams::Order]
+            #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+            #   order and `desc` for descending order.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -47,7 +52,8 @@ module OpenAI
             #
             # @overload activate(project_id, certificate_ids:, request_options: {})
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
             # @param certificate_ids [Array<String>]
             #
@@ -74,7 +80,8 @@ module OpenAI
             #
             # @overload deactivate(project_id, certificate_ids:, request_options: {})
             #
-            # @param project_id [String] The ID of the project.
+            # @param project_id [String]
+            #   The ID of the project.
             #
             # @param certificate_ids [Array<String>]
             #

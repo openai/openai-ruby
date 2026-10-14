@@ -21,7 +21,8 @@ module OpenAI
         #
         #   @param custom [OpenAI::Models::Chat::ChatCompletionNamedToolChoiceCustom::Custom]
         #
-        #   @param type [Symbol, :custom] For custom tool calling, the type is always `custom`.
+        #   @param type [Symbol, :custom]
+        #     For custom tool calling, the type is always `custom`.
 
         # @see OpenAI::Models::Chat::ChatCompletionNamedToolChoiceCustom#custom
         class Custom < OpenAI::Internal::Type::BaseModel
@@ -32,7 +33,8 @@ module OpenAI
           required :name, String
 
           # @!method initialize(name:)
-          #   @param name [String] The name of the custom tool to call.
+          #   @param name [String]
+          #     The name of the custom tool to call.
         end
       end
     end

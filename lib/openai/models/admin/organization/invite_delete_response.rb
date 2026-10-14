@@ -27,7 +27,8 @@ module OpenAI
           #
           #   @param deleted [Boolean]
           #
-          #   @param object [Symbol, :"organization.invite.deleted"] The object type, which is always `organization.invite.deleted`
+          #   @param object [Symbol, :"organization.invite.deleted"]
+          #     The object type, which is always `organization.invite.deleted`
         end
       end
     end

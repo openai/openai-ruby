@@ -9,11 +9,14 @@ module OpenAI
           #
           # @overload create(permissions:, role_name:, description: nil, request_options: {})
           #
-          # @param permissions [Array<String>] Permissions to grant to the role.
+          # @param permissions [Array<String>]
+          #   Permissions to grant to the role.
           #
-          # @param role_name [String] Unique name for the role.
+          # @param role_name [String]
+          #   Unique name for the role.
           #
-          # @param description [String, nil] Optional description of the role.
+          # @param description [String, nil]
+          #   Optional description of the role.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -36,7 +39,8 @@ module OpenAI
           #
           # @overload retrieve(role_id, request_options: {})
           #
-          # @param role_id [String] The ID of the role to retrieve.
+          # @param role_id [String]
+          #   The ID of the role to retrieve.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -57,13 +61,17 @@ module OpenAI
           #
           # @overload update(role_id, description: nil, permissions: nil, role_name: nil, request_options: {})
           #
-          # @param role_id [String] The ID of the role to update.
+          # @param role_id [String]
+          #   The ID of the role to update.
           #
-          # @param description [String, nil] New description for the role.
+          # @param description [String, nil]
+          #   New description for the role.
           #
-          # @param permissions [Array<String>, nil] Updated set of permissions for the role.
+          # @param permissions [Array<String>, nil]
+          #   Updated set of permissions for the role.
           #
-          # @param role_name [String, nil] New name for the role.
+          # @param role_name [String, nil]
+          #   New name for the role.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -82,18 +90,19 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::RoleListParams} for more details.
-          #
           # Lists the roles configured for the organization.
           #
           # @overload list(after: nil, limit: nil, order: nil, request_options: {})
           #
-          # @param after [String] Cursor for pagination. Provide the value from the previous response's `next` fie
+          # @param after [String]
+          #   Cursor for pagination. Provide the value from the previous response's `next`
+          #   field to continue listing roles.
           #
-          # @param limit [Integer] A limit on the number of roles to return. Defaults to 1000.
+          # @param limit [Integer]
+          #   A limit on the number of roles to return. Defaults to 1000.
           #
-          # @param order [Symbol, OpenAI::Models::Admin::Organization::RoleListParams::Order] Sort order for the returned roles.
+          # @param order [Symbol, OpenAI::Models::Admin::Organization::RoleListParams::Order]
+          #   Sort order for the returned roles.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -118,7 +127,8 @@ module OpenAI
           #
           # @overload delete(role_id, request_options: {})
           #
-          # @param role_id [String] The ID of the role to delete.
+          # @param role_id [String]
+          #   The ID of the role to delete.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

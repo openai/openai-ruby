@@ -3,22 +3,35 @@ module OpenAI
     module Admin
       module Organization
         type role_delete_response =
-          { id: String, deleted: bool, object: :"role.deleted" }
+          { id: String, deleted: bool, ?object: :"role.deleted" }
 
         class RoleDeleteResponse < OpenAI::Internal::Type::BaseModel
+          # Identifier of the deleted role.
           attr_accessor id: String
 
+          # Whether the role was deleted.
           attr_accessor deleted: bool
 
+          # Always `role.deleted`.
           attr_accessor object: :"role.deleted"
 
+          # @param id
+          #   Identifier of the deleted role.
+          # @param deleted
+          #   Whether the role was deleted.
+          # @param object
+          #   Always `role.deleted`.
           def initialize: (
             id: String,
             deleted: bool,
             ?object: :"role.deleted"
           ) -> void
 
-          def to_hash: -> { id: String, deleted: bool, object: :"role.deleted" }
+          def to_hash: -> {
+            id: String,
+            deleted: bool,
+            ?object: :"role.deleted"
+          }
         end
       end
     end

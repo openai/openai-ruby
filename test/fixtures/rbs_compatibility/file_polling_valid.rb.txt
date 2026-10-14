@@ -1,0 +1,4 @@
+client = OpenAI::Client.new(api_key: "fake-key")
+client.files.wait_for_processing("file_synthetic").id.upcase
+client.files.wait_for_processing("file_synthetic", poll_interval: 1, timeout: nil, request_options: {max_retries: 0}).id.upcase
+client.files.wait_for_processing("file_synthetic", poll_interval: 0.5, timeout: 10.0).id.upcase

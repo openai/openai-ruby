@@ -2,11 +2,14 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       # Build Assistants that can call models and use tools.
       class Assistants
+
         # Create an assistant with a model and instructions.
-        sig do
+        sig {
           params(
             model: T.any(String, OpenAI::ChatModel::OrSymbol),
             description: T.nilable(String),
@@ -14,38 +17,34 @@ module OpenAI
             metadata: T.nilable(T::Hash[Symbol, String]),
             name: T.nilable(String),
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
-            response_format:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::ResponseFormatText::OrHash,
-                  OpenAI::ResponseFormatJSONObject::OrHash,
-                  OpenAI::ResponseFormatJSONSchema::OrHash
-                )
-              ),
+            response_format: T.nilable(
+              T.any(
+                Symbol,
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash
+              )
+            ),
             temperature: T.nilable(Float),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::AssistantCreateParams::ToolResources::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Beta::CodeInterpreterTool::OrHash,
-                  OpenAI::Beta::FileSearchTool::OrHash,
-                  OpenAI::Beta::FunctionTool::OrHash
-                )
-              ],
+            tool_resources: T.nilable(OpenAI::Beta::AssistantCreateParams::ToolResources::OrHash),
+            tools: T::Array[
+              T.any(
+                OpenAI::Beta::CodeInterpreterTool::OrHash,
+                OpenAI::Beta::FileSearchTool::OrHash,
+                OpenAI::Beta::FunctionTool::OrHash
+              )
+            ],
             top_p: T.nilable(Float),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Assistant)
-        end
+          )
+            .returns(OpenAI::Beta::Assistant)
+        }
         def create(
           # ID of the model to use. You can use the
-          # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-          # see all of your available models, or see our
-          # [Model overview](https://platform.openai.com/docs/models) for descriptions of
-          # them.
+          # [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+          # API to see all of your available models, or see our
+          # [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+          # of them.
           model:,
           # The description of the assistant. The maximum length is 512 characters.
           description: nil,
@@ -65,18 +64,18 @@ module OpenAI
           # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
           # reasoning effort can result in faster responses and fewer tokens used on
           # reasoning in a response. Not all reasoning models support every value. See the
-          # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
           # model-specific support.
           reasoning_effort: nil,
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.
@@ -113,12 +112,9 @@ module OpenAI
         end
 
         # Retrieves an assistant.
-        sig do
-          params(
-            assistant_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Assistant)
-        end
+        sig {
+          params(assistant_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Beta::Assistant)
+        }
         def retrieve(
           # The ID of the assistant to retrieve.
           assistant_id,
@@ -127,45 +123,37 @@ module OpenAI
         end
 
         # Modifies an assistant.
-        sig do
+        sig {
           params(
             assistant_id: String,
             description: T.nilable(String),
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
-            model:
-              T.any(
-                String,
-                OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol
-              ),
+            model: T.any(String, OpenAI::Beta::AssistantUpdateParams::Model::OrSymbol),
             name: T.nilable(String),
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
-            response_format:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  OpenAI::ResponseFormatText::OrHash,
-                  OpenAI::ResponseFormatJSONObject::OrHash,
-                  OpenAI::ResponseFormatJSONSchema::OrHash
-                )
-              ),
+            response_format: T.nilable(
+              T.any(
+                Symbol,
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash
+              )
+            ),
             temperature: T.nilable(Float),
-            tool_resources:
-              T.nilable(
-                OpenAI::Beta::AssistantUpdateParams::ToolResources::OrHash
-              ),
-            tools:
-              T::Array[
-                T.any(
-                  OpenAI::Beta::CodeInterpreterTool::OrHash,
-                  OpenAI::Beta::FileSearchTool::OrHash,
-                  OpenAI::Beta::FunctionTool::OrHash
-                )
-              ],
+            tool_resources: T.nilable(OpenAI::Beta::AssistantUpdateParams::ToolResources::OrHash),
+            tools: T::Array[
+              T.any(
+                OpenAI::Beta::CodeInterpreterTool::OrHash,
+                OpenAI::Beta::FileSearchTool::OrHash,
+                OpenAI::Beta::FunctionTool::OrHash
+              )
+            ],
             top_p: T.nilable(Float),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::Assistant)
-        end
+          )
+            .returns(OpenAI::Beta::Assistant)
+        }
         def update(
           # The ID of the assistant to modify.
           assistant_id,
@@ -182,10 +170,10 @@ module OpenAI
           # a maximum length of 512 characters.
           metadata: nil,
           # ID of the model to use. You can use the
-          # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-          # see all of your available models, or see our
-          # [Model overview](https://platform.openai.com/docs/models) for descriptions of
-          # them.
+          # [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+          # API to see all of your available models, or see our
+          # [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+          # of them.
           model: nil,
           # The name of the assistant. The maximum length is 256 characters.
           name: nil,
@@ -193,18 +181,18 @@ module OpenAI
           # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
           # reasoning effort can result in faster responses and fewer tokens used on
           # reasoning in a response. Not all reasoning models support every value. See the
-          # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
           # model-specific support.
           reasoning_effort: nil,
           # Specifies the format that the model must output. Compatible with
-          # [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-          # [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-          # and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+          # [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+          # [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+          # all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
           #
           # Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
           # Outputs which ensures the model will match your supplied JSON schema. Learn more
           # in the
-          # [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+          # [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
           #
           # Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
           # message the model generates is valid JSON.
@@ -241,15 +229,16 @@ module OpenAI
         end
 
         # Returns a list of assistants.
-        sig do
+        sig {
           params(
             after: String,
             before: String,
             limit: Integer,
             order: OpenAI::Beta::AssistantListParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Assistant])
-        end
+          )
+            .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::Assistant])
+        }
         def list(
           # A cursor for use in pagination. `after` is an object ID that defines your place
           # in the list. For instance, if you make a list request and receive 100 objects,
@@ -272,12 +261,11 @@ module OpenAI
         end
 
         # Delete an assistant.
-        sig do
-          params(
-            assistant_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Beta::AssistantDeleted)
-        end
+        sig {
+          params(assistant_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Beta::AssistantDeleted
+          )
+        }
         def delete(
           # The ID of the assistant to delete.
           assistant_id,
@@ -290,6 +278,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

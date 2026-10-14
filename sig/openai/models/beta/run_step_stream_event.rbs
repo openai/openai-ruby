@@ -16,14 +16,17 @@ module OpenAI
         type thread_run_step_created =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.created"
+            ?event: :"thread.run.step.created"
           }
 
         class ThreadRunStepCreated < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.created"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.created"
@@ -31,21 +34,24 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.created"
+            ?event: :"thread.run.step.created"
           }
         end
 
         type thread_run_step_in_progress =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.in_progress"
+            ?event: :"thread.run.step.in_progress"
           }
 
         class ThreadRunStepInProgress < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.in_progress"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.in_progress"
@@ -53,21 +59,26 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.in_progress"
+            ?event: :"thread.run.step.in_progress"
           }
         end
 
         type thread_run_step_delta =
           {
             data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
-            event: :"thread.run.step.delta"
+            ?event: :"thread.run.step.delta"
           }
 
         class ThreadRunStepDelta < OpenAI::Internal::Type::BaseModel
+          # Represents a run step delta i.e. any changed fields on a run step during
+          # streaming.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent
 
           attr_accessor event: :"thread.run.step.delta"
 
+          # @param data
+          #   Represents a run step delta i.e. any changed fields on a run step during
+          #   streaming.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
             ?event: :"thread.run.step.delta"
@@ -75,21 +86,24 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStepDeltaEvent,
-            event: :"thread.run.step.delta"
+            ?event: :"thread.run.step.delta"
           }
         end
 
         type thread_run_step_completed =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.completed"
+            ?event: :"thread.run.step.completed"
           }
 
         class ThreadRunStepCompleted < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.completed"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.completed"
@@ -97,21 +111,24 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.completed"
+            ?event: :"thread.run.step.completed"
           }
         end
 
         type thread_run_step_failed =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.failed"
+            ?event: :"thread.run.step.failed"
           }
 
         class ThreadRunStepFailed < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.failed"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.failed"
@@ -119,21 +136,24 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.failed"
+            ?event: :"thread.run.step.failed"
           }
         end
 
         type thread_run_step_cancelled =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.cancelled"
+            ?event: :"thread.run.step.cancelled"
           }
 
         class ThreadRunStepCancelled < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.cancelled"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.cancelled"
@@ -141,21 +161,24 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.cancelled"
+            ?event: :"thread.run.step.cancelled"
           }
         end
 
         type thread_run_step_expired =
           {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.expired"
+            ?event: :"thread.run.step.expired"
           }
 
         class ThreadRunStepExpired < OpenAI::Internal::Type::BaseModel
+          # Represents a step in execution of a run.
           attr_accessor data: OpenAI::Beta::Threads::Runs::RunStep
 
           attr_accessor event: :"thread.run.step.expired"
 
+          # @param data
+          #   Represents a step in execution of a run.
           def initialize: (
             data: OpenAI::Beta::Threads::Runs::RunStep,
             ?event: :"thread.run.step.expired"
@@ -163,7 +186,7 @@ module OpenAI
 
           def to_hash: -> {
             data: OpenAI::Beta::Threads::Runs::RunStep,
-            event: :"thread.run.step.expired"
+            ?event: :"thread.run.step.expired"
           }
         end
 

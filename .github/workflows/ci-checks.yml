@@ -7,45 +7,10 @@ on:
         description: Runner label for CI jobs
         required: true
         type: string
-      publish-stainless-artifact:
-        description: Build and upload an installable Stainless artifact
-        required: true
-        type: boolean
 
 permissions: {}
 
 jobs:
-  stainless-artifact:
-    timeout-minutes: 10
-    name: stainless artifact
-    if: inputs.publish-stainless-artifact
-    permissions:
-      contents: read
-      id-token: write # Authenticate the artifact upload to pkg.stainless.com.
-    runs-on: ${{ inputs.runner }}
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          persist-credentials: false
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
-        with:
-          bundler-cache: true
-
-      - name: Get GitHub OIDC token
-        id: github-oidc
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
-        with:
-          script: core.setOutput('github_token', await core.getIDToken());
-
-      - name: Build and upload gem artifacts
-        env:
-          URL: https://pkg.stainless.com/s
-          AUTH: ${{ steps.github-oidc.outputs.github_token }}
-          SHA: ${{ github.sha }}
-          PACKAGE_NAME: openai
-        run: ./scripts/utils/upload-artifact.sh
-
   lint:
     timeout-minutes: 10
     name: lint (rubocop)
@@ -55,11 +20,11 @@ jobs:
     env:
       RUBOCOP_CACHE_ROOT: ${{ github.workspace }}/.cache/rubocop
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1
         with:
           ruby-version: '4.0'
           bundler-cache: true
@@ -76,32 +41,43 @@ jobs:
 
   typecheck:
     timeout-minutes: 10
-    name: typecheck (${{ matrix.format }})
+    name: typecheck (rbi)
+    permissions:
+      contents: read
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1
+        with:
+          ruby-version: '4.0'
+          bundler-cache: true
+      - name: Typecheck rbi files
+        run: bundle exec rake typecheck:sorbet
+
+  validate-rbs:
+    timeout-minutes: 10
+    name: validate (rbs)
     permissions:
       contents: read
     runs-on: ${{ inputs.runner }}
     env:
-      # Steep defaults to two workers in CI; eight is the measured balance for this runner.
+      # The consolidated green path always uses one worker; keep the reference
+      # fallback tuned so failing builds produce exact diagnostics promptly.
       STEEP_JOBS: 8
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - format: rbi
-            task: typecheck:sorbet
-          - format: rbs
-            task: typecheck:steep
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1
         with:
           ruby-version: '4.0'
           bundler-cache: true
-      - name: Typecheck ${{ matrix.format }} files
-        run: bundle exec rake ${{ matrix.task }}
+      - name: Validate rbs files
+        run: bundle exec rake validate:rbs
 
   package:
     timeout-minutes: 10
@@ -110,11 +86,11 @@ jobs:
       contents: read
     runs-on: ${{ inputs.runner }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1
         with:
           ruby-version: '4.0'
           bundler-cache: true
@@ -122,8 +98,8 @@ jobs:
         run: bundle exec rake build:gem
 
   test-ruby:
-    timeout-minutes: 10
-    name: test (ruby ${{ matrix.ruby-version }})
+    timeout-minutes: 15
+    name: test (ruby ${{ matrix.ruby-version }}, shard ${{ matrix.shard }}/1)
     permissions:
       contents: read
     runs-on: ${{ inputs.runner }}
@@ -131,27 +107,60 @@ jobs:
       fail-fast: false
       matrix:
         ruby-version: ['3.3', '3.4', '4.0']
+        shard: [1]
+    env:
+      TEST_SHARD: ${{ matrix.shard }}/1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+      - name: Check primary dependency bundle
+        run: bundle check
+      - name: Check concurrent Steady publication
+        run: node scripts/steady/publication.test.cjs
+      - name: Check browser lifecycle
+        run: node --test test/openai/realtime/browser/peer_test.mjs
+
+      - name: Run tests
+        run: ./scripts/test
+
+  test-bedrock:
+    timeout-minutes: 10
+    name: test (bedrock, ruby 4.0)
+    permissions:
+      contents: read
+    runs-on: ${{ inputs.runner }}
+    env:
+      BUNDLE_GEMFILE: gemfiles/bedrock.gemfile
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1
+        uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1
         with:
-          ruby-version: ${{ matrix.ruby-version }}
+          ruby-version: '4.0'
           bundler-cache: true
-      - name: Run tests
-        run: ./scripts/test
+      - name: Check Bedrock dependency bundle
+        run: bundle check
+      - name: Run Bedrock tests
+        run: bundle exec rake test:bedrock
 
   required:
     timeout-minutes: 5
     name: ci-required
     # Keep branch protection on one stable context as the job matrix evolves.
     needs:
-      - stainless-artifact
       - lint
       - typecheck
+      - validate-rbs
       - package
+      - test-bedrock
       - test-ruby
     if: ${{ always() }}
     permissions: {}
@@ -159,14 +168,16 @@ jobs:
     steps:
       - name: Check required job results
         env:
-          ARTIFACT_RESULT: ${{ needs.stainless-artifact.result }}
           LINT_RESULT: ${{ needs.lint.result }}
           TYPECHECK_RESULT: ${{ needs.typecheck.result }}
+          RBS_VALIDATION_RESULT: ${{ needs.validate-rbs.result }}
           PACKAGE_RESULT: ${{ needs.package.result }}
+          BEDROCK_TEST_RESULT: ${{ needs.test-bedrock.result }}
           TEST_RESULT: ${{ needs.test-ruby.result }}
         run: |
-          test "$ARTIFACT_RESULT" = "success" || test "$ARTIFACT_RESULT" = "skipped"
           test "$LINT_RESULT" = "success"
           test "$TYPECHECK_RESULT" = "success"
+          test "$RBS_VALIDATION_RESULT" = "success"
           test "$PACKAGE_RESULT" = "success"
+          test "$BEDROCK_TEST_RESULT" = "success"
           test "$TEST_RESULT" = "success"

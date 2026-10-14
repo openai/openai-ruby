@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Responses
+      class UnknownServerEvent
+        # @api private
+        def initialize: (data: ::Hash[Symbol, top]) -> void
+
+        attr_reader type: Symbol
+        attr_reader data: ::Hash[Symbol, top]
+        attr_reader stream_id: top
+        def to_h: -> ::Hash[Symbol, top]
+      end
+    end
+  end
+end

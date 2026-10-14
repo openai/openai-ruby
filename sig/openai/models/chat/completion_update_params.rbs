@@ -2,8 +2,11 @@ module OpenAI
   module Models
     module Chat
       type completion_update_params =
-        { completion_id: String, metadata: OpenAI::Models::metadata? }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          completion_id: String,
+          metadata: OpenAI::Models::metadata?,
+          ?request_options: OpenAI::request_opts
+        }
 
       class CompletionUpdateParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -11,8 +14,21 @@ module OpenAI
 
         attr_accessor completion_id: String
 
+        # Set of 16 key-value pairs that can be attached to an object. This can be useful
+        # for storing additional information about the object in a structured format, and
+        # querying for objects via API or the dashboard.
+        #
+        # Keys are strings with a maximum length of 64 characters. Values are strings with
+        # a maximum length of 512 characters.
         attr_accessor metadata: OpenAI::Models::metadata?
 
+        # @param metadata
+        #   Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #   for storing additional information about the object in a structured format, and
+        #   querying for objects via API or the dashboard.
+        #
+        #   Keys are strings with a maximum length of 64 characters. Values are strings with
+        #   a maximum length of 512 characters.
         def initialize: (
           completion_id: String,
           metadata: OpenAI::Models::metadata?,
@@ -22,7 +38,7 @@ module OpenAI
         def to_hash: -> {
           completion_id: String,
           metadata: OpenAI::Models::metadata?,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

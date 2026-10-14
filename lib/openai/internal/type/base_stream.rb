@@ -14,15 +14,58 @@ module OpenAI
         include Enumerable
 
         # @return [Integer]
-        attr_reader :status
+        def status = last_response.status
 
         # @return [Hash{String=>String}]
-        attr_reader :headers
+        def headers = last_response.headers
+
+        # The ID of the API request, returned via the x-request-id response
+        # header.
+        #
+        # @api public
+        #
+        # @return [String, nil]
+        def _request_id = last_response.request_id
+
+        # Metadata from the HTTP response that opened this stream.
+        #
+        # @api public
+        #
+        # @return [OpenAI::ResponseMetadata]
+        attr_reader :last_response
 
         # @api public
         #
         # @return [void]
         def close = OpenAI::Internal::Util.close_fused!(@iterator)
+
+        # Attach request lifecycle logging without changing the stream's identity.
+        #
+        # @api private
+        #
+        # @param context [OpenAI::Internal::Logging::Context]
+        # @param response [OpenAI::HTTPClient::Response]
+        # @return [self]
+        def observe(context:, response:)
+          source = @iterator
+          @iterator = OpenAI::Internal::Util.chain_fused(source) do |yielder|
+            loop do
+              event = begin
+                source.next
+              rescue StopIteration
+                context.completed(response)
+                break
+              rescue StandardError => e
+                context.request_failed(e)
+                raise
+              end
+
+              yielder << event
+            end
+          end
+
+          self
+        end
 
         # @api private
         #
@@ -39,6 +82,7 @@ module OpenAI
           unless block_given?
             raise ArgumentError.new("A block must be given to ##{__method__}")
           end
+
           @iterator.each(&blk)
         end
 
@@ -53,16 +97,14 @@ module OpenAI
         #
         # @param model [Class, OpenAI::Internal::Type::Converter]
         # @param url [URI::Generic]
-        # @param status [Integer]
-        # @param headers [Hash{String=>String}]
-        # @param response [Net::HTTPResponse]
+        # @param response_metadata [OpenAI::ResponseMetadata]
+        # @param response [OpenAI::HTTPClient::Response]
         # @param unwrap [Symbol, Integer, Array<Symbol, Integer>, Proc]
         # @param stream [Enumerable<Object>]
-        def initialize(model:, url:, status:, headers:, response:, unwrap:, stream:)
+        def initialize(model:, url:, response_metadata:, response:, unwrap:, stream:)
           @model = model
           @url = url
-          @status = status
-          @headers = headers
+          @last_response = response_metadata
           @response = response
           @unwrap = unwrap
           @stream = stream

@@ -2,35 +2,37 @@
 
 module OpenAI
   module Resources
+
     class Audio
+
       # Turn audio into text or text into audio.
       class Speech
+
         # Generates audio from the input text.
         #
         # Returns the audio file content, or a stream of audio events.
-        sig do
+        sig {
           params(
             input: String,
             model: T.any(String, OpenAI::Audio::SpeechModel::OrSymbol),
-            voice:
-              T.any(
-                String,
-                OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol,
-                OpenAI::Audio::SpeechCreateParams::Voice::ID::OrHash
-              ),
+            voice: T.any(
+              String,
+              OpenAI::Audio::SpeechCreateParams::Voice::OrSymbol,
+              OpenAI::Audio::SpeechCreateParams::Voice::ID::OrHash
+            ),
             instructions: String,
-            response_format:
-              OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
+            response_format: OpenAI::Audio::SpeechCreateParams::ResponseFormat::OrSymbol,
             speed: Float,
-            stream_format:
-              OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
+            stream_format: OpenAI::Audio::SpeechCreateParams::StreamFormat::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(StringIO)
-        end
+          )
+            .returns(T.all(StringIO, OpenAI::ResponseCarrier))
+        }
         def create(
           # The text to generate audio for. The maximum length is 4096 characters.
           input:,
-          # One of the available [TTS models](https://platform.openai.com/docs/models#tts):
+          # One of the available
+          # [TTS models](https://developers.openai.com/api/docs/guides/text-to-speech):
           # `tts-1`, `tts-1-hd`, `gpt-4o-mini-tts`, or `gpt-4o-mini-tts-2025-12-15`.
           model:,
           # The voice to use when generating the audio. Supported built-in voices are
@@ -38,7 +40,8 @@ module OpenAI
           # `shimmer`, `verse`, `marin`, and `cedar`. You may also provide a custom voice
           # object with an `id`, for example `{ "id": "voice_1234" }`. Previews of the
           # voices are available in the
-          # [Text to speech guide](https://platform.openai.com/docs/guides/text-to-speech#voice-options).
+          # [Text to speech guide](https://developers.openai.com/api/docs/guides/text-to-speech#voice-options).
+          # Custom voices must be created from audio samples.
           voice:,
           # Control the voice of your generated audio with additional instructions. Does not
           # work with `tts-1` or `tts-1-hd`.
@@ -61,6 +64,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

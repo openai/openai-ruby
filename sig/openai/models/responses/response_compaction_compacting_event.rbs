@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_compaction_compacting_event =
+        {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.compaction.compacting"
+        }
+
+      class ResponseCompactionCompactingEvent < OpenAI::Internal::Type::BaseModel
+        # The ID of the compaction output item.
+        attr_accessor item_id: String
+
+        # The index of the compaction output item.
+        attr_accessor output_index: Integer
+
+        # The sequence number of the event that was emitted.
+        attr_accessor sequence_number: Integer
+
+        # The type of the event, always `response.compaction.compacting`.
+        attr_accessor type: :"response.compaction.compacting"
+
+        # @param item_id
+        #   The ID of the compaction output item.
+        # @param output_index
+        #   The index of the compaction output item.
+        # @param sequence_number
+        #   The sequence number of the event that was emitted.
+        # @param type
+        #   The type of the event, always `response.compaction.compacting`.
+        def initialize: (
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.compaction.compacting"
+        ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          output_index: Integer,
+          sequence_number: Integer,
+          ?type: :"response.compaction.compacting"
+        }
+      end
+    end
+  end
+end

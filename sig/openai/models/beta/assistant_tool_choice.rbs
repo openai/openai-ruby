@@ -4,10 +4,11 @@ module OpenAI
       type assistant_tool_choice =
         {
           type: OpenAI::Models::Beta::AssistantToolChoice::type_,
-          function: OpenAI::Beta::AssistantToolChoiceFunction
+          ?function: OpenAI::Beta::AssistantToolChoiceFunction
         }
 
       class AssistantToolChoice < OpenAI::Internal::Type::BaseModel
+        # The type of the tool. If type is `function`, the function name must be set
         attr_accessor type: OpenAI::Models::Beta::AssistantToolChoice::type_
 
         attr_reader function: OpenAI::Beta::AssistantToolChoiceFunction?
@@ -16,6 +17,8 @@ module OpenAI
           OpenAI::Beta::AssistantToolChoiceFunction
         ) -> OpenAI::Beta::AssistantToolChoiceFunction
 
+        # @param type
+        #   The type of the tool. If type is `function`, the function name must be set
         def initialize: (
           type: OpenAI::Models::Beta::AssistantToolChoice::type_,
           ?function: OpenAI::Beta::AssistantToolChoiceFunction
@@ -23,7 +26,7 @@ module OpenAI
 
         def to_hash: -> {
           type: OpenAI::Models::Beta::AssistantToolChoice::type_,
-          function: OpenAI::Beta::AssistantToolChoiceFunction
+          ?function: OpenAI::Beta::AssistantToolChoiceFunction
         }
 
         type type_ = :function | :code_interpreter | :file_search

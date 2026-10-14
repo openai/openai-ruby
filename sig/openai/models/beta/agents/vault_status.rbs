@@ -1,0 +1,18 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault_status = :active | :archived
+
+        module VaultStatus
+          extend OpenAI::Internal::Type::Enum
+
+          ACTIVE: :active
+          ARCHIVED: :archived
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::vault_status]
+        end
+      end
+    end
+  end
+end

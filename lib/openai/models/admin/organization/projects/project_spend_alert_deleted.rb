@@ -28,11 +28,14 @@ module OpenAI
             # @!method initialize(id:, deleted:, object: :"project.spend_alert.deleted")
             #   Confirmation payload returned after deleting a project spend alert.
             #
-            #   @param id [String] The deleted spend alert ID.
+            #   @param id [String]
+            #     The deleted spend alert ID.
             #
-            #   @param deleted [Boolean] Whether the spend alert was deleted.
+            #   @param deleted [Boolean]
+            #     Whether the spend alert was deleted.
             #
-            #   @param object [Symbol, :"project.spend_alert.deleted"] Always `project.spend_alert.deleted`.
+            #   @param object [Symbol, :"project.spend_alert.deleted"]
+            #     Always `project.spend_alert.deleted`.
           end
         end
 

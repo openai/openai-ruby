@@ -2,50 +2,36 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       OrganizationSpendLimit = Organization::OrganizationSpendLimit
 
       module Organization
-        class OrganizationSpendLimit < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Admin::Organization::OrganizationSpendLimit,
-                OpenAI::Internal::AnyHash
-              )
-            end
 
-          # The currency for the threshold amount. Currently, only `USD` is supported.
-          sig do
-            returns(
-              OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::Variants
+        class OrganizationSpendLimit < OpenAI::Internal::Type::BaseModel
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Admin::Organization::OrganizationSpendLimit,
+              OpenAI::Internal::AnyHash
             )
           end
+
+          # The currency for the threshold amount. Currently, only `USD` is supported.
+          sig { returns(OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::Variants) }
           attr_accessor :currency
 
           # The current enforcement state of the hard spend limit.
-          sig do
-            returns(
-              OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement
-            )
-          end
+          sig { returns(OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement) }
           attr_reader :enforcement
 
-          sig do
-            params(
-              enforcement:
-                OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::OrHash
-            ).void
-          end
+          sig { params(enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::OrHash).void }
           attr_writer :enforcement
 
           # The time interval for evaluating spend against the threshold. Currently, only
           # `month` is supported.
-          sig do
-            returns(
-              OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::Variants
-            )
-          end
+          sig { returns(OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::Variants) }
           attr_accessor :interval
 
           # The object type, which is always `organization.spend_limit`.
@@ -59,33 +45,36 @@ module OpenAI
           # Represents a hard spend limit configured at the organization level.
           sig do
             params(
-              currency:
-                T.any(
-                  String,
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::OrSymbol
-                ),
-              enforcement:
-                OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::OrHash,
-              interval:
-                T.any(
-                  String,
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::OrSymbol
-                ),
+
+              currency: T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::OrSymbol),
+
+              enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::OrHash,
+
+              interval: T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::OrSymbol),
+
               threshold_amount: Integer,
+
               object: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The currency for the threshold amount. Currently, only `USD` is supported.
             currency:,
+
             # The current enforcement state of the hard spend limit.
             enforcement:,
+
             # The time interval for evaluating spend against the threshold. Currently, only
             # `month` is supported.
             interval:,
+
             # The hard spend limit amount, in cents.
             threshold_amount:,
+
             # The object type, which is always `organization.spend_limit`.
+
             object: :"organization.spend_limit"
           )
           end
@@ -93,12 +82,9 @@ module OpenAI
           sig do
             override.returns(
               {
-                currency:
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::Variants,
-                enforcement:
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
-                interval:
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::Variants,
+                currency: OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::Variants,
+                enforcement: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
+                interval: OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::Variants,
                 object: Symbol,
                 threshold_amount: Integer
               }
@@ -111,79 +97,58 @@ module OpenAI
           module Currency
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  String,
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::TaggedSymbol
-                )
-              end
+            Variants = T.type_alias {
+              T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::TaggedSymbol)
+            }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::Variants]) }
             def self.variants
             end
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Currency
-                )
-              end
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Admin::Organization::OrganizationSpendLimit::Currency)
+            end
+
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            USD =
-              T.let(
-                :USD,
-                OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::TaggedSymbol
-              )
+            USD = T.let(:USD, OpenAI::Admin::Organization::OrganizationSpendLimit::Currency::TaggedSymbol)
+
           end
 
           class Enforcement < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-            # Whether the hard spend limit is currently enforcing.
-            sig do
-              returns(
-                OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::Variants
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement,
+                OpenAI::Internal::AnyHash
               )
             end
+
+            # Whether the hard spend limit is currently enforcing.
+            sig { returns(OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::Variants) }
             attr_accessor :status
 
             # The current enforcement state of the hard spend limit.
             sig do
               params(
-                status:
-                  T.any(
-                    String,
-                    OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::OrSymbol
-                  )
-              ).returns(T.attached_class)
+
+                status: T.any(
+                  String,
+                  OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::OrSymbol
+                )
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Whether the hard spend limit is currently enforcing.
+
               status:
             )
             end
 
             sig do
               override.returns(
-                {
-                  status:
-                    OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::Variants
-                }
+                {status: OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::Variants}
               )
             end
             def to_hash
@@ -193,43 +158,33 @@ module OpenAI
             module Status
               extend OpenAI::Internal::Type::Union
 
-              Variants =
-                T.type_alias do
-                  T.any(
-                    String,
-                    OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::TaggedSymbol
-                  )
-                end
+              Variants = T.type_alias {
+                T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::TaggedSymbol)
+              }
 
-              sig do
+              sig {
                 override.returns(
-                  T::Array[
-                    OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::Variants
-                  ]
+                  T::Array[OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::Variants]
                 )
-              end
+              }
               def self.variants
               end
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status
-                  )
-                end
+              TaggedSymbol = T.type_alias do
+                T.all(Symbol, OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status)
+              end
+
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              INACTIVE =
-                T.let(
-                  :inactive,
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::TaggedSymbol
-                )
-              ENFORCING =
-                T.let(
-                  :enforcing,
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::TaggedSymbol
-                )
+              INACTIVE = T.let(
+                :inactive,
+                OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::TaggedSymbol
+              )
+              ENFORCING = T.let(
+                :enforcing,
+                OpenAI::Admin::Organization::OrganizationSpendLimit::Enforcement::Status::TaggedSymbol
+              )
+
             end
           end
 
@@ -238,41 +193,29 @@ module OpenAI
           module Interval
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  String,
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::TaggedSymbol
-                )
-              end
+            Variants = T.type_alias {
+              T.any(String, OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::TaggedSymbol)
+            }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::Variants]) }
             def self.variants
             end
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::OrganizationSpendLimit::Interval
-                )
-              end
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Admin::Organization::OrganizationSpendLimit::Interval)
+            end
+
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            MONTH =
-              T.let(
-                :month,
-                OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::TaggedSymbol
-              )
+            MONTH = T.let(:month, OpenAI::Admin::Organization::OrganizationSpendLimit::Interval::TaggedSymbol)
+
           end
+
         end
+
       end
+
     end
+
   end
 end

@@ -35,21 +35,22 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseFileSearchCallCompletedEvent::Agent }, nil?: true
 
         # @!method initialize(item_id:, output_index:, sequence_number:, agent: nil, type: :"response.file_search_call.completed")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseFileSearchCallCompletedEvent} for more
-        #   details.
-        #
         #   Emitted when a file search call is completed (results found).
         #
-        #   @param item_id [String] The ID of the output item that the file search call is initiated.
+        #   @param item_id [String]
+        #     The ID of the output item that the file search call is initiated.
         #
-        #   @param output_index [Integer] The index of the output item that the file search call is initiated.
+        #   @param output_index [Integer]
+        #     The index of the output item that the file search call is initiated.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseFileSearchCallCompletedEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseFileSearchCallCompletedEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.file_search_call.completed"] The type of the event. Always `response.file_search_call.completed`.
+        #   @param type [Symbol, :"response.file_search_call.completed"]
+        #     The type of the event. Always `response.file_search_call.completed`.
 
         # @see OpenAI::Models::Beta::BetaResponseFileSearchCallCompletedEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -62,7 +63,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

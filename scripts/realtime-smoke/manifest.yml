@@ -1,0 +1,21 @@
+version: 1
+opt_in: OPENAI_REALTIME_LIVE_SMOKE=1
+scenarios:
+  audio:
+    coverage:
+      - committed_transcription
+      - committed_voice
+    attempts: 1
+    synthetic_speech_requests: 1
+    input_seconds_max: 6
+    voice_output_tokens_max: 128
+    deadline_seconds: 60
+    process_deadline_seconds: 75
+  browser:
+    status: unavailable
+    dependency: Ruby Realtime browser WebRTC reference workflows
+    coverage_required:
+      - generated_call_create
+      - native_browser_sdp_negotiation
+      - sideband_acknowledgement
+      - explicit_hangup

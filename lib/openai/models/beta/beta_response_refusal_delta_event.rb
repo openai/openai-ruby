@@ -47,24 +47,28 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseRefusalDeltaEvent::Agent }, nil?: true
 
         # @!method initialize(content_index:, delta:, item_id:, output_index:, sequence_number:, agent: nil, type: :"response.refusal.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseRefusalDeltaEvent} for more details.
-        #
         #   Emitted when there is a partial refusal text.
         #
-        #   @param content_index [Integer] The index of the content part that the refusal text is added to.
+        #   @param content_index [Integer]
+        #     The index of the content part that the refusal text is added to.
         #
-        #   @param delta [String] The refusal text that is added.
+        #   @param delta [String]
+        #     The refusal text that is added.
         #
-        #   @param item_id [String] The ID of the output item that the refusal text is added to.
+        #   @param item_id [String]
+        #     The ID of the output item that the refusal text is added to.
         #
-        #   @param output_index [Integer] The index of the output item that the refusal text is added to.
+        #   @param output_index [Integer]
+        #     The index of the output item that the refusal text is added to.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseRefusalDeltaEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseRefusalDeltaEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.refusal.delta"] The type of the event. Always `response.refusal.delta`.
+        #   @param type [Symbol, :"response.refusal.delta"]
+        #     The type of the event. Always `response.refusal.delta`.
 
         # @see OpenAI::Models::Beta::BetaResponseRefusalDeltaEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -77,7 +81,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

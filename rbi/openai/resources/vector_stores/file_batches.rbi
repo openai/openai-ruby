@@ -2,32 +2,26 @@
 
 module OpenAI
   module Resources
+
     class VectorStores
+
       class FileBatches
+
         # Create a vector store file batch.
-        sig do
+        sig {
           params(
             vector_store_id: String,
-            attributes:
-              T.nilable(
-                T::Hash[
-                  Symbol,
-                  OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants
-                ]
-              ),
-            chunking_strategy:
-              T.any(
-                OpenAI::AutoFileChunkingStrategyParam::OrHash,
-                OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
-              ),
+            attributes: T.nilable(T::Hash[Symbol, OpenAI::VectorStores::FileBatchCreateParams::Attribute::Variants]),
+            chunking_strategy: T.any(
+              OpenAI::AutoFileChunkingStrategyParam::OrHash,
+              OpenAI::StaticFileChunkingStrategyObjectParam::OrHash
+            ),
             file_ids: T::Array[String],
-            files:
-              T::Array[
-                OpenAI::VectorStores::FileBatchCreateParams::File::OrHash
-              ],
+            files: T::Array[OpenAI::VectorStores::FileBatchCreateParams::File::OrHash],
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
-        end
+          )
+            .returns(OpenAI::VectorStores::VectorStoreFileBatch)
+        }
         def create(
           # The ID of the vector store for which to create a File Batch.
           vector_store_id,
@@ -40,12 +34,12 @@ module OpenAI
           # The chunking strategy used to chunk the file(s). If not set, will use the `auto`
           # strategy. Only applicable if `file_ids` is non-empty.
           chunking_strategy: nil,
-          # A list of [File](https://platform.openai.com/docs/api-reference/files) IDs that
-          # the vector store should use. Useful for tools like `file_search` that can access
-          # files. If `attributes` or `chunking_strategy` are provided, they will be applied
-          # to all files in the batch. The maximum batch size is 2000 files. This endpoint
-          # is recommended for multi-file ingestion and helps reduce per-vector-store write
-          # request pressure. Mutually exclusive with `files`.
+          # A list of [File](https://developers.openai.com/api/reference/resources/files)
+          # IDs that the vector store should use. Useful for tools like `file_search` that
+          # can access files. If `attributes` or `chunking_strategy` are provided, they will
+          # be applied to all files in the batch. The maximum batch size is 2000 files. This
+          # endpoint is recommended for multi-file ingestion and helps reduce
+          # per-vector-store write request pressure. Mutually exclusive with `files`.
           file_ids: nil,
           # A list of objects that each include a `file_id` plus optional `attributes` or
           # `chunking_strategy`. Use this when you need to override metadata for specific
@@ -59,13 +53,11 @@ module OpenAI
         end
 
         # Retrieves a vector store file batch.
-        sig do
-          params(
-            batch_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
-        end
+        sig {
+          params(batch_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::VectorStores::VectorStoreFileBatch
+          )
+        }
         def retrieve(
           # The ID of the file batch being retrieved.
           batch_id,
@@ -77,13 +69,11 @@ module OpenAI
 
         # Cancel a vector store file batch. This attempts to cancel the processing of
         # files in this batch as soon as possible.
-        sig do
-          params(
-            batch_id: String,
-            vector_store_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::VectorStores::VectorStoreFileBatch)
-        end
+        sig {
+          params(batch_id: String, vector_store_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::VectorStores::VectorStoreFileBatch
+          )
+        }
         def cancel(
           # The ID of the file batch to cancel.
           batch_id,
@@ -94,22 +84,19 @@ module OpenAI
         end
 
         # Returns a list of vector store files in a batch.
-        sig do
+        sig {
           params(
             batch_id: String,
             vector_store_id: String,
             after: String,
             before: String,
-            filter:
-              OpenAI::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
+            filter: OpenAI::VectorStores::FileBatchListFilesParams::Filter::OrSymbol,
             limit: Integer,
-            order:
-              OpenAI::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
+            order: OpenAI::VectorStores::FileBatchListFilesParams::Order::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::VectorStores::VectorStoreFile])
+        }
         def list_files(
           # Path param: The ID of the file batch that the files belong to.
           batch_id,
@@ -143,6 +130,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

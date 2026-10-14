@@ -20,30 +20,66 @@ module OpenAI
             }
 
           class RoleRetrieveResponse < OpenAI::Internal::Type::BaseModel
+            # Identifier for the role.
             attr_accessor id: String
 
+            # Principals from which the role assignment is inherited, when available.
             attr_accessor assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse::AssignmentSource]?
 
+            # When the role was created.
             attr_accessor created_at: Integer?
 
+            # Identifier of the actor who created the role.
             attr_accessor created_by: String?
 
+            # User details for the actor that created the role, when available.
             attr_accessor created_by_user_obj: ::Hash[Symbol, top]?
 
+            # Description of the role.
             attr_accessor description: String?
 
+            # Arbitrary metadata stored on the role.
             attr_accessor metadata: ::Hash[Symbol, top]?
 
+            # Name of the role.
             attr_accessor name: String
 
+            # Permissions associated with the role.
             attr_accessor permissions: ::Array[String]
 
+            # Whether the role is predefined by OpenAI.
             attr_accessor predefined_role: bool
 
+            # Resource type the role applies to.
             attr_accessor resource_type: String
 
+            # When the role was last updated.
             attr_accessor updated_at: Integer?
 
+            # @param id
+            #   Identifier for the role.
+            # @param assignment_sources
+            #   Principals from which the role assignment is inherited, when available.
+            # @param created_at
+            #   When the role was created.
+            # @param created_by
+            #   Identifier of the actor who created the role.
+            # @param created_by_user_obj
+            #   User details for the actor that created the role, when available.
+            # @param description
+            #   Description of the role.
+            # @param metadata
+            #   Arbitrary metadata stored on the role.
+            # @param name
+            #   Name of the role.
+            # @param permissions
+            #   Permissions associated with the role.
+            # @param predefined_role
+            #   Whether the role is predefined by OpenAI.
+            # @param resource_type
+            #   Resource type the role applies to.
+            # @param updated_at
+            #   When the role was last updated.
             def initialize: (
               id: String,
               assignment_sources: ::Array[OpenAI::Models::Admin::Organization::Groups::RoleRetrieveResponse::AssignmentSource]?,

@@ -21,7 +21,8 @@ module OpenAI
           #
           #   @param refusal [String]
           #
-          #   @param type [Symbol, :refusal] Always `refusal`.
+          #   @param type [Symbol, :refusal]
+          #     Always `refusal`.
         end
       end
     end

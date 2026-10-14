@@ -23,7 +23,8 @@ module OpenAI
           # @!method initialize(group_id:, name:, request_options: {})
           #   @param group_id [String]
           #
-          #   @param name [String] New display name for the group.
+          #   @param name [String]
+          #     New display name for the group.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

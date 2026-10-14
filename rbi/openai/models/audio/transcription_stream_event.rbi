@@ -2,31 +2,31 @@
 
 module OpenAI
   module Models
+
     module Audio
+
       # Emitted when a diarized transcription returns a completed segment with speaker
       # information. Only emitted when you
-      # [create a transcription](https://platform.openai.com/docs/api-reference/audio/create-transcription)
+      # [create a transcription](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create)
       # with `stream` set to `true` and `response_format` set to `diarized_json`.
       module TranscriptionStreamEvent
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              OpenAI::Audio::TranscriptionTextSegmentEvent,
-              OpenAI::Audio::TranscriptionTextDeltaEvent,
-              OpenAI::Audio::TranscriptionTextDoneEvent
-            )
-          end
-
-        sig do
-          override.returns(
-            T::Array[OpenAI::Audio::TranscriptionStreamEvent::Variants]
+        Variants = T.type_alias do
+          T.any(
+            OpenAI::Audio::TranscriptionTextSegmentEvent,
+            OpenAI::Audio::TranscriptionTextDeltaEvent,
+            OpenAI::Audio::TranscriptionTextDoneEvent
           )
         end
+
+        sig { override.returns(T::Array[OpenAI::Audio::TranscriptionStreamEvent::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

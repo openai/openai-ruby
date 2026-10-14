@@ -22,9 +22,11 @@ module OpenAI
             # @!method initialize(deleted:, object: :"project.spend_limit.deleted")
             #   Confirmation payload returned after deleting a project hard spend limit.
             #
-            #   @param deleted [Boolean] Whether the hard spend limit was deleted.
+            #   @param deleted [Boolean]
+            #     Whether the hard spend limit was deleted.
             #
-            #   @param object [Symbol, :"project.spend_limit.deleted"] The object type, which is always `project.spend_limit.deleted`.
+            #   @param object [Symbol, :"project.spend_limit.deleted"]
+            #     The object type, which is always `project.spend_limit.deleted`.
           end
         end
 

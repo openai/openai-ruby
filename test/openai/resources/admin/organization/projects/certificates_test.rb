@@ -10,7 +10,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::CertificatesTest <
       response => OpenAI::Internal::ConversationCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -19,25 +20,25 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::CertificatesTest <
 
     assert_pattern do
       row => {
-        id: String,
-        active: OpenAI::Internal::Type::Boolean,
-        certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateListResponse::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: Symbol
-      }
+          id: String,
+          active: OpenAI::Internal::Type::Boolean,
+          certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateListResponse::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: Symbol
+        }
     end
   end
 
   def test_activate_required_params
-    response =
-      @openai.admin.organization.projects.certificates.activate("project_id", certificate_ids: ["cert_abc"])
+    response = @openai.admin.organization.projects.certificates.activate("project_id", certificate_ids: ["cert_abc"])
 
     assert_pattern do
       response => OpenAI::Internal::Page
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -46,25 +47,25 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::CertificatesTest <
 
     assert_pattern do
       row => {
-        id: String,
-        active: OpenAI::Internal::Type::Boolean,
-        certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: Symbol
-      }
+          id: String,
+          active: OpenAI::Internal::Type::Boolean,
+          certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateActivateResponse::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: Symbol
+        }
     end
   end
 
   def test_deactivate_required_params
-    response =
-      @openai.admin.organization.projects.certificates.deactivate("project_id", certificate_ids: ["cert_abc"])
+    response = @openai.admin.organization.projects.certificates.deactivate("project_id", certificate_ids: ["cert_abc"])
 
     assert_pattern do
       response => OpenAI::Internal::Page
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -73,13 +74,13 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::CertificatesTest <
 
     assert_pattern do
       row => {
-        id: String,
-        active: OpenAI::Internal::Type::Boolean,
-        certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: Symbol
-      }
+          id: String,
+          active: OpenAI::Internal::Type::Boolean,
+          certificate_details: OpenAI::Models::Admin::Organization::Projects::CertificateDeactivateResponse::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: Symbol
+        }
     end
   end
 end

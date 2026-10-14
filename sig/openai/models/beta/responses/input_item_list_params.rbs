@@ -5,13 +5,13 @@ module OpenAI
         type input_item_list_params =
           {
             response_id: String,
-            after: String,
-            include: ::Array[OpenAI::Models::Beta::beta_response_includable],
-            limit: Integer,
-            order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
-            betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]
+            ?after: String,
+            ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class InputItemListParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -19,22 +19,40 @@ module OpenAI
 
           attr_accessor response_id: String
 
+          # An item ID to list items after, used in pagination.
           attr_reader after: String?
 
+          # An item ID to list items after, used in pagination.
           def after=: (String) -> String
 
+          # Additional fields to include in the response. See the `include` parameter for
+          # Response creation above for more information.
           attr_reader include: ::Array[OpenAI::Models::Beta::beta_response_includable]?
 
+          # Additional fields to include in the response. See the `include` parameter for
+          # Response creation above for more information.
           def include=: (
             ::Array[OpenAI::Models::Beta::beta_response_includable]
           ) -> ::Array[OpenAI::Models::Beta::beta_response_includable]
 
+          # A limit on the number of objects to be returned. Limit can range between 1 and
+          # 100, and the default is 20.
           attr_reader limit: Integer?
 
+          # A limit on the number of objects to be returned. Limit can range between 1 and
+          # 100, and the default is 20.
           def limit=: (Integer) -> Integer
 
+          # The order to return the input items in. Default is `desc`.
+          #
+          # - `asc`: Return the input items in ascending order.
+          # - `desc`: Return the input items in descending order.
           attr_reader order: OpenAI::Models::Beta::Responses::InputItemListParams::order?
 
+          # The order to return the input items in. Default is `desc`.
+          #
+          # - `asc`: Return the input items in ascending order.
+          # - `desc`: Return the input items in descending order.
           def order=: (
             OpenAI::Models::Beta::Responses::InputItemListParams::order
           ) -> OpenAI::Models::Beta::Responses::InputItemListParams::order
@@ -45,6 +63,19 @@ module OpenAI
             ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]
           ) -> ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta]
 
+          # @param after
+          #   An item ID to list items after, used in pagination.
+          # @param include
+          #   Additional fields to include in the response. See the `include` parameter for
+          #   Response creation above for more information.
+          # @param limit
+          #   A limit on the number of objects to be returned. Limit can range between 1 and
+          #   100, and the default is 20.
+          # @param order
+          #   The order to return the input items in. Default is `desc`.
+          #
+          #   - `asc`: Return the input items in ascending order.
+          #   - `desc`: Return the input items in descending order.
           def initialize: (
             response_id: String,
             ?after: String,
@@ -57,12 +88,12 @@ module OpenAI
 
           def to_hash: -> {
             response_id: String,
-            after: String,
-            include: ::Array[OpenAI::Models::Beta::beta_response_includable],
-            limit: Integer,
-            order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
-            betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
-            request_options: OpenAI::RequestOptions
+            ?after: String,
+            ?include: ::Array[OpenAI::Models::Beta::beta_response_includable],
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Responses::InputItemListParams::order,
+            ?betas: ::Array[OpenAI::Models::Beta::Responses::InputItemListParams::beta],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type order = :asc | :desc

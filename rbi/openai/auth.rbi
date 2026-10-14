@@ -35,20 +35,43 @@ module OpenAI
 
       sig do
         params(
-          identity_provider_id: T.any(String, Symbol),
-          service_account_id: T.any(String, Symbol),
           provider: SubjectTokenProvider,
+          identity_provider_id: T.nilable(T.any(String, Symbol)),
+          service_account_id: T.nilable(T.any(String, Symbol)),
           client_id: T.nilable(T.any(String, Symbol)),
           refresh_buffer_seconds: Integer
-        ).void
+        )
+          .void
       end
       def initialize(
-        identity_provider_id:,
-        service_account_id:,
         provider:,
+        identity_provider_id: ENV["IDENTITY_PROVIDER_ID"],
+        service_account_id: ENV["SERVICE_ACCOUNT_ID"],
         client_id: nil,
         refresh_buffer_seconds: 1200
       )
+      end
+    end
+
+    class WorkloadIdentityAuth
+      sig { params(deadline: T.nilable(Float)).returns(String) }
+      def get_token(deadline: nil)
+      end
+
+      sig { params(rejected_token: T.nilable(String)).void }
+      def invalidate_token(rejected_token = nil)
+      end
+
+      # @api private
+      sig do
+        params(identity: OpenAI::Auth::X509WorkloadIdentity, transport: OpenAI::Auth::X509Transport)
+          .returns(T::Boolean)
+      end
+      def bound_to?(identity, transport:)
+      end
+
+      sig { returns(String) }
+      def inspect
       end
     end
   end

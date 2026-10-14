@@ -1,0 +1,48 @@
+module OpenAI
+  module Models
+    module Beta
+      type text_format =
+        OpenAI::Beta::TextFormat::Text | OpenAI::Beta::TextFormat::JSONSchema
+
+      module TextFormat
+        extend OpenAI::Internal::Type::Union
+
+        type text = { ?type: :text }
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `text`.
+          attr_accessor type: :text
+
+          # @param type
+          #   The type of the object. Always `text`.
+          def initialize: (?type: :text) -> void
+
+          def to_hash: -> { ?type: :text }
+        end
+
+        type json_schema = { schema: ::Hash[Symbol, top], ?type: :json_schema }
+
+        class JSONSchema < OpenAI::Internal::Type::BaseModel
+          # The JSON Schema that generated text must match.
+          attr_accessor schema: ::Hash[Symbol, top]
+
+          # The type of the object. Always `json_schema`.
+          attr_accessor type: :json_schema
+
+          # @param schema
+          #   The JSON Schema that generated text must match.
+          # @param type
+          #   The type of the object. Always `json_schema`.
+          def initialize: (
+            schema: ::Hash[Symbol, top],
+            ?type: :json_schema
+          ) -> void
+
+          def to_hash: -> { schema: ::Hash[Symbol, top], ?type: :json_schema }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::text_format]
+      end
+    end
+  end
+end

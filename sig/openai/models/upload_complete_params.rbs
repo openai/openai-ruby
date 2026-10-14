@@ -1,8 +1,12 @@
 module OpenAI
   module Models
     type upload_complete_params =
-      { upload_id: String, part_ids: ::Array[String], :md5 => String }
-      & OpenAI::Internal::Type::request_parameters
+      {
+        upload_id: String,
+        part_ids: ::Array[String],
+        ?:md5 => String,
+        ?request_options: OpenAI::request_opts
+      }
 
     class UploadCompleteParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -10,12 +14,22 @@ module OpenAI
 
       attr_accessor upload_id: String
 
+      # The ordered list of Part IDs.
       attr_accessor part_ids: ::Array[String]
 
+      # The optional md5 checksum for the file contents to verify if the bytes uploaded
+      # matches what you expect.
       attr_reader md5: String?
 
+      # The optional md5 checksum for the file contents to verify if the bytes uploaded
+      # matches what you expect.
       def md5=: (String) -> String
 
+      # @param part_ids
+      #   The ordered list of Part IDs.
+      # @param md5
+      #   The optional md5 checksum for the file contents to verify if the bytes uploaded
+      #   matches what you expect.
       def initialize: (
         upload_id: String,
         part_ids: ::Array[String],
@@ -26,8 +40,8 @@ module OpenAI
       def to_hash: -> {
         upload_id: String,
         part_ids: ::Array[String],
-        :md5 => String,
-        request_options: OpenAI::RequestOptions
+        ?:md5 => String,
+        ?request_options: OpenAI::RequestOptions
       }
     end
   end

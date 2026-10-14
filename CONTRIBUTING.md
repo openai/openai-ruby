@@ -1,7 +1,29 @@
+# Contributing
+
+## Contribution policy
+
+We welcome bug reports, feature requests, minimal reproductions, and root-cause
+analysis through [GitHub issues](https://github.com/openai/openai-ruby/issues).
+
+**Pull requests are limited to repository collaborators. We do not accept pull
+requests from non-collaborators**, including documentation or example changes.
+If you are not a collaborator, please open an issue instead of preparing a pull
+request. Include the affected version, expected and actual behavior, and a small,
+sanitized reproduction when applicable.
+
+Report suspected security vulnerabilities privately as described in
+[SECURITY.md](SECURITY.md), rather than in issues or pull requests.
+
+The development and pull request instructions below are for maintainers and
+repository collaborators.
+
 ## Setting up the environment
 
 See the [versioning policy](VERSIONING.md) before changing the public API,
 minimum Ruby version, dependencies, or release behavior.
+
+Review the [security requirements](#security-requirements) before installing
+dependencies, changing SDK behavior, or running live examples.
 
 This repository contains a `.ruby-version` file, which should work with either [rbenv](https://github.com/rbenv/rbenv) or [asdf](https://github.com/asdf-vm/asdf) with the [ruby plugin](https://github.com/asdf-vm/asdf-ruby).
 
@@ -13,7 +35,55 @@ To set up the repository, run:
 $ ./scripts/bootstrap
 ```
 
-This will install all the required dependencies.
+This installs the dependencies used by the normal test, lint, typecheck, and
+package workflows. Documentation tooling has a separate bundle; see
+[Documentation](#documentation).
+
+## Custom-code budget
+
+The custom-code budget counts additions plus deletions in the remaining patch
+against verified generated output. `.castiron-ratchet.json` defines this repository's
+ceiling. CI uses the checker and budget on main, not the PR's proposed versions.
+
+Budget changes must be in a separate PR modifying **only `.castiron-ratchet.json`**.
+Justify the current usage, proposed ceiling, and why fixing generation is not
+appropriate in the PR description. Increases require a **human approving review**
+and must merge before an SDK change relies on them. Agents may draft proposals,
+but must not approve increases or bypass the gate. Keep default CODEOWNERS.
+Lower the ceiling after cleanup while retaining headroom; decreases must still
+fit the measured usage.
+
+See [custom-code technical details](scripts/castiron/CUSTOM_CODE.md) for accounting,
+local checks, trusted CI, and activation instructions.
+
+## Security requirements
+
+- **Secrets and fixtures:** Never commit API keys, access tokens, private keys,
+  credentials, or customer data. Load secrets from environment variables such
+  as `OPENAI_API_KEY`; use clearly fake values in examples, tests, snapshots,
+  and WebMock fixtures.
+- **Logs and diagnostics:** Redact authorization headers, cookies, signed URLs,
+  credential-bearing query parameters, customer data, and sensitive
+  request/response bodies, prompts, or uploaded files from logs, exceptions,
+  error messages, fixtures, and CI artifacts. Clearly fake or sanitized
+  payloads may remain in tests and diagnostics.
+- **Dependencies:** Review `Gemfile`, `Gemfile.lock`, `gemfiles/*.gemfile`,
+  `gemfiles/*.gemfile.lock`, `docs/Gemfile`, `docs/Gemfile.lock`, and
+  `openai.gemspec` changes, including direct and transitive gems, sources,
+  locked Git revisions, native extensions, and install/build scripts. Do not
+  run unreviewed scripts or accept unexplained lockfile changes.
+- **CI and publishing:** Pin GitHub Actions to full commit SHAs, grant minimum
+  per-job permissions, and preserve `permissions: {}`,
+  `persist-credentials: false`, protected release environments, and RubyGems
+  trusted publishing. Restrict `id-token: write` to the publishing job; protect
+  GitHub App private keys and do not introduce long-lived publishing tokens.
+- **Sensitive changes:** Request `@openai/sdks-team` review for authentication,
+  network endpoints/transports, redirects, TLS, uploads and file paths,
+  JSON/YAML/Marshal deserialization, request logging, webhooks, dependencies,
+  and CI/release changes. Add targeted regression/security tests for affected
+  credential, network, file, serialization, or publishing boundaries.
+- **Vulnerability reports:** Follow [SECURITY.md](SECURITY.md). Never report a
+  suspected vulnerability in a public issue, pull request, or discussion.
 
 ## Modifying/Adding code
 
@@ -69,7 +139,26 @@ $ bundle exec rake
 
 ## Running tests
 
-Most tests require you to [set up a mock server](https://github.com/dgellow/steady) against the OpenAPI spec to run the tests.
+The mock server uses [the OpenAI Steady fork](https://github.com/openai-oss-forks/steady).
+`scripts/steady/manifest.json` is the single source of dependency pins: the
+Steady Git commit and source digest, plus the Deno version and runtime checksums. `./scripts/steady/install` fetches that source, verifies the runtime,
+and caches dependencies using the fork's frozen Deno lockfile. It requires
+Git, Node.js, curl, unzip, and sha256sum or shasum. The installation supports
+macOS and Linux on x64/ARM64, and Windows x64 through Git Bash.
+
+`./scripts/run-steady` verifies the local source and runtime, then runs without
+downloading dependencies. Pass a local OpenAPI specification path. To update
+Steady, review the fork commit and run
+`node scripts/steady/update.cjs <full-commit-sha>`. This updates the manifest
+with the commit and its source digest; no launcher or test edits are needed.
+Then run `./scripts/steady/install`. Review the release checksums when changing Deno.
+Run `node scripts/steady/test.cjs` to check the
+installation, integrity checks, and mock-server lifecycle.
+
+
+Most tests require you to [set up a mock server](https://github.com/openai-oss-forks/steady) against the OpenAPI spec to run the tests.
+Install `lsof` and ensure it is available on `PATH`; the daemon launcher uses it
+to verify that the mock process group owns its listening socket before tests run.
 
 ```sh
 $ ./scripts/mock
@@ -79,9 +168,132 @@ $ ./scripts/mock
 $ bundle exec rake test
 ```
 
+CI partitions the non-Bedrock suite into three disjoint groups of whole test
+files on each supported Ruby version. To reproduce one group locally, run
+`TEST_SHARD=1/3 ./scripts/test` (or `2/3`, `3/3`). Without `TEST_SHARD`, the
+command still runs the complete suite. Each group preserves the suite's serial
+test scheduling, including the large-payload cases.
+
+The primary bundle intentionally omits the optional AWS SDK. Install the
+dedicated Bedrock bundle and run its tests separately:
+
+```bash
+$ BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle install
+$ BUNDLE_GEMFILE=gemfiles/bedrock.gemfile bundle exec rake test:bedrock
+```
+
+When regenerating `gemfiles/bedrock.gemfile.lock`, preserve the
+`x-release-please` markers around the local `openai` version. Release Please
+uses them to update this lockfile; Bundler can remove them when rewriting it.
+
+### Running examples end-to-end
+
+The live example suite executes every example marked as `covered` in
+`examples/e2e.yml`. It requires `OPENAI_API_KEY`, makes real API requests, and
+writes JSON and Markdown execution reports under `tmp/examples-e2e/` by default.
+
+Keep `OPENAI_API_KEY` in the environment. Prefer the offline inventory check,
+which makes no API requests:
+
+```bash
+$ bundle exec rake test:examples:inventory
+```
+
+Live reports include example paths, pass/fail status, timing, and structural
+failure diagnostics. Existing stdout/stderr report fields remain present but are
+always null. Captured output and exception messages are omitted from JSON
+reports, Markdown summaries, and the explicitly selected CI artifacts. Running
+the live suite still makes real API requests:
+
+```bash
+$ bundle exec rake test:examples:e2e
+```
+
+Every `examples/**/*.rb` file must be classified as covered or explicitly
+excluded with a reason. In GitHub Actions, live execution is available only
+through the manually dispatched `Examples E2E` workflow.
+
+### Optional live library smoke tests
+
+Run a short, optional smoke test against the real API with an API key in your
+environment:
+
+```bash
+$ OPENAI_API_KEY=sk-example bundle exec rake test:live:smoke
+```
+
+The test verifies model discovery, a normal Responses API request, and a
+completed streaming response. Override the default `gpt-4o-mini` model with
+`OPENAI_LIVE_SMOKE_MODEL` when needed. It emits only pass/fail diagnostics,
+never API response content, request bodies, or credentials.
+
+To also verify a real X.509 issuer exchange and a certificate-authenticated API
+request, keep `OPENAI_API_KEY` available for the standard smoke checks and
+provide the enrolled certificate/key paths and mapped provider/account IDs
+documented in the README, then run:
+
+```bash
+$ OPENAI_LIVE_SMOKE_X509=1 bundle exec rake test:live:smoke
+```
+
+GitHub Actions exposes the same checks through the optional, manually dispatched
+`Live Smoke` workflow. Its standard smoke runs in the existing `ci` environment.
+The optional X.509 job runs only after the standard smoke succeeds, is disabled
+by default, and requires the following secrets in the separate, protected
+`x509-live-smoke` environment:
+
+- `OPENAI_X509_CLIENT_CERTIFICATE_CHAIN_PEM`
+- `OPENAI_X509_CLIENT_PRIVATE_KEY_PEM`
+- `OPENAI_X509_IDENTITY_PROVIDER_ID`
+- `OPENAI_X509_SERVICE_ACCOUNT_ID`
+- `OPENAI_X509_CLIENT_KEY_PASSPHRASE` when the private key is encrypted.
+
+The X.509 environment requires independent SDK-team approval, prevents
+self-review, disables administrator bypasses, and runs only on the protected
+default branch. X.509 secrets are available only to the explicitly selected
+X.509 job. Certificate files are mode-restricted, short-lived runner files, raw
+PEM variables are removed before the SDK starts, and credential files are never
+uploaded as artifacts. The GitHub-hosted runner always uses a direct X.509
+connection. Local runs may set
+`OPENAI_X509_PROXY_MODE=http_connect` when an explicitly approved HTTP CONNECT
+proxy is configured. Live smoke tests are not required pull-request checks.
+
 ## Linting and formatting
 
-This repository uses [rubocop](https://github.com/rubocop/rubocop) for linting and formatting of `*.rb` files; And [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) is used for formatting of both `*.rbi` and `*.rbs` files.
+[rubyfmt](https://github.com/fables-tales/rubyfmt) owns Ruby source and `*.rbi` signature layout. The `scripts/rubyfmt` launcher uses version 0.14.1 and downloads a checksum-verified release into your user cache when needed. To use an existing installation, set `RUBYFMT` to an executable of that exact version.
+
+[rubocop](https://github.com/rubocop/rubocop) remains responsible for correctness and security checks. The existing CI lint task checks rubyfmt output and RBS formatting. [syntax_tree](https://github.com/ruby-syntax-tree/syntax_tree) continues to format `*.rbs` files; its check and write modes use the same implementation.
+
+All Ruby sources are formatted; file-level opt-outs are rejected. Two existing handwritten pattern-matching expressions use equivalent forms that avoid rubyfmt 0.14.1 bugs. Their source comments explain why, and regression tests check that both complete files format into valid Ruby and remain unchanged on a second pass.
+
+RuboCop suppressions must name individual cops and cover an actual offense.
+Remove obsolete disable/enable pairs when code or policy changes; suppressions
+for disabled layout, style, or metrics rules are rejected too. Put a necessary
+disable before the beginning of the affected expression (including a multiline
+method chain), close it immediately afterward, and explain the exception.
+Temporary `rubocop:todo` directives also need an owner and an issue or future
+removal date. The directive guard rejects broad and unowned suppressions.
+
+For lint-policy changes, run the full policy before and after cleanup:
+
+```bash
+$ bundle exec rubocop --format json --out tmp/rubocop-report.json
+```
+
+Record per-cop counts and affected paths from that report, audit those paths
+against Castiron's output and ownership rules, and include the result in the PR.
+Generated-code fixes must start in Castiron when regeneration could recreate
+them. Otherwise document why no generator companion is needed. Keep each rule
+rollout separate, preserve necessary semantic exceptions, and never add broad
+exclusions to make the gate pass. Run the full lint task after cleanup; limiting
+a run with `--only` can change which suppression directives are necessary.
+
+The remaining disabled correctness cops are deliberate: `Lint/ArgumentMismatch`,
+`Lint/SuperArgumentMismatch`, and `Lint/UnusedPrivateMethod` require a separate
+project-index/rubydex rollout; `Lint/ConstantResolution` requires a broad naming
+and constant-lookup audit. `Lint/HeredocMethodCallPosition` is layout owned by
+rubyfmt. `Lint/NumberConversion` remains enabled with only the generated webhook
+timestamp compatibility exception from `lib/openai/.rubocop.generated.yml`.
 
 There are two separate type checkers supported by this library: [sorbet](https://github.com/sorbet/sorbet) and [steep](https://github.com/soutaro/steep) are used for verifying `*.rbi` and `*.rbs` files respectively.
 
@@ -91,7 +303,7 @@ To lint and typecheck:
 $ bundle exec rake lint
 ```
 
-To format and fix all lint issues automatically:
+To run the available formatters:
 
 ```bash
 $ bundle exec rake format
@@ -119,10 +331,81 @@ This can be installed along side Ruby LSP.
 
 2. For each generic type in `*.rbi` files, a spurious "Duplicate type member" error is present.
 
-## Documentation Preview
+## Documentation
+
+Documentation dependencies are intentionally isolated from the primary
+contributor bundle. Install them with:
+
+```bash
+$ ./scripts/docs install
+```
+
+To build the documentation, run:
+
+```bash
+$ ./scripts/docs build
+```
 
 To preview the documentation, run:
 
 ```bash
-$ bundle exec rake docs:preview [PORT=8808]
+$ PORT=8808 ./scripts/docs preview
 ```
+
+The existing `bundle exec rake build:docs` and
+`bundle exec rake docs:preview` tasks delegate to the same docs bundle.
+
+### Protected Realtime live verification
+
+`Realtime Live Smoke` is a separate manual workflow using the existing protected
+`ci` environment, SDK-team approval, default-branch restriction, read-only job
+permissions and pinned actions. It is not a required PR check. Dispatching and
+approving this workflow authorizes the bounded paid scenario described below;
+do not dispatch it merely to validate a PR. No environment protection is created
+or weakened by this change.
+
+For an explicitly authorized local audio run, put the key in the environment and
+run:
+
+```sh
+OPENAI_REALTIME_LIVE_SMOKE=1 bundle exec ruby scripts/realtime-smoke/run.rb audio
+```
+
+The fixed scenario makes at most one short `gpt-4o-mini-tts` request for synthetic
+speech, one committed `gpt-4o-mini-transcribe` session, and one `gpt-realtime-2.1`
+voice response capped at 128 output tokens. The fixture is at most six seconds
+of 24 kHz mono PCM16, reused in memory for both sessions. No microphone or
+speaker is opened; no input files, prompts or model overrides are accepted.
+All HTTP retries and conversational reconnect are disabled. HTTP operations
+have ten-second timeouts, the scenario has a sixty-second deadline, and its
+supervising process terminates it after seventy-five seconds. The SDK's
+block-scoped sockets close/abort on exit. There is no automatic rerun; each
+manual run consumes another allowance. These are workload bounds, not a dollar
+cap: use a dedicated project with an owner-approved spending limit as well.
+
+Output is one JSON metadata record. SDK/transport/example output and exception
+messages are discarded at the subprocess boundary, including on failure.
+Transcripts, audio, credentials, SDP and identifiers are never reported or
+uploaded. The workflow uploads no artifacts. Only exit 0 with `passed` means
+live network evidence; exit 1 means failure, and exit 2 means skipped or
+unavailable. Missing opt-in/credentials never counts as passing. Model access
+and service errors fail the run without printing response bodies.
+
+The separate `browser` selection currently returns `unavailable` without making
+requests. Its explicit dependency is **Ruby Realtime: browser WebRTC reference
+workflows**. Integration must use that application's native `RTCPeerConnection`
+workflow to prove generated call creation, real negotiation, sideband
+acknowledgement and explicit hangup, with known-call cleanup on every failure.
+Until integrated, audio success is not WebRTC evidence. The distinct Live API,
+SIP and translation are outside this harness. `scripts/realtime-smoke/manifest.yml`
+records this opt-in coverage separately from the ordinary example E2E inventory;
+existing text/function E2E and generic Responses smoke do not establish it.
+
+Offline validation (no credentials or network):
+
+```sh
+bundle exec ruby test/scripts/realtime_smoke_test.rb
+```
+
+Offline lifecycle tests verify the harness and shipped event handling; they do
+not establish model availability or successful live transcription/voice.

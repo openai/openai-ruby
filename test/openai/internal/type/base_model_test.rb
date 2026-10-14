@@ -106,6 +106,44 @@ class OpenAI::Test::PrimitiveModelTest < Minitest::Test
     end
   end
 
+  def test_coerce_integer_strings_are_decimal
+    # `Integer(str)` infers a base from the literal's prefix, so a zero-padded
+    # decimal was misread as octal and a base-prefixed literal was accepted.
+    # Values on the wire are decimal, so neither is right.
+    cases = {
+      "10" => [{maybe: 1}, 10],
+      "010" => [{maybe: 1}, 10],
+      "08" => [{maybe: 1}, 8],
+      "007" => [{maybe: 1}, 7],
+      "-010" => [{maybe: 1}, -10],
+      "0x1f" => [{no: 1}, "0x1f"],
+      "0b11" => [{no: 1}, "0b11"],
+      "one" => [{no: 1}, "one"]
+    }
+
+    cases.each do |input, (exactness, expect)|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+      coerced = OpenAI::Internal::Type::Converter.coerce(Integer, input, state: state)
+
+      assert_equal(expect, coerced, input)
+      assert_equal(exactness, state.fetch(:exactness).filter { _2.nonzero? }.to_h, input)
+    end
+  end
+
+  def test_coerce_integer_keeps_non_string_conversions
+    # An explicit base is only valid for strings, so numerics have to keep the
+    # unbased call and its truncation.
+    cases = {1 => [{yes: 1}, 1], 1.0 => [{maybe: 1}, 1], 3.7 => [{maybe: 1}, 3], -3.7 => [{maybe: 1}, -3]}
+
+    cases.each do |input, (exactness, expect)|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+      coerced = OpenAI::Internal::Type::Converter.coerce(Integer, input, state: state)
+
+      assert_equal(expect, coerced, input.to_s)
+      assert_equal(exactness, state.fetch(:exactness).filter { _2.nonzero? }.to_h, input.to_s)
+    end
+  end
+
   def test_coerce_errors
     cases = {
       [Integer, "one"] => ArgumentError,
@@ -191,6 +229,7 @@ class OpenAI::Test::EnumModelTest < Minitest::Test
   end
 
   def test_coerce
+    boolean_symbol = true.to_s.to_sym
     cases = {
       [E0.new, "one"] => [{no: 1}, "one"],
       [E0.new(:one), "one"] => [{yes: 1}, :one],
@@ -198,7 +237,7 @@ class OpenAI::Test::EnumModelTest < Minitest::Test
 
       [E1, true] => [{yes: 1}, true],
       [E1, false] => [{no: 1}, false],
-      [E1, :true] => [{no: 1}, :true],
+      [E1, boolean_symbol] => [{no: 1}, boolean_symbol],
 
       [E2, 1] => [{yes: 1}, 1],
       [E2, 1.0] => [{yes: 1}, 1],
@@ -303,6 +342,49 @@ class OpenAI::Test::CollectionModelTest < Minitest::Test
 end
 
 class OpenAI::Test::BaseModelTest < Minitest::Test
+  class HashKeyMatrix < OpenAI::Internal::Type::BaseModel
+    required :required_text, String
+    required :required_nullable, String, nil?: true
+    optional :optional_text, String
+    optional :optional_nullable, String, nil?: true
+  end
+
+  def test_to_hash_distinguishes_omitted_keys_from_explicit_null
+    model = HashKeyMatrix.new(required_text: "present", required_nullable: nil)
+
+    assert_equal({required_text: "present", required_nullable: nil}, model.to_hash)
+    refute(model.to_hash.key?(:optional_text))
+    refute(model.to_hash.key?(:optional_nullable))
+    assert_raises(KeyError) { model.to_hash.fetch(:optional_text) }
+    assert_nil(model.optional_text)
+    refute(model.to_hash.key?(:optional_text))
+
+    model.optional_text = "value"
+    model.optional_nullable = nil
+    assert_equal("value", model.to_hash.fetch(:optional_text))
+    assert_nil(model.to_hash.fetch(:optional_nullable))
+    assert_equal(
+      {"required_text" => "present", "required_nullable" => nil, "optional_text" => "value", "optional_nullable" => nil},
+      JSON.parse(model.to_json)
+    )
+  end
+
+  def test_function_output_hash_can_omit_call_id_in_stable_and_beta_models
+    [
+      OpenAI::Responses::ResponseFunctionToolCallOutputItem,
+      OpenAI::Beta::BetaResponseFunctionToolCallOutputItem
+    ].each do |model_class|
+      model = model_class.new(id: "fc_test", output: "ok", status: :completed)
+
+      assert_nil(model.call_id)
+      refute(model.to_hash.key?(:call_id))
+      assert_raises(KeyError) { model.to_hash.fetch(:call_id) }
+      refute(JSON.parse(model.to_json).key?("call_id"))
+      model.call_id = "call_test"
+      assert_equal("call_test", model.to_hash.fetch(:call_id))
+    end
+  end
+
   class M1 < OpenAI::Internal::Type::BaseModel
     required :a, Integer
   end
@@ -368,7 +450,9 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
       [M5, {d: "d"}] => [{yes: 3}, {d: :d}],
       [M5, {d: nil}] => [{yes: 2, no: 1}, {d: nil}],
 
-      [M6, {a: [{a: []}]}] => [{yes: 6}, -> { _1 in {a: [M6]} }]
+      # rubyfmt 0.14.1 rewrites `{a: [M6]}` in a predicate as invalid `{:a => [M6]}`.
+      # The value here is a model's to_h result; preserve the nested-array assertion.
+      [M6, {a: [{a: []}]}] => [{yes: 6}, -> (value) { value.is_a?(Hash) && (value[:a] in [M6]) }]
     }
 
     cases.each do |lhs, rhs|
@@ -383,9 +467,58 @@ class OpenAI::Test::BaseModelTest < Minitest::Test
         else
           coerced => ^expect
         end
+
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
       end
     end
+  end
+
+  def test_coerce_preserves_model_identity_and_response_metadata
+    response = OpenAI::ResponseMetadata.new(status: 200, headers: {"x-request-id" => "req_123"})
+    model = M1.new(a: 1)._set_last_response(response)
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    coerced = OpenAI::Internal::Type::Converter.coerce(M1, model, state: state)
+
+    assert_same(model, coerced)
+    assert_same(response, coerced.last_response)
+    assert_equal("req_123", coerced._request_id)
+    assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
+    assert_nil(state.fetch(:error))
+  end
+
+  def test_coerce_preserves_subclass_instances
+    model = M2.new(a: Time.new(1990, 9, 19), b: 1)
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    coerced = OpenAI::Internal::Type::Converter.coerce(M1, model, state: state)
+
+    assert_same(model, coerced)
+    assert_instance_of(M2, coerced)
+    assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
+    assert_nil(state.fetch(:error))
+  end
+
+  def test_coerce_rejects_class_objects
+    [String, Class, M1].each do |value|
+      state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+      assert_same(value, OpenAI::Internal::Type::Converter.coerce(M1, value, state: state))
+      assert_instance_of(TypeError, state.fetch(:error))
+      assert_equal({yes: 0, no: 1, maybe: 0}, state.fetch(:exactness))
+    end
+  end
+
+  def test_coerce_preserves_nested_model_instances
+    model = M6.new(a: [])
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    coerced = OpenAI::Internal::Type::Converter.coerce(M6, {a: [model], b: model}, state: state)
+
+    assert_same(model, coerced.a.fetch(0))
+    assert_same(model, coerced.b)
+    assert_equal({yes: 4, no: 0, maybe: 0}, state.fetch(:exactness))
+    assert_nil(state.fetch(:error))
   end
 
   def test_dump
@@ -595,10 +728,41 @@ class OpenAI::Test::UnionTest < Minitest::Test
         else
           coerced => ^expect
         end
+
         state.fetch(:exactness).filter { _2.nonzero? }.to_h => ^exactness
         state => {branched: ^branched}
       end
     end
+  end
+
+  def test_coerce_breaks_alternative_ties_on_declaration_order
+    # `Integer` and `Float` both coerce the string inexactly, so the two
+    # alternatives rank identically. `Array#sort_by!` is not stable, so without an
+    # explicit tie-break the runner-up could be picked and the union would return
+    # a Float for a type that declares `Integer` first.
+    forward = U0.new(Integer, Float)
+    reverse = U0.new(Float, Integer)
+
+    # `2 == 2.0`, so the variant that won is only visible in the coerced class.
+    assert_instance_of(Integer, OpenAI::Internal::Type::Converter.coerce(forward, "2"))
+    assert_instance_of(Float, OpenAI::Internal::Type::Converter.coerce(reverse, "2"))
+
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+    OpenAI::Internal::Type::Converter.coerce(forward, "2", state: state)
+
+    assert_equal({yes: 0, no: 0, maybe: 1}, state.fetch(:exactness))
+    assert_equal(2, state.fetch(:branched))
+  end
+
+  def test_coerce_preserves_existing_union_model_variants
+    model = M1.new(t: :a)
+    state = OpenAI::Internal::Type::Converter.new_coerce_state
+
+    coerced = OpenAI::Internal::Type::Converter.coerce(U2, model, state: state)
+
+    assert_same(model, coerced)
+    assert_equal({yes: 1, no: 0, maybe: 0}, state.fetch(:exactness))
+    assert_nil(state.fetch(:error))
   end
 end
 
@@ -691,15 +855,32 @@ class OpenAI::Test::BaseModelQoLTest < Minitest::Test
       end
     end
   end
+
+  def test_response_metadata_is_unset_on_constructed_model
+    model = M1.new(a: 1)
+
+    assert_nil(model._request_id)
+    assert_nil(model.last_response)
+  end
 end
 
 class OpenAI::Test::MetaInfoTest < Minitest::Test
   A1 = OpenAI::Internal::Type::ArrayOf[Integer, nil?: true, doc: "dog"]
   H1 = OpenAI::Internal::Type::HashOf[-> { String }, nil?: true, doc: "dawg"]
+  A2 = OpenAI::Internal::Type::ArrayOf[enum: -> { Integer }, doc: "hash dog"]
+  H2 = OpenAI::Internal::Type::HashOf[enum: -> { String }, doc: "hash dawg"]
 
   class M1 < OpenAI::Internal::Type::BaseModel
     required :a, Integer, doc: "dog"
     optional :b, -> { String }, nil?: true, doc: "dawg"
+  end
+
+  class M2 < OpenAI::Internal::Type::BaseModel
+    required :a, enum: -> { Integer }, doc: "hash dog"
+  end
+
+  class M3 < OpenAI::Internal::Type::BaseModel
+    required :a, {enum: -> { Integer }, doc: "hash dog"}, doc: "spec dog"
   end
 
   module U1
@@ -714,10 +895,14 @@ class OpenAI::Test::MetaInfoTest < Minitest::Test
     m2 = H1.instance_variable_get(:@meta)
     assert_equal({doc: "dog"}, m1)
     assert_equal({doc: "dawg"}, m2)
+    assert_equal({doc: "hash dog"}, A2.instance_variable_get(:@meta))
+    assert_equal({doc: "hash dawg"}, H2.instance_variable_get(:@meta))
 
     ma, mb = M1.fields.fetch_values(:a, :b)
     assert_equal({doc: "dog"}, ma.fetch(:meta))
     assert_equal({doc: "dawg"}, mb.fetch(:meta))
+    assert_equal({doc: "hash dog"}, M2.fields.fetch(:a).fetch(:meta))
+    assert_equal({doc: "spec dog"}, M3.fields.fetch(:a).fetch(:meta))
 
     ua, ub = U1.send(:known_variants).map(&:last)
     assert_equal({doc: "dog"}, ua)

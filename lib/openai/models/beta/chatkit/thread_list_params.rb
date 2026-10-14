@@ -43,18 +43,23 @@ module OpenAI
           optional :user, String
 
           # @!method initialize(after: nil, before: nil, limit: nil, order: nil, user: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::ChatKit::ThreadListParams} for more details.
+          #   @param after [String]
+          #     List items created after this thread item ID. Defaults to null for the first
+          #     page.
           #
-          #   @param after [String] List items created after this thread item ID. Defaults to null for the first pag
+          #   @param before [String]
+          #     List items created before this thread item ID. Defaults to null for the newest
+          #     results.
           #
-          #   @param before [String] List items created before this thread item ID. Defaults to null for the newest r
+          #   @param limit [Integer]
+          #     Maximum number of thread items to return. Defaults to 20.
           #
-          #   @param limit [Integer] Maximum number of thread items to return. Defaults to 20.
+          #   @param order [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListParams::Order]
+          #     Sort order for results by creation time. Defaults to `desc`.
           #
-          #   @param order [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListParams::Order] Sort order for results by creation time. Defaults to `desc`.
-          #
-          #   @param user [String] Filter threads that belong to this user identifier. Defaults to null to return a
+          #   @param user [String]
+          #     Filter threads that belong to this user identifier. Defaults to null to return
+          #     all users.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

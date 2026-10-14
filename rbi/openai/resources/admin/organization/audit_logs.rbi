@@ -2,34 +2,33 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         # List user actions and configuration changes within this organization.
         class AuditLogs
+
           # List user actions and configuration changes within this organization.
-          sig do
+          sig {
             params(
               actor_emails: T::Array[String],
               actor_ids: T::Array[String],
               after: String,
               before: String,
-              effective_at:
-                OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt::OrHash,
-              event_types:
-                T::Array[
-                  OpenAI::Admin::Organization::AuditLogListParams::EventType::OrSymbol
-                ],
+              effective_at: OpenAI::Admin::Organization::AuditLogListParams::EffectiveAt::OrHash,
+              event_types: T::Array[OpenAI::Admin::Organization::AuditLogListParams::EventType::OrSymbol],
               limit: Integer,
               project_ids: T::Array[String],
               resource_ids: T::Array[String],
               tenant_only: T::Boolean,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Models::Admin::Organization::AuditLogListResponse
-              ]
             )
-          end
+              .returns(
+                OpenAI::Internal::ConversationCursorPage[OpenAI::Models::Admin::Organization::AuditLogListResponse]
+              )
+          }
           def list(
             # Return only events performed by users with these emails.
             actor_emails: nil,
@@ -50,7 +49,7 @@ module OpenAI
             effective_at: nil,
             # Return only events with a `type` in one of these values. For example,
             # `project.created`. For all options, see the documentation for the
-            # [audit log object](https://platform.openai.com/docs/api-reference/audit-logs/object).
+            # [audit log object](https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/audit_logs).
             event_types: nil,
             # A limit on the number of objects to be returned. Limit can range between 1 and
             # 100, and the default is 20.
@@ -75,7 +74,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

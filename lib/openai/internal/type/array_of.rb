@@ -38,7 +38,21 @@ module OpenAI
         # @param other [Object]
         #
         # @return [Boolean]
-        def ===(other) = other.is_a?(Array) && other.all?(item_type)
+        def ===(other)
+          return false unless other.is_a?(Array)
+
+          target = item_type
+          other.all? do |item|
+            case item
+            in ^target
+              true
+            in nil
+              nilable?
+            else
+              false
+            end
+          end
+        end
 
         # @api public
         #
@@ -46,15 +60,13 @@ module OpenAI
         #
         # @return [Boolean]
         def ==(other)
-          # rubocop:disable Layout/LineLength
           other.is_a?(OpenAI::Internal::Type::ArrayOf) && other.nilable? == nilable? && other.item_type == item_type
-          # rubocop:enable Layout/LineLength
         end
 
         # @api public
         #
         # @return [Integer]
-        def hash = [self.class, item_type].hash
+        def hash = [self.class, item_type, nilable?].hash
 
         # @api private
         #
@@ -82,18 +94,24 @@ module OpenAI
             return value
           end
 
-          target = item_type
+          target = OpenAI::Internal::Type::Converter.resolve_type(@item_type_fn, state: state)
           exactness[:yes] += 1
-          value
-            .map do |item|
-              case [nilable?, item]
-              in [true, nil]
-                exactness[:yes] += 1
-                nil
-              else
-                OpenAI::Internal::Type::Converter.coerce(target, item, state: state)
-              end
+          previous_error = state.fetch(:error)
+          last_error = nil
+          converted = value.map do |item|
+            case [nilable?, item]
+            in [true, nil]
+              exactness[:yes] += 1
+              nil
+            else
+              coerced, item_error = OpenAI::Internal::Type::Converter.coerce_with_error(target, item, state: state)
+              last_error = item_error if item_error
+              coerced
             end
+          end
+
+          state[:error] = last_error || previous_error
+          converted
         end
 
         # @api private
@@ -120,7 +138,9 @@ module OpenAI
         #
         # @return [Object]
         def to_sorbet_type
-          T::Array[OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)]
+          type = OpenAI::Internal::Util::SorbetRuntimeSupport.to_sorbet_type(item_type)
+          type = T.nilable(type) if nilable?
+          T::Array[type]
         end
 
         # @api private
@@ -160,7 +180,7 @@ module OpenAI
         def inspect(depth: 0)
           items = OpenAI::Internal::Type::Converter.inspect(item_type, depth: depth.succ)
 
-          "#{self.class}[#{[items, nilable? ? 'nil' : nil].compact.join(' | ')}]"
+          "#{self.class}[#{[items, nilable? ? "nil" : nil].compact.join(" | ")}]"
         end
       end
     end

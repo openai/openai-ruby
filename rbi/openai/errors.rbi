@@ -4,7 +4,33 @@ module OpenAI
   module Errors
     class Error < StandardError
       sig { returns(T.nilable(StandardError)) }
-      attr_accessor :cause
+      attr_reader :cause
+    end
+
+    class InvalidWebhookSignatureError < OpenAI::Errors::Error
+    end
+
+    class PollingError < OpenAI::Errors::Error
+    end
+
+    class PollingTimeoutError < OpenAI::Errors::PollingError
+      sig { returns(T.anything) }
+      attr_reader :resource
+
+      sig { returns(Float) }
+      attr_reader :timeout
+
+      sig { returns(String) }
+      attr_reader :operation
+
+      # @api private
+      sig do
+        params(operation: String, timeout: Float, resource: T.anything).returns(
+          T.attached_class
+        )
+      end
+      def self.new(operation:, timeout:, resource:)
+      end
     end
 
     class ConversionError < OpenAI::Errors::Error
@@ -20,7 +46,8 @@ module OpenAI
           target: T.anything,
           value: T.anything,
           cause: T.nilable(StandardError)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(on:, method:, target:, value:, cause: nil)
       end
@@ -48,6 +75,13 @@ module OpenAI
       sig { returns(T.nilable(String)) }
       attr_accessor :type
 
+      # The ID of the API request, returned via the `x-request-id` response
+      # header. This is nil when no HTTP response was received or the response
+      # did not include the header.
+      sig { returns(T.nilable(String)) }
+      def request_id
+      end
+
       # @api private
       sig do
         params(
@@ -58,7 +92,8 @@ module OpenAI
           request: NilClass,
           response: NilClass,
           message: T.nilable(String)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         url:,
@@ -89,6 +124,11 @@ module OpenAI
       attr_accessor :type
 
       # @api private
+      sig { returns(T::Boolean) }
+      def request_may_have_been_sent?
+      end
+
+      # @api private
       sig do
         params(
           url: URI::Generic,
@@ -97,8 +137,10 @@ module OpenAI
           body: NilClass,
           request: NilClass,
           response: NilClass,
-          message: T.nilable(String)
-        ).returns(T.attached_class)
+          message: T.nilable(String),
+          request_may_have_been_sent: T::Boolean
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         url:,
@@ -107,7 +149,8 @@ module OpenAI
         body: nil,
         request: nil,
         response: nil,
-        message: "Connection error."
+        message: "Connection error.",
+        request_may_have_been_sent: true
       )
       end
     end
@@ -122,8 +165,10 @@ module OpenAI
           body: NilClass,
           request: NilClass,
           response: NilClass,
-          message: T.nilable(String)
-        ).returns(T.attached_class)
+          message: T.nilable(String),
+          request_may_have_been_sent: T::Boolean
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         url:,
@@ -132,7 +177,8 @@ module OpenAI
         body: nil,
         request: nil,
         response: nil,
-        message: "Request timed out."
+        message: "Request timed out.",
+        request_may_have_been_sent: true
       )
       end
     end
@@ -148,7 +194,8 @@ module OpenAI
           request: NilClass,
           response: NilClass,
           message: T.nilable(String)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.for(
         url:,
@@ -183,7 +230,8 @@ module OpenAI
           request: NilClass,
           response: NilClass,
           message: T.nilable(String)
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
         url:,
@@ -227,6 +275,43 @@ module OpenAI
 
     class InternalServerError < OpenAI::Errors::APIStatusError
       HTTP_STATUS = T.let((500..), T::Range[Integer])
+    end
+
+    class OAuthError < OpenAI::Errors::APIStatusError
+      sig { returns(T.nilable(OpenAI::Models::OAuthErrorCode::Variants)) }
+      attr_reader :error_code
+
+      # @api private
+      sig do
+        params(
+          status: Integer,
+          body: T.nilable(Object),
+          headers: T.nilable(T::Hash[String, String])
+        )
+          .returns(T.attached_class)
+      end
+      def self.new(status:, body:, headers:)
+      end
+    end
+
+    class SubjectTokenProviderError < OpenAI::Errors::Error
+      sig { returns(String) }
+      attr_reader :provider
+
+      sig { returns(T.nilable(StandardError)) }
+      attr_accessor :cause
+
+      # @api private
+      sig do
+        params(
+          message: String,
+          provider: String,
+          cause: T.nilable(StandardError)
+        )
+          .returns(T.attached_class)
+      end
+      def self.new(message:, provider:, cause: nil)
+      end
     end
   end
 end

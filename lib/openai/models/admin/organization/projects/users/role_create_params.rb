@@ -32,7 +32,8 @@ module OpenAI
               #
               #   @param user_id [String]
               #
-              #   @param role_id [String] Identifier of the role to assign.
+              #   @param role_id [String]
+              #     Identifier of the role to assign.
               #
               #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
             end

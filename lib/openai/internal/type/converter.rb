@@ -122,22 +122,37 @@ module OpenAI
           #
           # @return [Hash{Symbol=>Object}]
           def meta_info(type_info, spec)
-            [spec, type_info].grep(Hash).first.to_h.except(:const, :enum, :union, :nil?)
+            [type_info, spec]
+              .grep(Hash)
+              .reduce({}, :merge)
+              .except(:const, :enum, :union, :nil?)
           end
 
           # @api private
           #
           # @param translate_names [Boolean]
           #
+          # @param request_only [Boolean] Exclude fields omitted by the request serializer.
+          #
           # @return [Hash{Symbol=>Object}]
-          def new_coerce_state(translate_names: true)
+          def new_coerce_state(translate_names: true, request_only: false, memoize: false)
             {
               translate_names: translate_names,
+              request_only: request_only,
               strictness: true,
               exactness: {yes: 0, no: 0, maybe: 0},
               error: nil,
-              branched: 0
+              branched: 0,
+              memo: memoize ? {}.compare_by_identity : nil
             }
+          end
+
+          # @api private
+          # Resolve lazy schema types once within an opted-in parse.
+          def resolve_type(type_fn, state: nil)
+            return type_fn.call unless state && state[:memo]
+            cache = state[:memo][:resolved_types] ||= {}.compare_by_identity
+            cache.fetch(type_fn) { cache[type_fn] = type_fn.call }
           end
 
           # @api private
@@ -185,7 +200,12 @@ module OpenAI
           #
           # @return [Object]
           def coerce(target, value, state: OpenAI::Internal::Type::Converter.new_coerce_state)
-            # rubocop:disable Metrics/BlockNesting
+            if state[:memo] &&
+                target.is_a?(OpenAI::Internal::Type::Converter) &&
+                (value.is_a?(Hash) || value.is_a?(Array))
+              return coerce_cached(target, value, state: state)
+            end
+
             exactness = state.fetch(:exactness)
 
             case target
@@ -199,7 +219,7 @@ module OpenAI
 
               case target
               in -> { _1 <= NilClass }
-                exactness[value.nil? ? :yes : :maybe] += 1
+                exactness[nil.equal?(value) ? :yes : :maybe] += 1
                 return nil
               in -> { _1 <= Integer }
                 case value
@@ -208,11 +228,17 @@ module OpenAI
                   return value
                 else
                   Kernel.then do
-                    return Integer(value).tap { exactness[:maybe] += 1 }
+                    # Wire text is decimal. `Integer(str)` would read a leading `0` as
+                    # octal and `0x`/`0b` as other bases, so "010" became 8 and "08"
+                    # failed outright. Non-strings keep the unbased call, which accepts
+                    # Float and other numerics that reject an explicit base.
+                    coerced = value.is_a?(String) ? Integer(value, 10) : Integer(value)
+                    return coerced.tap { exactness[:maybe] += 1 }
                   rescue ArgumentError, TypeError => e
                     state[:error] = e
                   end
                 end
+
               in -> { _1 <= Float }
                 if value.is_a?(Numeric)
                   exactness[:yes] += 1
@@ -224,6 +250,7 @@ module OpenAI
                     state[:error] = e
                   end
                 end
+
               in -> { _1 <= String }
                 case value
                 in String | Symbol | Numeric
@@ -235,17 +262,26 @@ module OpenAI
                 else
                   state[:error] = TypeError.new("#{value.class} can't be coerced into #{String}")
                 end
+
+              in -> { _1 <= Symbol }
+                if value.is_a?(String)
+                  exactness[:yes] += 1
+                  return value.to_sym
+                end
+
               in -> { _1 <= Date || _1 <= Time }
                 Kernel.then do
                   return target.parse(value).tap { exactness[:yes] += 1 }
                 rescue ArgumentError, TypeError => e
                   state[:error] = e
                 end
+
               in -> { _1 <= StringIO } if value.is_a?(String)
                 exactness[:yes] += 1
                 return StringIO.new(value.b)
               else
               end
+
             in Symbol
               case value
               in Symbol | String
@@ -265,7 +301,51 @@ module OpenAI
 
             exactness[:no] += 1
             value
-            # rubocop:enable Metrics/BlockNesting
+          end
+
+          # @api private
+          # Reuse converter/value pairs within one parse, including recursive collections.
+          # Identity keys avoid recursively hashing model and converter definitions.
+          def coerce_cached(target, value, state:)
+            converters = state.fetch(:memo)
+            values = converters[target] ||= {}.compare_by_identity
+            outcomes = values[value] ||= {}
+            key = state.values_at(:translate_names, :request_only, :strictness, :error)
+            exactness = state.fetch(:exactness)
+            if (cached = outcomes[key])
+              parsed, delta, error, branched = cached
+              delta.each { exactness[_1] += _2 }
+              state[:error] = error
+              state[:branched] += branched
+              return parsed
+            end
+
+            before = exactness.dup
+            branched = state.fetch(:branched)
+            parsed = target.coerce(value, state: state)
+            delta = exactness.to_h { |name, count| [name, count - before.fetch(name)] }
+            outcomes[key] = [parsed, delta, state[:error], state[:branched] - branched]
+            parsed
+          end
+
+          # @api private
+          #
+          # Coerces a value while isolating its error from sibling coercions.
+          #
+          # @param target [OpenAI::Internal::Type::Converter, Class]
+          #
+          # @param value [Object]
+          #
+          # @param state [Hash{Symbol=>Object}]
+          #
+          # @return [Array(Object, StandardError, nil)]
+          def coerce_with_error(target, value, state:)
+            previous_error = state.fetch(:error)
+            state[:error] = nil
+            coerced = coerce(target, value, state: state)
+            [coerced, state.fetch(:error)]
+          ensure
+            state[:error] = previous_error
           end
 
           # @api private
@@ -307,17 +387,21 @@ module OpenAI
         define_sorbet_constant!(:Input) do
           T.type_alias { T.any(OpenAI::Internal::Type::Converter, T::Class[T.anything]) }
         end
+
         define_sorbet_constant!(:CoerceState) do
           T.type_alias do
             {
               translate_names: T::Boolean,
+              request_only: T::Boolean,
               strictness: T::Boolean,
               exactness: {yes: Integer, no: Integer, maybe: Integer},
-              error: T::Class[StandardError],
-              branched: Integer
+              error: T.nilable(StandardError),
+              branched: Integer,
+              memo: T.nilable(T::Hash[T.untyped, T.untyped])
             }
           end
         end
+
         define_sorbet_constant!(:DumpState) do
           T.type_alias { {can_retry: T::Boolean} }
         end

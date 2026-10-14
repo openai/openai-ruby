@@ -4,6 +4,12 @@ module OpenAI
   module Internal
     # @api private
     module Util
+      # Marks enumerators whose overridden rewind safely closes the iterator.
+      module FusedEnumerator
+      end
+
+      private_constant :FusedEnumerator
+
       # @api private
       #
       # @return [Float]
@@ -15,14 +21,17 @@ module OpenAI
       #
       # @return [Enumerable<Module, Class>]
       def self.walk_namespaces(ns)
-        ns.constants(false).lazy.flat_map do
-          case (c = ns.const_get(_1, false))
-          in Module | Class
-            walk_namespaces(c)
-          else
-            []
+        ns
+          .constants(false)
+          .lazy
+          .flat_map do
+            case (c = ns.const_get(_1, false))
+            in Module | Class
+              walk_namespaces(c)
+            else
+              []
+            end
           end
-        end
           .chain([ns])
       end
 
@@ -176,7 +185,7 @@ module OpenAI
           in [Hash, Hash, _]
             lhs.merge(rhs) { deep_merge_lr(_2, _3, concat: concat) }
           in [Array, Array, true]
-            lhs.concat(rhs)
+            lhs + rhs
           else
             rhs
           end
@@ -229,6 +238,7 @@ module OpenAI
                 return blk&.call
               end
             end
+
           in [_, Proc]
             pick.call(data)
           else
@@ -256,9 +266,13 @@ module OpenAI
         #
         # @param path [String, Integer]
         #
+        # @raise [ArgumentError]
         # @return [String]
         def encode_path(path)
-          path.to_s.gsub(OpenAI::Internal::Util::RFC_3986_NOT_PCHARS) { ERB::Util.url_encode(_1) }
+          path = path.to_s
+          raise ArgumentError, "path segment cannot be '.' or '..'" if path == "." || path == ".."
+
+          path.gsub(OpenAI::Internal::Util::RFC_3986_NOT_PCHARS) { ERB::Util.url_encode(_1) }
         end
 
         # @api private
@@ -286,7 +300,24 @@ module OpenAI
         #
         # @return [Hash{String=>Array<String>}]
         def decode_query(query)
-          CGI.parse(query.to_s)
+          params = {}
+          query.to_s.split(/[&;]/).each do |pair|
+            key, value = pair.split("=", 2).map do |component|
+              # URI rejects malformed escapes, while CGI leaves them literal and stops at a trailing "%+".
+              escaped = component.gsub(/%(?![0-9a-fA-F]{2})/, "%25")
+              escaped = escaped.delete_suffix("+") + "%2B" if component.end_with?("%+")
+              decoded = URI.decode_www_form_component(escaped).force_encoding(Encoding::UTF_8)
+              decoded.valid_encoding? ? decoded : decoded.force_encoding(component.encoding)
+            end
+
+            next unless key
+
+            params[key] ||= []
+            params[key] << value if value
+          end
+
+          params.default = [].freeze
+          params
         end
 
         # @api private
@@ -384,100 +415,16 @@ module OpenAI
         #
         # @return [Hash{String=>String}]
         def normalized_headers(*headers)
-          {}.merge(*headers.compact).to_h do |key, val|
-            value =
-              case val
-              in Array
-                val.filter_map { _1&.to_s&.strip }.join(", ")
-              else
-                val&.to_s&.strip
-              end
-            [key.downcase, value]
-          end
-        end
-      end
-
-      # @api private
-      #
-      # An adapter that satisfies the IO interface required by `::IO.copy_stream`
-      class ReadIOAdapter
-        # @api private
-        #
-        # @return [Boolean, nil]
-        def close? = @closing
-
-        # @api private
-        def close
-          case @stream
-          in Enumerator
-            OpenAI::Internal::Util.close_fused!(@stream)
-          in IO if close?
-            @stream.close
-          else
-          end
-        end
-
-        # @api private
-        #
-        # @param max_len [Integer, nil]
-        #
-        # @return [String]
-        private def read_enum(max_len)
-          case max_len
-          in nil
-            @stream.to_a.join
-          in Integer
-            @buf << @stream.next while @buf.length < max_len
-            @buf.slice!(..max_len)
-          end
-        rescue StopIteration
-          @stream = nil
-          @buf.slice!(0..)
-        end
-
-        # @api private
-        #
-        # @param max_len [Integer, nil]
-        # @param out_string [String, nil]
-        #
-        # @return [String, nil]
-        def read(max_len = nil, out_string = nil)
-          case @stream
-          in nil
-            nil
-          in IO | StringIO
-            @stream.read(max_len, out_string)
-          in Enumerator
-            read = read_enum(max_len)
-            case out_string
-            in String
-              out_string.replace(read)
-            in nil
-              read
-            end
-          end
-            .tap(&@blk)
-        end
-
-        # @api private
-        #
-        # @param src [String, Pathname, StringIO, Enumerable<String>]
-        # @param blk [Proc]
-        #
-        # @yieldparam [String]
-        def initialize(src, &blk)
-          @stream =
-            case src
-            in String
-              StringIO.new(src)
-            in Pathname
-              @closing = true
-              src.open(binmode: true)
+          headers.compact.flat_map(&:to_a).to_h do |key, val|
+            value = case val
+            in Array
+              val.filter_map { _1&.to_s&.strip }.join(", ")
             else
-              src
+              val&.to_s&.strip
             end
-          @buf = String.new
-          @blk = blk
+
+            [key.to_s.downcase, value]
+          end
         end
       end
 
@@ -499,9 +446,11 @@ module OpenAI
       end
 
       # @type [Regexp]
-      JSON_CONTENT = %r{^application/(?:[a-zA-Z0-9.-]+\+)?json(?!l)}
+      JSON_CONTENT = %r{\Aapplication/(?:[a-z0-9.-]+\+)?json[ \t]*(?:;|\z)}i
       # @type [Regexp]
-      JSONL_CONTENT = %r{^application/(:?x-(?:n|l)djson)|(:?(?:x-)?jsonl)}
+      JSONL_CONTENT = %r{\Aapplication/(?:x-[nl]djson|(?:x-)?jsonl)[ \t]*(?:;|\z)}i
+      # @type [Regexp]
+      MULTIPART_CONTENT = %r{\Amultipart/form-data[ \t]*(?:;|\z)}i
 
       class << self
         # @api private
@@ -528,6 +477,7 @@ module OpenAI
             element.each do |name, value|
               write_query_param_element!(collection, "#{key}[#{name}]", value)
             end
+
           in Array
             collection["#{key}[]"] = element.map(&:to_s)
           else
@@ -550,7 +500,7 @@ module OpenAI
               y,
               val: val.content,
               closing: closing,
-              content_type: val.content_type
+              content_type: OpenAI::FilePart.validate_content_type(val.content_type)
             )
           in Pathname
             y << format(content_line, content_type || "application/octet-stream")
@@ -562,7 +512,7 @@ module OpenAI
             IO.copy_stream(val, y)
           in StringIO
             y << format(content_line, content_type || "application/octet-stream")
-            y << val.string
+            y << (val.string.byteslice(val.pos..) || "")
           in -> { primitive?(_1) }
             y << format(content_line, content_type || "text/plain")
             y << val.to_s
@@ -570,19 +520,20 @@ module OpenAI
             y << format(content_line, content_type || "application/json")
             y << JSON.generate(val)
           end
+
           y << "\r\n"
         end
 
         # @api private
         #
-        # Multipart filenames are quoted-strings, not URI path segments. Escape header
-        # delimiters and remove CR/LF without encoding ordinary filename characters.
+        # Multipart disposition parameters are quoted-strings, not URI path segments.
+        # Escape header delimiters and remove CR/LF without encoding ordinary characters.
         #
-        # @param filename [Pathname, String]
+        # @param value [Pathname, String, Symbol]
         #
         # @return [String]
-        private def escape_multipart_filename(filename)
-          filename.to_s.gsub(/["\\]/) { "\\#{_1}" }.delete("\r\n").b
+        private def escape_multipart_header_param(value)
+          value.to_s.gsub(/["\\]/) { "\\#{_1}" }.delete("\r\n").b
         end
 
         # @api private
@@ -597,21 +548,49 @@ module OpenAI
           y << "Content-Disposition: form-data"
 
           unless key.nil?
-            y << "; name=\"#{key}\""
+            name = escape_multipart_header_param(key)
+            y << "; name=\"#{name}\""
           end
 
           case val
           in OpenAI::FilePart unless val.filename.nil?
-            filename = escape_multipart_filename(val.filename)
+            filename = escape_multipart_header_param(val.filename)
             y << "; filename=\"#{filename}\""
           in Pathname | IO
-            filename = escape_multipart_filename(::File.basename(val.to_path))
+            # Keep raw multipart IO consistent with FileInput.dump: pathless streams
+            # are still file parts and use the same stable fallback filename.
+            filename = val.to_path.nil? ? "upload" : ::File.basename(val.to_path)
+            filename = escape_multipart_header_param(filename)
             y << "; filename=\"#{filename}\""
           else
           end
+
           y << "\r\n"
 
           write_multipart_content(y, val: val, closing: closing)
+        end
+
+        # @api private
+        #
+        # @param y [Enumerator::Yielder]
+        # @param boundary [String]
+        # @param key [Symbol, String]
+        # @param val [Object]
+        # @param closing [Array<Proc>]
+        private def write_multipart_value(y, boundary:, key:, val:, closing:)
+          case val
+          in Hash
+            val.each do |name, value|
+              write_multipart_value(y, boundary: boundary, key: "#{key}[#{name}]", val: value, closing: closing)
+            end
+
+          in Array
+            val.each do |value|
+              write_multipart_value(y, boundary: boundary, key: "#{key}[]", val: value, closing: closing)
+            end
+          else
+            write_multipart_chunk(y, boundary: boundary, key: key, val: val, closing: closing)
+          end
         end
 
         # @api private
@@ -622,7 +601,6 @@ module OpenAI
         #
         # @return [Array(String, Enumerable<String>)]
         private def encode_multipart_streaming(body)
-          # rubocop:disable Style/CaseEquality
           # RFC 1521 Section 7.2.1 says we should have 70 char maximum for boundary length
           boundary = SecureRandom.urlsafe_base64(46)
 
@@ -631,24 +609,17 @@ module OpenAI
             case body
             in Hash
               body.each do |key, val|
-                case val
-                in Array if val.all? { primitive?(_1) || OpenAI::Internal::Type::FileInput === _1 }
-                  val.each do |v|
-                    write_multipart_chunk(y, boundary: boundary, key: key, val: v, closing: closing)
-                  end
-                else
-                  write_multipart_chunk(y, boundary: boundary, key: key, val: val, closing: closing)
-                end
+                write_multipart_value(y, boundary: boundary, key: key, val: val, closing: closing)
               end
             else
               write_multipart_chunk(y, boundary: boundary, key: nil, val: body, closing: closing)
             end
+
             y << "--#{boundary}--\r\n"
           end
 
           fused_io = fused_enum(strio) { closing.each(&:call) }
           [boundary, fused_io]
-          # rubocop:enable Style/CaseEquality
         end
 
         # @api private
@@ -658,29 +629,116 @@ module OpenAI
         #
         # @return [Object]
         def encode_content(headers, body)
-          # rubocop:disable Style/CaseEquality
-          # rubocop:disable Layout/LineLength
           content_type = headers["content-type"]
           case [content_type, body]
           in [OpenAI::Internal::Util::JSON_CONTENT, Hash | Array | -> { primitive?(_1) }]
             [headers, JSON.generate(body)]
           in [OpenAI::Internal::Util::JSONL_CONTENT, Enumerable] unless OpenAI::Internal::Type::FileInput === body
-            [headers, body.lazy.map { JSON.generate(_1) }]
-          in [%r{^multipart/form-data}, Hash | OpenAI::Internal::Type::FileInput]
+            [headers, body.lazy.map { "#{JSON.generate(_1)}\n" }]
+          in [OpenAI::Internal::Util::MULTIPART_CONTENT, Hash | OpenAI::Internal::Type::FileInput]
             boundary, strio = encode_multipart_streaming(body)
             headers = {**headers, "content-type" => "#{content_type}; boundary=#{boundary}"}
             [headers, strio]
           in [_, Symbol | Numeric]
             [headers, body.to_s]
           in [_, StringIO]
-            [headers, body.string]
+            [headers, body.string.byteslice(body.pos..) || body.string.byteslice(0, 0)]
+          in [_, OpenAI::FilePart] if body.content.is_a?(StringIO)
+            content = body.content
+            [headers, content.string.byteslice(content.pos..) || content.string.byteslice(0, 0)]
           in [_, OpenAI::FilePart]
             [headers, body.content]
           else
             [headers, body]
           end
-          # rubocop:enable Layout/LineLength
-          # rubocop:enable Style/CaseEquality
+        end
+
+        # @api private
+        #
+        # Split a media type on its `;` delimiters, ignoring any that appear inside a
+        # quoted string so that a parameter value may contain one.
+        #
+        # @param content_type [String]
+        #
+        # @return [Array<String>]
+        private def split_media_type_segments(content_type)
+          segments = [String.new]
+          quoted = escaped = false
+
+          content_type.to_s.each_char do |char|
+            if escaped
+              segments.last << char
+              escaped = false
+            elsif quoted && char == "\\"
+              segments.last << char
+              escaped = true
+            elsif char == "\""
+              segments.last << char
+              quoted = !quoted
+            elsif char == ";" && !quoted
+              segments << String.new
+            else
+              segments.last << char
+            end
+          end
+
+          segments
+        end
+
+        # @api private
+        #
+        # Read a media type parameter value: either a token that ends at the first
+        # whitespace, or a quoted string in which `\` escapes the next character.
+        # A quoted string that is never closed, or has non-whitespace after its
+        # closing quote, has no value.
+        #
+        # @param value [String]
+        #
+        # @return [String, nil]
+        private def read_media_type_value(value)
+          return value[/\A[^;\s]+/] unless value.start_with?("\"")
+
+          unquoted = String.new
+          escaped = false
+
+          value[1..].to_s.each_char.with_index do |char, index|
+            if escaped
+              unquoted << char
+              escaped = false
+            elsif char == "\\"
+              escaped = true
+            elsif char == "\""
+              return unquoted if value[(index + 2)..].to_s.match?(/\A\s*\z/)
+
+              return nil
+            else
+              unquoted << char
+            end
+          end
+
+          nil
+        end
+
+        # @api private
+        #
+        # Find the value of the `charset` media type parameter. Parameter names are
+        # case-insensitive, so `Charset` and `CHARSET` name the same parameter, but the
+        # name has to match in full: a `charset` suffix of another parameter's name, or
+        # a `charset=` inside a quoted value, belongs to a different parameter.
+        #
+        # @param content_type [String]
+        #
+        # @return [String, nil]
+        private def media_type_charset(content_type)
+          split_media_type_segments(content_type).each do |segment|
+            name, separator, value = segment.partition("=")
+            next if separator.empty?
+            next unless name.strip.casecmp?("charset")
+
+            return read_media_type_value(value.lstrip)
+          end
+
+          nil
         end
 
         # @api private
@@ -690,9 +748,9 @@ module OpenAI
         # @param content_type [String]
         # @param text [String]
         def force_charset!(content_type, text:)
-          charset = /charset=([^;\s]+)/.match(content_type)&.captures&.first
+          charset = media_type_charset(content_type)
 
-          return unless charset
+          return if charset.nil? || charset.empty?
 
           begin
             encoding = Encoding.find(charset)
@@ -709,13 +767,16 @@ module OpenAI
         # @param headers [Hash{String=>String}]
         # @param stream [Enumerable<String>]
         # @param suppress_error [Boolean]
+        # @yieldparam [String] The buffered response body before decoding.
         #
         # @raise [JSON::ParserError]
         # @return [Object]
-        def decode_content(headers, stream:, suppress_error: false)
+        def decode_content(headers, stream:, suppress_error: false, &body_observer)
           case (content_type = headers["content-type"])
           in OpenAI::Internal::Util::JSON_CONTENT
-            return nil if (json = stream.to_a.join).empty?
+            json = stream.to_a.join
+            body_observer&.call(json)
+            return nil if json.empty?
 
             begin
               JSON.parse(json, symbolize_names: true)
@@ -723,6 +784,7 @@ module OpenAI
               raise e unless suppress_error
               json
             end
+
           in OpenAI::Internal::Util::JSONL_CONTENT
             lines = decode_lines(stream)
             chain_fused(lines) do |y|
@@ -732,11 +794,13 @@ module OpenAI
                 y << JSON.parse(_1, symbolize_names: true)
               end
             end
-          in %r{^text/event-stream}
+
+          in %r{\Atext/event-stream[ \t]*(?:;|\z)}i
             lines = decode_lines(stream)
             decode_sse(lines)
           else
             text = stream.to_a.join
+            body_observer&.call(text)
             force_charset!(content_type, text: text)
             StringIO.new(text)
           end
@@ -764,15 +828,19 @@ module OpenAI
             else
               enum.each(&y)
             end
+
           ensure
             close&.call
             close = nil
           end
 
+          iter.extend(FusedEnumerator)
+
           iter.define_singleton_method(:rewind) do
             fused = true
             self
           end
+
           iter
         end
 
@@ -780,7 +848,7 @@ module OpenAI
         #
         # @param enum [Enumerable<Object>, nil]
         def close_fused!(enum)
-          return unless enum.is_a?(Enumerator)
+          return unless enum.is_a?(FusedEnumerator)
 
           # rubocop:disable Lint/UnreachableLoop
           enum.rewind.each { break }
@@ -803,40 +871,54 @@ module OpenAI
       class << self
         # @api private
         #
-        # Assumes Strings have been forced into having `Encoding::BINARY`.
-        #
-        # This decoder is responsible for reassembling lines split across multiple
-        # fragments.
+        # This decoder is responsible for reassembling bytes split across multiple
+        # String fragments without depending on each fragment's encoding label
+        # while preserving the String encoding callers supplied.
         #
         # @param enum [Enumerable<String>]
         #
         # @return [Enumerable<String>]
         def decode_lines(enum)
           re = /(\r\n|\r|\n)/
-          buffer = String.new
+          buffer = String.new(encoding: Encoding::BINARY)
+          encoding = nil
           cr_seen = nil
 
           chain_fused(enum) do |y|
             enum.each do |row|
+              encoding = row.encoding if !row.empty? && (encoding.nil? || encoding == Encoding::US_ASCII)
               offset = buffer.bytesize
-              buffer << row
-              while (match = re.match(buffer, cr_seen&.to_i || offset))
+              buffer << (row.encoding == Encoding::BINARY ? row : row.b)
+              while (match = re.match(buffer, cr_seen || offset))
                 case [match.captures.first, cr_seen]
                 in ["\r", nil]
                   cr_seen = match.end(1)
                   next
-                in ["\r" | "\r\n", Integer]
-                  y << buffer.slice!(..(cr_seen.pred))
+                in [terminator, Integer] if terminator != "\n" || match.begin(1) != cr_seen
+                  line = buffer.slice!(..(cr_seen.pred))
+                  line.force_encoding(encoding) unless encoding.nil?
+                  y << line
                 else
-                  y << buffer.slice!(..(match.end(1).pred))
+                  line = buffer.slice!(..(match.end(1).pred))
+                  line.force_encoding(encoding) unless encoding.nil?
+                  y << line
                 end
+
                 offset = 0
                 cr_seen = nil
               end
             end
 
-            y << buffer.slice!(..(cr_seen.pred)) unless cr_seen.nil?
-            y << buffer unless buffer.empty?
+            unless cr_seen.nil?
+              line = buffer.slice!(..(cr_seen.pred))
+              line.force_encoding(encoding) unless encoding.nil?
+              y << line
+            end
+
+            unless buffer.empty?
+              buffer.force_encoding(encoding) unless encoding.nil?
+              y << buffer
+            end
           end
         end
 
@@ -850,12 +932,17 @@ module OpenAI
         #
         # @return [Enumerable<Hash{Symbol=>Object}>]
         def decode_sse(lines)
-          # rubocop:disable Metrics/BlockLength
           chain_fused(lines) do |y|
             blank = {event: nil, data: nil, id: nil, retry: nil}
             current = {}
+            first_line = true
 
             lines.each do |line|
+              if first_line
+                line = line.byteslice(3..) || "" if line.byteslice(0, 3)&.bytes == [0xEF, 0xBB, 0xBF]
+                first_line = false
+              end
+
               case line.sub(/\R$/, "")
               in ""
                 next if current.empty?
@@ -863,23 +950,26 @@ module OpenAI
                 current = {}
               in /^:/
                 next
-              in /^([^:]+):\s?(.*)$/
+              in /^([^:]+)(?::\s?(.*))?$/
                 field, value = Regexp.last_match.captures
+                # A line with no colon names a field whose value is the empty
+                # string, so a bare `data` line still contributes a blank line to
+                # the data buffer.
+                value = value.to_s
                 case field
                 in "event"
                   current.merge!(event: value)
                 in "data"
-                  (current[:data] ||= String.new) << (value << "\n")
+                  (current[:data] ||= String.new) << value << "\n"
                 in "id" unless value.include?("\0")
                   current.merge!(id: value)
                 in "retry" if /^\d+$/ =~ value
-                  current.merge!(retry: Integer(value))
+                  current.merge!(retry: Integer(value, 10))
                 else
                 end
               else
               end
             end
-            # rubocop:enable Metrics/BlockLength
 
             y << {**blank, **current} unless current.empty?
           end
@@ -926,7 +1016,7 @@ module OpenAI
         # @api private
         #
         # @return [Object]
-        def to_sorbet_type = raise(NotImplementedError)
+        def to_sorbet_type = raise NotImplementedError
 
         class << self
           # @api private

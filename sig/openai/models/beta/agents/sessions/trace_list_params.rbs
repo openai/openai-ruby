@@ -1,0 +1,81 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module Sessions
+          type trace_list_params =
+            {
+              session_id: String,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Beta::Agents::Sessions::TraceListParams::order,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class TraceListParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor session_id: String
+
+            # Return resources after this resource ID in the selected order.
+            attr_reader after: String?
+
+            # Return resources after this resource ID in the selected order.
+            def after=: (String) -> String
+
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+            attr_reader limit: Integer?
+
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+            def limit=: (Integer) -> Integer
+
+            # The order in which resources are returned. Defaults to `desc`.
+            attr_reader order: OpenAI::Models::Beta::Agents::Sessions::TraceListParams::order?
+
+            # The order in which resources are returned. Defaults to `desc`.
+            def order=: (
+              OpenAI::Models::Beta::Agents::Sessions::TraceListParams::order
+            ) -> OpenAI::Models::Beta::Agents::Sessions::TraceListParams::order
+
+            # @param after
+            #   Return resources after this resource ID in the selected order.
+            # @param limit
+            #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
+            # @param order
+            #   The order in which resources are returned. Defaults to `desc`.
+            def initialize: (
+              session_id: String,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Beta::Agents::Sessions::TraceListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              session_id: String,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Beta::Agents::Sessions::TraceListParams::order,
+              ?request_options: OpenAI::RequestOptions
+            }
+
+            type order = :asc | :desc
+
+            module Order
+              extend OpenAI::Internal::Type::Enum
+
+              # Returns resources in ascending order.
+              ASC: :asc
+
+              # Returns resources in descending order.
+              DESC: :desc
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Sessions::TraceListParams::order]
+            end
+          end
+        end
+      end
+    end
+  end
+end

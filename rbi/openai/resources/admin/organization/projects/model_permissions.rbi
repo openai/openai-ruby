@@ -2,19 +2,21 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class ModelPermissions
+
             # Returns model permissions for a project.
-            sig do
-              params(
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Admin::Organization::Projects::ProjectModelPermissions
               )
-            end
+            }
             def retrieve(
               # The ID of the project.
               project_id,
@@ -23,17 +25,15 @@ module OpenAI
             end
 
             # Updates model permissions for a project.
-            sig do
+            sig {
               params(
                 project_id: String,
-                mode:
-                  OpenAI::Admin::Organization::Projects::ModelPermissionUpdateParams::Mode::OrSymbol,
+                mode: OpenAI::Admin::Organization::Projects::ModelPermissionUpdateParams::Mode::OrSymbol,
                 model_ids: T::Array[String],
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Admin::Organization::Projects::ProjectModelPermissions
               )
-            end
+                .returns(OpenAI::Admin::Organization::Projects::ProjectModelPermissions)
+            }
             def update(
               # The ID of the project.
               project_id,
@@ -46,14 +46,11 @@ module OpenAI
             end
 
             # Deletes model permissions for a project.
-            sig do
-              params(
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Admin::Organization::Projects::ProjectModelPermissionsDeleted
               )
-            end
+            }
             def delete(
               # The ID of the project.
               project_id,
@@ -66,8 +63,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

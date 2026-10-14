@@ -5,7 +5,7 @@ module OpenAI
     # @generic Elem
     #
     # @example
-    #   if page.has_next?
+    #   if page.next_page?
     #     page = page.next_page
     #   end
     #
@@ -30,7 +30,7 @@ module OpenAI
       # @raise [OpenAI::HTTP::Error]
       # @return [self]
       def next_page
-        RuntimeError.new("No more pages available.")
+        raise RuntimeError.new("No more pages available.")
       end
 
       # @param blk [Proc]
@@ -54,9 +54,9 @@ module OpenAI
       #
       # @param client [OpenAI::Internal::Transport::BaseClient]
       # @param req [Hash{Symbol=>Object}]
-      # @param headers [Hash{String=>String}]
+      # @param response_metadata [OpenAI::ResponseMetadata]
       # @param page_data [Array<Object>]
-      def initialize(client:, req:, headers:, page_data:)
+      def initialize(client:, req:, response_metadata:, page_data:)
         super
 
         case page_data
@@ -64,6 +64,7 @@ module OpenAI
           @data = data.map { OpenAI::Internal::Type::Converter.coerce(@model, _1) }
         else
         end
+
         @object = page_data[:object]
       end
 

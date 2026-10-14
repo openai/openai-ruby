@@ -2,18 +2,25 @@ module OpenAI
   module Models
     module Realtime
       type realtime_translation_session_close_event =
-        { type: :"session.close", event_id: String }
+        { ?type: :"session.close", ?event_id: String }
 
       class RealtimeTranslationSessionCloseEvent < OpenAI::Internal::Type::BaseModel
+        # The event type, must be `session.close`.
         attr_accessor type: :"session.close"
 
+        # Optional client-generated ID used to identify this event.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event.
         def event_id=: (String) -> String
 
+        # @param event_id
+        #   Optional client-generated ID used to identify this event.
+        # @param type
+        #   The event type, must be `session.close`.
         def initialize: (?event_id: String, ?type: :"session.close") -> void
 
-        def to_hash: -> { type: :"session.close", event_id: String }
+        def to_hash: -> { ?type: :"session.close", ?event_id: String }
       end
     end
   end

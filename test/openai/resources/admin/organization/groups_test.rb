@@ -12,12 +12,12 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        group_type: OpenAI::Admin::Organization::Group::GroupType,
-        is_scim_managed: OpenAI::Internal::Type::Boolean,
-        name: String
-      }
+          id: String,
+          created_at: Integer,
+          group_type: OpenAI::Admin::Organization::Group::GroupType,
+          is_scim_managed: OpenAI::Internal::Type::Boolean,
+          name: String
+        }
     end
   end
 
@@ -30,12 +30,12 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        group_type: OpenAI::Admin::Organization::Group::GroupType,
-        is_scim_managed: OpenAI::Internal::Type::Boolean,
-        name: String
-      }
+          id: String,
+          created_at: Integer,
+          group_type: OpenAI::Admin::Organization::Group::GroupType,
+          is_scim_managed: OpenAI::Internal::Type::Boolean,
+          name: String
+        }
     end
   end
 
@@ -48,11 +48,11 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        is_scim_managed: OpenAI::Internal::Type::Boolean,
-        name: String
-      }
+          id: String,
+          created_at: Integer,
+          is_scim_managed: OpenAI::Internal::Type::Boolean,
+          name: String
+        }
     end
   end
 
@@ -63,7 +63,8 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
       response => OpenAI::Internal::NextCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -72,12 +73,12 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        group_type: OpenAI::Admin::Organization::Group::GroupType,
-        is_scim_managed: OpenAI::Internal::Type::Boolean,
-        name: String
-      }
+          id: String,
+          created_at: Integer,
+          group_type: OpenAI::Admin::Organization::Group::GroupType,
+          is_scim_managed: OpenAI::Internal::Type::Boolean,
+          name: String
+        }
     end
   end
 
@@ -90,10 +91,10 @@ class OpenAI::Test::Resources::Admin::Organization::GroupsTest < OpenAI::Test::R
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

@@ -12,11 +12,11 @@ class OpenAI::Test::Resources::ConversationsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        metadata: OpenAI::Internal::Type::Unknown,
-        object: Symbol
-      }
+          id: String,
+          created_at: Integer,
+          metadata: OpenAI::Internal::Type::Unknown,
+          object: Symbol
+        }
     end
   end
 
@@ -29,11 +29,11 @@ class OpenAI::Test::Resources::ConversationsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        metadata: OpenAI::Internal::Type::Unknown,
-        object: Symbol
-      }
+          id: String,
+          created_at: Integer,
+          metadata: OpenAI::Internal::Type::Unknown,
+          object: Symbol
+        }
     end
   end
 
@@ -46,11 +46,11 @@ class OpenAI::Test::Resources::ConversationsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        metadata: OpenAI::Internal::Type::Unknown,
-        object: Symbol
-      }
+          id: String,
+          created_at: Integer,
+          metadata: OpenAI::Internal::Type::Unknown,
+          object: Symbol
+        }
     end
   end
 
@@ -63,10 +63,10 @@ class OpenAI::Test::Resources::ConversationsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

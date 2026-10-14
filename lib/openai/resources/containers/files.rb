@@ -7,21 +7,28 @@ module OpenAI
         # @return [OpenAI::Resources::Containers::Files::Content]
         attr_reader :content
 
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Containers::FileCreateParams} for more details.
-        #
         # Create a Container File
         #
         # You can send either a multipart/form-data request with the raw file content, or
         # a JSON request with a file ID.
         #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        #
         # @overload create(container_id, file: nil, file_id: nil, request_options: {})
         #
         # @param container_id [String]
         #
-        # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart] The File object (not file name) to be uploaded.
+        # @param file [Pathname, StringIO, IO, String, OpenAI::FilePart]
+        #   The File object (not file name) to be uploaded.
         #
-        # @param file_id [String] Name of the file to create.
+        #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #   content type.
+        #
+        # @param file_id [String]
+        #   Name of the file to create.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -33,6 +40,7 @@ module OpenAI
           @client.request(
             method: :post,
             path: ["containers/%1$s/files", container_id],
+            headers: parsed[:file].nil? ? nil : {"content-type" => "multipart/form-data"},
             body: parsed,
             model: OpenAI::Models::Containers::FileCreateResponse,
             security: {bearer_auth: true},
@@ -53,10 +61,10 @@ module OpenAI
         # @see OpenAI::Models::Containers::FileRetrieveParams
         def retrieve(file_id, params)
           parsed, options = OpenAI::Containers::FileRetrieveParams.dump_request(params)
-          container_id =
-            parsed.delete(:container_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          container_id = parsed.delete(:container_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :get,
             path: ["containers/%1$s/files/%2$s", container_id, file_id],
@@ -66,20 +74,25 @@ module OpenAI
           )
         end
 
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Containers::FileListParams} for more details.
-        #
         # List Container files
         #
         # @overload list(container_id, after: nil, limit: nil, order: nil, request_options: {})
         #
         # @param container_id [String]
         #
-        # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+        # @param after [String]
+        #   A cursor for use in pagination. `after` is an object ID that defines your place
+        #   in the list. For instance, if you make a list request and receive 100 objects,
+        #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+        #   fetch the next page of the list.
         #
-        # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+        # @param limit [Integer]
+        #   A limit on the number of objects to be returned. Limit can range between 1 and
+        #   100, and the default is 20.
         #
-        # @param order [Symbol, OpenAI::Models::Containers::FileListParams::Order] Sort order by the `created_at` timestamp of the objects. `asc` for ascending ord
+        # @param order [Symbol, OpenAI::Models::Containers::FileListParams::Order]
+        #   Sort order by the `created_at` timestamp of the objects. `asc` for ascending
+        #   order and `desc` for descending order.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -113,10 +126,10 @@ module OpenAI
         # @see OpenAI::Models::Containers::FileDeleteParams
         def delete(file_id, params)
           parsed, options = OpenAI::Containers::FileDeleteParams.dump_request(params)
-          container_id =
-            parsed.delete(:container_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          container_id = parsed.delete(:container_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :delete,
             path: ["containers/%1$s/files/%2$s", container_id, file_id],

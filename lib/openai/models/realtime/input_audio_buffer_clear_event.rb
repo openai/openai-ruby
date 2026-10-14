@@ -20,9 +20,11 @@ module OpenAI
         #   Send this event to clear the audio bytes in the buffer. The server will respond
         #   with an `input_audio_buffer.cleared` event.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"input_audio_buffer.clear"] The event type, must be `input_audio_buffer.clear`.
+        #   @param type [Symbol, :"input_audio_buffer.clear"]
+        #     The event type, must be `input_audio_buffer.clear`.
       end
     end
   end

@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Realtime
       type realtime_transcription_session_audio =
-        { input: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput }
+        { ?input: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput }
 
       class RealtimeTranscriptionSessionAudio < OpenAI::Internal::Type::BaseModel
         attr_reader input: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput?
@@ -16,7 +16,7 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          input: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput
+          ?input: OpenAI::Realtime::RealtimeTranscriptionSessionAudioInput
         }
       end
     end

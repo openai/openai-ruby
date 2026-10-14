@@ -2,18 +2,21 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       ChatKitThreadUserMessageItem = ChatKit::ChatKitThreadUserMessageItem
 
       module ChatKit
+
         class ChatKitThreadUserMessageItem < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Identifier of the thread item.
           sig { returns(String) }
@@ -24,13 +27,7 @@ module OpenAI
           attr_accessor :attachments
 
           # Ordered content elements supplied by the user.
-          sig do
-            returns(
-              T::Array[
-                OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::Variants
-              ]
-            )
-          end
+          sig { returns(T::Array[OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::Variants]) }
           attr_accessor :content
 
           # Unix timestamp (in seconds) for when the item was created.
@@ -38,23 +35,17 @@ module OpenAI
           attr_accessor :created_at
 
           # Inference overrides applied to the message. Defaults to null when unset.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions)) }
           attr_reader :inference_options
 
-          sig do
+          sig {
             params(
-              inference_options:
-                T.nilable(
-                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::OrHash
-                )
-            ).void
-          end
+              inference_options: T.nilable(
+                OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::OrHash
+              )
+            )
+              .void
+          }
           attr_writer :inference_options
 
           # Type discriminator that is always `chatkit.thread_item`.
@@ -71,41 +62,55 @@ module OpenAI
           # User-authored messages within a thread.
           sig do
             params(
+
               id: String,
-              attachments:
-                T::Array[OpenAI::Beta::ChatKit::ChatKitAttachment::OrHash],
-              content:
-                T::Array[
-                  T.any(
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText::OrHash,
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText::OrHash
-                  )
-                ],
+
+              attachments: T::Array[OpenAI::Beta::ChatKit::ChatKitAttachment::OrHash],
+
+              content: T::Array[
+                T.any(
+                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText::OrHash,
+                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText::OrHash
+                )
+              ],
+
               created_at: Integer,
-              inference_options:
-                T.nilable(
-                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::OrHash
-                ),
+
+              inference_options: T.nilable(
+                OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::OrHash
+              ),
+
               thread_id: String,
+
               object: Symbol,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Identifier of the thread item.
             id:,
+
             # Attachments associated with the user message. Defaults to an empty list.
             attachments:,
+
             # Ordered content elements supplied by the user.
             content:,
+
             # Unix timestamp (in seconds) for when the item was created.
             created_at:,
+
             # Inference overrides applied to the message. Defaults to null when unset.
             inference_options:,
+
             # Identifier of the parent thread.
             thread_id:,
+
             # Type discriminator that is always `chatkit.thread_item`.
             object: :"chatkit.thread_item",
+
             type: :"chatkit.user_message"
           )
           end
@@ -115,15 +120,9 @@ module OpenAI
               {
                 id: String,
                 attachments: T::Array[OpenAI::Beta::ChatKit::ChatKitAttachment],
-                content:
-                  T::Array[
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::Variants
-                  ],
+                content: T::Array[OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::Variants],
                 created_at: Integer,
-                inference_options:
-                  T.nilable(
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions
-                  ),
+                inference_options: T.nilable(OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions),
                 object: Symbol,
                 thread_id: String,
                 type: Symbol
@@ -137,22 +136,20 @@ module OpenAI
           module Content
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText,
-                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText,
+                OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText
+              )
+            }
 
             class InputText < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Plain-text content supplied by the user.
               sig { returns(String) }
@@ -164,29 +161,42 @@ module OpenAI
 
               # Text block that a user contributed to the thread.
               sig do
-                params(text: String, type: Symbol).returns(T.attached_class)
+                params(
+
+                  text: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Plain-text content supplied by the user.
                 text:,
+
                 # Type discriminator that is always `input_text`.
+
                 type: :input_text
               )
               end
 
-              sig { override.returns({ text: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {text: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
             class QuotedText < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Quoted text content.
               sig { returns(String) }
@@ -198,40 +208,48 @@ module OpenAI
 
               # Quoted snippet that the user referenced in their message.
               sig do
-                params(text: String, type: Symbol).returns(T.attached_class)
+                params(
+
+                  text: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Quoted text content.
                 text:,
+
                 # Type discriminator that is always `quoted_text`.
+
                 type: :quoted_text
               )
               end
 
-              sig { override.returns({ text: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {text: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::Variants]) }
             def self.variants
             end
+
           end
 
           class InferenceOptions < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Model name that generated the response. Defaults to null when using the session
             # default.
@@ -239,40 +257,41 @@ module OpenAI
             attr_accessor :model
 
             # Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice
-                )
-              )
-            end
+            sig {
+              returns(T.nilable(OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice))
+            }
             attr_reader :tool_choice
 
-            sig do
+            sig {
               params(
-                tool_choice:
-                  T.nilable(
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice::OrHash
-                  )
-              ).void
-            end
+                tool_choice: T.nilable(
+                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice::OrHash
+                )
+              )
+                .void
+            }
             attr_writer :tool_choice
 
             # Inference overrides applied to the message. Defaults to null when unset.
             sig do
               params(
+
                 model: T.nilable(String),
-                tool_choice:
-                  T.nilable(
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice::OrHash
-                  )
-              ).returns(T.attached_class)
+
+                tool_choice: T.nilable(
+                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice::OrHash
+                )
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Model name that generated the response. Defaults to null when using the session
               # default.
               model:,
+
               # Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
+
               tool_choice:
             )
             end
@@ -281,10 +300,9 @@ module OpenAI
               override.returns(
                 {
                   model: T.nilable(String),
-                  tool_choice:
-                    T.nilable(
-                      OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice
-                    )
+                  tool_choice: T.nilable(
+                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice
+                  )
                 }
               )
             end
@@ -292,33 +310,49 @@ module OpenAI
             end
 
             class ToolChoice < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Identifier of the requested tool.
               sig { returns(String) }
               attr_accessor :id
 
               # Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
-              sig { params(id: String).returns(T.attached_class) }
+              sig do
+                params(
+
+                  id: String
+                )
+                  .returns(T.attached_class)
+              end
               def self.new(
+
                 # Identifier of the requested tool.
+
                 id:
               )
               end
 
-              sig { override.returns({ id: String }) }
+              sig do
+                override.returns(
+                  {id: String}
+                )
+              end
               def to_hash
               end
+
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

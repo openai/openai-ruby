@@ -4,12 +4,21 @@ module OpenAI
       { completed: Integer, failed: Integer, total: Integer }
 
     class BatchRequestCounts < OpenAI::Internal::Type::BaseModel
+      # Number of requests that have been completed successfully.
       attr_accessor completed: Integer
 
+      # Number of requests that have failed.
       attr_accessor failed: Integer
 
+      # Total number of requests in the batch.
       attr_accessor total: Integer
 
+      # @param completed
+      #   Number of requests that have been completed successfully.
+      # @param failed
+      #   Number of requests that have failed.
+      # @param total
+      #   Total number of requests in the batch.
       def initialize: (
         completed: Integer,
         failed: Integer,

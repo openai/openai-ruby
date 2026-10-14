@@ -29,11 +29,14 @@ module OpenAI
         #   with a `conversation.item.retrieved` event, unless the item does not exist in
         #   the conversation history, in which case the server will respond with an error.
         #
-        #   @param item_id [String] The ID of the item to retrieve.
+        #   @param item_id [String]
+        #     The ID of the item to retrieve.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"conversation.item.retrieve"] The event type, must be `conversation.item.retrieve`.
+        #   @param type [Symbol, :"conversation.item.retrieve"]
+        #     The event type, must be `conversation.item.retrieve`.
       end
     end
   end

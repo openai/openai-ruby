@@ -12,10 +12,10 @@ class OpenAI::Test::Resources::Admin::Organization::Users::RolesTest < OpenAI::T
 
     assert_pattern do
       response => {
-        object: Symbol,
-        role: OpenAI::Admin::Organization::Role,
-        user: OpenAI::Admin::Organization::OrganizationUser
-      }
+          object: Symbol,
+          role: OpenAI::Admin::Organization::Role,
+          user: OpenAI::Admin::Organization::OrganizationUser
+        }
     end
   end
 
@@ -28,19 +28,21 @@ class OpenAI::Test::Resources::Admin::Organization::Users::RolesTest < OpenAI::T
 
     assert_pattern do
       response => {
-        id: String,
-        assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse::AssignmentSource]) | nil,
-        created_at: Integer | nil,
-        created_by: String | nil,
-        created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
-        description: String | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
-        name: String,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String,
-        updated_at: Integer | nil
-      }
+          id: String,
+          assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[
+            OpenAI::Models::Admin::Organization::Users::RoleRetrieveResponse::AssignmentSource
+          ]) | nil,
+          created_at: Integer | nil,
+          created_by: String | nil,
+          created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+          description: String | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+          name: String,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String,
+          updated_at: Integer | nil
+        }
     end
   end
 
@@ -51,7 +53,8 @@ class OpenAI::Test::Resources::Admin::Organization::Users::RolesTest < OpenAI::T
       response => OpenAI::Internal::NextCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -60,19 +63,21 @@ class OpenAI::Test::Resources::Admin::Organization::Users::RolesTest < OpenAI::T
 
     assert_pattern do
       row => {
-        id: String,
-        assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource]) | nil,
-        created_at: Integer | nil,
-        created_by: String | nil,
-        created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
-        description: String | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
-        name: String,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String,
-        updated_at: Integer | nil
-      }
+          id: String,
+          assignment_sources: ^(OpenAI::Internal::Type::ArrayOf[
+            OpenAI::Models::Admin::Organization::Users::RoleListResponse::AssignmentSource
+          ]) | nil,
+          created_at: Integer | nil,
+          created_by: String | nil,
+          created_by_user_obj: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+          description: String | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]) | nil,
+          name: String,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String,
+          updated_at: Integer | nil
+        }
     end
   end
 
@@ -85,9 +90,9 @@ class OpenAI::Test::Resources::Admin::Organization::Users::RolesTest < OpenAI::T
 
     assert_pattern do
       response => {
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: String
-      }
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: String
+        }
     end
   end
 end

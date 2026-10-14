@@ -22,15 +22,14 @@ module OpenAI
               required :object, String
 
               # @!method initialize(deleted:, object:)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Admin::Organization::Projects::Users::RoleDeleteResponse} for
-              #   more details.
-              #
               #   Confirmation payload returned after unassigning a role.
               #
-              #   @param deleted [Boolean] Whether the assignment was removed.
+              #   @param deleted [Boolean]
+              #     Whether the assignment was removed.
               #
-              #   @param object [String] Identifier for the deleted assignment, such as `group.role.deleted` or `user.rol
+              #   @param object [String]
+              #     Identifier for the deleted assignment, such as `group.role.deleted` or
+              #     `user.role.deleted`.
             end
           end
         end

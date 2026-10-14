@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Beta
+      type hosted_plugin_param =
+        {
+          description: String,
+          name: String,
+          source: OpenAI::Beta::InlineCapabilitySourceParam,
+          ?type: :inline
+        }
+
+      class HostedPluginParam < OpenAI::Internal::Type::BaseModel
+        # The plugin description declared in `.codex-plugin/plugin.json`.
+        attr_accessor description: String
+
+        # The plugin name declared in `.codex-plugin/plugin.json`.
+        attr_accessor name: String
+
+        # Provides ZIP bytes encoded with standard base64.
+        attr_accessor source: OpenAI::Beta::InlineCapabilitySourceParam
+
+        # The type of the object. Always `inline`.
+        attr_accessor type: :inline
+
+        # @param description
+        #   The plugin description declared in `.codex-plugin/plugin.json`.
+        # @param name
+        #   The plugin name declared in `.codex-plugin/plugin.json`.
+        # @param source
+        #   Provides ZIP bytes encoded with standard base64.
+        # @param type
+        #   The type of the object. Always `inline`.
+        def initialize: (
+          description: String,
+          name: String,
+          source: OpenAI::Beta::InlineCapabilitySourceParam,
+          ?type: :inline
+        ) -> void
+
+        def to_hash: -> {
+          description: String,
+          name: String,
+          source: OpenAI::Beta::InlineCapabilitySourceParam,
+          ?type: :inline
+        }
+      end
+    end
+  end
+end

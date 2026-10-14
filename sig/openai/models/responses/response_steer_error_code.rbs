@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_steer_error_code =
+        :response_not_found
+        | :invalid_input
+        | :steering_not_supported
+        | :too_many_pending_steers
+        | :response_already_completed
+        | :response_not_active
+        | :successor_creation_failed
+        | String
+
+      module ResponseSteerErrorCode
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_steer_error_code]
+
+        RESPONSE_NOT_FOUND: :response_not_found
+        INVALID_INPUT: :invalid_input
+        STEERING_NOT_SUPPORTED: :steering_not_supported
+        TOO_MANY_PENDING_STEERS: :too_many_pending_steers
+        RESPONSE_ALREADY_COMPLETED: :response_already_completed
+        RESPONSE_NOT_ACTIVE: :response_not_active
+        SUCCESSOR_CREATION_FAILED: :successor_creation_failed
+      end
+    end
+  end
+end

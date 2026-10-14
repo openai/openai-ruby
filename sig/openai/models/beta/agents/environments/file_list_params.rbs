@@ -1,0 +1,86 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module Environments
+          type file_list_params =
+            {
+              environment_id: String,
+              ?limit: Integer?,
+              ?order: OpenAI::Models::Beta::Agents::Environments::FileListParams::order,
+              ?page: String,
+              ?path: String?,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class FileListParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor environment_id: String
+
+            # The maximum number of files to return, between 1 and 100.
+            attr_accessor limit: Integer?
+
+            # Sort by case-sensitive path components. Defaults to descending.
+            attr_reader order: OpenAI::Models::Beta::Agents::Environments::FileListParams::order?
+
+            # Sort by case-sensitive path components. Defaults to descending.
+            def order=: (
+              OpenAI::Models::Beta::Agents::Environments::FileListParams::order
+            ) -> OpenAI::Models::Beta::Agents::Environments::FileListParams::order
+
+            # The opaque token from the previous page. Keep the same path, order, and limit.
+            attr_reader page: String?
+
+            # The opaque token from the previous page. Keep the same path, order, and limit.
+            def page=: (String) -> String
+
+            # Restrict the listing to this absolute workspace directory.
+            attr_accessor path: String?
+
+            # @param limit
+            #   The maximum number of files to return, between 1 and 100.
+            # @param order
+            #   Sort by case-sensitive path components. Defaults to descending.
+            # @param page
+            #   The opaque token from the previous page. Keep the same path, order, and limit.
+            # @param path
+            #   Restrict the listing to this absolute workspace directory.
+            def initialize: (
+              environment_id: String,
+              ?limit: Integer?,
+              ?order: OpenAI::Models::Beta::Agents::Environments::FileListParams::order,
+              ?page: String,
+              ?path: String?,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              environment_id: String,
+              ?limit: Integer?,
+              ?order: OpenAI::Models::Beta::Agents::Environments::FileListParams::order,
+              ?page: String,
+              ?path: String?,
+              ?request_options: OpenAI::RequestOptions
+            }
+
+            type order = :asc | :desc
+
+            module Order
+              extend OpenAI::Internal::Type::Enum
+
+              # Returns resources in ascending order.
+              ASC: :asc
+
+              # Returns resources in descending order.
+              DESC: :desc
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Environments::FileListParams::order]
+            end
+          end
+        end
+      end
+    end
+  end
+end

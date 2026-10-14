@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ToolChoiceMcp < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Responses::ToolChoiceMcp, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ToolChoiceMcp,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The label of the MCP server to use.
         sig { returns(String) }
@@ -25,29 +30,40 @@ module OpenAI
         # server.
         sig do
           params(
+
             server_label: String,
+
             name: T.nilable(String),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The label of the MCP server to use.
           server_label:,
+
           # The name of the tool to call on the server.
           name: nil,
+
           # For MCP tools, the type is always `mcp`.
+
           type: :mcp
         )
         end
 
         sig do
           override.returns(
-            { server_label: String, type: Symbol, name: T.nilable(String) }
+            {server_label: String, type: Symbol, name: T.nilable(String)}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

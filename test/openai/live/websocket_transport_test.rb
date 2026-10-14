@@ -1,0 +1,318 @@
+# frozen_string_literal: true
+
+require_relative "../test_helper"
+require "async/http/endpoint"
+require "async/http/server"
+require "async/websocket/adapters/http"
+require "async/websocket/server"
+require "async/websocket/client"
+require "socket"
+
+class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
+  extend Minitest::Serial
+
+  def test_live_primary_handshake_start_ready_flow_on_local_socket
+    accept = Queue.new
+    wire = Queue.new
+    listener = TCPServer.new("127.0.0.1", 0)
+    port = listener.local_address.ip_port
+    listener.close
+    endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
+    fallback = -> (_) { Protocol::HTTP::Response[404, {}, []] }
+    websocket = Async::WebSocket::Server.new(fallback) do |connection|
+      message = JSON.parse(connection.read.to_str)
+      wire << message
+      connection.write(
+        JSON.generate(
+          type: "session.started",
+          event_id: "start_1",
+          session: {id: "sess_local", model: "gpt-live-1", expires_at: 2000000000, status: "active"}
+        )
+      )
+      connection.flush
+      wire << JSON.parse(connection.read.to_str)
+      connection.write(
+        JSON.generate(
+          type: "session.closed",
+          event_id: "close_1",
+          session: {id: "sess_local", model: "gpt-live-1", expires_at: 2000000000, status: "active"},
+          reason: "close_requested",
+          usage: {seconds: 0}
+        )
+      )
+      connection.flush
+    end
+
+    app = lambda do |request|
+      accept << [request.path, request.headers["authorization"], request.headers["x-live-test"]]
+      websocket.call(request)
+    end
+
+    server = Async::HTTP::Server.new(app, endpoint)
+    Sync do |task|
+      server_task = task.async { server.run.wait }
+      api = OpenAI::Client.new(api_key: "sk-test-local", base_url: "http://127.0.0.1:#{port}/v1", timeout: 5)
+      task.with_timeout(5) do
+        result = api.live.connect(request_options: {extra_headers: {"X-Live-Test" => "value"}}) do |connection|
+          assert_equal(["/v1/live/sessions", "Bearer sk-test-local", ["value"]], accept.pop(timeout: 1))
+          assert(wire.empty?, "the SDK must not send startup before the caller chooses to")
+          connection.send_event(type: "session.start", session: {model: "gpt-live-1", store: false})
+          ready = connection.receive
+          assert_instance_of(OpenAI::Live::SessionStartedEvent, ready)
+          assert_equal("sess_local", ready.session.id)
+          connection.send_event(type: "session.close")
+          closed = connection.receive
+          assert_instance_of(OpenAI::Live::SessionClosedEvent, closed)
+          :finished
+        end
+
+        assert_equal(:finished, result)
+      end
+
+      assert_equal("session.start", wire.pop(timeout: 1).fetch("type"))
+      assert_equal("session.close", wire.pop(timeout: 1).fetch("type"))
+    ensure
+      server_task&.stop
+    end
+  end
+
+  def test_default_transport_does_not_chain_raw_handshake_errors
+    failure = -> (*) { raise IOError, "private-payload" }
+    error = Async::WebSocket::Client.stub(:open, failure) do
+      assert_raises(OpenAI::Errors::LiveConnectionError) do
+        OpenAI::Client.new(api_key: "fake-key", base_url: "http://127.0.0.1:12345/v1").live.connect { flunk }
+      end
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message, "private-payload")
+  end
+
+  def test_default_transport_failure_keeps_client_base_url_credentials_out_of_errors
+    source_url = "http://fake-live-user:fake-live-secret@127.0.0.1:12345/v1"
+    api = OpenAI::Client.new(api_key: "fake-key", base_url: source_url)
+    requested = nil
+    failure = lambda do |endpoint, **|
+      requested = endpoint.url.dup
+      raise IOError, "fake-live-private-body"
+    end
+
+    error = Async::WebSocket::Client.stub(:open, failure) do
+      assert_raises(OpenAI::Errors::LiveConnectionError) { api.live.connect { flunk } }
+    end
+
+    assert_equal("fake-live-user:fake-live-secret", requested.userinfo)
+    assert_equal("http://fake-live-user:fake-live-secret@127.0.0.1:12345/v1", source_url)
+    assert_nil(error.url.userinfo)
+    assert_nil(error.cause)
+    assert_equal("/v1/live/sessions", error.url.path)
+    ["fake-live-user", "fake-live-secret", "fake-live-private-body"].each do |secret|
+      refute_includes(error.url.to_s, secret)
+      refute_includes(error.full_message, secret)
+    end
+  end
+
+  def test_sideband_and_fork_routes_real_websocket_auth_and_role_lifecycle
+    requests = Queue.new
+    handshakes = Queue.new
+    writes = Queue.new
+    listener = TCPServer.new("127.0.0.1", 0)
+    port = listener.local_address.ip_port
+    listener.close
+    endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
+    fallback = -> (_) { Protocol::HTTP::Response[404, {}, []] }
+    socket_server = Async::WebSocket::Server.new(fallback) do |connection|
+      path = requests.pop(timeout: 2).fetch(:path)
+      if path.end_with?("/attach")
+        # Subscription may replay an event immediately; there is no fresh startup.
+        connection.write(JSON.generate(type: "session.input_audio.append", audio: "AA=="))
+        connection.flush
+        writes << JSON.parse(connection.read.to_str)
+      else
+        start = JSON.parse(connection.read.to_str)
+        writes << start
+        connection.write(
+          JSON.generate(
+            type: "session.started",
+            event_id: "start_1",
+            session: {id: "live_fork", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"}
+          )
+        )
+        connection.flush
+        writes << JSON.parse(connection.read.to_str)
+      end
+    end
+
+    app = lambda do |request|
+      path, auth = request.path, request.headers["authorization"]
+      handshakes << [request.method, path, auth]
+      if auth != "Bearer fake-observer"
+        Protocol::HTTP::Response[403, {"content-type" => "application/json"}, ["{\"message\":\"private-body\"}"]]
+      else
+        requests << {path: path, method: request.method}
+        socket_server.call(request)
+      end
+    end
+
+    server = Async::HTTP::Server.new(app, endpoint)
+    api = OpenAI::Client.new(api_key: "fake-key", base_url: "http://127.0.0.1:#{port}/v1", timeout: 5)
+    Sync do |task|
+      server_task = task.async { server.run.wait }
+      task.with_timeout(5) do
+        denied = assert_raises(OpenAI::Errors::LiveConnectionError) {
+          api.live.sideband.connect("live_source") { flunk }
+        }
+        assert_equal(403, denied.http_status)
+        assert_nil(denied.cause)
+        refute_includes(denied.full_message, "private-body")
+        denied = assert_raises(OpenAI::Errors::LiveConnectionError) {
+          api.live.forks.connect("live_stored") { flunk }
+        }
+        assert_equal(403, denied.http_status)
+        assert_equal(["GET", "/v1/live/sessions/live_source/attach", "Bearer fake-key"], handshakes.pop(timeout: 1))
+        assert_equal(["GET", "/v1/live/sessions/live_stored/fork", "Bearer fake-key"], handshakes.pop(timeout: 1))
+
+        options = {extra_headers: {"authorization" => "Bearer fake-observer"}}
+        api.live.sideband.connect("live_source", request_options: options) do |connection|
+          assert_equal("/v1/live/sessions/live_source/attach", connection.url.path)
+          reflected = connection.receive
+          assert_instance_of(OpenAI::Live::ServerEvent::SessionInputAudioAppend, reflected)
+          assert_equal("AA==", reflected.audio)
+          assert_raises(ArgumentError) { connection.send_event(type: "session.start", session: {model: "gpt-live-1"}) }
+          connection.send_event(type: "session.input_audio.mute")
+        end
+
+        assert_equal({"type" => "session.input_audio.mute"}, writes.pop(timeout: 1))
+        assert_equal(
+          ["GET", "/v1/live/sessions/live_source/attach", "Bearer fake-observer"],
+          handshakes.pop(timeout: 1)
+        )
+
+        api.live.forks.connect("live_stored", request_options: options) do |connection|
+          assert_equal("/v1/live/sessions/live_stored/fork", connection.url.path)
+          assert(writes.empty?, "transport opening must not invent fork startup")
+          assert_raises(ArgumentError) { connection.send_event(type: "session.start", session: {model: "gpt-live-1"}) }
+          connection.send_event(OpenAI::Live::ForkSessionStartEvent.new(session: {}))
+          assert_equal("live_fork", connection.receive.session.id)
+          connection.send_event(type: "session.close")
+        end
+
+        assert_equal({"type" => "session.start", "session" => {}}, writes.pop(timeout: 1))
+        assert_equal({"type" => "session.close"}, writes.pop(timeout: 1))
+        assert_equal(["GET", "/v1/live/sessions/live_stored/fork", "Bearer fake-observer"], handshakes.pop(timeout: 1))
+      end
+
+    ensure
+      server_task&.stop
+    end
+  end
+
+  %i[primary fork sideband].each do |role|
+    define_method("test_#{role}_early_iteration_keeps_reading_after_storage_failure_and_closes_on_block_exit") do
+      wire = Queue.new
+      listener = TCPServer.new("127.0.0.1", 0)
+      port = listener.local_address.ip_port
+      listener.close
+      endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
+      fallback = -> (_) { Protocol::HTTP::Response[404, {}, []] }
+      server = Async::HTTP::Server.new(
+        Async::WebSocket::Server.new(fallback) do |socket|
+          unless role == :sideband
+            wire << JSON.parse(socket.read.to_str)
+            socket.write(
+              JSON.generate(
+                type: "session.started",
+                event_id: "start_1",
+                session: {id: "sess_local", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"}
+              )
+            )
+          end
+
+          socket.write(JSON.generate(type: "future.server.event", nested: {choices: [nil, "future-value"]}))
+          socket.flush
+          # The peer waits for the caller after they stop iterating. An early
+          # break must leave the same socket available for sending and receiving.
+          wire << JSON.parse(socket.read.to_str)
+          socket.write(
+            JSON.generate(
+              type: "error",
+              event_id: "failure_1",
+              error: {type: "server_error", code: "session_storage_failed", message: "not stored"}
+            )
+          )
+          socket.write(
+            JSON.generate(
+              type: "session.closed",
+              event_id: "close_1",
+              session: {id: "sess_local", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"},
+              reason: "close_requested",
+              usage: {seconds: 0}
+            )
+          )
+          socket.flush
+          wire << [:eof, socket.read]
+        end,
+        endpoint
+      )
+
+      Sync do |task|
+        server_task = task.async { server.run.wait }
+        api = OpenAI::Client.new(api_key: "sk-test-local", base_url: "http://127.0.0.1:#{port}/v1", timeout: 5)
+        task.with_timeout(5) do
+          live_connection = nil
+          consume = lambda do |connection|
+            live_connection = connection
+            assert(wire.empty?, "opening the transport cannot send a startup event")
+            case role
+            when :primary
+              connection.send_event(type: "session.start", session: {model: "gpt-live-1", store: false})
+            when :fork
+              connection.send_event(OpenAI::Live::ForkSessionStartEvent.new(session: {}))
+            end
+
+            unless role == :sideband
+              assert_instance_of(OpenAI::Live::SessionStartedEvent, connection.receive)
+              assert_equal("session.start", wire.pop(timeout: 1).fetch("type"))
+            end
+
+            future = connection.each do |event|
+              break event if event.is_a?(OpenAI::Live::UnknownServerEvent)
+            end
+
+            assert_instance_of(OpenAI::Live::UnknownServerEvent, future)
+            assert_equal({type: "future.server.event", nested: {choices: [nil, "future-value"]}}, future.data)
+            assert_raises(FrozenError) { future.data.fetch(:nested).fetch(:choices) << "changed" }
+            refute_predicate(connection, :closed?)
+            connection.send_event(type: "session.close")
+            failed = connection.receive
+            assert_instance_of(OpenAI::Live::ErrorEvent, failed)
+            assert_equal("session_storage_failed", failed.error.code)
+            closed = connection.receive
+            assert_instance_of(OpenAI::Live::SessionClosedEvent, closed)
+            assert_equal(:close_requested, closed.reason)
+            refute_predicate(connection, :closed?, "a session.closed event is not the socket close")
+            :finished
+          end
+
+          result = case role
+          when :primary
+            api.live.connect(&consume)
+          when :fork
+            api.live.forks.connect("sess_stored", &consume)
+          when :sideband
+            api.live.sideband.connect("sess_live", &consume)
+          end
+
+          assert_equal(:finished, result)
+          assert_predicate(live_connection, :closed?)
+          assert_equal({"type" => "session.close"}, wire.pop(timeout: 1))
+          assert_equal([:eof, nil], wire.pop(timeout: 1), "peer saw EOF on the same socket after block exit")
+          assert(wire.empty?, "no invented startup, reconnect or additional frames")
+        end
+
+      ensure
+        server_task&.stop
+      end
+    end
+  end
+end

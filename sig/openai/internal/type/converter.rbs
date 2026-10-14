@@ -9,10 +9,12 @@ module OpenAI
         type coerce_state =
           {
             translate_names: bool,
+            request_only: bool,
             strictness: bool,
             exactness: { yes: Integer, no: Integer, maybe: Integer },
-            error: Class,
-            branched: Integer
+            error: StandardError?,
+            branched: Integer,
+            memo: Hash[untyped, untyped]?
           }
 
         type dump_state = { can_retry: bool }
@@ -57,7 +59,9 @@ module OpenAI
         ) -> ::Hash[Symbol, top]
 
         def self.new_coerce_state: (
-          ?translate_names: bool
+          ?translate_names: bool,
+          ?request_only: bool,
+          ?memoize: bool
         ) -> OpenAI::Internal::Type::Converter::coerce_state
 
         def self.coerce: (
@@ -65,6 +69,24 @@ module OpenAI
           top value,
           ?state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> top
+
+        # @api private
+        def self.resolve_type: (
+          ^-> untyped type_fn,
+          ?state: coerce_state?
+        ) -> untyped
+
+        def self.coerce_cached: (
+          OpenAI::Internal::Type::Converter target,
+          Hash[untyped, untyped] | Array[untyped] value,
+          state: OpenAI::Internal::Type::Converter::coerce_state
+        ) -> untyped
+
+        def self.coerce_with_error: (
+          OpenAI::Internal::Type::Converter::input target,
+          top value,
+          state: OpenAI::Internal::Type::Converter::coerce_state
+        ) -> [top, StandardError?]
 
         def self.dump: (
           OpenAI::Internal::Type::Converter::input target,

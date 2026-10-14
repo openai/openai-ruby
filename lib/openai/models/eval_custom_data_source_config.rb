@@ -17,9 +17,6 @@ module OpenAI
       required :type, const: :custom
 
       # @!method initialize(schema:, type: :custom)
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::EvalCustomDataSourceConfig} for more details.
-      #
       #   A CustomDataSourceConfig which specifies the schema of your `item` and
       #   optionally `sample` namespaces. The response schema defines the shape of the
       #   data that will be:
@@ -27,9 +24,12 @@ module OpenAI
       #   - Used to define your testing criteria and
       #   - What data is required when creating a run
       #
-      #   @param schema [Hash{Symbol=>Object}] The json schema for the run data source items.
+      #   @param schema [Hash{Symbol=>Object}]
+      #     The json schema for the run data source items. Learn how to build JSON schemas
+      #     [here](https://json-schema.org/).
       #
-      #   @param type [Symbol, :custom] The type of data source. Always `custom`.
+      #   @param type [Symbol, :custom]
+      #     The type of data source. Always `custom`.
     end
   end
 end

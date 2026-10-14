@@ -5,13 +5,19 @@ module OpenAI
 
       module Organization
         type organization_spend_limit_deleted =
-          { deleted: bool, object: :"organization.spend_limit.deleted" }
+          { deleted: bool, ?object: :"organization.spend_limit.deleted" }
 
         class OrganizationSpendLimitDeleted < OpenAI::Internal::Type::BaseModel
+          # Whether the hard spend limit was deleted.
           attr_accessor deleted: bool
 
+          # The object type, which is always `organization.spend_limit.deleted`.
           attr_accessor object: :"organization.spend_limit.deleted"
 
+          # @param deleted
+          #   Whether the hard spend limit was deleted.
+          # @param object
+          #   The object type, which is always `organization.spend_limit.deleted`.
           def initialize: (
             deleted: bool,
             ?object: :"organization.spend_limit.deleted"
@@ -19,7 +25,7 @@ module OpenAI
 
           def to_hash: -> {
             deleted: bool,
-            object: :"organization.spend_limit.deleted"
+            ?object: :"organization.spend_limit.deleted"
           }
         end
       end

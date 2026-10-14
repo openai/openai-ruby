@@ -2,21 +2,31 @@ module OpenAI
   module Models
     module Realtime
       type output_audio_buffer_clear_event =
-        { type: :"output_audio_buffer.clear", event_id: String }
+        { ?type: :"output_audio_buffer.clear", ?event_id: String }
 
       class OutputAudioBufferClearEvent < OpenAI::Internal::Type::BaseModel
+        # The event type, must be `output_audio_buffer.clear`.
         attr_accessor type: :"output_audio_buffer.clear"
 
+        # The unique ID of the client event used for error handling.
         attr_reader event_id: String?
 
+        # The unique ID of the client event used for error handling.
         def event_id=: (String) -> String
 
+        # @param event_id
+        #   The unique ID of the client event used for error handling.
+        # @param type
+        #   The event type, must be `output_audio_buffer.clear`.
         def initialize: (
           ?event_id: String,
           ?type: :"output_audio_buffer.clear"
         ) -> void
 
-        def to_hash: -> { type: :"output_audio_buffer.clear", event_id: String }
+        def to_hash: -> {
+          ?type: :"output_audio_buffer.clear",
+          ?event_id: String
+        }
       end
     end
   end

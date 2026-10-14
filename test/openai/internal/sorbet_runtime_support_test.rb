@@ -36,7 +36,6 @@ class OpenAI::Test::SorbetRuntimeSupportTest < Minitest::Test
     assert_raises(err) { OpenAI::Internal::Util::ServerSentEvent }
     assert_raises(err) { OpenAI::Internal::Transport::BaseClient::RequestComponents }
     assert_raises(err) { OpenAI::Internal::Transport::BaseClient::RequestInput }
-    assert_raises(err) { OpenAI::Internal::Transport::PooledNetRequester::Request }
     assert_raises(err) { E::TaggedSymbol }
     assert_raises(err) { U::Variants }
     assert_raises(err) { M::OrHash }

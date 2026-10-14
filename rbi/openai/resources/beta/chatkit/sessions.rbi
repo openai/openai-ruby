@@ -2,23 +2,25 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class ChatKit
+
         class Sessions
+
           # Create a ChatKit session.
-          sig do
+          sig {
             params(
               user: String,
               workflow: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::OrHash,
-              chatkit_configuration:
-                OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::OrHash,
-              expires_after:
-                OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam::OrHash,
-              rate_limits:
-                OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam::OrHash,
+              chatkit_configuration: OpenAI::Beta::ChatKit::ChatSessionChatKitConfigurationParam::OrHash,
+              expires_after: OpenAI::Beta::ChatKit::ChatSessionExpiresAfterParam::OrHash,
+              rate_limits: OpenAI::Beta::ChatKit::ChatSessionRateLimitsParam::OrHash,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::ChatKit::ChatSession)
-          end
+            )
+              .returns(OpenAI::Beta::ChatKit::ChatSession)
+          }
           def create(
             # A free-form string that identifies your end user; ensures this Session can
             # access other objects that have the same `user` scope.
@@ -39,12 +41,11 @@ module OpenAI
           # Cancel an active ChatKit session and return its most recent metadata.
           #
           # Cancelling prevents new requests from using the issued client secret.
-          sig do
-            params(
-              session_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Beta::ChatKit::ChatSession)
-          end
+          sig {
+            params(session_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::ChatKit::ChatSession
+            )
+          }
           def cancel(
             # Unique identifier for the ChatKit session to cancel.
             session_id,
@@ -57,7 +58,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

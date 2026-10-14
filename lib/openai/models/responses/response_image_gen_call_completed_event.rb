@@ -32,13 +32,17 @@ module OpenAI
         #   Emitted when an image generation tool call has completed and the final image is
         #   available.
         #
-        #   @param item_id [String] The unique identifier of the image generation item being processed.
+        #   @param item_id [String]
+        #     The unique identifier of the image generation item being processed.
         #
-        #   @param output_index [Integer] The index of the output item in the response's output array.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response's output array.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.image_generation_call.completed"] The type of the event. Always 'response.image_generation_call.completed'.
+        #   @param type [Symbol, :"response.image_generation_call.completed"]
+        #     The type of the event. Always 'response.image_generation_call.completed'.
       end
     end
   end

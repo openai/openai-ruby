@@ -2,14 +2,18 @@
 
 module OpenAI
   module Models
+
     class VectorStoreSearchParams < OpenAI::Internal::Type::BaseModel
+
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::VectorStoreSearchParams, OpenAI::Internal::AnyHash)
-        end
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::VectorStoreSearchParams,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       sig { returns(String) }
       attr_accessor :vector_store_id
@@ -19,22 +23,10 @@ module OpenAI
       attr_accessor :query
 
       # A filter to apply based on file attributes.
-      sig do
-        returns(
-          T.nilable(T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter))
-        )
-      end
+      sig { returns(T.nilable(T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter))) }
       attr_reader :filters
 
-      sig do
-        params(
-          filters:
-            T.any(
-              OpenAI::ComparisonFilter::OrHash,
-              OpenAI::CompoundFilter::OrHash
-            )
-        ).void
-      end
+      sig { params(filters: T.any(OpenAI::ComparisonFilter::OrHash, OpenAI::CompoundFilter::OrHash)).void }
       attr_writer :filters
 
       # The maximum number of results to return. This number should be between 1 and 50
@@ -46,17 +38,10 @@ module OpenAI
       attr_writer :max_num_results
 
       # Ranking options for search.
-      sig do
-        returns(T.nilable(OpenAI::VectorStoreSearchParams::RankingOptions))
-      end
+      sig { returns(T.nilable(OpenAI::VectorStoreSearchParams::RankingOptions)) }
       attr_reader :ranking_options
 
-      sig do
-        params(
-          ranking_options:
-            OpenAI::VectorStoreSearchParams::RankingOptions::OrHash
-        ).void
-      end
+      sig { params(ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions::OrHash).void }
       attr_writer :ranking_options
 
       # Whether to rewrite the natural language query for vector search.
@@ -68,33 +53,43 @@ module OpenAI
 
       sig do
         params(
+
           vector_store_id: String,
+
           query: OpenAI::VectorStoreSearchParams::Query::Variants,
-          filters:
-            T.any(
-              OpenAI::ComparisonFilter::OrHash,
-              OpenAI::CompoundFilter::OrHash
-            ),
+
+          filters: T.any(OpenAI::ComparisonFilter::OrHash, OpenAI::CompoundFilter::OrHash),
+
           max_num_results: Integer,
-          ranking_options:
-            OpenAI::VectorStoreSearchParams::RankingOptions::OrHash,
+
+          ranking_options: OpenAI::VectorStoreSearchParams::RankingOptions::OrHash,
+
           rewrite_query: T::Boolean,
+
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         vector_store_id:,
+
         # A query string for a search
         query:,
+
         # A filter to apply based on file attributes.
         filters: nil,
+
         # The maximum number of results to return. This number should be between 1 and 50
         # inclusive.
         max_num_results: nil,
+
         # Ranking options for search.
         ranking_options: nil,
+
         # Whether to rewrite the natural language query for vector search.
         rewrite_query: nil,
+
         request_options: {}
       )
       end
@@ -121,64 +116,42 @@ module OpenAI
 
         Variants = T.type_alias { T.any(String, T::Array[String]) }
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::VectorStoreSearchParams::Query::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::VectorStoreSearchParams::Query::Variants]) }
         def self.variants
         end
 
-        StringArray =
-          T.let(
-            OpenAI::Internal::Type::ArrayOf[String],
-            OpenAI::Internal::Type::Converter
-          )
+        StringArray = T.let(
+          OpenAI::Internal::Type::ArrayOf[String],
+          OpenAI::Internal::Type::Converter
+        )
+
       end
 
       # A filter to apply based on file attributes.
       module Filters
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter)
-          end
+        Variants = T.type_alias { T.any(OpenAI::ComparisonFilter, OpenAI::CompoundFilter) }
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::VectorStoreSearchParams::Filters::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::VectorStoreSearchParams::Filters::Variants]) }
         def self.variants
         end
+
       end
 
       class RankingOptions < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::VectorStoreSearchParams::RankingOptions,
-              OpenAI::Internal::AnyHash
-            )
-          end
-
-        # Enable re-ranking; set to `none` to disable, which can help reduce latency.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol
-            )
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::VectorStoreSearchParams::RankingOptions,
+            OpenAI::Internal::AnyHash
           )
         end
+
+        # Enable re-ranking; set to `none` to disable, which can help reduce latency.
+        sig { returns(T.nilable(OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol)) }
         attr_reader :ranker
 
-        sig do
-          params(
-            ranker:
-              OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol
-          ).void
-        end
+        sig { params(ranker: OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol).void }
         attr_writer :ranker
 
         sig { returns(T.nilable(Float)) }
@@ -190,25 +163,25 @@ module OpenAI
         # Ranking options for search.
         sig do
           params(
-            ranker:
-              OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol,
+
+            ranker: OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol,
+
             score_threshold: Float
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Enable re-ranking; set to `none` to disable, which can help reduce latency.
           ranker: nil,
+
           score_threshold: nil
         )
         end
 
         sig do
           override.returns(
-            {
-              ranker:
-                OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol,
-              score_threshold: Float
-            }
+            {ranker: OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::OrSymbol, score_threshold: Float}
           )
         end
         def to_hash
@@ -218,42 +191,23 @@ module OpenAI
         module Ranker
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::VectorStoreSearchParams::RankingOptions::Ranker
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::VectorStoreSearchParams::RankingOptions::Ranker) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          NONE =
-            T.let(
-              :none,
-              OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol
-            )
-          AUTO =
-            T.let(
-              :auto,
-              OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol
-            )
-          DEFAULT_2024_11_15 =
-            T.let(
-              :"default-2024-11-15",
-              OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol
-            )
+          NONE = T.let(:none, OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol)
+          AUTO = T.let(:auto, OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol)
+          DEFAULT_2024_11_15 = T.let(
+            :"default-2024-11-15",
+            OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol
+          )
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::VectorStoreSearchParams::RankingOptions::Ranker::TaggedSymbol]) }
           def self.values
           end
         end
       end
+
     end
+
   end
 end

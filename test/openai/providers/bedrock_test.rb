@@ -1,67 +1,206 @@
 # frozen_string_literal: true
 
-require_relative "../test_helper"
-
-require "aws-sdk-core"
-require "fileutils"
-require "tmpdir"
+require_relative "bedrock_test_helper"
 
 class OpenAI::Test::BedrockProviderTest < Minitest::Test
   extend Minitest::Serial
-  include WebMock::API
+  include OpenAI::Test::BedrockTestHelper
 
-  ENVIRONMENT_VARIABLES = %w[
-    AWS_ACCESS_KEY_ID
-    AWS_BEARER_TOKEN_BEDROCK
-    AWS_BEDROCK_BASE_URL
-    AWS_CONFIG_FILE
-    AWS_DEFAULT_PROFILE
-    AWS_DEFAULT_REGION
-    AWS_EC2_METADATA_DISABLED
-    AWS_PROFILE
-    AWS_REGION
-    AWS_SDK_CONFIG_OPT_OUT
-    AWS_SECRET_ACCESS_KEY
-    AWS_SESSION_TOKEN
-    AWS_SHARED_CREDENTIALS_FILE
-    OPENAI_ADMIN_KEY
-    OPENAI_API_KEY
-    OPENAI_BASE_URL
-    OPENAI_CUSTOM_HEADERS
-    OPENAI_ORG_ID
-    OPENAI_PROJECT_ID
-  ].freeze
+  def test_inference_routes_match_the_documented_model_and_endpoint
+    # AWS model cards specify /v1 for GPT OSS and /openai/v1 for GPT-6.1 Sol on Mantle.
+    [
+      {api_key: "bedrock-token"},
+      {access_key_id: "access-key", secret_access_key: "secret-key"}
+    ].each do |authentication|
+      ["openai.gpt-oss-120b", "openai.gpt-6.1-sol", :"openai.gpt-6.1-sol"].each do |model|
+        [
+          [{}, nil, model.to_s == "openai.gpt-6.1-sol" ? "/openai/v1" : "/v1", "bedrock-mantle.us-east-1.api.aws"],
+          [{base_url: "https://proxy.example/v1"}, nil, "/v1", "proxy.example"],
+          [{base_url: "https://proxy.example/openai/v1"}, nil, "/openai/v1", "proxy.example"],
+          [{}, "https://proxy.example/v1", "/v1", "proxy.example"],
+          [{}, "https://proxy.example/openai/v1", "/openai/v1", "proxy.example"],
+          [{endpoint: :runtime}, nil, "/openai/v1", "bedrock-runtime.us-east-1.amazonaws.com"]
+        ].each do |options, environment_url, prefix, host|
+          ENV["AWS_BEDROCK_BASE_URL"] = environment_url
+          client = OpenAI::Client.new(
+            provider: OpenAI::Providers.bedrock(region: "us-east-1", **authentication, **options)
+          )
+          responses_url = "https://#{host}#{prefix}/responses"
+          chat_url = "https://#{host}#{prefix}/chat/completions"
+          stub_request(:post, responses_url).to_return_json(status: 200, body: {id: "resp_test", output: []})
+          stub_request(:post, chat_url).to_return_json(status: 200, body: {id: "chat_test", choices: []})
 
-  def before_all
-    super
-    WebMock.enable!
+          assert_equal("resp_test", client.responses.create(model: model, input: "hello").id)
+          assert_equal(
+            "chat_test",
+            client.chat.completions.create(model: model, messages: [{role: :user, content: "hello"}]).id
+          )
+          [responses_url, chat_url].each do |url|
+            assert_requested(:post, url, times: 1) do |request|
+              assert_equal(model.to_s, JSON.parse(request.body).fetch("model"))
+              assert_bedrock_request_authentication(
+                request,
+                authentication,
+                service: options[:endpoint] == :runtime ? "bedrock" : "bedrock-mantle"
+              )
+            end
+          end
+
+          WebMock.reset!
+        end
+      end
+    end
   end
 
-  def setup
-    super
-    @environment = ENVIRONMENT_VARIABLES.to_h { [_1, ENV[_1]] }
-    ENVIRONMENT_VARIABLES.each { ENV.delete(_1) }
-    @aws_dir = Dir.mktmpdir("openai-bedrock-test")
-    ENV["AWS_SHARED_CREDENTIALS_FILE"] = File.join(@aws_dir, "credentials")
-    ENV["AWS_CONFIG_FILE"] = File.join(@aws_dir, "config")
-    ENV["AWS_EC2_METADATA_DISABLED"] = "true"
-    File.write(ENV.fetch("AWS_SHARED_CREDENTIALS_FILE"), "")
-    File.write(ENV.fetch("AWS_CONFIG_FILE"), "")
-    reset_shared_config
+  def test_sol_routing_uses_the_final_body_on_retries_without_changing_the_client
+    [
+      {api_key: "bedrock-token"},
+      {access_key_id: "access-key", secret_access_key: "secret-key"}
+    ].each do |authentication|
+      url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/responses"
+      stub_request(:post, url)
+        .to_return(status: 503, body: "", headers: {"retry-after" => "0"})
+        .then
+        .to_return_json(status: 200, body: {id: "resp_sol", output: []})
+      client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(region: "us-east-1", **authentication)
+      )
+      response = client.responses.create(
+        model: "openai.gpt-oss-120b",
+        input: "hello",
+        request_options: {extra_body: {model: "openai.gpt-6.1-sol"}}
+      )
+
+      assert_equal("resp_sol", response.id)
+      assert_requested(:post, url, times: 2) do |request|
+        assert_bedrock_request_authentication(request, authentication)
+      end
+
+      legacy_url = "https://bedrock-mantle.us-east-1.api.aws/v1/responses"
+      stub_request(:post, legacy_url).to_return_json(status: 200, body: {id: "resp_oss", output: []})
+      assert_equal("resp_oss", client.responses.create(model: "openai.gpt-oss-120b", input: "hello").id)
+      assert_equal("https://bedrock-mantle.us-east-1.api.aws/v1", client.base_url.to_s)
+      WebMock.reset!
+    end
   end
 
-  def teardown
-    Thread.current.thread_variable_set(:time_now, nil)
-    WebMock.reset!
-    FileUtils.rm_rf(@aws_dir)
-    @environment.each { |name, value| value.nil? ? ENV.delete(name) : ENV[name] = value }
-    reset_shared_config
-    super
+  def test_model_less_followups_use_the_configured_base_url
+    [
+      {api_key: "bedrock-token"},
+      {access_key_id: "access-key", secret_access_key: "secret-key"}
+    ].each do |authentication|
+      [nil, "https://bedrock-mantle.us-east-1.api.aws/openai/v1"].each do |override|
+        [{base_url: override}, {}].each do |options|
+          ENV["AWS_BEDROCK_BASE_URL"] = override
+          root = override || "https://bedrock-mantle.us-east-1.api.aws/v1"
+          url = "#{root}/responses/resp_test"
+          stub_request(:get, url).to_return_json(status: 200, body: {id: "resp_test", output: []})
+          client = OpenAI::Client.new(
+            provider: OpenAI::Providers.bedrock(region: "us-east-1", **authentication, **options)
+          )
+
+          assert_equal("resp_test", client.responses.retrieve("resp_test").id)
+          assert_requested(:get, url) do |request|
+            assert_bedrock_request_authentication(request, authentication)
+          end
+
+          WebMock.reset!
+        end
+      end
+    end
   end
 
-  def after_all
-    WebMock.disable!
-    super
+  def test_large_sol_input_is_not_parsed_again_to_select_the_route
+    url = "https://bedrock-mantle.us-east-1.api.aws/openai/v1/responses"
+    stub_request(:post, url)
+      .to_return(status: 503, body: "", headers: {"retry-after" => "0"})
+      .then
+      .to_return_json(status: 200, body: {id: "resp_large", output: []})
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
+    )
+    input = "large-sol-routing-probe:" + ("x" * (16 * 1024 * 1024))
+    parse = JSON.method(:parse)
+    checked_parse = lambda do |value, **options|
+      flunk("Routing must not parse the encoded request payload") if value.include?("large-sol-routing-probe:")
+      parse.call(value, **options)
+    end
+
+    JSON.stub(:parse, checked_parse) do
+      response = client.responses.create(model: "openai.gpt-6.1-sol", input: input)
+      assert_equal("resp_large", response.id)
+    end
+
+    assert_requested(:post, url, times: 2)
+  end
+
+  def test_explicit_and_environment_mantle_paths_are_preserved
+    base_url = "https://bedrock-mantle.us-east-1.api.aws/v1"
+    ENV["AWS_BEDROCK_BASE_URL"] = base_url
+
+    [{}, {base_url: base_url}].each do |options|
+      client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token", **options)
+      )
+
+      assert_equal(base_url, client.base_url.to_s)
+    end
+  end
+
+  def test_mantle_model_discovery_preserves_its_documented_route
+    # https://docs.aws.amazon.com/bedrock/latest/userguide/models-get-info.html
+    # https://docs.aws.amazon.com/bedrock/latest/userguide/logging-cloudtrail-mantle.html
+    [
+      {api_key: "bedrock-token"},
+      {access_key_id: "access-key", secret_access_key: "secret-key"}
+    ].each do |authentication|
+      [nil, "https://bedrock-mantle.us-east-1.api.aws/openai/v1"].each do |override|
+        [{base_url: override}, {}].each do |options|
+          ENV["AWS_BEDROCK_BASE_URL"] = override
+          root = override || "https://bedrock-mantle.us-east-1.api.aws/v1"
+          [nil, "openai.test-model"].each do |model|
+            url = "#{root}/models#{model ? "/#{model}" : ""}"
+            stub_request(:get, url).to_return_json(
+              status: 200,
+              body: model ? {id: model} : {data: [{id: "openai.test-model"}]}
+            )
+            client = OpenAI::Client.new(
+              provider: OpenAI::Providers.bedrock(region: "us-east-1", **authentication, **options)
+            )
+
+            result = model ? client.models.retrieve(model) : client.models.list.data.fetch(0)
+            assert_equal("openai.test-model", result.id)
+            assert_requested(:get, url) do |request|
+              assert_bedrock_request_authentication(request, authentication)
+            end
+
+            WebMock.reset!
+          end
+        end
+      end
+    end
+  end
+
+  def test_sol_routing_does_not_match_other_routes_or_methods
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
+    )
+    [
+      [:post, "models"],
+      [:delete, "models/openai.test-model"],
+      [:get, "models-extra"],
+      [:get, "models/openai.test-model/extra"],
+      [:post, "responses/compact"],
+      [:post, "responses/resp_test/cancel"]
+    ].each do |method, path|
+      url = "https://bedrock-mantle.us-east-1.api.aws/v1/#{path}"
+      stub_request(method, url).to_return_json(status: 200, body: {})
+      client.request(method: method, path: path, body: {model: "openai.gpt-6.1-sol"})
+
+      assert_requested(method, url, times: 1) do |request|
+        assert_equal("Bearer bedrock-token", request.headers["Authorization"])
+      end
+    end
   end
 
   def test_bearer_provider_owns_endpoint_and_authentication
@@ -100,6 +239,28 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       refute_includes(headers, "openai-organization")
       refute_includes(headers, "openai-project")
       refute_includes(headers, "x-openai-custom")
+    end
+  end
+
+  def test_provider_authentication_overrides_explicit_default_headers
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
+    stub_request(:get, url).to_return_json(status: 200, body: {})
+
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token"),
+      default_headers: {
+        "Authorization" => "Bearer string-custom",
+        :Authorization => "Bearer symbol-custom",
+        :"X-Cost-Center" => "finance"
+      }
+    )
+    refute_includes(client.headers, :authorization)
+    client.request({method: :get, path: "models"})
+
+    assert_requested(:get, url) do |request|
+      headers = request.headers.transform_keys(&:downcase)
+      assert_equal("Bearer bedrock-token", headers["authorization"])
+      assert_equal("finance", headers["x-cost-center"])
     end
   end
 
@@ -182,6 +343,102 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     end
   end
 
+  def test_named_profile_does_not_construct_unused_process_credentials
+    File.write(
+      ENV.fetch("AWS_SHARED_CREDENTIALS_FILE"),
+      <<~INI
+        [engineering]
+        aws_access_key_id = profile-access-key
+        aws_secret_access_key = profile-secret-key
+      INI
+    )
+    File.write(
+      ENV.fetch("AWS_CONFIG_FILE"),
+      <<~INI
+        [profile engineering]
+        credential_process = unused-process
+      INI
+    )
+    reset_shared_config
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
+    stub_request(:get, url).to_return_json(status: 200, body: {})
+    process_calls = 0
+    process_constructor = lambda do |_command|
+      process_calls += 1
+      raise "unused process credentials must not be constructed"
+    end
+
+    Aws::ProcessCredentials.stub(:new, process_constructor) do
+      client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(region: "us-east-1", profile: "engineering")
+      )
+      client.request({method: :get, path: "models"})
+    end
+
+    assert_equal(0, process_calls)
+    assert_requested(:get, url) do |request|
+      assert_includes(request.headers.fetch("Authorization"), "Credential=profile-access-key/")
+    end
+  end
+
+  def test_named_profile_continues_to_process_credentials_after_unset_candidates
+    File.write(
+      ENV.fetch("AWS_CONFIG_FILE"),
+      <<~INI
+        [profile engineering]
+        credential_process = selected-process
+      INI
+    )
+    reset_shared_config
+    url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
+    stub_request(:get, url).to_return_json(status: 200, body: {})
+    process_calls = 0
+    process_constructor = lambda do |_command|
+      process_calls += 1
+      Aws::Credentials.new("process-access-key", "process-secret-key")
+    end
+
+    Aws::ProcessCredentials.stub(:new, process_constructor) do
+      client = OpenAI::Client.new(
+        provider: OpenAI::Providers.bedrock(region: "us-east-1", profile: "engineering")
+      )
+      client.request({method: :get, path: "models"})
+    end
+
+    assert_equal(1, process_calls)
+    assert_requested(:get, url) do |request|
+      assert_includes(request.headers.fetch("Authorization"), "Credential=process-access-key/")
+    end
+  end
+
+  def test_named_profile_does_not_downgrade_after_higher_priority_provider_error
+    File.write(
+      ENV.fetch("AWS_SHARED_CREDENTIALS_FILE"),
+      <<~INI
+        [engineering]
+        aws_access_key_id = profile-access-key
+        aws_secret_access_key = profile-secret-key
+      INI
+    )
+    reset_shared_config
+    config = Aws.shared_config
+    failing_web_identity = lambda do |**_options|
+      raise "higher priority provider failed"
+    end
+
+    error = config.stub(:assume_role_web_identity_credentials_from_config, failing_web_identity) do
+      runtime = OpenAI::Internal::Provider.configure(
+        OpenAI::Providers.bedrock(region: "us-east-1", profile: "engineering")
+      )
+      assert_raises(OpenAI::Errors::Error) do
+        runtime.prepare_request.call(bedrock_request)
+      end
+    end
+
+    assert_equal(OpenAI::Providers::Bedrock::CREDENTIAL_RESOLUTION_MESSAGE, error.message)
+    assert_equal("higher priority provider failed", error.cause.message)
+  end
+
   def test_named_profile_reads_shared_credentials_when_config_is_disabled
     ENV["AWS_SDK_CONFIG_OPT_OUT"] = "true"
     File.write(
@@ -210,6 +467,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     error = assert_raises(ArgumentError) do
       OpenAI::Client.new(provider: OpenAI::Providers.bedrock(profile: "missing"))
     end
+
     assert_equal(OpenAI::Providers::Bedrock::MISSING_REGION_MESSAGE, error.message)
 
     runtime = OpenAI::Internal::Provider.configure(
@@ -278,6 +536,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
 
     sigv4_runtime = OpenAI::Internal::Provider.configure(
       OpenAI::Providers.bedrock(
+        endpoint: :mantle,
         region: "us-east-1",
         base_url: "https://gateway.example/openai/v1",
         access_key_id: "access-key",
@@ -288,6 +547,28 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       bedrock_request("https://gateway.example/openai/v1/models")
     )
     assert_includes(prepared.dig(:headers, "authorization"), "bedrock-mantle/aws4_request")
+  end
+
+  def test_custom_signed_endpoints_default_to_mantle
+    ENV["AWS_BEDROCK_BASE_URL"] = "https://environment.example/openai/v1"
+    custom_endpoints = {
+      "https://environment.example/openai/v1" => {},
+      "https://gateway.example/openai/v1" => {base_url: "https://gateway.example/openai/v1"}
+    }
+
+    custom_endpoints.each do |base_url, options|
+      runtime = OpenAI::Internal::Provider.configure(
+        OpenAI::Providers.bedrock(
+          region: "us-east-1",
+          access_key_id: "access-key",
+          secret_access_key: "secret-key",
+          **options
+        )
+      )
+      prepared = runtime.prepare_request.call(bedrock_request("#{base_url}/models"))
+
+      assert_includes(prepared.dig(:headers, "authorization"), "/us-east-1/bedrock-mantle/aws4_request")
+    end
   end
 
   def test_sigv4_matches_the_shared_fixture
@@ -329,12 +610,18 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       requests << request
       {status: 200, body: "{}", headers: {"content-type" => "application/json"}}
     end
+
     client = OpenAI::Client.new(
       provider: OpenAI::Providers.bedrock(
         region: "us-east-1",
         access_key_id: "access-key",
         secret_access_key: "secret-key"
-      )
+      ),
+      default_headers: {
+        "X-Amz-Content-Sha256": "injected-hash",
+        "X-Amz-Date": "injected-date",
+        "X-Amz-Security-Token": "injected-token"
+      }
     )
 
     client.request(
@@ -347,6 +634,8 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
 
     request = requests.fetch(0)
     assert_equal(Digest::SHA256.hexdigest(request.body), request.headers["X-Amz-Content-Sha256"])
+    refute_equal("injected-date", request.headers["X-Amz-Date"])
+    refute_includes(request.headers, "X-Amz-Security-Token")
     assert_includes(request.headers.fetch("Authorization"), "bedrock-mantle/aws4_request")
   end
 
@@ -356,6 +645,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       calls += 1
       Aws::Credentials.new("retry-access-#{calls}", "retry-secret-#{calls}")
     end
+
     url = "https://bedrock-mantle.us-east-1.api.aws/v1/models"
     authorizations = []
     retry_counts = []
@@ -403,7 +693,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       assert_includes(prepared.dig(:headers, "authorization"), "Credential=custom-access/")
     end
 
-    [-> { Aws::Credentials.new("", "custom-secret") }, -> {}].each do |credential_provider|
+    [-> { Aws::Credentials.new("", "custom-secret") }, -> { }].each do |credential_provider|
       invalid_runtime = OpenAI::Internal::Provider.configure(
         OpenAI::Providers.bedrock(
           region: "us-east-1",
@@ -413,6 +703,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       error = assert_raises(OpenAI::Errors::Error) do
         invalid_runtime.prepare_request.call(bedrock_request)
       end
+
       assert_equal(OpenAI::Providers::Bedrock::CREDENTIAL_RESOLUTION_MESSAGE, error.message)
     end
 
@@ -425,6 +716,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     error = assert_raises(OpenAI::Errors::Error) do
       failing_runtime.prepare_request.call(bedrock_request)
     end
+
     assert_equal(OpenAI::Providers::Bedrock::CREDENTIAL_RESOLUTION_MESSAGE, error.message)
     assert_equal("credential provider failed", error.cause.message)
   end
@@ -465,6 +757,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     error = assert_raises(OpenAI::Errors::Error) do
       invalid_runtime.prepare_request.call(bedrock_request)
     end
+
     assert_match(/must return a non-empty string/, error.message)
 
     failing_runtime = OpenAI::Internal::Provider.configure(
@@ -476,6 +769,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     error = assert_raises(OpenAI::Errors::Error) do
       failing_runtime.prepare_request.call(bedrock_request)
     end
+
     assert_equal("Failed to resolve a bearer credential for Bedrock.", error.message)
     assert_equal("token provider failed", error.cause.message)
   end
@@ -516,6 +810,20 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     assert_match(/replayable request body/, error.message)
   end
 
+  def test_provider_rejects_symbol_request_authorization_header
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.bedrock(region: "us-east-1", api_key: "bedrock-token")
+    )
+
+    error = assert_raises(OpenAI::Errors::Error) do
+      client.request(
+        {method: :get, path: "models", options: {extra_headers: {Authorization: "Bearer custom"}}}
+      )
+    end
+
+    assert_match(/custom `Authorization` header/, error.message)
+  end
+
   def test_sigv4_rejects_redirects_and_mismatched_canonical_regions
     provider = OpenAI::Providers.bedrock(
       region: "us-east-1",
@@ -531,24 +839,19 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     error = assert_raises(OpenAI::Errors::APIStatusError) do
       client.request({method: :get, path: "models"})
     end
+
     assert_equal(307, error.status)
     assert_not_requested(:get, target)
 
-    mismatched = OpenAI::Internal::Provider.configure(
+    error = assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(
         region: "us-east-1",
         base_url: "https://bedrock-mantle.us-west-2.api.aws/v1",
         access_key_id: "access-key",
         secret_access_key: "secret-key"
       )
-    )
-    request = {
-      method: :get,
-      url: URI("https://bedrock-mantle.us-west-2.api.aws/v1/models"),
-      headers: {},
-      body: nil
-    }
-    error = assert_raises(OpenAI::Errors::Error) { mismatched.prepare_request.call(request) }
+    end
+
     assert_match(/region `us-west-2` does not match.*`us-east-1`/, error.message)
   end
 
@@ -556,6 +859,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(region: "us-east-1", access_key_id: "access-key")
     end
+
     assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(
         region: "us-east-1",
@@ -563,6 +867,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
         profile: "engineering"
       )
     end
+
     assert_raises(ArgumentError) do
       OpenAI::Providers.bedrock(
         region: "us-east-1",
@@ -585,6 +890,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     error = assert_raises(ArgumentError) do
       OpenAI::Internal::Provider.name(Object.new)
     end
+
     assert_match(/Invalid provider/, error.message)
 
     error = assert_raises(ArgumentError) { OpenAI::Client.new(provider: false) }
@@ -629,6 +935,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
       error = assert_raises(ArgumentError, options.inspect) do
         OpenAI::Providers.bedrock(**options)
       end
+
       assert_match(message, error.message, options.inspect)
     end
 
@@ -647,6 +954,7 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     error = assert_raises(KeyError) do
       bearer_runtime.prepare_request.call(bedrock_request.except(:url))
     end
+
     assert_match(/url/, error.message)
 
     sigv4_runtime = OpenAI::Internal::Provider.configure(
@@ -659,14 +967,30 @@ class OpenAI::Test::BedrockProviderTest < Minitest::Test
     error = assert_raises(KeyError) do
       sigv4_runtime.prepare_request.call(bedrock_request.except(:method))
     end
+
     assert_match(/method/, error.message)
   end
 
-  private def reset_shared_config
-    Aws.instance_variable_set(:@shared_config, nil)
+  private def assert_bedrock_request_authentication(request, authentication, service: "bedrock-mantle")
+    if authentication.key?(:api_key)
+      assert_equal("Bearer bedrock-token", request.headers["Authorization"])
+    else
+      signed_headers = request.headers.fetch("Authorization")[/SignedHeaders=([^,]+)/, 1].split(";")
+      signature = Aws::Sigv4::Signer
+        .new(
+          service: service,
+          region: "us-east-1",
+          access_key_id: "access-key",
+          secret_access_key: "secret-key"
+        )
+        .sign_request(
+          http_method: request.method.to_s.upcase,
+          url: request.uri.to_s,
+          headers: request.headers.select { |name, _| signed_headers.include?(name.downcase) },
+          body: request.body || ""
+        )
+      assert_equal(signature.headers.fetch("authorization"), request.headers["Authorization"])
+    end
   end
 
-  private def bedrock_request(url = "https://bedrock-mantle.us-east-1.api.aws/v1/models")
-    {method: :get, url: URI(url), headers: {}, body: nil}
-  end
 end

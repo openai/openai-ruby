@@ -11,8 +11,11 @@ module OpenAI
         class Text < OpenAI::Internal::Type::BaseModel
           attr_accessor annotations: ::Array[OpenAI::Models::Beta::Threads::annotation]
 
+          # The data that makes up the text.
           attr_accessor value: String
 
+          # @param value
+          #   The data that makes up the text.
           def initialize: (
             annotations: ::Array[OpenAI::Models::Beta::Threads::annotation],
             value: String

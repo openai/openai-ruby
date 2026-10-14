@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+
     module VideoSeconds
       extend OpenAI::Internal::Type::Enum
 
@@ -16,5 +17,6 @@ module OpenAI
       def self.values
       end
     end
+
   end
 end

@@ -21,12 +21,11 @@ module OpenAI
         required :target_uri, String
 
         # @!method initialize(call_id:, target_uri:, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::CallReferParams} for more details.
-        #
         #   @param call_id [String]
         #
-        #   @param target_uri [String] URI that should appear in the SIP Refer-To header. Supports values like
+        #   @param target_uri [String]
+        #     URI that should appear in the SIP Refer-To header. Supports values like
+        #     `tel:+14155550123` or `sip:agent@example.com`.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
       end

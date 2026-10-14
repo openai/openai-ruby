@@ -2,26 +2,28 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class Groups
-            sig do
-              returns(
-                OpenAI::Resources::Admin::Organization::Projects::Groups::Roles
-              )
-            end
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::Groups::Roles) }
             attr_reader :roles
 
             # Grants a group access to a project.
-            sig do
+            sig {
               params(
                 project_id: String,
                 group_id: String,
                 role: String,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(OpenAI::Admin::Organization::Projects::ProjectGroup)
-            end
+              )
+                .returns(OpenAI::Admin::Organization::Projects::ProjectGroup)
+            }
             def create(
               # The ID of the project to update.
               project_id,
@@ -34,15 +36,15 @@ module OpenAI
             end
 
             # Retrieves a project's group.
-            sig do
+            sig {
               params(
                 group_id: String,
                 project_id: String,
-                group_type:
-                  OpenAI::Admin::Organization::Projects::GroupRetrieveParams::GroupType::OrSymbol,
+                group_type: OpenAI::Admin::Organization::Projects::GroupRetrieveParams::GroupType::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(OpenAI::Admin::Organization::Projects::ProjectGroup)
-            end
+              )
+                .returns(OpenAI::Admin::Organization::Projects::ProjectGroup)
+            }
             def retrieve(
               # Path param: The ID of the group to retrieve.
               group_id,
@@ -55,20 +57,16 @@ module OpenAI
             end
 
             # Lists the groups that have access to a project.
-            sig do
+            sig {
               params(
                 project_id: String,
                 after: String,
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Projects::GroupListParams::Order::OrSymbol,
+                order: OpenAI::Admin::Organization::Projects::GroupListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::NextCursorPage[
-                  OpenAI::Admin::Organization::Projects::ProjectGroup
-                ]
               )
-            end
+                .returns(OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Projects::ProjectGroup])
+            }
             def list(
               # The ID of the project to inspect.
               project_id,
@@ -84,15 +82,11 @@ module OpenAI
             end
 
             # Revokes a group's access to a project.
-            sig do
-              params(
-                group_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(group_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Projects::GroupDeleteResponse
               )
-            end
+            }
             def delete(
               # The ID of the group to remove from the project.
               group_id,
@@ -107,8 +101,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

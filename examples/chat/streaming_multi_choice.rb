@@ -21,7 +21,9 @@ stream.each do |event|
   case event
   when OpenAI::Streaming::ChatChunkEvent
     # Access the full snapshot with all choices:
-    event.snapshot.choices.each_with_index do |choice, index|
+    event.snapshot.choices.each do |choice|
+      index = choice.index
+
       if choice.message.content
         choice_contents[index] = choice.message.content
       end
@@ -37,7 +39,16 @@ stream.each do |event|
   end
 end
 
+expected_choice_indices = [0, 1]
+completed_choices = expected_choice_indices.select do |index|
+  choice_finished[index] && !choice_contents.fetch(index, "").strip.empty?
+end
+
+unless completed_choices == expected_choice_indices
+  abort("Expected two completed choices with content; received #{completed_choices.length}")
+end
+
 puts("------ final choices ------")
-choice_contents.keys.sort.each do |i|
+expected_choice_indices.each do |i|
   puts("[#{i}] #{choice_contents[i]}")
 end

@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type environment_retrieve_params =
+          { environment_id: String, ?request_options: OpenAI::request_opts }
+
+        class EnvironmentRetrieveParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor environment_id: String
+
+          def initialize: (
+            environment_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            environment_id: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

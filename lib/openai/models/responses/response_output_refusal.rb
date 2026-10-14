@@ -19,9 +19,11 @@ module OpenAI
         # @!method initialize(refusal:, type: :refusal)
         #   A refusal from the model.
         #
-        #   @param refusal [String] The refusal explanation from the model.
+        #   @param refusal [String]
+        #     The refusal explanation from the model.
         #
-        #   @param type [Symbol, :refusal] The type of the refusal. Always `refusal`.
+        #   @param type [Symbol, :refusal]
+        #     The type of the refusal. Always `refusal`.
       end
     end
   end

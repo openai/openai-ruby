@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Audio
+
       class TranscriptionSegment < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Audio::TranscriptionSegment,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Audio::TranscriptionSegment,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Unique identifier of the segment.
         sig { returns(Integer) }
@@ -57,41 +59,63 @@ module OpenAI
 
         sig do
           params(
+
             id: Integer,
+
             avg_logprob: Float,
+
             compression_ratio: Float,
+
             end_: Float,
+
             no_speech_prob: Float,
+
             seek: Integer,
+
             start: Float,
+
             temperature: Float,
+
             text: String,
+
             tokens: T::Array[Integer]
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Unique identifier of the segment.
           id:,
+
           # Average logprob of the segment. If the value is lower than -1, consider the
           # logprobs failed.
           avg_logprob:,
+
           # Compression ratio of the segment. If the value is greater than 2.4, consider the
           # compression failed.
           compression_ratio:,
+
           # End time of the segment in seconds.
           end_:,
+
           # Probability of no speech in the segment. If the value is higher than 1.0 and the
           # `avg_logprob` is below -1, consider this segment silent.
           no_speech_prob:,
+
           # Seek offset of the segment.
           seek:,
+
           # Start time of the segment in seconds.
           start:,
+
           # Temperature parameter used for generating the segment.
           temperature:,
+
           # Text content of the segment.
           text:,
+
           # Array of token IDs for the text content.
+
           tokens:
         )
         end
@@ -114,7 +138,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

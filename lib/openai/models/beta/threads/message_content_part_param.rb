@@ -4,14 +4,15 @@ module OpenAI
   module Models
     module Beta
       module Threads
-        # References an image [File](https://platform.openai.com/docs/api-reference/files)
-        # in the content of a message.
+        # References an image
+        # [File](https://developers.openai.com/api/reference/resources/files) in the
+        # content of a message.
         module MessageContentPartParam
           extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
-          # References an image [File](https://platform.openai.com/docs/api-reference/files) in the content of a message.
+          # References an image [File](https://developers.openai.com/api/reference/resources/files) in the content of a message.
           variant :image_file, -> { OpenAI::Beta::Threads::ImageFileContentBlock }
 
           # References an image URL in the content of a message.

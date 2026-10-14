@@ -38,7 +38,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       )
       .to_return(
         status: 200,
-        headers: {"Content-Type" => "text/event-stream"},
+        headers: {"Content-Type" => "text/event-stream", "X-Request-ID" => "req_stream"},
         body: response_body
       )
   end
@@ -65,20 +65,46 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     text_done = events.find { |e| e.type == :"response.output_text.done" }
     assert_pattern do
-      text_done => OpenAI::Streaming::ResponseTextDoneEvent[
-        text: "Hello there! How can I help you today?"
-      ]
+      text_done => OpenAI::Streaming::ResponseTextDoneEvent(
+          text: "Hello there! How can I help you today?"
+        )
     end
 
     completed = events.find { |e| e.type == :"response.completed" }
     assert_pattern do
-      completed => OpenAI::Streaming::ResponseCompletedEvent[
-        response: {
-          id: "msg_001",
-          status: :completed
-        }
-      ]
+      completed => OpenAI::Streaming::ResponseCompletedEvent(
+          response: {
+              id: "msg_001",
+              status: :completed
+            }
+        )
     end
+  end
+
+  def test_keepalive_event_is_dropped_from_helper_stream
+    stub_streaming_response(keepalive_before_created_sse_response)
+
+    events = @client.responses.stream(**basic_params).to_a
+
+    assert_instance_of(OpenAI::Models::Responses::ResponseCreatedEvent, events.first)
+    refute(events.any? { |event| event.type.to_s == "keepalive" })
+    assert_text_delta_events(
+      events,
+      expected_deltas: ["Hello there! ", "How can I help you ", "today?"],
+      expected_snapshot: "Hello there! How can I help you today?"
+    )
+  end
+
+  def test_keepalive_event_is_dropped_from_raw_stream
+    stub_streaming_response(keepalive_before_created_sse_response)
+
+    stream = @client.responses.stream_raw(**basic_params)
+    events = stream.to_a
+
+    assert_instance_of(OpenAI::Models::Responses::ResponseCreatedEvent, events.first)
+    refute(events.any? { |event| event.type.to_s == "keepalive" })
+  ensure
+    stream&.close
   end
 
   def test_get_final_response
@@ -87,16 +113,60 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     stream = @client.responses.stream(**basic_params)
     response = stream.get_final_response
 
+    assert_equal(200, stream.status)
+    assert_same(stream.last_response.headers, stream.headers)
+    assert_equal("req_stream", stream.last_response.request_id)
+    assert_nil(response.last_response)
+
     assert_pattern do
-      response => OpenAI::Models::Responses::Response[
-        id: "msg_001",
-        status: :completed,
-        output: [
-          {
-            content: [{text: "Hello there! How can I help you today?"}]
-          }
-        ]
-      ]
+      response => OpenAI::Models::Responses::Response(
+          id: "msg_001",
+          status: :completed,
+          output: [
+              {
+                  content: [{text: "Hello there! How can I help you today?"}]
+                }
+            ]
+        )
+    end
+  end
+
+  def test_raw_stream_exposes_response_metadata
+    stub_streaming_response(basic_text_sse_response)
+
+    stream = @client.responses.stream_raw(**basic_params)
+
+    assert_equal(200, stream.last_response.status)
+    assert_equal("req_stream", stream._request_id)
+    assert_equal("req_stream", stream.last_response.request_id)
+    assert_equal("text/event-stream", stream.last_response.headers["content-type"])
+    assert_same(stream.last_response.headers, stream.headers)
+    assert_nil(stream.first.last_response)
+  ensure
+    stream&.close
+  end
+
+  def test_enabled_logging_preserves_raw_and_helper_stream_types
+    stub_streaming_response(basic_text_sse_response)
+
+    [:error, :warn, :info, :debug].each do |level|
+      client = OpenAI::Client.new(
+        base_url: "http://localhost",
+        api_key: "test-key",
+        logger: Logger.new(StringIO.new),
+        log_level: level
+      )
+
+      raw_stream = client.responses.stream_raw(**basic_params)
+      assert_instance_of(OpenAI::Internal::Stream, raw_stream)
+      assert_includes(raw_stream.inspect, "ResponseStreamEvent")
+      assert_equal("req_stream", raw_stream.last_response.request_id)
+      raw_stream.close
+
+      helper_stream = client.responses.stream(**basic_params)
+      assert_instance_of(OpenAI::Helpers::Streaming::ResponseStream, helper_stream)
+      assert_equal("req_stream", helper_stream.last_response.request_id)
+      assert_equal("Hello there! How can I help you today?", helper_stream.get_output_text)
     end
   end
 
@@ -141,12 +211,12 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     function_call = response.output.find { |o| o.is_a?(OpenAI::Models::Responses::ResponseFunctionToolCall) }
 
     assert_pattern do
-      function_call => OpenAI::Models::Responses::ResponseFunctionToolCall[
-        parsed: WeatherModel[
-          location: "San Francisco",
-          temperature: 72
-        ]
-      ]
+      function_call => OpenAI::Models::Responses::ResponseFunctionToolCall(
+          parsed: WeatherModel(
+              location: "San Francisco",
+              temperature: 72
+            )
+        )
     end
   end
 
@@ -179,20 +249,20 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     assert_equal(3, text_deltas.length)
     assert_equal(
       [
-        '{"location":"',
-        '{"location":"San Francisco","temperature":',
-        '{"location":"San Francisco","temperature":72}'
+        "{\"location\":\"",
+        "{\"location\":\"San Francisco\",\"temperature\":",
+        "{\"location\":\"San Francisco\",\"temperature\":72}"
       ],
       text_deltas.map(&:snapshot)
     )
 
     assert_pattern do
-      text_done => OpenAI::Streaming::ResponseTextDoneEvent[
-        parsed: WeatherModel[
-          location: "San Francisco",
-          temperature: 72
-        ]
-      ]
+      text_done => OpenAI::Streaming::ResponseTextDoneEvent(
+          parsed: WeatherModel(
+              location: "San Francisco",
+              temperature: 72
+            )
+        )
     end
   end
 
@@ -201,11 +271,14 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     error = assert_raises(RuntimeError) do
       stream = @client.responses.stream(**basic_params, text: WeatherModel)
-      stream.each { |_event| } # Consume the stream to trigger the error.
+      # Consume the stream to trigger the error.
+      stream.each { |_event| next }
     end
 
     assert_match(/Failed to parse structured text as JSON/, error.message)
-    assert_match(/Raw text:/, error.message)
+    refute_match(/Raw text:/, error.message)
+    refute_match(/SENSITIVE_MODEL_OUTPUT/, error.message)
+    assert_nil(error.cause)
   end
 
   def test_function_calling_streaming
@@ -216,8 +289,8 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     assert_function_delta_events(
       events,
-      expected_deltas: ['{"location":"', "San Francisco", '","temperature":', "72}"],
-      expected_snapshot: '{"location":"San Francisco","temperature":72}'
+      expected_deltas: ["{\"location\":\"", "San Francisco", "\",\"temperature\":", "72}"],
+      expected_snapshot: "{\"location\":\"San Francisco\",\"temperature\":72}"
     )
   end
 
@@ -248,7 +321,8 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     stream = @client.responses.stream(**basic_params)
     error = assert_raises(OpenAI::Errors::APIStatusError) do
-      stream.each {} # Consume the stream to trigger the error.
+      # Consume the stream to trigger the error.
+      stream.each { |_event| next }
     end
 
     assert_equal(200, error.status)
@@ -274,7 +348,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       chunk
     end
 
-    assert_equal(['{"location":"', 'San Francisco","temperature":', "72}"], text_chunks)
+    assert_equal(["{\"location\":\"", "San Francisco\",\"temperature\":", "72}"], text_chunks)
   end
 
   def test_create_stream_with_previous_response_id
@@ -303,12 +377,12 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     completed = events.find { |e| e.type == :"response.completed" }
     assert_pattern do
-      completed => OpenAI::Streaming::ResponseCompletedEvent[
-        response: {
-          id: "msg_123",
-          status: :completed
-        }
-      ]
+      completed => OpenAI::Streaming::ResponseCompletedEvent(
+          response: {
+              id: "msg_123",
+              status: :completed
+            }
+        )
     end
   end
 
@@ -329,12 +403,12 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     completed = events.find { |e| e.type == :"response.completed" }
     assert_pattern do
-      completed => OpenAI::Streaming::ResponseCompletedEvent[
-        response: {
-          id: "msg_123",
-          status: :completed
-        }
-      ]
+      completed => OpenAI::Streaming::ResponseCompletedEvent(
+          response: {
+              id: "msg_123",
+              status: :completed
+            }
+        )
     end
   end
 
@@ -344,9 +418,24 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     end
   end
 
+  def test_resume_stream_with_string_keyed_starting_after
+    stub_request(:get, "http://localhost/responses/msg_456?starting_after=7&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: resume_stream_with_starting_after_sse_response
+      )
+
+    stream = @client.responses.stream("response_id" => "msg_456", "starting_after" => 7)
+
+    assert(stream.to_a.all? { |event| event.sequence_number > 7 })
+  ensure
+    stream&.close
+  end
+
   def test_resume_stream_with_response_id_and_starting_after
     # Stub the GET request to retrieve the response.
-    stub_request(:get, "http://localhost/responses/msg_456?stream=true")
+    stub_request(:get, "http://localhost/responses/msg_456?starting_after=7&stream=true")
       .to_return(
         status: 200,
         headers: {"Content-Type" => "text/event-stream"},
@@ -366,11 +455,11 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     # Verify with assert_pattern that we get the correct event class and properties.
     assert_pattern do
-      text_delta => OpenAI::Streaming::ResponseTextDeltaEvent[
-        type: :"response.output_text.delta",
-        delta: "today?",
-        sequence_number: 8
-      ]
+      text_delta => OpenAI::Streaming::ResponseTextDeltaEvent(
+          type: :"response.output_text.delta",
+          delta: "today?",
+          sequence_number: 8
+        )
     end
 
     text_done = events.find { |e| e.type == :"response.output_text.done" }
@@ -380,6 +469,156 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     completed = events.find { |e| e.type == :"response.completed" }
     assert_equal("msg_456", completed.response[:id])
     assert_equal(11, completed.sequence_number)
+  end
+
+  def test_incrementally_resume_stream_from_output_item
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=2&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 2)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 2)
+    events = stream.to_a
+
+    assert_instance_of(OpenAI::Models::Responses::ResponseOutputItemAddedEvent, events.first)
+    assert_incremental_text_delta_events(
+      events,
+      expected_deltas: ["Hello there! ", "How can I help you ", "today?"]
+    )
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resume_stream_from_text_delta
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=5&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 5)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 5)
+    events = stream.to_a
+
+    assert_incremental_text_delta_events(
+      events,
+      expected_deltas: ["How can I help you ", "today?"]
+    )
+    text_delta = events.find { |event| event.sequence_number == 6 }
+    assert_equal(["How"], text_delta.logprobs.map(&:token))
+    assert_equal("msg_001", text_delta[:response_id])
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resumed_text_method
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=5&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 5)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 5)
+
+    assert_equal(["How can I help you ", "today?"], stream.text.to_a)
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resume_stream_from_completed_event
+    stub_request(:get, "http://localhost/responses/msg_001?starting_after=10&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(basic_text_sse_response, starting_after: 10)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_001", starting_after: 10)
+    events = stream.to_a
+
+    assert_equal(1, events.length)
+    assert_instance_of(OpenAI::Streaming::ResponseCompletedEvent, events.first)
+    assert_equal("Hello there! How can I help you today?", stream.get_output_text)
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resume_stream_with_structured_output
+    stub_request(:get, "http://localhost/responses/msg_structured?starting_after=3&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(resume_stream_structured_output_sse_response, starting_after: 3)
+      )
+
+    stream = @client.responses.stream(response_id: "msg_structured", starting_after: 3, text: WeatherModel)
+    events = stream.to_a
+
+    assert_pattern do
+      events.first => OpenAI::Streaming::ResponseTextDoneEvent(
+          parsed: WeatherModel(location: "San Francisco", temperature: 72)
+        )
+    end
+
+    assert_pattern do
+      stream.get_final_response.output.first.content.first.parsed => WeatherModel(
+          location: "San Francisco",
+          temperature: 72
+        )
+    end
+
+  ensure
+    stream&.close
+  end
+
+  def test_incrementally_resume_stream_with_typed_function_arguments
+    stub_request(:get, "http://localhost/responses/resp_stream_001?starting_after=9&stream=true")
+      .to_return(
+        status: 200,
+        headers: {"Content-Type" => "text/event-stream"},
+        body: incremental_sse_response(text_and_tools_sse_response, starting_after: 9)
+      )
+
+    stream = @client.responses.stream(
+      response_id: "resp_stream_001",
+      starting_after: 9,
+      text: CalendarEvent,
+      tools: [LookupCalendar]
+    )
+    events = stream.to_a
+
+    assert_incremental_function_delta_events(
+      events,
+      expected_deltas: ["{\"first_name\":\"Ada\",", "\"last_name\":\"Lovelace\"}"]
+    )
+    function_delta = events.find { |event| event.sequence_number == 10 }
+    assert_equal("resp_stream_001", function_delta[:response_id])
+    assert_pattern do
+      stream.get_final_response.output.last.parsed => LookupCalendar(
+          first_name: "Ada",
+          last_name: "Lovelace"
+        )
+    end
+
+  ensure
+    stream&.close
+  end
+
+  def test_non_resumed_stream_still_requires_response_created
+    stub_streaming_response(incremental_sse_response(basic_text_sse_response, starting_after: 5))
+
+    stream = @client.responses.stream(**basic_params)
+    error = assert_raises(RuntimeError) { stream.to_a }
+
+    assert_equal("Expected first event to be response.created", error.message)
+  ensure
+    stream&.close
   end
 
   def test_resume_stream_with_structured_output
@@ -398,45 +637,45 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     text_done = events.find { |e| e.type == :"response.output_text.done" }
     assert_pattern do
-      text_done => OpenAI::Streaming::ResponseTextDoneEvent[
-        text: "{\"location\":\"San Francisco\",\"temperature\":72}",
-        parsed: WeatherModel[
-          location: "San Francisco",
-          temperature: 72
-        ]
-      ]
+      text_done => OpenAI::Streaming::ResponseTextDoneEvent(
+          text: "{\"location\":\"San Francisco\",\"temperature\":72}",
+          parsed: WeatherModel(
+              location: "San Francisco",
+              temperature: 72
+            )
+        )
     end
 
     completed = events.find { |e| e.type == :"response.completed" }
     assert_pattern do
-      completed => OpenAI::Streaming::ResponseCompletedEvent[
-        response: {
-          id: "msg_structured",
-          status: :completed
-        }
-      ]
+      completed => OpenAI::Streaming::ResponseCompletedEvent(
+          response: {
+              id: "msg_structured",
+              status: :completed
+            }
+        )
     end
 
     # Also verify the parsed field is available in the final response for resumed streams.
     final_response = stream.get_final_response
     assert_pattern do
-      final_response => OpenAI::Models::Responses::Response[
-        id: "msg_structured",
-        status: :completed,
-        output: [
-          {
-            content: [
+      final_response => OpenAI::Models::Responses::Response(
+          id: "msg_structured",
+          status: :completed,
+          output: [
               {
-                text: "{\"location\":\"San Francisco\",\"temperature\":72}",
-                parsed: WeatherModel[
-                  location: "San Francisco",
-                  temperature: 72
-                ]
-              }
+                  content: [
+                      {
+                          text: "{\"location\":\"San Francisco\",\"temperature\":72}",
+                          parsed: WeatherModel(
+                              location: "San Francisco",
+                              temperature: 72
+                            )
+                        }
+                    ]
+                }
             ]
-          }
-        ]
-      ]
+        )
     end
   end
 
@@ -447,21 +686,21 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     final_response = stream.get_final_response
 
     assert_pattern do
-      final_response => OpenAI::Models::Responses::Response[
-        output: [
-          {
-            content: [
+      final_response => OpenAI::Models::Responses::Response(
+          output: [
               {
-                text: "{\"location\":\"San Francisco\",\"temperature\":72}",
-                parsed: WeatherModel[
-                  location: "San Francisco",
-                  temperature: 72
-                ]
-              }
+                  content: [
+                      {
+                          text: "{\"location\":\"San Francisco\",\"temperature\":72}",
+                          parsed: WeatherModel(
+                              location: "San Francisco",
+                              temperature: 72
+                            )
+                        }
+                    ]
+                }
             ]
-          }
-        ]
-      ]
+        )
     end
   end
 
@@ -498,43 +737,54 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
     text_done = events.find { |e| e.type == :"response.output_text.done" }
     assert_pattern do
-      text_done => OpenAI::Streaming::ResponseTextDoneEvent[
-        parsed: CalendarEvent[
-          name: "Conference",
-          date: "Friday",
-          location: "Convention Center"
-        ]
-      ]
+      text_done => OpenAI::Streaming::ResponseTextDoneEvent(
+          parsed: CalendarEvent(
+              name: "Conference",
+              date: "Friday",
+              location: "Convention Center"
+            )
+        )
     end
 
     function_done = events.find { |e| e.type == :"response.function_call_arguments.done" }
-    assert_equal('{"first_name":"Ada","last_name":"Lovelace"}', function_done.arguments)
+    assert_equal("{\"first_name\":\"Ada\",\"last_name\":\"Lovelace\"}", function_done.arguments)
 
     final_response = stream.get_final_response
 
     text_output = final_response.output.find { |o| o.is_a?(OpenAI::Models::Responses::ResponseOutputMessage) }
     text_content = text_output.content.find { |c| c[:type] == :output_text }
     assert_pattern do
-      text_content[:parsed] => CalendarEvent[
-        name: "Conference",
-        date: "Friday",
-        location: "Convention Center"
-      ]
+      text_content[:parsed] => CalendarEvent(
+          name: "Conference",
+          date: "Friday",
+          location: "Convention Center"
+        )
     end
 
     tool_call = final_response.output.find { |o| o.is_a?(OpenAI::Models::Responses::ResponseFunctionToolCall) }
     assert_pattern do
-      tool_call => OpenAI::Models::Responses::ResponseFunctionToolCall[
-        name: "LookupCalendar",
-        parsed: LookupCalendar[
-          first_name: "Ada",
-          last_name: "Lovelace"
-        ]
-      ]
+      tool_call => OpenAI::Models::Responses::ResponseFunctionToolCall(
+          name: "LookupCalendar",
+          parsed: LookupCalendar(
+              first_name: "Ada",
+              last_name: "Lovelace"
+            )
+        )
     end
   end
 
   private
+
+  def incremental_sse_response(response, starting_after:)
+    response
+      .split("\n\n")
+      .select do |event|
+        data = event.lines.find { |line| line.start_with?("data: ") }
+        JSON.parse(data.delete_prefix("data: ")).fetch("sequence_number") > starting_after
+      end
+      .join("\n\n") +
+      "\n\n"
+  end
 
   def function_tool_params
     basic_params.merge(
@@ -570,6 +820,28 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
     assert_equal(expected_snapshot, function_deltas.last.snapshot, "Incorrect final snapshot")
   end
 
+  def assert_incremental_text_delta_events(events, expected_deltas:)
+    text_deltas = events.select do |event|
+      event.is_a?(OpenAI::Streaming::ResponseTextDeltaEvent)
+    end
+
+    assert_equal(expected_deltas, text_deltas.map(&:delta))
+    text_deltas.each do |event|
+      assert_nil(event.snapshot)
+    end
+  end
+
+  def assert_incremental_function_delta_events(events, expected_deltas:)
+    function_deltas = events.select do |event|
+      event.is_a?(OpenAI::Streaming::ResponseFunctionCallArgumentsDeltaEvent)
+    end
+
+    assert_equal(expected_deltas, function_deltas.map(&:delta))
+    function_deltas.each do |event|
+      assert_nil(event.snapshot)
+    end
+  end
+
   def basic_text_sse_response
     <<~SSE
       event: response.created
@@ -588,7 +860,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.output_text.delta","sequence_number":5,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"Hello there! "}
 
       event: response.output_text.delta
-      data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"How can I help you "}
+      data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"How can I help you ","logprobs":[{"token":"How","logprob":-0.5,"top_logprobs":[]}]}
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":7,"response_id":"msg_001","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
@@ -606,6 +878,15 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.completed","sequence_number":11,"response":{"id":"msg_001","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"item_001","object":"realtime.item","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"Hello there! How can I help you today?"}]}],"usage":{"total_tokens":20,"input_tokens":10,"output_tokens":10},"metadata":null}}
 
     SSE
+  end
+
+  def keepalive_before_created_sse_response
+    <<~SSE +
+      event: keepalive
+      data: {"type":"keepalive","sequence_number":0}
+
+    SSE
+      basic_text_sse_response
   end
 
   def resume_stream_sse_response
@@ -653,6 +934,9 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":6,"response_id":"msg_456","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
+
+      event: keepalive
+      data: {"type":"keepalive","sequence_number":7}
 
       event: response.output_text.delta
       data: {"type":"response.output_text.delta","sequence_number":8,"response_id":"msg_456","item_id":"item_001","output_index":0,"content_index":0,"delta":"today?"}
@@ -759,13 +1043,13 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.output_text.delta","sequence_number":4,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"delta":"{\\"location\\":\\""}
 
       event: response.output_text.delta
-      data: {"type":"response.output_text.delta","sequence_number":5,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"delta":"San Francisco\\", malformed JSON"}
+      data: {"type":"response.output_text.delta","sequence_number":5,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"delta":"SENSITIVE_MODEL_OUTPUT\\", malformed JSON"}
 
       event: response.output_text.done
-      data: {"type":"response.output_text.done","sequence_number":6,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"text":"{\\"location\\":\\"San Francisco\\", malformed JSON"}
+      data: {"type":"response.output_text.done","sequence_number":6,"response_id":"msg_malformed","item_id":"item_malformed","output_index":0,"content_index":0,"text":"{\\"location\\":\\"SENSITIVE_MODEL_OUTPUT\\", malformed JSON"}
 
       event: response.completed
-      data: {"type":"response.completed","sequence_number":7,"response":{"id":"msg_malformed","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"item_malformed","object":"realtime.item","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"{\\"location\\":\\"San Francisco\\", malformed JSON"}]}],"usage":{"total_tokens":20,"input_tokens":10,"output_tokens":10},"metadata":null}}
+      data: {"type":"response.completed","sequence_number":7,"response":{"id":"msg_malformed","object":"realtime.response","status":"completed","status_details":null,"output":[{"id":"item_malformed","object":"realtime.item","type":"message","status":"completed","role":"assistant","content":[{"type":"output_text","text":"{\\"location\\":\\"SENSITIVE_MODEL_OUTPUT\\", malformed JSON"}]}],"usage":{"total_tokens":20,"input_tokens":10,"output_tokens":10},"metadata":null}}
 
     SSE
   end
@@ -877,7 +1161,7 @@ class OpenAI::Test::Resources::Responses::StreamingTest < Minitest::Test
       data: {"type":"response.output_item.added","sequence_number":9,"response_id":"resp_stream_001","output_index":1,"item":{"id":"call_001","object":"realtime.item","type":"function_call","status":"in_progress","name":"LookupCalendar","arguments":"","call_id":"call_001"}}
 
       event: response.function_call_arguments.delta
-      data: {"type":"response.function_call_arguments.delta","sequence_number":10,"item_id":"call_001","output_index":1,"delta":"{\\"first_name\\":\\"Ada\\","}
+      data: {"type":"response.function_call_arguments.delta","sequence_number":10,"response_id":"resp_stream_001","item_id":"call_001","output_index":1,"delta":"{\\"first_name\\":\\"Ada\\","}
 
       event: response.function_call_arguments.delta
       data: {"type":"response.function_call_arguments.delta","sequence_number":11,"item_id":"call_001","output_index":1,"delta":"\\"last_name\\":\\"Lovelace\\"}"}

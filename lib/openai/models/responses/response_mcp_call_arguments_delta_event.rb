@@ -36,22 +36,24 @@ module OpenAI
         required :type, const: :"response.mcp_call_arguments.delta"
 
         # @!method initialize(delta:, item_id:, output_index:, sequence_number:, type: :"response.mcp_call_arguments.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseMcpCallArgumentsDeltaEvent} for more
-        #   details.
-        #
         #   Emitted when there is a delta (partial update) to the arguments of an MCP tool
         #   call.
         #
-        #   @param delta [String] A JSON string containing the partial update to the arguments for the MCP tool ca
+        #   @param delta [String]
+        #     A JSON string containing the partial update to the arguments for the MCP tool
+        #     call.
         #
-        #   @param item_id [String] The unique identifier of the MCP tool call item being processed.
+        #   @param item_id [String]
+        #     The unique identifier of the MCP tool call item being processed.
         #
-        #   @param output_index [Integer] The index of the output item in the response's output array.
+        #   @param output_index [Integer]
+        #     The index of the output item in the response's output array.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.mcp_call_arguments.delta"] The type of the event. Always 'response.mcp_call_arguments.delta'.
+        #   @param type [Symbol, :"response.mcp_call_arguments.delta"]
+        #     The type of the event. Always 'response.mcp_call_arguments.delta'.
       end
     end
   end

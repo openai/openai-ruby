@@ -50,24 +50,29 @@ module OpenAI
           required :resource_type, String
 
           # @!method initialize(id:, description:, name:, permissions:, predefined_role:, resource_type:, object: :role)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::Role} for more details.
-          #
           #   Details about a role that can be assigned through the public Roles API.
           #
-          #   @param id [String] Identifier for the role.
+          #   @param id [String]
+          #     Identifier for the role.
           #
-          #   @param description [String, nil] Optional description of the role.
+          #   @param description [String, nil]
+          #     Optional description of the role.
           #
-          #   @param name [String] Unique name for the role.
+          #   @param name [String]
+          #     Unique name for the role.
           #
-          #   @param permissions [Array<String>] Permissions granted by the role.
+          #   @param permissions [Array<String>]
+          #     Permissions granted by the role.
           #
-          #   @param predefined_role [Boolean] Whether the role is predefined and managed by OpenAI.
+          #   @param predefined_role [Boolean]
+          #     Whether the role is predefined and managed by OpenAI.
           #
-          #   @param resource_type [String] Resource type the role is bound to (for example `api.organization` or `api.proje
+          #   @param resource_type [String]
+          #     Resource type the role is bound to (for example `api.organization` or
+          #     `api.project`).
           #
-          #   @param object [Symbol, :role] Always `role`.
+          #   @param object [Symbol, :role]
+          #     Always `role`.
         end
       end
     end

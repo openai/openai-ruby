@@ -62,9 +62,7 @@ module OpenAI
         #
         # @return [Boolean]
         def ==(other)
-          # rubocop:disable Style/CaseEquality
           OpenAI::Internal::Type::Enum === other && other.values.to_set == values.to_set
-          # rubocop:enable Style/CaseEquality
         end
 
         # @api public
@@ -148,7 +146,7 @@ module OpenAI
           members = values.map { OpenAI::Internal::Type::Converter.inspect(_1, depth: depth.succ) }
           prefix = is_a?(Module) ? name : self.class.name
 
-          "#{prefix}[#{members.join(' | ')}]"
+          "#{prefix}[#{members.join(" | ")}]"
         end
       end
     end

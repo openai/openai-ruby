@@ -1,0 +1,309 @@
+module OpenAI
+  module Models
+    module Live
+      type responses_delegation_update_config =
+        {
+          ?instructions: String?,
+          ?max_output_tokens: Integer?,
+          ?model: String,
+          ?parallel_tool_calls: bool?,
+          ?reasoning: OpenAI::Live::ResponsesDelegationUpdateConfig::Reasoning?,
+          ?service_tier: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::service_tier?,
+          ?text: OpenAI::Live::ResponsesDelegationUpdateConfig::Text?,
+          ?tool_choice: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool]
+        }
+
+      class ResponsesDelegationUpdateConfig < OpenAI::Internal::Type::BaseModel
+        # Instructions for the delegated Responses model, separate from Live instructions.
+        # See
+        # [backend prompting](https://developers.openai.com/api/docs/guides/live-delegation#start-with-your-existing-backend-prompt).
+        attr_accessor instructions: String?
+
+        # Maximum number of output tokens for each delegated response.
+        attr_accessor max_output_tokens: Integer?
+
+        # The Responses backend model to use for subsequent delegated requests. Omit to
+        # keep the current backend model.
+        attr_reader model: String?
+
+        # The Responses backend model to use for subsequent delegated requests. Omit to
+        # keep the current backend model.
+        def model=: (String) -> String
+
+        # Whether the delegated Responses model may request multiple tool calls in a
+        # single response.
+        attr_accessor parallel_tool_calls: bool?
+
+        # Reasoning settings passed to each delegated Responses request.
+        attr_accessor reasoning: OpenAI::Live::ResponsesDelegationUpdateConfig::Reasoning?
+
+        # Service tier for delegated Responses requests.
+        attr_accessor service_tier: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::service_tier?
+
+        # Text generation settings passed to each delegated Responses request.
+        attr_accessor text: OpenAI::Live::ResponsesDelegationUpdateConfig::Text?
+
+        # Controls which tool the Responses backend uses when handling a task delegated by
+        # the Live model.
+        attr_reader tool_choice: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool_choice?
+
+        # Controls which tool the Responses backend uses when handling a task delegated by
+        # the Live model.
+        def tool_choice=: (
+          OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool_choice
+        ) -> OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool_choice
+
+        # Tools available to the Responses backend while it handles tasks delegated by the
+        # Live model.
+        attr_reader tools: ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool]?
+
+        # Tools available to the Responses backend while it handles tasks delegated by the
+        # Live model.
+        def tools=: (
+          ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool]
+        ) -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool]
+
+        # @param instructions
+        #   Instructions for the delegated Responses model, separate from Live instructions.
+        #   See
+        #   [backend prompting](https://developers.openai.com/api/docs/guides/live-delegation#start-with-your-existing-backend-prompt).
+        # @param max_output_tokens
+        #   Maximum number of output tokens for each delegated response.
+        # @param model
+        #   The Responses backend model to use for subsequent delegated requests. Omit to
+        #   keep the current backend model.
+        # @param parallel_tool_calls
+        #   Whether the delegated Responses model may request multiple tool calls in a
+        #   single response.
+        # @param reasoning
+        #   Reasoning settings passed to each delegated Responses request.
+        # @param service_tier
+        #   Service tier for delegated Responses requests.
+        # @param text
+        #   Text generation settings passed to each delegated Responses request.
+        # @param tool_choice
+        #   Controls which tool the Responses backend uses when handling a task delegated by
+        #   the Live model.
+        # @param tools
+        #   Tools available to the Responses backend while it handles tasks delegated by the
+        #   Live model.
+        def initialize: (
+          ?instructions: String?,
+          ?max_output_tokens: Integer?,
+          ?model: String,
+          ?parallel_tool_calls: bool?,
+          ?reasoning: OpenAI::Live::ResponsesDelegationUpdateConfig::Reasoning?,
+          ?service_tier: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::service_tier?,
+          ?text: OpenAI::Live::ResponsesDelegationUpdateConfig::Text?,
+          ?tool_choice: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool]
+        ) -> void
+
+        def to_hash: -> {
+          ?instructions: String?,
+          ?max_output_tokens: Integer?,
+          ?model: String,
+          ?parallel_tool_calls: bool?,
+          ?reasoning: OpenAI::Live::ResponsesDelegationUpdateConfig::Reasoning?,
+          ?service_tier: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::service_tier?,
+          ?text: OpenAI::Live::ResponsesDelegationUpdateConfig::Text?,
+          ?tool_choice: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool_choice,
+          ?tools: ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool]
+        }
+
+        type reasoning =
+          {
+            ?effort: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::effort?,
+            ?summary: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::summary?
+          }
+
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          # How much reasoning effort the delegated Responses model should use. Supported
+          # values depend on the backend model.
+          attr_accessor effort: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::effort?
+
+          # The reasoning summary to request from the delegated Responses model, when
+          # supported.
+          attr_accessor summary: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::summary?
+
+          # @param effort
+          #   How much reasoning effort the delegated Responses model should use. Supported
+          #   values depend on the backend model.
+          # @param summary
+          #   The reasoning summary to request from the delegated Responses model, when
+          #   supported.
+          def initialize: (
+            ?effort: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::effort?,
+            ?summary: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::summary?
+          ) -> void
+
+          def to_hash: -> {
+            ?effort: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::effort?,
+            ?summary: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::summary?
+          }
+
+          type effort = :none | :minimal | :low | :medium | :high | :xhigh
+
+          module Effort
+            extend OpenAI::Internal::Type::Enum
+
+            NONE: :none
+            MINIMAL: :minimal
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+            XHIGH: :xhigh
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::effort]
+          end
+
+          type summary = :concise | :detailed | :auto
+
+          module Summary
+            extend OpenAI::Internal::Type::Enum
+
+            CONCISE: :concise
+            DETAILED: :detailed
+            AUTO: :auto
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Reasoning::summary]
+          end
+        end
+
+        type service_tier =
+          :auto
+          | :default
+          | :fast_tier_temp_pilot
+          | :flex
+          | :priority
+          | :ultrafast
+
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          AUTO: :auto
+          DEFAULT: :default
+          FAST_TIER_TEMP_PILOT: :fast_tier_temp_pilot
+          FLEX: :flex
+          PRIORITY: :priority
+          ULTRAFAST: :ultrafast
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::service_tier]
+        end
+
+        type text =
+          {
+            ?verbosity: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Text::verbosity?
+          }
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          # The amount of detail in text generated by the Responses backend. This does not
+          # configure the Live model’s spoken delivery.
+          attr_accessor verbosity: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Text::verbosity?
+
+          # @param verbosity
+          #   The amount of detail in text generated by the Responses backend. This does not
+          #   configure the Live model’s spoken delivery.
+          def initialize: (
+            ?verbosity: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Text::verbosity?
+          ) -> void
+
+          def to_hash: -> {
+            ?verbosity: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Text::verbosity?
+          }
+
+          type verbosity = :low | :medium | :high
+
+          module Verbosity
+            extend OpenAI::Internal::Type::Enum
+
+            LOW: :low
+            MEDIUM: :medium
+            HIGH: :high
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Text::verbosity]
+          end
+        end
+
+        type tool_choice =
+          OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::live_tool_choice_enum
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::LiveFunctionToolChoiceParam
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::LiveMCPToolChoiceParam
+
+        module ToolChoice
+          extend OpenAI::Internal::Type::Union
+
+          type live_tool_choice_enum = :auto | :none | :required
+
+          module LiveToolChoiceEnum
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            NONE: :none
+            REQUIRED: :required
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::live_tool_choice_enum]
+          end
+
+          type live_function_tool_choice_param =
+            { name: String, ?type: :function }
+
+          class LiveFunctionToolChoiceParam < OpenAI::Internal::Type::BaseModel
+            attr_accessor name: String
+
+            attr_accessor type: :function
+
+            def initialize: (name: String, ?type: :function) -> void
+
+            def to_hash: -> { name: String, ?type: :function }
+          end
+
+          type live_mcp_tool_choice_param =
+            { name: String, server_label: String, ?type: :mcp }
+
+          class LiveMCPToolChoiceParam < OpenAI::Internal::Type::BaseModel
+            attr_accessor name: String
+
+            attr_accessor server_label: String
+
+            attr_accessor type: :mcp
+
+            def initialize: (
+              name: String,
+              server_label: String,
+              ?type: :mcp
+            ) -> void
+
+            def to_hash: -> { name: String, server_label: String, ?type: :mcp }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool_choice]
+        end
+
+        type tool =
+          OpenAI::Live::FunctionTool
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::WebSearch
+
+        module Tool
+          extend OpenAI::Internal::Type::Union
+
+          type web_search = { ?type: :web_search }
+
+          class WebSearch < OpenAI::Internal::Type::BaseModel
+            # The tool type. Always `web_search`.
+            attr_accessor type: :web_search
+
+            # @param type
+            #   The tool type. Always `web_search`.
+            def initialize: (?type: :web_search) -> void
+
+            def to_hash: -> { ?type: :web_search }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::tool]
+        end
+      end
+    end
+  end
+end

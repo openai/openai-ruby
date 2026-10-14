@@ -40,10 +40,10 @@ module OpenAI
       required :quality, enum: -> { OpenAI::ImageGenPartialImageEvent::Quality }
 
       # @!attribute size
-      #   The size of the requested image.
+      #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @return [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Size]
-      required :size, enum: -> { OpenAI::ImageGenPartialImageEvent::Size }
+      #   @return [String, Symbol, OpenAI::Models::ImageGenPartialImageEvent::Size]
+      required :size, union: -> { OpenAI::ImageGenPartialImageEvent::Size }
 
       # @!attribute type
       #   The type of the event. Always `image_generation.partial_image`.
@@ -52,26 +52,31 @@ module OpenAI
       required :type, const: :"image_generation.partial_image"
 
       # @!method initialize(b64_json:, background:, created_at:, output_format:, partial_image_index:, quality:, size:, type: :"image_generation.partial_image")
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::ImageGenPartialImageEvent} for more details.
-      #
       #   Emitted when a partial image is available during image generation streaming.
       #
-      #   @param b64_json [String] Base64-encoded partial image data, suitable for rendering as an image.
+      #   @param b64_json [String]
+      #     Base64-encoded partial image data, suitable for rendering as an image.
       #
-      #   @param background [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Background] The background setting for the requested image.
+      #   @param background [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Background]
+      #     The background setting for the requested image.
       #
-      #   @param created_at [Integer] The Unix timestamp when the event was created.
+      #   @param created_at [Integer]
+      #     The Unix timestamp when the event was created.
       #
-      #   @param output_format [Symbol, OpenAI::Models::ImageGenPartialImageEvent::OutputFormat] The output format for the requested image.
+      #   @param output_format [Symbol, OpenAI::Models::ImageGenPartialImageEvent::OutputFormat]
+      #     The output format for the requested image.
       #
-      #   @param partial_image_index [Integer] 0-based index for the partial image (streaming).
+      #   @param partial_image_index [Integer]
+      #     0-based index for the partial image (streaming).
       #
-      #   @param quality [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Quality] The quality setting for the requested image.
+      #   @param quality [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Quality]
+      #     The quality setting for the requested image.
       #
-      #   @param size [Symbol, OpenAI::Models::ImageGenPartialImageEvent::Size] The size of the requested image.
+      #   @param size [String, Symbol, OpenAI::Models::ImageGenPartialImageEvent::Size]
+      #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @param type [Symbol, :"image_generation.partial_image"] The type of the event. Always `image_generation.partial_image`.
+      #   @param type [Symbol, :"image_generation.partial_image"]
+      #     The type of the event. Always `image_generation.partial_image`.
 
       # The background setting for the requested image.
       #
@@ -110,25 +115,50 @@ module OpenAI
         LOW = :low
         MEDIUM = :medium
         HIGH = :high
+        XHIGH = :xhigh
+        MAX = :max
         AUTO = :auto
 
         # @!method self.values
         #   @return [Array<Symbol>]
       end
 
-      # The size of the requested image.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       # @see OpenAI::Models::ImageGenPartialImageEvent#size
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
+
+        variant const: -> { OpenAI::Models::ImageGenPartialImageEvent::Size::SIZE_1024X1024 }
+
+        variant const: -> { OpenAI::Models::ImageGenPartialImageEvent::Size::SIZE_1024X1536 }
+
+        variant const: -> { OpenAI::Models::ImageGenPartialImageEvent::Size::SIZE_1536X1024 }
+
+        variant const: -> { OpenAI::Models::ImageGenPartialImageEvent::Size::AUTO }
+
+        variant String
+
+        # @!method self.variants
+        #   @return [Array(String, Symbol)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::ImageGenPartialImageEvent::Size::TaggedSymbol) }
+        end
+
+        # @!group
 
         SIZE_1024X1024 = :"1024x1024"
         SIZE_1024X1536 = :"1024x1536"
         SIZE_1536X1024 = :"1536x1024"
         AUTO = :auto
 
-        # @!method self.values
-        #   @return [Array<Symbol>]
+        # @!endgroup
+
+        # Preserve the enum helper available before arbitrary strings were supported.
+        #
+        # @return [Array<Symbol>]
+        def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024, AUTO]
       end
     end
   end

@@ -6,13 +6,18 @@ echo "Script started with $# arguments"
 echo "Arguments: $*"
 echo "Script location: $(dirname "$0")"
 
-cd -- "$(dirname "$0")/.."
-echo "Changed to directory: $PWD"
-
 if [ $# -eq 0 ]; then
     echo "Usage: $0 <file-with-paths> [additional-formatter-args...]"
     echo "The file should contain one file path per line"
     exit 1
 fi
 
-exec -- bundle exec rake format FORMAT_FILE="$1"
+path_list="$1"
+if [[ "$path_list" != /* ]]; then
+    path_list="$PWD/$path_list"
+fi
+
+cd -- "$(dirname "$0")/.."
+echo "Changed to directory: $PWD"
+
+exec -- bundle exec rake format FORMAT_FILE="$path_list" "${@:2}"

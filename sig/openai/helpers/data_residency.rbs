@@ -1,0 +1,16 @@
+module OpenAI
+  module Internal
+    # @api private
+    module ClientOptions
+      # @api private
+      DATA_RESIDENCY_URLS: ::Hash[String, String]
+
+      # @api private
+      def self.resolve_data_residency: (
+        untyped data_residency,
+        base_url: untyped,
+        provider: OpenAI::Provider?
+      ) -> untyped
+    end
+  end
+end

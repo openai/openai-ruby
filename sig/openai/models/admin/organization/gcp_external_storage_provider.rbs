@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type gcp_external_storage_provider =
+          {
+            audience: String,
+            bucket: String,
+            region: String,
+            ?type: :gcp,
+            workload_identity_pool_id: String,
+            workload_identity_project_number: String,
+            workload_identity_provider_id: String
+          }
+
+        class GcpExternalStorageProvider < OpenAI::Internal::Type::BaseModel
+          attr_accessor audience: String
+
+          attr_accessor bucket: String
+
+          attr_accessor region: String
+
+          attr_accessor type: :gcp
+
+          attr_accessor workload_identity_pool_id: String
+
+          attr_accessor workload_identity_project_number: String
+
+          attr_accessor workload_identity_provider_id: String
+
+          def initialize: (
+            audience: String,
+            bucket: String,
+            region: String,
+            workload_identity_pool_id: String,
+            workload_identity_project_number: String,
+            workload_identity_provider_id: String,
+            ?type: :gcp
+          ) -> void
+
+          def to_hash: -> {
+            audience: String,
+            bucket: String,
+            region: String,
+            ?type: :gcp,
+            workload_identity_pool_id: String,
+            workload_identity_project_number: String,
+            workload_identity_provider_id: String
+          }
+        end
+      end
+    end
+  end
+end

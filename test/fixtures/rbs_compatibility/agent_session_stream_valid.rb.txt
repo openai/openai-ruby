@@ -1,0 +1,41 @@
+client = OpenAI::Client.new(api_key: "fake-key")
+client.beta.agents.sessions.stream("session_test", input: "Hello", on_tool_error: ->(failure) { failure.error.message; failure.stage.to_s; failure.session_id.upcase; failure.turn_id.upcase; failure.call_id.upcase; failure.tool_name.upcase }, tool_handlers: {"lookup" => ->(arguments) { arguments.fetch("query").to_s }}) do |stream|
+  stream.each do |event|
+    event.event_id.to_s
+  end
+end
+stream = client.beta.agents.sessions.stream("session_test", input: [{role: :user, content: [{type: :input_text, text: "Hello"}]}])
+stream.with_result_collection.until_done
+stream.close
+message = OpenAI::Beta::AgentSessionMessage.new(id: "message_test", content: [], phase: nil, role: :assistant, status: :completed, turn_id: "turn_test")
+message.output_text.upcase
+
+result = stream.get_final_result
+result.output_text.upcase
+result.turn.status.to_s
+result.messages.each { |message| message.output_text.upcase }
+result.session_id.upcase
+result.turn_id.upcase
+creation = client.beta.agents.sessions.create_streaming(agent: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent.new(model: "test-model"), environment: OpenAI::Models::Beta::EnvironmentParam::None.new, input: "Hi", tool_handlers: {"lookup" => ->(arguments) { arguments.fetch("query").to_s }})
+creation.status.to_i
+creation.with_result_collection.to_enum.next.event_id.to_s
+creation.get_final_result.output_text.upcase
+
+collector = OpenAI::Helpers::Beta::Agents::ResultCollector.new(session_id: "session_test", handler_names: ["lookup"])
+collector.enable
+collector.observe({type: "future.event"})
+collector.stopped?.to_s
+collector.observe_error(StandardError.new("observation failed"))
+collector.result.output_text.upcase
+
+# @type var report_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)
+report_type = _ = Class.new(OpenAI::BaseModel)
+report_type.required(:summary, String)
+typed = client.beta.agents.sessions.create_streaming(agent: OpenAI::Models::Beta::Agents::SessionCreateParams::Agent.new(model: "test-model"), environment: OpenAI::Models::Beta::EnvironmentParam::None.new, input: "Hi", output_type: report_type)
+typed.get_final_result.output_parsed.summary
+client.beta.agents.sessions.stream("session_test", input: "Continue", output_type: report_type).get_final_result.output_parsed.summary
+result.parse(output_type: report_type).raw_result.output_text.upcase
+
+lookup = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "lookup", arguments: report_type, defer_loading: true) { |arguments| arguments.summary.to_s }
+lookup.definition
+lookup.handlers

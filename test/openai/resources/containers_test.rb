@@ -12,16 +12,16 @@ class OpenAI::Test::Resources::ContainersTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        name: String,
-        object: String,
-        status: String,
-        expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter | nil,
-        last_active_at: Integer | nil,
-        memory_limit: OpenAI::Models::ContainerCreateResponse::MemoryLimit | nil,
-        network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy | nil
-      }
+          id: String,
+          created_at: Integer,
+          name: String,
+          object: String,
+          status: String,
+          expires_after: OpenAI::Models::ContainerCreateResponse::ExpiresAfter | nil,
+          last_active_at: Integer | nil,
+          memory_limit: OpenAI::Models::ContainerCreateResponse::MemoryLimit | nil,
+          network_policy: OpenAI::Models::ContainerCreateResponse::NetworkPolicy | nil
+        }
     end
   end
 
@@ -34,16 +34,16 @@ class OpenAI::Test::Resources::ContainersTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        name: String,
-        object: String,
-        status: String,
-        expires_after: OpenAI::Models::ContainerRetrieveResponse::ExpiresAfter | nil,
-        last_active_at: Integer | nil,
-        memory_limit: OpenAI::Models::ContainerRetrieveResponse::MemoryLimit | nil,
-        network_policy: OpenAI::Models::ContainerRetrieveResponse::NetworkPolicy | nil
-      }
+          id: String,
+          created_at: Integer,
+          name: String,
+          object: String,
+          status: String,
+          expires_after: OpenAI::Models::ContainerRetrieveResponse::ExpiresAfter | nil,
+          last_active_at: Integer | nil,
+          memory_limit: OpenAI::Models::ContainerRetrieveResponse::MemoryLimit | nil,
+          network_policy: OpenAI::Models::ContainerRetrieveResponse::NetworkPolicy | nil
+        }
     end
   end
 
@@ -54,7 +54,8 @@ class OpenAI::Test::Resources::ContainersTest < OpenAI::Test::ResourceTest
       response => OpenAI::Internal::CursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -63,16 +64,16 @@ class OpenAI::Test::Resources::ContainersTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        name: String,
-        object: String,
-        status: String,
-        expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter | nil,
-        last_active_at: Integer | nil,
-        memory_limit: OpenAI::Models::ContainerListResponse::MemoryLimit | nil,
-        network_policy: OpenAI::Models::ContainerListResponse::NetworkPolicy | nil
-      }
+          id: String,
+          created_at: Integer,
+          name: String,
+          object: String,
+          status: String,
+          expires_after: OpenAI::Models::ContainerListResponse::ExpiresAfter | nil,
+          last_active_at: Integer | nil,
+          memory_limit: OpenAI::Models::ContainerListResponse::MemoryLimit | nil,
+          network_policy: OpenAI::Models::ContainerListResponse::NetworkPolicy | nil
+        }
     end
   end
 

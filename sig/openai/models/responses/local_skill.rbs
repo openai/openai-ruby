@@ -4,12 +4,21 @@ module OpenAI
       type local_skill = { description: String, name: String, path: String }
 
       class LocalSkill < OpenAI::Internal::Type::BaseModel
+        # The description of the skill.
         attr_accessor description: String
 
+        # The name of the skill.
         attr_accessor name: String
 
+        # The path to the directory containing the skill.
         attr_accessor path: String
 
+        # @param description
+        #   The description of the skill.
+        # @param name
+        #   The name of the skill.
+        # @param path
+        #   The path to the directory containing the skill.
         def initialize: (
           description: String,
           name: String,

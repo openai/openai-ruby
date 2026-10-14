@@ -24,10 +24,12 @@ class CalendarEvent < OpenAI::BaseModel
   required :participants, OpenAI::ArrayOf[Participant]
   required :optional_participants, OpenAI::ArrayOf[Participant, doc: "who might not show up"], nil?: true
   required :is_virtual, OpenAI::Boolean
-  required :location,
-           OpenAI::UnionOf[String, Location],
-           nil?: true,
-           doc: "Event location"
+  required(
+    :location,
+    OpenAI::UnionOf[String, Location],
+    nil?: true,
+    doc: "Event location"
+  )
 end
 
 # gets API Key from environment variable `OPENAI_API_KEY`
@@ -48,10 +50,16 @@ chat_completion = client.chat.completions.create(
   response_format: CalendarEvent
 )
 
-chat_completion
-  .choices
-  .reject { _1.message.refusal }
-  .each do |choice|
-    # parsed is an instance of `CalendarEvent`
-    pp(choice.message.parsed)
+parsed_events = chat_completion.choices.filter_map do |choice|
+  next if choice.message.refusal
+
+  parsed = choice.message.parsed
+  case parsed
+  when CalendarEvent
+    parsed
   end
+end
+
+abort("The response did not contain a parsed CalendarEvent") if parsed_events.empty?
+
+parsed_events.each { pp(_1) }

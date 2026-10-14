@@ -32,16 +32,18 @@ module OpenAI
             optional :id, String
 
             # @!method initialize(file_search:, index:, id: nil, type: :file_search)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Threads::Runs::FileSearchToolCallDelta} for more details.
+            #   @param file_search [Object]
+            #     For now, this is always going to be an empty object.
             #
-            #   @param file_search [Object] For now, this is always going to be an empty object.
+            #   @param index [Integer]
+            #     The index of the tool call in the tool calls array.
             #
-            #   @param index [Integer] The index of the tool call in the tool calls array.
+            #   @param id [String]
+            #     The ID of the tool call object.
             #
-            #   @param id [String] The ID of the tool call object.
-            #
-            #   @param type [Symbol, :file_search] The type of tool call. This is always going to be `file_search` for this type of
+            #   @param type [Symbol, :file_search]
+            #     The type of tool call. This is always going to be `file_search` for this type of
+            #     tool call.
           end
         end
       end

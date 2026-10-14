@@ -1,0 +1,16 @@
+module OpenAI
+  module Helpers
+    module Beta
+      module Agents
+        module ModelAdapter
+          def self.validate!: (untyped model, parameter: String) -> void
+          def self.coerce: (
+            singleton(OpenAI::BaseModel) model,
+            untyped value,
+            ?memoize: bool
+          ) -> OpenAI::BaseModel?
+        end
+      end
+    end
+  end
+end

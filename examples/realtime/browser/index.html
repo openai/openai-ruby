@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Ruby Realtime browser reference</title></head>
+<body>
+  <h1>Ruby Realtime browser reference</h1>
+  <nav><a href="/direct">Browser-owned</a> | <a href="/backend">Backend-owned</a></nav>
+  <h2 id="mode"></h2>
+  <p>Ordinary Realtime API. Your browser owns the microphone, media and peer connection.</p>
+  <p>Paste the local application's BROWSER_APP_TOKEN. Never paste your OpenAI API key.</p>
+  <label>Application token <input id="token" type="password" autocomplete="off" spellcheck="false"></label>
+  <button id="start" type="button">Start</button>
+  <button id="stop" type="button" disabled>Stop</button>
+  <p id="status" role="status">Stopped</p>
+  <p>Allow microphone access, then speak after Connected. Stop releases microphone and peer resources.</p>
+  <p>If audio does not play automatically, use the Play control below.</p>
+  <audio controls autoplay></audio>
+  <script type="module" src="/page.js"></script>
+</body>
+</html>

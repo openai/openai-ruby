@@ -8,7 +8,8 @@ module OpenAI
         #
         # @overload retrieve(skill_id, request_options: {})
         #
-        # @param skill_id [String] The identifier of the skill to download.
+        # @param skill_id [String]
+        #   The identifier of the skill to download.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

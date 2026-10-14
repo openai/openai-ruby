@@ -2,8 +2,11 @@ module OpenAI
   module Models
     module Realtime
       type call_refer_params =
-        { call_id: String, target_uri: String }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          call_id: String,
+          target_uri: String,
+          ?request_options: OpenAI::request_opts
+        }
 
       class CallReferParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -11,8 +14,13 @@ module OpenAI
 
         attr_accessor call_id: String
 
+        # URI that should appear in the SIP Refer-To header. Supports values like
+        # `tel:+14155550123` or `sip:agent@example.com`.
         attr_accessor target_uri: String
 
+        # @param target_uri
+        #   URI that should appear in the SIP Refer-To header. Supports values like
+        #   `tel:+14155550123` or `sip:agent@example.com`.
         def initialize: (
           call_id: String,
           target_uri: String,
@@ -22,7 +30,7 @@ module OpenAI
         def to_hash: -> {
           call_id: String,
           target_uri: String,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

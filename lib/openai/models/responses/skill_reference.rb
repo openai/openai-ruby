@@ -23,11 +23,14 @@ module OpenAI
         optional :version, String
 
         # @!method initialize(skill_id:, version: nil, type: :skill_reference)
-        #   @param skill_id [String] The ID of the referenced skill.
+        #   @param skill_id [String]
+        #     The ID of the referenced skill.
         #
-        #   @param version [String] Optional skill version. Use a positive integer or 'latest'. Omit for default.
+        #   @param version [String]
+        #     Optional skill version. Use a positive integer or 'latest'. Omit for default.
         #
-        #   @param type [Symbol, :skill_reference] References a skill created with the /v1/skills endpoint.
+        #   @param type [Symbol, :skill_reference]
+        #     References a skill created with the /v1/skills endpoint.
       end
     end
   end

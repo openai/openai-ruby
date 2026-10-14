@@ -10,14 +10,30 @@ module OpenAI
         }
 
       class ChatKitWorkflow < OpenAI::Internal::Type::BaseModel
+        # Identifier of the workflow backing the session.
         attr_accessor id: String
 
+        # State variable key-value pairs applied when invoking the workflow. Defaults to
+        # null when no overrides were provided.
         attr_accessor state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKitWorkflow::state_variable]?
 
+        # Tracing settings applied to the workflow.
         attr_accessor tracing: OpenAI::Beta::ChatKitWorkflow::Tracing
 
+        # Specific workflow version used for the session. Defaults to null when using the
+        # latest deployment.
         attr_accessor version: String?
 
+        # @param id
+        #   Identifier of the workflow backing the session.
+        # @param state_variables
+        #   State variable key-value pairs applied when invoking the workflow. Defaults to
+        #   null when no overrides were provided.
+        # @param tracing
+        #   Tracing settings applied to the workflow.
+        # @param version
+        #   Specific workflow version used for the session. Defaults to null when using the
+        #   latest deployment.
         def initialize: (
           id: String,
           state_variables: ::Hash[Symbol, OpenAI::Models::Beta::ChatKitWorkflow::state_variable]?,
@@ -43,8 +59,11 @@ module OpenAI
         type tracing = { enabled: bool }
 
         class Tracing < OpenAI::Internal::Type::BaseModel
+          # Indicates whether tracing is enabled.
           attr_accessor enabled: bool
 
+          # @param enabled
+          #   Indicates whether tracing is enabled.
           def initialize: (enabled: bool) -> void
 
           def to_hash: -> { enabled: bool }

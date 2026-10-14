@@ -2,18 +2,20 @@
 
 module OpenAI
   module Models
+
     module Conversations
+
       class ItemListParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Conversations::ItemListParams,
-              OpenAI::Internal::AnyHash
-            )
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Conversations::ItemListParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :conversation_id
@@ -43,18 +45,10 @@ module OpenAI
         #   multi-turn conversations when using the Responses API statelessly (like when
         #   the `store` parameter is set to `false`, or when an organization is enrolled
         #   in the zero data retention program).
-        sig do
-          returns(
-            T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol])) }
         attr_reader :include
 
-        sig do
-          params(
-            include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]
-          ).void
-        end
+        sig { params(include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]).void }
         attr_writer :include
 
         # A limit on the number of objects to be returned. Limit can range between 1 and
@@ -69,34 +63,36 @@ module OpenAI
         #
         # - `asc`: Return the input items in ascending order.
         # - `desc`: Return the input items in descending order.
-        sig do
-          returns(
-            T.nilable(OpenAI::Conversations::ItemListParams::Order::OrSymbol)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Conversations::ItemListParams::Order::OrSymbol)) }
         attr_reader :order
 
-        sig do
-          params(
-            order: OpenAI::Conversations::ItemListParams::Order::OrSymbol
-          ).void
-        end
+        sig { params(order: OpenAI::Conversations::ItemListParams::Order::OrSymbol).void }
         attr_writer :order
 
         sig do
           params(
+
             conversation_id: String,
+
             after: String,
+
             include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+
             limit: Integer,
+
             order: OpenAI::Conversations::ItemListParams::Order::OrSymbol,
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           conversation_id:,
+
           # An item ID to list items after, used in pagination.
           after: nil,
+
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
@@ -116,14 +112,17 @@ module OpenAI
           #   the `store` parameter is set to `false`, or when an organization is enrolled
           #   in the zero data retention program).
           include: nil,
+
           # A limit on the number of objects to be returned. Limit can range between 1 and
           # 100, and the default is 20.
           limit: nil,
+
           # The order to return the input items in. Default is `desc`.
           #
           # - `asc`: Return the input items in ascending order.
           # - `desc`: Return the input items in descending order.
           order: nil,
+
           request_options: {}
         )
         end
@@ -133,8 +132,7 @@ module OpenAI
             {
               conversation_id: String,
               after: String,
-              include:
-                T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
+              include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
               limit: Integer,
               order: OpenAI::Conversations::ItemListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions
@@ -151,34 +149,20 @@ module OpenAI
         module Order
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Conversations::ItemListParams::Order)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Conversations::ItemListParams::Order) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ASC =
-            T.let(
-              :asc,
-              OpenAI::Conversations::ItemListParams::Order::TaggedSymbol
-            )
-          DESC =
-            T.let(
-              :desc,
-              OpenAI::Conversations::ItemListParams::Order::TaggedSymbol
-            )
+          ASC = T.let(:asc, OpenAI::Conversations::ItemListParams::Order::TaggedSymbol)
+          DESC = T.let(:desc, OpenAI::Conversations::ItemListParams::Order::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Conversations::ItemListParams::Order::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Conversations::ItemListParams::Order::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

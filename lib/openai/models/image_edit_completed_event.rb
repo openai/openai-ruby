@@ -34,10 +34,10 @@ module OpenAI
       required :quality, enum: -> { OpenAI::ImageEditCompletedEvent::Quality }
 
       # @!attribute size
-      #   The size of the edited image.
+      #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @return [Symbol, OpenAI::Models::ImageEditCompletedEvent::Size]
-      required :size, enum: -> { OpenAI::ImageEditCompletedEvent::Size }
+      #   @return [String, Symbol, OpenAI::Models::ImageEditCompletedEvent::Size]
+      required :size, union: -> { OpenAI::ImageEditCompletedEvent::Size }
 
       # @!attribute type
       #   The type of the event. Always `image_edit.completed`.
@@ -53,26 +53,32 @@ module OpenAI
       required :usage, -> { OpenAI::ImageEditCompletedEvent::Usage }
 
       # @!method initialize(b64_json:, background:, created_at:, output_format:, quality:, size:, usage:, type: :"image_edit.completed")
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::ImageEditCompletedEvent} for more details.
-      #
       #   Emitted when image editing has completed and the final image is available.
       #
-      #   @param b64_json [String] Base64-encoded final edited image data, suitable for rendering as an image.
+      #   @param b64_json [String]
+      #     Base64-encoded final edited image data, suitable for rendering as an image.
       #
-      #   @param background [Symbol, OpenAI::Models::ImageEditCompletedEvent::Background] The background setting for the edited image.
+      #   @param background [Symbol, OpenAI::Models::ImageEditCompletedEvent::Background]
+      #     The background setting for the edited image.
       #
-      #   @param created_at [Integer] The Unix timestamp when the event was created.
+      #   @param created_at [Integer]
+      #     The Unix timestamp when the event was created.
       #
-      #   @param output_format [Symbol, OpenAI::Models::ImageEditCompletedEvent::OutputFormat] The output format for the edited image.
+      #   @param output_format [Symbol, OpenAI::Models::ImageEditCompletedEvent::OutputFormat]
+      #     The output format for the edited image.
       #
-      #   @param quality [Symbol, OpenAI::Models::ImageEditCompletedEvent::Quality] The quality setting for the edited image.
+      #   @param quality [Symbol, OpenAI::Models::ImageEditCompletedEvent::Quality]
+      #     The quality setting for the edited image.
       #
-      #   @param size [Symbol, OpenAI::Models::ImageEditCompletedEvent::Size] The size of the edited image.
+      #   @param size [String, Symbol, OpenAI::Models::ImageEditCompletedEvent::Size]
+      #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @param usage [OpenAI::Models::ImageEditCompletedEvent::Usage] For the GPT image models only, the token usage information for the image generat
+      #   @param usage [OpenAI::Models::ImageEditCompletedEvent::Usage]
+      #     For the GPT image models only, the token usage information for the image
+      #     generation.
       #
-      #   @param type [Symbol, :"image_edit.completed"] The type of the event. Always `image_edit.completed`.
+      #   @param type [Symbol, :"image_edit.completed"]
+      #     The type of the event. Always `image_edit.completed`.
 
       # The background setting for the edited image.
       #
@@ -111,25 +117,50 @@ module OpenAI
         LOW = :low
         MEDIUM = :medium
         HIGH = :high
+        XHIGH = :xhigh
+        MAX = :max
         AUTO = :auto
 
         # @!method self.values
         #   @return [Array<Symbol>]
       end
 
-      # The size of the edited image.
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       # @see OpenAI::Models::ImageEditCompletedEvent#size
       module Size
-        extend OpenAI::Internal::Type::Enum
+        extend OpenAI::Internal::Type::Union
+
+        variant const: -> { OpenAI::Models::ImageEditCompletedEvent::Size::SIZE_1024X1024 }
+
+        variant const: -> { OpenAI::Models::ImageEditCompletedEvent::Size::SIZE_1024X1536 }
+
+        variant const: -> { OpenAI::Models::ImageEditCompletedEvent::Size::SIZE_1536X1024 }
+
+        variant const: -> { OpenAI::Models::ImageEditCompletedEvent::Size::AUTO }
+
+        variant String
+
+        # @!method self.variants
+        #   @return [Array(String, Symbol)]
+
+        define_sorbet_constant!(:Variants) do
+          T.type_alias { T.any(String, OpenAI::ImageEditCompletedEvent::Size::TaggedSymbol) }
+        end
+
+        # @!group
 
         SIZE_1024X1024 = :"1024x1024"
         SIZE_1024X1536 = :"1024x1536"
         SIZE_1536X1024 = :"1536x1024"
         AUTO = :auto
 
-        # @!method self.values
-        #   @return [Array<Symbol>]
+        # @!endgroup
+
+        # Preserve the enum helper available before arbitrary strings were supported.
+        #
+        # @return [Array<Symbol>]
+        def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024, AUTO]
       end
 
       # @see OpenAI::Models::ImageEditCompletedEvent#usage
@@ -159,19 +190,20 @@ module OpenAI
         required :total_tokens, Integer
 
         # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, total_tokens:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::ImageEditCompletedEvent::Usage} for more details.
-        #
         #   For the GPT image models only, the token usage information for the image
         #   generation.
         #
-        #   @param input_tokens [Integer] The number of tokens (images and text) in the input prompt.
+        #   @param input_tokens [Integer]
+        #     The number of tokens (images and text) in the input prompt.
         #
-        #   @param input_tokens_details [OpenAI::Models::ImageEditCompletedEvent::Usage::InputTokensDetails] The input tokens detailed information for the image generation.
+        #   @param input_tokens_details [OpenAI::Models::ImageEditCompletedEvent::Usage::InputTokensDetails]
+        #     The input tokens detailed information for the image generation.
         #
-        #   @param output_tokens [Integer] The number of image tokens in the output image.
+        #   @param output_tokens [Integer]
+        #     The number of image tokens in the output image.
         #
-        #   @param total_tokens [Integer] The total number of tokens (images and text) used for the image generation.
+        #   @param total_tokens [Integer]
+        #     The total number of tokens (images and text) used for the image generation.
 
         # @see OpenAI::Models::ImageEditCompletedEvent::Usage#input_tokens_details
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -190,9 +222,11 @@ module OpenAI
           # @!method initialize(image_tokens:, text_tokens:)
           #   The input tokens detailed information for the image generation.
           #
-          #   @param image_tokens [Integer] The number of image tokens in the input prompt.
+          #   @param image_tokens [Integer]
+          #     The number of image tokens in the input prompt.
           #
-          #   @param text_tokens [Integer] The number of text tokens in the input prompt.
+          #   @param text_tokens [Integer]
+          #     The number of text tokens in the input prompt.
         end
       end
     end

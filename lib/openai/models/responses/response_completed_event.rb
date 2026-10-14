@@ -23,16 +23,16 @@ module OpenAI
         required :type, const: :"response.completed"
 
         # @!method initialize(response:, sequence_number:, type: :"response.completed")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseCompletedEvent} for more details.
-        #
         #   Emitted when the model response is complete.
         #
-        #   @param response [OpenAI::Models::Responses::Response] Properties of the completed response.
+        #   @param response [OpenAI::Models::Responses::Response]
+        #     Properties of the completed response.
         #
-        #   @param sequence_number [Integer] The sequence number for this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number for this event.
         #
-        #   @param type [Symbol, :"response.completed"] The type of the event. Always `response.completed`.
+        #   @param type [Symbol, :"response.completed"]
+        #     The type of the event. Always `response.completed`.
       end
     end
   end

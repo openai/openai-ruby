@@ -1,0 +1,15 @@
+module OpenAI
+  module Models
+    module Live
+      type custom_voice = { id: String }
+
+      class CustomVoice < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        def initialize: (id: String) -> void
+
+        def to_hash: -> { id: String }
+      end
+    end
+  end
+end

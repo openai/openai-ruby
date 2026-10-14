@@ -2,16 +2,19 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module Threads
+
         class FilePathDeltaAnnotation < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::Threads::FilePathDeltaAnnotation,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::Threads::FilePathDeltaAnnotation,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The index of the annotation in the text content part.
           sig { returns(Integer) }
@@ -27,21 +30,10 @@ module OpenAI
           sig { params(end_index: Integer).void }
           attr_writer :end_index
 
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath)) }
           attr_reader :file_path
 
-          sig do
-            params(
-              file_path:
-                OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath::OrHash
-            ).void
-          end
+          sig { params(file_path: OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath::OrHash).void }
           attr_writer :file_path
 
           sig { returns(T.nilable(Integer)) }
@@ -61,24 +53,37 @@ module OpenAI
           # `code_interpreter` tool to generate a file.
           sig do
             params(
+
               index: Integer,
+
               end_index: Integer,
-              file_path:
-                OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath::OrHash,
+
+              file_path: OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath::OrHash,
+
               start_index: Integer,
+
               text: String,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The index of the annotation in the text content part.
             index:,
+
             end_index: nil,
+
             file_path: nil,
+
             start_index: nil,
+
             # The text in the message content that needs to be replaced.
             text: nil,
+
             # Always `file_path`.
+
             type: :file_path
           )
           end
@@ -89,8 +94,7 @@ module OpenAI
                 index: Integer,
                 type: Symbol,
                 end_index: Integer,
-                file_path:
-                  OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath,
+                file_path: OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath,
                 start_index: Integer,
                 text: String
               }
@@ -100,13 +104,12 @@ module OpenAI
           end
 
           class FilePath < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::FilePathDeltaAnnotation::FilePath,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The ID of the file that was generated.
             sig { returns(T.nilable(String)) }
@@ -115,19 +118,36 @@ module OpenAI
             sig { params(file_id: String).void }
             attr_writer :file_id
 
-            sig { params(file_id: String).returns(T.attached_class) }
+            sig do
+              params(
+
+                file_id: String
+              )
+                .returns(T.attached_class)
+            end
             def self.new(
+
               # The ID of the file that was generated.
+
               file_id: nil
             )
             end
 
-            sig { override.returns({ file_id: String }) }
+            sig do
+              override.returns(
+                {file_id: String}
+              )
+            end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

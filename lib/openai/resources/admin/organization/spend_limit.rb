@@ -24,18 +24,19 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::SpendLimitUpdateParams} for more details.
-          #
           # Create or replace the organization's hard spend limit.
           #
           # @overload update(currency:, interval:, threshold_amount:, request_options: {})
           #
-          # @param currency [Symbol, OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::Currency] The currency for the threshold amount. Currently, only `USD` is supported.
+          # @param currency [Symbol, OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::Currency]
+          #   The currency for the threshold amount. Currently, only `USD` is supported.
           #
-          # @param interval [Symbol, OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::Interval] The time interval for evaluating spend against the threshold. Currently, only `m
+          # @param interval [Symbol, OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::Interval]
+          #   The time interval for evaluating spend against the threshold. Currently, only
+          #   `month` is supported.
           #
-          # @param threshold_amount [Integer] The hard spend limit amount, in cents.
+          # @param threshold_amount [Integer]
+          #   The hard spend limit amount, in cents.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

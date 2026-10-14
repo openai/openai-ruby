@@ -68,28 +68,38 @@ module OpenAI
         required :tokens, OpenAI::Internal::Type::ArrayOf[Integer]
 
         # @!method initialize(id:, avg_logprob:, compression_ratio:, end_:, no_speech_prob:, seek:, start:, temperature:, text:, tokens:)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Audio::TranscriptionSegment} for more details.
+        #   @param id [Integer]
+        #     Unique identifier of the segment.
         #
-        #   @param id [Integer] Unique identifier of the segment.
+        #   @param avg_logprob [Float]
+        #     Average logprob of the segment. If the value is lower than -1, consider the
+        #     logprobs failed.
         #
-        #   @param avg_logprob [Float] Average logprob of the segment. If the value is lower than -1, consider the logp
+        #   @param compression_ratio [Float]
+        #     Compression ratio of the segment. If the value is greater than 2.4, consider the
+        #     compression failed.
         #
-        #   @param compression_ratio [Float] Compression ratio of the segment. If the value is greater than 2.4, consider the
+        #   @param end_ [Float]
+        #     End time of the segment in seconds.
         #
-        #   @param end_ [Float] End time of the segment in seconds.
+        #   @param no_speech_prob [Float]
+        #     Probability of no speech in the segment. If the value is higher than 1.0 and the
+        #     `avg_logprob` is below -1, consider this segment silent.
         #
-        #   @param no_speech_prob [Float] Probability of no speech in the segment. If the value is higher than 1.0 and the
+        #   @param seek [Integer]
+        #     Seek offset of the segment.
         #
-        #   @param seek [Integer] Seek offset of the segment.
+        #   @param start [Float]
+        #     Start time of the segment in seconds.
         #
-        #   @param start [Float] Start time of the segment in seconds.
+        #   @param temperature [Float]
+        #     Temperature parameter used for generating the segment.
         #
-        #   @param temperature [Float] Temperature parameter used for generating the segment.
+        #   @param text [String]
+        #     Text content of the segment.
         #
-        #   @param text [String] Text content of the segment.
-        #
-        #   @param tokens [Array<Integer>] Array of token IDs for the text content.
+        #   @param tokens [Array<Integer>]
+        #     Array of token IDs for the text content.
       end
     end
   end

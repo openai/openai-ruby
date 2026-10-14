@@ -42,23 +42,26 @@ module OpenAI
         optional :agent, -> { OpenAI::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent::Agent }, nil?: true
 
         # @!method initialize(delta:, item_id:, output_index:, sequence_number:, agent: nil, type: :"response.code_interpreter_call_code.delta")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent} for more
-        #   details.
-        #
         #   Emitted when a partial code snippet is streamed by the code interpreter.
         #
-        #   @param delta [String] The partial code snippet being streamed by the code interpreter.
+        #   @param delta [String]
+        #     The partial code snippet being streamed by the code interpreter.
         #
-        #   @param item_id [String] The unique identifier of the code interpreter tool call item.
+        #   @param item_id [String]
+        #     The unique identifier of the code interpreter tool call item.
         #
-        #   @param output_index [Integer] The index of the output item in the response for which the code is being streame
+        #   @param output_index [Integer]
+        #     The index of the output item in the response for which the code is being
+        #     streamed.
         #
-        #   @param sequence_number [Integer] The sequence number of this event, used to order streaming events.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event, used to order streaming events.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.code_interpreter_call_code.delta"] The type of the event. Always `response.code_interpreter_call_code.delta`.
+        #   @param type [Symbol, :"response.code_interpreter_call_code.delta"]
+        #     The type of the event. Always `response.code_interpreter_call_code.delta`.
 
         # @see OpenAI::Models::Beta::BetaResponseCodeInterpreterCallCodeDeltaEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -71,7 +74,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

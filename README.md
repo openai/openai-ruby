@@ -15,7 +15,7 @@ To use this gem, install via Bundler by adding the following to your application
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.76.0"
+gem "openai", "~> 0.103.0"
 ```
 
 <!-- x-release-please-end -->
@@ -50,6 +50,152 @@ stream.each do |event|
 end
 ```
 
+### Agents final output (beta)
+
+Collect final output from an Agents creation stream:
+
+```ruby
+stream = openai.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-5.2", instructions: "Explain the supplied policy clearly."},
+  environment: {type: :none},
+  input: "Explain this policy: ..."
+)
+result = stream.get_final_result
+puts(result.output_text)
+```
+
+Use the same getter for follow-ups; to display progress first, call
+`stream.with_result_collection` before iterating:
+
+```ruby
+openai.beta.agents.sessions.stream(result.session_id, input: "Give an example.") do |stream|
+  puts(stream.get_final_result.output_text)
+end
+```
+
+The beta result includes `turn` metadata and final `messages`; unsuccessful or
+incomplete collection raises `OpenAI::Helpers::Beta::Agents::ResultError`.
+
+### Typed Agents output (beta)
+
+Use an `OpenAI::BaseModel` with `output_type` to configure and parse a structured answer:
+
+```ruby
+class Report < OpenAI::BaseModel
+  required :summary, String
+  required :findings, OpenAI::ArrayOf[String]
+end
+
+result = openai.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-5.2"}, environment: {type: :none},
+  input: "Summarize these notes: ...", output_type: Report
+).get_final_result
+puts(result.output_parsed.summary)
+
+openai.beta.agents.sessions.stream(result.session_id, input: "Update the report.", output_type: Report) do |stream|
+  puts(stream.get_final_result.output_parsed.summary)
+end
+```
+
+Parsing follows the SDK’s existing `BaseModel` conventions. Each output-text item is parsed separately; `output_parsed` returns the first. Follow-up `output_type` only parses the answer; it does not change the session's schema.
+`OutputParseError#raw_result` preserves the completed answer if parsing fails.
+
+### Hosted files and artifacts
+
+Prepare selected local files before creating a hosted session, or use `upload` to stage one in an existing environment. Keep `upload_ids` for explicit cleanup through the Files API.
+
+```ruby
+prepared = openai.beta.agents.environments.files.prepare({
+  "/workspace/source.pdf" => Pathname("source.pdf")
+})
+stream = openai.beta.agents.sessions.create_streaming(
+  agent: {model: "gpt-6-astra"},
+  environment: {type: :openai_hosted, files: prepared.files},
+  input: "Read source.pdf and write /workspace/outputs/report.md"
+)
+result = stream.get_final_result
+artifacts = openai.beta.agents.sessions.artifacts.for_result(result)
+artifacts.download(path: "/workspace/outputs/report.md", to: Pathname("report.md"))
+
+# Or keep the downloaded bytes in memory:
+buffer = StringIO.new
+artifacts.download(path: "/workspace/outputs/report.md", to: buffer)
+puts(buffer.string)
+```
+
+`prepare_directory(directory, destination:, include:)` stages an explicitly selected snapshot. Local path and directory helpers assume stable, application-owned source paths; they are not a filesystem sandbox for arbitrary user-supplied paths or hostile local writers. Downloads select the exact result turn and stream to an application-owned local path or the writer you supply. An interrupted transfer may leave partial contents.
+
+### Local audio
+
+Record a clip and play generated speech with optional FFmpeg/FFplay helpers.
+See the [local audio guide](local-audio.md) for setup, device selection and examples.
+
+### Realtime WebSockets
+
+The SDK supports block-scoped, typed Realtime WebSocket sessions for
+server-side text, committed-turn transcription, one-turn voice, WebRTC call
+creation, and sideband control of existing WebRTC or SIP calls. Add the
+optional `async-websocket` gem for WebSocket connections, then use
+`client.realtime.connect`:
+
+```ruby
+client.realtime.connect(model: "gpt-realtime-2.1") do |connection|
+  connection.session.update(type: :realtime, output_modalities: [:text])
+  connection.conversation.items.create(
+    type: :message,
+    role: :user,
+    content: [{type: :input_text, text: "Hello"}]
+  )
+  connection.response.create
+
+  connection.each do |event|
+    print(event.delta) if event.is_a?(OpenAI::Realtime::ResponseTextDeltaEvent)
+    break if event.is_a?(OpenAI::Realtime::ResponseDoneEvent)
+  end
+end
+```
+
+WebRTC calls can be created with `client.realtime.calls.create`; its HTTP
+response preserves the SDP answer and the `Location` header needed to attach a
+sideband connection. See the [Realtime WebSocket guide](realtime.md) and the runnable
+[text, transcription, voice, and sideband examples](examples/realtime/README.md)
+for lifecycle, authentication, proxy, TLS, and custom transport details.
+
+### Responses WebSockets
+
+The Responses API also supports a persistent, block-scoped WebSocket for
+sequential and multiplexed response creation. Add the optional
+`async-websocket` gem, then send `response.create` events through
+`client.responses.connect`:
+
+```ruby
+client.responses.connect do |connection|
+  connection.response.create(
+    model: "gpt-5.2",
+    input: "Say hello.",
+    stream_id: "turn_1"
+  )
+
+  connection.each do |event|
+    print(event.delta) if event.type == :"response.output_text.delta"
+    break if event.type == :"response.completed"
+  end
+end
+```
+
+The connection is intentionally single-owner: callers serialize writes and
+use one reader (`receive` or `each`). The SDK forwards response fields and
+`stream_id` values without imposing additional client-side policy. Known
+server events are decoded into generated models on a best-effort basis, while
+newer event types remain observable as `UnknownServerEvent` values. The SDK
+does not automatically reconnect or replay an ambiguous write. When the server
+closes a connection, open a new connection and continue with
+`previous_response_id` when the response was stored.
+
+See the [Responses WebSocket guide](responses-websocket.md) and
+[runnable workflows](examples/responses/websocket_workflows.rb) for tool turns,
+multiplexing, stored continuation, stateless replay, and operation deadlines.
+
 ### Pagination
 
 List methods in the OpenAI API are paginated.
@@ -82,6 +228,8 @@ end
 
 Request parameters that correspond to file uploads can be passed as raw contents, a [`Pathname`](https://rubyapi.org/3.3/o/pathname) instance, [`StringIO`](https://rubyapi.org/3.3/o/stringio), or more.
 
+Raw `String` and `StringIO` values, and `IO` objects without a path, do not carry format-identifying metadata. The SDK sends them using the fallback filename `upload`; raw `String` values default to `text/plain`, while `StringIO` and pathless `IO` values default to `application/octet-stream`. For format-sensitive endpoints, such as audio transcriptions, wrap each value in `OpenAI::FilePart` and provide an extension-bearing filename and content type.
+
 ```ruby
 require "pathname"
 
@@ -93,12 +241,25 @@ file_object = openai.files.create(file: File.read("input.jsonl"), purpose: "fine
 
 puts(file_object.id)
 
-# Or, to control the filename and/or content type:
-image = OpenAI::FilePart.new(Pathname('dog.jpg'), content_type: 'image/jpeg')
+# For format-sensitive uploads, provide the filename and content type:
+audio_data = StringIO.new(File.binread("audio.wav"))
+audio = OpenAI::FilePart.new(
+  audio_data,
+  filename: "audio.wav",
+  content_type: "audio/wav"
+)
+transcription = openai.audio.transcriptions.create(
+  model: "gpt-4o-transcribe",
+  file: audio
+)
+puts(transcription.text)
+
+# FilePart also accepts a Pathname:
+image = OpenAI::FilePart.new(Pathname("dog.jpg"), content_type: "image/jpeg")
 edited = openai.images.edit(
   prompt: "make this image look like a painting",
-  model: "gpt-image-1",
-  size: '1024x1024',
+  model: "gpt-image-2",
+  size: "1024x1024",
   image: image
 )
 
@@ -106,6 +267,196 @@ puts(edited.data.first)
 ```
 
 Note that you can also pass a raw `IO` descriptor, but this disables retries, as the library can't be sure if the descriptor is a file or pipe (which cannot be rewound).
+
+#### Polling and vector store ingestion
+
+Polling helpers wait for file processing and return the final resource. Durations are
+expressed in seconds. By default, the helpers honor the API's recommended polling
+interval, fall back to 5 seconds, and stop after 30 minutes. Pass `timeout: nil` to
+wait indefinitely.
+
+To keep a finite overall deadline strict, each polling retrieval includes
+authentication and request replay time and does not perform transport-level retries.
+Pass `timeout: nil` to retain the client's configured retry behavior.
+
+```ruby
+file = openai.files.wait_for_processing(
+  file_object.id,
+  poll_interval: 2,
+  timeout: 10 * 60
+)
+
+vector_file = openai.vector_stores.files.upload_and_poll(
+  vector_store.id,
+  file: Pathname("handbook.pdf"),
+  attributes: {department: "engineering"}
+)
+
+batch = openai.vector_stores.file_batches.upload_and_poll(
+  vector_store.id,
+  files: [Pathname("one.pdf"), Pathname("two.pdf")],
+  file_ids: [file_object.id],
+  max_concurrency: 3
+)
+```
+
+The vector store helpers return terminal `failed` and `cancelled` resources instead
+of raising, so inspect `status`, `last_error`, or `file_counts` as appropriate. An
+overall polling timeout raises `OpenAI::Errors::PollingTimeoutError`; its `resource`
+attribute contains the last object returned by the API, or `nil` if the deadline
+elapsed before the first response.
+
+Batch inputs are enumerated before requests begin so the 2,000-file API limit can be
+checked without orphaning uploads. IO streams yielded by an enumerable must remain
+open until the helper returns; use paths for block-scoped lazy enumeration. Batch
+uploads are concurrent but not transactional. If one upload fails, the helper stops
+starting queued uploads and raises that error; files uploaded successfully before the
+failure remain available through the Files API.
+
+### Custom HTTP clients
+
+`OpenAI::Client` accepts an `http_client` for advanced transport requirements.
+Provide an object that implements `execute(request)` and returns an
+`OpenAI::HTTPClient::Response`; subclassing `OpenAI::HTTPClient` is the easiest
+way to make that contract explicit. The request exposes the SDK-prepared HTTP
+method, URL, headers, encoded body, and timeout. Response bodies are enumerable
+byte-string chunks (or a single buffered string), so large and streaming
+responses do not need to be buffered.
+
+The OpenAI client owns API authentication, redirects, and API-level retries.
+The custom HTTP client owns connection pooling and lifecycle, must enforce
+`request.timeout`, and should raise `OpenAI::Errors::APIConnectionError` or
+`OpenAI::Errors::APITimeoutError` for retryable transport failures. Other
+exceptions propagate without an SDK retry. The SDK does not close an injected
+HTTP client. Connection failures are treated as potentially post-send by
+default, so non-idempotent requests are not retried automatically. When a
+transport can prove that no request bytes were sent, it may raise either error
+with `request_may_have_been_sent: false` to allow the SDK retry policy to
+retry a replayable request safely.
+
+The default `OpenAI::NetHTTPClient` implements this contract with pooled
+`Net::HTTP` connections. It accepts an optional block for native connection
+configuration, as shown below. Call `close` to retire its current pools; the
+HTTP client remains reusable and creates fresh connections on its next request.
+
+### Mutual TLS with a custom HTTP client
+
+To opt in and activate mTLS for an organization or project, follow the
+[OpenAI Mutual TLS Beta Program
+guide](https://help.openai.com/en/articles/10876024-openai-mutual-tls-beta-program).
+If you use an intermediate chain, confirm that certificate-chain support is
+enabled for your organization.
+
+For API-key requests that also require mutual TLS (mTLS), set the mTLS endpoint
+explicitly and pass a configured `OpenAI::NetHTTPClient` as `http_client`.
+`OpenAI::Client` accepts an HTTP client object so advanced transport behavior
+does not require a separate SDK option for every use case. The default
+`OpenAI::NetHTTPClient` accepts a block that configures each native
+`Net::HTTP` connection before it is pooled and started.
+
+Ruby's native TLS properties configure the client identity. The certificate
+file must contain the leaf certificate first, followed by any intermediate
+certificates needed when certificate-chain support is enabled for your
+organization:
+
+```ruby
+require "openai"
+
+mtls_endpoint = URI("https://mtls.api.openai.com/v1")
+certificates = OpenSSL::X509::Certificate.load(
+  File.binread(ENV.fetch("OPENAI_CLIENT_CERTIFICATE_CHAIN"))
+)
+raise "Expected a client certificate" if certificates.empty?
+
+leaf_certificate, *intermediates = certificates
+private_key = OpenSSL::PKey.read(
+  File.binread(ENV.fetch("OPENAI_CLIENT_KEY")),
+  ENV["OPENAI_CLIENT_KEY_PASSPHRASE"]
+)
+raise "Certificate and key do not match" unless leaf_certificate.check_private_key(private_key)
+
+now = Time.now
+raise "Certificate is not yet valid" if now < leaf_certificate.not_before
+raise "Certificate has expired" if now > leaf_certificate.not_after
+
+mtls_destination = [mtls_endpoint.host, mtls_endpoint.port]
+http_client = OpenAI::NetHTTPClient.new do |http|
+  unless http.use_ssl? && mtls_destination == [http.address, http.port]
+    raise "Refusing to present the client certificate to an unexpected origin"
+  end
+
+  http.cert = leaf_certificate
+  http.extra_chain_cert = intermediates
+  http.key = private_key
+end
+
+client = OpenAI::Client.new(
+  api_key: ENV.fetch("OPENAI_API_KEY"),
+  base_url: mtls_endpoint.to_s,
+  http_client: http_client
+)
+```
+
+The SDK cannot infer whether custom HTTP configuration uses mTLS, so it does not
+automatically change `base_url`. An explicit `base_url`, including an EU or
+custom endpoint, is always preserved. Scope client certificates to the expected
+origin, as above, so they cannot be presented elsewhere. Use the
+`OpenAI::NetHTTPClient` block for TLS and other connection-level configuration.
+Server trust remains separate from the client identity and can be customized
+with `Net::HTTP` properties such as `cert_store` or `ca_file`.
+
+Each `OpenAI::NetHTTPClient` owns its connection pool, so separate HTTP client
+instances do not share connections or credentials.
+
+After a process forks, create new OpenAI and HTTP clients in the child. Keep the
+certificate configuration captured by an HTTP client immutable. For certificate
+rotation, build and atomically swap in new `OpenAI::NetHTTPClient` and
+`OpenAI::Client` instances, then call `close` on the retired HTTP client after
+in-flight work finishes. See the complete [custom HTTP client mTLS
+example](examples/mtls_custom_http_client.rb).
+
+## Microsoft Azure OpenAI
+
+Use the standard client with the Azure provider to call model deployments through
+the Azure OpenAI v1 API. The provider accepts an Azure resource endpoint and
+adds `/openai/v1` when needed:
+
+```ruby
+require "openai"
+
+client = OpenAI::Client.new(
+  provider: OpenAI::Providers.azure(
+    endpoint: ENV.fetch("AZURE_OPENAI_ENDPOINT"),
+    api_key: ENV.fetch("AZURE_OPENAI_API_KEY")
+  )
+)
+
+response = client.responses.create(
+  model: ENV.fetch("AZURE_OPENAI_DEPLOYMENT"),
+  input: "Say hello!"
+)
+
+puts(response.output_text)
+```
+
+Omit `endpoint` and `api_key` to use `AZURE_OPENAI_ENDPOINT` and
+`AZURE_OPENAI_API_KEY`. For Microsoft Entra authentication, pass a callable
+that returns a current bearer token. The provider invokes it before every
+request attempt, including retries:
+
+```ruby
+client = OpenAI::Client.new(
+  provider: OpenAI::Providers.azure(
+    endpoint: ENV.fetch("AZURE_OPENAI_ENDPOINT"),
+    token_provider: -> { fetch_azure_openai_token }
+  )
+)
+```
+
+This integration targets the Azure OpenAI v1 API. It does not add dated
+`api-version` query parameters or rewrite requests to legacy
+`/deployments/{deployment}` paths. See [azure.md](azure.md) for configuration,
+authentication precedence, and endpoint security details.
 
 ## Amazon Bedrock
 
@@ -163,6 +514,103 @@ For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP
 
 `client_id` remains available as an optional parameter for token exchange setups that require an explicit OAuth client ID.
 
+If `OPENAI_API_KEY` is already set in your environment, pass `api_key: nil`
+to explicitly opt out of that ambient API key when constructing a workload
+identity client.
+
+### X.509 Workload Identity (Preview)
+
+Organizations enrolled in the X.509 workload identity preview can exchange a
+client certificate for a short-lived OpenAI bearer credential. Both the token
+exchange and subsequent API request use the same caller-attested mTLS transport.
+The bearer is not cryptographically bound to the certificate; the API separately
+requires an accepted client certificate.
+
+```ruby
+require "openai"
+
+certificates = OpenSSL::X509::Certificate.load(
+  File.binread(ENV.fetch("OPENAI_CLIENT_CERTIFICATE_CHAIN"))
+)
+raise "Expected an enrolled client certificate" if certificates.empty?
+
+client_certificate, *intermediate_certificates = certificates
+client_private_key = OpenSSL::PKey.read(
+  File.binread(ENV.fetch("OPENAI_CLIENT_KEY")),
+  ENV["OPENAI_CLIENT_KEY_PASSPHRASE"]
+)
+unless client_certificate.check_private_key(client_private_key)
+  raise "The enrolled certificate and private key do not match"
+end
+
+api_origin = ENV.fetch("OPENAI_X509_API_ORIGIN", "https://mtls.api.openai.com")
+api_host = URI(api_origin).host&.downcase
+approved_hosts = ["mtls.auth.openai.com", api_host].freeze
+native_http_client = OpenAI::NetHTTPClient.new do |connection|
+  unless connection.use_ssl? && connection.port == 443 && approved_hosts.include?(connection.address.downcase)
+    raise "Refusing to present the enrolled certificate to an unexpected destination"
+  end
+
+  connection.cert = client_certificate
+  connection.extra_chain_cert = intermediate_certificates
+  connection.key = client_private_key
+end
+
+identity = OpenAI::Auth::X509WorkloadIdentity.new(
+  identity_provider_id: ENV.fetch("IDENTITY_PROVIDER_ID"),
+  service_account_id: ENV.fetch("SERVICE_ACCOUNT_ID"),
+  http_client: native_http_client,
+  api_origin: api_origin
+)
+
+client = OpenAI::Client.new(
+  api_key: nil,
+  workload_identity: identity
+)
+
+model = client.models.list.data.first
+```
+
+The identity creates its guarded transport internally and selects the matching
+mTLS API endpoint automatically. The application still owns its certificate,
+key, trust settings, and native HTTP client. Keep the selected certificate
+identity static, configure only the approved issuer and API destinations, and
+create a fresh native client and identity when rotating credentials. Clients
+derived with `with_options` share the original identity's cached token when
+their transport is unchanged.
+
+The supported X.509 API regions are global, US, and EU. Set `api_origin:` to
+`https://mtls.api.openai.com`, `https://mtls-us.api.openai.com`, or
+`https://mtls-eu.api.openai.com`; an optional `data_residency:` on the client
+must match. Direct mode rejects ambient proxies; pass `proxy: :http_connect` to
+the identity only when an HTTP CONNECT proxy is configured. HTTPS proxies are
+rejected before proxy credentials can be transmitted. Arbitrary custom
+transports, Azure/Bedrock providers, and Realtime WebSockets are not supported.
+The normal client or per-request timeout covers both token exchange and the API
+request; `timeout: nil` disables both deadlines. Preview access must be enabled
+for the organization, and mTLS can be configured for the enrolled organization
+or project.
+
+See the complete [X.509 workload identity live smoke
+example](examples/x509_workload_identity.rb). It performs a real token exchange
+and API request only when an enrolled certificate, private key, identity-provider
+ID, and mapped service-account ID are explicitly supplied.
+
+Keep these values in a private environment file outside your checkout or in a
+secret manager, then run the example without an API key:
+
+```sh
+export OPENAI_CLIENT_CERTIFICATE_CHAIN=/secure/path/client-chain.pem
+export OPENAI_CLIENT_KEY=/secure/path/client-key.pem
+export IDENTITY_PROVIDER_ID=idp_example
+export SERVICE_ACCOUNT_ID=svc_acct_example
+
+ruby examples/x509_workload_identity.rb
+```
+
+Set `OPENAI_X509_PROXY_MODE=http_connect` only when an approved HTTP CONNECT
+proxy is configured. Encrypted keys can use `OPENAI_CLIENT_KEY_PASSPHRASE`.
+
 ### Kubernetes Service Account
 
 ```ruby
@@ -178,6 +626,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 
@@ -199,6 +648,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 ```
@@ -215,6 +665,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
 )
 ```
@@ -245,6 +696,7 @@ workload_identity = OpenAI::Auth::WorkloadIdentity.new(
 )
 
 client = OpenAI::Client.new(
+  api_key: nil,
   workload_identity: workload_identity,
   organization: ENV["OPENAI_ORG_ID"],
   project: ENV["OPENAI_PROJECT_ID"]
@@ -267,8 +719,11 @@ Note that the `body` parameter must be the raw JSON string sent from the server 
 require 'sinatra'
 require 'openai'
 
-# Set up the client with webhook secret from environment variable
-client = OpenAI::Client.new(webhook_secret: ENV['OPENAI_WEBHOOK_SECRET'])
+# Set up the client with API credentials and the webhook secret
+client = OpenAI::Client.new(
+  api_key: ENV.fetch('OPENAI_API_KEY'),
+  webhook_secret: ENV.fetch('OPENAI_WEBHOOK_SECRET')
+)
 
 post '/webhook' do
   request_body = request.body.read
@@ -277,9 +732,9 @@ post '/webhook' do
     event = client.webhooks.unwrap(request_body, request.env)
     
     case event.type
-    when 'response.completed'
+    when :'response.completed'
       puts "Response completed: #{event.data}"
-    when 'response.failed'
+    when :'response.failed'
       puts "Response failed: #{event.data}"
     else
       puts "Unhandled event type: #{event.type}"
@@ -306,8 +761,11 @@ require 'sinatra'
 require 'json'
 require 'openai'
 
-# Set up the client with webhook secret from environment variable
-client = OpenAI::Client.new(webhook_secret: ENV['OPENAI_WEBHOOK_SECRET'])
+# Set up the client with API credentials and the webhook secret
+client = OpenAI::Client.new(
+  api_key: ENV.fetch('OPENAI_API_KEY'),
+  webhook_secret: ENV.fetch('OPENAI_WEBHOOK_SECRET')
+)
 
 post '/webhook' do
   request_body = request.body.read
@@ -380,6 +838,27 @@ response
   end
 ```
 
+For a stored or background response, pass the same structured-output model again
+when retrieving it. The model is used locally to populate `content.parsed`; it is
+not sent as a retrieval query parameter. A response that is still queued or in
+progress can be retrieved the same way, but structured output is parsed only after
+a later retrieval reports it completed when status is present. Compatible
+statusless responses parse once their hinted output is syntactically complete JSON.
+For structured function tools, pass the same model again with
+`tools: [ToolArguments]`; matching retrieved function calls expose typed arguments
+through `output.parsed`.
+
+```ruby
+pending = client.responses.create(
+  model: "gpt-5.2",
+  input: "Extract the event information.",
+  text: CalendarEvent,
+  background: true
+)
+
+response = client.responses.retrieve(pending.id, text: CalendarEvent)
+```
+
 </details>
 
 See the [examples](https://github.com/openai/openai-ruby/tree/main/examples) directory for more usage examples for helper usage.
@@ -433,6 +912,58 @@ response = client.responses.create(
 
 </details>
 
+#### Sorbet structured-output models
+
+Applications that use Sorbet can provide their own `T::Struct` models instead of
+subclassing `OpenAI::BaseModel`. Add `sorbet-runtime` to your application's
+dependencies and explicitly load the optional integration:
+
+```ruby
+require "openai"
+require "openai/helpers/sorbet"
+
+class Participant < T::Struct
+  const :name, String
+  const :email, T.nilable(String)
+end
+
+class CalendarEvent < T::Struct
+  const :title, String
+  const :participants, T::Array[Participant]
+end
+
+schema = OpenAI::StructuredOutput.from_sorbet(CalendarEvent)
+client = OpenAI::Client.new
+
+response = client.responses.create(
+  model: "gpt-5.2",
+  input: "Extract the event information.",
+  text: schema
+)
+
+message = response.output.grep(OpenAI::Responses::ResponseOutputMessage).fetch(0)
+output_text = message.content.grep(OpenAI::Responses::ResponseOutputText).fetch(0)
+event = T.cast(output_text.parsed, CalendarEvent)
+event.participants.fetch(0).name
+
+completion = client.chat.completions.create(
+  model: "gpt-5.2",
+  messages: [{role: :user, content: "Extract the event information."}],
+  response_format: schema
+)
+
+T.cast(completion.choices.fetch(0).message.parsed, CalendarEvent)
+```
+
+The integration supports nested structs, arrays, nullable values, boolean and
+numeric fields, application-defined `T::Enum` values, and Sorbet's `name:` field
+aliases. All structured-output fields are required, including nullable fields.
+Unsupported unions, hashes, recursive models, and enum values that do not
+serialize to strings are rejected. `sorbet-runtime` remains optional and is not
+loaded by ordinary SDK usage. This integration supports non-streaming
+`responses.create` and `chat.completions.create` requests only; streaming
+structured outputs and function-tool schemas are not supported.
+
 ### Handling errors
 
 When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `OpenAI::Errors::APIError` will be thrown:
@@ -465,13 +996,130 @@ Error codes are as follows:
 | HTTP >= 500      | `InternalServerError`      |
 | Other HTTP error | `APIStatusError`           |
 | Timeout          | `APITimeoutError`          |
+| Polling timeout  | `PollingTimeoutError`      |
 | Network error    | `APIConnectionError`       |
+
+### Request logging
+
+Request logging is disabled by default. Enable it with a standard Ruby logger
+when creating the client:
+
+```ruby
+client = OpenAI::Client.new(
+  api_key: ENV.fetch("OPENAI_API_KEY"),
+  logger: Rails.logger,
+  log_level: :info
+)
+```
+
+The logger can be any object that responds to `debug`, `info`, `warn`, and
+`error`; the SDK does not depend on Rails. Supplying a logger enables `:info`
+logging by default. When logging is enabled without a custom logger, the SDK
+uses a standard-library `Logger` that writes to stderr. Use `log_level: :off`
+when you only need retry notifications.
+
+You can instead set `OPENAI_LOG=info` or `OPENAI_LOG=debug`. An explicit
+`log_level:` takes precedence over the environment variable.
+
+For example, to use the stderr logger for one process:
+
+```sh
+OPENAI_LOG=info bundle exec ruby app.rb
+```
+
+A completion message includes the logical request and retry context:
+
+```text
+[openai] request complete log_id=log_a1b2c3d4e5f6 method=POST path=/v1/responses status=200 request_id=req_123 attempts=1 duration_ms=42.7
+```
+
+| Level | Behavior |
+| --- | --- |
+| `:off` | No SDK request logs (default) |
+| `:error` | Terminal request failures after retries are exhausted |
+| `:warn` | Error events plus retry reason and delay |
+| `:info` | Safe request completion summaries |
+| `:debug` | Per-attempt headers and bounded structural body diagnostics |
+
+Info, warning, and error logs include operational fields such as the HTTP
+method, sanitized path, status, request ID, duration, and attempt count. They
+never include headers or bodies. Debug logs redact credential-bearing headers
+and query parameters, including authorization, API-key, cookie, token,
+credential, and signature values.
+
+Debug body diagnostics never include customer-controlled object keys, string
+values, prompts, model responses, tool arguments, form fields, or signed URLs.
+JSON bodies report only their byte size, top-level type, and object-field or
+array-item count; form bodies report only their byte size and field count. The
+built-in logger omits uploaded file contents, multipart bodies, binary bodies,
+server-sent event contents, unsupported text bodies, oversized bodies, and
+incomplete bodies. Response bodies are observed only as the application consumes
+them and are never read eagerly for logging.
+
+SDK log messages are intended for human diagnostics. Their text format is not
+a stable structured-event API and may change between releases. Exceptions from
+a supplied logger are isolated and never replace an API result or API error.
+
+### Response metadata and request IDs
+
+OpenAI recommends logging request IDs in production so requests can be traced
+during troubleshooting. Top-level models, pages, streams, and binary StringIO
+values returned by the client expose immutable HTTP response metadata through
+`last_response`:
+
+```ruby
+response = openai.responses.create(model: "gpt-5.2", input: "Say 'this is a test'.")
+puts(response.last_response.status)                 # 200
+puts(response.last_response.headers["x-request-id"]) # req_123
+puts(response.last_response.request_id)             # req_123
+puts(response._request_id)                           # req_123
+
+audio = openai.audio.speech.create(input: "Hello!", model: "tts-1", voice: "alloy")
+puts(audio.last_response.headers["x-request-id"])    # req_456
+puts(audio._request_id)                               # req_456
+```
+
+Header names and values are normalized to strings, header names are lowercase,
+and the metadata and header map are frozen. Streams expose the metadata for the
+HTTP response that opened the stream. Higher-level streaming helpers expose the
+same metadata as their underlying stream; models assembled from stream events
+do not.
+
+`last_response` and `_request_id` are only populated on top-level models,
+pages, streams, and direct binary `StringIO` responses returned by the client.
+They are `nil` on constructed or nested models, unavailable on primitive or
+union-backed plain-text fallbacks, and are not included in `to_h`, JSON, or
+YAML output. Endpoints returning `nil` have no object that can carry metadata.
+Unlike other properties that begin with an underscore, `_request_id` is public.
+
+For failed HTTP requests, catch `OpenAI::Errors::APIStatusError` and use
+`request_id`:
+
+```ruby
+begin
+  openai.responses.create(model: "gpt-5.2", input: "Say 'this is a test'.")
+rescue OpenAI::Errors::APIStatusError => e
+  puts(e.request_id) # req_123
+  raise
+end
+```
+
+See the [official OpenAI request debugging documentation](https://developers.openai.com/api/reference/overview#debugging-requests)
+for more information.
 
 ### Retries
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
 
-Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, >=500 Internal errors, and timeouts will all be retried by default.
+Requests are automatically retried only when their bodies are replayable. For
+those requests, after transport execution begins, connection errors (for
+example, due to a network connectivity problem) and timeouts are retried by
+default only when the transport proves that no request bytes were sent, for
+idempotent HTTP methods, or for requests carrying a non-empty
+`Idempotency-Key` header. Failures before transport execution retain the
+configured retry behavior because no request has been dispatched.
+408 Request Timeout, 409 Conflict, 429 Rate Limit, and >=500 Internal errors
+are retried by default regardless of the HTTP method.
 
 You can use the `max_retries` option to configure or disable this:
 
@@ -488,6 +1136,27 @@ openai.chat.completions.create(
   request_options: {max_retries: 5}
 )
 ```
+
+To observe retries as they happen, supply an `on_retry` callback when creating
+the client. The callback runs immediately before the retry delay and receives
+an immutable `OpenAI::RetryEvent`:
+
+```ruby
+openai = OpenAI::Client.new(
+  log_level: :off,
+  on_retry: lambda do |event|
+    Rails.logger.warn(
+      "OpenAI retry #{event.attempt}/#{event.max_attempts} " \
+      "status=#{event.status.inspect} request_id=#{event.request_id.inspect}"
+    )
+  end
+)
+```
+
+For response-triggered retries, `event.response` contains the same immutable
+status, headers, and request ID shape as `last_response`. For connection errors,
+`event.error` is populated instead. Exceptions raised by the callback are
+isolated and do not replace the API result or error.
 
 ### Timeouts
 
@@ -509,9 +1178,27 @@ openai.chat.completions.create(
 
 On timeout, `OpenAI::Errors::APITimeoutError` is raised.
 
-Note that requests that time out are retried by default.
+After transport execution begins, requests with replayable bodies that time out
+are retried by default only when the transport proves that no request bytes
+were sent, for idempotent HTTP methods, or for requests carrying a non-empty
+`Idempotency-Key` header. Timeouts before transport execution retain the
+configured retry behavior.
 
 ## Advanced concepts
+
+### Default request headers
+
+Use `default_headers` to send the same custom headers with every request made by a client:
+
+```ruby
+finance = OpenAI::Client.new(
+  default_headers: {"x-cost-center" => "finance"}
+)
+```
+
+Explicit `default_headers` override values from `OPENAI_CUSTOM_HEADERS`. For a single request,
+`request_options[:extra_headers]` can override a client default or remove it by assigning `nil`.
+Authentication and endpoint-specific headers also take precedence over client defaults.
 
 ### BaseModel
 
@@ -531,7 +1218,7 @@ All parameter and response objects inherit from `OpenAI::Internal::Type::BaseMod
 
 You can send undocumented parameters to any endpoint, and read undocumented response properties, like so:
 
-Note: the `extra_` parameters of the same name overrides the documented parameters.
+Note: the `extra_` parameters of the same name override the documented parameters.
 
 ```ruby
 chat_completion =
@@ -566,11 +1253,48 @@ response = client.request(
 )
 ```
 
+Generic requests use the ordinary API key when one is configured, even if an
+admin API key is also available. A client configured with only an admin API key
+uses that key. To explicitly use an admin API key when both credentials are
+configured, pass `security: {admin_api_key_auth: true}` to `client.request`.
+
 ### Concurrency & connection pooling
 
-The `OpenAI::Client` instances are threadsafe, but are only fork-safe when there are no in-flight HTTP requests.
+`OpenAI::Client` instances using the default `OpenAI::NetHTTPClient` are threadsafe, but are only fork-safe when there are no in-flight HTTP requests. Injected HTTP clients are responsible for documenting and enforcing their own concurrency guarantees.
 
-Each instance of `OpenAI::Client` has its own HTTP connection pool with a default size of 99. As such, we recommend instantiating the client once per application in most settings.
+#### Asynchronous requests with a fiber scheduler
+
+The default HTTP client also cooperates with Ruby's fiber scheduler interface
+(`Fiber.scheduler`). When a request runs inside a non-blocking fiber managed by
+an active scheduler, network operations, streaming reads, retry delays, and
+waits for a pooled connection yield to other fibers instead of blocking the
+thread. Resource methods keep their normal return types; schedule each complete
+request or stream operation as a task using the scheduler implementation your
+application already uses.
+
+For example, with the [`async`](https://github.com/socketry/async) gem:
+
+```ruby
+require "async"
+
+prompts = ["Summarize the incident report.", "Draft the follow-up actions."]
+
+responses = Async do |task|
+  prompts.map do |prompt|
+    task.async do
+      openai.responses.create(model: "gpt-5.2", input: prompt)
+    end
+  end.map(&:wait)
+end.wait
+```
+
+Outside a non-blocking fiber managed by an active scheduler, calls block the
+current thread as usual. The SDK does not install a scheduler or depend on a
+particular scheduler gem.
+
+#### Connection pooling
+
+By default, each `OpenAI::Client` creates its own HTTP connection pool with a size of at least 99 connections. As such, we recommend instantiating the client once per application in most settings. An injected HTTP client may instead share its pool across multiple SDK clients; the caller owns that HTTP client's lifecycle.
 
 When all available connections from the pool are checked out, requests wait for a new connection to become available, with queue time counting towards the request timeout.
 
@@ -644,4 +1368,7 @@ This line will not receive separate maintenance.
 
 ## Contributing
 
-See [the contributing documentation](https://github.com/openai/openai-ruby/tree/main/CONTRIBUTING.md).
+Please share bug reports and feature requests through [GitHub issues](https://github.com/openai/openai-ruby/issues).
+Pull requests are limited to repository collaborators; we do not accept pull requests from non-collaborators.
+See [CONTRIBUTING.md](https://github.com/openai/openai-ruby/blob/main/CONTRIBUTING.md) for the contribution policy and development guide.
+For security vulnerabilities, follow [SECURITY.md](https://github.com/openai/openai-ruby/blob/main/SECURITY.md).

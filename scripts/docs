@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd -- "$(dirname -- "$0")/.."
+
+if [[ -z "${BUNDLE_APP_CONFIG:-}" ]]; then
+  export BUNDLE_APP_CONFIG="$PWD/.bundle"
+elif [[ "$BUNDLE_APP_CONFIG" != /* ]]; then
+  export BUNDLE_APP_CONFIG="$PWD/$BUNDLE_APP_CONFIG"
+fi
+export BUNDLE_GEMFILE="$PWD/docs/Gemfile"
+export BUNDLE_LOCKFILE="$PWD/docs/Gemfile.lock"
+
+case "${1:-}" in
+  install)
+    shift
+    exec bundle install "$@"
+    ;;
+  build)
+    shift
+    exec bundle exec yard "$@"
+    ;;
+  preview)
+    shift
+    exec bundle exec yard server --reload --quiet --bind '[::]' --port "${PORT:-8808}" "$@"
+    ;;
+  *)
+    echo "Usage: $0 {install|build|preview}" >&2
+    exit 64
+    ;;
+esac

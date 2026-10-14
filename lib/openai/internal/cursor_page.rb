@@ -5,7 +5,7 @@ module OpenAI
     # @generic Elem
     #
     # @example
-    #   if cursor_page.has_next?
+    #   if cursor_page.next_page?
     #     cursor_page = cursor_page.next_page
     #   end
     #
@@ -32,7 +32,7 @@ module OpenAI
       def next_page
         unless next_page?
           message = "No more pages available. Please check #next_page? before calling ##{__method__}"
-          raise RuntimeError.new(message)
+          raise message
         end
 
         req = OpenAI::Internal::Util.deep_merge(@req, {query: {after: data&.last&.id}})
@@ -60,9 +60,9 @@ module OpenAI
       #
       # @param client [OpenAI::Internal::Transport::BaseClient]
       # @param req [Hash{Symbol=>Object}]
-      # @param headers [Hash{String=>String}]
+      # @param response_metadata [OpenAI::ResponseMetadata]
       # @param page_data [Hash{Symbol=>Object}]
-      def initialize(client:, req:, headers:, page_data:)
+      def initialize(client:, req:, response_metadata:, page_data:)
         super
 
         case page_data
@@ -70,6 +70,7 @@ module OpenAI
           @data = data.map { OpenAI::Internal::Type::Converter.coerce(@model, _1) }
         else
         end
+
         @has_more = page_data[:has_more]
       end
 

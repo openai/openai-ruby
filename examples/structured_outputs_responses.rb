@@ -23,10 +23,12 @@ class CalendarEvent < OpenAI::BaseModel
   required :participants, OpenAI::ArrayOf[Participant]
   required :optional_participants, OpenAI::ArrayOf[Participant, doc: "who might not show up"], nil?: true
   required :is_virtual, OpenAI::Boolean
-  required :location,
-           OpenAI::UnionOf[String, Location],
-           nil?: true,
-           doc: "Event location"
+  required(
+    :location,
+    OpenAI::UnionOf[String, Location],
+    nil?: true,
+    doc: "Event location"
+  )
 end
 
 client = OpenAI::Client.new
@@ -48,10 +50,13 @@ response = client.responses.create(
 
 response
   .output
-  .flat_map { _1.content }
-  # filter out refusal responses
-  .grep_v(OpenAI::Models::Responses::ResponseOutputRefusal)
+  .grep(OpenAI::Models::Responses::ResponseOutputMessage)
+  .flat_map(&:content)
+  .grep(OpenAI::Models::Responses::ResponseOutputText)
   .each do |content|
     # parsed is an instance of `CalendarEvent`
-    pp(content.parsed)
+    parsed = content.parsed
+    next unless parsed.is_a?(CalendarEvent)
+
+    pp(parsed)
   end

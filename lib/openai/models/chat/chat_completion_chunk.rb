@@ -44,6 +44,14 @@ module OpenAI
         #   @return [OpenAI::Models::Chat::ChatCompletionChunk::Moderation, nil]
         optional :moderation, -> { OpenAI::Chat::ChatCompletionChunk::Moderation }, nil?: true
 
+        # @!attribute obfuscation
+        #   An obfuscation string added to normalize the size of streamed chunks as a
+        #   mitigation to certain side-channel attacks. The field is included by default and
+        #   omitted when `stream_options.include_obfuscation` is `false`.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
         # @!attribute service_tier
         #   Specifies the processing type used for serving the request.
         #
@@ -52,13 +60,15 @@ module OpenAI
         #     will use 'default'.
         #   - If set to 'default', then the request will be processed with the standard
         #     pricing and performance for the selected model.
-        #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #     then the request will be processed with the Flex Processing service tier.
-        #   - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #     include the `service_tier=fast` or `service_tier=priority` parameter for
-        #     Responses or Chat Completions. The response will show `service_tier=priority`
-        #     regardless of if you specify `service_tier=fast` or `priority` in your
-        #     request.
+        #   - If set to
+        #     '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #     the request will be processed with the Flex Processing service tier.
+        #   - To opt-in to
+        #     [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #     request level, include the `service_tier=fast` or `service_tier=priority`
+        #     parameter for Responses or Chat Completions. The response will show
+        #     `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #     `priority` in your request.
         #   - When not set, the default behavior is 'auto'.
         #
         #   When the `service_tier` parameter is set, the response body will include the
@@ -91,53 +101,83 @@ module OpenAI
         #   @return [OpenAI::Models::CompletionUsage, nil]
         optional :usage, -> { OpenAI::CompletionUsage }, nil?: true
 
-        # @!method initialize(id:, choices:, created:, model:, moderation: nil, service_tier: nil, system_fingerprint: nil, usage: nil, object: :"chat.completion.chunk")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Chat::ChatCompletionChunk} for more details.
-        #
+        # @!method initialize(id:, choices:, created:, model:, moderation: nil, obfuscation: nil, service_tier: nil, system_fingerprint: nil, usage: nil, object: :"chat.completion.chunk")
         #   Represents a streamed chunk of a chat completion response returned by the model,
         #   based on the provided input.
-        #   [Learn more](https://platform.openai.com/docs/guides/streaming-responses).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/streaming-responses).
         #
-        #   @param id [String] A unique identifier for the chat completion. Each chunk has the same ID.
+        #   @param id [String]
+        #     A unique identifier for the chat completion. Each chunk has the same ID.
         #
-        #   @param choices [Array<OpenAI::Models::Chat::ChatCompletionChunk::Choice>] A list of chat completion choices. Can contain more than one elements if `n` is
+        #   @param choices [Array<OpenAI::Models::Chat::ChatCompletionChunk::Choice>]
+        #     A list of chat completion choices. Can contain more than one elements if `n` is
+        #     greater than 1. Can also be empty for the last chunk if you set
+        #     `stream_options: {"include_usage": true}`.
         #
-        #   @param created [Integer] The Unix timestamp (in seconds) of when the chat completion was created. Each ch
+        #   @param created [Integer]
+        #     The Unix timestamp (in seconds) of when the chat completion was created. Each
+        #     chunk has the same timestamp.
         #
-        #   @param model [String] The model to generate the completion.
+        #   @param model [String]
+        #     The model to generate the completion.
         #
-        #   @param moderation [OpenAI::Models::Chat::ChatCompletionChunk::Moderation, nil] Moderation results for the request input and generated output. Present
+        #   @param moderation [OpenAI::Models::Chat::ChatCompletionChunk::Moderation, nil]
+        #     Moderation results for the request input and generated output. Present on the
+        #     moderation chunk when moderated completions are requested.
         #
-        #   @param service_tier [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier, nil] Specifies the processing type used for serving the request.
+        #   @param obfuscation [String]
+        #     An obfuscation string added to normalize the size of streamed chunks as a
+        #     mitigation to certain side-channel attacks. The field is included by default and
+        #     omitted when `stream_options.include_obfuscation` is `false`.
         #
-        #   @param system_fingerprint [String] This fingerprint represents the backend configuration that the model runs with.
+        #   @param service_tier [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::ServiceTier, nil]
+        #     Specifies the processing type used for serving the request.
         #
-        #   @param usage [OpenAI::Models::CompletionUsage, nil] An optional field that will only be present when you set
+        #     - If set to 'auto', then the request will be processed with the service tier
+        #       configured in the Project settings. Unless otherwise configured, the Project
+        #       will use 'default'.
+        #     - If set to 'default', then the request will be processed with the standard
+        #       pricing and performance for the selected model.
+        #     - If set to
+        #       '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #       the request will be processed with the Flex Processing service tier.
+        #     - To opt-in to
+        #       [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #       request level, include the `service_tier=fast` or `service_tier=priority`
+        #       parameter for Responses or Chat Completions. The response will show
+        #       `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #       `priority` in your request.
+        #     - When not set, the default behavior is 'auto'.
         #
-        #   @param object [Symbol, :"chat.completion.chunk"] The object type, which is always `chat.completion.chunk`.
-
+        #     When the `service_tier` parameter is set, the response body will include the
+        #     `service_tier` value based on the processing mode actually used to serve the
+        #     request. This response value may be different from the value set in the
+        #     parameter.
+        #
+        #   @param system_fingerprint [String]
+        #     This fingerprint represents the backend configuration that the model runs with.
+        #     Can be used in conjunction with the `seed` request parameter to understand when
+        #     backend changes have been made that might impact determinism.
+        #
+        #   @param usage [OpenAI::Models::CompletionUsage, nil]
+        #     An optional field that will only be present when you set
+        #     `stream_options: {"include_usage": true}` in your request. When present, it
+        #     contains a null value **except for the last chunk** which contains the token
+        #     usage statistics for the entire request.
+        #
+        #     **NOTE:** If the stream is interrupted or cancelled, you may not receive the
+        #     final usage chunk which contains the total token usage for the request.
+        #
+        #   @param object [Symbol, :"chat.completion.chunk"]
+        #     The object type, which is always `chat.completion.chunk`.
         class Choice < OpenAI::Internal::Type::BaseModel
           # @!attribute delta
-          #   A chat completion delta generated by streamed model responses.
+          #   A chat completion delta generated by streamed model responses. Streamed audio
+          #   can arrive in partial updates with an ID, base64 data, or transcript text. The
+          #   final audio update contains only its expiry timestamp.
           #
           #   @return [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta]
           required :delta, -> { OpenAI::Chat::ChatCompletionChunk::Choice::Delta }
-
-          # @!attribute finish_reason
-          #   The reason the model stopped generating tokens. This will be `stop` if the model
-          #   hit a natural stop point or a provided stop sequence, `length` if the maximum
-          #   number of tokens specified in the request was reached, `content_filter` if
-          #   content was omitted due to a flag from our content filters, `tool_calls` if the
-          #   model called a tool, or `function_call` (deprecated) if the model called a
-          #   function.
-          #
-          #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason, nil]
-          required :finish_reason,
-                   enum: -> {
-                     OpenAI::Chat::ChatCompletionChunk::Choice::FinishReason
-                   },
-                   nil?: true
 
           # @!attribute index
           #   The index of the choice in the list of choices.
@@ -145,26 +185,60 @@ module OpenAI
           #   @return [Integer]
           required :index, Integer
 
+          # @!attribute finish_reason
+          #   The reason the model stopped generating tokens. This will be `stop` if the model
+          #   hit a natural stop point or a provided stop sequence, `length` if the maximum
+          #   number of tokens specified in the request was reached, `content_filter` if
+          #   content was omitted due to a flag from our content filters, `tool_calls` if the
+          #   model called a tool, or `function_call` (deprecated) if the model called a
+          #   function. Omitted from the final audio update containing only
+          #   `delta.audio.expires_at`.
+          #
+          #   @return [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason, nil]
+          optional(
+            :finish_reason,
+            enum: -> {
+              OpenAI::Chat::ChatCompletionChunk::Choice::FinishReason
+            },
+            nil?: true
+          )
+
           # @!attribute logprobs
           #   Log probability information for the choice.
           #
           #   @return [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, nil]
           optional :logprobs, -> { OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs }, nil?: true
 
-          # @!method initialize(delta:, finish_reason:, index:, logprobs: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Chat::ChatCompletionChunk::Choice} for more details.
+          # @!method initialize(delta:, index:, finish_reason: nil, logprobs: nil)
+          #   @param delta [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta]
+          #     A chat completion delta generated by streamed model responses. Streamed audio
+          #     can arrive in partial updates with an ID, base64 data, or transcript text. The
+          #     final audio update contains only its expiry timestamp.
           #
-          #   @param delta [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta] A chat completion delta generated by streamed model responses.
+          #   @param index [Integer]
+          #     The index of the choice in the list of choices.
           #
-          #   @param finish_reason [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason, nil] The reason the model stopped generating tokens. This will be `stop` if the model
+          #   @param finish_reason [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::FinishReason, nil]
+          #     The reason the model stopped generating tokens. This will be `stop` if the model
+          #     hit a natural stop point or a provided stop sequence, `length` if the maximum
+          #     number of tokens specified in the request was reached, `content_filter` if
+          #     content was omitted due to a flag from our content filters, `tool_calls` if the
+          #     model called a tool, or `function_call` (deprecated) if the model called a
+          #     function. Omitted from the final audio update containing only
+          #     `delta.audio.expires_at`.
           #
-          #   @param index [Integer] The index of the choice in the list of choices.
-          #
-          #   @param logprobs [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, nil] Log probability information for the choice.
+          #   @param logprobs [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Logprobs, nil]
+          #     Log probability information for the choice.
 
           # @see OpenAI::Models::Chat::ChatCompletionChunk::Choice#delta
           class Delta < OpenAI::Internal::Type::BaseModel
+            # @!attribute audio
+            #   A partial audio response. Audio chunks may carry an ID, base64 data, or
+            #   transcript text; the final audio update contains only its expiry timestamp.
+            #
+            #   @return [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Audio, nil]
+            optional :audio, -> { OpenAI::Chat::ChatCompletionChunk::Choice::Delta::Audio }
+
             # @!attribute content
             #   The contents of the chunk message.
             #
@@ -195,24 +269,81 @@ module OpenAI
             # @!attribute tool_calls
             #
             #   @return [Array<OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall>, nil]
-            optional :tool_calls,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall] }
+            optional(
+              :tool_calls,
+              -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall] }
+            )
 
-            # @!method initialize(content: nil, function_call: nil, refusal: nil, role: nil, tool_calls: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta} for more details.
+            # @!method initialize(audio: nil, content: nil, function_call: nil, refusal: nil, role: nil, tool_calls: nil)
+            #   A chat completion delta generated by streamed model responses. Streamed audio
+            #   can arrive in partial updates with an ID, base64 data, or transcript text. The
+            #   final audio update contains only its expiry timestamp.
             #
-            #   A chat completion delta generated by streamed model responses.
+            #   @param audio [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Audio]
+            #     A partial audio response. Audio chunks may carry an ID, base64 data, or
+            #     transcript text; the final audio update contains only its expiry timestamp.
             #
-            #   @param content [String, nil] The contents of the chunk message.
+            #   @param content [String, nil]
+            #     The contents of the chunk message.
             #
-            #   @param function_call [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall] Deprecated and replaced by `tool_calls`. The name and arguments of a function th
+            #   @param function_call [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall]
+            #     Deprecated and replaced by `tool_calls`. The name and arguments of a function
+            #     that should be called, as generated by the model.
             #
-            #   @param refusal [String, nil] The refusal message generated by the model.
+            #   @param refusal [String, nil]
+            #     The refusal message generated by the model.
             #
-            #   @param role [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role] The role of the author of this message.
+            #   @param role [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::Role]
+            #     The role of the author of this message.
             #
             #   @param tool_calls [Array<OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall>]
+
+            # @see OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta#audio
+            class Audio < OpenAI::Internal::Type::BaseModel
+              # @!attribute id
+              #   Unique identifier for this audio response.
+              #
+              #   @return [String, nil]
+              optional :id, String
+
+              # @!attribute data
+              #   Base64 encoded audio bytes generated by the model, in the format specified in
+              #   the request.
+              #
+              #   @return [String, nil]
+              optional :data, String
+
+              # @!attribute expires_at
+              #   The Unix timestamp (in seconds) for when this audio response will no longer be
+              #   accessible on the server for use in multi-turn conversations.
+              #
+              #   @return [Integer, nil]
+              optional :expires_at, Integer
+
+              # @!attribute transcript
+              #   Transcript text from this audio chunk.
+              #
+              #   @return [String, nil]
+              optional :transcript, String
+
+              # @!method initialize(id: nil, data: nil, expires_at: nil, transcript: nil)
+              #   A partial audio response. Audio chunks may carry an ID, base64 data, or
+              #   transcript text; the final audio update contains only its expiry timestamp.
+              #
+              #   @param id [String]
+              #     Unique identifier for this audio response.
+              #
+              #   @param data [String]
+              #     Base64 encoded audio bytes generated by the model, in the format specified in
+              #     the request.
+              #
+              #   @param expires_at [Integer]
+              #     The Unix timestamp (in seconds) for when this audio response will no longer be
+              #     accessible on the server for use in multi-turn conversations.
+              #
+              #   @param transcript [String]
+              #     Transcript text from this audio chunk.
+            end
 
             # @deprecated
             #
@@ -234,16 +365,17 @@ module OpenAI
               optional :name, String
 
               # @!method initialize(arguments: nil, name: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall} for
-              #   more details.
-              #
               #   Deprecated and replaced by `tool_calls`. The name and arguments of a function
               #   that should be called, as generated by the model.
               #
-              #   @param arguments [String] The arguments to call the function with, as generated by the model in JSON forma
+              #   @param arguments [String]
+              #     The arguments to call the function with, as generated by the model in JSON
+              #     format. Note that the model does not always generate valid JSON, and may
+              #     hallucinate parameters not defined by your function schema. Validate the
+              #     arguments in your code before calling your function.
               #
-              #   @param name [String] The name of the function to call.
+              #   @param name [String]
+              #     The name of the function to call.
             end
 
             # The role of the author of this message.
@@ -288,11 +420,13 @@ module OpenAI
               # @!method initialize(index:, id: nil, function: nil, type: nil)
               #   @param index [Integer]
               #
-              #   @param id [String] The ID of the tool call.
+              #   @param id [String]
+              #     The ID of the tool call.
               #
               #   @param function [OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function]
               #
-              #   @param type [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type] The type of the tool. Currently, only `function` is supported.
+              #   @param type [Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Type]
+              #     The type of the tool. Currently, only `function` is supported.
 
               # @see OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall#function
               class Function < OpenAI::Internal::Type::BaseModel
@@ -312,13 +446,14 @@ module OpenAI
                 optional :name, String
 
                 # @!method initialize(arguments: nil, name: nil)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function}
-                #   for more details.
+                #   @param arguments [String]
+                #     The arguments to call the function with, as generated by the model in JSON
+                #     format. Note that the model does not always generate valid JSON, and may
+                #     hallucinate parameters not defined by your function schema. Validate the
+                #     arguments in your code before calling your function.
                 #
-                #   @param arguments [String] The arguments to call the function with, as generated by the model in JSON forma
-                #
-                #   @param name [String] The name of the function to call.
+                #   @param name [String]
+                #     The name of the function to call.
               end
 
               # The type of the tool. Currently, only `function` is supported.
@@ -340,7 +475,8 @@ module OpenAI
           # number of tokens specified in the request was reached, `content_filter` if
           # content was omitted due to a flag from our content filters, `tool_calls` if the
           # model called a tool, or `function_call` (deprecated) if the model called a
-          # function.
+          # function. Omitted from the final audio update containing only
+          # `delta.audio.expires_at`.
           #
           # @see OpenAI::Models::Chat::ChatCompletionChunk::Choice#finish_reason
           module FinishReason
@@ -362,24 +498,30 @@ module OpenAI
             #   A list of message content tokens with log probability information.
             #
             #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
-            required :content,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob] },
-                     nil?: true
+            required(
+              :content,
+              -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob] },
+              nil?: true
+            )
 
             # @!attribute refusal
             #   A list of message refusal tokens with log probability information.
             #
             #   @return [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
-            required :refusal,
-                     -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob] },
-                     nil?: true
+            required(
+              :refusal,
+              -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionTokenLogprob] },
+              nil?: true
+            )
 
             # @!method initialize(content:, refusal:)
             #   Log probability information for the choice.
             #
-            #   @param content [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil] A list of message content tokens with log probability information.
+            #   @param content [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
+            #     A list of message content tokens with log probability information.
             #
-            #   @param refusal [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil] A list of message refusal tokens with log probability information.
+            #   @param refusal [Array<OpenAI::Models::Chat::ChatCompletionTokenLogprob>, nil]
+            #     A list of message refusal tokens with log probability information.
           end
         end
 
@@ -401,9 +543,11 @@ module OpenAI
           #   Moderation results for the request input and generated output. Present on the
           #   moderation chunk when moderated completions are requested.
           #
-          #   @param input [OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::Error] Moderation for the request input.
+          #   @param input [OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::Error]
+          #     Moderation for the request input.
           #
-          #   @param output [OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::Error] Moderation for the generated output.
+          #   @param output [OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::Error]
+          #     Moderation for the generated output.
 
           # Moderation for the request input.
           #
@@ -414,8 +558,10 @@ module OpenAI
             discriminator :type
 
             # Successful moderation results for the request input or generated output.
-            variant :moderation_results,
-                    -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults }
+            variant(
+              :moderation_results,
+              -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults }
+            )
 
             # An error produced while attempting moderation.
             variant :error, -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Input::Error }
@@ -431,8 +577,14 @@ module OpenAI
               #   A list of moderation results.
               #
               #   @return [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result>]
-              required :results,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result] }
+              required(
+                :results,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result
+                  ]
+                }
+              )
 
               # @!attribute type
               #   The object type, which is always `moderation_results`.
@@ -443,12 +595,14 @@ module OpenAI
               # @!method initialize(model:, results:, type: :moderation_results)
               #   Successful moderation results for the request input or generated output.
               #
-              #   @param model [String] The moderation model used to generate the results.
+              #   @param model [String]
+              #     The moderation model used to generate the results.
               #
-              #   @param results [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result>] A list of moderation results.
+              #   @param results [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result>]
+              #     A list of moderation results.
               #
-              #   @param type [Symbol, :moderation_results] The object type, which is always `moderation_results`.
-
+              #   @param type [Symbol, :moderation_results]
+              #     The object type, which is always `moderation_results`.
               class Result < OpenAI::Internal::Type::BaseModel
                 # @!attribute categories
                 #   A dictionary of moderation categories to booleans, True if the input is flagged
@@ -461,14 +615,16 @@ module OpenAI
                 #   Which modalities of input are reflected by the score for each category.
                 #
                 #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType>}]
-                required :category_applied_input_types,
-                         -> do
-                           OpenAI::Internal::Type::HashOf[
-                             OpenAI::Internal::Type::ArrayOf[
-                               enum: OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType
-                             ]
-                           ]
-                         end
+                required(
+                  :category_applied_input_types,
+                  -> do
+                    OpenAI::Internal::Type::HashOf[
+                      OpenAI::Internal::Type::ArrayOf[
+                        enum: OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType
+                      ]
+                    ]
+                  end
+                )
 
                 # @!attribute category_scores
                 #   A dictionary of moderation categories to scores.
@@ -496,24 +652,27 @@ module OpenAI
                 required :type, const: :moderation_result
 
                 # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:, model:, type: :moderation_result)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result}
-                #   for more details.
-                #
                 #   A moderation result produced for the response input or output.
                 #
-                #   @param categories [Hash{Symbol=>Boolean}] A dictionary of moderation categories to booleans, True if the input is flagged
+                #   @param categories [Hash{Symbol=>Boolean}]
+                #     A dictionary of moderation categories to booleans, True if the input is flagged
+                #     under this category.
                 #
-                #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType>}] Which modalities of input are reflected by the score for each category.
+                #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::CategoryAppliedInputType>}]
+                #     Which modalities of input are reflected by the score for each category.
                 #
-                #   @param category_scores [Hash{Symbol=>Float}] A dictionary of moderation categories to scores.
+                #   @param category_scores [Hash{Symbol=>Float}]
+                #     A dictionary of moderation categories to scores.
                 #
-                #   @param flagged [Boolean] A boolean indicating whether the content was flagged by any category.
+                #   @param flagged [Boolean]
+                #     A boolean indicating whether the content was flagged by any category.
                 #
-                #   @param model [String] The moderation model that produced this result.
+                #   @param model [String]
+                #     The moderation model that produced this result.
                 #
-                #   @param type [Symbol, :moderation_result] The object type, which was always `moderation_result` for successful moderation
-
+                #   @param type [Symbol, :moderation_result]
+                #     The object type, which was always `moderation_result` for successful moderation
+                #     results.
                 module CategoryAppliedInputType
                   extend OpenAI::Internal::Type::Enum
 
@@ -548,11 +707,14 @@ module OpenAI
               # @!method initialize(code:, message:, type: :error)
               #   An error produced while attempting moderation.
               #
-              #   @param code [String] The error code.
+              #   @param code [String]
+              #     The error code.
               #
-              #   @param message [String] The error message.
+              #   @param message [String]
+              #     The error message.
               #
-              #   @param type [Symbol, :error] The object type, which is always `error`.
+              #   @param type [Symbol, :error]
+              #     The object type, which is always `error`.
             end
 
             # @!method self.variants
@@ -568,8 +730,10 @@ module OpenAI
             discriminator :type
 
             # Successful moderation results for the request input or generated output.
-            variant :moderation_results,
-                    -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults }
+            variant(
+              :moderation_results,
+              -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults }
+            )
 
             # An error produced while attempting moderation.
             variant :error, -> { OpenAI::Chat::ChatCompletionChunk::Moderation::Output::Error }
@@ -585,8 +749,14 @@ module OpenAI
               #   A list of moderation results.
               #
               #   @return [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result>]
-              required :results,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result] }
+              required(
+                :results,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result
+                  ]
+                }
+              )
 
               # @!attribute type
               #   The object type, which is always `moderation_results`.
@@ -597,12 +767,14 @@ module OpenAI
               # @!method initialize(model:, results:, type: :moderation_results)
               #   Successful moderation results for the request input or generated output.
               #
-              #   @param model [String] The moderation model used to generate the results.
+              #   @param model [String]
+              #     The moderation model used to generate the results.
               #
-              #   @param results [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result>] A list of moderation results.
+              #   @param results [Array<OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result>]
+              #     A list of moderation results.
               #
-              #   @param type [Symbol, :moderation_results] The object type, which is always `moderation_results`.
-
+              #   @param type [Symbol, :moderation_results]
+              #     The object type, which is always `moderation_results`.
               class Result < OpenAI::Internal::Type::BaseModel
                 # @!attribute categories
                 #   A dictionary of moderation categories to booleans, True if the input is flagged
@@ -615,14 +787,16 @@ module OpenAI
                 #   Which modalities of input are reflected by the score for each category.
                 #
                 #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType>}]
-                required :category_applied_input_types,
-                         -> do
-                           OpenAI::Internal::Type::HashOf[
-                             OpenAI::Internal::Type::ArrayOf[
-                               enum: OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType
-                             ]
-                           ]
-                         end
+                required(
+                  :category_applied_input_types,
+                  -> do
+                    OpenAI::Internal::Type::HashOf[
+                      OpenAI::Internal::Type::ArrayOf[
+                        enum: OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType
+                      ]
+                    ]
+                  end
+                )
 
                 # @!attribute category_scores
                 #   A dictionary of moderation categories to scores.
@@ -650,24 +824,27 @@ module OpenAI
                 required :type, const: :moderation_result
 
                 # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:, model:, type: :moderation_result)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result}
-                #   for more details.
-                #
                 #   A moderation result produced for the response input or output.
                 #
-                #   @param categories [Hash{Symbol=>Boolean}] A dictionary of moderation categories to booleans, True if the input is flagged
+                #   @param categories [Hash{Symbol=>Boolean}]
+                #     A dictionary of moderation categories to booleans, True if the input is flagged
+                #     under this category.
                 #
-                #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType>}] Which modalities of input are reflected by the score for each category.
+                #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::CategoryAppliedInputType>}]
+                #     Which modalities of input are reflected by the score for each category.
                 #
-                #   @param category_scores [Hash{Symbol=>Float}] A dictionary of moderation categories to scores.
+                #   @param category_scores [Hash{Symbol=>Float}]
+                #     A dictionary of moderation categories to scores.
                 #
-                #   @param flagged [Boolean] A boolean indicating whether the content was flagged by any category.
+                #   @param flagged [Boolean]
+                #     A boolean indicating whether the content was flagged by any category.
                 #
-                #   @param model [String] The moderation model that produced this result.
+                #   @param model [String]
+                #     The moderation model that produced this result.
                 #
-                #   @param type [Symbol, :moderation_result] The object type, which was always `moderation_result` for successful moderation
-
+                #   @param type [Symbol, :moderation_result]
+                #     The object type, which was always `moderation_result` for successful moderation
+                #     results.
                 module CategoryAppliedInputType
                   extend OpenAI::Internal::Type::Enum
 
@@ -702,11 +879,14 @@ module OpenAI
               # @!method initialize(code:, message:, type: :error)
               #   An error produced while attempting moderation.
               #
-              #   @param code [String] The error code.
+              #   @param code [String]
+              #     The error code.
               #
-              #   @param message [String] The error message.
+              #   @param message [String]
+              #     The error message.
               #
-              #   @param type [Symbol, :error] The object type, which is always `error`.
+              #   @param type [Symbol, :error]
+              #     The object type, which is always `error`.
             end
 
             # @!method self.variants
@@ -721,13 +901,15 @@ module OpenAI
         #   will use 'default'.
         # - If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model.
-        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #   then the request will be processed with the Flex Processing service tier.
-        # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #   include the `service_tier=fast` or `service_tier=priority` parameter for
-        #   Responses or Chat Completions. The response will show `service_tier=priority`
-        #   regardless of if you specify `service_tier=fast` or `priority` in your
-        #   request.
+        # - If set to
+        #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #   the request will be processed with the Flex Processing service tier.
+        # - To opt-in to
+        #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #   request level, include the `service_tier=fast` or `service_tier=priority`
+        #   parameter for Responses or Chat Completions. The response will show
+        #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #   `priority` in your request.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the

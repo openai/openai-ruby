@@ -3,6 +3,7 @@
 module OpenAI
   module Models
     module Webhooks
+      # @deprecated
       class LiveCallIncomingWebhookEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute id
         #   The unique ID of the event.
@@ -35,49 +36,78 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"live.call.incoming")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent} for more details.
+        #   Deprecated: use `live.transport.incoming`. Retained for existing subscriptions
+        #   during migration; new subscriptions to this event are not allowed. Sent when an
+        #   incoming API SIP session is available for Live acceptance. The same pending
+        #   session can also emit `realtime.call.incoming`; the first successful Realtime or
+        #   Live accept endpoint selects the runtime surface.
         #
-        #   Sent when an incoming API SIP session is available for Live acceptance. The same
-        #   pending session can also emit `realtime.call.incoming`; the first successful
-        #   Realtime or Live accept endpoint selects the runtime surface.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the event was created.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the event was created.
+        #   @param data [OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param data [OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data] Event data payload.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Object] The object of the event. Always `event`.
-        #
-        #   @param type [Symbol, :"live.call.incoming"] The type of the event. Always `live.call.incoming`.
+        #   @param type [Symbol, :"live.call.incoming"]
+        #     The type of the event. Always `live.call.incoming`.
 
         # @see OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
           # @!attribute session_id
-          #   The Transceiver `rtc_...` ID of the pending SIP session. The same value appears
-          #   as `call_id` in `realtime.call.incoming`.
+          #   The `live_...` ID of the pending SIP session. Pass this value unchanged to Live
+          #   call controls and sideband connections. The corresponding
+          #   `realtime.call.incoming` event uses a separate `rtc_...` call ID.
           #
           #   @return [String]
           required :session_id, String
 
           # @!attribute sip_headers
-          #   Headers from the SIP Invite.
+          #   Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          #   names, values, repeated entries, and order are preserved. Treat these values as
+          #   untrusted call metadata.
           #
           #   @return [Array<OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader>]
-          required :sip_headers,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader] }
+          required(
+            :sip_headers,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader] }
+          )
 
-          # @!method initialize(session_id:, sip_headers:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data} for more details.
+          # @!attribute sip_media_security
+          #   Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          #   indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          #   not describe SIP signaling security or confirm that media has flowed. Clients
+          #   should handle unrecognized values as unknown.
           #
+          #   @return [Symbol, String, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipMediaSecurity, nil]
+          optional(
+            :sip_media_security,
+            union: -> { OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipMediaSecurity }
+          )
+
+          # @!method initialize(session_id:, sip_headers:, sip_media_security: nil)
           #   Event data payload.
           #
-          #   @param session_id [String] The Transceiver `rtc_...` ID of the pending SIP session. The same
+          #   @param session_id [String]
+          #     The `live_...` ID of the pending SIP session. Pass this value unchanged to Live
+          #     call controls and sideband connections. The corresponding
+          #     `realtime.call.incoming` event uses a separate `rtc_...` call ID.
           #
-          #   @param sip_headers [Array<OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader>] Headers from the SIP Invite.
-
+          #   @param sip_headers [Array<OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader>]
+          #     Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          #     names, values, repeated entries, and order are preserved. Treat these values as
+          #     untrusted call metadata.
+          #
+          #   @param sip_media_security [Symbol, String, OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipMediaSecurity]
+          #     Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          #     indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          #     not describe SIP signaling security or confirm that media has flowed. Clients
+          #     should handle unrecognized values as unknown.
           class SipHeader < OpenAI::Internal::Type::BaseModel
             # @!attribute name
             #   Name of the SIP Header.
@@ -92,15 +122,45 @@ module OpenAI
             required :value, String
 
             # @!method initialize(name:, value:)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipHeader} for
-            #   more details.
-            #
             #   A header from the SIP Invite.
             #
-            #   @param name [String] Name of the SIP Header.
+            #   @param name [String]
+            #     Name of the SIP Header.
             #
-            #   @param value [String] Value of the SIP Header.
+            #   @param value [String]
+            #     Value of the SIP Header.
+          end
+
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          #
+          # @see OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data#sip_media_security
+          module SipMediaSecurity
+            extend OpenAI::Internal::Type::Union
+
+            variant const: -> { OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipMediaSecurity::RTP }
+
+            variant const: -> { OpenAI::Models::Webhooks::LiveCallIncomingWebhookEvent::Data::SipMediaSecurity::SRTP }
+
+            variant String
+
+            # @!method self.variants
+            #   @return [Array(Symbol, String)]
+
+            define_sorbet_constant!(:Variants) do
+              T.type_alias {
+                T.any(OpenAI::Webhooks::LiveCallIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol, String)
+              }
+            end
+
+            # @!group
+
+            RTP = :rtp
+            SRTP = :srtp
+
+            # @!endgroup
           end
         end
 

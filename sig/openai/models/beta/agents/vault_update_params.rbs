@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault_update_params =
+          {
+            vault_id: String,
+            ?metadata: ::Hash[Symbol, String],
+            ?name: String?,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class VaultUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor vault_id: String
+
+          # Replaces all metadata. Omit to leave unchanged, or pass {} to clear it. Up to 16
+          # string key-value pairs, with keys up to 64 and values up to 512 characters.
+          attr_reader metadata: ::Hash[Symbol, String]?
+
+          # Replaces all metadata. Omit to leave unchanged, or pass {} to clear it. Up to 16
+          # string key-value pairs, with keys up to 64 and values up to 512 characters.
+          def metadata=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
+
+          # A replacement name. Omit to leave unchanged, or pass null to clear it. The name
+          # is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after trimming.
+          attr_accessor name: String?
+
+          # @param metadata
+          #   Replaces all metadata. Omit to leave unchanged, or pass {} to clear it. Up to 16
+          #   string key-value pairs, with keys up to 64 and values up to 512 characters.
+          # @param name
+          #   A replacement name. Omit to leave unchanged, or pass null to clear it. The name
+          #   is trimmed before storage. It must contain 1 to 256 UTF-8 bytes after trimming.
+          def initialize: (
+            vault_id: String,
+            ?metadata: ::Hash[Symbol, String],
+            ?name: String?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            vault_id: String,
+            ?metadata: ::Hash[Symbol, String],
+            ?name: String?,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

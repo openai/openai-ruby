@@ -1,0 +1,715 @@
+# frozen_string_literal: true
+
+require_relative "agent_turn_result_test"
+
+class OpenAI::Test::AgentTypedResultTest < OpenAI::Test::AgentTurnResultTest
+  class Finding < OpenAI::BaseModel
+    required :label, String
+    required :score, Integer
+  end
+
+  class Report < OpenAI::BaseModel
+    required :summary, String
+    required :findings, OpenAI::ArrayOf[Finding]
+    required :question, String, nil?: true
+  end
+
+  class Tree < OpenAI::BaseModel
+    required :label, String
+    required :children, -> { OpenAI::ArrayOf[Tree] }
+  end
+
+  class Alternatives < OpenAI::BaseModel
+    required :choice, OpenAI::EnumOf[:yes, :no]
+    required :detail, OpenAI::UnionOf[String, Integer]
+    required :first, Finding, doc: "Primary finding"
+    required :second, Finding, doc: "Secondary finding"
+  end
+
+  class Constrained < OpenAI::BaseModel
+    required :name, String, minLength: 2
+  end
+
+  def test_enums_unions_and_reused_nested_models
+    text = JSON.generate(choice: "yes", detail: 3, first: {label: "A", score: 1}, second: {label: "B", score: 2})
+    configure([turn("created"), answer_event(text), turn("completed"), idle])
+    result = typed_stream(creation: true, output_type: Alternatives).get_final_result
+    assert_equal(:yes, result.output_parsed.choice)
+    assert_equal(3, result.output_parsed.detail)
+    assert_equal("B", result.output_parsed.second.label)
+  end
+
+  def test_supported_constraints_are_preserved_for_hosted_validation
+    configure(complete)
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(Constrained)
+    params = {agent: {model: "test-model"}}
+    parser.prepare_request(params)
+    assert_equal(2, params.dig(:agent, :text, :format, :schema, "properties", "name", "minLength"))
+  end
+
+  class BranchA < OpenAI::BaseModel
+    required :child, -> { OpenAI::UnionOf[BranchA, BranchB] }, nil?: true
+    required :kind, const: :a
+  end
+
+  class BranchB < OpenAI::BaseModel
+    required :child, -> { OpenAI::UnionOf[BranchA, BranchB] }, nil?: true
+    required :kind, const: :b
+  end
+
+  class BranchReport < OpenAI::BaseModel
+    required :branch, OpenAI::UnionOf[BranchA, BranchB]
+  end
+
+  def test_recursive_union_hydration_does_not_repeat_subtrees
+    ["invalid", "b"].each do |kind|
+      value = nil
+      16.times { value = {child: value, kind: kind} }
+      configure([turn("created"), answer_event(JSON.generate(branch: value)), turn("completed"), idle])
+      raw = stream.get_final_result
+      parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(BranchReport)
+      calls = 0
+      trace = TracePoint.new(:call) { calls += 1 if _1.method_id == :coerce }
+      parsed = trace.enable { parser.parse(raw).output_parsed }
+      assert_operator(calls, :<, 1000)
+      assert_instance_of(BranchB, parsed.branch) if kind == "b"
+    end
+  end
+
+  def test_memoized_conversion_preserves_native_union_selection_and_state
+    values = [
+      {branch: {child: nil, kind: "b"}},
+      {branch: {child: {child: nil, kind: "b"}, kind: "invalid"}},
+      {branch: []}
+    ]
+    values.each do |value|
+      native = OpenAI::Internal::Type::Converter.new_coerce_state
+      memoized = OpenAI::Internal::Type::Converter.new_coerce_state(memoize: true)
+      expected = OpenAI::Internal::Type::Converter.coerce(BranchReport, value, state: native)
+      actual = OpenAI::Internal::Type::Converter.coerce(BranchReport, value, state: memoized)
+      assert_equal(expected, actual)
+      assert_equal(native.except(:memo, :error), memoized.except(:memo, :error))
+      assert_equal([native[:error]&.class], [memoized[:error]&.class])
+    end
+  end
+
+  class AnnotatedRecursive < OpenAI::BaseModel
+    required :child, -> { AnnotatedRecursive }, doc: "Next node"
+  end
+
+  def test_reference_names_are_normalized_for_agents_strict_schema
+    inner = Class.new(OpenAI::BaseModel) { required(:label, String) }
+    outer = Class.new(OpenAI::BaseModel) do
+      required(:first, inner)
+      required(:second, inner)
+    end
+
+    report = Class.new(OpenAI::BaseModel) { required(:outer, outer) }
+    [report, Tree, AnnotatedRecursive].each do |model|
+      parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+      params = {agent: {model: "test-model"}}
+      parser.prepare_request(params)
+      schema = params.dig(:agent, :text, :format, :schema)
+      definitions = schema.fetch("$defs")
+      assert(definitions.keys.all? { _1.match?(/\Amodel_\d+\z/) })
+      nodes = [schema]
+      until nodes.empty?
+        node = nodes.pop
+        case node
+        when Hash
+          if node.key?("$ref")
+            assert(definitions.key?(node.fetch("$ref").delete_prefix("#/$defs/")))
+            assert_equal(["$ref"], node.keys)
+          end
+
+          nodes.concat(node.values)
+        when Array
+          nodes.concat(node)
+        end
+      end
+    end
+  end
+
+  def test_schema_copy_does_not_add_a_json_nesting_limit
+    model = Class.new(OpenAI::BaseModel) { required(:leaf, String) }
+    60.times do
+      inner = model
+      model = Class.new(OpenAI::BaseModel) { required(:child, inner) }
+    end
+
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+    params = {agent: {model: "test-model"}}
+    parser.prepare_request(params)
+    assert_equal("object", params.dig(:agent, :text, :format, :schema, "type"))
+  end
+
+  def test_string_keyed_agent_configuration_preserves_options_and_detects_conflicts
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(Report)
+    params = {agent: {"model" => "test-model", "text" => {"verbosity" => "low"}}}
+    parser.prepare_request(params)
+    assert_equal("test-model", params.dig(:agent, :model))
+    assert_equal("low", params.dig(:agent, :text, :verbosity))
+    assert_raises(ArgumentError) do
+      parser.prepare_request(agent: {"text" => {"format" => {"type" => "text"}}})
+    end
+  end
+
+  def test_ruby_named_text_format_conflicts_are_not_overwritten
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(Report)
+    [
+      {format_: {type: :text}},
+      {"format_" => {"type" => "text"}},
+      OpenAI::Models::Beta::AgentTextParam.new(format_: {type: :text})
+    ].each do |text|
+      assert_raises(ArgumentError) { parser.prepare_request(agent: {text: text}) }
+    end
+  end
+
+  def test_schema_normalization_does_not_interpret_business_property_names_or_defaults
+    model = Class.new(OpenAI::BaseModel) do
+      required(:reference, String, api_name: :$ref, default: {"$ref" => "business value"})
+    end
+
+    parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+    params = {agent: {model: "test-model"}}
+    parser.prepare_request(params)
+    field = params.dig(:agent, :text, :format, :schema, "properties", "$ref")
+    assert_equal("string", field.fetch("type"))
+    assert_equal({"$ref" => "business value"}, field.fetch("default"))
+  end
+
+  def test_typed_tools_and_results_share_native_model_conventions
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "summarize", arguments: Report) { _1 }
+    configure([turn("created"), answer_event(report_json), turn("completed"), idle])
+    parsed = typed_stream.get_final_result.output_parsed
+    assert_equal(tool.call(report_json), parsed)
+    assert_instance_of(Finding, parsed.findings.first)
+  end
+
+  def test_shared_model_hydration_preserves_tool_and_output_error_policies
+    calls = []
+    tool = OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "summarize", arguments: Report) { calls << _1 }
+    invalid = JSON.generate(summary: [], findings: [])
+    error = assert_raises(ArgumentError) { tool.call(invalid) }
+    assert_equal("Tool arguments cannot be parsed into the argument model", error.message)
+    assert_empty(calls)
+
+    configure([turn("created"), answer_event(invalid), turn("completed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_equal(invalid, error.raw_result.output_text)
+
+    tool_error = assert_raises(ArgumentError) do
+      OpenAI::Helpers::Beta::Agents::FunctionTool.new(name: "bad", arguments: Hash) { nil }
+    end
+
+    assert_equal("arguments must be an OpenAI::BaseModel subclass", tool_error.message)
+    output_error = assert_raises(ArgumentError) do
+      OpenAI::Helpers::Beta::Agents::OutputParser.new(Hash)
+    end
+
+    assert_equal("output_type must be an OpenAI::BaseModel subclass", output_error.message)
+  end
+
+  def test_recursive_collection_unions_reuse_conversion_work
+    union = nil
+    left = OpenAI::ArrayOf[-> { union }]
+    right = OpenAI::ArrayOf[-> { union }]
+    union = OpenAI::UnionOf[left, right, Integer]
+    model = Class.new(OpenAI::BaseModel) { required(:value, union) }
+    [false, 1].each do |leaf|
+      value = leaf
+      16.times { value = [value] }
+      configure([turn("created"), answer_event(JSON.generate(value: value)), turn("completed"), idle])
+      raw = stream.get_final_result
+      parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+      calls = 0
+      trace = TracePoint.new(:call) { calls += 1 if _1.method_id == :coerce }
+      trace.enable do
+        if leaf == false
+          assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { parser.parse(raw) }
+        else
+          assert_instance_of(model, parser.parse(raw).output_parsed)
+        end
+      end
+
+      assert_operator(calls, :<, 1000)
+    end
+  end
+
+  def test_lazy_recursive_type_factories_are_resolved_once_per_parse
+    [:array, :hash].each do |container|
+      [false, 1].each do |leaf|
+        resolutions = 0
+        lazy = nil
+        lazy = lambda do
+          resolutions += 1
+          collection = container == :array ? OpenAI::ArrayOf : OpenAI::Internal::Type::HashOf
+          OpenAI::UnionOf[collection[lazy], collection[lazy], Integer]
+        end
+
+        model = Class.new(OpenAI::BaseModel) { required(:value, lazy) }
+        value = leaf
+        16.times { value = container == :array ? [value] : {child: value} }
+        [false, true].each do |followup|
+          configure([turn("created"), answer_event(JSON.generate(value: value)), turn("completed"), idle])
+          resolutions = 0
+          calls = 0
+          trace = TracePoint.new(:call) { calls += 1 if _1.method_id == :coerce }
+          parse = lambda do
+            followup ? typed_stream(output_type: model).get_final_result : stream
+              .get_final_result
+              .parse(output_type: model)
+          end
+
+          trace.enable(target_thread: Thread.current) do
+            if leaf == false
+              error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError, &parse)
+              assert_equal(JSON.generate(value: value), error.raw_result.output_text)
+            else
+              assert_equal(value, parse.call.output_parsed.to_h[:value])
+            end
+          end
+
+          assert_equal(1, resolutions)
+          assert_operator(calls, :<, 500)
+        end
+      end
+    end
+  end
+
+  def test_lazy_resolution_cache_preserves_default_conversion_semantics
+    resolutions = 0
+    lazy = -> {
+      resolutions += 1
+      OpenAI::UnionOf[Integer, String]
+    }
+    model = Class.new(OpenAI::BaseModel) do
+      required(:first, lazy)
+      required(:second, lazy)
+    end
+
+    value = {first: 1, second: "two"}
+    native = OpenAI::Internal::Type::Converter.new_coerce_state
+    expected = OpenAI::Internal::Type::Converter.coerce(model, value, state: native)
+    assert_equal(2, resolutions)
+    resolutions = 0
+    memoized = OpenAI::Internal::Type::Converter.new_coerce_state(memoize: true)
+    actual = OpenAI::Internal::Type::Converter.coerce(model, value, state: memoized)
+    assert_equal(1, resolutions)
+    assert_equal(expected, actual)
+    assert_equal(native.except(:memo, :error), memoized.except(:memo, :error))
+    before = resolutions
+    model.fields
+    assert_equal(before + 2, resolutions)
+  end
+
+  def test_supported_creation_parameter_containers_keep_output_type_local
+    [
+      OpenAI::Beta::Agents::SessionCreateParams.new(
+        agent: {model: "test-model"},
+        environment: {type: :none},
+        input: "Report"
+      ),
+      {
+        "agent" => {"model" => "test-model"},
+        "environment" => {"type" => "none"},
+        "input" => "Report",
+        "output_type" => Report
+      }
+    ].each do |params|
+      configure([turn("created"), answer_event(report_json), turn("completed"), idle])
+      result = @sessions.create_streaming(params).get_final_result
+      assert_equal(report_json, result.output_text)
+      assert_instance_of(Report, result.output_parsed) if params.is_a?(Hash)
+      body = JSON.parse(@server.requests.first.body)
+      refute(body.key?("output_type"))
+    end
+  end
+
+  def test_numeric_range_failure_preserves_raw_result
+    configure(
+      [turn("created"), answer_event(report_json.sub("\"score\":2", "\"score\":1e400")), turn("completed"), idle]
+    )
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_includes(error.raw_result.output_text, "1e400")
+    assert_nil(error.cause)
+  end
+
+  def test_recursive_output_is_not_limited_to_100_json_levels
+    tree = {label: "leaf", children: []}
+    80.times { tree = {label: "parent", children: [tree]} }
+    configure([turn("created"), answer_event(JSON.generate(tree, max_nesting: false)), turn("completed"), idle])
+    result = typed_stream(output_type: Tree).get_final_result
+    parsed = result.output_parsed
+    80.times { parsed = parsed.children.first }
+    assert_equal("leaf", parsed.label)
+  end
+
+  def report_json = JSON.generate(summary: "Ready", findings: [{label: "A", score: 2}], question: nil)
+
+  def typed_stream(creation: false, output_type: Report)
+    if creation
+      @sessions.create_streaming(
+        agent: {model: "test-model"},
+        environment: {type: :none},
+        input: "Report",
+        output_type: output_type
+      )
+    else
+      @sessions.stream("session_test", input: "Report", output_type: output_type)
+    end
+  end
+
+  def test_typed_creation_and_followup_preserve_raw_result_and_cache
+    [false, true].each do |creation|
+      configure([turn("created"), answer_event(report_json), turn("completed"), idle])
+      result_stream = typed_stream(creation: creation)
+      result = result_stream.get_final_result
+      assert_instance_of(Report, result.output_parsed)
+      assert_equal("Ready", result.output_parsed.summary)
+      assert_instance_of(Finding, result.output_parsed.findings.first)
+      assert_equal(2, result.output_parsed.findings.first.score)
+      assert_nil(result.output_parsed.question)
+      assert_equal(report_json, result.output_text)
+      assert_same(result.messages, result.raw_result.messages)
+      assert_same(result, result_stream.get_final_result)
+      bodies = @server.requests.select { _1.method == :post }.map { JSON.parse(_1.body) }
+      refute(bodies.any? { _1.key?("output_type") })
+      if creation
+        format = bodies.first.dig("agent", "text", "format")
+        assert_equal(%w[schema type], format.keys.sort)
+        assert_equal("json_schema", format["type"])
+        assert_equal("object", format.dig("schema", "type"))
+      else
+        assert_equal(1, bodies.length)
+        refute(bodies.first.key?("agent"))
+      end
+    end
+  end
+
+  def test_each_final_output_text_item_is_parsed_without_concatenating_json
+    texts = [report_json, report_json.sub("Ready", "Updated")]
+    [true, false].each do |single_message|
+      events = if single_message
+        item = answer_event
+        item[:item][:content] = texts.map { {type: "output_text", text: _1} }
+        [item]
+      else
+        [answer_event(texts[1], id: "second", index: 1), answer_event(texts[0], id: "first", index: 0)]
+      end
+
+      configure([turn("created"), *events, turn("completed"), idle])
+      result = typed_stream(creation: true).get_final_result
+      assert_equal("Ready", result.output_parsed.summary)
+      assert_equal(texts.join, result.output_text)
+      assert_same(result.raw_result.messages, result.messages)
+      assert_equal(single_message ? 1 : 2, result.messages.size)
+    end
+  end
+
+  def test_invalid_later_text_and_missing_text_preserve_the_raw_result
+    ["invalid JSON", report_json.sub("\"score\":2", "\"score\":[]")].each do |invalid|
+      configure(
+        [
+          turn("created"),
+          answer_event(report_json, id: "first", index: 0),
+          answer_event(invalid, id: "second", index: 1),
+          turn("completed"),
+          idle
+        ]
+      )
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+      assert_equal(report_json + invalid, error.raw_result.output_text)
+      assert_equal(2, error.raw_result.messages.size)
+    end
+
+    configure([turn("created"), turn("completed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_equal("", error.raw_result.output_text)
+    assert_empty(error.raw_result.messages)
+  end
+
+  def test_missing_text_preserves_the_raw_result_in_the_typed_error
+    event = answer_event
+    event[:item][:content].first.delete(:text)
+    configure([turn("created"), event, turn("completed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_equal(1, error.raw_result.messages.size)
+    assert_nil(error.raw_result.messages.first.content.first[:text])
+    assert_nil(error.cause)
+  end
+
+  def test_missing_null_or_nonarray_content_preserves_the_raw_result
+    [nil, "invalid", {}].each do |content|
+      event = answer_event
+      event[:item][:content] = content
+      configure([turn("created"), event, turn("completed"), idle])
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+      assert_equal(1, error.raw_result.messages.size)
+      assert_equal([content], [error.raw_result.messages.first[:content]])
+    end
+
+    event = answer_event
+    event[:item].delete(:content)
+    configure([turn("created"), event, turn("completed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { typed_stream.get_final_result }
+    assert_equal(1, error.raw_result.messages.size)
+    assert_nil(error.raw_result.messages.first[:content])
+  end
+
+  def test_invalid_content_parts_preserve_raw_results_without_swallowing_interrupts
+    [nil, 1, "invalid", []].each do |part|
+      event = answer_event
+      event[:item][:content] = [part]
+      configure([turn("created"), event, turn("completed"), idle])
+      subject = typed_stream
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result }
+      assert_same(error, assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result })
+      assert_equal([part], error.raw_result.messages.first[:content])
+    end
+
+    configure([turn("created"), answer_event(report_json), turn("completed"), idle])
+    raw = stream.get_final_result
+    raw.stub(:messages, -> { raise Interrupt }) do
+      assert_raises(Interrupt) { raw.parse(output_type: Report) }
+    end
+  end
+
+  def test_parse_failures_preserve_raw_result_without_unsafe_causes
+    invalid = [
+      "not json",
+      "[]",
+      "{\"summary\":\"Ready\"}",
+      report_json.sub("\"score\":2", "\"score\":[]")
+    ]
+    [false, true].product(invalid).each do |creation, text|
+      configure([turn("created"), answer_event(text), turn("completed"), idle])
+      subject = typed_stream(creation: creation)
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result }
+      assert_equal(:completed, error.raw_result.turn.status)
+      assert_equal(text, error.raw_result.output_text)
+      assert_nil(error.cause)
+      assert_same(error, assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result })
+    end
+  end
+
+  class EmptyEnum < OpenAI::BaseModel
+    required :value, OpenAI::EnumOf[]
+  end
+
+  class URIReport < OpenAI::BaseModel
+    required :link, String, format: "uri"
+  end
+
+  def test_string_formats_are_sent_for_api_validation
+    configure(complete)
+    typed_stream(creation: true, output_type: URIReport).close
+    schema = JSON.parse(@server.requests.first.body).dig("agent", "text", "format", "schema")
+    assert_equal("uri", schema.dig("properties", "link", "format"))
+  end
+
+  def test_followup_and_raw_parsing_do_not_require_an_installable_agents_schema
+    text = JSON.generate(link: "https://example.com")
+    configure([turn("created"), answer_event(text), turn("completed"), idle])
+    result = typed_stream(output_type: URIReport).get_final_result
+    assert_equal("https://example.com", result.output_parsed.link)
+    assert_equal(result.output_parsed, result.raw_result.parse(output_type: URIReport).output_parsed)
+  end
+
+  def test_empty_enums_are_sent_for_api_validation
+    configure(complete)
+    typed_stream(creation: true, output_type: EmptyEnum).close
+    schema = JSON.parse(@server.requests.first.body).dig("agent", "text", "format", "schema")
+    assert_equal([], schema.dig("properties", "value", "enum"))
+  end
+
+  def test_agents_preserves_schema_policies_accepted_by_native_responses_conversion
+    schemas = [
+      {type: "object", additionalProperties: true, propertyNames: {pattern: "^[a-z]+$"}},
+      {type: "object", properties: {values: {type: "array", contains: {type: "string"}, uniqueItems: true}}},
+      {type: "object", allOf: [{required: ["name"]}], if: {required: ["tag"]}, then: {required: ["value"]}},
+      {type: "string", format: "custom-format", enum: []},
+      {type: "custom-type", "x-guidance": {setting: true}}
+    ]
+    schemas.each do |schema|
+      model = Class.new(OpenAI::BaseModel)
+      model.define_singleton_method(:to_json_schema) { schema }
+      responses = {text: {format: {type: :json_schema, schema: model}}}
+      OpenAI::Helpers::StructuredOutput::ResponseParser.get_models(responses)
+      configure(complete)
+      typed_stream(creation: true, output_type: model).close
+      sent = JSON.parse(@server.requests.first.body).dig("agent", "text", "format", "schema")
+      assert_equal(JSON.parse(JSON.generate(responses.dig(:text, :format, :schema))), sent)
+      assert_equal(schema, model.to_json_schema)
+    end
+  end
+
+  def test_unknown_and_constrained_root_references_preserve_the_original_schema
+    definition = {type: "object", properties: {value: {type: "string"}}, required: ["value"]}
+    schemas = [
+      {"$defs": {value: definition}, "$ref": "https://example.com/schema.json"},
+      {"$defs": {value: definition}, "$ref": "#/$defs/missing"},
+      {"$defs": {value: definition}, "$ref": "#/$defs/value", maxProperties: 1, additionalProperties: false},
+      {"$defs": {value: definition}, "$ref": "#/$defs/value", anyOf: [{required: ["value"]}], title: "Result"}
+    ]
+    schemas.each do |schema|
+      model = Class.new(OpenAI::BaseModel)
+      model.define_singleton_method(:to_json_schema) { schema }
+      parser = OpenAI::Helpers::Beta::Agents::OutputParser.new(model)
+      params = {agent: {model: "test-model"}}
+      parser.prepare_request(params)
+      assert_equal(JSON.parse(JSON.generate(schema)), params.dig(:agent, :text, :format, :schema))
+    end
+  end
+
+  def test_reference_adaptation_keeps_constraints_and_literal_reference_data
+    constraint = [{minProperties: 1}]
+    literal = {"$ref": "#/$defs/record"}
+    schema = {
+      type: "object",
+      "$defs": {record: {type: "object", properties: {name: {type: "string"}}}},
+      properties: {
+        value: {"$ref": "#/$defs/record", title: "Value", anyOf: constraint, default: literal},
+        other: {allOf: [{"$ref": "#/$defs/record"}]}
+      }
+    }
+    model = Class.new(OpenAI::BaseModel)
+    model.define_singleton_method(:to_json_schema) { schema }
+    params = {agent: {model: "test-model"}}
+    OpenAI::Helpers::Beta::Agents::OutputParser.new(model).prepare_request(params)
+    sent = params.dig(:agent, :text, :format, :schema)
+    assert_equal(JSON.parse(JSON.generate(constraint)), sent.dig("properties", "value", "anyOf"))
+    assert_equal(JSON.parse(JSON.generate(literal)), sent.dig("properties", "value", "default"))
+    assert_equal("#/$defs/model_0", sent.dig("properties", "value", "$ref"))
+    assert_equal("#/$defs/model_0", sent.dig("properties", "other", "allOf", 0, "$ref"))
+    assert_equal("#/$defs/record", schema.dig(:properties, :value, :$ref))
+  end
+
+  def test_unvisited_or_scoped_references_leave_definition_names_unchanged
+    base = {
+      type: "object",
+      "$defs": {record: {type: "string"}},
+      properties: {value: {"$ref": "#/$defs/record"}}
+    }
+    schemas = [
+      base.merge(
+        properties: base[:properties].merge(encoded: {type: "string", contentSchema: {"$ref": "#/$defs/record"}})
+      ),
+      base.merge("$id": "https://example.com/schema.json"),
+      base.merge(discriminator: {propertyName: "kind", mapping: {item: "#/$defs/record"}}),
+      base.merge(
+        properties: base[:properties].merge(
+          tagged: {
+            type: "object",
+            discriminator: {propertyName: "kind", mapping: {item: "#/$defs/record"}}
+          }
+        )
+      ),
+      base.merge("x-reference-map": {item: "#/$defs/record"}),
+      base.merge(properties: base[:properties].merge(other: {"$dynamicRef": "#/$defs/record"}))
+    ]
+    schemas.each do |schema|
+      model = Class.new(OpenAI::BaseModel)
+      model.define_singleton_method(:to_json_schema) { schema }
+      params = {agent: {model: "test-model"}}
+      OpenAI::Helpers::Beta::Agents::OutputParser.new(model).prepare_request(params)
+      assert_equal(JSON.parse(JSON.generate(schema)), params.dig(:agent, :text, :format, :schema))
+    end
+  end
+
+  def test_schema_rejections_keep_the_native_api_error
+    configure(complete)
+    response = @server.response(
+      400,
+      JSON.generate(error: {message: "Unsupported schema format", type: "invalid_request_error"})
+    )
+    @server.stub(:execute, response) do
+      error = assert_raises(OpenAI::Errors::BadRequestError) do
+        typed_stream(creation: true, output_type: URIReport)
+      end
+
+      assert_equal(400, error.status)
+      assert_includes(error.body.to_s, "Unsupported schema format")
+    end
+  end
+
+  def test_integral_json_numbers_hydrate_as_integers
+    %w[1.0 1e0].each do |number|
+      text = report_json.sub("\"score\":2", "\"score\":#{number}")
+      configure([turn("created"), answer_event(text), turn("completed"), idle])
+      score = typed_stream.get_final_result.output_parsed.findings.first.score
+      assert_instance_of(Integer, score)
+      assert_equal(1, score)
+    end
+  end
+
+  def test_parse_error_tracebacks_do_not_include_output
+    canary = "PRIVATE_SYNTHETIC_REPORT_CANARY"
+    configure([turn("created"), answer_event("#{canary} invalid JSON"), turn("completed"), idle])
+    subject = typed_stream
+    2.times do
+      error = assert_raises(OpenAI::Helpers::Beta::Agents::OutputParseError) { subject.get_final_result }
+      refute_includes(error.full_message, canary)
+      assert_includes(error.raw_result.output_text, canary)
+    end
+  end
+
+  def test_hosted_failures_are_not_parse_errors
+    configure([turn("created"), turn("failed"), idle])
+    error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { typed_stream.get_final_result }
+    assert_equal(:failed, error.reason)
+  end
+
+  def test_recursive_models_and_explicit_raw_result_parse
+    text = JSON.generate(label: "root", children: [{label: "child", children: []}])
+    configure([turn("created"), answer_event(text), turn("completed"), idle])
+    result = typed_stream(creation: true, output_type: Tree).get_final_result
+    assert_instance_of(Tree, result.output_parsed.children.first)
+    assert_equal("child", result.output_parsed.children.first.label)
+    assert_instance_of(Tree, result.raw_result.parse(output_type: Tree).output_parsed)
+    request = JSON.parse(@server.requests.first.body)
+    assert_equal("object", request.dig("agent", "text", "format", "schema", "type"))
+  end
+
+  def test_false_output_type_is_rejected_before_creation_or_followup_requests
+    [true, false].each do |creation|
+      configure(complete)
+      error = assert_raises(ArgumentError) { typed_stream(creation: creation, output_type: false) }
+      assert_equal("output_type must be an OpenAI::BaseModel subclass", error.message)
+      assert_empty(@server.requests)
+    end
+  end
+
+  def test_nil_output_type_keeps_results_untyped
+    [true, false].each do |creation|
+      configure(complete)
+      result = typed_stream(creation: creation, output_type: nil).get_final_result
+      assert_instance_of(OpenAI::Helpers::Beta::Agents::TurnResult, result)
+      assert_nil(result.output_parsed)
+    end
+  end
+
+  def test_type_validation_precedes_network_and_rejects_conflicting_schema
+    configure(complete)
+    assert_raises(ArgumentError) { typed_stream(creation: true, output_type: String) }
+    assert_empty(@server.requests)
+    assert_raises(ArgumentError) do
+      @sessions.create_streaming(
+        agent: {model: "test-model", text: {format: {type: :text}}},
+        environment: {type: :none},
+        input: "Report",
+        output_type: Report
+      )
+    end
+
+    assert_empty(@server.requests)
+  end
+
+  def test_raw_iteration_keeps_collection_opt_in_for_typed_streams
+    configure([turn("created"), answer_event(report_json), turn("completed"), idle])
+    subject = typed_stream(creation: true)
+    subject.each { |_event| nil }
+    assert_empty(subject.instance_variable_get(:@collector).instance_variable_get(:@messages))
+    assert_raises(ArgumentError) { subject.get_final_result }
+  end
+end

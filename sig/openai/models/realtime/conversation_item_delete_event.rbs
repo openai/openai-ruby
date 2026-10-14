@@ -2,17 +2,31 @@ module OpenAI
   module Models
     module Realtime
       type conversation_item_delete_event =
-        { item_id: String, type: :"conversation.item.delete", event_id: String }
+        {
+          item_id: String,
+          ?type: :"conversation.item.delete",
+          ?event_id: String
+        }
 
       class ConversationItemDeleteEvent < OpenAI::Internal::Type::BaseModel
+        # The ID of the item to delete.
         attr_accessor item_id: String
 
+        # The event type, must be `conversation.item.delete`.
         attr_accessor type: :"conversation.item.delete"
 
+        # Optional client-generated ID used to identify this event.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event.
         def event_id=: (String) -> String
 
+        # @param item_id
+        #   The ID of the item to delete.
+        # @param event_id
+        #   Optional client-generated ID used to identify this event.
+        # @param type
+        #   The event type, must be `conversation.item.delete`.
         def initialize: (
           item_id: String,
           ?event_id: String,
@@ -21,8 +35,8 @@ module OpenAI
 
         def to_hash: -> {
           item_id: String,
-          type: :"conversation.item.delete",
-          event_id: String
+          ?type: :"conversation.item.delete",
+          ?event_id: String
         }
       end
     end

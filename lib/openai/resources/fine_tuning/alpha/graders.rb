@@ -6,18 +6,25 @@ module OpenAI
       class Alpha
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         class Graders
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::FineTuning::Alpha::GraderRunParams} for more details.
-          #
           # Run a grader.
           #
           # @overload run(grader:, model_sample:, item: nil, request_options: {})
           #
-          # @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
+          # @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader]
+          #   The grader used for the fine-tuning job.
           #
-          # @param model_sample [String] The model sample to be evaluated. This value will be used to populate
+          # @param model_sample [String]
+          #   The model sample to be evaluated. This value will be used to populate the
+          #   `sample` namespace. See
+          #   [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          #   details. The `output_json` variable will be populated if the model sample is a
+          #   valid JSON string.
           #
-          # @param item [Object] The dataset item provided to the grader. This will be used to populate
+          # @param item [Object]
+          #   The dataset item provided to the grader. This will be used to populate the
+          #   `item` namespace. See
+          #   [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          #   details.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -40,7 +47,8 @@ module OpenAI
           #
           # @overload validate(grader:, request_options: {})
           #
-          # @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
+          # @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader]
+          #   The grader used for the fine-tuning job.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

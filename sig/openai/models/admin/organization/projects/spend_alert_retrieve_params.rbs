@@ -4,8 +4,11 @@ module OpenAI
       module Organization
         module Projects
           type spend_alert_retrieve_params =
-            { project_id: String, alert_id: String }
-            & OpenAI::Internal::Type::request_parameters
+            {
+              project_id: String,
+              alert_id: String,
+              ?request_options: OpenAI::request_opts
+            }
 
           class SpendAlertRetrieveParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -24,7 +27,7 @@ module OpenAI
             def to_hash: -> {
               project_id: String,
               alert_id: String,
-              request_options: OpenAI::RequestOptions
+              ?request_options: OpenAI::RequestOptions
             }
           end
         end

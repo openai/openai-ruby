@@ -2,14 +2,19 @@
 
 module OpenAI
   module Models
+
     SkillVersion = Skills::SkillVersion
 
     module Skills
+
       class SkillVersion < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Skills::SkillVersion, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Skills::SkillVersion,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Unique identifier for the skill version.
         sig { returns(String) }
@@ -41,29 +46,45 @@ module OpenAI
 
         sig do
           params(
+
             id: String,
+
             created_at: Integer,
+
             description: String,
+
             name: String,
+
             skill_id: String,
+
             version: String,
+
             object: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Unique identifier for the skill version.
           id:,
+
           # Unix timestamp (seconds) for when the version was created.
           created_at:,
+
           # Description of the skill version.
           description:,
+
           # Name of the skill version.
           name:,
+
           # Identifier of the skill for this version.
           skill_id:,
+
           # Version number for this skill.
           version:,
+
           # The object type, which is `skill.version`.
+
           object: :"skill.version"
         )
         end
@@ -83,7 +104,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

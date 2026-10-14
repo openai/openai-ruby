@@ -19,9 +19,11 @@ module OpenAI
         # @!method initialize(event_id:, type: :"session.closed")
         #   Returned when a realtime translation session is closed.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param type [Symbol, :"session.closed"] The event type, must be `session.closed`.
+        #   @param type [Symbol, :"session.closed"]
+        #     The event type, must be `session.closed`.
       end
     end
   end

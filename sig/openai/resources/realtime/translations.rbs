@@ -1,0 +1,11 @@
+module OpenAI
+  module Resources
+    class Realtime
+      class Translations
+        attr_reader client_secrets: OpenAI::Resources::Realtime::Translations::ClientSecrets
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

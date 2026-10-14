@@ -35,15 +35,20 @@ module OpenAI
         optional :skills, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaContainerAuto::Skill] }
 
         # @!method initialize(file_ids: nil, memory_limit: nil, network_policy: nil, skills: nil, type: :container_auto)
-        #   @param file_ids [Array<String>] An optional list of uploaded files to make available to your code.
+        #   @param file_ids [Array<String>]
+        #     An optional list of uploaded files to make available to your code.
         #
-        #   @param memory_limit [Symbol, OpenAI::Models::Beta::BetaContainerAuto::MemoryLimit, nil] The memory limit for the container.
+        #   @param memory_limit [Symbol, OpenAI::Models::Beta::BetaContainerAuto::MemoryLimit, nil]
+        #     The memory limit for the container.
         #
-        #   @param network_policy [OpenAI::Models::Beta::BetaContainerNetworkPolicyDisabled, OpenAI::Models::Beta::BetaContainerNetworkPolicyAllowlist] Network access policy for the container.
+        #   @param network_policy [OpenAI::Models::Beta::BetaContainerNetworkPolicyDisabled, OpenAI::Models::Beta::BetaContainerNetworkPolicyAllowlist]
+        #     Network access policy for the container.
         #
-        #   @param skills [Array<OpenAI::Models::Beta::BetaSkillReference, OpenAI::Models::Beta::BetaInlineSkill>] An optional list of skills referenced by id or inline data.
+        #   @param skills [Array<OpenAI::Models::Beta::BetaSkillReference, OpenAI::Models::Beta::BetaInlineSkill>]
+        #     An optional list of skills referenced by id or inline data.
         #
-        #   @param type [Symbol, :container_auto] Automatically creates a container for this request
+        #   @param type [Symbol, :container_auto]
+        #     Automatically creates a container for this request
 
         # The memory limit for the container.
         #

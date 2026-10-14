@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../helpers/streaming/response_event_decoder"
+
 module OpenAI
   module Internal
     # @generic Elem
@@ -15,9 +17,9 @@ module OpenAI
       #
       # @return [Enumerable<generic<Elem>>]
       private def iterator
-        # rubocop:disable Metrics/BlockLength
         @iterator ||= OpenAI::Internal::Util.chain_fused(@stream) do |y|
           consume = false
+          decoder = OpenAI::Helpers::Streaming::ResponseEventDecoder.new(model: @model)
 
           @stream.each do |msg|
             next if consume
@@ -29,19 +31,19 @@ module OpenAI
             in {data: String => data}
               case JSON.parse(data, symbolize_names: true)
               in {error: error}
-                message =
-                  case error
-                  in String
-                    error
-                  in {message: String => m}
-                    m
-                  else
-                    "An error occurred during streaming"
-                  end
+                message = case error
+                in String
+                  error
+                in {message: String => m}
+                  m
+                else
+                  "An error occurred during streaming"
+                end
+
                 err = OpenAI::Errors::APIStatusError.for(
                   url: @url,
-                  status: @status,
-                  headers: @headers,
+                  status: status,
+                  headers: headers,
                   body: data,
                   request: nil,
                   response: @response,
@@ -50,13 +52,15 @@ module OpenAI
                 raise err
               in decoded
                 unwrapped = OpenAI::Internal::Util.dig(decoded, @unwrap)
-                y << OpenAI::Internal::Type::Converter.coerce(@model, unwrapped)
+                # Some providers emit transport heartbeats as JSON events. They are not
+                # part of the API's typed streaming event surface.
+                next if unwrapped in {type: "keepalive"}
+                y << decoder.decode(unwrapped)
               end
             else
             end
           end
         end
-        # rubocop:enable Metrics/BlockLength
       end
     end
   end

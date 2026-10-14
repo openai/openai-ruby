@@ -37,15 +37,20 @@ module OpenAI
         # @!method initialize(input:, item_id:, output_index:, sequence_number:, type: :"response.custom_tool_call_input.done")
         #   Event indicating that input for a custom tool call is complete.
         #
-        #   @param input [String] The complete input data for the custom tool call.
+        #   @param input [String]
+        #     The complete input data for the custom tool call.
         #
-        #   @param item_id [String] Unique identifier for the API item associated with this event.
+        #   @param item_id [String]
+        #     Unique identifier for the API item associated with this event.
         #
-        #   @param output_index [Integer] The index of the output this event applies to.
+        #   @param output_index [Integer]
+        #     The index of the output this event applies to.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param type [Symbol, :"response.custom_tool_call_input.done"] The event type identifier.
+        #   @param type [Symbol, :"response.custom_tool_call_input.done"]
+        #     The event type identifier.
       end
     end
   end

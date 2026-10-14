@@ -1,0 +1,134 @@
+# frozen_string_literal: true
+
+module OpenAI
+  module Models
+    module Beta
+      # @see OpenAI::Resources::Beta::Agents#create
+      class AgentCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        # @!attribute model
+        #   The model to use for the agent. The requested model name is preserved.
+        #
+        #   @return [String]
+        required :model, String
+
+        # @!attribute instructions
+        #   Additional instructions appended to the agent's default base instructions. Omit
+        #   or set to null to add no custom instructions.
+        #
+        #   @return [String, nil]
+        optional :instructions, String, nil?: true
+
+        # @!attribute metadata
+        #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+        #   characters. Omission or null defaults to an empty map.
+        #
+        #   @return [Hash{Symbol=>String}, nil]
+        optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
+
+        # @!attribute multi_agent
+        #   Configuration for creating and coordinating subagents. Subagent tools are
+        #   disabled by default.
+        #
+        #   @return [OpenAI::Models::Beta::MultiAgentConfigParam, nil]
+        optional :multi_agent, -> { OpenAI::Beta::MultiAgentConfigParam }, nil?: true
+
+        # @!attribute name
+        #   A human-readable name for the agent. Omission or null leaves the agent unnamed.
+        #
+        #   @return [String, nil]
+        optional :name, String, nil?: true
+
+        # @!attribute reasoning
+        #   Configuration for model reasoning. Omission uses the model's default effort.
+        #
+        #   @return [OpenAI::Models::Beta::AgentReasoningParam, nil]
+        optional :reasoning, -> { OpenAI::Beta::AgentReasoningParam }, nil?: true
+
+        # @!attribute service_tier
+        #   The service tier used for model requests. Defaults to `auto`.
+        #
+        #   @return [Symbol, OpenAI::Models::Beta::AgentCreateParams::ServiceTier, nil]
+        optional :service_tier, enum: -> { OpenAI::Beta::AgentCreateParams::ServiceTier }, nil?: true
+
+        # @!attribute text
+        #   Configuration for generated text. Defaults to the `text` format and medium
+        #   verbosity.
+        #
+        #   @return [OpenAI::Models::Beta::AgentTextParam, nil]
+        optional :text, -> { OpenAI::Beta::AgentTextParam }, nil?: true
+
+        # @!attribute tools
+        #   Tools available to the agent. Defaults to an empty list. The tool list must fit
+        #   within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
+        #
+        #   @return [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
+        optional(
+          :tools,
+          -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::PersistedAgentToolParam] },
+          nil?: true
+        )
+
+        # @!method initialize(model:, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
+        #   @param model [String]
+        #     The model to use for the agent. The requested model name is preserved.
+        #
+        #   @param instructions [String, nil]
+        #     Additional instructions appended to the agent's default base instructions. Omit
+        #     or set to null to add no custom instructions.
+        #
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #     Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+        #     characters. Omission or null defaults to an empty map.
+        #
+        #   @param multi_agent [OpenAI::Models::Beta::MultiAgentConfigParam, nil]
+        #     Configuration for creating and coordinating subagents. Subagent tools are
+        #     disabled by default.
+        #
+        #   @param name [String, nil]
+        #     A human-readable name for the agent. Omission or null leaves the agent unnamed.
+        #
+        #   @param reasoning [OpenAI::Models::Beta::AgentReasoningParam, nil]
+        #     Configuration for model reasoning. Omission uses the model's default effort.
+        #
+        #   @param service_tier [Symbol, OpenAI::Models::Beta::AgentCreateParams::ServiceTier, nil]
+        #     The service tier used for model requests. Defaults to `auto`.
+        #
+        #   @param text [OpenAI::Models::Beta::AgentTextParam, nil]
+        #     Configuration for generated text. Defaults to the `text` format and medium
+        #     verbosity.
+        #
+        #   @param tools [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
+        #     Tools available to the agent. Defaults to an empty list. The tool list must fit
+        #     within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
+        #
+        #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+
+        # The service tier used for model requests. Defaults to `auto`.
+        module ServiceTier
+          extend OpenAI::Internal::Type::Enum
+
+          # Selects the service tier automatically.
+          AUTO = :auto
+
+          # Uses the default service tier.
+          DEFAULT = :default
+
+          # Uses the flex service tier.
+          FLEX = :flex
+
+          # Uses the priority service tier.
+          PRIORITY = :priority
+
+          # Uses the fast service tier.
+          FAST = :fast
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+      end
+    end
+  end
+end

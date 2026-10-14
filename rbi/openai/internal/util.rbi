@@ -112,7 +112,8 @@ module OpenAI
             values: T::Array[T.anything],
             sentinel: T.nilable(T.anything),
             concat: T::Boolean
-          ).returns(T.anything)
+          )
+            .returns(T.anything)
         end
         def deep_merge(
           *values,
@@ -126,23 +127,22 @@ module OpenAI
         # @api private
         sig do
           params(
-            data:
+            data: T.any(
+              OpenAI::Internal::AnyHash,
+              T::Array[T.anything],
+              T.anything
+            ),
+            pick: T.nilable(
               T.any(
-                OpenAI::Internal::AnyHash,
-                T::Array[T.anything],
-                T.anything
-              ),
-            pick:
-              T.nilable(
-                T.any(
-                  Symbol,
-                  Integer,
-                  T::Array[T.any(Symbol, Integer)],
-                  T.proc.params(arg0: T.anything).returns(T.anything)
-                )
-              ),
+                Symbol,
+                Integer,
+                T::Array[T.any(Symbol, Integer)],
+                T.proc.params(arg0: T.anything).returns(T.anything)
+              )
+            ),
             blk: T.nilable(T.proc.returns(T.anything))
-          ).returns(T.nilable(T.anything))
+          )
+            .returns(T.nilable(T.anything))
         end
         def dig(data, pick, &blk)
         end
@@ -181,26 +181,25 @@ module OpenAI
         # @api private
         sig do
           params(
-            query:
-              T.nilable(
-                T::Hash[String, T.nilable(T.any(T::Array[String], String))]
-              )
-          ).returns(T.nilable(String))
+            query: T.nilable(
+              T::Hash[String, T.nilable(T.any(T::Array[String], String))]
+            )
+          )
+            .returns(T.nilable(String))
         end
         def encode_query(query)
         end
       end
 
-      ParsedUri =
-        T.type_alias do
-          {
-            scheme: T.nilable(String),
-            host: T.nilable(String),
-            port: T.nilable(Integer),
-            path: T.nilable(String),
-            query: T::Hash[String, T::Array[String]]
-          }
-        end
+      ParsedUri = T.type_alias do
+        {
+          scheme: T.nilable(String),
+          host: T.nilable(String),
+          port: T.nilable(Integer),
+          path: T.nilable(String),
+          query: T::Hash[String, T::Array[String]]
+        }
+      end
 
       class << self
         # @api private
@@ -226,7 +225,8 @@ module OpenAI
           params(
             lhs: OpenAI::Internal::Util::ParsedUri,
             rhs: OpenAI::Internal::Util::ParsedUri
-          ).returns(URI::Generic)
+          )
+            .returns(URI::Generic)
         end
         def join_parsed_uri(lhs, rhs)
         end
@@ -236,60 +236,20 @@ module OpenAI
         # @api private
         sig do
           params(
-            headers:
-              T::Hash[
-                String,
-                T.nilable(
-                  T.any(
-                    String,
-                    Integer,
-                    T::Array[T.nilable(T.any(String, Integer))]
-                  )
+            headers: T::Hash[
+              String,
+              T.nilable(
+                T.any(
+                  String,
+                  Integer,
+                  T::Array[T.nilable(T.any(String, Integer))]
                 )
-              ]
-          ).returns(T::Hash[String, String])
+              )
+            ]
+          )
+            .returns(T::Hash[String, String])
         end
         def normalized_headers(*headers)
-        end
-      end
-
-      # @api private
-      #
-      # An adapter that satisfies the IO interface required by `::IO.copy_stream`
-      class ReadIOAdapter
-        # @api private
-        sig { returns(T.nilable(T::Boolean)) }
-        def close?
-        end
-
-        # @api private
-        sig { void }
-        def close
-        end
-
-        # @api private
-        sig { params(max_len: T.nilable(Integer)).returns(String) }
-        private def read_enum(max_len)
-        end
-
-        # @api private
-        sig do
-          params(
-            max_len: T.nilable(Integer),
-            out_string: T.nilable(String)
-          ).returns(T.nilable(String))
-        end
-        def read(max_len = nil, out_string = nil)
-        end
-
-        # @api private
-        sig do
-          params(
-            src: T.any(String, Pathname, StringIO, T::Enumerable[String]),
-            blk: T.proc.params(arg0: String).void
-          ).returns(T.attached_class)
-        end
-        def self.new(src, &blk)
         end
       end
 
@@ -303,10 +263,12 @@ module OpenAI
         end
       end
 
-      JSON_CONTENT =
-        T.let(%r{^application/(?:[a-zA-Z0-9.-]+\+)?json(?!l)}, Regexp)
-      JSONL_CONTENT =
-        T.let(%r{^application/(:?x-(?:n|l)djson)|(:?(?:x-)?jsonl)}, Regexp)
+      JSON_CONTENT = T.let(%r{\Aapplication/(?:[a-z0-9.-]+\+)?json[ \t]*(?:;|\z)}i, Regexp)
+      JSONL_CONTENT = T.let(
+        %r{\Aapplication/(?:x-[nl]djson|(?:x-)?jsonl)[ \t]*(?:;|\z)}i,
+        Regexp
+      )
+      MULTIPART_CONTENT = T.let(%r{\Amultipart/form-data[ \t]*(?:;|\z)}i, Regexp)
 
       class << self
         # @api private
@@ -324,7 +286,8 @@ module OpenAI
             collection: OpenAI::Internal::AnyHash,
             key: String,
             element: T.anything
-          ).void
+          )
+            .void
         end
         private def write_query_param_element!(collection, key, element)
         end
@@ -336,7 +299,8 @@ module OpenAI
             val: T.anything,
             closing: T::Array[T.proc.void],
             content_type: T.nilable(String)
-          ).void
+          )
+            .void
         end
         private def write_multipart_content(
           y,
@@ -347,6 +311,11 @@ module OpenAI
         end
 
         # @api private
+        sig { params(value: T.any(Pathname, String, Symbol)).returns(String) }
+        private def escape_multipart_header_param(value)
+        end
+
+        # @api private
         sig do
           params(
             y: Enumerator::Yielder,
@@ -354,9 +323,24 @@ module OpenAI
             key: T.any(Symbol, String),
             val: T.anything,
             closing: T::Array[T.proc.void]
-          ).void
+          )
+            .void
         end
         private def write_multipart_chunk(y, boundary:, key:, val:, closing:)
+        end
+
+        # @api private
+        sig do
+          params(
+            y: Enumerator::Yielder,
+            boundary: String,
+            key: T.any(Symbol, String),
+            val: T.anything,
+            closing: T::Array[T.proc.void]
+          )
+            .void
+        end
+        private def write_multipart_value(y, boundary:, key:, val:, closing:)
         end
 
         # @api private
@@ -391,10 +375,12 @@ module OpenAI
           params(
             headers: T::Hash[String, String],
             stream: T::Enumerable[String],
-            suppress_error: T::Boolean
-          ).returns(T.anything)
+            suppress_error: T::Boolean,
+            body_observer: T.nilable(T.proc.params(body: String).void)
+          )
+            .returns(T.anything)
         end
-        def decode_content(headers, stream:, suppress_error: false)
+        def decode_content(headers, stream:, suppress_error: false, &body_observer)
         end
       end
 
@@ -407,7 +393,8 @@ module OpenAI
             enum: T::Enumerable[T.anything],
             external: T::Boolean,
             close: T.proc.void
-          ).returns(T::Enumerable[T.anything])
+          )
+            .returns(T::Enumerable[T.anything])
         end
         def fused_enum(enum, external: false, &close)
         end
@@ -422,21 +409,21 @@ module OpenAI
           params(
             enum: T.nilable(T::Enumerable[T.anything]),
             blk: T.proc.params(arg0: Enumerator::Yielder).void
-          ).returns(T::Enumerable[T.anything])
+          )
+            .returns(T::Enumerable[T.anything])
         end
         def chain_fused(enum, &blk)
         end
       end
 
-      ServerSentEvent =
-        T.type_alias do
-          {
-            event: T.nilable(String),
-            data: T.nilable(String),
-            id: T.nilable(String),
-            retry: T.nilable(Integer)
-          }
-        end
+      ServerSentEvent = T.type_alias do
+        {
+          event: T.nilable(String),
+          data: T.nilable(String),
+          id: T.nilable(String),
+          retry: T.nilable(Integer)
+        }
+      end
 
       class << self
         # @api private
@@ -499,9 +486,9 @@ module OpenAI
           # @api private
           sig do
             params(
-              type:
-                T.any(OpenAI::Internal::Util::SorbetRuntimeSupport, T.anything)
-            ).returns(T.anything)
+              type: T.any(OpenAI::Internal::Util::SorbetRuntimeSupport, T.anything)
+            )
+              .returns(T.anything)
           end
           def to_sorbet_type(type)
           end

@@ -2,27 +2,24 @@
 
 module OpenAI
   module Models
+
     ChatCompletionNamedToolChoice = Chat::ChatCompletionNamedToolChoice
 
     module Chat
+
       class ChatCompletionNamedToolChoice < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Chat::ChatCompletionNamedToolChoice,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Chat::ChatCompletionNamedToolChoice,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(OpenAI::Chat::ChatCompletionNamedToolChoice::Function) }
         attr_reader :function
 
-        sig do
-          params(
-            function:
-              OpenAI::Chat::ChatCompletionNamedToolChoice::Function::OrHash
-          ).void
-        end
+        sig { params(function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function::OrHash).void }
         attr_writer :function
 
         # For function calling, the type is always `function`.
@@ -33,54 +30,71 @@ module OpenAI
         # function.
         sig do
           params(
-            function:
-              OpenAI::Chat::ChatCompletionNamedToolChoice::Function::OrHash,
+
+            function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function::OrHash,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           function:,
+
           # For function calling, the type is always `function`.
+
           type: :function
         )
         end
 
         sig do
           override.returns(
-            {
-              function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
-              type: Symbol
-            }
+            {function: OpenAI::Chat::ChatCompletionNamedToolChoice::Function, type: Symbol}
           )
         end
         def to_hash
         end
 
         class Function < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Chat::ChatCompletionNamedToolChoice::Function,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The name of the function to call.
           sig { returns(String) }
           attr_accessor :name
 
-          sig { params(name: String).returns(T.attached_class) }
+          sig do
+            params(
+
+              name: String
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The name of the function to call.
+
             name:
           )
           end
 
-          sig { override.returns({ name: String }) }
+          sig do
+            override.returns(
+              {name: String}
+            )
+          end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

@@ -1,0 +1,238 @@
+# typed: strong
+
+module OpenAI
+  module Resources
+
+    class Beta
+
+      class Agents
+
+        class Sessions
+
+          sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Subagents) }
+          attr_reader :subagents
+
+          sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Artifacts) }
+          attr_reader :artifacts
+
+          sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Items) }
+          attr_reader :items
+
+          sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Events) }
+          attr_reader :events
+
+          sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Traces) }
+          attr_reader :traces
+
+          sig { returns(OpenAI::Resources::Beta::Agents::Sessions::Turns) }
+          attr_reader :turns
+
+          # See {OpenAI::Resources::Beta::Agents::Sessions#create_streaming} for streaming
+          # counterpart.
+          #
+          # Creates a managed agent session, optionally submits initial input, and returns
+          # the session or streams its events when stream is true. See
+          # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
+          sig {
+            params(
+              environment: T.any(
+                OpenAI::Beta::EnvironmentParam::None::OrHash,
+                OpenAI::Beta::EnvironmentParam::OpenAIHosted::OrHash,
+                OpenAI::Beta::EnvironmentParam::SelfHosted::OrHash
+              ),
+              agent: OpenAI::Beta::Agents::SessionCreateParams::Agent::OrHash,
+              agent_id: String,
+              input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
+              vault_ids: T.nilable(T::Array[String]),
+              stream: T.noreturn,
+              request_options: OpenAI::RequestOptions::OrHash
+            )
+              .returns(OpenAI::Beta::AgentSession)
+          }
+          def create(
+            # An inline execution environment or a reference to an environment template.
+            environment:,
+            # Agent configuration. With `agent_id`, supplied fields override the saved agent
+            # for this session. Without `agent_id`, `model` is required.
+            agent: nil,
+            # The ID of a saved reusable agent. Omit `agent` to use its configuration
+            # unchanged.
+            agent_id: nil,
+            # Initial input to submit when the session is created. A string is shorthand for a
+            # single user message. Required when `environment.type` is `none`, or when
+            # `stream` is `true` for an environment that is not `self_hosted`; optional for
+            # self-hosted and non-streaming execution environments.
+            input: nil,
+            # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+            # characters. Omission or null defaults to an empty map.
+            metadata: nil,
+            # Optional spending limit in USD cents. Omission or null creates an unlimited
+            # session.
+            spend_control: nil,
+            # The IDs of vaults made available to the session.
+            vault_ids: nil,
+            # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+            # `#create` for streaming and non-streaming use cases, respectively.
+            stream: false,
+            request_options: {}
+          )
+          end
+
+          # See {OpenAI::Resources::Beta::Agents::Sessions#create} for non-streaming
+          # counterpart.
+          #
+          # Creates a managed agent session, optionally submits initial input, and returns
+          # the session or streams its events when stream is true. See
+          # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
+          sig {
+            params(
+              environment: T.any(
+                OpenAI::Beta::EnvironmentParam::None::OrHash,
+                OpenAI::Beta::EnvironmentParam::OpenAIHosted::OrHash,
+                OpenAI::Beta::EnvironmentParam::SelfHosted::OrHash
+              ),
+              agent: OpenAI::Beta::Agents::SessionCreateParams::Agent::OrHash,
+              agent_id: String,
+              tool_handlers: T::Hash[String, OpenAI::Helpers::Agents::ToolHandler],
+              output_type: T.nilable(T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)),
+              input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
+              vault_ids: T.nilable(T::Array[String]),
+              stream: T.noreturn,
+              request_options: OpenAI::RequestOptions::OrHash
+            )
+              .returns(OpenAI::Helpers::Beta::Agents::CreationStream)
+          }
+          def create_streaming(
+            # An inline execution environment or a reference to an environment template.
+            environment:,
+            # Agent configuration. With `agent_id`, supplied fields override the saved agent
+            # for this session. Without `agent_id`, `model` is required.
+            agent: nil,
+            # The ID of a saved reusable agent. Omit `agent` to use its configuration
+            # unchanged.
+            agent_id: nil,
+            tool_handlers: {},
+            output_type: nil,
+            # Initial input to submit when the session is created. A string is shorthand for a
+            # single user message. Required when `environment.type` is `none`, or when
+            # `stream` is `true` for an environment that is not `self_hosted`; optional for
+            # self-hosted and non-streaming execution environments.
+            input: nil,
+            # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+            # characters. Omission or null defaults to an empty map.
+            metadata: nil,
+            # Optional spending limit in USD cents. Omission or null creates an unlimited
+            # session.
+            spend_control: nil,
+            # The IDs of vaults made available to the session.
+            vault_ids: nil,
+            # There is no need to provide `stream:`. Instead, use `#create_streaming` or
+            # `#create` for streaming and non-streaming use cases, respectively.
+            stream: true,
+            request_options: {}
+          )
+          end
+
+          # Retrieves the current state of a managed agent session. See
+          # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
+          sig {
+            params(session_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::AgentSession
+            )
+          }
+          def retrieve(
+            # The ID of the session.
+            session_id,
+            request_options: {}
+          )
+          end
+
+          # Updates session metadata, model, reasoning effort, or service tier. Model
+          # settings apply to subsequent turns. Omitted fields are unchanged. See
+          # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
+          sig {
+            params(
+              session_id: String,
+              agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent::OrHash,
+              metadata: T.nilable(T::Hash[Symbol, String]),
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
+              request_options: OpenAI::RequestOptions::OrHash
+            )
+              .returns(OpenAI::Beta::AgentSession)
+          }
+          def update(
+            # The ID of the session.
+            session_id,
+            # Model settings for subsequent turns. Omitted fields stay unchanged.
+            agent: nil,
+            # Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
+            # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+            # characters.
+            metadata: nil,
+            # Omit to retain the limit; null or a null limit removes it without resetting
+            # spend.
+            spend_control: nil,
+            request_options: {}
+          )
+          end
+
+          # Lists managed agent sessions using ID-based pagination and the requested sort
+          # order. See
+          # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
+          sig {
+            params(
+              after: String,
+              agent_id: String,
+              limit: Integer,
+              order: OpenAI::Beta::Agents::SessionListParams::Order::OrSymbol,
+              request_options: OpenAI::RequestOptions::OrHash
+            )
+              .returns(OpenAI::Internal::CursorPage[OpenAI::Beta::AgentSession])
+          }
+          def list(
+            # Return resources after this resource ID in the selected order.
+            after: nil,
+            # Only return sessions whose root agent has this ID. Omit to return sessions for
+            # all agents.
+            agent_id: nil,
+            # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+            limit: nil,
+            # The order in which resources are returned. Defaults to `desc`.
+            order: nil,
+            request_options: {}
+          )
+          end
+
+          # Removes a managed agent session from the public API and returns a deletion
+          # confirmation. If backend execution has ended, deletion can cancel a still-open
+          # public turn and abandon unpublished outputs. Running execution must be cancelled
+          # first. Physical cleanup may continue asynchronously. See
+          # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
+          sig {
+            params(session_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Beta::AgentSessionDeleted
+            )
+          }
+          def delete(
+            # The ID of the session.
+            session_id,
+            request_options: {}
+          )
+          end
+
+          # @api private
+          sig { params(client: OpenAI::Client).returns(T.attached_class) }
+          def self.new(client:)
+          end
+        end
+
+      end
+
+    end
+
+  end
+end

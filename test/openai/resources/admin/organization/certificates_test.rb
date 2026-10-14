@@ -12,13 +12,13 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
 
     assert_pattern do
       response => {
-        id: String,
-        certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: OpenAI::Admin::Organization::Certificate::Object,
-        active: OpenAI::Internal::Type::Boolean | nil
-      }
+          id: String,
+          certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: OpenAI::Admin::Organization::Certificate::Object,
+          active: OpenAI::Internal::Type::Boolean | nil
+        }
     end
   end
 
@@ -31,13 +31,13 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
 
     assert_pattern do
       response => {
-        id: String,
-        certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: OpenAI::Admin::Organization::Certificate::Object,
-        active: OpenAI::Internal::Type::Boolean | nil
-      }
+          id: String,
+          certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: OpenAI::Admin::Organization::Certificate::Object,
+          active: OpenAI::Internal::Type::Boolean | nil
+        }
     end
   end
 
@@ -50,13 +50,13 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
 
     assert_pattern do
       response => {
-        id: String,
-        certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: OpenAI::Admin::Organization::Certificate::Object,
-        active: OpenAI::Internal::Type::Boolean | nil
-      }
+          id: String,
+          certificate_details: OpenAI::Admin::Organization::Certificate::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: OpenAI::Admin::Organization::Certificate::Object,
+          active: OpenAI::Internal::Type::Boolean | nil
+        }
     end
   end
 
@@ -67,7 +67,8 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
       response => OpenAI::Internal::ConversationCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -76,13 +77,13 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
 
     assert_pattern do
       row => {
-        id: String,
-        active: OpenAI::Internal::Type::Boolean,
-        certificate_details: OpenAI::Models::Admin::Organization::CertificateListResponse::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: Symbol
-      }
+          id: String,
+          active: OpenAI::Internal::Type::Boolean,
+          certificate_details: OpenAI::Models::Admin::Organization::CertificateListResponse::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -95,9 +96,9 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
 
     assert_pattern do
       response => {
-        id: String,
-        object: Symbol
-      }
+          id: String,
+          object: Symbol
+        }
     end
   end
 
@@ -108,7 +109,8 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
       response => OpenAI::Internal::Page
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -117,13 +119,13 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
 
     assert_pattern do
       row => {
-        id: String,
-        active: OpenAI::Internal::Type::Boolean,
-        certificate_details: OpenAI::Models::Admin::Organization::CertificateActivateResponse::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: Symbol
-      }
+          id: String,
+          active: OpenAI::Internal::Type::Boolean,
+          certificate_details: OpenAI::Models::Admin::Organization::CertificateActivateResponse::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -134,7 +136,8 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
       response => OpenAI::Internal::Page
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -143,13 +146,13 @@ class OpenAI::Test::Resources::Admin::Organization::CertificatesTest < OpenAI::T
 
     assert_pattern do
       row => {
-        id: String,
-        active: OpenAI::Internal::Type::Boolean,
-        certificate_details: OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails,
-        created_at: Integer,
-        name: String | nil,
-        object: Symbol
-      }
+          id: String,
+          active: OpenAI::Internal::Type::Boolean,
+          certificate_details: OpenAI::Models::Admin::Organization::CertificateDeactivateResponse::CertificateDetails,
+          created_at: Integer,
+          name: String | nil,
+          object: Symbol
+        }
     end
   end
 end

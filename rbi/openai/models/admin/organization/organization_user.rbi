@@ -2,18 +2,21 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       OrganizationUser = Organization::OrganizationUser
 
       module Organization
+
         class OrganizationUser < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Admin::Organization::OrganizationUser,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Admin::Organization::OrganizationUser,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The identifier, which can be referenced in API endpoints
           sig { returns(String) }
@@ -76,21 +79,10 @@ module OpenAI
           attr_accessor :name
 
           # Projects associated with the user, if included.
-          sig do
-            returns(
-              T.nilable(OpenAI::Admin::Organization::OrganizationUser::Projects)
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Admin::Organization::OrganizationUser::Projects)) }
           attr_reader :projects
 
-          sig do
-            params(
-              projects:
-                T.nilable(
-                  OpenAI::Admin::Organization::OrganizationUser::Projects::OrHash
-                )
-            ).void
-          end
+          sig { params(projects: T.nilable(OpenAI::Admin::Organization::OrganizationUser::Projects::OrHash)).void }
           attr_writer :projects
 
           # `owner` or `reader`
@@ -102,76 +94,99 @@ module OpenAI
           attr_accessor :technical_level
 
           # Nested user details.
-          sig do
-            returns(
-              T.nilable(OpenAI::Admin::Organization::OrganizationUser::User)
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Admin::Organization::OrganizationUser::User)) }
           attr_reader :user
 
-          sig do
-            params(
-              user: OpenAI::Admin::Organization::OrganizationUser::User::OrHash
-            ).void
-          end
+          sig { params(user: OpenAI::Admin::Organization::OrganizationUser::User::OrHash).void }
           attr_writer :user
 
           # Represents an individual `user` within an organization.
           sig do
             params(
+
               id: String,
+
               added_at: Integer,
+
               api_key_last_used_at: T.nilable(Integer),
+
               created: Integer,
+
               developer_persona: T.nilable(String),
+
               email: T.nilable(String),
+
               is_default: T::Boolean,
+
               is_scale_tier_authorized_purchaser: T.nilable(T::Boolean),
+
               is_scim_managed: T::Boolean,
+
               is_service_account: T::Boolean,
+
               name: T.nilable(String),
-              projects:
-                T.nilable(
-                  OpenAI::Admin::Organization::OrganizationUser::Projects::OrHash
-                ),
+
+              projects: T.nilable(OpenAI::Admin::Organization::OrganizationUser::Projects::OrHash),
+
               role: T.nilable(String),
+
               technical_level: T.nilable(String),
+
               user: OpenAI::Admin::Organization::OrganizationUser::User::OrHash,
+
               object: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The identifier, which can be referenced in API endpoints
             id:,
+
             # The Unix timestamp (in seconds) of when the user was added.
             added_at:,
+
             # The Unix timestamp (in seconds) of the user's last API key usage.
             api_key_last_used_at: nil,
+
             # The Unix timestamp (in seconds) of when the user was created.
             created: nil,
+
             # The developer persona metadata for the user.
             developer_persona: nil,
+
             # The email address of the user
             email: nil,
+
             # Whether this is the organization's default user.
             is_default: nil,
+
             # Whether the user is an authorized purchaser for Scale Tier.
             is_scale_tier_authorized_purchaser: nil,
+
             # Whether the user is managed through SCIM.
             is_scim_managed: nil,
+
             # Whether the user is a service account.
             is_service_account: nil,
+
             # The name of the user
             name: nil,
+
             # Projects associated with the user, if included.
             projects: nil,
+
             # `owner` or `reader`
             role: nil,
+
             # The technical level metadata for the user.
             technical_level: nil,
+
             # Nested user details.
             user: nil,
+
             # The object type, which is always `organization.user`
+
             object: :"organization.user"
           )
           end
@@ -191,10 +206,7 @@ module OpenAI
                 is_scim_managed: T::Boolean,
                 is_service_account: T::Boolean,
                 name: T.nilable(String),
-                projects:
-                  T.nilable(
-                    OpenAI::Admin::Organization::OrganizationUser::Projects
-                  ),
+                projects: T.nilable(OpenAI::Admin::Organization::OrganizationUser::Projects),
                 role: T.nilable(String),
                 technical_level: T.nilable(String),
                 user: OpenAI::Admin::Organization::OrganizationUser::User
@@ -205,21 +217,14 @@ module OpenAI
           end
 
           class Projects < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::OrganizationUser::Projects,
-                  OpenAI::Internal::AnyHash
-                )
-              end
-
-            sig do
-              returns(
-                T::Array[
-                  OpenAI::Admin::Organization::OrganizationUser::Projects::Data
-                ]
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::OrganizationUser::Projects,
+                OpenAI::Internal::AnyHash
               )
             end
+
+            sig { returns(T::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data]) }
             attr_accessor :data
 
             sig { returns(Symbol) }
@@ -228,38 +233,36 @@ module OpenAI
             # Projects associated with the user, if included.
             sig do
               params(
-                data:
-                  T::Array[
-                    OpenAI::Admin::Organization::OrganizationUser::Projects::Data::OrHash
-                  ],
+
+                data: T::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data::OrHash],
+
                 object: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
-            def self.new(data:, object: :list)
+            def self.new(
+
+              data:,
+
+              object: :list
+            )
             end
 
             sig do
               override.returns(
-                {
-                  data:
-                    T::Array[
-                      OpenAI::Admin::Organization::OrganizationUser::Projects::Data
-                    ],
-                  object: Symbol
-                }
+                {data: T::Array[OpenAI::Admin::Organization::OrganizationUser::Projects::Data], object: Symbol}
               )
             end
             def to_hash
             end
 
             class Data < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Admin::Organization::OrganizationUser::Projects::Data,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Admin::Organization::OrganizationUser::Projects::Data,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               sig { returns(T.nilable(String)) }
               attr_accessor :id
@@ -272,36 +275,43 @@ module OpenAI
 
               sig do
                 params(
+
                   id: T.nilable(String),
+
                   name: T.nilable(String),
+
                   role: T.nilable(String)
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
-              def self.new(id: nil, name: nil, role: nil)
+              def self.new(
+
+                id: nil,
+
+                name: nil,
+
+                role: nil
+              )
               end
 
               sig do
                 override.returns(
-                  {
-                    id: T.nilable(String),
-                    name: T.nilable(String),
-                    role: T.nilable(String)
-                  }
+                  {id: T.nilable(String), name: T.nilable(String), role: T.nilable(String)}
                 )
               end
               def to_hash
               end
+
             end
           end
 
           class User < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::OrganizationUser::User,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::OrganizationUser::User,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(String) }
             attr_accessor :id
@@ -330,24 +340,41 @@ module OpenAI
             # Nested user details.
             sig do
               params(
+
                 id: String,
+
                 banned: T.nilable(T::Boolean),
+
                 banned_at: T.nilable(Integer),
+
                 email: T.nilable(String),
+
                 enabled: T.nilable(T::Boolean),
+
                 name: T.nilable(String),
+
                 picture: T.nilable(String),
+
                 object: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               id:,
+
               banned: nil,
+
               banned_at: nil,
+
               email: nil,
+
               enabled: nil,
+
               name: nil,
+
               picture: nil,
+
               object: :user
             )
             end
@@ -368,9 +395,14 @@ module OpenAI
             end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

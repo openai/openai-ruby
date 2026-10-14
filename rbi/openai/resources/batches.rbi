@@ -2,21 +2,22 @@
 
 module OpenAI
   module Resources
+
     # Create large batches of API requests to run asynchronously.
     class Batches
+
       # Creates and executes a batch from an uploaded file of requests
-      sig do
+      sig {
         params(
-          completion_window:
-            OpenAI::BatchCreateParams::CompletionWindow::OrSymbol,
+          completion_window: OpenAI::BatchCreateParams::CompletionWindow::OrSymbol,
           endpoint: OpenAI::BatchCreateParams::Endpoint::OrSymbol,
           input_file_id: String,
           metadata: T.nilable(T::Hash[Symbol, String]),
-          output_expires_after:
-            OpenAI::BatchCreateParams::OutputExpiresAfter::OrHash,
+          output_expires_after: OpenAI::BatchCreateParams::OutputExpiresAfter::OrHash,
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Batch)
-      end
+        )
+          .returns(OpenAI::Batch)
+      }
       def create(
         # The time frame within which the batch should be processed. Currently only `24h`
         # is supported.
@@ -30,11 +31,12 @@ module OpenAI
         endpoint:,
         # The ID of an uploaded file that contains requests for the new batch.
         #
-        # See [upload file](https://platform.openai.com/docs/api-reference/files/create)
+        # See
+        # [upload file](https://developers.openai.com/api/reference/resources/files/methods/create)
         # for how to upload a file.
         #
         # Your input file must be formatted as a
-        # [JSONL file](https://platform.openai.com/docs/api-reference/batch/request-input),
+        # [JSONL file](https://developers.openai.com/api/docs/guides/batch#1-prepare-your-batch-file),
         # and must be uploaded with the purpose `batch`. The file can contain up to 50,000
         # requests, and can be up to 200 MB in size.
         input_file_id:,
@@ -53,12 +55,7 @@ module OpenAI
       end
 
       # Retrieves a batch.
-      sig do
-        params(
-          batch_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Batch)
-      end
+      sig { params(batch_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Batch) }
       def retrieve(
         # The ID of the batch to retrieve.
         batch_id,
@@ -67,13 +64,11 @@ module OpenAI
       end
 
       # List your organization's batches.
-      sig do
-        params(
-          after: String,
-          limit: Integer,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Internal::CursorPage[OpenAI::Batch])
-      end
+      sig {
+        params(after: String, limit: Integer, request_options: OpenAI::RequestOptions::OrHash).returns(
+          OpenAI::Internal::CursorPage[OpenAI::Batch]
+        )
+      }
       def list(
         # A cursor for use in pagination. `after` is an object ID that defines your place
         # in the list. For instance, if you make a list request and receive 100 objects,
@@ -90,12 +85,7 @@ module OpenAI
       # Cancels an in-progress batch. The batch will be in status `cancelling` for up to
       # 10 minutes, before changing to `cancelled`, where it will have partial results
       # (if any) available in the output file.
-      sig do
-        params(
-          batch_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
-        ).returns(OpenAI::Batch)
-      end
+      sig { params(batch_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(OpenAI::Batch) }
       def cancel(
         # The ID of the batch to cancel.
         batch_id,
@@ -108,5 +98,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

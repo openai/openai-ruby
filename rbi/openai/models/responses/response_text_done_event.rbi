@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseTextDoneEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseTextDoneEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseTextDoneEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The index of the content part that the text content is finalized.
         sig { returns(Integer) }
@@ -21,9 +23,7 @@ module OpenAI
         attr_accessor :item_id
 
         # The log probabilities of the tokens in the delta.
-        sig do
-          returns(T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob])
-        end
+        sig { returns(T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob]) }
         attr_accessor :logprobs
 
         # The index of the output item that the text content is finalized.
@@ -45,32 +45,45 @@ module OpenAI
         # Emitted when text content is finalized.
         sig do
           params(
+
             content_index: Integer,
+
             item_id: String,
-            logprobs:
-              T::Array[
-                OpenAI::Responses::ResponseTextDoneEvent::Logprob::OrHash
-              ],
+
+            logprobs: T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::OrHash],
+
             output_index: Integer,
+
             sequence_number: Integer,
+
             text: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The index of the content part that the text content is finalized.
           content_index:,
+
           # The ID of the output item that the text content is finalized.
           item_id:,
+
           # The log probabilities of the tokens in the delta.
           logprobs:,
+
           # The index of the output item that the text content is finalized.
           output_index:,
+
           # The sequence number for this event.
           sequence_number:,
+
           # The text content that is finalized.
           text:,
+
           # The type of the event. Always `response.output_text.done`.
+
           type: :"response.output_text.done"
         )
         end
@@ -80,8 +93,7 @@ module OpenAI
             {
               content_index: Integer,
               item_id: String,
-              logprobs:
-                T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob],
+              logprobs: T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob],
               output_index: Integer,
               sequence_number: Integer,
               text: String,
@@ -93,13 +105,12 @@ module OpenAI
         end
 
         class Logprob < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseTextDoneEvent::Logprob,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseTextDoneEvent::Logprob,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # A possible text token.
           sig { returns(String) }
@@ -110,25 +121,12 @@ module OpenAI
           attr_accessor :logprob
 
           # The log probabilities of up to 20 of the most likely tokens.
-          sig do
-            returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob
-                ]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob])) }
           attr_reader :top_logprobs
 
-          sig do
-            params(
-              top_logprobs:
-                T::Array[
-                  OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob::OrHash
-                ]
-            ).void
-          end
+          sig {
+            params(top_logprobs: T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob::OrHash]).void
+          }
           attr_writer :top_logprobs
 
           # A logprob is the logarithmic probability that the model assigns to producing a
@@ -136,20 +134,25 @@ module OpenAI
           # logprob values indicate greater model confidence in that token choice.
           sig do
             params(
+
               token: String,
+
               logprob: Float,
-              top_logprobs:
-                T::Array[
-                  OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob::OrHash
-                ]
-            ).returns(T.attached_class)
+
+              top_logprobs: T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob::OrHash]
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # A possible text token.
             token:,
+
             # The log probability of this token.
             logprob:,
+
             # The log probabilities of up to 20 of the most likely tokens.
+
             top_logprobs: nil
           )
           end
@@ -159,10 +162,7 @@ module OpenAI
               {
                 token: String,
                 logprob: Float,
-                top_logprobs:
-                  T::Array[
-                    OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob
-                  ]
+                top_logprobs: T::Array[OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob]
               }
             )
           end
@@ -170,13 +170,12 @@ module OpenAI
           end
 
           class TopLogprob < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseTextDoneEvent::Logprob::TopLogprob,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # A possible text token.
             sig { returns(T.nilable(String)) }
@@ -193,22 +192,39 @@ module OpenAI
             attr_writer :logprob
 
             sig do
-              params(token: String, logprob: Float).returns(T.attached_class)
+              params(
+
+                token: String,
+
+                logprob: Float
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # A possible text token.
               token: nil,
+
               # The log probability of this token.
+
               logprob: nil
             )
             end
 
-            sig { override.returns({ token: String, logprob: Float }) }
+            sig do
+              override.returns(
+                {token: String, logprob: Float}
+              )
+            end
             def to_hash
             end
+
           end
         end
+
       end
+
     end
+
   end
 end

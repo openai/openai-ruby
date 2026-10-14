@@ -1,7 +1,7 @@
 module OpenAI
   module Models
     type model_delete_params =
-      { model: String } & OpenAI::Internal::Type::request_parameters
+      { model: String, ?request_options: OpenAI::request_opts }
 
     class ModelDeleteParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -14,7 +14,10 @@ module OpenAI
         ?request_options: OpenAI::request_opts
       ) -> void
 
-      def to_hash: -> { model: String, request_options: OpenAI::RequestOptions }
+      def to_hash: -> {
+        model: String,
+        ?request_options: OpenAI::RequestOptions
+      }
     end
   end
 end

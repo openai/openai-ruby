@@ -18,9 +18,9 @@ module OpenAI
           # @!attribute model_sample
           #   The model sample to be evaluated. This value will be used to populate the
           #   `sample` namespace. See
-          #   [the guide](https://platform.openai.com/docs/guides/graders) for more details.
-          #   The `output_json` variable will be populated if the model sample is a valid JSON
-          #   string.
+          #   [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          #   details. The `output_json` variable will be populated if the model sample is a
+          #   valid JSON string.
           #
           #   @return [String]
           required :model_sample, String
@@ -28,20 +28,28 @@ module OpenAI
           # @!attribute item
           #   The dataset item provided to the grader. This will be used to populate the
           #   `item` namespace. See
-          #   [the guide](https://platform.openai.com/docs/guides/graders) for more details.
+          #   [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          #   details.
           #
           #   @return [Object, nil]
           optional :item, OpenAI::Internal::Type::Unknown
 
           # @!method initialize(grader:, model_sample:, item: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::FineTuning::Alpha::GraderRunParams} for more details.
+          #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader]
+          #     The grader used for the fine-tuning job.
           #
-          #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
+          #   @param model_sample [String]
+          #     The model sample to be evaluated. This value will be used to populate the
+          #     `sample` namespace. See
+          #     [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          #     details. The `output_json` variable will be populated if the model sample is a
+          #     valid JSON string.
           #
-          #   @param model_sample [String] The model sample to be evaluated. This value will be used to populate
-          #
-          #   @param item [Object] The dataset item provided to the grader. This will be used to populate
+          #   @param item [Object]
+          #     The dataset item provided to the grader. This will be used to populate the
+          #     `item` namespace. See
+          #     [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          #     details.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

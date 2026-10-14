@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Evals
       type run_delete_response =
-        { deleted: bool, object: String, run_id: String }
+        { ?deleted: bool, ?object: String, ?run_id: String }
 
       class RunDeleteResponse < OpenAI::Internal::Type::BaseModel
         attr_reader deleted: bool?
@@ -23,7 +23,7 @@ module OpenAI
           ?run_id: String
         ) -> void
 
-        def to_hash: -> { deleted: bool, object: String, run_id: String }
+        def to_hash: -> { ?deleted: bool, ?object: String, ?run_id: String }
       end
     end
   end

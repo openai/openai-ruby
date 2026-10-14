@@ -6,17 +6,32 @@ module OpenAI
       # To customize the JSON schema conversion for a type, implement the `JsonSchemaConverter` interface.
       module JsonSchemaConverter
         # @api private
-        POINTERS = Object.new.tap do
-          _1.define_singleton_method(:inspect) do
-            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::POINTERS>"
+        POINTERS = Object
+          .new
+          .tap do
+            _1.define_singleton_method(:inspect) do
+              "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::POINTERS>"
+            end
           end
-        end.freeze
+          .freeze
         # @api private
-        NO_REF = Object.new.tap do
-          _1.define_singleton_method(:inspect) do
-            "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::NO_REF>"
+        NO_REF = Object
+          .new
+          .tap do
+            _1.define_singleton_method(:inspect) do
+              "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::NO_REF>"
+            end
           end
-        end.freeze
+          .freeze
+        # @api private
+        RECURSIVE = Object
+          .new
+          .tap do
+            _1.define_singleton_method(:inspect) do
+              "#<#{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter}::RECURSIVE>"
+            end
+          end
+          .freeze
 
         # rubocop:disable Lint/UnusedMethodArgument
 
@@ -50,6 +65,8 @@ module OpenAI
                   {type: null}
                 ]
               }
+            in {const: _}
+              {anyOf: [schema, {type: null}]}
             in {anyOf: schemas}
               null = {type: null}
               schemas.any? { _1 == null || _1 == {type: ["null"]} } ? schema : {anyOf: [*schemas, null]}
@@ -68,6 +85,7 @@ module OpenAI
             if schema.key?(:$ref) && !xformed.empty?
               schema.merge!(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF => true)
             end
+
             schema.merge!(xformed)
           end
 
@@ -87,7 +105,11 @@ module OpenAI
             defs, path = state.fetch_values(:defs, :path)
             if (stored = defs[type])
               pointers = stored.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
-              pointers.first.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF).tap do
+              if pointers.first.fetch(:$ref).empty?
+                stored[OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::RECURSIVE] = true
+              end
+
+              pointers.first.slice(:$ref).tap do
                 pointers << _1
               end
             else
@@ -98,7 +120,10 @@ module OpenAI
               }
               defs.store(type, stored)
               schema = blk.call
-              ref_path.replace("#/$defs/#{path.join('/')}")
+              definition_name = path.map { _1.gsub("~", "~0").gsub("/", "~1") }.join("/")
+              pointer_token = definition_name.gsub("~", "~0").gsub("/", "~1")
+              escaped_name = URI::RFC2396_PARSER.escape(pointer_token, /[^A-Za-z0-9._~-]/)
+              ref_path.replace("#/$defs/#{escaped_name}")
               stored.update(schema)
               ref
             end
@@ -118,29 +143,42 @@ module OpenAI
             )
             reused_defs = {}
             defs.each_value do |acc|
-              sch = acc.except(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
+              recursive = acc.key?(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::RECURSIVE)
+              sch = acc.except(
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS,
+                OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::RECURSIVE
+              )
               pointers = acc.fetch(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::POINTERS)
 
               no_refs, refs = pointers.partition do
                 _1.delete(OpenAI::Helpers::StructuredOutput::JsonSchemaConverter::NO_REF)
               end
 
-              case refs
-              in [ref]
-                ref.replace(ref.except(:$ref).merge(sch))
-              in [_, ref, *]
-                reused_defs.store(ref.fetch(:$ref), sch)
-                refs.each do
-                  unless (meta = _1.except(:$ref)).empty?
-                    _1.replace(allOf: [_1.slice(:$ref), meta])
-                  end
-                end
+              if recursive
+                reused_defs.store(pointers.first.fetch(:$ref), sch)
               else
+                case refs
+                in [ref]
+                  ref.replace(ref.except(:$ref).merge(sch))
+                in [_, ref, *]
+                  reused_defs.store(ref.fetch(:$ref), sch)
+                  refs.each do
+                    unless (meta = _1.except(:$ref)).empty?
+                      _1.replace(allOf: [_1.slice(:$ref), meta])
+                    end
+                  end
+                else
+                end
               end
-              no_refs.each { _1.replace(_1.except(:$ref).merge(sch)) }
+
+              no_refs.each { _1.replace(_1.except(:$ref).merge(sch)) } unless recursive
             end
 
-            xformed = reused_defs.transform_keys { _1.delete_prefix("#/$defs/") }
+            xformed = reused_defs.transform_keys do
+              pointer_token = URI::RFC2396_PARSER.unescape(_1.delete_prefix("#/$defs/"))
+              pointer_token.gsub("~1", "/").gsub("~0", "~")
+            end
+
             xformed.empty? ? schema : {"$defs": xformed}.update(schema)
           end
 
@@ -173,6 +211,7 @@ module OpenAI
                 return {type: "string"}
               else
               end
+
             in _ if OpenAI::Internal::Util.primitive?(type)
               return {const: type.is_a?(Symbol) ? type.to_s : type}
             else
@@ -190,9 +229,7 @@ module OpenAI
               OpenAI::UnionOf
               OpenAI::BaseModel
             ]
-            # rubocop:disable Layout/LineLength
             message = "#{type} does not implement the #{OpenAI::Helpers::StructuredOutput::JsonSchemaConverter} interface. Please use one of the supported types: #{models}"
-            # rubocop:enable Layout/LineLength
             raise ArgumentError.new(message)
           end
         end

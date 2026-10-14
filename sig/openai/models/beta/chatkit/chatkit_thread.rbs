@@ -8,25 +8,45 @@ module OpenAI
           {
             id: String,
             created_at: Integer,
-            object: :"chatkit.thread",
+            ?object: :"chatkit.thread",
             status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status,
             title: String?,
             user: String
           }
 
         class ChatKitThread < OpenAI::Internal::Type::BaseModel
+          # Identifier of the thread.
           attr_accessor id: String
 
+          # Unix timestamp (in seconds) for when the thread was created.
           attr_accessor created_at: Integer
 
+          # Type discriminator that is always `chatkit.thread`.
           attr_accessor object: :"chatkit.thread"
 
+          # Current status for the thread. Defaults to `active` for newly created threads.
           attr_accessor status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status
 
+          # Optional human-readable title for the thread. Defaults to null when no title has
+          # been generated.
           attr_accessor title: String?
 
+          # Free-form string that identifies your end user who owns the thread.
           attr_accessor user: String
 
+          # @param id
+          #   Identifier of the thread.
+          # @param created_at
+          #   Unix timestamp (in seconds) for when the thread was created.
+          # @param status
+          #   Current status for the thread. Defaults to `active` for newly created threads.
+          # @param title
+          #   Optional human-readable title for the thread. Defaults to null when no title has
+          #   been generated.
+          # @param user
+          #   Free-form string that identifies your end user who owns the thread.
+          # @param object
+          #   Type discriminator that is always `chatkit.thread`.
           def initialize: (
             id: String,
             created_at: Integer,
@@ -39,7 +59,7 @@ module OpenAI
           def to_hash: -> {
             id: String,
             created_at: Integer,
-            object: :"chatkit.thread",
+            ?object: :"chatkit.thread",
             status: OpenAI::Models::Beta::ChatKit::ChatKitThread::status,
             title: String?,
             user: String
@@ -53,38 +73,53 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Union
 
-            type active = { type: :active }
+            type active = { ?type: :active }
 
             class Active < OpenAI::Internal::Type::BaseModel
+              # Status discriminator that is always `active`.
               attr_accessor type: :active
 
+              # @param type
+              #   Status discriminator that is always `active`.
               def initialize: (?type: :active) -> void
 
-              def to_hash: -> { type: :active }
+              def to_hash: -> { ?type: :active }
             end
 
-            type locked = { reason: String?, type: :locked }
+            type locked = { reason: String?, ?type: :locked }
 
             class Locked < OpenAI::Internal::Type::BaseModel
+              # Reason that the thread was locked. Defaults to null when no reason is recorded.
               attr_accessor reason: String?
 
+              # Status discriminator that is always `locked`.
               attr_accessor type: :locked
 
+              # @param reason
+              #   Reason that the thread was locked. Defaults to null when no reason is recorded.
+              # @param type
+              #   Status discriminator that is always `locked`.
               def initialize: (reason: String?, ?type: :locked) -> void
 
-              def to_hash: -> { reason: String?, type: :locked }
+              def to_hash: -> { reason: String?, ?type: :locked }
             end
 
-            type closed = { reason: String?, type: :closed }
+            type closed = { reason: String?, ?type: :closed }
 
             class Closed < OpenAI::Internal::Type::BaseModel
+              # Reason that the thread was closed. Defaults to null when no reason is recorded.
               attr_accessor reason: String?
 
+              # Status discriminator that is always `closed`.
               attr_accessor type: :closed
 
+              # @param reason
+              #   Reason that the thread was closed. Defaults to null when no reason is recorded.
+              # @param type
+              #   Status discriminator that is always `closed`.
               def initialize: (reason: String?, ?type: :closed) -> void
 
-              def to_hash: -> { reason: String?, type: :closed }
+              def to_hash: -> { reason: String?, ?type: :closed }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Beta::ChatKit::ChatKitThread::status]

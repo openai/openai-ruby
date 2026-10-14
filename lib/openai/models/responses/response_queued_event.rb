@@ -25,11 +25,14 @@ module OpenAI
         # @!method initialize(response:, sequence_number:, type: :"response.queued")
         #   Emitted when a response is queued and waiting to be processed.
         #
-        #   @param response [OpenAI::Models::Responses::Response] The full response object that is queued.
+        #   @param response [OpenAI::Models::Responses::Response]
+        #     The full response object that is queued.
         #
-        #   @param sequence_number [Integer] The sequence number for this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number for this event.
         #
-        #   @param type [Symbol, :"response.queued"] The type of the event. Always 'response.queued'.
+        #   @param type [Symbol, :"response.queued"]
+        #     The type of the event. Always 'response.queued'.
       end
     end
   end

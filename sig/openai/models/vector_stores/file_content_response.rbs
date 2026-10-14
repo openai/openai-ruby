@@ -1,20 +1,28 @@
 module OpenAI
   module Models
     module VectorStores
-      type file_content_response = { text: String, type: String }
+      type file_content_response = { ?text: String, ?type: String }
 
       class FileContentResponse < OpenAI::Internal::Type::BaseModel
+        # The text content
         attr_reader text: String?
 
+        # The text content
         def text=: (String) -> String
 
+        # The content type (currently only `"text"`)
         attr_reader type: String?
 
+        # The content type (currently only `"text"`)
         def type=: (String) -> String
 
+        # @param text
+        #   The text content
+        # @param type
+        #   The content type (currently only `"text"`)
         def initialize: (?text: String, ?type: String) -> void
 
-        def to_hash: -> { text: String, type: String }
+        def to_hash: -> { ?text: String, ?type: String }
       end
     end
   end

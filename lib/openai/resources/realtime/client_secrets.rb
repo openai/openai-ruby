@@ -4,9 +4,6 @@ module OpenAI
   module Resources
     class Realtime
       class ClientSecrets
-        # Some parameter documentations has been truncated, see
-        # {OpenAI::Models::Realtime::ClientSecretCreateParams} for more details.
-        #
         # Create a Realtime client secret with an associated session configuration.
         #
         # Client secrets are short-lived tokens that can be passed to a client app, such
@@ -18,16 +15,22 @@ module OpenAI
         # will be applied to any sessions created using that client secret, but these can
         # also be overridden by the client connection.
         #
-        # [Learn more about authentication with client secrets over WebRTC](https://platform.openai.com/docs/guides/realtime-webrtc).
+        # [Learn more about authentication with client secrets over WebRTC](https://developers.openai.com/api/docs/guides/realtime-webrtc).
         #
         # Returns the created client secret and the effective session object. The client
         # secret is a string that looks like `ek_1234`.
         #
         # @overload create(expires_after: nil, session: nil, request_options: {})
         #
-        # @param expires_after [OpenAI::Models::Realtime::ClientSecretCreateParams::ExpiresAfter] Configuration for the client secret expiration. Expiration refers to the time af
+        # @param expires_after [OpenAI::Models::Realtime::ClientSecretCreateParams::ExpiresAfter]
+        #   Configuration for the client secret expiration. Expiration refers to the time
+        #   after which a client secret will no longer be valid for creating sessions. The
+        #   session itself may continue after that time once started. A secret can be used
+        #   to create multiple sessions until it expires.
         #
-        # @param session [OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest] Session configuration to use for the client secret. Choose either a realtime
+        # @param session [OpenAI::Models::Realtime::RealtimeSessionCreateRequest, OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest]
+        #   Session configuration to use for the client secret. Choose either a realtime
+        #   session or a transcription session.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #

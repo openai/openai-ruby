@@ -1,0 +1,34 @@
+module OpenAI
+  module Auth
+    class X509Transport
+      ISSUER_ORIGIN: String
+
+      attr_reader api_origin: String
+
+      attr_reader proxy_mode: Symbol
+
+      def self.exact_instance?: (
+        untyped candidate,
+        Class expected_class
+      ) -> bool
+
+      def initialize: (
+        http_client: OpenAI::NetHTTPClient,
+        certificate_identity: Symbol,
+        ?proxy: Symbol,
+        ?api_origin: String
+      ) -> void
+
+      def execute: (
+        OpenAI::HTTPClient::Request request
+      ) -> OpenAI::HTTPClient::Response
+
+      def validate_api_request!: (
+        url: URI::Generic,
+        headers: ::Hash[String, String]
+      ) -> ::Hash[String, String]
+
+      def supports_data_residency?: (Symbol | String residency) -> bool
+    end
+  end
+end

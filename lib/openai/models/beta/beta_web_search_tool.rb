@@ -10,6 +10,14 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Beta::BetaWebSearchTool::Type]
         required :type, enum: -> { OpenAI::Beta::BetaWebSearchTool::Type }
 
+        # @!attribute external_web_access
+        #   Allow live internet access for web search. Defaults to true when omitted. When
+        #   false, the web search tool runs in offline/cache-only mode and will not fetch
+        #   new external content.
+        #
+        #   @return [Boolean, nil]
+        optional :external_web_access, OpenAI::Internal::Type::Boolean
+
         # @!attribute filters
         #   Filters for the search.
         #
@@ -24,25 +32,36 @@ module OpenAI
         optional :search_context_size, enum: -> { OpenAI::Beta::BetaWebSearchTool::SearchContextSize }
 
         # @!attribute user_location
-        #   The approximate location of the user.
+        #   The approximate location of the user. If omitted or null, defaults to the United
+        #   States. To avoid this fallback, pass `{"type": "approximate"}` without location
+        #   fields. To localize results, provide the relevant location fields.
         #
         #   @return [OpenAI::Models::Beta::BetaWebSearchTool::UserLocation, nil]
         optional :user_location, -> { OpenAI::Beta::BetaWebSearchTool::UserLocation }, nil?: true
 
-        # @!method initialize(type:, filters: nil, search_context_size: nil, user_location: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaWebSearchTool} for more details.
-        #
+        # @!method initialize(type:, external_web_access: nil, filters: nil, search_context_size: nil, user_location: nil)
         #   Search the Internet for sources related to the prompt. Learn more about the
-        #   [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+        #   [web search tool](https://developers.openai.com/api/docs/guides/tools-web-search).
         #
-        #   @param type [Symbol, OpenAI::Models::Beta::BetaWebSearchTool::Type] The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
+        #   @param type [Symbol, OpenAI::Models::Beta::BetaWebSearchTool::Type]
+        #     The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
         #
-        #   @param filters [OpenAI::Models::Beta::BetaWebSearchTool::Filters, nil] Filters for the search.
+        #   @param external_web_access [Boolean]
+        #     Allow live internet access for web search. Defaults to true when omitted. When
+        #     false, the web search tool runs in offline/cache-only mode and will not fetch
+        #     new external content.
         #
-        #   @param search_context_size [Symbol, OpenAI::Models::Beta::BetaWebSearchTool::SearchContextSize] High level guidance for the amount of context window space to use for the search
+        #   @param filters [OpenAI::Models::Beta::BetaWebSearchTool::Filters, nil]
+        #     Filters for the search.
         #
-        #   @param user_location [OpenAI::Models::Beta::BetaWebSearchTool::UserLocation, nil] The approximate location of the user.
+        #   @param search_context_size [Symbol, OpenAI::Models::Beta::BetaWebSearchTool::SearchContextSize]
+        #     High level guidance for the amount of context window space to use for the
+        #     search. One of `low`, `medium`, or `high`. `medium` is the default.
+        #
+        #   @param user_location [OpenAI::Models::Beta::BetaWebSearchTool::UserLocation, nil]
+        #     The approximate location of the user. If omitted or null, defaults to the United
+        #     States. To avoid this fallback, pass `{"type": "approximate"}` without location
+        #     fields. To localize results, provide the relevant location fields.
 
         # The type of the web search tool. One of `web_search` or `web_search_2025_08_26`.
         #
@@ -69,12 +88,13 @@ module OpenAI
           optional :allowed_domains, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
           # @!method initialize(allowed_domains: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaWebSearchTool::Filters} for more details.
-          #
           #   Filters for the search.
           #
-          #   @param allowed_domains [Array<String>, nil] Allowed domains for the search. If not provided, all domains are allowed.
+          #   @param allowed_domains [Array<String>, nil]
+          #     Allowed domains for the search. If not provided, all domains are allowed.
+          #     Subdomains of the provided domains are allowed as well.
+          #
+          #     Example: `["pubmed.ncbi.nlm.nih.gov"]`
         end
 
         # High level guidance for the amount of context window space to use for the
@@ -127,20 +147,26 @@ module OpenAI
           optional :type, enum: -> { OpenAI::Beta::BetaWebSearchTool::UserLocation::Type }
 
           # @!method initialize(city: nil, country: nil, region: nil, timezone: nil, type: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaWebSearchTool::UserLocation} for more details.
+          #   The approximate location of the user. If omitted or null, defaults to the United
+          #   States. To avoid this fallback, pass `{"type": "approximate"}` without location
+          #   fields. To localize results, provide the relevant location fields.
           #
-          #   The approximate location of the user.
+          #   @param city [String, nil]
+          #     Free text input for the city of the user, e.g. `San Francisco`.
           #
-          #   @param city [String, nil] Free text input for the city of the user, e.g. `San Francisco`.
+          #   @param country [String, nil]
+          #     The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of
+          #     the user, e.g. `US`.
           #
-          #   @param country [String, nil] The two-letter [ISO country code](https://en.wikipedia.org/wiki/ISO_3166-1) of t
+          #   @param region [String, nil]
+          #     Free text input for the region of the user, e.g. `California`.
           #
-          #   @param region [String, nil] Free text input for the region of the user, e.g. `California`.
+          #   @param timezone [String, nil]
+          #     The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the
+          #     user, e.g. `America/Los_Angeles`.
           #
-          #   @param timezone [String, nil] The [IANA timezone](https://timeapi.io/documentation/iana-timezones) of the user
-          #
-          #   @param type [Symbol, OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::Type] The type of location approximation. Always `approximate`.
+          #   @param type [Symbol, OpenAI::Models::Beta::BetaWebSearchTool::UserLocation::Type]
+          #     The type of location approximation. Always `approximate`.
 
           # The type of location approximation. Always `approximate`.
           #

@@ -12,14 +12,38 @@ module OpenAI
         }
 
       class ChatCompletionTokenLogprob < OpenAI::Internal::Type::BaseModel
+        # The token.
         attr_accessor token: String
 
+        # A list of integers representing the UTF-8 bytes representation of the token.
+        # Useful in instances where characters are represented by multiple tokens and
+        # their byte representations must be combined to generate the correct text
+        # representation. Can be `null` if there is no bytes representation for the token.
         attr_accessor bytes: ::Array[Integer]?
 
+        # The log probability of this token, if it is within the top 20 most likely
+        # tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
+        # unlikely.
         attr_accessor logprob: Float
 
+        # List of the most likely tokens and their log probability, at this token
+        # position. The number of entries may be fewer than the requested `top_logprobs`.
         attr_accessor top_logprobs: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob::TopLogprob]
 
+        # @param token
+        #   The token.
+        # @param bytes
+        #   A list of integers representing the UTF-8 bytes representation of the token.
+        #   Useful in instances where characters are represented by multiple tokens and
+        #   their byte representations must be combined to generate the correct text
+        #   representation. Can be `null` if there is no bytes representation for the token.
+        # @param logprob
+        #   The log probability of this token, if it is within the top 20 most likely
+        #   tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
+        #   unlikely.
+        # @param top_logprobs
+        #   List of the most likely tokens and their log probability, at this token
+        #   position. The number of entries may be fewer than the requested `top_logprobs`.
         def initialize: (
           token: String,
           bytes: ::Array[Integer]?,
@@ -38,12 +62,31 @@ module OpenAI
           { token: String, bytes: ::Array[Integer]?, logprob: Float }
 
         class TopLogprob < OpenAI::Internal::Type::BaseModel
+          # The token.
           attr_accessor token: String
 
+          # A list of integers representing the UTF-8 bytes representation of the token.
+          # Useful in instances where characters are represented by multiple tokens and
+          # their byte representations must be combined to generate the correct text
+          # representation. Can be `null` if there is no bytes representation for the token.
           attr_accessor bytes: ::Array[Integer]?
 
+          # The log probability of this token, if it is within the top 20 most likely
+          # tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
+          # unlikely.
           attr_accessor logprob: Float
 
+          # @param token
+          #   The token.
+          # @param bytes
+          #   A list of integers representing the UTF-8 bytes representation of the token.
+          #   Useful in instances where characters are represented by multiple tokens and
+          #   their byte representations must be combined to generate the correct text
+          #   representation. Can be `null` if there is no bytes representation for the token.
+          # @param logprob
+          #   The log probability of this token, if it is within the top 20 most likely
+          #   tokens. Otherwise, the value `-9999.0` is used to signify that the token is very
+          #   unlikely.
           def initialize: (
             token: String,
             bytes: ::Array[Integer]?,

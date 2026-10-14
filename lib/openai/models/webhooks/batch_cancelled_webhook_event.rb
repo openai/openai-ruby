@@ -35,20 +35,22 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::BatchCancelledWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"batch.cancelled")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::BatchCancelledWebhookEvent} for more details.
-        #
         #   Sent when a batch API request has been cancelled.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the batch API request was cancelled.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the batch API request was cancelled.
         #
-        #   @param data [OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"batch.cancelled"] The type of the event. Always `batch.cancelled`.
+        #   @param type [Symbol, :"batch.cancelled"]
+        #     The type of the event. Always `batch.cancelled`.
 
         # @see OpenAI::Models::Webhooks::BatchCancelledWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -59,12 +61,10 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::BatchCancelledWebhookEvent::Data} for more details.
-          #
           #   Event data payload.
           #
-          #   @param id [String] The unique ID of the batch API request.
+          #   @param id [String]
+          #     The unique ID of the batch API request.
         end
 
         # The object of the event. Always `event`.

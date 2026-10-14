@@ -1,0 +1,296 @@
+module OpenAI
+  module Models
+    type decision =
+      {
+        answers: ::Array[OpenAI::Models::Decision::answer],
+        model: String,
+        usage: OpenAI::Decision::Usage
+      }
+
+    class Decision < OpenAI::Internal::Type::BaseModel
+      attr_accessor answers: ::Array[OpenAI::Models::Decision::answer]
+
+      attr_accessor model: String
+
+      attr_accessor usage: OpenAI::Decision::Usage
+
+      def initialize: (
+        answers: ::Array[OpenAI::Models::Decision::answer],
+        model: String,
+        usage: OpenAI::Decision::Usage
+      ) -> void
+
+      def to_hash: -> {
+        answers: ::Array[OpenAI::Models::Decision::answer],
+        model: String,
+        usage: OpenAI::Decision::Usage
+      }
+
+      type answer =
+        OpenAI::Decision::Answer::Predicate
+        | OpenAI::Decision::Answer::Choice
+        | OpenAI::Decision::Answer::Score
+        | OpenAI::Decision::Answer::Refusal
+
+      module Answer
+        extend OpenAI::Internal::Type::Union
+
+        type predicate =
+          { name: String?, probability: Float, ?type: :predicate }
+
+        class Predicate < OpenAI::Internal::Type::BaseModel
+          attr_accessor name: String?
+
+          attr_accessor probability: Float
+
+          # The type of the object. Always `predicate`.
+          attr_accessor type: :predicate
+
+          # @param type
+          #   The type of the object. Always `predicate`.
+          def initialize: (
+            name: String?,
+            probability: Float,
+            ?type: :predicate
+          ) -> void
+
+          def to_hash: -> {
+            name: String?,
+            probability: Float,
+            ?type: :predicate
+          }
+        end
+
+        type choice =
+          {
+            choice: OpenAI::Models::Decision::Answer::Choice::choice,
+            confidence: Float,
+            name: String?,
+            probabilities: ::Array[OpenAI::Decision::Answer::Choice::Probability],
+            ?type: :choice
+          }
+
+        class Choice < OpenAI::Internal::Type::BaseModel
+          # Choice values are typed: a string and a boolean with the same text are distinct.
+          attr_accessor choice: OpenAI::Models::Decision::Answer::Choice::choice
+
+          attr_accessor confidence: Float
+
+          attr_accessor name: String?
+
+          attr_accessor probabilities: ::Array[OpenAI::Decision::Answer::Choice::Probability]
+
+          # The type of the object. Always `choice`.
+          attr_accessor type: :choice
+
+          # @param choice
+          #   Choice values are typed: a string and a boolean with the same text are distinct.
+          # @param type
+          #   The type of the object. Always `choice`.
+          def initialize: (
+            choice: OpenAI::Models::Decision::Answer::Choice::choice,
+            confidence: Float,
+            name: String?,
+            probabilities: ::Array[OpenAI::Decision::Answer::Choice::Probability],
+            ?type: :choice
+          ) -> void
+
+          def to_hash: -> {
+            choice: OpenAI::Models::Decision::Answer::Choice::choice,
+            confidence: Float,
+            name: String?,
+            probabilities: ::Array[OpenAI::Decision::Answer::Choice::Probability],
+            ?type: :choice
+          }
+
+          type choice = String | bool
+
+          module Choice
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Decision::Answer::Choice::choice]
+          end
+
+          type probability =
+            {
+              probability: Float,
+              value: OpenAI::Models::Decision::Answer::Choice::Probability::value
+            }
+
+          class Probability < OpenAI::Internal::Type::BaseModel
+            attr_accessor probability: Float
+
+            # Choice values are typed: a string and a boolean with the same text are distinct.
+            attr_accessor value: OpenAI::Models::Decision::Answer::Choice::Probability::value
+
+            # @param value
+            #   Choice values are typed: a string and a boolean with the same text are distinct.
+            def initialize: (
+              probability: Float,
+              value: OpenAI::Models::Decision::Answer::Choice::Probability::value
+            ) -> void
+
+            def to_hash: -> {
+              probability: Float,
+              value: OpenAI::Models::Decision::Answer::Choice::Probability::value
+            }
+
+            type value = String | bool
+
+            module Value
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Decision::Answer::Choice::Probability::value]
+            end
+          end
+        end
+
+        type score =
+          {
+            confidence: Float,
+            name: String?,
+            probabilities: ::Array[OpenAI::Decision::Answer::Score::Probability],
+            score: Float,
+            ?type: :score
+          }
+
+        class Score < OpenAI::Internal::Type::BaseModel
+          attr_accessor confidence: Float
+
+          attr_accessor name: String?
+
+          attr_accessor probabilities: ::Array[OpenAI::Decision::Answer::Score::Probability]
+
+          attr_accessor score: Float
+
+          # The type of the object. Always `score`.
+          attr_accessor type: :score
+
+          # @param type
+          #   The type of the object. Always `score`.
+          def initialize: (
+            confidence: Float,
+            name: String?,
+            probabilities: ::Array[OpenAI::Decision::Answer::Score::Probability],
+            score: Float,
+            ?type: :score
+          ) -> void
+
+          def to_hash: -> {
+            confidence: Float,
+            name: String?,
+            probabilities: ::Array[OpenAI::Decision::Answer::Score::Probability],
+            score: Float,
+            ?type: :score
+          }
+
+          type probability =
+            { label: String, probability: Float, value: Integer }
+
+          class Probability < OpenAI::Internal::Type::BaseModel
+            attr_accessor label: String
+
+            attr_accessor probability: Float
+
+            attr_accessor value: Integer
+
+            def initialize: (
+              label: String,
+              probability: Float,
+              value: Integer
+            ) -> void
+
+            def to_hash: -> {
+              label: String,
+              probability: Float,
+              value: Integer
+            }
+          end
+        end
+
+        type refusal = { name: String?, ?type: :refusal }
+
+        class Refusal < OpenAI::Internal::Type::BaseModel
+          attr_accessor name: String?
+
+          # The type of the object. Always `refusal`.
+          attr_accessor type: :refusal
+
+          # @param type
+          #   The type of the object. Always `refusal`.
+          def initialize: (name: String?, ?type: :refusal) -> void
+
+          def to_hash: -> { name: String?, ?type: :refusal }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Decision::answer]
+      end
+
+      type usage =
+        {
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::Decision::Usage::InputTokensDetails,
+          output_tokens: Integer,
+          output_tokens_details: OpenAI::Decision::Usage::OutputTokensDetails,
+          total_tokens: Integer
+        }
+
+      class Usage < OpenAI::Internal::Type::BaseModel
+        attr_accessor input_tokens: Integer
+
+        attr_accessor input_tokens_details: OpenAI::Decision::Usage::InputTokensDetails
+
+        attr_accessor output_tokens: Integer
+
+        attr_accessor output_tokens_details: OpenAI::Decision::Usage::OutputTokensDetails
+
+        attr_accessor total_tokens: Integer
+
+        def initialize: (
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::Decision::Usage::InputTokensDetails,
+          output_tokens: Integer,
+          output_tokens_details: OpenAI::Decision::Usage::OutputTokensDetails,
+          total_tokens: Integer
+        ) -> void
+
+        def to_hash: -> {
+          input_tokens: Integer,
+          input_tokens_details: OpenAI::Decision::Usage::InputTokensDetails,
+          output_tokens: Integer,
+          output_tokens_details: OpenAI::Decision::Usage::OutputTokensDetails,
+          total_tokens: Integer
+        }
+
+        type input_tokens_details =
+          { cache_write_tokens: Integer, cached_tokens: Integer }
+
+        class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+          attr_accessor cache_write_tokens: Integer
+
+          attr_accessor cached_tokens: Integer
+
+          def initialize: (
+            cache_write_tokens: Integer,
+            cached_tokens: Integer
+          ) -> void
+
+          def to_hash: -> {
+            cache_write_tokens: Integer,
+            cached_tokens: Integer
+          }
+        end
+
+        type output_tokens_details = { reasoning_tokens: Integer }
+
+        class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
+          attr_accessor reasoning_tokens: Integer
+
+          def initialize: (reasoning_tokens: Integer) -> void
+
+          def to_hash: -> { reasoning_tokens: Integer }
+        end
+      end
+    end
+  end
+end

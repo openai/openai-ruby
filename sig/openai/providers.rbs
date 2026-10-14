@@ -1,6 +1,13 @@
 module OpenAI
   module Providers
+    def self.azure: (
+      ?endpoint: String?,
+      ?api_key: String?,
+      ?token_provider: (^-> String)?
+    ) -> OpenAI::Provider
+
     def self.bedrock: (
+      ?endpoint: (:mantle | :runtime | "mantle" | "runtime")?,
       ?region: String?,
       ?base_url: String?,
       ?api_key: String?,

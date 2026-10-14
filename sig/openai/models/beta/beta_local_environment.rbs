@@ -4,25 +4,32 @@ module OpenAI
 
     module Beta
       type beta_local_environment =
-        { type: :local, skills: ::Array[OpenAI::Beta::BetaLocalSkill] }
+        { ?type: :local, ?skills: ::Array[OpenAI::Beta::BetaLocalSkill] }
 
       class BetaLocalEnvironment < OpenAI::Internal::Type::BaseModel
+        # Use a local computer environment.
         attr_accessor type: :local
 
+        # An optional list of skills.
         attr_reader skills: ::Array[OpenAI::Beta::BetaLocalSkill]?
 
+        # An optional list of skills.
         def skills=: (
           ::Array[OpenAI::Beta::BetaLocalSkill]
         ) -> ::Array[OpenAI::Beta::BetaLocalSkill]
 
+        # @param skills
+        #   An optional list of skills.
+        # @param type
+        #   Use a local computer environment.
         def initialize: (
           ?skills: ::Array[OpenAI::Beta::BetaLocalSkill],
           ?type: :local
         ) -> void
 
         def to_hash: -> {
-          type: :local,
-          skills: ::Array[OpenAI::Beta::BetaLocalSkill]
+          ?type: :local,
+          ?skills: ::Array[OpenAI::Beta::BetaLocalSkill]
         }
       end
     end

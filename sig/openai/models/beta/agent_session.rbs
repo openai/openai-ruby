@@ -1,0 +1,572 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_session =
+        {
+          id: String,
+          agent: OpenAI::Beta::AgentSession::Agent,
+          created_at: Integer,
+          environment: OpenAI::Models::Beta::environment,
+          error: String?,
+          last_active_at: Integer,
+          metadata: ::Hash[Symbol, String],
+          ?object: :"agent.session",
+          required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          status: OpenAI::Models::Beta::AgentSession::status,
+          usage: OpenAI::Beta::TokenUsage?,
+          vault_ids: ::Array[String],
+          ?spend_control: OpenAI::Beta::AgentSession::SpendControl
+        }
+
+      class AgentSession < OpenAI::Internal::Type::BaseModel
+        # The ID of the session.
+        attr_accessor id: String
+
+        # The agent running in the session.
+        attr_accessor agent: OpenAI::Beta::AgentSession::Agent
+
+        # The Unix timestamp, in seconds, when the session was created.
+        attr_accessor created_at: Integer
+
+        # The execution environment for the session.
+        attr_accessor environment: OpenAI::Models::Beta::environment
+
+        # The error that caused the session to fail, if any.
+        attr_accessor error: String?
+
+        # The Unix timestamp, in seconds, when the session was last active.
+        attr_accessor last_active_at: Integer
+
+        # Custom string key-value pairs attached to the session.
+        attr_accessor metadata: ::Hash[Symbol, String]
+
+        # The object type. Always `agent.session`.
+        attr_accessor object: :"agent.session"
+
+        # Actions that must be completed before the session can continue.
+        attr_accessor required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action]
+
+        # The current status of the session.
+        attr_accessor status: OpenAI::Models::Beta::AgentSession::status
+
+        # Best-effort token usage for the session, or null if unknown. Recorded usage may
+        # change.
+        attr_accessor usage: OpenAI::Beta::TokenUsage?
+
+        # The IDs of vaults made available to the session.
+        attr_accessor vault_ids: ::Array[String]
+
+        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
+        # sessions omit this object.
+        attr_reader spend_control: OpenAI::Beta::AgentSession::SpendControl?
+
+        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
+        # sessions omit this object.
+        def spend_control=: (
+          OpenAI::Beta::AgentSession::SpendControl
+        ) -> OpenAI::Beta::AgentSession::SpendControl
+
+        # @param id
+        #   The ID of the session.
+        # @param agent
+        #   The agent running in the session.
+        # @param created_at
+        #   The Unix timestamp, in seconds, when the session was created.
+        # @param environment
+        #   The execution environment for the session.
+        # @param error
+        #   The error that caused the session to fail, if any.
+        # @param last_active_at
+        #   The Unix timestamp, in seconds, when the session was last active.
+        # @param metadata
+        #   Custom string key-value pairs attached to the session.
+        # @param required_actions
+        #   Actions that must be completed before the session can continue.
+        # @param status
+        #   The current status of the session.
+        # @param usage
+        #   Best-effort token usage for the session, or null if unknown. Recorded usage may
+        #   change.
+        # @param vault_ids
+        #   The IDs of vaults made available to the session.
+        # @param spend_control
+        #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
+        #   sessions omit this object.
+        # @param object
+        #   The object type. Always `agent.session`.
+        def initialize: (
+          id: String,
+          agent: OpenAI::Beta::AgentSession::Agent,
+          created_at: Integer,
+          environment: OpenAI::Models::Beta::environment,
+          error: String?,
+          last_active_at: Integer,
+          metadata: ::Hash[Symbol, String],
+          required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          status: OpenAI::Models::Beta::AgentSession::status,
+          usage: OpenAI::Beta::TokenUsage?,
+          vault_ids: ::Array[String],
+          ?spend_control: OpenAI::Beta::AgentSession::SpendControl,
+          ?object: :"agent.session"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          agent: OpenAI::Beta::AgentSession::Agent,
+          created_at: Integer,
+          environment: OpenAI::Models::Beta::environment,
+          error: String?,
+          last_active_at: Integer,
+          metadata: ::Hash[Symbol, String],
+          ?object: :"agent.session",
+          required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          status: OpenAI::Models::Beta::AgentSession::status,
+          usage: OpenAI::Beta::TokenUsage?,
+          vault_ids: ::Array[String],
+          ?spend_control: OpenAI::Beta::AgentSession::SpendControl
+        }
+
+        type agent =
+          {
+            id: String,
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            name: String?,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool]
+          }
+
+        class Agent < OpenAI::Internal::Type::BaseModel
+          # The ID of the agent.
+          attr_accessor id: String
+
+          # Custom instructions appended to the agent's default base instructions.
+          attr_accessor instructions: String?
+
+          # The model used by the agent.
+          attr_accessor model: String
+
+          # Configuration for creating and coordinating subagents.
+          attr_accessor multi_agent: OpenAI::Beta::MultiAgentConfig
+
+          # The reusable agent's name when the session was created, or null if no name was
+          # saved. Later changes to the agent's name do not affect this value.
+          attr_accessor name: String?
+
+          # The agent's reasoning configuration.
+          attr_accessor reasoning: OpenAI::Beta::AgentReasoning
+
+          # The effective service-tier policy for model requests. Defaults to `auto`.
+          attr_accessor service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier
+
+          # Configuration for text generated by the agent.
+          attr_accessor text: OpenAI::Beta::AgentText
+
+          # Tools available to the agent.
+          attr_accessor tools: ::Array[OpenAI::Models::Beta::agent_tool]
+
+          # @param id
+          #   The ID of the agent.
+          # @param instructions
+          #   Custom instructions appended to the agent's default base instructions.
+          # @param model
+          #   The model used by the agent.
+          # @param multi_agent
+          #   Configuration for creating and coordinating subagents.
+          # @param name
+          #   The reusable agent's name when the session was created, or null if no name was
+          #   saved. Later changes to the agent's name do not affect this value.
+          # @param reasoning
+          #   The agent's reasoning configuration.
+          # @param service_tier
+          #   The effective service-tier policy for model requests. Defaults to `auto`.
+          # @param text
+          #   Configuration for text generated by the agent.
+          # @param tools
+          #   Tools available to the agent.
+          def initialize: (
+            id: String,
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            name: String?,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool]
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            name: String?,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool]
+          }
+
+          type service_tier =
+            :auto | :default | :flex | :priority | :fast | :ultrafast
+
+          module ServiceTier
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            DEFAULT: :default
+            FLEX: :flex
+            PRIORITY: :priority
+            FAST: :fast
+            ULTRAFAST: :ultrafast
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::Agent::service_tier]
+          end
+        end
+
+        type required_action =
+          OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest
+          | OpenAI::Beta::AgentSession::RequiredAction::FunctionCall
+          | OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection
+
+        module RequiredAction
+          extend OpenAI::Internal::Type::Union
+
+          type computer_use_approval_request =
+            {
+              request: OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request,
+              request_id: String,
+              turn_id: String,
+              ?type: :computer_use_approval_request
+            }
+
+          class ComputerUseApprovalRequest < OpenAI::Internal::Type::BaseModel
+            # The information needed to render the request.
+            attr_accessor request: OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request
+
+            # The registered request ID to echo when responding.
+            attr_accessor request_id: String
+
+            # The turn that requested approval.
+            attr_accessor turn_id: String
+
+            # The type of the object. Always `computer_use_approval_request`.
+            attr_accessor type: :computer_use_approval_request
+
+            # @param request
+            #   The information needed to render the request.
+            # @param request_id
+            #   The registered request ID to echo when responding.
+            # @param turn_id
+            #   The turn that requested approval.
+            # @param type
+            #   The type of the object. Always `computer_use_approval_request`.
+            def initialize: (
+              request: OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request,
+              request_id: String,
+              turn_id: String,
+              ?type: :computer_use_approval_request
+            ) -> void
+
+            def to_hash: -> {
+              request: OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request,
+              request_id: String,
+              turn_id: String,
+              ?type: :computer_use_approval_request
+            }
+
+            type request =
+              OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication
+              | OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserOriginAccess
+
+            module Request
+              extend OpenAI::Internal::Type::Union
+
+              type browser_authentication =
+                {
+                  credential_origin: String?,
+                  fields: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field],
+                  options: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option],
+                  reason: String?,
+                  ?type: :browser_authentication
+                }
+
+              class BrowserAuthentication < OpenAI::Internal::Type::BaseModel
+                # The registered form or frame origin where values will be entered.
+                attr_accessor credential_origin: String?
+
+                # Controls to render. All submitted values are sensitive.
+                attr_accessor fields: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field]
+
+                # Sign-in methods. Empty for a plain form.
+                attr_accessor options: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option]
+
+                # Why the agent needs the user to sign in.
+                attr_accessor reason: String?
+
+                # The type of the object. Always `browser_authentication`.
+                attr_accessor type: :browser_authentication
+
+                # @param credential_origin
+                #   The registered form or frame origin where values will be entered.
+                # @param fields
+                #   Controls to render. All submitted values are sensitive.
+                # @param options
+                #   Sign-in methods. Empty for a plain form.
+                # @param reason
+                #   Why the agent needs the user to sign in.
+                # @param type
+                #   The type of the object. Always `browser_authentication`.
+                def initialize: (
+                  credential_origin: String?,
+                  fields: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field],
+                  options: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option],
+                  reason: String?,
+                  ?type: :browser_authentication
+                ) -> void
+
+                def to_hash: -> {
+                  credential_origin: String?,
+                  fields: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Field],
+                  options: ::Array[OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::Request::BrowserAuthentication::Option],
+                  reason: String?,
+                  ?type: :browser_authentication
+                }
+
+                type field =
+                  { id: String, label: String, required: bool, type: String }
+
+                class Field < OpenAI::Internal::Type::BaseModel
+                  # The field ID to submit as field_id in a fields entry.
+                  attr_accessor id: String
+
+                  # The label to display beside the control.
+                  attr_accessor label: String
+
+                  # Whether this control requires a nonempty value.
+                  attr_accessor required: bool
+
+                  # The rendering type, such as email, password, or text.
+                  attr_accessor type: String
+
+                  # @param id
+                  #   The field ID to submit as field_id in a fields entry.
+                  # @param label
+                  #   The label to display beside the control.
+                  # @param required
+                  #   Whether this control requires a nonempty value.
+                  # @param type
+                  #   The rendering type, such as email, password, or text.
+                  def initialize: (
+                    id: String,
+                    label: String,
+                    required: bool,
+                    type: String
+                  ) -> void
+
+                  def to_hash: -> {
+                    id: String,
+                    label: String,
+                    required: bool,
+                    type: String
+                  }
+                end
+
+                type option =
+                  { id: String, field_ids: ::Array[String], label: String }
+
+                class Option < OpenAI::Internal::Type::BaseModel
+                  # The option ID to submit as selected_option.
+                  attr_accessor id: String
+
+                  # IDs from the registered fields that this method accepts.
+                  attr_accessor field_ids: ::Array[String]
+
+                  # The method label to display.
+                  attr_accessor label: String
+
+                  # @param id
+                  #   The option ID to submit as selected_option.
+                  # @param field_ids
+                  #   IDs from the registered fields that this method accepts.
+                  # @param label
+                  #   The method label to display.
+                  def initialize: (
+                    id: String,
+                    field_ids: ::Array[String],
+                    label: String
+                  ) -> void
+
+                  def to_hash: -> {
+                    id: String,
+                    field_ids: ::Array[String],
+                    label: String
+                  }
+                end
+              end
+
+              type browser_origin_access =
+                {
+                  origin: String,
+                  reason: String?,
+                  ?type: :browser_origin_access
+                }
+
+              class BrowserOriginAccess < OpenAI::Internal::Type::BaseModel
+                # The origin the browser needs permission to access.
+                attr_accessor origin: String
+
+                # The browser's explanation for this request, or null when unavailable.
+                attr_accessor reason: String?
+
+                # The type of the object. Always `browser_origin_access`.
+                attr_accessor type: :browser_origin_access
+
+                # @param origin
+                #   The origin the browser needs permission to access.
+                # @param reason
+                #   The browser's explanation for this request, or null when unavailable.
+                # @param type
+                #   The type of the object. Always `browser_origin_access`.
+                def initialize: (
+                  origin: String,
+                  reason: String?,
+                  ?type: :browser_origin_access
+                ) -> void
+
+                def to_hash: -> {
+                  origin: String,
+                  reason: String?,
+                  ?type: :browser_origin_access
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::request]
+            end
+          end
+
+          type function_call =
+            {
+              arguments: top,
+              call_id: String,
+              name: String,
+              turn_id: String,
+              ?type: :function_call
+            }
+
+          class FunctionCall < OpenAI::Internal::Type::BaseModel
+            # The arguments supplied by the model.
+            attr_accessor arguments: top
+
+            # The ID to include when submitting the function result.
+            attr_accessor call_id: String
+
+            # The function name.
+            attr_accessor name: String
+
+            # The ID of the turn that requested the function call.
+            attr_accessor turn_id: String
+
+            # The type of the object. Always `function_call`.
+            attr_accessor type: :function_call
+
+            # @param arguments
+            #   The arguments supplied by the model.
+            # @param call_id
+            #   The ID to include when submitting the function result.
+            # @param name
+            #   The function name.
+            # @param turn_id
+            #   The ID of the turn that requested the function call.
+            # @param type
+            #   The type of the object. Always `function_call`.
+            def initialize: (
+              arguments: top,
+              call_id: String,
+              name: String,
+              turn_id: String,
+              ?type: :function_call
+            ) -> void
+
+            def to_hash: -> {
+              arguments: top,
+              call_id: String,
+              name: String,
+              turn_id: String,
+              ?type: :function_call
+            }
+          end
+
+          type environment_connection =
+            { environment_id: String, ?type: :environment_connection }
+
+          class EnvironmentConnection < OpenAI::Internal::Type::BaseModel
+            # The ID of the environment to reconnect.
+            attr_accessor environment_id: String
+
+            # The type of the object. Always `environment_connection`.
+            attr_accessor type: :environment_connection
+
+            # @param environment_id
+            #   The ID of the environment to reconnect.
+            # @param type
+            #   The type of the object. Always `environment_connection`.
+            def initialize: (
+              environment_id: String,
+              ?type: :environment_connection
+            ) -> void
+
+            def to_hash: -> {
+              environment_id: String,
+              ?type: :environment_connection
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::AgentSession::required_action]
+        end
+
+        type status = :idle | :in_progress | :requires_action | :failed
+
+        module Status
+          extend OpenAI::Internal::Type::Enum
+
+          # The session has no turn in progress and is ready for input. A hosted environment may still be provisioning.
+          IDLE: :idle
+
+          # The session is processing a turn.
+          IN_PROGRESS: :in_progress
+
+          # The session is waiting for one or more required actions.
+          REQUIRES_ACTION: :requires_action
+
+          # The session failed.
+          FAILED: :failed
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::status]
+        end
+
+        type spend_control = { consumed: Integer?, limit: Integer }
+
+        class SpendControl < OpenAI::Internal::Type::BaseModel
+          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          attr_accessor consumed: Integer?
+
+          # The configured positive limit in USD cents.
+          attr_accessor limit: Integer
+
+          # @param consumed
+          #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          # @param limit
+          #   The configured positive limit in USD cents.
+          def initialize: (consumed: Integer?, limit: Integer) -> void
+
+          def to_hash: -> { consumed: Integer?, limit: Integer }
+        end
+      end
+    end
+  end
+end

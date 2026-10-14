@@ -1,0 +1,14 @@
+providers = [
+  OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(token_path: "/synthetic/token"),
+  OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new(resource: "synthetic", timeout: 1.0),
+  OpenAI::Auth::SubjectTokenProviders::GCPIDTokenProvider.new(audience: "synthetic", timeout: 1.0)
+]
+providers.each do |provider|
+  identity = OpenAI::Auth::WorkloadIdentity.new(
+    provider: provider,
+    identity_provider_id: "ip_synthetic",
+    service_account_id: "sa_synthetic"
+  )
+  identity.provider.token_type
+  identity.provider.get_token
+end

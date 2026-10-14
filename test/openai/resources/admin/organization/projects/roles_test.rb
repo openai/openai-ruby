@@ -4,12 +4,11 @@ require_relative "../../../../test_helper"
 
 class OpenAI::Test::Resources::Admin::Organization::Projects::RolesTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response =
-      @openai.admin.organization.projects.roles.create(
-        "project_id",
-        permissions: ["string"],
-        role_name: "role_name"
-      )
+    response = @openai.admin.organization.projects.roles.create(
+      "project_id",
+      permissions: ["string"],
+      role_name: "role_name"
+    )
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Role
@@ -17,14 +16,14 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::RolesTest < OpenAI
 
     assert_pattern do
       response => {
-        id: String,
-        description: String | nil,
-        name: String,
-        object: Symbol,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String
-      }
+          id: String,
+          description: String | nil,
+          name: String,
+          object: Symbol,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String
+        }
     end
   end
 
@@ -37,14 +36,14 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::RolesTest < OpenAI
 
     assert_pattern do
       response => {
-        id: String,
-        description: String | nil,
-        name: String,
-        object: Symbol,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String
-      }
+          id: String,
+          description: String | nil,
+          name: String,
+          object: Symbol,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String
+        }
     end
   end
 
@@ -57,14 +56,14 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::RolesTest < OpenAI
 
     assert_pattern do
       response => {
-        id: String,
-        description: String | nil,
-        name: String,
-        object: Symbol,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String
-      }
+          id: String,
+          description: String | nil,
+          name: String,
+          object: Symbol,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String
+        }
     end
   end
 
@@ -75,7 +74,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::RolesTest < OpenAI
       response => OpenAI::Internal::NextCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -84,14 +84,14 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::RolesTest < OpenAI
 
     assert_pattern do
       row => {
-        id: String,
-        description: String | nil,
-        name: String,
-        object: Symbol,
-        permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        predefined_role: OpenAI::Internal::Type::Boolean,
-        resource_type: String
-      }
+          id: String,
+          description: String | nil,
+          name: String,
+          object: Symbol,
+          permissions: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          predefined_role: OpenAI::Internal::Type::Boolean,
+          resource_type: String
+        }
     end
   end
 
@@ -104,10 +104,10 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::RolesTest < OpenAI
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 end

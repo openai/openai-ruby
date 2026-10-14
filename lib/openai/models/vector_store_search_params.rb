@@ -44,20 +44,23 @@ module OpenAI
       optional :rewrite_query, OpenAI::Internal::Type::Boolean
 
       # @!method initialize(vector_store_id:, query:, filters: nil, max_num_results: nil, ranking_options: nil, rewrite_query: nil, request_options: {})
-      #   Some parameter documentations has been truncated, see
-      #   {OpenAI::Models::VectorStoreSearchParams} for more details.
-      #
       #   @param vector_store_id [String]
       #
-      #   @param query [String, Array<String>] A query string for a search
+      #   @param query [String, Array<String>]
+      #     A query string for a search
       #
-      #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter] A filter to apply based on file attributes.
+      #   @param filters [OpenAI::Models::ComparisonFilter, OpenAI::Models::CompoundFilter]
+      #     A filter to apply based on file attributes.
       #
-      #   @param max_num_results [Integer] The maximum number of results to return. This number should be between 1 and 50
+      #   @param max_num_results [Integer]
+      #     The maximum number of results to return. This number should be between 1 and 50
+      #     inclusive.
       #
-      #   @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions] Ranking options for search.
+      #   @param ranking_options [OpenAI::Models::VectorStoreSearchParams::RankingOptions]
+      #     Ranking options for search.
       #
-      #   @param rewrite_query [Boolean] Whether to rewrite the natural language query for vector search.
+      #   @param rewrite_query [Boolean]
+      #     Whether to rewrite the natural language query for vector search.
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -105,7 +108,8 @@ module OpenAI
         # @!method initialize(ranker: nil, score_threshold: nil)
         #   Ranking options for search.
         #
-        #   @param ranker [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker] Enable re-ranking; set to `none` to disable, which can help reduce latency.
+        #   @param ranker [Symbol, OpenAI::Models::VectorStoreSearchParams::RankingOptions::Ranker]
+        #     Enable re-ranking; set to `none` to disable, which can help reduce latency.
         #
         #   @param score_threshold [Float]
 

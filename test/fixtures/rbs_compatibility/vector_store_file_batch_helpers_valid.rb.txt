@@ -1,0 +1,5 @@
+client = OpenAI::Client.new(api_key: "fake-key")
+batches = client.vector_stores.file_batches
+batches.create_and_poll("vs_synthetic", file_ids: ["file_synthetic"], attributes: {source: "fixture"}, timeout: nil).id.upcase
+batches.poll("batch_synthetic", vector_store_id: "vs_synthetic", poll_interval: 0.5, timeout: 10.0).id.upcase
+batches.upload_and_poll("vs_synthetic", files: [StringIO.new("synthetic")], file_ids: ["file_existing"], max_concurrency: 1, timeout: nil).id.upcase

@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Webhooks
+
       class RealtimeCallIncomingWebhookEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique ID of the event.
         sig { returns(String) }
@@ -21,17 +23,10 @@ module OpenAI
         attr_accessor :created_at
 
         # Event data payload.
-        sig do
-          returns(OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data)
-        end
+        sig { returns(OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data) }
         attr_reader :data
 
-        sig do
-          params(
-            data:
-              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::OrHash
-          ).void
-        end
+        sig { params(data: OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::OrHash).void }
         attr_writer :data
 
         # The type of the event. Always `realtime.call.incoming`.
@@ -39,47 +34,46 @@ module OpenAI
         attr_accessor :type
 
         # The object of the event. Always `event`.
-        sig do
-          returns(
-            T.nilable(
-              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::TaggedSymbol
-            )
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::TaggedSymbol)) }
         attr_reader :object
 
-        sig do
-          params(
-            object:
-              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::OrSymbol
-          ).void
-        end
+        sig { params(object: OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::OrSymbol).void }
         attr_writer :object
 
         # Sent when an incoming API SIP session is available for Realtime acceptance. The
-        # same pending session can also emit `live.call.incoming`; the first successful
-        # Realtime or Live accept endpoint selects the runtime surface.
+        # same pending session can also emit `live.transport.incoming`; the first
+        # successful Realtime or Live accept endpoint selects the runtime surface.
         sig do
           params(
+
             id: String,
+
             created_at: Integer,
-            data:
-              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::OrHash,
-            object:
-              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::OrSymbol,
+
+            data: OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::OrHash,
+
+            object: OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::OrSymbol,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique ID of the event.
           id:,
+
           # The Unix timestamp (in seconds) of when the model response was completed.
           created_at:,
+
           # Event data payload.
           data:,
+
           # The object of the event. Always `event`.
           object: nil,
+
           # The type of the event. Always `realtime.call.incoming`.
+
           type: :"realtime.call.incoming"
         )
         end
@@ -91,8 +85,7 @@ module OpenAI
               created_at: Integer,
               data: OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data,
               type: Symbol,
-              object:
-                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::TaggedSymbol
+              object: OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::TaggedSymbol
             }
           )
         end
@@ -100,45 +93,82 @@ module OpenAI
         end
 
         class Data < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
-          # The Transceiver `rtc_...` ID of the pending SIP session. The same value appears
-          # as `session_id` in `live.call.incoming`.
+          # The ID of the pending SIP call. Pass this value unchanged when accepting or
+          # rejecting the call through the Realtime API. For the Live API, use the
+          # `session_id` from `live.transport.incoming` instead.
           sig { returns(String) }
           attr_accessor :call_id
 
-          # Headers from the SIP Invite.
-          sig do
-            returns(
-              T::Array[
-                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader
-              ]
-            )
-          end
+          # Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+          # names, values, repeated entries, and order are preserved. Treat these values as
+          # untrusted call metadata.
+          sig { returns(T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader]) }
           attr_accessor :sip_headers
+
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          sig {
+            returns(
+              T.nilable(
+                T.any(OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol, String)
+              )
+            )
+          }
+          attr_reader :sip_media_security
+
+          sig {
+            params(
+              sip_media_security: T.any(
+                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                String
+              )
+            )
+              .void
+          }
+          attr_writer :sip_media_security
 
           # Event data payload.
           sig do
             params(
+
               call_id: String,
-              sip_headers:
-                T::Array[
-                  OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader::OrHash
-                ]
-            ).returns(T.attached_class)
+
+              sip_headers: T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader::OrHash],
+
+              sip_media_security: T.any(
+                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                String
+              )
+            )
+              .returns(T.attached_class)
           end
           def self.new(
-            # The Transceiver `rtc_...` ID of the pending SIP session. The same value appears
-            # as `session_id` in `live.call.incoming`.
+
+            # The ID of the pending SIP call. Pass this value unchanged when accepting or
+            # rejecting the call through the Realtime API. For the Live API, use the
+            # `session_id` from `live.transport.incoming` instead.
             call_id:,
-            # Headers from the SIP Invite.
-            sip_headers:
+
+            # Headers from the SIP INVITE, excluding SIP authorization headers. Retained
+            # names, values, repeated entries, and order are preserved. Treat these values as
+            # untrusted call metadata.
+            sip_headers:,
+
+            # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+            # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+            # not describe SIP signaling security or confirm that media has flowed. Clients
+            # should handle unrecognized values as unknown.
+
+            sip_media_security: nil
           )
           end
 
@@ -146,10 +176,11 @@ module OpenAI
             override.returns(
               {
                 call_id: String,
-                sip_headers:
-                  T::Array[
-                    OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader
-                  ]
+                sip_headers: T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader],
+                sip_media_security: T.any(
+                  OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::OrSymbol,
+                  String
+                )
               }
             )
           end
@@ -157,13 +188,12 @@ module OpenAI
           end
 
           class SipHeader < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipHeader,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Name of the SIP Header.
             sig { returns(String) }
@@ -175,19 +205,66 @@ module OpenAI
 
             # A header from the SIP Invite.
             sig do
-              params(name: String, value: String).returns(T.attached_class)
+              params(
+
+                name: String,
+
+                value: String
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Name of the SIP Header.
               name:,
+
               # Value of the SIP Header.
+
               value:
             )
             end
 
-            sig { override.returns({ name: String, value: String }) }
+            sig do
+              override.returns(
+                {name: String, value: String}
+              )
+            end
             def to_hash
             end
+
+          end
+
+          # Media protection selected on the SIP leg during SDP negotiation. `srtp`
+          # indicates SRTP; `rtp` indicates unencrypted RTP. Omitted when unknown. This does
+          # not describe SIP signaling security or confirm that media has flowed. Clients
+          # should handle unrecognized values as unknown.
+          module SipMediaSecurity
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol, String)
+            }
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::Variants]
+              )
+            }
+            def self.variants
+            end
+
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity)
+            end
+
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            RTP = T.let(:rtp, OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol)
+            SRTP = T.let(
+              :srtp,
+              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Data::SipMediaSecurity::TaggedSymbol
+            )
+
           end
         end
 
@@ -195,32 +272,19 @@ module OpenAI
         module Object
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(
-                Symbol,
-                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object
-              )
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          EVENT =
-            T.let(
-              :event,
-              OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::TaggedSymbol
-            )
+          EVENT = T.let(:event, OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent::Object::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

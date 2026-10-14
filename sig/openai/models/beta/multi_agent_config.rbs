@@ -1,0 +1,29 @@
+module OpenAI
+  module Models
+    module Beta
+      type multi_agent_config =
+        { enabled: bool, max_concurrent_subagents: Integer? }
+
+      class MultiAgentConfig < OpenAI::Internal::Type::BaseModel
+        # Whether subagent tools are enabled. Defaults to false.
+        attr_accessor enabled: bool
+
+        # Maximum number of subagents that may run concurrently, or null when disabled.
+        # Defaults to 6 when enabled.
+        attr_accessor max_concurrent_subagents: Integer?
+
+        # @param enabled
+        #   Whether subagent tools are enabled. Defaults to false.
+        # @param max_concurrent_subagents
+        #   Maximum number of subagents that may run concurrently, or null when disabled.
+        #   Defaults to 6 when enabled.
+        def initialize: (
+          enabled: bool,
+          max_concurrent_subagents: Integer?
+        ) -> void
+
+        def to_hash: -> { enabled: bool, max_concurrent_subagents: Integer? }
+      end
+    end
+  end
+end

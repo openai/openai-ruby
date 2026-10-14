@@ -1,0 +1,27 @@
+module OpenAI
+  module Helpers
+    module Beta
+      module Agents
+        class FunctionTool
+          attr_reader name: String
+
+          def initialize: (
+            name: String,
+            arguments: Class,
+            ?description: String,
+            ?defer_loading: bool?
+          ) {
+            (untyped) -> OpenAI::Helpers::Agents::tool_output
+          } -> void
+          def definition: -> Hash[Symbol, untyped]
+          def handlers: -> Hash[String, OpenAI::Helpers::Agents::tool_handler]
+          def call: (
+            String | Hash[String | Symbol, untyped]
+          ) ?{
+            (:arguments | :execution) -> void
+          } -> OpenAI::Helpers::Agents::tool_output
+        end
+      end
+    end
+  end
+end

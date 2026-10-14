@@ -32,8 +32,14 @@ module OpenAI
           #   Return only web search usage for these context levels.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::ContextLevel>, nil]
-          optional :context_levels,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageWebSearchCallsParams::ContextLevel] }
+          optional(
+            :context_levels,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[
+                enum: OpenAI::Admin::Organization::UsageWebSearchCallsParams::ContextLevel
+              ]
+            }
+          )
 
           # @!attribute end_time
           #   End time (Unix seconds) of the query time range, exclusive.
@@ -43,12 +49,18 @@ module OpenAI
 
           # @!attribute group_by
           #   Group the usage data by the specified fields. Support fields include
-          #   `project_id`, `user_id`, `api_key_id`, `model`, `context_level` or any
-          #   combination of them.
+          #   `project_id`, `user_id`, `api_key_id`, `model`, `context_level`, `api_source` or
+          #   any combination of them. When grouped by `api_source`, results use `agents_api`
+          #   for attributed Agents API activity and `unlabeled` for all other activity.
+          #   Without source grouping, `api_source` is null.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy]
+            }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.
@@ -86,31 +98,48 @@ module OpenAI
           optional :user_ids, OpenAI::Internal::Type::ArrayOf[String]
 
           # @!method initialize(start_time:, api_key_ids: nil, bucket_width: nil, context_levels: nil, end_time: nil, group_by: nil, limit: nil, models: nil, page: nil, project_ids: nil, user_ids: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams} for more
-          #   details.
+          #   @param start_time [Integer]
+          #     Start time (Unix seconds) of the query time range, inclusive.
           #
-          #   @param start_time [Integer] Start time (Unix seconds) of the query time range, inclusive.
+          #   @param api_key_ids [Array<String>]
+          #     Return only usage for these API keys.
           #
-          #   @param api_key_ids [Array<String>] Return only usage for these API keys.
+          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::BucketWidth]
+          #     Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+          #     supported, default to `1d`.
           #
-          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::BucketWidth] Width of each time bucket in response. Currently `1m`, `1h` and `1d` are support
+          #   @param context_levels [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::ContextLevel>]
+          #     Return only web search usage for these context levels.
           #
-          #   @param context_levels [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::ContextLevel>] Return only web search usage for these context levels.
+          #   @param end_time [Integer]
+          #     End time (Unix seconds) of the query time range, exclusive.
           #
-          #   @param end_time [Integer] End time (Unix seconds) of the query time range, exclusive.
+          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::GroupBy>]
+          #     Group the usage data by the specified fields. Support fields include
+          #     `project_id`, `user_id`, `api_key_id`, `model`, `context_level`, `api_source` or
+          #     any combination of them. When grouped by `api_source`, results use `agents_api`
+          #     for attributed Agents API activity and `unlabeled` for all other activity.
+          #     Without source grouping, `api_source` is null.
           #
-          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageWebSearchCallsParams::GroupBy>] Group the usage data by the specified fields. Support fields include `project_id
+          #   @param limit [Integer]
+          #     Specifies the number of buckets to return.
           #
-          #   @param limit [Integer] Specifies the number of buckets to return.
+          #     - `bucket_width=1d`: default: 7, max: 31
+          #     - `bucket_width=1h`: default: 24, max: 168
+          #     - `bucket_width=1m`: default: 60, max: 1440
           #
-          #   @param models [Array<String>] Return only usage for these models.
+          #   @param models [Array<String>]
+          #     Return only usage for these models.
           #
-          #   @param page [String] A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #   @param page [String]
+          #     A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #     previous response.
           #
-          #   @param project_ids [Array<String>] Return only usage for these projects.
+          #   @param project_ids [Array<String>]
+          #     Return only usage for these projects.
           #
-          #   @param user_ids [Array<String>] Return only usage for these users.
+          #   @param user_ids [Array<String>]
+          #     Return only usage for these users.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -146,6 +175,7 @@ module OpenAI
             API_KEY_ID = :api_key_id
             MODEL = :model
             CONTEXT_LEVEL = :context_level
+            API_SOURCE = :api_source
 
             # @!method self.values
             #   @return [Array<Symbol>]

@@ -2,19 +2,22 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         class UsageImagesParams < OpenAI::Internal::Type::BaseModel
+
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Admin::Organization::UsageImagesParams,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Admin::Organization::UsageImagesParams,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Start time (Unix seconds) of the query time range, inclusive.
           sig { returns(Integer) }
@@ -29,21 +32,10 @@ module OpenAI
 
           # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
           # supported, default to `1d`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol)) }
           attr_reader :bucket_width
 
-          sig do
-            params(
-              bucket_width:
-                OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol
-            ).void
-          end
+          sig { params(bucket_width: OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol).void }
           attr_writer :bucket_width
 
           # End time (Unix seconds) of the query time range, exclusive.
@@ -56,25 +48,10 @@ module OpenAI
           # Group the usage data by the specified fields. Support fields include
           # `project_id`, `user_id`, `api_key_id`, `model`, `size`, `source` or any
           # combination of them.
-          sig do
-            returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol
-                ]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol])) }
           attr_reader :group_by
 
-          sig do
-            params(
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol
-                ]
-            ).void
-          end
+          sig { params(group_by: T::Array[OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol]).void }
           attr_writer :group_by
 
           # Specifies the number of buckets to return.
@@ -112,48 +89,18 @@ module OpenAI
 
           # Return only usages for these image sizes. Possible values are `256x256`,
           # `512x512`, `1024x1024`, `1792x1792`, `1024x1792` or any combination of them.
-          sig do
-            returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol
-                ]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol])) }
           attr_reader :sizes
 
-          sig do
-            params(
-              sizes:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol
-                ]
-            ).void
-          end
+          sig { params(sizes: T::Array[OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol]).void }
           attr_writer :sizes
 
           # Return only usages for these sources. Possible values are `image.generation`,
           # `image.edit`, `image.variation` or any combination of them.
-          sig do
-            returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol
-                ]
-              )
-            )
-          end
+          sig { returns(T.nilable(T::Array[OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol])) }
           attr_reader :sources
 
-          sig do
-            params(
-              sources:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol
-                ]
-            ).void
-          end
+          sig { params(sources: T::Array[OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol]).void }
           attr_writer :sources
 
           # Return only usage for these users.
@@ -165,66 +112,83 @@ module OpenAI
 
           sig do
             params(
+
               start_time: Integer,
+
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol,
+
+              bucket_width: OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol,
+
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol
-                ],
+
+              group_by: T::Array[OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol],
+
               limit: Integer,
+
               models: T::Array[String],
+
               page: String,
+
               project_ids: T::Array[String],
-              sizes:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol
-                ],
-              sources:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol
-                ],
+
+              sizes: T::Array[OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol],
+
+              sources: T::Array[OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol],
+
               user_ids: T::Array[String],
+
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
+
             # Return only usage for these API keys.
             api_key_ids: nil,
+
             # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
             # supported, default to `1d`.
             bucket_width: nil,
+
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
+
             # Group the usage data by the specified fields. Support fields include
             # `project_id`, `user_id`, `api_key_id`, `model`, `size`, `source` or any
             # combination of them.
             group_by: nil,
+
             # Specifies the number of buckets to return.
             #
             # - `bucket_width=1d`: default: 7, max: 31
             # - `bucket_width=1h`: default: 24, max: 168
             # - `bucket_width=1m`: default: 60, max: 1440
             limit: nil,
+
             # Return only usage for these models.
             models: nil,
+
             # A cursor for use in pagination. Corresponding to the `next_page` field from the
             # previous response.
             page: nil,
+
             # Return only usage for these projects.
             project_ids: nil,
+
             # Return only usages for these image sizes. Possible values are `256x256`,
             # `512x512`, `1024x1024`, `1792x1792`, `1024x1792` or any combination of them.
             sizes: nil,
+
             # Return only usages for these sources. Possible values are `image.generation`,
             # `image.edit`, `image.variation` or any combination of them.
             sources: nil,
+
             # Return only usage for these users.
             user_ids: nil,
+
             request_options: {}
           )
           end
@@ -234,25 +198,15 @@ module OpenAI
               {
                 start_time: Integer,
                 api_key_ids: T::Array[String],
-                bucket_width:
-                  OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol,
+                bucket_width: OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol,
                 end_time: Integer,
-                group_by:
-                  T::Array[
-                    OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol
-                  ],
+                group_by: T::Array[OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol],
                 limit: Integer,
                 models: T::Array[String],
                 page: String,
                 project_ids: T::Array[String],
-                sizes:
-                  T::Array[
-                    OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol
-                  ],
-                sources:
-                  T::Array[
-                    OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol
-                  ],
+                sizes: T::Array[OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol],
+                sources: T::Array[OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol],
                 user_ids: T::Array[String],
                 request_options: OpenAI::RequestOptions
               }
@@ -266,38 +220,16 @@ module OpenAI
           module BucketWidth
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::UsageImagesParams::BucketWidth
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::UsageImagesParams::BucketWidth) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            BUCKET_WIDTH_1M =
-              T.let(
-                :"1m",
-                OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::TaggedSymbol
-              )
-            BUCKET_WIDTH_1H =
-              T.let(
-                :"1h",
-                OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::TaggedSymbol
-              )
-            BUCKET_WIDTH_1D =
-              T.let(
-                :"1d",
-                OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::TaggedSymbol
-              )
+            BUCKET_WIDTH_1M = T.let(:"1m", OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::TaggedSymbol)
+            BUCKET_WIDTH_1H = T.let(:"1h", OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::TaggedSymbol)
+            BUCKET_WIDTH_1D = T.let(:"1d", OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::TaggedSymbol])
+            }
             def self.values
             end
           end
@@ -305,53 +237,17 @@ module OpenAI
           module GroupBy
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::UsageImagesParams::GroupBy
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::UsageImagesParams::GroupBy) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            PROJECT_ID =
-              T.let(
-                :project_id,
-                OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol
-              )
-            USER_ID =
-              T.let(
-                :user_id,
-                OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol
-              )
-            API_KEY_ID =
-              T.let(
-                :api_key_id,
-                OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol
-              )
-            MODEL =
-              T.let(
-                :model,
-                OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol
-              )
-            SIZE =
-              T.let(
-                :size,
-                OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol
-              )
-            SOURCE =
-              T.let(
-                :source,
-                OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol
-              )
+            PROJECT_ID = T.let(:project_id, OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol)
+            USER_ID = T.let(:user_id, OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol)
+            API_KEY_ID = T.let(:api_key_id, OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol)
+            MODEL = T.let(:model, OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol)
+            SIZE = T.let(:size, OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol)
+            SOURCE = T.let(:source, OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Admin::Organization::UsageImagesParams::GroupBy::TaggedSymbol]) }
             def self.values
             end
           end
@@ -359,48 +255,16 @@ module OpenAI
           module Size
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::UsageImagesParams::Size
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::UsageImagesParams::Size) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            SIZE_256X256 =
-              T.let(
-                :"256x256",
-                OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol
-              )
-            SIZE_512X512 =
-              T.let(
-                :"512x512",
-                OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol
-              )
-            SIZE_1024X1024 =
-              T.let(
-                :"1024x1024",
-                OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol
-              )
-            SIZE_1792X1792 =
-              T.let(
-                :"1792x1792",
-                OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol
-              )
-            SIZE_1024X1792 =
-              T.let(
-                :"1024x1792",
-                OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol
-              )
+            SIZE_256X256 = T.let(:"256x256", OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol)
+            SIZE_512X512 = T.let(:"512x512", OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol)
+            SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol)
+            SIZE_1792X1792 = T.let(:"1792x1792", OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol)
+            SIZE_1024X1792 = T.let(:"1024x1792", OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Admin::Organization::UsageImagesParams::Size::TaggedSymbol]) }
             def self.values
             end
           end
@@ -408,43 +272,29 @@ module OpenAI
           module Source
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Admin::Organization::UsageImagesParams::Source
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Admin::Organization::UsageImagesParams::Source) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IMAGE_GENERATION =
-              T.let(
-                :"image.generation",
-                OpenAI::Admin::Organization::UsageImagesParams::Source::TaggedSymbol
-              )
-            IMAGE_EDIT =
-              T.let(
-                :"image.edit",
-                OpenAI::Admin::Organization::UsageImagesParams::Source::TaggedSymbol
-              )
-            IMAGE_VARIATION =
-              T.let(
-                :"image.variation",
-                OpenAI::Admin::Organization::UsageImagesParams::Source::TaggedSymbol
-              )
+            IMAGE_GENERATION = T.let(
+              :"image.generation",
+              OpenAI::Admin::Organization::UsageImagesParams::Source::TaggedSymbol
+            )
+            IMAGE_EDIT = T.let(:"image.edit", OpenAI::Admin::Organization::UsageImagesParams::Source::TaggedSymbol)
+            IMAGE_VARIATION = T.let(
+              :"image.variation",
+              OpenAI::Admin::Organization::UsageImagesParams::Source::TaggedSymbol
+            )
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Source::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Admin::Organization::UsageImagesParams::Source::TaggedSymbol]) }
             def self.values
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

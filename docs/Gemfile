@@ -1,0 +1,8 @@
+# frozen_string_literal: true
+
+# Keep documentation tooling out of the primary contributor dependency graph.
+source "https://rubygems.org", cooldown: 7
+
+gem "redcarpet"
+gem "webrick"
+gem "yard"

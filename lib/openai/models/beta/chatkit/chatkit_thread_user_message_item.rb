@@ -21,8 +21,10 @@ module OpenAI
           #   Ordered content elements supplied by the user.
           #
           #   @return [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText, OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText>]
-          required :content,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content] }
+          required(
+            :content,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::Content] }
+          )
 
           # @!attribute created_at
           #   Unix timestamp (in seconds) for when the item was created.
@@ -34,9 +36,11 @@ module OpenAI
           #   Inference overrides applied to the message. Defaults to null when unset.
           #
           #   @return [OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions, nil]
-          required :inference_options,
-                   -> { OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions },
-                   nil?: true
+          required(
+            :inference_options,
+            -> { OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions },
+            nil?: true
+          )
 
           # @!attribute object
           #   Type discriminator that is always `chatkit.thread_item`.
@@ -58,19 +62,26 @@ module OpenAI
           # @!method initialize(id:, attachments:, content:, created_at:, inference_options:, thread_id:, object: :"chatkit.thread_item", type: :"chatkit.user_message")
           #   User-authored messages within a thread.
           #
-          #   @param id [String] Identifier of the thread item.
+          #   @param id [String]
+          #     Identifier of the thread item.
           #
-          #   @param attachments [Array<OpenAI::Models::Beta::ChatKit::ChatKitAttachment>] Attachments associated with the user message. Defaults to an empty list.
+          #   @param attachments [Array<OpenAI::Models::Beta::ChatKit::ChatKitAttachment>]
+          #     Attachments associated with the user message. Defaults to an empty list.
           #
-          #   @param content [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText, OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText>] Ordered content elements supplied by the user.
+          #   @param content [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::InputText, OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::Content::QuotedText>]
+          #     Ordered content elements supplied by the user.
           #
-          #   @param created_at [Integer] Unix timestamp (in seconds) for when the item was created.
+          #   @param created_at [Integer]
+          #     Unix timestamp (in seconds) for when the item was created.
           #
-          #   @param inference_options [OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions, nil] Inference overrides applied to the message. Defaults to null when unset.
+          #   @param inference_options [OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions, nil]
+          #     Inference overrides applied to the message. Defaults to null when unset.
           #
-          #   @param thread_id [String] Identifier of the parent thread.
+          #   @param thread_id [String]
+          #     Identifier of the parent thread.
           #
-          #   @param object [Symbol, :"chatkit.thread_item"] Type discriminator that is always `chatkit.thread_item`.
+          #   @param object [Symbol, :"chatkit.thread_item"]
+          #     Type discriminator that is always `chatkit.thread_item`.
           #
           #   @param type [Symbol, :"chatkit.user_message"]
 
@@ -102,9 +113,11 @@ module OpenAI
               # @!method initialize(text:, type: :input_text)
               #   Text block that a user contributed to the thread.
               #
-              #   @param text [String] Plain-text content supplied by the user.
+              #   @param text [String]
+              #     Plain-text content supplied by the user.
               #
-              #   @param type [Symbol, :input_text] Type discriminator that is always `input_text`.
+              #   @param type [Symbol, :input_text]
+              #     Type discriminator that is always `input_text`.
             end
 
             class QuotedText < OpenAI::Internal::Type::BaseModel
@@ -123,9 +136,11 @@ module OpenAI
               # @!method initialize(text:, type: :quoted_text)
               #   Quoted snippet that the user referenced in their message.
               #
-              #   @param text [String] Quoted text content.
+              #   @param text [String]
+              #     Quoted text content.
               #
-              #   @param type [Symbol, :quoted_text] Type discriminator that is always `quoted_text`.
+              #   @param type [Symbol, :quoted_text]
+              #     Type discriminator that is always `quoted_text`.
             end
 
             # @!method self.variants
@@ -145,20 +160,21 @@ module OpenAI
             #   Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
             #
             #   @return [OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice, nil]
-            required :tool_choice,
-                     -> { OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice },
-                     nil?: true
+            required(
+              :tool_choice,
+              -> { OpenAI::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice },
+              nil?: true
+            )
 
             # @!method initialize(model:, tool_choice:)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions}
-            #   for more details.
-            #
             #   Inference overrides applied to the message. Defaults to null when unset.
             #
-            #   @param model [String, nil] Model name that generated the response. Defaults to null when using the session
+            #   @param model [String, nil]
+            #     Model name that generated the response. Defaults to null when using the session
+            #     default.
             #
-            #   @param tool_choice [OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice, nil] Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
+            #   @param tool_choice [OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions::ToolChoice, nil]
+            #     Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
 
             # @see OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem::InferenceOptions#tool_choice
             class ToolChoice < OpenAI::Internal::Type::BaseModel
@@ -171,7 +187,8 @@ module OpenAI
               # @!method initialize(id:)
               #   Preferred tool to invoke. Defaults to null when ChatKit should auto-select.
               #
-              #   @param id [String] Identifier of the requested tool.
+              #   @param id [String]
+              #     Identifier of the requested tool.
             end
           end
         end

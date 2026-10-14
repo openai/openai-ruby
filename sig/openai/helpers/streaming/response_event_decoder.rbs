@@ -1,0 +1,16 @@
+module OpenAI
+  module Helpers
+    module Streaming
+      # @api private
+      class ResponseEventDecoder
+        def initialize: (model: untyped) -> void
+        def decode: (untyped data) -> untyped
+
+        private
+
+        def response_stream_model?: -> bool
+        def unknown_response_event?: (untyped data) -> bool
+      end
+    end
+  end
+end

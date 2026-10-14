@@ -35,16 +35,17 @@ module OpenAI
             optional :order, enum: -> { OpenAI::Admin::Organization::Users::RoleListParams::Order }
 
             # @!method initialize(user_id:, after: nil, limit: nil, order: nil, request_options: {})
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::Users::RoleListParams} for more details.
-            #
             #   @param user_id [String]
             #
-            #   @param after [String] Cursor for pagination. Provide the value from the previous response's `next` fie
+            #   @param after [String]
+            #     Cursor for pagination. Provide the value from the previous response's `next`
+            #     field to continue listing organization roles.
             #
-            #   @param limit [Integer] A limit on the number of organization role assignments to return.
+            #   @param limit [Integer]
+            #     A limit on the number of organization role assignments to return.
             #
-            #   @param order [Symbol, OpenAI::Models::Admin::Organization::Users::RoleListParams::Order] Sort order for the returned organization roles.
+            #   @param order [Symbol, OpenAI::Models::Admin::Organization::Users::RoleListParams::Order]
+            #     Sort order for the returned organization roles.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

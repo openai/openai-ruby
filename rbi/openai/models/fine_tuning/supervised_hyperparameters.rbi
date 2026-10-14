@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module FineTuning
+
       class SupervisedHyperparameters < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::FineTuning::SupervisedHyperparameters,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::FineTuning::SupervisedHyperparameters,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.
@@ -39,20 +41,28 @@ module OpenAI
         # The hyperparameters used for the fine-tuning job.
         sig do
           params(
+
             batch_size: T.any(Symbol, Integer),
+
             learning_rate_multiplier: T.any(Symbol, Float),
+
             n_epochs: T.any(Symbol, Integer)
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
           batch_size: nil,
+
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           # avoid overfitting.
           learning_rate_multiplier: nil,
+
           # The number of epochs to train the model for. An epoch refers to one full cycle
           # through the training dataset.
+
           n_epochs: nil
         )
         end
@@ -76,15 +86,10 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Integer) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::SupervisedHyperparameters::BatchSize::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::SupervisedHyperparameters::BatchSize::Variants]) }
           def self.variants
           end
+
         end
 
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -94,15 +99,12 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Float) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::SupervisedHyperparameters::LearningRateMultiplier::Variants
-              ]
-            )
-          end
+          sig {
+            override.returns(T::Array[OpenAI::FineTuning::SupervisedHyperparameters::LearningRateMultiplier::Variants])
+          }
           def self.variants
           end
+
         end
 
         # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -112,17 +114,15 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Integer) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::SupervisedHyperparameters::NEpochs::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::SupervisedHyperparameters::NEpochs::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

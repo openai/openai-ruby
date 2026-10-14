@@ -2,15 +2,17 @@
 
 module OpenAI
   module Resources
+
     class Skills
+
       class Content
+
         # Download a skill zip bundle by its ID.
-        sig do
-          params(
-            skill_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(StringIO)
-        end
+        sig {
+          params(skill_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            T.all(StringIO, OpenAI::ResponseCarrier)
+          )
+        }
         def retrieve(
           # The identifier of the skill to download.
           skill_id,
@@ -23,6 +25,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

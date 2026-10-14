@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module Webhooks
+      type webhook_delete_params =
+        { webhook_endpoint_id: String, ?request_options: OpenAI::request_opts }
+
+      class WebhookDeleteParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor webhook_endpoint_id: String
+
+        def initialize: (
+          webhook_endpoint_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          webhook_endpoint_id: String,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end
