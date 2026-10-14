@@ -12,11 +12,11 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -29,11 +29,13 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[
+            OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse::Data
+          ]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -46,11 +48,13 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[
+            OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsResponse::Data
+          ]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -63,11 +67,11 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageCompletionsResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -80,11 +84,28 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageCostsResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
+    end
+  end
+
+  def test_decisions_required_params
+    response = @openai.admin.organization.usage.decisions(start_time: 0)
+
+    assert_pattern do
+      response => OpenAI::Models::Admin::Organization::UsageDecisionsResponse
+    end
+
+    assert_pattern do
+      response => {
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -97,11 +118,11 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -114,11 +135,13 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[
+            OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse::Data
+          ]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -131,11 +154,11 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageImagesResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageImagesResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -148,11 +171,11 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageModerationsResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -165,11 +188,11 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageVectorStoresResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageVectorStoresResponse::Data]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 
@@ -182,11 +205,13 @@ class OpenAI::Test::Resources::Admin::Organization::UsageTest < OpenAI::Test::Re
 
     assert_pattern do
       response => {
-        data: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data]),
-        has_more: OpenAI::Internal::Type::Boolean,
-        next_page: String | nil,
-        object: Symbol
-      }
+          data: ^(OpenAI::Internal::Type::ArrayOf[
+            OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse::Data
+          ]),
+          has_more: OpenAI::Internal::Type::Boolean,
+          next_page: String | nil,
+          object: Symbol
+        }
     end
   end
 end

@@ -47,19 +47,26 @@ module OpenAI
       required :object, const: :skill
 
       # @!method initialize(id:, created_at:, default_version:, description:, latest_version:, name:, object: :skill)
-      #   @param id [String] Unique identifier for the skill.
+      #   @param id [String]
+      #     Unique identifier for the skill.
       #
-      #   @param created_at [Integer] Unix timestamp (seconds) for when the skill was created.
+      #   @param created_at [Integer]
+      #     Unix timestamp (seconds) for when the skill was created.
       #
-      #   @param default_version [String] Default version for the skill.
+      #   @param default_version [String]
+      #     Default version for the skill.
       #
-      #   @param description [String] Description of the skill.
+      #   @param description [String]
+      #     Description of the skill.
       #
-      #   @param latest_version [String] Latest version for the skill.
+      #   @param latest_version [String]
+      #     Latest version for the skill.
       #
-      #   @param name [String] Name of the skill.
+      #   @param name [String]
+      #     Name of the skill.
       #
-      #   @param object [Symbol, :skill] The object type, which is `skill`.
+      #   @param object [Symbol, :skill]
+      #     The object type, which is `skill`.
     end
   end
 end

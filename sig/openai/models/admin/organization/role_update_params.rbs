@@ -5,11 +5,11 @@ module OpenAI
         type role_update_params =
           {
             role_id: String,
-            description: String?,
-            permissions: ::Array[String]?,
-            role_name: String?
+            ?description: String?,
+            ?permissions: ::Array[String]?,
+            ?role_name: String?,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class RoleUpdateParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -17,12 +17,21 @@ module OpenAI
 
           attr_accessor role_id: String
 
+          # New description for the role.
           attr_accessor description: String?
 
+          # Updated set of permissions for the role.
           attr_accessor permissions: ::Array[String]?
 
+          # New name for the role.
           attr_accessor role_name: String?
 
+          # @param description
+          #   New description for the role.
+          # @param permissions
+          #   Updated set of permissions for the role.
+          # @param role_name
+          #   New name for the role.
           def initialize: (
             role_id: String,
             ?description: String?,
@@ -33,10 +42,10 @@ module OpenAI
 
           def to_hash: -> {
             role_id: String,
-            description: String?,
-            permissions: ::Array[String]?,
-            role_name: String?,
-            request_options: OpenAI::RequestOptions
+            ?description: String?,
+            ?permissions: ::Array[String]?,
+            ?role_name: String?,
+            ?request_options: OpenAI::RequestOptions
           }
         end
       end

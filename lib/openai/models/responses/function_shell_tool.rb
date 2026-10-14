@@ -14,11 +14,13 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Responses::FunctionShellTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::FunctionShellTool::AllowedCaller]
-                 },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Responses::FunctionShellTool::AllowedCaller]
+          },
+          nil?: true
+        )
 
         # @!attribute environment
         #
@@ -28,12 +30,13 @@ module OpenAI
         # @!method initialize(allowed_callers: nil, environment: nil, type: :shell)
         #   A tool that allows the model to execute shell commands.
         #
-        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::FunctionShellTool::AllowedCaller>, nil] The tool invocation context(s).
+        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Responses::FunctionShellTool::AllowedCaller>, nil]
+        #     The tool invocation context(s).
         #
         #   @param environment [OpenAI::Models::Responses::ContainerAuto, OpenAI::Models::Responses::LocalEnvironment, OpenAI::Models::Responses::ContainerReference, nil]
         #
-        #   @param type [Symbol, :shell] The type of the shell tool. Always `shell`.
-
+        #   @param type [Symbol, :shell]
+        #     The type of the shell tool. Always `shell`.
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 

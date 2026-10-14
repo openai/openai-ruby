@@ -29,16 +29,22 @@ module OpenAI
         optional :type, enum: -> { OpenAI::Realtime::RealtimeResponseStatus::Type }
 
         # @!method initialize(error: nil, reason: nil, type: nil)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeResponseStatus} for more details.
-        #
         #   Additional details about the status.
         #
-        #   @param error [OpenAI::Models::Realtime::RealtimeResponseStatus::Error] A description of the error that caused the response to fail,
+        #   @param error [OpenAI::Models::Realtime::RealtimeResponseStatus::Error]
+        #     A description of the error that caused the response to fail, populated when the
+        #     `status` is `failed`.
         #
-        #   @param reason [Symbol, OpenAI::Models::Realtime::RealtimeResponseStatus::Reason] The reason the Response did not complete. For a `cancelled` Response, one of `t
+        #   @param reason [Symbol, OpenAI::Models::Realtime::RealtimeResponseStatus::Reason]
+        #     The reason the Response did not complete. For a `cancelled` Response, one of
+        #     `turn_detected` (the server VAD detected a new start of speech) or
+        #     `client_cancelled` (the client sent a cancel event). For an `incomplete`
+        #     Response, one of `max_output_tokens` or `content_filter` (the server-side safety
+        #     filter activated and cut off the response).
         #
-        #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeResponseStatus::Type] The type of error that caused the response to fail, corresponding
+        #   @param type [Symbol, OpenAI::Models::Realtime::RealtimeResponseStatus::Type]
+        #     The type of error that caused the response to fail, corresponding with the
+        #     `status` field (`completed`, `cancelled`, `incomplete`, `failed`).
 
         # @see OpenAI::Models::Realtime::RealtimeResponseStatus#error
         class Error < OpenAI::Internal::Type::BaseModel
@@ -58,9 +64,11 @@ module OpenAI
           #   A description of the error that caused the response to fail, populated when the
           #   `status` is `failed`.
           #
-          #   @param code [String] Error code, if any.
+          #   @param code [String]
+          #     Error code, if any.
           #
-          #   @param type [String] The type of error.
+          #   @param type [String]
+          #     The type of error.
         end
 
         # The reason the Response did not complete. For a `cancelled` Response, one of

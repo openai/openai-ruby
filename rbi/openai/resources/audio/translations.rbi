@@ -2,31 +2,40 @@
 
 module OpenAI
   module Resources
+
     class Audio
+
       # Turn audio into text or text into audio.
       class Translations
+
         # Translates audio into English.
-        sig do
+        sig {
           params(
             file: OpenAI::Internal::FileInput,
             model: T.any(String, OpenAI::AudioModel::OrSymbol),
             prompt: String,
-            response_format:
-              OpenAI::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
+            response_format: OpenAI::Audio::TranslationCreateParams::ResponseFormat::OrSymbol,
             temperature: Float,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Models::Audio::TranslationCreateResponse::Variants)
-        end
+          )
+            .returns(OpenAI::Models::Audio::TranslationCreateResponse::Variants)
+        }
         def create(
           # The audio file object (not file name) translate, in one of these formats: flac,
-          # mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
+          # mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. The request must include enough
+          # format metadata for the file to be identified. We recommend an extension-bearing
+          # filename and an appropriate content type.
+          #
+          # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+          # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+          # content type.
           file:,
           # ID of the model to use. Only `whisper-1` (which is powered by our open source
           # Whisper V2 model) is currently available.
           model:,
           # An optional text to guide the model's style or continue a previous audio
           # segment. The
-          # [prompt](https://platform.openai.com/docs/guides/speech-to-text#prompting)
+          # [prompt](https://developers.openai.com/api/docs/guides/speech-to-text#prompting)
           # should be in English.
           prompt: nil,
           # The format of the output, in one of these options: `json`, `text`, `srt`,
@@ -47,6 +56,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

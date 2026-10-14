@@ -2,20 +2,24 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         module Projects
+
           class RoleListParams < OpenAI::Internal::Type::BaseModel
+
             extend OpenAI::Internal::Type::RequestParameters::Converter
             include OpenAI::Internal::Type::RequestParameters
 
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Admin::Organization::Projects::RoleListParams,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Admin::Organization::Projects::RoleListParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(String) }
             attr_accessor :project_id
@@ -36,42 +40,41 @@ module OpenAI
             attr_writer :limit
 
             # Sort order for the returned roles.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol
-                )
-              )
-            end
+            sig { returns(T.nilable(OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol)) }
             attr_reader :order
 
-            sig do
-              params(
-                order:
-                  OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol
-              ).void
-            end
+            sig { params(order: OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol).void }
             attr_writer :order
 
             sig do
               params(
+
                 project_id: String,
+
                 after: String,
+
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol,
+
+                order: OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol,
+
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               project_id:,
+
               # Cursor for pagination. Provide the value from the previous response's `next`
               # field to continue listing roles.
               after: nil,
+
               # A limit on the number of roles to return. Defaults to 1000.
               limit: nil,
+
               # Sort order for the returned roles.
               order: nil,
+
               request_options: {}
             )
             end
@@ -82,8 +85,7 @@ module OpenAI
                   project_id: String,
                   after: String,
                   limit: Integer,
-                  order:
-                    OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol,
+                  order: OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol,
                   request_options: OpenAI::RequestOptions
                 }
               )
@@ -95,39 +97,28 @@ module OpenAI
             module Order
               extend OpenAI::Internal::Type::Enum
 
-              TaggedSymbol =
-                T.type_alias do
-                  T.all(
-                    Symbol,
-                    OpenAI::Admin::Organization::Projects::RoleListParams::Order
-                  )
-                end
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Admin::Organization::Projects::RoleListParams::Order)
+              }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-              ASC =
-                T.let(
-                  :asc,
-                  OpenAI::Admin::Organization::Projects::RoleListParams::Order::TaggedSymbol
-                )
-              DESC =
-                T.let(
-                  :desc,
-                  OpenAI::Admin::Organization::Projects::RoleListParams::Order::TaggedSymbol
-                )
+              ASC = T.let(:asc, OpenAI::Admin::Organization::Projects::RoleListParams::Order::TaggedSymbol)
+              DESC = T.let(:desc, OpenAI::Admin::Organization::Projects::RoleListParams::Order::TaggedSymbol)
 
-              sig do
-                override.returns(
-                  T::Array[
-                    OpenAI::Admin::Organization::Projects::RoleListParams::Order::TaggedSymbol
-                  ]
-                )
-              end
+              sig {
+                override.returns(T::Array[OpenAI::Admin::Organization::Projects::RoleListParams::Order::TaggedSymbol])
+              }
               def self.values
               end
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

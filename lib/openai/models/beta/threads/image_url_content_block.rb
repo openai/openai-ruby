@@ -21,7 +21,8 @@ module OpenAI
           #
           #   @param image_url [OpenAI::Models::Beta::Threads::ImageURL]
           #
-          #   @param type [Symbol, :image_url] The type of the content part.
+          #   @param type [Symbol, :image_url]
+          #     The type of the content part.
         end
       end
     end

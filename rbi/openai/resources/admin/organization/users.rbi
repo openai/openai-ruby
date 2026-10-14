@@ -2,19 +2,22 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Users
+
           sig { returns(OpenAI::Resources::Admin::Organization::Users::Roles) }
           attr_reader :roles
 
           # Retrieves a user by their identifier.
-          sig do
-            params(
-              user_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::OrganizationUser)
-          end
+          sig {
+            params(user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::OrganizationUser
+            )
+          }
           def retrieve(
             # The ID of the user.
             user_id,
@@ -23,7 +26,7 @@ module OpenAI
           end
 
           # Modifies a user's role in the organization.
-          sig do
+          sig {
             params(
               user_id: String,
               developer_persona: T.nilable(String),
@@ -31,8 +34,9 @@ module OpenAI
               role_id: T.nilable(String),
               technical_level: T.nilable(String),
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::OrganizationUser)
-          end
+            )
+              .returns(OpenAI::Admin::Organization::OrganizationUser)
+          }
           def update(
             # The ID of the user.
             user_id,
@@ -49,18 +53,15 @@ module OpenAI
           end
 
           # Lists all of the users in the organization.
-          sig do
+          sig {
             params(
               after: String,
               emails: T::Array[String],
               limit: Integer,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::ConversationCursorPage[
-                OpenAI::Admin::Organization::OrganizationUser
-              ]
             )
-          end
+              .returns(OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::OrganizationUser])
+          }
           def list(
             # A cursor for use in pagination. `after` is an object ID that defines your place
             # in the list. For instance, if you make a list request and receive 100 objects,
@@ -77,12 +78,11 @@ module OpenAI
           end
 
           # Deletes a user from the organization.
-          sig do
-            params(
-              user_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Admin::Organization::UserDeleteResponse)
-          end
+          sig {
+            params(user_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Models::Admin::Organization::UserDeleteResponse
+            )
+          }
           def delete(
             # The ID of the user.
             user_id,
@@ -95,7 +95,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

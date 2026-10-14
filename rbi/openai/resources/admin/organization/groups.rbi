@@ -2,9 +2,13 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Groups
+
           sig { returns(OpenAI::Resources::Admin::Organization::Groups::Users) }
           attr_reader :users
 
@@ -12,12 +16,11 @@ module OpenAI
           attr_reader :roles
 
           # Creates a new group in the organization.
-          sig do
-            params(
-              name: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Group)
-          end
+          sig {
+            params(name: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::Group
+            )
+          }
           def create(
             # Human readable name for the group.
             name:,
@@ -26,12 +29,11 @@ module OpenAI
           end
 
           # Retrieves a group.
-          sig do
-            params(
-              group_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Admin::Organization::Group)
-          end
+          sig {
+            params(group_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Admin::Organization::Group
+            )
+          }
           def retrieve(
             # The ID of the group to retrieve.
             group_id,
@@ -40,13 +42,11 @@ module OpenAI
           end
 
           # Updates a group's information.
-          sig do
-            params(
-              group_id: String,
-              name: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Admin::Organization::GroupUpdateResponse)
-          end
+          sig {
+            params(group_id: String, name: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Models::Admin::Organization::GroupUpdateResponse
+            )
+          }
           def update(
             # The ID of the group to update.
             group_id,
@@ -57,19 +57,15 @@ module OpenAI
           end
 
           # Lists all groups in the organization.
-          sig do
+          sig {
             params(
               after: String,
               limit: Integer,
-              order:
-                OpenAI::Admin::Organization::GroupListParams::Order::OrSymbol,
+              order: OpenAI::Admin::Organization::GroupListParams::Order::OrSymbol,
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Internal::NextCursorPage[
-                OpenAI::Admin::Organization::Group
-              ]
             )
-          end
+              .returns(OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Group])
+          }
           def list(
             # A cursor for use in pagination. `after` is a group ID that defines your place in
             # the list. For instance, if you make a list request and receive 100 objects,
@@ -86,12 +82,11 @@ module OpenAI
           end
 
           # Deletes a group from the organization.
-          sig do
-            params(
-              group_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Admin::Organization::GroupDeleteResponse)
-          end
+          sig {
+            params(group_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              OpenAI::Models::Admin::Organization::GroupDeleteResponse
+            )
+          }
           def delete(
             # The ID of the group to delete.
             group_id,
@@ -104,7 +99,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

@@ -8,33 +8,61 @@ module OpenAI
           pending_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck],
           status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
           type: OpenAI::Models::Responses::ResponseComputerToolCall::type_,
-          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
-          actions: OpenAI::Models::Responses::computer_action_list
+          ?action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
+          ?actions: OpenAI::Models::Responses::computer_action_list
         }
 
       class ResponseComputerToolCall < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the computer call.
         attr_accessor id: String
 
+        # An identifier used when responding to the tool call with output.
         attr_accessor call_id: String
 
+        # The pending safety checks for the computer call.
         attr_accessor pending_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck]
 
+        # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        # Populated when items are returned via API.
         attr_accessor status: OpenAI::Models::Responses::ResponseComputerToolCall::status
 
+        # The type of the computer call. Always `computer_call`.
         attr_accessor type: OpenAI::Models::Responses::ResponseComputerToolCall::type_
 
+        # A click action.
         attr_reader action: OpenAI::Models::Responses::ResponseComputerToolCall::action?
 
+        # A click action.
         def action=: (
           OpenAI::Models::Responses::ResponseComputerToolCall::action
         ) -> OpenAI::Models::Responses::ResponseComputerToolCall::action
 
+        # Flattened batched actions for `computer_use`. Each action includes an `type`
+        # discriminator and action-specific fields.
         attr_reader actions: OpenAI::Models::Responses::computer_action_list?
 
+        # Flattened batched actions for `computer_use`. Each action includes an `type`
+        # discriminator and action-specific fields.
         def actions=: (
           OpenAI::Models::Responses::computer_action_list
         ) -> OpenAI::Models::Responses::computer_action_list
 
+        # @param id
+        #   The unique ID of the computer call.
+        # @param call_id
+        #   An identifier used when responding to the tool call with output.
+        # @param pending_safety_checks
+        #   The pending safety checks for the computer call.
+        # @param status
+        #   The status of the item. One of `in_progress`, `completed`, or `incomplete`.
+        #   Populated when items are returned via API.
+        # @param type
+        #   The type of the computer call. Always `computer_call`.
+        # @param action
+        #   A click action.
+        # @param actions
+        #   Flattened batched actions for `computer_use`. Each action includes an `type`
+        #   discriminator and action-specific fields.
         def initialize: (
           id: String,
           call_id: String,
@@ -51,27 +79,36 @@ module OpenAI
           pending_safety_checks: ::Array[OpenAI::Responses::ResponseComputerToolCall::PendingSafetyCheck],
           status: OpenAI::Models::Responses::ResponseComputerToolCall::status,
           type: OpenAI::Models::Responses::ResponseComputerToolCall::type_,
-          action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
-          actions: OpenAI::Models::Responses::computer_action_list
+          ?action: OpenAI::Models::Responses::ResponseComputerToolCall::action,
+          ?actions: OpenAI::Models::Responses::computer_action_list
         }
 
         type pending_safety_check =
-          { id: String, code: String?, message: String? }
+          { id: String, ?code: String?, ?message: String? }
 
         class PendingSafetyCheck < OpenAI::Internal::Type::BaseModel
+          # The ID of the pending safety check.
           attr_accessor id: String
 
+          # The type of the pending safety check.
           attr_accessor code: String?
 
+          # Details about the pending safety check.
           attr_accessor message: String?
 
+          # @param id
+          #   The ID of the pending safety check.
+          # @param code
+          #   The type of the pending safety check.
+          # @param message
+          #   Details about the pending safety check.
           def initialize: (
             id: String,
             ?code: String?,
             ?message: String?
           ) -> void
 
-          def to_hash: -> { id: String, code: String?, message: String? }
+          def to_hash: -> { id: String, ?code: String?, ?message: String? }
         end
 
         type status = :in_progress | :completed | :incomplete
@@ -113,23 +150,40 @@ module OpenAI
           type click =
             {
               button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
-              type: :click,
+              ?type: :click,
               x: Integer,
               y_: Integer,
-              keys: ::Array[String]?
+              ?keys: ::Array[String]?
             }
 
           class Click < OpenAI::Internal::Type::BaseModel
+            # Indicates which mouse button was pressed during the click. One of `left`,
+            # `right`, `wheel`, `back`, or `forward`.
             attr_accessor button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button
 
+            # Specifies the event type. For a click action, this property is always `click`.
             attr_accessor type: :click
 
+            # The x-coordinate where the click occurred.
             attr_accessor x: Integer
 
+            # The y-coordinate where the click occurred.
             attr_accessor y_: Integer
 
+            # The keys being held while clicking.
             attr_accessor keys: ::Array[String]?
 
+            # @param button
+            #   Indicates which mouse button was pressed during the click. One of `left`,
+            #   `right`, `wheel`, `back`, or `forward`.
+            # @param x
+            #   The x-coordinate where the click occurred.
+            # @param y_
+            #   The y-coordinate where the click occurred.
+            # @param keys
+            #   The keys being held while clicking.
+            # @param type
+            #   Specifies the event type. For a click action, this property is always `click`.
             def initialize: (
               button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
               x: Integer,
@@ -140,10 +194,10 @@ module OpenAI
 
             def to_hash: -> {
               button: OpenAI::Models::Responses::ResponseComputerToolCall::Action::Click::button,
-              type: :click,
+              ?type: :click,
               x: Integer,
               y_: Integer,
-              keys: ::Array[String]?
+              ?keys: ::Array[String]?
             }
 
             type button = :left | :right | :wheel | :back | :forward
@@ -164,20 +218,34 @@ module OpenAI
           type double_click =
             {
               keys: ::Array[String]?,
-              type: :double_click,
+              ?type: :double_click,
               x: Integer,
               y_: Integer
             }
 
           class DoubleClick < OpenAI::Internal::Type::BaseModel
+            # The keys being held while double-clicking.
             attr_accessor keys: ::Array[String]?
 
+            # Specifies the event type. For a double click action, this property is always set
+            # to `double_click`.
             attr_accessor type: :double_click
 
+            # The x-coordinate where the double click occurred.
             attr_accessor x: Integer
 
+            # The y-coordinate where the double click occurred.
             attr_accessor y_: Integer
 
+            # @param keys
+            #   The keys being held while double-clicking.
+            # @param x
+            #   The x-coordinate where the double click occurred.
+            # @param y_
+            #   The y-coordinate where the double click occurred.
+            # @param type
+            #   Specifies the event type. For a double click action, this property is always set
+            #   to `double_click`.
             def initialize: (
               keys: ::Array[String]?,
               x: Integer,
@@ -187,7 +255,7 @@ module OpenAI
 
             def to_hash: -> {
               keys: ::Array[String]?,
-              type: :double_click,
+              ?type: :double_click,
               x: Integer,
               y_: Integer
             }
@@ -196,17 +264,44 @@ module OpenAI
           type drag =
             {
               path: ::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path],
-              type: :drag,
-              keys: ::Array[String]?
+              ?type: :drag,
+              ?keys: ::Array[String]?
             }
 
           class Drag < OpenAI::Internal::Type::BaseModel
+            # An array of coordinates representing the path of the drag action. Coordinates
+            # will appear as an array of objects, eg
+            #
+            # ```
+            # [
+            #   { x: 100, y: 200 },
+            #   { x: 200, y: 300 }
+            # ]
+            # ```
             attr_accessor path: ::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path]
 
+            # Specifies the event type. For a drag action, this property is always set to
+            # `drag`.
             attr_accessor type: :drag
 
+            # The keys being held while dragging the mouse.
             attr_accessor keys: ::Array[String]?
 
+            # @param path
+            #   An array of coordinates representing the path of the drag action. Coordinates
+            #   will appear as an array of objects, eg
+            #
+            #   ```
+            #   [
+            #     { x: 100, y: 200 },
+            #     { x: 200, y: 300 }
+            #   ]
+            #   ```
+            # @param keys
+            #   The keys being held while dragging the mouse.
+            # @param type
+            #   Specifies the event type. For a drag action, this property is always set to
+            #   `drag`.
             def initialize: (
               path: ::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path],
               ?keys: ::Array[String]?,
@@ -215,47 +310,77 @@ module OpenAI
 
             def to_hash: -> {
               path: ::Array[OpenAI::Responses::ResponseComputerToolCall::Action::Drag::Path],
-              type: :drag,
-              keys: ::Array[String]?
+              ?type: :drag,
+              ?keys: ::Array[String]?
             }
 
             type path = { x: Integer, y_: Integer }
 
             class Path < OpenAI::Internal::Type::BaseModel
+              # The x-coordinate.
               attr_accessor x: Integer
 
+              # The y-coordinate.
               attr_accessor y_: Integer
 
+              # @param x
+              #   The x-coordinate.
+              # @param y_
+              #   The y-coordinate.
               def initialize: (x: Integer, y_: Integer) -> void
 
               def to_hash: -> { x: Integer, y_: Integer }
             end
           end
 
-          type keypress = { keys: ::Array[String], type: :keypress }
+          type keypress = { keys: ::Array[String], ?type: :keypress }
 
           class Keypress < OpenAI::Internal::Type::BaseModel
+            # The combination of keys the model is requesting to be pressed. This is an array
+            # of strings, each representing a key.
             attr_accessor keys: ::Array[String]
 
+            # Specifies the event type. For a keypress action, this property is always set to
+            # `keypress`.
             attr_accessor type: :keypress
 
+            # @param keys
+            #   The combination of keys the model is requesting to be pressed. This is an array
+            #   of strings, each representing a key.
+            # @param type
+            #   Specifies the event type. For a keypress action, this property is always set to
+            #   `keypress`.
             def initialize: (keys: ::Array[String], ?type: :keypress) -> void
 
-            def to_hash: -> { keys: ::Array[String], type: :keypress }
+            def to_hash: -> { keys: ::Array[String], ?type: :keypress }
           end
 
           type move =
-            { type: :move, x: Integer, y_: Integer, keys: ::Array[String]? }
+            { ?type: :move, x: Integer, y_: Integer, ?keys: ::Array[String]? }
 
           class Move < OpenAI::Internal::Type::BaseModel
+            # Specifies the event type. For a move action, this property is always set to
+            # `move`.
             attr_accessor type: :move
 
+            # The x-coordinate to move to.
             attr_accessor x: Integer
 
+            # The y-coordinate to move to.
             attr_accessor y_: Integer
 
+            # The keys being held while moving the mouse.
             attr_accessor keys: ::Array[String]?
 
+            # @param x
+            #   The x-coordinate to move to.
+            # @param y_
+            #   The y-coordinate to move to.
+            # @param keys
+            #   The keys being held while moving the mouse.
+            # @param type
+            #   Specifies the event type. For a move action, this property is always set to
+            #   `move`.
             def initialize: (
               x: Integer,
               y_: Integer,
@@ -264,46 +389,71 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              type: :move,
+              ?type: :move,
               x: Integer,
               y_: Integer,
-              keys: ::Array[String]?
+              ?keys: ::Array[String]?
             }
           end
 
-          type screenshot = { type: :screenshot }
+          type screenshot = { ?type: :screenshot }
 
           class Screenshot < OpenAI::Internal::Type::BaseModel
+            # Specifies the event type. For a screenshot action, this property is always set
+            # to `screenshot`.
             attr_accessor type: :screenshot
 
+            # @param type
+            #   Specifies the event type. For a screenshot action, this property is always set
+            #   to `screenshot`.
             def initialize: (?type: :screenshot) -> void
 
-            def to_hash: -> { type: :screenshot }
+            def to_hash: -> { ?type: :screenshot }
           end
 
           type scroll =
             {
               scroll_x: Integer,
               scroll_y: Integer,
-              type: :scroll,
+              ?type: :scroll,
               x: Integer,
               y_: Integer,
-              keys: ::Array[String]?
+              ?keys: ::Array[String]?
             }
 
           class Scroll < OpenAI::Internal::Type::BaseModel
+            # The horizontal scroll distance.
             attr_accessor scroll_x: Integer
 
+            # The vertical scroll distance.
             attr_accessor scroll_y: Integer
 
+            # Specifies the event type. For a scroll action, this property is always set to
+            # `scroll`.
             attr_accessor type: :scroll
 
+            # The x-coordinate where the scroll occurred.
             attr_accessor x: Integer
 
+            # The y-coordinate where the scroll occurred.
             attr_accessor y_: Integer
 
+            # The keys being held while scrolling.
             attr_accessor keys: ::Array[String]?
 
+            # @param scroll_x
+            #   The horizontal scroll distance.
+            # @param scroll_y
+            #   The vertical scroll distance.
+            # @param x
+            #   The x-coordinate where the scroll occurred.
+            # @param y_
+            #   The y-coordinate where the scroll occurred.
+            # @param keys
+            #   The keys being held while scrolling.
+            # @param type
+            #   Specifies the event type. For a scroll action, this property is always set to
+            #   `scroll`.
             def initialize: (
               scroll_x: Integer,
               scroll_y: Integer,
@@ -316,33 +466,46 @@ module OpenAI
             def to_hash: -> {
               scroll_x: Integer,
               scroll_y: Integer,
-              type: :scroll,
+              ?type: :scroll,
               x: Integer,
               y_: Integer,
-              keys: ::Array[String]?
+              ?keys: ::Array[String]?
             }
           end
 
-          type type_ = { text: String, type: :type }
+          type type_ = { text: String, ?type: :type }
 
           class Type < OpenAI::Internal::Type::BaseModel
+            # The text to type.
             attr_accessor text: String
 
+            # Specifies the event type. For a type action, this property is always set to
+            # `type`.
             attr_accessor type: :type
 
+            # @param text
+            #   The text to type.
+            # @param type
+            #   Specifies the event type. For a type action, this property is always set to
+            #   `type`.
             def initialize: (text: String, ?type: :type) -> void
 
-            def to_hash: -> { text: String, type: :type }
+            def to_hash: -> { text: String, ?type: :type }
           end
 
-          type wait = { type: :wait }
+          type wait = { ?type: :wait }
 
           class Wait < OpenAI::Internal::Type::BaseModel
+            # Specifies the event type. For a wait action, this property is always set to
+            # `wait`.
             attr_accessor type: :wait
 
+            # @param type
+            #   Specifies the event type. For a wait action, this property is always set to
+            #   `wait`.
             def initialize: (?type: :wait) -> void
 
-            def to_hash: -> { type: :wait }
+            def to_hash: -> { ?type: :wait }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseComputerToolCall::action]

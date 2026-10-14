@@ -2,14 +2,19 @@
 
 module OpenAI
   module Models
+
     PythonGrader = Graders::PythonGrader
 
     module Graders
+
       class PythonGrader < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Graders::PythonGrader, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Graders::PythonGrader,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The name of the grader.
         sig { returns(String) }
@@ -33,32 +38,45 @@ module OpenAI
         # A PythonGrader object that runs a python script on the input.
         sig do
           params(
+
             name: String,
+
             source: String,
+
             image_tag: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The name of the grader.
           name:,
+
           # The source code of the python script.
           source:,
+
           # The image tag to use for the python script.
           image_tag: nil,
+
           # The object type, which is always `python`.
+
           type: :python
         )
         end
 
         sig do
           override.returns(
-            { name: String, source: String, type: Symbol, image_tag: String }
+            {name: String, source: String, type: Symbol, image_tag: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

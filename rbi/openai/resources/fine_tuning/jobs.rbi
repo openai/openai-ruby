@@ -2,9 +2,12 @@
 
 module OpenAI
   module Resources
+
     class FineTuning
+
       # Manage fine-tuning jobs to tailor a model to your specific training data.
       class Jobs
+
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         sig { returns(OpenAI::Resources::FineTuning::Jobs::Checkpoints) }
         attr_reader :checkpoints
@@ -15,52 +18,44 @@ module OpenAI
         # Response includes details of the enqueued job including job status and the name
         # of the fine-tuned models once complete.
         #
-        # [Learn more about fine-tuning](https://platform.openai.com/docs/guides/model-optimization)
-        sig do
+        # [Learn more about fine-tuning](https://developers.openai.com/api/docs/guides/model-optimization)
+        sig {
           params(
-            model:
-              T.any(
-                String,
-                OpenAI::FineTuning::JobCreateParams::Model::OrSymbol
-              ),
+            model: T.any(String, OpenAI::FineTuning::JobCreateParams::Model::OrSymbol),
             training_file: String,
-            hyperparameters:
-              OpenAI::FineTuning::JobCreateParams::Hyperparameters::OrHash,
-            integrations:
-              T.nilable(
-                T::Array[
-                  OpenAI::FineTuning::JobCreateParams::Integration::OrHash
-                ]
-              ),
+            hyperparameters: OpenAI::FineTuning::JobCreateParams::Hyperparameters::OrHash,
+            integrations: T.nilable(T::Array[OpenAI::FineTuning::JobCreateParams::Integration::OrHash]),
             metadata: T.nilable(T::Hash[Symbol, String]),
             method_: OpenAI::FineTuning::JobCreateParams::Method::OrHash,
             seed: T.nilable(Integer),
             suffix: T.nilable(String),
             validation_file: T.nilable(String),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+          )
+            .returns(OpenAI::FineTuning::FineTuningJob)
+        }
         def create(
           # The name of the model to fine-tune. You can select one of the
-          # [supported models](https://platform.openai.com/docs/guides/fine-tuning#which-models-can-be-fine-tuned).
+          # [supported models](https://developers.openai.com/api/docs/guides/model-optimization#fine-tuning-methods).
           model:,
           # The ID of an uploaded file that contains training data.
           #
-          # See [upload file](https://platform.openai.com/docs/api-reference/files/create)
+          # See
+          # [upload file](https://developers.openai.com/api/reference/resources/files/methods/create)
           # for how to upload a file.
           #
           # Your dataset must be formatted as a JSONL file. Additionally, you must upload
           # your file with the purpose `fine-tune`.
           #
           # The contents of the file should differ depending on if the model uses the
-          # [chat](https://platform.openai.com/docs/api-reference/fine-tuning/chat-input),
-          # [completions](https://platform.openai.com/docs/api-reference/fine-tuning/completions-input)
+          # [chat](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#formatting-your-data),
+          # [completions](https://developers.openai.com/api/docs/guides/supervised-fine-tuning#formatting-your-data)
           # format, or if the fine-tuning method uses the
-          # [preference](https://platform.openai.com/docs/api-reference/fine-tuning/preference-input)
+          # [preference](https://developers.openai.com/api/docs/guides/direct-preference-optimization)
           # format.
           #
           # See the
-          # [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimization)
+          # [fine-tuning guide](https://developers.openai.com/api/docs/guides/model-optimization)
           # for more details.
           training_file:,
           # The hyperparameters used for the fine-tuning job. This value is now deprecated
@@ -98,7 +93,7 @@ module OpenAI
           # the purpose `fine-tune`.
           #
           # See the
-          # [fine-tuning guide](https://platform.openai.com/docs/guides/model-optimization)
+          # [fine-tuning guide](https://developers.openai.com/api/docs/guides/model-optimization)
           # for more details.
           validation_file: nil,
           request_options: {}
@@ -107,13 +102,12 @@ module OpenAI
 
         # Get info about a fine-tuning job.
         #
-        # [Learn more about fine-tuning](https://platform.openai.com/docs/guides/model-optimization)
-        sig do
-          params(
-            fine_tuning_job_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+        # [Learn more about fine-tuning](https://developers.openai.com/api/docs/guides/model-optimization)
+        sig {
+          params(fine_tuning_job_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::FineTuning::FineTuningJob
+          )
+        }
         def retrieve(
           # The ID of the fine-tuning job.
           fine_tuning_job_id,
@@ -122,35 +116,38 @@ module OpenAI
         end
 
         # List your organization's fine-tuning jobs
-        sig do
+        sig {
           params(
             after: String,
             limit: Integer,
             metadata: T.nilable(T::Hash[Symbol, String]),
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJob]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJob])
+        }
         def list(
           # Identifier for the last job from the previous pagination request.
           after: nil,
           # Number of fine-tuning jobs to retrieve.
           limit: nil,
-          # Optional metadata filter. To filter, use the syntax `metadata[k]=v`.
-          # Alternatively, set `metadata=null` to indicate no metadata.
+          # Optional metadata filter. To filter, use the syntax `metadata[k]=v`. Omitting
+          # the parameter or passing an empty object applies no metadata filter. An empty
+          # value, such as `metadata[k]=`, filters for that key with an empty string value.
+          # To select jobs with null metadata, send the literal query string
+          # `metadata=null`. Nullable caller types do not specify how a client serializes
+          # null for a deep-object parameter. Use a raw query parameter if the client omits
+          # null. Do not combine the two query forms.
           metadata: nil,
           request_options: {}
         )
         end
 
         # Immediately cancel a fine-tune job.
-        sig do
-          params(
-            fine_tuning_job_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+        sig {
+          params(fine_tuning_job_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::FineTuning::FineTuningJob
+          )
+        }
         def cancel(
           # The ID of the fine-tuning job to cancel.
           fine_tuning_job_id,
@@ -159,16 +156,15 @@ module OpenAI
         end
 
         # Get status updates for a fine-tuning job.
-        sig do
+        sig {
           params(
             fine_tuning_job_id: String,
             after: String,
             limit: Integer,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(
-            OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJobEvent]
           )
-        end
+            .returns(OpenAI::Internal::CursorPage[OpenAI::FineTuning::FineTuningJobEvent])
+        }
         def list_events(
           # The ID of the fine-tuning job to get events for.
           fine_tuning_job_id,
@@ -181,12 +177,11 @@ module OpenAI
         end
 
         # Pause a fine-tune job.
-        sig do
-          params(
-            fine_tuning_job_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+        sig {
+          params(fine_tuning_job_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::FineTuning::FineTuningJob
+          )
+        }
         def pause(
           # The ID of the fine-tuning job to pause.
           fine_tuning_job_id,
@@ -195,12 +190,11 @@ module OpenAI
         end
 
         # Resume a fine-tune job.
-        sig do
-          params(
-            fine_tuning_job_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::FineTuning::FineTuningJob)
-        end
+        sig {
+          params(fine_tuning_job_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::FineTuning::FineTuningJob
+          )
+        }
         def resume(
           # The ID of the fine-tuning job to resume.
           fine_tuning_job_id,
@@ -213,6 +207,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

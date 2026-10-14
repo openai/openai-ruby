@@ -16,7 +16,8 @@ module OpenAI
           required :grader, union: -> { OpenAI::FineTuning::Alpha::GraderValidateParams::Grader }
 
           # @!method initialize(grader:, request_options: {})
-          #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader] The grader used for the fine-tuning job.
+          #   @param grader [OpenAI::Models::Graders::StringCheckGrader, OpenAI::Models::Graders::TextSimilarityGrader, OpenAI::Models::Graders::PythonGrader, OpenAI::Models::Graders::ScoreModelGrader, OpenAI::Models::Graders::MultiGrader]
+          #     The grader used for the fine-tuning job.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

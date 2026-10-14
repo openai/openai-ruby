@@ -2,29 +2,30 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class ServiceAccounts
-            sig do
-              returns(
-                OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys
-              )
-            end
+
+            sig { returns(OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts::APIKeys) }
             attr_reader :api_keys
 
             # Creates a new service account in the project. By default, this also returns an
             # unredacted API key for the service account.
-            sig do
+            sig {
               params(
                 project_id: String,
                 name: String,
                 create_service_account_only: T.nilable(T::Boolean),
+                expires_in_seconds: T.nilable(Integer),
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse
               )
-            end
+                .returns(OpenAI::Models::Admin::Organization::Projects::ServiceAccountCreateResponse)
+            }
             def create(
               # The ID of the project.
               project_id,
@@ -32,20 +33,21 @@ module OpenAI
               name:,
               # Create the service account without default roles or an API key.
               create_service_account_only: nil,
+              # Number of seconds until the initial API key expires. If omitted or null, the key
+              # does not expire unless the effective organization or project policy requires an
+              # expiration. When a policy sets a maximum lifetime, this value must be provided
+              # and must not exceed that limit. A non-null value cannot be used when
+              # `create_service_account_only` is true.
+              expires_in_seconds: nil,
               request_options: {}
             )
             end
 
             # Retrieves a service account in the project.
-            sig do
-              params(
-                service_account_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Admin::Organization::Projects::ProjectServiceAccount
-              )
-            end
+            sig {
+              params(service_account_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash)
+                .returns(OpenAI::Admin::Organization::Projects::ProjectServiceAccount)
+            }
             def retrieve(
               # The ID of the service account.
               service_account_id,
@@ -56,18 +58,16 @@ module OpenAI
             end
 
             # Updates a service account in the project.
-            sig do
+            sig {
               params(
                 service_account_id: String,
                 project_id: String,
                 name: String,
-                role:
-                  OpenAI::Admin::Organization::Projects::ServiceAccountUpdateParams::Role::OrSymbol,
+                role: OpenAI::Admin::Organization::Projects::ServiceAccountUpdateParams::Role::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Admin::Organization::Projects::ProjectServiceAccount
               )
-            end
+                .returns(OpenAI::Admin::Organization::Projects::ProjectServiceAccount)
+            }
             def update(
               # Path param: The ID of the service account.
               service_account_id,
@@ -82,18 +82,12 @@ module OpenAI
             end
 
             # Returns a list of service accounts in the project.
-            sig do
-              params(
-                project_id: String,
-                after: String,
-                limit: Integer,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::ConversationCursorPage[
-                  OpenAI::Admin::Organization::Projects::ProjectServiceAccount
-                ]
-              )
-            end
+            sig {
+              params(project_id: String, after: String, limit: Integer, request_options: OpenAI::RequestOptions::OrHash)
+                .returns(
+                  OpenAI::Internal::ConversationCursorPage[OpenAI::Admin::Organization::Projects::ProjectServiceAccount]
+                )
+            }
             def list(
               # The ID of the project.
               project_id,
@@ -113,15 +107,10 @@ module OpenAI
             #
             # Returns confirmation of service account deletion, or an error if the project is
             # archived (archived projects have no service accounts).
-            sig do
-              params(
-                service_account_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Models::Admin::Organization::Projects::ServiceAccountDeleteResponse
-              )
-            end
+            sig {
+              params(service_account_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash)
+                .returns(OpenAI::Models::Admin::Organization::Projects::ServiceAccountDeleteResponse)
+            }
             def delete(
               # The ID of the service account.
               service_account_id,
@@ -136,8 +125,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

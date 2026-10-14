@@ -1,0 +1,110 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault_list_params =
+          {
+            ?after: String,
+            ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String],
+            ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
+            ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class VaultListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          # Return resources after this resource ID in the selected order.
+          attr_reader after: String?
+
+          # Return resources after this resource ID in the selected order.
+          def after=: (String) -> String
+
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          attr_reader limit: Integer?
+
+          # The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          def limit=: (Integer) -> Integer
+
+          # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          # characters. Filtering is eventually consistent; metadata changes may take time
+          # to appear.
+          attr_reader metadata: ::Hash[Symbol, String]?
+
+          # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          # characters. Filtering is eventually consistent; metadata changes may take time
+          # to appear.
+          def metadata=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
+
+          # The order in which resources are returned. Defaults to `desc`.
+          attr_reader order: OpenAI::Models::Beta::Agents::VaultListParams::order?
+
+          # The order in which resources are returned. Defaults to `desc`.
+          def order=: (
+            OpenAI::Models::Beta::Agents::VaultListParams::order
+          ) -> OpenAI::Models::Beta::Agents::VaultListParams::order
+
+          # Filter by one status or a list, such as `status=active` or
+          # `status[]=active&status[]=archived`. Both statuses are included by default.
+          attr_reader status: OpenAI::Models::Beta::Agents::vault_status_filter?
+
+          # Filter by one status or a list, such as `status=active` or
+          # `status[]=active&status[]=archived`. Both statuses are included by default.
+          def status=: (
+            OpenAI::Models::Beta::Agents::vault_status_filter
+          ) -> OpenAI::Models::Beta::Agents::vault_status_filter
+
+          # @param after
+          #   Return resources after this resource ID in the selected order.
+          # @param limit
+          #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          # @param metadata
+          #   Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          #   match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          #   characters. Filtering is eventually consistent; metadata changes may take time
+          #   to appear.
+          # @param order
+          #   The order in which resources are returned. Defaults to `desc`.
+          # @param status
+          #   Filter by one status or a list, such as `status=active` or
+          #   `status[]=active&status[]=archived`. Both statuses are included by default.
+          def initialize: (
+            ?after: String,
+            ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String],
+            ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
+            ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            ?after: String,
+            ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String],
+            ?order: OpenAI::Models::Beta::Agents::VaultListParams::order,
+            ?status: OpenAI::Models::Beta::Agents::vault_status_filter,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type order = :asc | :desc
+
+          module Order
+            extend OpenAI::Internal::Type::Enum
+
+            # Returns resources in ascending order.
+            ASC: :asc
+
+            # Returns resources in descending order.
+            DESC: :desc
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::VaultListParams::order]
+          end
+        end
+      end
+    end
+  end
+end

@@ -3,26 +3,48 @@ module OpenAI
     module Realtime
       type realtime_transcription_session_create_request =
         {
-          type: :transcription,
-          audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+          ?type: :transcription,
+          ?audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
         }
 
       class RealtimeTranscriptionSessionCreateRequest < OpenAI::Internal::Type::BaseModel
+        # The type of session to create. Always `transcription` for transcription
+        # sessions.
         attr_accessor type: :transcription
 
+        # Configuration for input and output audio.
         attr_reader audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio?
 
+        # Configuration for input and output audio.
         def audio=: (
           OpenAI::Realtime::RealtimeTranscriptionSessionAudio
         ) -> OpenAI::Realtime::RealtimeTranscriptionSessionAudio
 
+        # Additional fields to include in server outputs.
+        #
+        # `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        # transcription.
         attr_reader include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]?
 
+        # Additional fields to include in server outputs.
+        #
+        # `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        # transcription.
         def include=: (
           ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
         ) -> ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
 
+        # @param audio
+        #   Configuration for input and output audio.
+        # @param include
+        #   Additional fields to include in server outputs.
+        #
+        #   `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #   transcription.
+        # @param type
+        #   The type of session to create. Always `transcription` for transcription
+        #   sessions.
         def initialize: (
           ?audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
           ?include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_],
@@ -30,9 +52,9 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          type: :transcription,
-          audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
-          include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
+          ?type: :transcription,
+          ?audio: OpenAI::Realtime::RealtimeTranscriptionSessionAudio,
+          ?include: ::Array[OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateRequest::include_]
         }
 
         type include_ = :"item.input_audio_transcription.logprobs"

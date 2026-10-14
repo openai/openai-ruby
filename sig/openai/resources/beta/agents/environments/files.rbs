@@ -1,0 +1,28 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Environments
+          class Files
+            def create: (
+              String environment_id,
+              hosted_environment_file_param: OpenAI::Models::Beta::hosted_environment_file_param,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Environments::EnvironmentFile
+
+            def list: (
+              String environment_id,
+              ?limit: Integer?,
+              ?order: OpenAI::Models::Beta::Agents::Environments::FileListParams::order,
+              ?page: String,
+              ?path: String?,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::TokenPage[OpenAI::Beta::Agents::Environments::EnvironmentFile]
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

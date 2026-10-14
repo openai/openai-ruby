@@ -4,7 +4,7 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Audio::SpeechTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.audio.speech.create(input: "input", model: :"tts-1", voice: :alloy)
+    response = @openai.audio.speech.create(input: "input", model: :"tts-1", voice: :ash)
 
     assert_pattern do
       response => StringIO

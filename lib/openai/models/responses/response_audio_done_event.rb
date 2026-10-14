@@ -17,14 +17,13 @@ module OpenAI
         required :type, const: :"response.audio.done"
 
         # @!method initialize(sequence_number:, type: :"response.audio.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseAudioDoneEvent} for more details.
-        #
         #   Emitted when the audio response is complete.
         #
-        #   @param sequence_number [Integer] The sequence number of the delta.
+        #   @param sequence_number [Integer]
+        #     The sequence number of the delta.
         #
-        #   @param type [Symbol, :"response.audio.done"] The type of the event. Always `response.audio.done`.
+        #   @param type [Symbol, :"response.audio.done"]
+        #     The type of the event. Always `response.audio.done`.
       end
     end
   end

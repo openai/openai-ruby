@@ -2,17 +2,19 @@
 
 module OpenAI
   module Resources
+
     class Skills
+
       class Versions
+
         class Content
+
           # Download a skill version zip bundle.
-          sig do
-            params(
-              version: String,
-              skill_id: String,
-              request_options: OpenAI::RequestOptions::OrHash
-            ).returns(StringIO)
-          end
+          sig {
+            params(version: String, skill_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+              T.all(StringIO, OpenAI::ResponseCarrier)
+            )
+          }
           def retrieve(
             # The skill version number.
             version,
@@ -27,7 +29,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

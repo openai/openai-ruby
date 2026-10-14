@@ -13,6 +13,11 @@ module OpenAI
         #   @return [String]
         required :id, String
 
+        # @!attribute access_programs
+        #
+        #   @return [OpenAI::Models::Beta::BetaResponse::AccessPrograms, nil]
+        required :access_programs, -> { OpenAI::Beta::BetaResponse::AccessPrograms }, nil?: true
+
         # @!attribute created_at
         #   Unix timestamp (in seconds) of when this Response was created.
         #
@@ -38,7 +43,7 @@ module OpenAI
         #   response will not be carried over to the next response. This makes it simple to
         #   swap out system (or developer) messages in new responses.
         #
-        #   @return [String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>, nil]
+        #   @return [String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>, nil]
         required :instructions, union: -> { OpenAI::Beta::BetaResponse::Instructions }, nil?: true
 
         # @!attribute metadata
@@ -53,11 +58,11 @@ module OpenAI
         required :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute model
-        #   Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        #   wide range of models with different capabilities, performance characteristics,
-        #   and price points. Refer to the
-        #   [model guide](https://platform.openai.com/docs/models) to browse and compare
-        #   available models.
+        #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        #   range of models with different capabilities, performance characteristics, and
+        #   price points. Refer to the
+        #   [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #   compare available models.
         #
         #   @return [Symbol, String, OpenAI::Models::Beta::BetaResponse::Model]
         required :model, union: -> { OpenAI::Beta::BetaResponse::Model }
@@ -111,17 +116,18 @@ module OpenAI
         #
         #   - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
         #     capabilities, like
-        #     [web search](https://platform.openai.com/docs/guides/tools-web-search) or
-        #     [file search](https://platform.openai.com/docs/guides/tools-file-search).
+        #     [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+        #     or
+        #     [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
         #     Learn more about
-        #     [built-in tools](https://platform.openai.com/docs/guides/tools).
+        #     [built-in tools](https://developers.openai.com/api/docs/guides/tools).
         #   - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
         #     predefined connectors such as Google Drive and SharePoint. Learn more about
-        #     [MCP Tools](https://platform.openai.com/docs/guides/tools-connectors-mcp).
+        #     [MCP Tools](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
         #   - **Function calls (custom tools)**: Functions that are defined by you, enabling
         #     the model to call your own code with strongly typed arguments and outputs.
         #     Learn more about
-        #     [function calling](https://platform.openai.com/docs/guides/function-calling).
+        #     [function calling](https://developers.openai.com/api/docs/guides/function-calling).
         #     You can also use custom tools to call your own code.
         #
         #   @return [Array<OpenAI::Models::Beta::BetaFunctionTool, OpenAI::Models::Beta::BetaFileSearchTool, OpenAI::Models::Beta::BetaComputerTool, OpenAI::Models::Beta::BetaComputerUsePreviewTool, OpenAI::Models::Beta::BetaTool::Mcp, OpenAI::Models::Beta::BetaTool::CodeInterpreter, OpenAI::Models::Beta::BetaTool::ProgrammaticToolCalling, OpenAI::Models::Beta::BetaTool::ImageGeneration, OpenAI::Models::Beta::BetaTool::LocalShell, OpenAI::Models::Beta::BetaFunctionShellTool, OpenAI::Models::Beta::BetaCustomTool, OpenAI::Models::Beta::BetaNamespaceTool, OpenAI::Models::Beta::BetaToolSearchTool, OpenAI::Models::Beta::BetaApplyPatchTool, OpenAI::Models::Beta::BetaWebSearchTool, OpenAI::Models::Beta::BetaWebSearchPreviewTool>]
@@ -139,7 +145,7 @@ module OpenAI
 
         # @!attribute background
         #   Whether to run the model response in the background.
-        #   [Learn more](https://platform.openai.com/docs/guides/background).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/background).
         #
         #   @return [Boolean, nil]
         optional :background, OpenAI::Internal::Type::Boolean, nil?: true
@@ -161,7 +167,7 @@ module OpenAI
         # @!attribute max_output_tokens
         #   An upper bound for the number of tokens that can be generated for a response,
         #   including visible output tokens and
-        #   [reasoning tokens](https://platform.openai.com/docs/guides/reasoning).
+        #   [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
         #
         #   @return [Integer, nil]
         optional :max_output_tokens, Integer, nil?: true
@@ -185,7 +191,7 @@ module OpenAI
         # @!attribute previous_response_id
         #   The unique ID of the previous response to the model. Use this to create
         #   multi-turn conversations. Learn more about
-        #   [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+        #   [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
         #   Cannot be used in conjunction with `conversation`.
         #
         #   @return [String, nil]
@@ -193,15 +199,21 @@ module OpenAI
 
         # @!attribute prompt
         #   Reference to a prompt template and its variables.
-        #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
         #
         #   @return [OpenAI::Models::Beta::BetaResponsePrompt, nil]
         optional :prompt, -> { OpenAI::Beta::BetaResponsePrompt }, nil?: true
 
+        # @!attribute prompt_cache_diagnostics
+        #   Prompt cache diagnostics requested for this response.
+        #
+        #   @return [OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable, nil]
+        optional :prompt_cache_diagnostics, union: -> { OpenAI::Beta::BetaResponse::PromptCacheDiagnostics }
+
         # @!attribute prompt_cache_key
         #   Used by OpenAI to cache responses for similar requests to optimize your cache
         #   hit rates. Replaces the `user` field.
-        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching).
         #
         #   @return [String, nil]
         optional :prompt_cache_key, String, nil?: true
@@ -221,7 +233,7 @@ module OpenAI
         #   The retention policy for the prompt cache. Set to `24h` to enable extended
         #   prompt caching, which keeps cached prefixes active for longer, up to a maximum
         #   of 24 hours.
-        #   [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
         #   This field expresses a maximum retention policy, while
         #   `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
         #   are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
@@ -235,15 +247,15 @@ module OpenAI
         #     `prompt_cache_retention` is not specified.
         #
         #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheRetention, nil]
-        optional :prompt_cache_retention,
-                 enum: -> { OpenAI::Beta::BetaResponse::PromptCacheRetention },
-                 nil?: true
+        optional(
+          :prompt_cache_retention,
+          enum: -> { OpenAI::Beta::BetaResponse::PromptCacheRetention },
+          nil?: true
+        )
 
         # @!attribute reasoning
-        #   **gpt-5 and o-series models only**
-        #
         #   Configuration options for
-        #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+        #   [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
         #
         #   @return [OpenAI::Models::Beta::BetaResponse::Reasoning, nil]
         optional :reasoning, -> { OpenAI::Beta::BetaResponse::Reasoning }, nil?: true
@@ -251,10 +263,10 @@ module OpenAI
         # @!attribute safety_identifier
         #   A stable identifier used to help detect users of your application that may be
         #   violating OpenAI's usage policies. The IDs should be a string that uniquely
-        #   identifies each user, with a maximum length of 64 characters. We recommend
+        #   identifies each user, with a maximum length of 128 characters. We recommend
         #   hashing their username or email address, in order to avoid sending us any
         #   identifying information.
-        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         #
         #   @return [String, nil]
         optional :safety_identifier, String, nil?: true
@@ -267,13 +279,19 @@ module OpenAI
         #     will use 'default'.
         #   - If set to 'default', then the request will be processed with the standard
         #     pricing and performance for the selected model.
-        #   - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #     then the request will be processed with the Flex Processing service tier.
-        #   - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #     include the `service_tier=fast` or `service_tier=priority` parameter for
-        #     Responses or Chat Completions. The response will show `service_tier=priority`
-        #     regardless of if you specify `service_tier=fast` or `priority` in your
-        #     request.
+        #   - If set to
+        #     '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #     the request will be processed with the Flex Processing service tier.
+        #   - To opt-in to
+        #     [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #     request level, include the `service_tier=fast` or `service_tier=priority`
+        #     parameter for Responses or Chat Completions. The response will show
+        #     `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #     `priority` in your request.
+        #   - If set to 'ultrafast', then the request will be processed with the
+        #     access-controlled Ultrafast Processing service tier. This tier is currently
+        #     available for `gpt-5.6-sol`; a response served through it will show
+        #     `service_tier=ultrafast`.
         #   - When not set, the default behavior is 'auto'.
         #
         #   When the `service_tier` parameter is set, the response body will include the
@@ -295,8 +313,8 @@ module OpenAI
         #   Configuration options for a text response from the model. Can be plain text or
         #   structured JSON data. Learn more:
         #
-        #   - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-        #   - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+        #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+        #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
         #
         #   @return [OpenAI::Models::Beta::BetaResponseTextConfig, nil]
         optional :text, -> { OpenAI::Beta::BetaResponseTextConfig }
@@ -335,87 +353,280 @@ module OpenAI
         #   `prompt_cache_key` instead to maintain caching optimizations. A stable
         #   identifier for your end-users. Used to boost cache hit rates by better bucketing
         #   similar requests and to help OpenAI detect and prevent abuse.
-        #   [Learn more](https://platform.openai.com/docs/guides/safety-best-practices#safety-identifiers).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         #
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponse} for more details.
+        # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        #   @param id [String]
+        #     Unique identifier for this Response.
         #
-        #   @param id [String] Unique identifier for this Response.
+        #   @param access_programs [OpenAI::Models::Beta::BetaResponse::AccessPrograms, nil]
         #
-        #   @param created_at [Float] Unix timestamp (in seconds) of when this Response was created.
+        #   @param created_at [Float]
+        #     Unix timestamp (in seconds) of when this Response was created.
         #
-        #   @param error [OpenAI::Models::Beta::BetaResponseError, nil] An error object returned when the model fails to generate a Response.
+        #   @param error [OpenAI::Models::Beta::BetaResponseError, nil]
+        #     An error object returned when the model fails to generate a Response.
         #
-        #   @param incomplete_details [OpenAI::Models::Beta::BetaResponse::IncompleteDetails, nil] Details about why the response is incomplete.
+        #   @param incomplete_details [OpenAI::Models::Beta::BetaResponse::IncompleteDetails, nil]
+        #     Details about why the response is incomplete.
         #
-        #   @param instructions [String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>, nil] A system (or developer) message inserted into the model's context.
+        #   @param instructions [String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>, nil]
+        #     A system (or developer) message inserted into the model's context.
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #     When using along with `previous_response_id`, the instructions from a previous
+        #     response will not be carried over to the next response. This makes it simple to
+        #     swap out system (or developer) messages in new responses.
         #
-        #   @param model [Symbol, String, OpenAI::Models::Beta::BetaResponse::Model] Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
         #
-        #   @param output [Array<OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem, OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseOutputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseOutputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseOutputItem::Program, OpenAI::Models::Beta::BetaResponseOutputItem::ProgramOutput, OpenAI::Models::Beta::BetaResponseToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItem, OpenAI::Models::Beta::BetaResponseOutputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseCompactionItem, OpenAI::Models::Beta::BetaResponseOutputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseFunctionShellToolCall, OpenAI::Models::Beta::BetaResponseFunctionShellToolCallOutput, OpenAI::Models::Beta::BetaResponseApplyPatchToolCall, OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput, OpenAI::Models::Beta::BetaResponseOutputItem::McpCall, OpenAI::Models::Beta::BetaResponseOutputItem::McpListTools, OpenAI::Models::Beta::BetaResponseOutputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseOutputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutputItem>] An array of content items generated by the model.
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
         #
-        #   @param parallel_tool_calls [Boolean] Whether to allow the model to run tool calls in parallel.
+        #   @param model [Symbol, String, OpenAI::Models::Beta::BetaResponse::Model]
+        #     Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        #     range of models with different capabilities, performance characteristics, and
+        #     price points. Refer to the
+        #     [model guide](https://developers.openai.com/api/docs/models) to browse and
+        #     compare available models.
         #
-        #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
+        #   @param output [Array<OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseFunctionToolCallOutputItem, OpenAI::Models::Beta::BetaResponseOutputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseOutputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseOutputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCallOutputItem, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseOutputItem::Program, OpenAI::Models::Beta::BetaResponseOutputItem::ProgramOutput, OpenAI::Models::Beta::BetaResponseToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItem, OpenAI::Models::Beta::BetaResponseOutputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseCompactionItem, OpenAI::Models::Beta::BetaResponseOutputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseOutputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseFunctionShellToolCall, OpenAI::Models::Beta::BetaResponseFunctionShellToolCallOutput, OpenAI::Models::Beta::BetaResponseApplyPatchToolCall, OpenAI::Models::Beta::BetaResponseApplyPatchToolCallOutput, OpenAI::Models::Beta::BetaResponseOutputItem::McpCall, OpenAI::Models::Beta::BetaResponseOutputItem::McpListTools, OpenAI::Models::Beta::BetaResponseOutputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseOutputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutputItem>]
+        #     An array of content items generated by the model.
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Beta::BetaToolChoiceOptions, OpenAI::Models::Beta::BetaToolChoiceAllowed, OpenAI::Models::Beta::BetaToolChoiceTypes, OpenAI::Models::Beta::BetaToolChoiceFunction, OpenAI::Models::Beta::BetaToolChoiceMcp, OpenAI::Models::Beta::BetaToolChoiceCustom, OpenAI::Models::Beta::BetaResponse::ToolChoice::BetaSpecificProgrammaticToolCallingParam, OpenAI::Models::Beta::BetaToolChoiceApplyPatch, OpenAI::Models::Beta::BetaToolChoiceShell] How the model should select which tool (or tools) to use when generating
+        #     - The length and order of items in the `output` array is dependent on the
+        #       model's response.
+        #     - Rather than accessing the first item in the `output` array and assuming it's
+        #       an `assistant` message with the content generated by the model, you might
+        #       consider using the `output_text` property where supported in SDKs.
         #
-        #   @param tools [Array<OpenAI::Models::Beta::BetaFunctionTool, OpenAI::Models::Beta::BetaFileSearchTool, OpenAI::Models::Beta::BetaComputerTool, OpenAI::Models::Beta::BetaComputerUsePreviewTool, OpenAI::Models::Beta::BetaTool::Mcp, OpenAI::Models::Beta::BetaTool::CodeInterpreter, OpenAI::Models::Beta::BetaTool::ProgrammaticToolCalling, OpenAI::Models::Beta::BetaTool::ImageGeneration, OpenAI::Models::Beta::BetaTool::LocalShell, OpenAI::Models::Beta::BetaFunctionShellTool, OpenAI::Models::Beta::BetaCustomTool, OpenAI::Models::Beta::BetaNamespaceTool, OpenAI::Models::Beta::BetaToolSearchTool, OpenAI::Models::Beta::BetaApplyPatchTool, OpenAI::Models::Beta::BetaWebSearchTool, OpenAI::Models::Beta::BetaWebSearchPreviewTool>] An array of tools the model may call while generating a response. You
+        #   @param parallel_tool_calls [Boolean]
+        #     Whether to allow the model to run tool calls in parallel.
         #
-        #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling,
+        #   @param temperature [Float, nil]
+        #     What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        #     make the output more random, while lower values like 0.2 will make it more
+        #     focused and deterministic. We generally recommend altering this or `top_p` but
+        #     not both.
         #
-        #   @param background [Boolean, nil] Whether to run the model response in the background.
+        #   @param tool_choice [Symbol, OpenAI::Models::Beta::BetaToolChoiceOptions, OpenAI::Models::Beta::BetaToolChoiceAllowed, OpenAI::Models::Beta::BetaToolChoiceTypes, OpenAI::Models::Beta::BetaToolChoiceFunction, OpenAI::Models::Beta::BetaToolChoiceMcp, OpenAI::Models::Beta::BetaToolChoiceCustom, OpenAI::Models::Beta::BetaResponse::ToolChoice::BetaSpecificProgrammaticToolCallingParam, OpenAI::Models::Beta::BetaToolChoiceApplyPatch, OpenAI::Models::Beta::BetaToolChoiceShell]
+        #     How the model should select which tool (or tools) to use when generating a
+        #     response. See the `tools` parameter to see how to specify which tools the model
+        #     can call.
         #
-        #   @param completed_at [Float, nil] Unix timestamp (in seconds) of when this Response was completed.
+        #   @param tools [Array<OpenAI::Models::Beta::BetaFunctionTool, OpenAI::Models::Beta::BetaFileSearchTool, OpenAI::Models::Beta::BetaComputerTool, OpenAI::Models::Beta::BetaComputerUsePreviewTool, OpenAI::Models::Beta::BetaTool::Mcp, OpenAI::Models::Beta::BetaTool::CodeInterpreter, OpenAI::Models::Beta::BetaTool::ProgrammaticToolCalling, OpenAI::Models::Beta::BetaTool::ImageGeneration, OpenAI::Models::Beta::BetaTool::LocalShell, OpenAI::Models::Beta::BetaFunctionShellTool, OpenAI::Models::Beta::BetaCustomTool, OpenAI::Models::Beta::BetaNamespaceTool, OpenAI::Models::Beta::BetaToolSearchTool, OpenAI::Models::Beta::BetaApplyPatchTool, OpenAI::Models::Beta::BetaWebSearchTool, OpenAI::Models::Beta::BetaWebSearchPreviewTool>]
+        #     An array of tools the model may call while generating a response. You can
+        #     specify which tool to use by setting the `tool_choice` parameter.
         #
-        #   @param conversation [OpenAI::Models::Beta::BetaResponse::Conversation, nil] The conversation that this response belonged to. Input items and output items fr
+        #     We support the following categories of tools:
         #
-        #   @param max_output_tokens [Integer, nil] An upper bound for the number of tokens that can be generated for a response, in
+        #     - **Built-in tools**: Tools that are provided by OpenAI that extend the model's
+        #       capabilities, like
+        #       [web search](https://developers.openai.com/api/docs/guides/tools-web-search)
+        #       or
+        #       [file search](https://developers.openai.com/api/docs/guides/tools-file-search).
+        #       Learn more about
+        #       [built-in tools](https://developers.openai.com/api/docs/guides/tools).
+        #     - **MCP Tools**: Integrations with third-party systems via custom MCP servers or
+        #       predefined connectors such as Google Drive and SharePoint. Learn more about
+        #       [MCP Tools](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
+        #     - **Function calls (custom tools)**: Functions that are defined by you, enabling
+        #       the model to call your own code with strongly typed arguments and outputs.
+        #       Learn more about
+        #       [function calling](https://developers.openai.com/api/docs/guides/function-calling).
+        #       You can also use custom tools to call your own code.
         #
-        #   @param max_tool_calls [Integer, nil] The maximum number of total calls to built-in tools that can be processed in a r
+        #   @param top_p [Float, nil]
+        #     An alternative to sampling with temperature, called nucleus sampling, where the
+        #     model considers the results of the tokens with top_p probability mass. So 0.1
+        #     means only the tokens comprising the top 10% probability mass are considered.
         #
-        #   @param moderation [OpenAI::Models::Beta::BetaResponse::Moderation, nil] Moderation results for the response input and output, if moderated completions w
+        #     We generally recommend altering this or `temperature` but not both.
         #
-        #   @param previous_response_id [String, nil] The unique ID of the previous response to the model. Use this to
+        #   @param background [Boolean, nil]
+        #     Whether to run the model response in the background.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/background).
         #
-        #   @param prompt [OpenAI::Models::Beta::BetaResponsePrompt, nil] Reference to a prompt template and its variables.
+        #   @param completed_at [Float, nil]
+        #     Unix timestamp (in seconds) of when this Response was completed. Only present
+        #     when the status is `completed`.
         #
-        #   @param prompt_cache_key [String, nil] Used by OpenAI to cache responses for similar requests to optimize your cache hi
+        #   @param conversation [OpenAI::Models::Beta::BetaResponse::Conversation, nil]
+        #     The conversation that this response belonged to. Input items and output items
+        #     from this response were automatically added to this conversation.
         #
-        #   @param prompt_cache_options [OpenAI::Models::Beta::BetaResponse::PromptCacheOptions] The prompt-caching options that were applied to the response. Supported for `gpt
+        #   @param max_output_tokens [Integer, nil]
+        #     An upper bound for the number of tokens that can be generated for a response,
+        #     including visible output tokens and
+        #     [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
         #
-        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheRetention, nil] Deprecated. Use `prompt_cache_options.ttl` instead.
+        #   @param max_tool_calls [Integer, nil]
+        #     The maximum number of total calls to built-in tools that can be processed in a
+        #     response. This maximum number applies across all built-in tool calls, not per
+        #     individual tool. Any further attempts to call a tool by the model will be
+        #     ignored.
         #
-        #   @param reasoning [OpenAI::Models::Beta::BetaResponse::Reasoning, nil] **gpt-5 and o-series models only**
+        #   @param moderation [OpenAI::Models::Beta::BetaResponse::Moderation, nil]
+        #     Moderation results for the response input and output, if moderated completions
+        #     were requested.
         #
-        #   @param safety_identifier [String, nil] A stable identifier used to help detect users of your application that may be vi
+        #   @param previous_response_id [String, nil]
+        #     The unique ID of the previous response to the model. Use this to create
+        #     multi-turn conversations. Learn more about
+        #     [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
+        #     Cannot be used in conjunction with `conversation`.
         #
-        #   @param service_tier [Symbol, OpenAI::Models::Beta::BetaResponse::ServiceTier, nil] Specifies the processing type used for serving the request.
+        #   @param prompt [OpenAI::Models::Beta::BetaResponsePrompt, nil]
+        #     Reference to a prompt template and its variables.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
         #
-        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseStatus] The status of the response generation. One of `completed`, `failed`,
+        #   @param prompt_cache_diagnostics [OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable]
+        #     Prompt cache diagnostics requested for this response.
         #
-        #   @param text [OpenAI::Models::Beta::BetaResponseTextConfig] Configuration options for a text response from the model. Can be plain
+        #   @param prompt_cache_key [String, nil]
+        #     Used by OpenAI to cache responses for similar requests to optimize your cache
+        #     hit rates. Replaces the `user` field.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching).
         #
-        #   @param top_logprobs [Integer, nil] An integer between 0 and 20 specifying the maximum number of most likely
+        #   @param prompt_cache_options [OpenAI::Models::Beta::BetaResponse::PromptCacheOptions]
+        #     The prompt-caching options that were applied to the response. Supported for
+        #     `gpt-5.6` and later models.
         #
-        #   @param truncation [Symbol, OpenAI::Models::Beta::BetaResponse::Truncation, nil] The truncation strategy to use for the model response.
+        #   @param prompt_cache_retention [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheRetention, nil]
+        #     Deprecated. Use `prompt_cache_options.ttl` instead.
         #
-        #   @param usage [OpenAI::Models::Beta::BetaResponseUsage] Represents token usage details including input tokens, output tokens,
+        #     The retention policy for the prompt cache. Set to `24h` to enable extended
+        #     prompt caching, which keeps cached prefixes active for longer, up to a maximum
+        #     of 24 hours.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
+        #     This field expresses a maximum retention policy, while
+        #     `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
+        #     are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
+        #     models, only `24h` is supported.
         #
-        #   @param user [String] This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        #     For older models that support both `in_memory` and `24h`, the default depends on
+        #     your organization's data retention policy:
         #
-        #   @param object [Symbol, :response] The object type of this resource - always set to `response`.
+        #     - Organizations without ZDR enabled default to `24h`.
+        #     - Organizations with ZDR enabled default to `in_memory` when
+        #       `prompt_cache_retention` is not specified.
+        #
+        #   @param reasoning [OpenAI::Models::Beta::BetaResponse::Reasoning, nil]
+        #     Configuration options for
+        #     [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
+        #
+        #   @param safety_identifier [String, nil]
+        #     A stable identifier used to help detect users of your application that may be
+        #     violating OpenAI's usage policies. The IDs should be a string that uniquely
+        #     identifies each user, with a maximum length of 128 characters. We recommend
+        #     hashing their username or email address, in order to avoid sending us any
+        #     identifying information.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+        #
+        #   @param service_tier [Symbol, OpenAI::Models::Beta::BetaResponse::ServiceTier, nil]
+        #     Specifies the processing type used for serving the request.
+        #
+        #     - If set to 'auto', then the request will be processed with the service tier
+        #       configured in the Project settings. Unless otherwise configured, the Project
+        #       will use 'default'.
+        #     - If set to 'default', then the request will be processed with the standard
+        #       pricing and performance for the selected model.
+        #     - If set to
+        #       '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #       the request will be processed with the Flex Processing service tier.
+        #     - To opt-in to
+        #       [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #       request level, include the `service_tier=fast` or `service_tier=priority`
+        #       parameter for Responses or Chat Completions. The response will show
+        #       `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #       `priority` in your request.
+        #     - If set to 'ultrafast', then the request will be processed with the
+        #       access-controlled Ultrafast Processing service tier. This tier is currently
+        #       available for `gpt-5.6-sol`; a response served through it will show
+        #       `service_tier=ultrafast`.
+        #     - When not set, the default behavior is 'auto'.
+        #
+        #     When the `service_tier` parameter is set, the response body will include the
+        #     `service_tier` value based on the processing mode actually used to serve the
+        #     request. This response value may be different from the value set in the
+        #     parameter.
+        #
+        #   @param status [Symbol, OpenAI::Models::Beta::BetaResponseStatus]
+        #     The status of the response generation. One of `completed`, `failed`,
+        #     `in_progress`, `cancelled`, `queued`, or `incomplete`.
+        #
+        #   @param text [OpenAI::Models::Beta::BetaResponseTextConfig]
+        #     Configuration options for a text response from the model. Can be plain text or
+        #     structured JSON data. Learn more:
+        #
+        #     - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+        #     - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+        #
+        #   @param top_logprobs [Integer, nil]
+        #     An integer between 0 and 20 specifying the maximum number of most likely tokens
+        #     to return at each token position, each with an associated log probability. In
+        #     some cases, the number of returned tokens may be fewer than requested.
+        #
+        #   @param truncation [Symbol, OpenAI::Models::Beta::BetaResponse::Truncation, nil]
+        #     The truncation strategy to use for the model response.
+        #
+        #     - `auto`: If the input to this Response exceeds the model's context window size,
+        #       the model will truncate the response to fit the context window by dropping
+        #       items from the beginning of the conversation.
+        #     - `disabled` (default): If the input size will exceed the context window size
+        #       for a model, the request will fail with a 400 error.
+        #
+        #   @param usage [OpenAI::Models::Beta::BetaResponseUsage]
+        #     Represents token usage details including input tokens, output tokens, a
+        #     breakdown of output tokens, and the total tokens used.
+        #
+        #   @param user [String]
+        #     This field is being replaced by `safety_identifier` and `prompt_cache_key`. Use
+        #     `prompt_cache_key` instead to maintain caching optimizations. A stable
+        #     identifier for your end-users. Used to boost cache hit rates by better bucketing
+        #     similar requests and to help OpenAI detect and prevent abuse.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+        #
+        #   @param object [Symbol, :response]
+        #     The object type of this resource - always set to `response`.
+
+        # @see OpenAI::Models::Beta::BetaResponse#access_programs
+        class AccessPrograms < OpenAI::Internal::Type::BaseModel
+          # @!attribute cyber
+          #   The effective Cyber access program used for this response.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::AccessPrograms::Cyber]
+          required :cyber, enum: -> { OpenAI::Beta::BetaResponse::AccessPrograms::Cyber }
+
+          # @!method initialize(cyber:)
+          #   @param cyber [Symbol, OpenAI::Models::Beta::BetaResponse::AccessPrograms::Cyber]
+          #     The effective Cyber access program used for this response.
+
+          # The effective Cyber access program used for this response.
+          #
+          # @see OpenAI::Models::Beta::BetaResponse::AccessPrograms#cyber
+          module Cyber
+            extend OpenAI::Internal::Type::Enum
+
+            STANDARD = :standard
+            DAYBREAK_BLUE = :daybreak_blue
+            DAYBREAK_RED = :daybreak_red
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
 
         # @see OpenAI::Models::Beta::BetaResponse#incomplete_details
         class IncompleteDetails < OpenAI::Internal::Type::BaseModel
           # @!attribute reason
-          #   The reason why the response is incomplete.
+          #   The reason why the response is incomplete. `steered` means the response stopped
+          #   at a safe output boundary after a WebSocket `response.steer` event. The server
+          #   can then create a successor response automatically with the queued input.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::IncompleteDetails::Reason, nil]
           optional :reason, enum: -> { OpenAI::Beta::BetaResponse::IncompleteDetails::Reason }
@@ -423,16 +634,23 @@ module OpenAI
           # @!method initialize(reason: nil)
           #   Details about why the response is incomplete.
           #
-          #   @param reason [Symbol, OpenAI::Models::Beta::BetaResponse::IncompleteDetails::Reason] The reason why the response is incomplete.
+          #   @param reason [Symbol, OpenAI::Models::Beta::BetaResponse::IncompleteDetails::Reason]
+          #     The reason why the response is incomplete. `steered` means the response stopped
+          #     at a safe output boundary after a WebSocket `response.steer` event. The server
+          #     can then create a successor response automatically with the queued input.
 
-          # The reason why the response is incomplete.
+          # The reason why the response is incomplete. `steered` means the response stopped
+          # at a safe output boundary after a WebSocket `response.steer` event. The server
+          # can then create a successor response automatically with the queued input.
           #
           # @see OpenAI::Models::Beta::BetaResponse::IncompleteDetails#reason
           module Reason
             extend OpenAI::Internal::Type::Enum
 
             MAX_OUTPUT_TOKENS = :max_output_tokens
+            MAX_MESSAGES = :max_messages
             CONTENT_FILTER = :content_filter
+            STEERED = :steered
 
             # @!method self.values
             #   @return [Array<Symbol>]
@@ -458,22 +676,31 @@ module OpenAI
           variant -> { OpenAI::Models::Beta::BetaResponse::Instructions::BetaResponseInputItemArray }
 
           # @!method self.variants
-          #   @return [Array(String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>)]
+          #   @return [Array(String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>)]
 
           # @type [OpenAI::Internal::Type::Converter]
-          BetaResponseInputItemArray =
-            OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::Beta::BetaResponseInputItem }]
+          BetaResponseInputItemArray = OpenAI::Internal::Type::ArrayOf[
+            union: -> { OpenAI::Beta::BetaResponseInputItem }
+          ]
         end
 
-        # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
-        # wide range of models with different capabilities, performance characteristics,
-        # and price points. Refer to the
-        # [model guide](https://platform.openai.com/docs/models) to browse and compare
-        # available models.
+        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
+        # range of models with different capabilities, performance characteristics, and
+        # price points. Refer to the
+        # [model guide](https://developers.openai.com/api/docs/models) to browse and
+        # compare available models.
         #
         # @see OpenAI::Models::Beta::BetaResponse#model
         module Model
           extend OpenAI::Internal::Type::Union
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_ASTRA }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_1_SOL }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_SOL }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_LUNA }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_6_SOL }
 
@@ -482,6 +709,8 @@ module OpenAI
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_6_LUNA }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_5 }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_5_2026_04_23 }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_4 }
 
@@ -573,6 +802,10 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_4O_2024_05_13 }
 
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_AUDIO_MINI }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_AUDIO_MINI_2025_12_15 }
+
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_4O_AUDIO_PREVIEW }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_4O_AUDIO_PREVIEW_2024_10_01 }
@@ -659,6 +892,10 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::COMPUTER_USE_PREVIEW_2025_03_11 }
 
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_5_PRO }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_5_PRO_2026_04_23 }
+
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_CODEX }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_PRO }
@@ -666,6 +903,14 @@ module OpenAI
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_PRO_2025_10_06 }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_1_CODEX_MAX }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_DAYBREAK_BLUE_LATEST }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_DAYBREAK_RED_LATEST }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_6_CYBER }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_ROSALIND_RESEARCH }
 
           variant String
 
@@ -678,102 +923,335 @@ module OpenAI
 
           # @!group
 
+          GPT_6_ASTRA = :"gpt-6-astra"
+          GPT_6_1_SOL = :"gpt-6.1-sol"
+          GPT_6_SOL = :"gpt-6-sol"
+          GPT_6_LUNA = :"gpt-6-luna"
           GPT_5_6_SOL = :"gpt-5.6-sol"
           GPT_5_6_TERRA = :"gpt-5.6-terra"
           GPT_5_6_LUNA = :"gpt-5.6-luna"
           GPT_5_5 = :"gpt-5.5"
+          GPT_5_5_2026_04_23 = :"gpt-5.5-2026-04-23"
           GPT_5_4 = :"gpt-5.4"
           GPT_5_4_MINI = :"gpt-5.4-mini"
           GPT_5_4_NANO = :"gpt-5.4-nano"
           GPT_5_4_MINI_2026_03_17 = :"gpt-5.4-mini-2026-03-17"
           GPT_5_4_NANO_2026_03_17 = :"gpt-5.4-nano-2026-03-17"
+          # @deprecated Announced shutdown date: 2026-08-10. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_3_CHAT_LATEST = :"gpt-5.3-chat-latest"
           GPT_5_2 = :"gpt-5.2"
           GPT_5_2_2025_12_11 = :"gpt-5.2-2025-12-11"
+          # @deprecated Announced shutdown date: 2026-08-10. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_2_CHAT_LATEST = :"gpt-5.2-chat-latest"
           GPT_5_2_PRO = :"gpt-5.2-pro"
           GPT_5_2_PRO_2025_12_11 = :"gpt-5.2-pro-2025-12-11"
           GPT_5_1 = :"gpt-5.1"
           GPT_5_1_2025_11_13 = :"gpt-5.1-2025-11-13"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_1_CODEX = :"gpt-5.1-codex"
+          # @deprecated Not a supported model ID. Retained for SDK compatibility.
           GPT_5_1_MINI = :"gpt-5.1-mini"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_1_CHAT_LATEST = :"gpt-5.1-chat-latest"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5 = :"gpt-5"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_MINI = :"gpt-5-mini"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_NANO = :"gpt-5-nano"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_2025_08_07 = :"gpt-5-2025-08-07"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_MINI_2025_08_07 = :"gpt-5-mini-2025-08-07"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_NANO_2025_08_07 = :"gpt-5-nano-2025-08-07"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_CHAT_LATEST = :"gpt-5-chat-latest"
           GPT_4_1 = :"gpt-4.1"
           GPT_4_1_MINI = :"gpt-4.1-mini"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_1_NANO = :"gpt-4.1-nano"
           GPT_4_1_2025_04_14 = :"gpt-4.1-2025-04-14"
           GPT_4_1_MINI_2025_04_14 = :"gpt-4.1-mini-2025-04-14"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_1_NANO_2025_04_14 = :"gpt-4.1-nano-2025-04-14"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O4_MINI = :"o4-mini"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O4_MINI_2025_04_16 = :"o4-mini-2025-04-16"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O3 = :o3
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O3_2025_04_16 = :"o3-2025-04-16"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O3_MINI = :"o3-mini"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O1 = :o1
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O1_2024_12_17 = :"o1-2024-12-17"
+          # @deprecated Announced shutdown date: 2025-07-28. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O1_PREVIEW = :"o1-preview"
+          # @deprecated Announced shutdown date: 2025-07-28. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O1_PREVIEW_2024_09_12 = :"o1-preview-2024-09-12"
+          # @deprecated Announced shutdown date: 2025-10-27. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O1_MINI = :"o1-mini"
+          # @deprecated Announced shutdown date: 2025-10-27. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O1_MINI_2024_09_12 = :"o1-mini-2024-09-12"
           GPT_4O = :"gpt-4o"
           GPT_4O_2024_11_20 = :"gpt-4o-2024-11-20"
           GPT_4O_2024_08_06 = :"gpt-4o-2024-08-06"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_2024_05_13 = :"gpt-4o-2024-05-13"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
+          GPT_AUDIO_MINI = :"gpt-audio-mini"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
+          GPT_AUDIO_MINI_2025_12_15 = :"gpt-audio-mini-2025-12-15"
+          # @deprecated Announced shutdown date: 2026-05-07. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_AUDIO_PREVIEW = :"gpt-4o-audio-preview"
+          # @deprecated Announced shutdown date: 2025-10-10. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_AUDIO_PREVIEW_2024_10_01 = :"gpt-4o-audio-preview-2024-10-01"
+          # @deprecated Announced shutdown date: 2026-05-07. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_AUDIO_PREVIEW_2024_12_17 = :"gpt-4o-audio-preview-2024-12-17"
+          # @deprecated Announced shutdown date: 2026-05-07. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_AUDIO_PREVIEW_2025_06_03 = :"gpt-4o-audio-preview-2025-06-03"
+          # @deprecated Announced shutdown date: 2026-05-07. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_MINI_AUDIO_PREVIEW = :"gpt-4o-mini-audio-preview"
+          # @deprecated Announced shutdown date: 2026-05-07. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_MINI_AUDIO_PREVIEW_2024_12_17 = :"gpt-4o-mini-audio-preview-2024-12-17"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_SEARCH_PREVIEW = :"gpt-4o-search-preview"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_MINI_SEARCH_PREVIEW = :"gpt-4o-mini-search-preview"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_SEARCH_PREVIEW_2025_03_11 = :"gpt-4o-search-preview-2025-03-11"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_MINI_SEARCH_PREVIEW_2025_03_11 = :"gpt-4o-mini-search-preview-2025-03-11"
+          # @deprecated Announced shutdown date: 2026-02-17. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           CHATGPT_4O_LATEST = :"chatgpt-4o-latest"
+          # @deprecated Announced shutdown date: 2026-02-12. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           CODEX_MINI_LATEST = :"codex-mini-latest"
           GPT_4O_MINI = :"gpt-4o-mini"
           GPT_4O_MINI_2024_07_18 = :"gpt-4o-mini-2024-07-18"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_TURBO = :"gpt-4-turbo"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_TURBO_2024_04_09 = :"gpt-4-turbo-2024-04-09"
+          # @deprecated Announced shutdown date: 2026-03-26. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_0125_PREVIEW = :"gpt-4-0125-preview"
+          # @deprecated Announced shutdown date: 2026-03-26. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_TURBO_PREVIEW = :"gpt-4-turbo-preview"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_1106_PREVIEW = :"gpt-4-1106-preview"
+          # @deprecated Announced shutdown date: 2024-12-06. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_VISION_PREVIEW = :"gpt-4-vision-preview"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4 = :"gpt-4"
+          # @deprecated Announced shutdown date: 2026-03-26. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_0314 = :"gpt-4-0314"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_0613 = :"gpt-4-0613"
+          # @deprecated Announced shutdown date: 2025-06-06. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_32K = :"gpt-4-32k"
+          # @deprecated Announced shutdown date: 2025-06-06. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_32K_0314 = :"gpt-4-32k-0314"
+          # @deprecated Announced shutdown date: 2025-06-06. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_32K_0613 = :"gpt-4-32k-0613"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_3_5_TURBO = :"gpt-3.5-turbo"
+          # @deprecated Announced shutdown date: 2024-09-13. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_3_5_TURBO_16K = :"gpt-3.5-turbo-16k"
+          # @deprecated Announced shutdown date: 2024-09-13. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_3_5_TURBO_0301 = :"gpt-3.5-turbo-0301"
+          # @deprecated Announced shutdown date: 2024-09-13. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_3_5_TURBO_0613 = :"gpt-3.5-turbo-0613"
+          # @deprecated Announced shutdown date: 2026-09-28. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_3_5_TURBO_1106 = :"gpt-3.5-turbo-1106"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
+          # @deprecated Announced shutdown date: 2024-09-13. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O1_PRO = :"o1-pro"
+          # @deprecated Announced shutdown date: 2026-10-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O1_PRO_2025_03_19 = :"o1-pro-2025-03-19"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O3_PRO = :"o3-pro"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O3_PRO_2025_06_10 = :"o3-pro-2025-06-10"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O3_DEEP_RESEARCH = :"o3-deep-research"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O3_DEEP_RESEARCH_2025_06_26 = :"o3-deep-research-2025-06-26"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O4_MINI_DEEP_RESEARCH = :"o4-mini-deep-research"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           O4_MINI_DEEP_RESEARCH_2025_06_26 = :"o4-mini-deep-research-2025-06-26"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           COMPUTER_USE_PREVIEW = :"computer-use-preview"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           COMPUTER_USE_PREVIEW_2025_03_11 = :"computer-use-preview-2025-03-11"
+          GPT_5_5_PRO = :"gpt-5.5-pro"
+          GPT_5_5_PRO_2026_04_23 = :"gpt-5.5-pro-2026-04-23"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_CODEX = :"gpt-5-codex"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_PRO = :"gpt-5-pro"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_PRO_2025_10_06 = :"gpt-5-pro-2025-10-06"
+          # @deprecated Announced shutdown date: 2026-07-23. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_1_CODEX_MAX = :"gpt-5.1-codex-max"
+          GPT_DAYBREAK_BLUE_LATEST = :"gpt-daybreak-blue-latest"
+          GPT_DAYBREAK_RED_LATEST = :"gpt-daybreak-red-latest"
+          GPT_5_6_CYBER = :"gpt-5.6-cyber"
+          GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
 
           # @!endgroup
         end
@@ -800,7 +1278,7 @@ module OpenAI
           variant -> { OpenAI::Beta::BetaToolChoiceAllowed }
 
           # Indicates that the model should use a built-in tool to generate a response.
-          # [Learn more about built-in tools](https://platform.openai.com/docs/guides/tools).
+          # [Learn more about built-in tools](https://developers.openai.com/api/docs/guides/tools).
           variant -> { OpenAI::Beta::BetaToolChoiceTypes }
 
           # Use this option to force the model to call a specific function.
@@ -828,7 +1306,8 @@ module OpenAI
             required :type, const: :programmatic_tool_calling
 
             # @!method initialize(type: :programmatic_tool_calling)
-            #   @param type [Symbol, :programmatic_tool_calling] The tool to call. Always `programmatic_tool_calling`.
+            #   @param type [Symbol, :programmatic_tool_calling]
+            #     The tool to call. Always `programmatic_tool_calling`.
           end
 
           # @!method self.variants
@@ -847,7 +1326,8 @@ module OpenAI
           #   The conversation that this response belonged to. Input items and output items
           #   from this response were automatically added to this conversation.
           #
-          #   @param id [String] The unique ID of the conversation that this response was associated with.
+          #   @param id [String]
+          #     The unique ID of the conversation that this response was associated with.
         end
 
         # @see OpenAI::Models::Beta::BetaResponse#moderation
@@ -868,9 +1348,11 @@ module OpenAI
           #   Moderation results for the response input and output, if moderated completions
           #   were requested.
           #
-          #   @param input [OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult, OpenAI::Models::Beta::BetaResponse::Moderation::Input::Error] Moderation for the response input.
+          #   @param input [OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult, OpenAI::Models::Beta::BetaResponse::Moderation::Input::Error]
+          #     Moderation for the response input.
           #
-          #   @param output [OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult, OpenAI::Models::Beta::BetaResponse::Moderation::Output::Error] Moderation for the response output.
+          #   @param output [OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult, OpenAI::Models::Beta::BetaResponse::Moderation::Output::Error]
+          #     Moderation for the response output.
 
           # Moderation for the response input.
           #
@@ -898,12 +1380,16 @@ module OpenAI
               #   Which modalities of input are reflected by the score for each category.
               #
               #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::CategoryAppliedInputType>}]
-              required :category_applied_input_types,
-                       -> do
-                         OpenAI::Internal::Type::HashOf[
-                           OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaResponse::Moderation::Input::ModerationResult::CategoryAppliedInputType]
-                         ]
-                       end
+              required(
+                :category_applied_input_types,
+                -> do
+                  OpenAI::Internal::Type::HashOf[
+                    OpenAI::Internal::Type::ArrayOf[
+                      enum: OpenAI::Beta::BetaResponse::Moderation::Input::ModerationResult::CategoryAppliedInputType
+                    ]
+                  ]
+                end
+              )
 
               # @!attribute category_scores
               #   A dictionary of moderation categories to scores.
@@ -931,24 +1417,27 @@ module OpenAI
               required :type, const: :moderation_result
 
               # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:, model:, type: :moderation_result)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult} for
-              #   more details.
-              #
               #   A moderation result produced for the response input or output.
               #
-              #   @param categories [Hash{Symbol=>Boolean}] A dictionary of moderation categories to booleans, True if the input is flagged
+              #   @param categories [Hash{Symbol=>Boolean}]
+              #     A dictionary of moderation categories to booleans, True if the input is flagged
+              #     under this category.
               #
-              #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::CategoryAppliedInputType>}] Which modalities of input are reflected by the score for each category.
+              #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Beta::BetaResponse::Moderation::Input::ModerationResult::CategoryAppliedInputType>}]
+              #     Which modalities of input are reflected by the score for each category.
               #
-              #   @param category_scores [Hash{Symbol=>Float}] A dictionary of moderation categories to scores.
+              #   @param category_scores [Hash{Symbol=>Float}]
+              #     A dictionary of moderation categories to scores.
               #
-              #   @param flagged [Boolean] A boolean indicating whether the content was flagged by any category.
+              #   @param flagged [Boolean]
+              #     A boolean indicating whether the content was flagged by any category.
               #
-              #   @param model [String] The moderation model that produced this result.
+              #   @param model [String]
+              #     The moderation model that produced this result.
               #
-              #   @param type [Symbol, :moderation_result] The object type, which was always `moderation_result` for successful moderation
-
+              #   @param type [Symbol, :moderation_result]
+              #     The object type, which was always `moderation_result` for successful moderation
+              #     results.
               module CategoryAppliedInputType
                 extend OpenAI::Internal::Type::Enum
 
@@ -982,11 +1471,14 @@ module OpenAI
               # @!method initialize(code:, message:, type: :error)
               #   An error produced while attempting moderation for the response input or output.
               #
-              #   @param code [String] The error code.
+              #   @param code [String]
+              #     The error code.
               #
-              #   @param message [String] The error message.
+              #   @param message [String]
+              #     The error message.
               #
-              #   @param type [Symbol, :error] The object type, which was always `error` for moderation failures.
+              #   @param type [Symbol, :error]
+              #     The object type, which was always `error` for moderation failures.
             end
 
             # @!method self.variants
@@ -1019,12 +1511,16 @@ module OpenAI
               #   Which modalities of input are reflected by the score for each category.
               #
               #   @return [Hash{Symbol=>Array<Symbol, OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::CategoryAppliedInputType>}]
-              required :category_applied_input_types,
-                       -> do
-                         OpenAI::Internal::Type::HashOf[
-                           OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaResponse::Moderation::Output::ModerationResult::CategoryAppliedInputType]
-                         ]
-                       end
+              required(
+                :category_applied_input_types,
+                -> do
+                  OpenAI::Internal::Type::HashOf[
+                    OpenAI::Internal::Type::ArrayOf[
+                      enum: OpenAI::Beta::BetaResponse::Moderation::Output::ModerationResult::CategoryAppliedInputType
+                    ]
+                  ]
+                end
+              )
 
               # @!attribute category_scores
               #   A dictionary of moderation categories to scores.
@@ -1052,24 +1548,27 @@ module OpenAI
               required :type, const: :moderation_result
 
               # @!method initialize(categories:, category_applied_input_types:, category_scores:, flagged:, model:, type: :moderation_result)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult} for
-              #   more details.
-              #
               #   A moderation result produced for the response input or output.
               #
-              #   @param categories [Hash{Symbol=>Boolean}] A dictionary of moderation categories to booleans, True if the input is flagged
+              #   @param categories [Hash{Symbol=>Boolean}]
+              #     A dictionary of moderation categories to booleans, True if the input is flagged
+              #     under this category.
               #
-              #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::CategoryAppliedInputType>}] Which modalities of input are reflected by the score for each category.
+              #   @param category_applied_input_types [Hash{Symbol=>Array<Symbol, OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult::CategoryAppliedInputType>}]
+              #     Which modalities of input are reflected by the score for each category.
               #
-              #   @param category_scores [Hash{Symbol=>Float}] A dictionary of moderation categories to scores.
+              #   @param category_scores [Hash{Symbol=>Float}]
+              #     A dictionary of moderation categories to scores.
               #
-              #   @param flagged [Boolean] A boolean indicating whether the content was flagged by any category.
+              #   @param flagged [Boolean]
+              #     A boolean indicating whether the content was flagged by any category.
               #
-              #   @param model [String] The moderation model that produced this result.
+              #   @param model [String]
+              #     The moderation model that produced this result.
               #
-              #   @param type [Symbol, :moderation_result] The object type, which was always `moderation_result` for successful moderation
-
+              #   @param type [Symbol, :moderation_result]
+              #     The object type, which was always `moderation_result` for successful moderation
+              #     results.
               module CategoryAppliedInputType
                 extend OpenAI::Internal::Type::Enum
 
@@ -1103,16 +1602,131 @@ module OpenAI
               # @!method initialize(code:, message:, type: :error)
               #   An error produced while attempting moderation for the response input or output.
               #
-              #   @param code [String] The error code.
+              #   @param code [String]
+              #     The error code.
               #
-              #   @param message [String] The error message.
+              #   @param message [String]
+              #     The error message.
               #
-              #   @param type [Symbol, :error] The object type, which was always `error` for moderation failures.
+              #   @param type [Symbol, :error]
+              #     The object type, which was always `error` for moderation failures.
             end
 
             # @!method self.variants
             #   @return [Array(OpenAI::Models::Beta::BetaResponse::Moderation::Output::ModerationResult, OpenAI::Models::Beta::BetaResponse::Moderation::Output::Error)]
           end
+        end
+
+        # Prompt cache diagnostics requested for this response.
+        #
+        # @see OpenAI::Models::Beta::BetaResponse#prompt_cache_diagnostics
+        module PromptCacheDiagnostics
+          extend OpenAI::Internal::Type::Union
+
+          discriminator :type
+
+          variant :cache_miss, -> { OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss }
+
+          variant :cache_hit, -> { OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit }
+
+          variant(
+            :comparison_response_not_found,
+            -> { OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound }
+          )
+
+          variant :unavailable, -> { OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable }
+
+          class CacheMiss < OpenAI::Internal::Type::BaseModel
+            # @!attribute cache_missed_tokens
+            #   The estimated number of input tokens affected after the first detected
+            #   divergence.
+            #
+            #   @return [Integer]
+            required :cache_missed_tokens, Integer
+
+            # @!attribute reason
+            #   The reason prompt cache reuse did not occur.
+            #
+            #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason]
+            required :reason, enum: -> { OpenAI::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason }
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :cache_miss]
+            required :type, const: :cache_miss
+
+            # @!attribute comparison_reusable_tokens
+            #   The raw token count of the reusable prefix in the compared response.
+            #
+            #   @return [Integer, nil]
+            optional :comparison_reusable_tokens, Integer
+
+            # @!method initialize(cache_missed_tokens:, reason:, comparison_reusable_tokens: nil, type: :cache_miss)
+            #   @param cache_missed_tokens [Integer]
+            #     The estimated number of input tokens affected after the first detected
+            #     divergence.
+            #
+            #   @param reason [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss::Reason]
+            #     The reason prompt cache reuse did not occur.
+            #
+            #   @param comparison_reusable_tokens [Integer]
+            #     The raw token count of the reusable prefix in the compared response.
+            #
+            #   @param type [Symbol, :cache_miss]
+
+            # The reason prompt cache reuse did not occur.
+            #
+            # @see OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss#reason
+            module Reason
+              extend OpenAI::Internal::Type::Enum
+
+              MODEL_CHANGED = :model_changed
+              PROMPT_CACHE_KEY_CHANGED = :prompt_cache_key_changed
+              TOOLS_CHANGED = :tools_changed
+              TEXT_FORMAT_CHANGED = :text_format_changed
+              REASONING_EFFORT_CHANGED = :reasoning_effort_changed
+              VERBOSITY_CHANGED = :verbosity_changed
+              CONTEXT_COMPACTED = :context_compacted
+              INPUT_CHANGED = :input_changed
+              SERVICE_TIER_CHANGED = :service_tier_changed
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+
+          class CacheHit < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :cache_hit]
+            required :type, const: :cache_hit
+
+            # @!method initialize(type: :cache_hit)
+            #   @param type [Symbol, :cache_hit]
+          end
+
+          class ComparisonResponseNotFound < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :comparison_response_not_found]
+            required :type, const: :comparison_response_not_found
+
+            # @!method initialize(type: :comparison_response_not_found)
+            #   @param type [Symbol, :comparison_response_not_found]
+          end
+
+          class Unavailable < OpenAI::Internal::Type::BaseModel
+            # @!attribute type
+            #
+            #   @return [Symbol, :unavailable]
+            required :type, const: :unavailable
+
+            # @!method initialize(type: :unavailable)
+            #   @param type [Symbol, :unavailable]
+          end
+
+          # @!method self.variants
+          #   @return [Array(OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheMiss, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::CacheHit, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::ComparisonResponseNotFound, OpenAI::Models::Beta::BetaResponse::PromptCacheDiagnostics::Unavailable)]
         end
 
         # @see OpenAI::Models::Beta::BetaResponse#prompt_cache_options
@@ -1129,13 +1743,24 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::Ttl]
           required :ttl, enum: -> { OpenAI::Beta::BetaResponse::PromptCacheOptions::Ttl }
 
-          # @!method initialize(mode:, ttl:)
+          # @!attribute comparison_response_id
+          #   The response ID supplied as the prompt cache diagnostics comparison.
+          #
+          #   @return [String, nil]
+          optional :comparison_response_id, String, nil?: true
+
+          # @!method initialize(mode:, ttl:, comparison_response_id: nil)
           #   The prompt-caching options that were applied to the response. Supported for
           #   `gpt-5.6` and later models.
           #
-          #   @param mode [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::Mode] Whether implicit prompt-cache breakpoints were enabled.
+          #   @param mode [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::Mode]
+          #     Whether implicit prompt-cache breakpoints were enabled.
           #
-          #   @param ttl [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::Ttl] The minimum lifetime applied to each cache breakpoint.
+          #   @param ttl [Symbol, OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::Ttl]
+          #     The minimum lifetime applied to each cache breakpoint.
+          #
+          #   @param comparison_response_id [String, nil]
+          #     The response ID supplied as the prompt cache diagnostics comparison.
 
           # Whether implicit prompt-cache breakpoints were enabled.
           #
@@ -1170,7 +1795,7 @@ module OpenAI
         # The retention policy for the prompt cache. Set to `24h` to enable extended
         # prompt caching, which keeps cached prefixes active for longer, up to a maximum
         # of 24 hours.
-        # [Learn more](https://platform.openai.com/docs/guides/prompt-caching#prompt-cache-retention).
+        # [Learn more](https://developers.openai.com/api/docs/guides/prompt-caching#prompt-cache-retention).
         # This field expresses a maximum retention policy, while
         # `prompt_cache_options.ttl` expresses a minimum cache lifetime. The two fields
         # are independent and do not interact. For `gpt-5.5`, `gpt-5.5-pro`, and future
@@ -1212,7 +1837,7 @@ module OpenAI
           #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
           #   reasoning effort can result in faster responses and fewer tokens used on
           #   reasoning in a response. Not all reasoning models support every value. See the
-          #   [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
           #   model-specific support.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Effort, nil]
@@ -1228,9 +1853,11 @@ module OpenAI
           #   `concise`, or `detailed`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::GenerateSummary, nil]
-          optional :generate_summary,
-                   enum: -> { OpenAI::Beta::BetaResponse::Reasoning::GenerateSummary },
-                   nil?: true
+          optional(
+            :generate_summary,
+            enum: -> { OpenAI::Beta::BetaResponse::Reasoning::GenerateSummary },
+            nil?: true
+          )
 
           # @!attribute mode
           #   Controls the reasoning execution mode for the request.
@@ -1252,23 +1879,44 @@ module OpenAI
           optional :summary, enum: -> { OpenAI::Beta::BetaResponse::Reasoning::Summary }, nil?: true
 
           # @!method initialize(context: nil, effort: nil, generate_summary: nil, mode: nil, summary: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaResponse::Reasoning} for more details.
-          #
-          #   **gpt-5 and o-series models only**
-          #
           #   Configuration options for
-          #   [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+          #   [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
           #
-          #   @param context [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Context, nil] Controls which reasoning items are rendered back to the model on later turns.
+          #   @param context [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Context, nil]
+          #     Controls which reasoning items are rendered back to the model on later turns. If
+          #     omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
+          #     model family defaults to `all_turns`; earlier models default to `current_turn`.
           #
-          #   @param effort [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Effort, nil] Constrains effort on reasoning for reasoning models. Currently supported
+          #     When returned on a response, this is the effective reasoning context mode used
+          #     for the response.
           #
-          #   @param generate_summary [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::GenerateSummary, nil] **Deprecated:** use `summary` instead.
+          #   @param effort [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Effort, nil]
+          #     Constrains effort on reasoning for reasoning models. Currently supported values
+          #     are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+          #     reasoning effort can result in faster responses and fewer tokens used on
+          #     reasoning in a response. Not all reasoning models support every value. See the
+          #     [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+          #     model-specific support.
           #
-          #   @param mode [String, Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Mode] Controls the reasoning execution mode for the request.
+          #   @param generate_summary [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::GenerateSummary, nil]
+          #     **Deprecated:** use `summary` instead.
           #
-          #   @param summary [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Summary, nil] A summary of the reasoning performed by the model. This can be
+          #     A summary of the reasoning performed by the model. This can be useful for
+          #     debugging and understanding the model's reasoning process. One of `auto`,
+          #     `concise`, or `detailed`.
+          #
+          #   @param mode [String, Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Mode]
+          #     Controls the reasoning execution mode for the request.
+          #
+          #     When returned on a response, this is the effective execution mode.
+          #
+          #   @param summary [Symbol, OpenAI::Models::Beta::BetaResponse::Reasoning::Summary, nil]
+          #     A summary of the reasoning performed by the model. This can be useful for
+          #     debugging and understanding the model's reasoning process. One of `auto`,
+          #     `concise`, or `detailed`.
+          #
+          #     `concise` is supported for `computer-use-preview` models and all reasoning
+          #     models after `gpt-5`.
 
           # Controls which reasoning items are rendered back to the model on later turns. If
           # omitted or set to `auto`, the model determines the context mode. The `gpt-5.6`
@@ -1293,7 +1941,7 @@ module OpenAI
           # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
           # reasoning effort can result in faster responses and fewer tokens used on
           # reasoning in a response. Not all reasoning models support every value. See the
-          # [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+          # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
           # model-specific support.
           #
           # @see OpenAI::Models::Beta::BetaResponse::Reasoning#effort
@@ -1388,13 +2036,19 @@ module OpenAI
         #   will use 'default'.
         # - If set to 'default', then the request will be processed with the standard
         #   pricing and performance for the selected model.
-        # - If set to '[flex](https://platform.openai.com/docs/guides/flex-processing)',
-        #   then the request will be processed with the Flex Processing service tier.
-        # - To opt-in to [Fast mode](/api/docs/guides/fast-mode) at the request level,
-        #   include the `service_tier=fast` or `service_tier=priority` parameter for
-        #   Responses or Chat Completions. The response will show `service_tier=priority`
-        #   regardless of if you specify `service_tier=fast` or `priority` in your
-        #   request.
+        # - If set to
+        #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #   the request will be processed with the Flex Processing service tier.
+        # - To opt-in to
+        #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #   request level, include the `service_tier=fast` or `service_tier=priority`
+        #   parameter for Responses or Chat Completions. The response will show
+        #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #   `priority` in your request.
+        # - If set to 'ultrafast', then the request will be processed with the
+        #   access-controlled Ultrafast Processing service tier. This tier is currently
+        #   available for `gpt-5.6-sol`; a response served through it will show
+        #   `service_tier=ultrafast`.
         # - When not set, the default behavior is 'auto'.
         #
         # When the `service_tier` parameter is set, the response body will include the
@@ -1412,6 +2066,7 @@ module OpenAI
           SCALE = :scale
           PRIORITY = :priority
           FAST = :fast
+          ULTRAFAST = :ultrafast
 
           # @!method self.values
           #   @return [Array<Symbol>]

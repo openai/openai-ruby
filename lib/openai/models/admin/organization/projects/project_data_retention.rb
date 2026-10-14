@@ -22,9 +22,11 @@ module OpenAI
             # @!method initialize(type:, object: :"project.data_retention")
             #   Represents a project's data retention control setting.
             #
-            #   @param type [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectDataRetention::Type] The configured project data retention type.
+            #   @param type [Symbol, OpenAI::Models::Admin::Organization::Projects::ProjectDataRetention::Type]
+            #     The configured project data retention type.
             #
-            #   @param object [Symbol, :"project.data_retention"] The object type, which is always `project.data_retention`.
+            #   @param object [Symbol, :"project.data_retention"]
+            #     The object type, which is always `project.data_retention`.
 
             # The configured project data retention type.
             #

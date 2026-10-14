@@ -36,20 +36,23 @@ module OpenAI
         required :type, const: :text_similarity
 
         # @!method initialize(evaluation_metric:, input:, name:, reference:, type: :text_similarity)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Graders::TextSimilarityGrader} for more details.
-        #
         #   A TextSimilarityGrader object which grades text based on similarity metrics.
         #
-        #   @param evaluation_metric [Symbol, OpenAI::Models::Graders::TextSimilarityGrader::EvaluationMetric] The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`,
+        #   @param evaluation_metric [Symbol, OpenAI::Models::Graders::TextSimilarityGrader::EvaluationMetric]
+        #     The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
+        #     `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.
         #
-        #   @param input [String] The text being graded.
+        #   @param input [String]
+        #     The text being graded.
         #
-        #   @param name [String] The name of the grader.
+        #   @param name [String]
+        #     The name of the grader.
         #
-        #   @param reference [String] The text being graded against.
+        #   @param reference [String]
+        #     The text being graded against.
         #
-        #   @param type [Symbol, :text_similarity] The type of grader.
+        #   @param type [Symbol, :text_similarity]
+        #     The type of grader.
 
         # The evaluation metric to use. One of `cosine`, `fuzzy_match`, `bleu`, `gleu`,
         # `meteor`, `rouge_1`, `rouge_2`, `rouge_3`, `rouge_4`, `rouge_5`, or `rouge_l`.

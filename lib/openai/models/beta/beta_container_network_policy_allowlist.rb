@@ -20,15 +20,20 @@ module OpenAI
         #   Optional domain-scoped secrets for allowlisted domains.
         #
         #   @return [Array<OpenAI::Models::Beta::BetaContainerNetworkPolicyDomainSecret>, nil]
-        optional :domain_secrets,
-                 -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret] }
+        optional(
+          :domain_secrets,
+          -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::BetaContainerNetworkPolicyDomainSecret] }
+        )
 
         # @!method initialize(allowed_domains:, domain_secrets: nil, type: :allowlist)
-        #   @param allowed_domains [Array<String>] A list of allowed domains when type is `allowlist`.
+        #   @param allowed_domains [Array<String>]
+        #     A list of allowed domains when type is `allowlist`.
         #
-        #   @param domain_secrets [Array<OpenAI::Models::Beta::BetaContainerNetworkPolicyDomainSecret>] Optional domain-scoped secrets for allowlisted domains.
+        #   @param domain_secrets [Array<OpenAI::Models::Beta::BetaContainerNetworkPolicyDomainSecret>]
+        #     Optional domain-scoped secrets for allowlisted domains.
         #
-        #   @param type [Symbol, :allowlist] Allow outbound network access only to specified domains. Always `allowlist`.
+        #   @param type [Symbol, :allowlist]
+        #     Allow outbound network access only to specified domains. Always `allowlist`.
       end
     end
 

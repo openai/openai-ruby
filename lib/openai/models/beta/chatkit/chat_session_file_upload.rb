@@ -26,11 +26,14 @@ module OpenAI
           # @!method initialize(enabled:, max_file_size:, max_files:)
           #   Upload permissions and limits applied to the session.
           #
-          #   @param enabled [Boolean] Indicates if uploads are enabled for the session.
+          #   @param enabled [Boolean]
+          #     Indicates if uploads are enabled for the session.
           #
-          #   @param max_file_size [Integer, nil] Maximum upload size in megabytes.
+          #   @param max_file_size [Integer, nil]
+          #     Maximum upload size in megabytes.
           #
-          #   @param max_files [Integer, nil] Maximum number of uploads allowed during the session.
+          #   @param max_files [Integer, nil]
+          #     Maximum number of uploads allowed during the session.
         end
       end
     end

@@ -2,79 +2,67 @@
 
 module OpenAI
   module Resources
+
     class Responses
+
+      # Create and manage model responses.
       class InputTokens
+
         # Returns input token counts of the request.
         #
         # Returns an object with `object` set to `response.input_tokens` and an
         # `input_tokens` count.
-        sig do
+        sig {
           params(
-            conversation:
-              T.nilable(
-                T.any(
-                  String,
-                  OpenAI::Responses::ResponseConversationParam::OrHash
-                )
-              ),
-            input:
-              T.nilable(
-                OpenAI::Responses::InputTokenCountParams::Input::Variants
-              ),
+            conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
+            input: T.nilable(OpenAI::Responses::InputTokenCountParams::Input::Variants),
             instructions: T.nilable(String),
             model: T.nilable(String),
             parallel_tool_calls: T.nilable(T::Boolean),
-            personality:
-              T.any(
-                String,
-                OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol
-              ),
+            personality: T.any(String, OpenAI::Responses::InputTokenCountParams::Personality::OrSymbol),
             previous_response_id: T.nilable(String),
             reasoning: T.nilable(OpenAI::Reasoning::OrHash),
-            text:
-              T.nilable(OpenAI::Responses::InputTokenCountParams::Text::OrHash),
-            tool_choice:
-              T.nilable(
+            text: T.nilable(OpenAI::Responses::InputTokenCountParams::Text::OrHash),
+            tool_choice: T.nilable(
+              T.any(
+                OpenAI::Responses::ToolChoiceOptions::OrSymbol,
+                OpenAI::Responses::ToolChoiceAllowed::OrHash,
+                OpenAI::Responses::ToolChoiceTypes::OrHash,
+                OpenAI::Responses::ToolChoiceFunction::OrHash,
+                OpenAI::Responses::ToolChoiceMcp::OrHash,
+                OpenAI::Responses::ToolChoiceCustom::OrHash,
+                OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
+                OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
+                OpenAI::Responses::ToolChoiceShell::OrHash
+              )
+            ),
+            tools: T.nilable(
+              T::Array[
                 T.any(
-                  OpenAI::Responses::ToolChoiceOptions::OrSymbol,
-                  OpenAI::Responses::ToolChoiceAllowed::OrHash,
-                  OpenAI::Responses::ToolChoiceTypes::OrHash,
-                  OpenAI::Responses::ToolChoiceFunction::OrHash,
-                  OpenAI::Responses::ToolChoiceMcp::OrHash,
-                  OpenAI::Responses::ToolChoiceCustom::OrHash,
-                  OpenAI::Responses::InputTokenCountParams::ToolChoice::SpecificProgrammaticToolCallingParam::OrHash,
-                  OpenAI::Responses::ToolChoiceApplyPatch::OrHash,
-                  OpenAI::Responses::ToolChoiceShell::OrHash
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::FunctionShellTool::OrHash,
+                  OpenAI::Responses::CustomTool::OrHash,
+                  OpenAI::Responses::NamespaceTool::OrHash,
+                  OpenAI::Responses::ToolSearchTool::OrHash,
+                  OpenAI::Responses::ApplyPatchTool::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash,
+                  OpenAI::Responses::WebSearchPreviewTool::OrHash
                 )
-              ),
-            tools:
-              T.nilable(
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::FunctionTool::OrHash,
-                    OpenAI::Responses::FileSearchTool::OrHash,
-                    OpenAI::Responses::ComputerTool::OrHash,
-                    OpenAI::Responses::ComputerUsePreviewTool::OrHash,
-                    OpenAI::Responses::Tool::Mcp::OrHash,
-                    OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                    OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
-                    OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                    OpenAI::Responses::Tool::LocalShell::OrHash,
-                    OpenAI::Responses::FunctionShellTool::OrHash,
-                    OpenAI::Responses::CustomTool::OrHash,
-                    OpenAI::Responses::NamespaceTool::OrHash,
-                    OpenAI::Responses::ToolSearchTool::OrHash,
-                    OpenAI::Responses::ApplyPatchTool::OrHash,
-                    OpenAI::Responses::WebSearchTool::OrHash,
-                    OpenAI::Responses::WebSearchPreviewTool::OrHash
-                  )
-                ]
-              ),
-            truncation:
-              OpenAI::Responses::InputTokenCountParams::Truncation::OrSymbol,
+              ]
+            ),
+            truncation: OpenAI::Responses::InputTokenCountParams::Truncation::OrSymbol,
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(OpenAI::Models::Responses::InputTokenCountResponse)
-        end
+          )
+            .returns(OpenAI::Models::Responses::InputTokenCountResponse)
+        }
         def count(
           # The conversation that this response belongs to. Items from this conversation are
           # prepended to `input_items` for this response request. Input items and output
@@ -91,8 +79,8 @@ module OpenAI
           # Model ID used to generate the response, like `gpt-4o` or `o3`. OpenAI offers a
           # wide range of models with different capabilities, performance characteristics,
           # and price points. Refer to the
-          # [model guide](https://platform.openai.com/docs/models) to browse and compare
-          # available models.
+          # [model guide](https://developers.openai.com/api/docs/models) to browse and
+          # compare available models.
           model: nil,
           # Whether to allow the model to run tool calls in parallel.
           parallel_tool_calls: nil,
@@ -102,17 +90,17 @@ module OpenAI
           personality: nil,
           # The unique ID of the previous response to the model. Use this to create
           # multi-turn conversations. Learn more about
-          # [conversation state](https://platform.openai.com/docs/guides/conversation-state).
+          # [conversation state](https://developers.openai.com/api/docs/guides/conversation-state).
           # Cannot be used in conjunction with `conversation`.
           previous_response_id: nil,
           # **gpt-5 and o-series models only** Configuration options for
-          # [reasoning models](https://platform.openai.com/docs/guides/reasoning).
+          # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
           reasoning: nil,
           # Configuration options for a text response from the model. Can be plain text or
           # structured JSON data. Learn more:
           #
-          # - [Text inputs and outputs](https://platform.openai.com/docs/guides/text)
-          # - [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+          # - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
+          # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
           text: nil,
           # Controls which tool the model should use, if any.
           tool_choice: nil,
@@ -134,6 +122,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -35,20 +35,22 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::BatchExpiredWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"batch.expired")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::BatchExpiredWebhookEvent} for more details.
-        #
         #   Sent when a batch API request has expired.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the batch API request expired.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the batch API request expired.
         #
-        #   @param data [OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"batch.expired"] The type of the event. Always `batch.expired`.
+        #   @param type [Symbol, :"batch.expired"]
+        #     The type of the event. Always `batch.expired`.
 
         # @see OpenAI::Models::Webhooks::BatchExpiredWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -59,12 +61,10 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::BatchExpiredWebhookEvent::Data} for more details.
-          #
           #   Event data payload.
           #
-          #   @param id [String] The unique ID of the batch API request.
+          #   @param id [String]
+          #     The unique ID of the batch API request.
         end
 
         # The object of the event. Always `event`.

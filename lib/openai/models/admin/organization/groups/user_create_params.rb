@@ -24,7 +24,8 @@ module OpenAI
             # @!method initialize(group_id:, user_id:, request_options: {})
             #   @param group_id [String]
             #
-            #   @param user_id [String] Identifier of the user to add to the group.
+            #   @param user_id [String]
+            #     Identifier of the user to add to the group.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

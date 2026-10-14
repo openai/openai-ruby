@@ -32,18 +32,20 @@ module OpenAI
           required :name, String
 
           # @!method initialize(id:, created_at:, is_scim_managed:, name:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::GroupUpdateResponse} for more details.
-          #
           #   Response returned after updating a group.
           #
-          #   @param id [String] Identifier for the group.
+          #   @param id [String]
+          #     Identifier for the group.
           #
-          #   @param created_at [Integer] Unix timestamp (in seconds) when the group was created.
+          #   @param created_at [Integer]
+          #     Unix timestamp (in seconds) when the group was created.
           #
-          #   @param is_scim_managed [Boolean] Whether the group is managed through SCIM and controlled by your identity provid
+          #   @param is_scim_managed [Boolean]
+          #     Whether the group is managed through SCIM and controlled by your identity
+          #     provider.
           #
-          #   @param name [String] Updated display name for the group.
+          #   @param name [String]
+          #     Updated display name for the group.
         end
       end
     end

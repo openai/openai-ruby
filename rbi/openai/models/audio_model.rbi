@@ -2,6 +2,7 @@
 
 module OpenAI
   module Models
+
     module AudioModel
       extend OpenAI::Internal::Type::Enum
 
@@ -9,23 +10,16 @@ module OpenAI
       OrSymbol = T.type_alias { T.any(Symbol, String) }
 
       WHISPER_1 = T.let(:"whisper-1", OpenAI::AudioModel::TaggedSymbol)
-      GPT_TRANSCRIBE =
-        T.let(:"gpt-transcribe", OpenAI::AudioModel::TaggedSymbol)
-      GPT_4O_TRANSCRIBE =
-        T.let(:"gpt-4o-transcribe", OpenAI::AudioModel::TaggedSymbol)
-      GPT_4O_MINI_TRANSCRIBE =
-        T.let(:"gpt-4o-mini-transcribe", OpenAI::AudioModel::TaggedSymbol)
-      GPT_4O_MINI_TRANSCRIBE_2025_12_15 =
-        T.let(
-          :"gpt-4o-mini-transcribe-2025-12-15",
-          OpenAI::AudioModel::TaggedSymbol
-        )
-      GPT_4O_TRANSCRIBE_DIARIZE =
-        T.let(:"gpt-4o-transcribe-diarize", OpenAI::AudioModel::TaggedSymbol)
+      GPT_TRANSCRIBE = T.let(:"gpt-transcribe", OpenAI::AudioModel::TaggedSymbol)
+      GPT_4O_TRANSCRIBE = T.let(:"gpt-4o-transcribe", OpenAI::AudioModel::TaggedSymbol)
+      GPT_4O_MINI_TRANSCRIBE = T.let(:"gpt-4o-mini-transcribe", OpenAI::AudioModel::TaggedSymbol)
+      GPT_4O_MINI_TRANSCRIBE_2025_12_15 = T.let(:"gpt-4o-mini-transcribe-2025-12-15", OpenAI::AudioModel::TaggedSymbol)
+      GPT_4O_TRANSCRIBE_DIARIZE = T.let(:"gpt-4o-transcribe-diarize", OpenAI::AudioModel::TaggedSymbol)
 
       sig { override.returns(T::Array[OpenAI::AudioModel::TaggedSymbol]) }
       def self.values
       end
     end
+
   end
 end

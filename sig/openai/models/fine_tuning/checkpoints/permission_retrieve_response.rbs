@@ -6,9 +6,9 @@ module OpenAI
           {
             data: ::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data],
             has_more: bool,
-            object: :list,
-            first_id: String?,
-            last_id: String?
+            ?object: :list,
+            ?first_id: String?,
+            ?last_id: String?
           }
 
         class PermissionRetrieveResponse < OpenAI::Internal::Type::BaseModel
@@ -33,28 +33,40 @@ module OpenAI
           def to_hash: -> {
             data: ::Array[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data],
             has_more: bool,
-            object: :list,
-            first_id: String?,
-            last_id: String?
+            ?object: :list,
+            ?first_id: String?,
+            ?last_id: String?
           }
 
           type data =
             {
               id: String,
               created_at: Integer,
-              object: :"checkpoint.permission",
+              ?object: :"checkpoint.permission",
               project_id: String
             }
 
           class Data < OpenAI::Internal::Type::BaseModel
+            # The permission identifier, which can be referenced in the API endpoints.
             attr_accessor id: String
 
+            # The Unix timestamp (in seconds) for when the permission was created.
             attr_accessor created_at: Integer
 
+            # The object type, which is always "checkpoint.permission".
             attr_accessor object: :"checkpoint.permission"
 
+            # The project identifier that the permission is for.
             attr_accessor project_id: String
 
+            # @param id
+            #   The permission identifier, which can be referenced in the API endpoints.
+            # @param created_at
+            #   The Unix timestamp (in seconds) for when the permission was created.
+            # @param project_id
+            #   The project identifier that the permission is for.
+            # @param object
+            #   The object type, which is always "checkpoint.permission".
             def initialize: (
               id: String,
               created_at: Integer,
@@ -65,7 +77,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               created_at: Integer,
-              object: :"checkpoint.permission",
+              ?object: :"checkpoint.permission",
               project_id: String
             }
           end

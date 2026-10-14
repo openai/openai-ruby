@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
 module OpenAI
-  [OpenAI::Internal::Type::BaseModel, *OpenAI::Internal::Type::BaseModel.subclasses].each do |cls|
+  # ActiveSupport 6 implements Class#subclasses using ==, which invokes BaseModel's
+  # structural equality before all model aliases are loaded.
+  base_model = OpenAI::Internal::Type::BaseModel
+  subclasses = ObjectSpace.each_object(base_model.singleton_class).select do |candidate|
+    !candidate.singleton_class? && candidate.superclass.equal?(base_model)
+  end
+
+  [base_model, *subclasses].each do |cls|
     cls.define_sorbet_constant!(:OrHash) { T.type_alias { T.any(cls, OpenAI::Internal::AnyHash) } }
   end
 
@@ -29,15 +36,16 @@ module OpenAI
     end
   end
 
-  OpenAI::Internal::Util.walk_namespaces(OpenAI::Models)
-                        .lazy
-                        .grep(OpenAI::Internal::Type::Union)
-                        .each do |mod|
-    const = :Variants
-    next if mod.sorbet_constant_defined?(const)
+  OpenAI::Internal::Util
+    .walk_namespaces(OpenAI::Models)
+    .lazy
+    .grep(OpenAI::Internal::Type::Union)
+    .each do |mod|
+      const = :Variants
+      next if mod.sorbet_constant_defined?(const)
 
-    mod.define_sorbet_constant!(const) { T.type_alias { mod.to_sorbet_type } }
-  end
+      mod.define_sorbet_constant!(const) { T.type_alias { mod.to_sorbet_type } }
+    end
 
   Admin = OpenAI::Models::Admin
 
@@ -104,6 +112,18 @@ module OpenAI
   CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
 
   CustomToolInputFormat = OpenAI::Models::CustomToolInputFormat
+
+  Decision = OpenAI::Models::Decision
+
+  DecisionCreateParams = OpenAI::Models::DecisionCreateParams
+
+  DecisionInputImage = OpenAI::Models::DecisionInputImage
+
+  DecisionInputMessage = OpenAI::Models::DecisionInputMessage
+
+  DecisionInputPart = OpenAI::Models::DecisionInputPart
+
+  DecisionInputText = OpenAI::Models::DecisionInputText
 
   DeletedSkill = OpenAI::Models::DeletedSkill
 
@@ -188,6 +208,8 @@ module OpenAI
 
   ImagesResponse = OpenAI::Models::ImagesResponse
 
+  Live = OpenAI::Models::Live
+
   # @type [OpenAI::Internal::Type::Converter]
   Metadata = OpenAI::Models::Metadata
 
@@ -236,6 +258,8 @@ module OpenAI
   Responses = OpenAI::Models::Responses
 
   ResponsesModel = OpenAI::Models::ResponsesModel
+
+  Safety = OpenAI::Models::Safety
 
   Skill = OpenAI::Models::Skill
 

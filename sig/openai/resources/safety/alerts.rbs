@@ -1,0 +1,14 @@
+module OpenAI
+  module Resources
+    class Safety
+      class Alerts
+        def retrieve: (
+          String id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Safety::SafetyAlert
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

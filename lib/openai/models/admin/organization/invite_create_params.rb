@@ -28,18 +28,23 @@ module OpenAI
           #   not be invited to any projects, including the default one.
           #
           #   @return [Array<OpenAI::Models::Admin::Organization::InviteCreateParams::Project>, nil]
-          optional :projects,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::InviteCreateParams::Project] }
+          optional(
+            :projects,
+            -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Admin::Organization::InviteCreateParams::Project] }
+          )
 
           # @!method initialize(email:, role:, projects: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::InviteCreateParams} for more details.
+          #   @param email [String]
+          #     Send an email to this address
           #
-          #   @param email [String] Send an email to this address
+          #   @param role [Symbol, OpenAI::Models::Admin::Organization::InviteCreateParams::Role]
+          #     `owner` or `reader`
           #
-          #   @param role [Symbol, OpenAI::Models::Admin::Organization::InviteCreateParams::Role] `owner` or `reader`
-          #
-          #   @param projects [Array<OpenAI::Models::Admin::Organization::InviteCreateParams::Project>] An array of projects to which membership is granted at the same time the org inv
+          #   @param projects [Array<OpenAI::Models::Admin::Organization::InviteCreateParams::Project>]
+          #     An array of projects to which membership is granted at the same time the org
+          #     invite is accepted. If omitted, the user will be invited to the default project
+          #     for compatibility with legacy behavior. If empty list is passed, the user will
+          #     not be invited to any projects, including the default one.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -68,9 +73,11 @@ module OpenAI
             required :role, enum: -> { OpenAI::Admin::Organization::InviteCreateParams::Project::Role }
 
             # @!method initialize(id:, role:)
-            #   @param id [String] Project's public ID
+            #   @param id [String]
+            #     Project's public ID
             #
-            #   @param role [Symbol, OpenAI::Models::Admin::Organization::InviteCreateParams::Project::Role] Project membership role
+            #   @param role [Symbol, OpenAI::Models::Admin::Organization::InviteCreateParams::Project::Role]
+            #     Project membership role
 
             # Project membership role
             #

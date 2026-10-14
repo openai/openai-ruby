@@ -4,11 +4,11 @@ module OpenAI
       type version_list_params =
         {
           skill_id: String,
-          after: String,
-          limit: Integer,
-          order: OpenAI::Models::Skills::VersionListParams::order
+          ?after: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::Skills::VersionListParams::order,
+          ?request_options: OpenAI::request_opts
         }
-        & OpenAI::Internal::Type::request_parameters
 
       class VersionListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -16,20 +16,32 @@ module OpenAI
 
         attr_accessor skill_id: String
 
+        # The skill version ID to start after.
         attr_reader after: String?
 
+        # The skill version ID to start after.
         def after=: (String) -> String
 
+        # Number of versions to retrieve.
         attr_reader limit: Integer?
 
+        # Number of versions to retrieve.
         def limit=: (Integer) -> Integer
 
+        # Sort order of results by version number.
         attr_reader order: OpenAI::Models::Skills::VersionListParams::order?
 
+        # Sort order of results by version number.
         def order=: (
           OpenAI::Models::Skills::VersionListParams::order
         ) -> OpenAI::Models::Skills::VersionListParams::order
 
+        # @param after
+        #   The skill version ID to start after.
+        # @param limit
+        #   Number of versions to retrieve.
+        # @param order
+        #   Sort order of results by version number.
         def initialize: (
           skill_id: String,
           ?after: String,
@@ -40,10 +52,10 @@ module OpenAI
 
         def to_hash: -> {
           skill_id: String,
-          after: String,
-          limit: Integer,
-          order: OpenAI::Models::Skills::VersionListParams::order,
-          request_options: OpenAI::RequestOptions
+          ?after: String,
+          ?limit: Integer,
+          ?order: OpenAI::Models::Skills::VersionListParams::order,
+          ?request_options: OpenAI::RequestOptions
         }
 
         type order = :asc | :desc

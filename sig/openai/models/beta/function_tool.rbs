@@ -2,13 +2,16 @@ module OpenAI
   module Models
     module Beta
       type function_tool =
-        { function: OpenAI::FunctionDefinition, type: :function }
+        { function: OpenAI::FunctionDefinition, ?type: :function }
 
       class FunctionTool < OpenAI::Internal::Type::BaseModel
         attr_accessor function: OpenAI::FunctionDefinition
 
+        # The type of tool being defined: `function`
         attr_accessor type: :function
 
+        # @param type
+        #   The type of tool being defined: `function`
         def initialize: (
           function: OpenAI::FunctionDefinition,
           ?type: :function
@@ -16,7 +19,7 @@ module OpenAI
 
         def to_hash: -> {
           function: OpenAI::FunctionDefinition,
-          type: :function
+          ?type: :function
         }
       end
     end

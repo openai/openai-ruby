@@ -1,7 +1,7 @@
 module OpenAI
   module Models
     type vector_store_deleted =
-      { id: String, deleted: bool, object: :"vector_store.deleted" }
+      { id: String, deleted: bool, ?object: :"vector_store.deleted" }
 
     class VectorStoreDeleted < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
@@ -19,7 +19,7 @@ module OpenAI
       def to_hash: -> {
         id: String,
         deleted: bool,
-        object: :"vector_store.deleted"
+        ?object: :"vector_store.deleted"
       }
     end
   end

@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class InputAudioBufferSpeechStartedEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::InputAudioBufferSpeechStartedEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::InputAudioBufferSpeechStartedEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Milliseconds from the start of all audio written to the buffer during the
         # session when speech was first detected. This will correspond to the beginning of
@@ -43,40 +45,48 @@ module OpenAI
         # the audio buffer during VAD activation).
         sig do
           params(
+
             audio_start_ms: Integer,
+
             event_id: String,
+
             item_id: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Milliseconds from the start of all audio written to the buffer during the
           # session when speech was first detected. This will correspond to the beginning of
           # audio sent to the model, and thus includes the `prefix_padding_ms` configured in
           # the Session.
           audio_start_ms:,
+
           # The unique ID of the server event.
           event_id:,
+
           # The ID of the user message item that will be created when speech stops.
           item_id:,
+
           # The event type, must be `input_audio_buffer.speech_started`.
+
           type: :"input_audio_buffer.speech_started"
         )
         end
 
         sig do
           override.returns(
-            {
-              audio_start_ms: Integer,
-              event_id: String,
-              item_id: String,
-              type: Symbol
-            }
+            {audio_start_ms: Integer, event_id: String, item_id: String, type: Symbol}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

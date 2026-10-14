@@ -2,34 +2,48 @@
 
 module OpenAI
   module Models
+
     class ModelDeleteParams < OpenAI::Internal::Type::BaseModel
+
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::ModelDeleteParams, OpenAI::Internal::AnyHash)
-        end
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::ModelDeleteParams,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       sig { returns(String) }
       attr_accessor :model
 
       sig do
         params(
+
           model: String,
+
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
-      def self.new(model:, request_options: {})
+      def self.new(
+
+        model:,
+
+        request_options: {}
+      )
       end
 
       sig do
         override.returns(
-          { model: String, request_options: OpenAI::RequestOptions }
+          {model: String, request_options: OpenAI::RequestOptions}
         )
       end
       def to_hash
       end
+
     end
+
   end
 end

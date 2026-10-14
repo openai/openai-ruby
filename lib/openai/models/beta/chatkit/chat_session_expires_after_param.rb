@@ -20,9 +20,11 @@ module OpenAI
           # @!method initialize(seconds:, anchor: :created_at)
           #   Controls when the session expires relative to an anchor timestamp.
           #
-          #   @param seconds [Integer] Number of seconds after the anchor when the session expires.
+          #   @param seconds [Integer]
+          #     Number of seconds after the anchor when the session expires.
           #
-          #   @param anchor [Symbol, :created_at] Base timestamp used to calculate expiration. Currently fixed to `created_at`.
+          #   @param anchor [Symbol, :created_at]
+          #     Base timestamp used to calculate expiration. Currently fixed to `created_at`.
         end
       end
     end

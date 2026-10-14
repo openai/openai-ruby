@@ -2,8 +2,11 @@
 
 module OpenAI
   module Resources
+
     class Beta
+
       class ChatKit
+
         sig { returns(OpenAI::Resources::Beta::ChatKit::Sessions) }
         attr_reader :sessions
 
@@ -15,6 +18,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

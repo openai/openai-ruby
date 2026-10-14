@@ -5,19 +5,22 @@ module OpenAI
     class Admin
       class Organization
         class Invites
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::InviteCreateParams} for more details.
-          #
           # Create an invite for a user to the organization. The invite must be accepted by
           # the user before they have access to the organization.
           #
           # @overload create(email:, role:, projects: nil, request_options: {})
           #
-          # @param email [String] Send an email to this address
+          # @param email [String]
+          #   Send an email to this address
           #
-          # @param role [Symbol, OpenAI::Models::Admin::Organization::InviteCreateParams::Role] `owner` or `reader`
+          # @param role [Symbol, OpenAI::Models::Admin::Organization::InviteCreateParams::Role]
+          #   `owner` or `reader`
           #
-          # @param projects [Array<OpenAI::Models::Admin::Organization::InviteCreateParams::Project>] An array of projects to which membership is granted at the same time the org inv
+          # @param projects [Array<OpenAI::Models::Admin::Organization::InviteCreateParams::Project>]
+          #   An array of projects to which membership is granted at the same time the org
+          #   invite is accepted. If omitted, the user will be invited to the default project
+          #   for compatibility with legacy behavior. If empty list is passed, the user will
+          #   not be invited to any projects, including the default one.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -40,7 +43,8 @@ module OpenAI
           #
           # @overload retrieve(invite_id, request_options: {})
           #
-          # @param invite_id [String] The ID of the invite to retrieve.
+          # @param invite_id [String]
+          #   The ID of the invite to retrieve.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -57,16 +61,19 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::InviteListParams} for more details.
-          #
           # Returns a list of invites in the organization.
           #
           # @overload list(after: nil, limit: nil, request_options: {})
           #
-          # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+          # @param after [String]
+          #   A cursor for use in pagination. `after` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #   fetch the next page of the list.
           #
-          # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+          # @param limit [Integer]
+          #   A limit on the number of objects to be returned. Limit can range between 1 and
+          #   100, and the default is 20.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -91,7 +98,8 @@ module OpenAI
           #
           # @overload delete(invite_id, request_options: {})
           #
-          # @param invite_id [String] The ID of the invite to delete.
+          # @param invite_id [String]
+          #   The ID of the invite to delete.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

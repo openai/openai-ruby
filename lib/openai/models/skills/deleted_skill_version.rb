@@ -31,7 +31,8 @@ module OpenAI
         #
         #   @param deleted [Boolean]
         #
-        #   @param version [String] The deleted skill version.
+        #   @param version [String]
+        #     The deleted skill version.
         #
         #   @param object [Symbol, :"skill.version.deleted"]
       end

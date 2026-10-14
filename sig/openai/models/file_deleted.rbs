@@ -1,6 +1,6 @@
 module OpenAI
   module Models
-    type file_deleted = { id: String, deleted: bool, object: :file }
+    type file_deleted = { id: String, deleted: bool, ?object: :file }
 
     class FileDeleted < OpenAI::Internal::Type::BaseModel
       attr_accessor id: String
@@ -11,7 +11,7 @@ module OpenAI
 
       def initialize: (id: String, deleted: bool, ?object: :file) -> void
 
-      def to_hash: -> { id: String, deleted: bool, object: :file }
+      def to_hash: -> { id: String, deleted: bool, ?object: :file }
     end
   end
 end

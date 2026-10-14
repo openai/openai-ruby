@@ -9,13 +9,24 @@ module OpenAI
 
         # Create a new immutable skill version.
         #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        #
         # @overload create(skill_id, default: nil, files: nil, request_options: {})
         #
-        # @param skill_id [String] The identifier of the skill to version.
+        # @param skill_id [String]
+        #   The identifier of the skill to version.
         #
-        # @param default [Boolean] Whether to set this version as the default.
+        # @param default [Boolean]
+        #   Whether to set this version as the default.
         #
-        # @param files [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart] Skill files to upload (directory upload) or a single zip file.
+        # @param files [Array<Pathname, StringIO, IO, String, OpenAI::FilePart>, Pathname, StringIO, IO, String, OpenAI::FilePart]
+        #   Skill files to upload (directory upload) or a single zip file.
+        #
+        #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #   content type.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -39,9 +50,11 @@ module OpenAI
         #
         # @overload retrieve(version, skill_id:, request_options: {})
         #
-        # @param version [String] The version number to retrieve.
+        # @param version [String]
+        #   The version number to retrieve.
         #
-        # @param skill_id [String] The identifier of the skill.
+        # @param skill_id [String]
+        #   The identifier of the skill.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -50,10 +63,10 @@ module OpenAI
         # @see OpenAI::Models::Skills::VersionRetrieveParams
         def retrieve(version, params)
           parsed, options = OpenAI::Skills::VersionRetrieveParams.dump_request(params)
-          skill_id =
-            parsed.delete(:skill_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          skill_id = parsed.delete(:skill_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :get,
             path: ["skills/%1$s/versions/%2$s", skill_id, version],
@@ -67,13 +80,17 @@ module OpenAI
         #
         # @overload list(skill_id, after: nil, limit: nil, order: nil, request_options: {})
         #
-        # @param skill_id [String] The identifier of the skill.
+        # @param skill_id [String]
+        #   The identifier of the skill.
         #
-        # @param after [String] The skill version ID to start after.
+        # @param after [String]
+        #   The skill version ID to start after.
         #
-        # @param limit [Integer] Number of versions to retrieve.
+        # @param limit [Integer]
+        #   Number of versions to retrieve.
         #
-        # @param order [Symbol, OpenAI::Models::Skills::VersionListParams::Order] Sort order of results by version number.
+        # @param order [Symbol, OpenAI::Models::Skills::VersionListParams::Order]
+        #   Sort order of results by version number.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -98,9 +115,11 @@ module OpenAI
         #
         # @overload delete(version, skill_id:, request_options: {})
         #
-        # @param version [String] The skill version number.
+        # @param version [String]
+        #   The skill version number.
         #
-        # @param skill_id [String] The identifier of the skill.
+        # @param skill_id [String]
+        #   The identifier of the skill.
         #
         # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
         #
@@ -109,10 +128,10 @@ module OpenAI
         # @see OpenAI::Models::Skills::VersionDeleteParams
         def delete(version, params)
           parsed, options = OpenAI::Skills::VersionDeleteParams.dump_request(params)
-          skill_id =
-            parsed.delete(:skill_id) do
-              raise ArgumentError.new("missing required path argument #{_1}")
-            end
+          skill_id = parsed.delete(:skill_id) do
+            raise ArgumentError.new("missing required path argument #{_1}")
+          end
+
           @client.request(
             method: :delete,
             path: ["skills/%1$s/versions/%2$s", skill_id, version],

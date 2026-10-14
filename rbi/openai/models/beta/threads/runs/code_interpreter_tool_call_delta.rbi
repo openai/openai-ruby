@@ -2,17 +2,21 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module Threads
+
         module Runs
+
           class CodeInterpreterToolCallDelta < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The index of the tool call in the tool calls array.
             sig { returns(Integer) }
@@ -31,42 +35,45 @@ module OpenAI
             attr_writer :id
 
             # The Code Interpreter tool call definition.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
-                )
-              )
-            end
+            sig { returns(T.nilable(OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter)) }
             attr_reader :code_interpreter
 
-            sig do
+            sig {
               params(
-                code_interpreter:
-                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::OrHash
-              ).void
-            end
+                code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::OrHash
+              )
+                .void
+            }
             attr_writer :code_interpreter
 
             # Details of the Code Interpreter tool call the run step was involved in.
             sig do
               params(
+
                 index: Integer,
+
                 id: String,
-                code_interpreter:
-                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::OrHash,
+
+                code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::OrHash,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The index of the tool call in the tool calls array.
               index:,
+
               # The ID of the tool call.
               id: nil,
+
               # The Code Interpreter tool call definition.
               code_interpreter: nil,
+
               # The type of tool call. This is always going to be `code_interpreter` for this
               # type of tool call.
+
               type: :code_interpreter
             )
             end
@@ -77,8 +84,7 @@ module OpenAI
                   index: Integer,
                   type: Symbol,
                   id: String,
-                  code_interpreter:
-                    OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
+                  code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter
                 }
               )
             end
@@ -86,13 +92,12 @@ module OpenAI
             end
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The input to the Code Interpreter tool call.
               sig { returns(T.nilable(String)) }
@@ -104,7 +109,7 @@ module OpenAI
               # The outputs from the Code Interpreter tool call. Code Interpreter can output one
               # or more items, including text (`logs`) or images (`image`). Each of these are
               # represented by a different object type.
-              sig do
+              sig {
                 returns(
                   T.nilable(
                     T::Array[
@@ -112,41 +117,46 @@ module OpenAI
                     ]
                   )
                 )
-              end
+              }
               attr_reader :outputs
 
-              sig do
+              sig {
                 params(
-                  outputs:
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterLogs::OrHash,
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::OrHash
-                      )
-                    ]
-                ).void
-              end
+                  outputs: T::Array[
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterLogs::OrHash,
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::OrHash
+                    )
+                  ]
+                )
+                  .void
+              }
               attr_writer :outputs
 
               # The Code Interpreter tool call definition.
               sig do
                 params(
+
                   input: String,
-                  outputs:
-                    T::Array[
-                      T.any(
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterLogs::OrHash,
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::OrHash
-                      )
-                    ]
-                ).returns(T.attached_class)
+
+                  outputs: T::Array[
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterLogs::OrHash,
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage::OrHash
+                    )
+                  ]
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The input to the Code Interpreter tool call.
                 input: nil,
+
                 # The outputs from the Code Interpreter tool call. Code Interpreter can output one
                 # or more items, including text (`logs`) or images (`image`). Each of these are
                 # represented by a different object type.
+
                 outputs: nil
               )
               end
@@ -155,10 +165,9 @@ module OpenAI
                 override.returns(
                   {
                     input: String,
-                    outputs:
-                      T::Array[
-                        OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output::Variants
-                      ]
+                    outputs: T::Array[
+                      OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output::Variants
+                    ]
                   }
                 )
               end
@@ -169,28 +178,33 @@ module OpenAI
               module Output
                 extend OpenAI::Internal::Type::Union
 
-                Variants =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
-                      OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage
-                    )
-                  end
+                Variants = T.type_alias {
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::CodeInterpreterLogs,
+                    OpenAI::Beta::Threads::Runs::CodeInterpreterOutputImage
+                  )
+                }
 
-                sig do
+                sig {
                   override.returns(
                     T::Array[
                       OpenAI::Beta::Threads::Runs::CodeInterpreterToolCallDelta::CodeInterpreter::Output::Variants
                     ]
                   )
-                end
+                }
                 def self.variants
                 end
+
               end
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

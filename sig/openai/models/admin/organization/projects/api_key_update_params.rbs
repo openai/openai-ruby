@@ -1,0 +1,49 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type api_key_update_params =
+            {
+              project_id: String,
+              api_key_id: String,
+              expires_in_seconds: Integer,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class APIKeyUpdateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor project_id: String
+
+            attr_accessor api_key_id: String
+
+            # Number of seconds from this request until the API key expires. Must comply with
+            # the organization and project expiry policies. Expired keys cannot be updated.
+            # Retrying resets the expiry relative to the new request.
+            attr_accessor expires_in_seconds: Integer
+
+            # @param expires_in_seconds
+            #   Number of seconds from this request until the API key expires. Must comply with
+            #   the organization and project expiry policies. Expired keys cannot be updated.
+            #   Retrying resets the expiry relative to the new request.
+            def initialize: (
+              project_id: String,
+              api_key_id: String,
+              expires_in_seconds: Integer,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              api_key_id: String,
+              expires_in_seconds: Integer,
+              ?request_options: OpenAI::RequestOptions
+            }
+          end
+        end
+      end
+    end
+  end
+end

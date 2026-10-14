@@ -1,0 +1,54 @@
+module OpenAI
+  module Models
+    module Beta
+      type hosted_environment_file =
+        OpenAI::Beta::HostedEnvironmentFileID
+        | OpenAI::Beta::HostedEnvironmentFile::Inline
+
+      module HostedEnvironmentFile
+        extend OpenAI::Internal::Type::Union
+
+        type inline =
+          { id: String, path: String, size_bytes: Integer, ?type: :inline }
+
+        class Inline < OpenAI::Internal::Type::BaseModel
+          # The session-scoped ID of the file in the execution environment.
+          attr_accessor id: String
+
+          # The file's absolute path inside the environment.
+          attr_accessor path: String
+
+          # The decoded file size in bytes.
+          attr_accessor size_bytes: Integer
+
+          # The type of the object. Always `inline`.
+          attr_accessor type: :inline
+
+          # @param id
+          #   The session-scoped ID of the file in the execution environment.
+          # @param path
+          #   The file's absolute path inside the environment.
+          # @param size_bytes
+          #   The decoded file size in bytes.
+          # @param type
+          #   The type of the object. Always `inline`.
+          def initialize: (
+            id: String,
+            path: String,
+            size_bytes: Integer,
+            ?type: :inline
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            path: String,
+            size_bytes: Integer,
+            ?type: :inline
+          }
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::hosted_environment_file]
+      end
+    end
+  end
+end

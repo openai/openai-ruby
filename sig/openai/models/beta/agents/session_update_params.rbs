@@ -1,0 +1,182 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type session_update_params =
+          {
+            session_id: String,
+            ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class SessionUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor session_id: String
+
+          # Model settings for subsequent turns. Omitted fields stay unchanged.
+          attr_reader agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent?
+
+          # Model settings for subsequent turns. Omitted fields stay unchanged.
+          def agent=: (
+            OpenAI::Beta::Agents::SessionUpdateParams::Agent
+          ) -> OpenAI::Beta::Agents::SessionUpdateParams::Agent
+
+          # Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
+          # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+          # characters.
+          attr_accessor metadata: ::Hash[Symbol, String]?
+
+          # Omit to retain the limit; null or a null limit removes it without resetting
+          # spend.
+          attr_accessor spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?
+
+          # @param agent
+          #   Model settings for subsequent turns. Omitted fields stay unchanged.
+          # @param metadata
+          #   Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
+          #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
+          #   characters.
+          # @param spend_control
+          #   Omit to retain the limit; null or a null limit removes it without resetting
+          #   spend.
+          def initialize: (
+            session_id: String,
+            ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            session_id: String,
+            ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
+            ?metadata: ::Hash[Symbol, String]?,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type agent =
+            {
+              ?model: String,
+              ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+            }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            # The model for subsequent turns. Omit to keep the current model.
+            attr_reader model: String?
+
+            # The model for subsequent turns. Omit to keep the current model.
+            def model=: (String) -> String
+
+            # Reasoning settings to update. Omit to keep the current effort.
+            attr_reader reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning?
+
+            # Reasoning settings to update. Omit to keep the current effort.
+            def reasoning=: (
+              OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning
+            ) -> OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning
+
+            # Omit to keep the current tier. Null resets it to auto.
+            attr_accessor service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+
+            # @param model
+            #   The model for subsequent turns. Omit to keep the current model.
+            # @param reasoning
+            #   Reasoning settings to update. Omit to keep the current effort.
+            # @param service_tier
+            #   Omit to keep the current tier. Null resets it to auto.
+            def initialize: (
+              ?model: String,
+              ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+            ) -> void
+
+            def to_hash: -> {
+              ?model: String,
+              ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+            }
+
+            type reasoning =
+              {
+                ?effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
+              }
+
+            class Reasoning < OpenAI::Internal::Type::BaseModel
+              # Omit to keep the current effort. Null selects the model's default effort.
+              attr_accessor effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
+
+              # @param effort
+              #   Omit to keep the current effort. Null selects the model's default effort.
+              def initialize: (
+                ?effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
+              ) -> void
+
+              def to_hash: -> {
+                ?effort: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort?
+              }
+
+              type effort =
+                :none | :minimal | :low | :medium | :high | :xhigh | :max
+
+              module Effort
+                extend OpenAI::Internal::Type::Enum
+
+                NONE: :none
+                MINIMAL: :minimal
+                LOW: :low
+                MEDIUM: :medium
+                HIGH: :high
+                XHIGH: :xhigh
+                MAX: :max
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::Reasoning::effort]
+              end
+            end
+
+            type service_tier = :auto | :default | :flex | :priority | :fast
+
+            module ServiceTier
+              extend OpenAI::Internal::Type::Enum
+
+              # Selects the service tier automatically.
+              AUTO: :auto
+
+              # Uses the default service tier.
+              DEFAULT: :default
+
+              # Uses the flex service tier.
+              FLEX: :flex
+
+              # Uses the priority service tier.
+              PRIORITY: :priority
+
+              # Uses the fast service tier.
+              FAST: :fast
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier]
+            end
+          end
+
+          type spend_control = { limit: Integer? }
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            # Positive USD cents, or null to remove the limit.
+            attr_accessor limit: Integer?
+
+            # @param limit
+            #   Positive USD cents, or null to remove the limit.
+            def initialize: (limit: Integer?) -> void
+
+            def to_hash: -> { limit: Integer? }
+          end
+        end
+      end
+    end
+  end
+end

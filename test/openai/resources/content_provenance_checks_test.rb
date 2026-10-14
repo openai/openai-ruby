@@ -12,10 +12,10 @@ class OpenAI::Test::Resources::ContentProvenanceChecksTest < OpenAI::Test::Resou
 
     assert_pattern do
       response => {
-        created_at: Integer,
-        object: OpenAI::ContentProvenanceCheck::Object,
-        results: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::ContentProvenanceCheck::Result])
-      }
+          created_at: Integer,
+          object: OpenAI::ContentProvenanceCheck::Object,
+          results: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::ContentProvenanceCheck::Result])
+        }
     end
   end
 end

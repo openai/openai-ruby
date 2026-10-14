@@ -2,33 +2,27 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class FunctionShellTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::FunctionShellTool,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::FunctionShellTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The type of the shell tool. Always `shell`.
         sig { returns(Symbol) }
         attr_accessor :type
 
         # The tool invocation context(s).
-        sig do
-          returns(
-            T.nilable(
-              T::Array[
-                OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol
-              ]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol])) }
         attr_accessor :allowed_callers
 
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -38,34 +32,36 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_accessor :environment
 
         # A tool that allows the model to execute shell commands.
         sig do
           params(
-            allowed_callers:
-              T.nilable(
-                T::Array[
-                  OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol
-                ]
-              ),
-            environment:
-              T.nilable(
-                T.any(
-                  OpenAI::Responses::ContainerAuto::OrHash,
-                  OpenAI::Responses::LocalEnvironment::OrHash,
-                  OpenAI::Responses::ContainerReference::OrHash
-                )
-              ),
+
+            allowed_callers: T.nilable(T::Array[OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol]),
+
+            environment: T.nilable(
+              T.any(
+                OpenAI::Responses::ContainerAuto::OrHash,
+                OpenAI::Responses::LocalEnvironment::OrHash,
+                OpenAI::Responses::ContainerReference::OrHash
+              )
+            ),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The tool invocation context(s).
           allowed_callers: nil,
+
           environment: nil,
+
           # The type of the shell tool. Always `shell`.
+
           type: :shell
         )
         end
@@ -74,20 +70,14 @@ module OpenAI
           override.returns(
             {
               type: Symbol,
-              allowed_callers:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol
-                  ]
-                ),
-              environment:
-                T.nilable(
-                  T.any(
-                    OpenAI::Responses::ContainerAuto,
-                    OpenAI::Responses::LocalEnvironment,
-                    OpenAI::Responses::ContainerReference
-                  )
+              allowed_callers: T.nilable(T::Array[OpenAI::Responses::FunctionShellTool::AllowedCaller::OrSymbol]),
+              environment: T.nilable(
+                T.any(
+                  OpenAI::Responses::ContainerAuto,
+                  OpenAI::Responses::LocalEnvironment,
+                  OpenAI::Responses::ContainerReference
                 )
+              )
             }
           )
         end
@@ -97,30 +87,13 @@ module OpenAI
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::FunctionShellTool::AllowedCaller)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::FunctionShellTool::AllowedCaller) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          DIRECT =
-            T.let(
-              :direct,
-              OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol
-            )
-          PROGRAMMATIC =
-            T.let(
-              :programmatic,
-              OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol
-            )
+          DIRECT = T.let(:direct, OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol)
+          PROGRAMMATIC = T.let(:programmatic, OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::FunctionShellTool::AllowedCaller::TaggedSymbol]) }
           def self.values
           end
         end
@@ -128,26 +101,23 @@ module OpenAI
         module Environment
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ContainerAuto,
-                OpenAI::Responses::LocalEnvironment,
-                OpenAI::Responses::ContainerReference
-              )
-            end
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::FunctionShellTool::Environment::Variants
-              ]
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Responses::ContainerAuto,
+              OpenAI::Responses::LocalEnvironment,
+              OpenAI::Responses::ContainerReference
             )
-          end
+          }
+
+          sig { override.returns(T::Array[OpenAI::Responses::FunctionShellTool::Environment::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

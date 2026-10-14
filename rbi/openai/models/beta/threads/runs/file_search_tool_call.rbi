@@ -2,36 +2,31 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module Threads
+
         module Runs
+
           class FileSearchToolCall < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::Runs::FileSearchToolCall,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::Runs::FileSearchToolCall,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The ID of the tool call object.
             sig { returns(String) }
             attr_accessor :id
 
             # For now, this is always going to be an empty object.
-            sig do
-              returns(
-                OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch
-              )
-            end
+            sig { returns(OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch) }
             attr_reader :file_search
 
-            sig do
-              params(
-                file_search:
-                  OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::OrHash
-              ).void
-            end
+            sig { params(file_search: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::OrHash).void }
             attr_writer :file_search
 
             # The type of tool call. This is always going to be `file_search` for this type of
@@ -41,100 +36,85 @@ module OpenAI
 
             sig do
               params(
+
                 id: String,
-                file_search:
-                  OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::OrHash,
+
+                file_search: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::OrHash,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The ID of the tool call object.
               id:,
+
               # For now, this is always going to be an empty object.
               file_search:,
+
               # The type of tool call. This is always going to be `file_search` for this type of
               # tool call.
+
               type: :file_search
             )
             end
 
             sig do
               override.returns(
-                {
-                  id: String,
-                  file_search:
-                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
-                  type: Symbol
-                }
+                {id: String, file_search: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch, type: Symbol}
               )
             end
             def to_hash
             end
 
             class FileSearch < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
-
-              # The ranking options for the file search.
-              sig do
-                returns(
-                  T.nilable(
-                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions
-                  )
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch,
+                  OpenAI::Internal::AnyHash
                 )
               end
+
+              # The ranking options for the file search.
+              sig { returns(T.nilable(OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions)) }
               attr_reader :ranking_options
 
-              sig do
+              sig {
                 params(
-                  ranking_options:
-                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::OrHash
-                ).void
-              end
+                  ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::OrHash
+                )
+                  .void
+              }
               attr_writer :ranking_options
 
               # The results of the file search.
-              sig do
-                returns(
-                  T.nilable(
-                    T::Array[
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result
-                    ]
-                  )
-                )
-              end
+              sig { returns(T.nilable(T::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result])) }
               attr_reader :results
 
-              sig do
-                params(
-                  results:
-                    T::Array[
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::OrHash
-                    ]
-                ).void
-              end
+              sig {
+                params(results: T::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::OrHash])
+                  .void
+              }
               attr_writer :results
 
               # For now, this is always going to be an empty object.
               sig do
                 params(
-                  ranking_options:
-                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::OrHash,
-                  results:
-                    T::Array[
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::OrHash
-                    ]
-                ).returns(T.attached_class)
+
+                  ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::OrHash,
+
+                  results: T::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::OrHash]
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The ranking options for the file search.
                 ranking_options: nil,
+
                 # The results of the file search.
+
                 results: nil
               )
               end
@@ -142,12 +122,8 @@ module OpenAI
               sig do
                 override.returns(
                   {
-                    ranking_options:
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                    results:
-                      T::Array[
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result
-                      ]
+                    ranking_options: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                    results: T::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result]
                   }
                 )
               end
@@ -155,21 +131,20 @@ module OpenAI
               end
 
               class RankingOptions < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The ranker to use for the file search. If not specified will use the `auto`
                 # ranker.
-                sig do
+                sig {
                   returns(
                     OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
                   )
-                end
+                }
                 attr_accessor :ranker
 
                 # The score threshold for the file search. All values must be a floating point
@@ -180,17 +155,22 @@ module OpenAI
                 # The ranking options for the file search.
                 sig do
                   params(
-                    ranker:
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::OrSymbol,
+
+                    ranker: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::OrSymbol,
+
                     score_threshold: Float
-                  ).returns(T.attached_class)
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The ranker to use for the file search. If not specified will use the `auto`
                   # ranker.
                   ranker:,
+
                   # The score threshold for the file search. All values must be a floating point
                   # number between 0 and 1.
+
                   score_threshold:
                 )
                 end
@@ -198,8 +178,7 @@ module OpenAI
                 sig do
                   override.returns(
                     {
-                      ranker:
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol,
+                      ranker: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol,
                       score_threshold: Float
                     }
                   )
@@ -212,46 +191,39 @@ module OpenAI
                 module Ranker
                   extend OpenAI::Internal::Type::Enum
 
-                  TaggedSymbol =
-                    T.type_alias do
-                      T.all(
-                        Symbol,
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker
-                      )
-                    end
+                  TaggedSymbol = T.type_alias {
+                    T.all(Symbol, OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker)
+                  }
                   OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-                  AUTO =
-                    T.let(
-                      :auto,
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
-                    )
-                  DEFAULT_2024_08_21 =
-                    T.let(
-                      :default_2024_08_21,
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
-                    )
+                  AUTO = T.let(
+                    :auto,
+                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                  )
+                  DEFAULT_2024_08_21 = T.let(
+                    :default_2024_08_21,
+                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
+                  )
 
-                  sig do
+                  sig {
                     override.returns(
                       T::Array[
                         OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::RankingOptions::Ranker::TaggedSymbol
                       ]
                     )
-                  end
+                  }
                   def self.values
                   end
                 end
               end
 
               class Result < OpenAI::Internal::Type::BaseModel
-                OrHash =
-                  T.type_alias do
-                    T.any(
-                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
-                      OpenAI::Internal::AnyHash
-                    )
-                  end
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
 
                 # The ID of the file that result was found in.
                 sig { returns(String) }
@@ -268,49 +240,54 @@ module OpenAI
 
                 # The content of the result that was found. The content is only included if
                 # requested via the include query parameter.
-                sig do
+                sig {
                   returns(
-                    T.nilable(
-                      T::Array[
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content
-                      ]
-                    )
+                    T.nilable(T::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content])
                   )
-                end
+                }
                 attr_reader :content
 
-                sig do
+                sig {
                   params(
-                    content:
-                      T::Array[
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::OrHash
-                      ]
-                  ).void
-                end
+                    content: T::Array[
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::OrHash
+                    ]
+                  )
+                    .void
+                }
                 attr_writer :content
 
                 # A result instance of the file search.
                 sig do
                   params(
+
                     file_id: String,
+
                     file_name: String,
+
                     score: Float,
-                    content:
-                      T::Array[
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::OrHash
-                      ]
-                  ).returns(T.attached_class)
+
+                    content: T::Array[
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::OrHash
+                    ]
+                  )
+                    .returns(T.attached_class)
                 end
                 def self.new(
+
                   # The ID of the file that result was found in.
                   file_id:,
+
                   # The name of the file that result was found in.
                   file_name:,
+
                   # The score of the result. All values must be a floating point number between 0
                   # and 1.
                   score:,
+
                   # The content of the result that was found. The content is only included if
                   # requested via the include query parameter.
+
                   content: nil
                 )
                 end
@@ -321,10 +298,7 @@ module OpenAI
                       file_id: String,
                       file_name: String,
                       score: Float,
-                      content:
-                        T::Array[
-                          OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content
-                        ]
+                      content: T::Array[OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content]
                     }
                   )
                 end
@@ -332,13 +306,12 @@ module OpenAI
                 end
 
                 class Content < OpenAI::Internal::Type::BaseModel
-                  OrHash =
-                    T.type_alias do
-                      T.any(
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
-                        OpenAI::Internal::AnyHash
-                      )
-                    end
+                  OrHash = T.type_alias do
+                    T.any(
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
 
                   # The text content of the file.
                   sig { returns(T.nilable(String)) }
@@ -348,34 +321,39 @@ module OpenAI
                   attr_writer :text
 
                   # The type of the content.
-                  sig do
+                  sig {
                     returns(
                       T.nilable(
                         OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
                       )
                     )
-                  end
+                  }
                   attr_reader :type
 
-                  sig do
+                  sig {
                     params(
-                      type:
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
-                    ).void
-                  end
+                      type: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
+                    )
+                      .void
+                  }
                   attr_writer :type
 
                   sig do
                     params(
+
                       text: String,
-                      type:
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
-                    ).returns(T.attached_class)
+
+                      type: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::OrSymbol
+                    )
+                      .returns(T.attached_class)
                   end
                   def self.new(
+
                     # The text content of the file.
                     text: nil,
+
                     # The type of the content.
+
                     type: nil
                   )
                   end
@@ -384,8 +362,7 @@ module OpenAI
                     override.returns(
                       {
                         text: String,
-                        type:
-                          OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                        type: OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
                       }
                     )
                   end
@@ -396,37 +373,37 @@ module OpenAI
                   module Type
                     extend OpenAI::Internal::Type::Enum
 
-                    TaggedSymbol =
-                      T.type_alias do
-                        T.all(
-                          Symbol,
-                          OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type
-                        )
-                      end
+                    TaggedSymbol = T.type_alias {
+                      T.all(Symbol, OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type)
+                    }
                     OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-                    TEXT =
-                      T.let(
-                        :text,
-                        OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
-                      )
+                    TEXT = T.let(
+                      :text,
+                      OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
+                    )
 
-                    sig do
+                    sig {
                       override.returns(
                         T::Array[
                           OpenAI::Beta::Threads::Runs::FileSearchToolCall::FileSearch::Result::Content::Type::TaggedSymbol
                         ]
                       )
-                    end
+                    }
                     def self.values
                     end
                   end
                 end
               end
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

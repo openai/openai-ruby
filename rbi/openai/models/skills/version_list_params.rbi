@@ -2,15 +2,20 @@
 
 module OpenAI
   module Models
+
     module Skills
+
       class VersionListParams < OpenAI::Internal::Type::BaseModel
+
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Skills::VersionListParams, OpenAI::Internal::AnyHash)
-          end
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Skills::VersionListParams,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :skill_id
@@ -30,33 +35,40 @@ module OpenAI
         attr_writer :limit
 
         # Sort order of results by version number.
-        sig do
-          returns(T.nilable(OpenAI::Skills::VersionListParams::Order::OrSymbol))
-        end
+        sig { returns(T.nilable(OpenAI::Skills::VersionListParams::Order::OrSymbol)) }
         attr_reader :order
 
-        sig do
-          params(order: OpenAI::Skills::VersionListParams::Order::OrSymbol).void
-        end
+        sig { params(order: OpenAI::Skills::VersionListParams::Order::OrSymbol).void }
         attr_writer :order
 
         sig do
           params(
+
             skill_id: String,
+
             after: String,
+
             limit: Integer,
+
             order: OpenAI::Skills::VersionListParams::Order::OrSymbol,
+
             request_options: OpenAI::RequestOptions::OrHash
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           skill_id:,
+
           # The skill version ID to start after.
           after: nil,
+
           # Number of versions to retrieve.
           limit: nil,
+
           # Sort order of results by version number.
           order: nil,
+
           request_options: {}
         )
         end
@@ -79,26 +91,20 @@ module OpenAI
         module Order
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Skills::VersionListParams::Order)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Skills::VersionListParams::Order) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          ASC =
-            T.let(:asc, OpenAI::Skills::VersionListParams::Order::TaggedSymbol)
-          DESC =
-            T.let(:desc, OpenAI::Skills::VersionListParams::Order::TaggedSymbol)
+          ASC = T.let(:asc, OpenAI::Skills::VersionListParams::Order::TaggedSymbol)
+          DESC = T.let(:desc, OpenAI::Skills::VersionListParams::Order::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Skills::VersionListParams::Order::TaggedSymbol]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Skills::VersionListParams::Order::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

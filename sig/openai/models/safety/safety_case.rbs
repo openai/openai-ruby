@@ -1,0 +1,75 @@
+module OpenAI
+  module Models
+    class SafetyCase = Safety::SafetyCase
+
+    module Safety
+      type safety_case =
+        {
+          id: String,
+          created_at: Integer,
+          entity_identifier: String,
+          notice: OpenAI::Safety::SafetyCase::Notice,
+          ?object: :"safety.case",
+          reason: String?
+        }
+
+      class SafetyCase < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        attr_accessor created_at: Integer
+
+        attr_accessor entity_identifier: String
+
+        attr_accessor notice: OpenAI::Safety::SafetyCase::Notice
+
+        attr_accessor object: :"safety.case"
+
+        attr_accessor reason: String?
+
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          entity_identifier: String,
+          notice: OpenAI::Safety::SafetyCase::Notice,
+          reason: String?,
+          ?object: :"safety.case"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          entity_identifier: String,
+          notice: OpenAI::Safety::SafetyCase::Notice,
+          ?object: :"safety.case",
+          reason: String?
+        }
+
+        type notice =
+          { type: OpenAI::Models::Safety::SafetyCase::Notice::type_ }
+
+        class Notice < OpenAI::Internal::Type::BaseModel
+          attr_accessor type: OpenAI::Models::Safety::SafetyCase::Notice::type_
+
+          def initialize: (
+            type: OpenAI::Models::Safety::SafetyCase::Notice::type_
+          ) -> void
+
+          def to_hash: -> {
+            type: OpenAI::Models::Safety::SafetyCase::Notice::type_
+          }
+
+          type type_ = :warning | :deactivation
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            WARNING: :warning
+            DEACTIVATION: :deactivation
+
+            def self?.values: -> ::Array[OpenAI::Models::Safety::SafetyCase::Notice::type_]
+          end
+        end
+      end
+    end
+  end
+end

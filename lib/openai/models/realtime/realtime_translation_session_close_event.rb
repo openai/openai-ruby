@@ -21,9 +21,11 @@ module OpenAI
         #   input audio and emits any remaining translated output before closing the
         #   session.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"session.close"] The event type, must be `session.close`.
+        #   @param type [Symbol, :"session.close"]
+        #     The event type, must be `session.close`.
       end
     end
   end

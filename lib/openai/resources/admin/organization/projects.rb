@@ -41,19 +41,30 @@ module OpenAI
           # @return [OpenAI::Resources::Admin::Organization::Projects::Certificates]
           attr_reader :certificates
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::ProjectCreateParams} for more details.
-          #
           # Create a new project in the organization. Projects can be created and archived,
           # but cannot be deleted.
           #
-          # @overload create(name:, external_key_id: nil, geography: nil, request_options: {})
+          # @overload create(name:, external_key_id: nil, geography: nil, residency: nil, request_options: {})
           #
-          # @param name [String] The friendly name of the project, this name appears in reports.
+          # @param name [String]
+          #   The friendly name of the project, this name appears in reports.
           #
-          # @param external_key_id [String, nil] External key ID to associate with the project.
+          # @param external_key_id [String, nil]
+          #   External key ID to associate with the project.
           #
-          # @param geography [String, nil] Create the project with the specified data residency region. Your organization m
+          # @param geography [String, nil]
+          #   Create the project with the specified data residency region. Your organization
+          #   must have access to Data residency functionality in order to use. See
+          #   [data residency controls](https://developers.openai.com/api/docs/guides/your-data#data-residency-controls)
+          #   to review the functionality and limitations of setting this field. Deprecated:
+          #   use `residency` instead. Do not provide both `geography` and `residency`.
+          #
+          # @param residency [Symbol, OpenAI::Models::Admin::Organization::ProjectResidency, nil]
+          #   Create the project with the specified residency configuration. Your organization
+          #   must have access to the requested residency configuration in order to use it.
+          #   See
+          #   [data residency controls](https://developers.openai.com/api/docs/guides/your-data#data-residency-controls)
+          #   to review the functionality and limitations of setting this field.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -76,7 +87,8 @@ module OpenAI
           #
           # @overload retrieve(project_id, request_options: {})
           #
-          # @param project_id [String] The ID of the project.
+          # @param project_id [String]
+          #   The ID of the project.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -97,13 +109,18 @@ module OpenAI
           #
           # @overload update(project_id, external_key_id: nil, geography: nil, name: nil, request_options: {})
           #
-          # @param project_id [String] The ID of the project.
+          # @param project_id [String]
+          #   The ID of the project.
           #
-          # @param external_key_id [String, nil] External key ID to associate with the project.
+          # @param external_key_id [String, nil]
+          #   External key ID to associate with the project.
           #
-          # @param geography [String, nil] Geography for the project.
+          # @param geography [String, nil]
+          #   Geography for the project. Deprecated: use `residency` when creating a project
+          #   to configure data residency. This field is retained for backward compatibility.
           #
-          # @param name [String, nil] The updated name of the project, this name appears in reports.
+          # @param name [String, nil]
+          #   The updated name of the project, this name appears in reports.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -122,18 +139,23 @@ module OpenAI
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Admin::Organization::ProjectListParams} for more details.
-          #
           # Returns a list of projects.
           #
           # @overload list(after: nil, include_archived: nil, limit: nil, request_options: {})
           #
-          # @param after [String] A cursor for use in pagination. `after` is an object ID that defines your place
+          # @param after [String]
+          #   A cursor for use in pagination. `after` is an object ID that defines your place
+          #   in the list. For instance, if you make a list request and receive 100 objects,
+          #   ending with obj_foo, your subsequent call can include after=obj_foo in order to
+          #   fetch the next page of the list.
           #
-          # @param include_archived [Boolean] If `true` returns all projects including those that have been `archived`. Archiv
+          # @param include_archived [Boolean]
+          #   If `true` returns all projects including those that have been `archived`.
+          #   Archived projects are not included by default.
           #
-          # @param limit [Integer] A limit on the number of objects to be returned. Limit can range between 1 and 1
+          # @param limit [Integer]
+          #   A limit on the number of objects to be returned. Limit can range between 1 and
+          #   100, and the default is 20.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -159,7 +181,8 @@ module OpenAI
           #
           # @overload archive(project_id, request_options: {})
           #
-          # @param project_id [String] The ID of the project.
+          # @param project_id [String]
+          #   The ID of the project.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -185,10 +208,10 @@ module OpenAI
             @service_accounts = OpenAI::Resources::Admin::Organization::Projects::ServiceAccounts.new(client: client)
             @api_keys = OpenAI::Resources::Admin::Organization::Projects::APIKeys.new(client: client)
             @rate_limits = OpenAI::Resources::Admin::Organization::Projects::RateLimits.new(client: client)
-            @model_permissions =
-              OpenAI::Resources::Admin::Organization::Projects::ModelPermissions.new(client: client)
-            @hosted_tool_permissions =
-              OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions.new(client: client)
+            @model_permissions = OpenAI::Resources::Admin::Organization::Projects::ModelPermissions.new(client: client)
+            @hosted_tool_permissions = OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions.new(
+              client: client
+            )
             @groups = OpenAI::Resources::Admin::Organization::Projects::Groups.new(client: client)
             @roles = OpenAI::Resources::Admin::Organization::Projects::Roles.new(client: client)
             @data_retention = OpenAI::Resources::Admin::Organization::Projects::DataRetention.new(client: client)

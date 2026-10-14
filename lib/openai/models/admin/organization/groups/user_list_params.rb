@@ -36,16 +36,18 @@ module OpenAI
             optional :order, enum: -> { OpenAI::Admin::Organization::Groups::UserListParams::Order }
 
             # @!method initialize(group_id:, after: nil, limit: nil, order: nil, request_options: {})
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Admin::Organization::Groups::UserListParams} for more details.
-            #
             #   @param group_id [String]
             #
-            #   @param after [String] A cursor for use in pagination. Provide the ID of the last user from the previou
+            #   @param after [String]
+            #     A cursor for use in pagination. Provide the ID of the last user from the
+            #     previous list response to retrieve the next page.
             #
-            #   @param limit [Integer] A limit on the number of users to be returned. Limit can range between 0 and 100
+            #   @param limit [Integer]
+            #     A limit on the number of users to be returned. Limit can range between 0 and
+            #     1000, and the default is 100.
             #
-            #   @param order [Symbol, OpenAI::Models::Admin::Organization::Groups::UserListParams::Order] Specifies the sort order of users in the list.
+            #   @param order [Symbol, OpenAI::Models::Admin::Organization::Groups::UserListParams::Order]
+            #     Specifies the sort order of users in the list.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

@@ -20,8 +20,10 @@ module OpenAI
         #   Details about the cached tokens used as input for the Response.
         #
         #   @return [OpenAI::Models::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails, nil]
-        optional :cached_tokens_details,
-                 -> { OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails }
+        optional(
+          :cached_tokens_details,
+          -> { OpenAI::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails }
+        )
 
         # @!attribute image_tokens
         #   The number of image tokens used as input for the Response.
@@ -41,15 +43,20 @@ module OpenAI
         #   current response. Cached tokens here are counted as a subset of input tokens,
         #   meaning input tokens will include cached and uncached tokens.
         #
-        #   @param audio_tokens [Integer] The number of audio tokens used as input for the Response.
+        #   @param audio_tokens [Integer]
+        #     The number of audio tokens used as input for the Response.
         #
-        #   @param cached_tokens [Integer] The number of cached tokens used as input for the Response.
+        #   @param cached_tokens [Integer]
+        #     The number of cached tokens used as input for the Response.
         #
-        #   @param cached_tokens_details [OpenAI::Models::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails] Details about the cached tokens used as input for the Response.
+        #   @param cached_tokens_details [OpenAI::Models::Realtime::RealtimeResponseUsageInputTokenDetails::CachedTokensDetails]
+        #     Details about the cached tokens used as input for the Response.
         #
-        #   @param image_tokens [Integer] The number of image tokens used as input for the Response.
+        #   @param image_tokens [Integer]
+        #     The number of image tokens used as input for the Response.
         #
-        #   @param text_tokens [Integer] The number of text tokens used as input for the Response.
+        #   @param text_tokens [Integer]
+        #     The number of text tokens used as input for the Response.
 
         # @see OpenAI::Models::Realtime::RealtimeResponseUsageInputTokenDetails#cached_tokens_details
         class CachedTokensDetails < OpenAI::Internal::Type::BaseModel
@@ -74,11 +81,14 @@ module OpenAI
           # @!method initialize(audio_tokens: nil, image_tokens: nil, text_tokens: nil)
           #   Details about the cached tokens used as input for the Response.
           #
-          #   @param audio_tokens [Integer] The number of cached audio tokens used as input for the Response.
+          #   @param audio_tokens [Integer]
+          #     The number of cached audio tokens used as input for the Response.
           #
-          #   @param image_tokens [Integer] The number of cached image tokens used as input for the Response.
+          #   @param image_tokens [Integer]
+          #     The number of cached image tokens used as input for the Response.
           #
-          #   @param text_tokens [Integer] The number of cached text tokens used as input for the Response.
+          #   @param text_tokens [Integer]
+          #     The number of cached text tokens used as input for the Response.
         end
       end
     end

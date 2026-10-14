@@ -31,20 +31,23 @@ module OpenAI
         required :type, const: :"input_audio_buffer.speech_stopped"
 
         # @!method initialize(audio_end_ms:, event_id:, item_id:, type: :"input_audio_buffer.speech_stopped")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::InputAudioBufferSpeechStoppedEvent} for more details.
-        #
         #   Returned in `server_vad` mode when the server detects the end of speech in the
         #   audio buffer. The server will also send an `conversation.item.created` event
         #   with the user message item that is created from the audio buffer.
         #
-        #   @param audio_end_ms [Integer] Milliseconds since the session started when speech stopped. This will
+        #   @param audio_end_ms [Integer]
+        #     Milliseconds since the session started when speech stopped. This will correspond
+        #     to the end of audio sent to the model, and thus includes the
+        #     `min_silence_duration_ms` configured in the Session.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the user message item that will be created.
+        #   @param item_id [String]
+        #     The ID of the user message item that will be created.
         #
-        #   @param type [Symbol, :"input_audio_buffer.speech_stopped"] The event type, must be `input_audio_buffer.speech_stopped`.
+        #   @param type [Symbol, :"input_audio_buffer.speech_stopped"]
+        #     The event type, must be `input_audio_buffer.speech_stopped`.
       end
     end
   end

@@ -25,6 +25,9 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :webhook_secret
 
+    sig { returns(OpenAI::Resources::Decisions) }
+    attr_reader :decisions
+
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
     sig { returns(OpenAI::Resources::Completions) }
@@ -71,6 +74,9 @@ module OpenAI
     sig { returns(OpenAI::Resources::VectorStores) }
     attr_reader :vector_stores
 
+    sig { returns(OpenAI::Resources::Safety) }
+    attr_reader :safety
+
     sig { returns(OpenAI::Resources::Webhooks) }
     attr_reader :webhooks
 
@@ -88,8 +94,12 @@ module OpenAI
     sig { returns(OpenAI::Resources::Admin) }
     attr_reader :admin
 
+    # Create and manage model responses.
     sig { returns(OpenAI::Resources::Responses) }
     attr_reader :responses
+
+    sig { returns(OpenAI::Resources::Live) }
+    attr_reader :live
 
     sig { returns(OpenAI::Resources::Realtime) }
     attr_reader :realtime
@@ -114,12 +124,7 @@ module OpenAI
     # @api private
     sig do
       override
-        .params(
-          security: {
-            bearer_auth: T::Boolean,
-            admin_api_key_auth: T::Boolean
-          }
-        )
+        .params(security: {bearer_auth: T::Boolean, admin_api_key_auth: T::Boolean})
         .returns(T::Hash[String, String])
     end
     private def auth_headers(security:)
@@ -138,37 +143,60 @@ module OpenAI
     # Creates and returns a new client for interacting with the API.
     sig do
       params(
+
         api_key: T.nilable(String),
+
         admin_api_key: T.nilable(String),
+
         organization: T.nilable(String),
+
         project: T.nilable(String),
+
         webhook_secret: T.nilable(String),
+
         base_url: T.nilable(String),
+        data_residency: T.nilable(T.any(Symbol, String)),
         max_retries: Integer,
-        timeout: Float,
+        timeout: T.nilable(Float),
         initial_retry_delay: Float,
-        max_retry_delay: Float
-      ).returns(T.attached_class)
+        max_retry_delay: Float,
+        http_client: T.untyped,
+        logger: T.untyped,
+        log_level: T.nilable(T.any(Symbol, String)),
+        on_retry: T.nilable(T.proc.params(event: OpenAI::RetryEvent).void)
+      )
+        .returns(T.attached_class)
     end
     def self.new(
+
       # Defaults to `ENV["OPENAI_API_KEY"]`
       api_key: ENV["OPENAI_API_KEY"],
+
       # Defaults to `ENV["OPENAI_ADMIN_KEY"]`
       admin_api_key: ENV["OPENAI_ADMIN_KEY"],
+
       # Defaults to `ENV["OPENAI_ORG_ID"]`
       organization: ENV["OPENAI_ORG_ID"],
+
       # Defaults to `ENV["OPENAI_PROJECT_ID"]`
       project: ENV["OPENAI_PROJECT_ID"],
+
       # Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
       webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
+
       # Override the default base URL for the API, e.g.,
       # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
       base_url: ENV["OPENAI_BASE_URL"],
+      data_residency: nil,
       # Max number of retries to attempt after a failed retryable request.
       max_retries: OpenAI::Client::DEFAULT_MAX_RETRIES,
       timeout: OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: OpenAI::Client::DEFAULT_INITIAL_RETRY_DELAY,
-      max_retry_delay: OpenAI::Client::DEFAULT_MAX_RETRY_DELAY
+      max_retry_delay: OpenAI::Client::DEFAULT_MAX_RETRY_DELAY,
+      http_client: nil,
+      logger: nil,
+      log_level: nil,
+      on_retry: nil
     )
     end
   end

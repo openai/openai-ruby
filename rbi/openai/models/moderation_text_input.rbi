@@ -2,11 +2,15 @@
 
 module OpenAI
   module Models
+
     class ModerationTextInput < OpenAI::Internal::Type::BaseModel
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::ModerationTextInput, OpenAI::Internal::AnyHash)
-        end
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::ModerationTextInput,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # A string of text to classify.
       sig { returns(String) }
@@ -17,18 +21,35 @@ module OpenAI
       attr_accessor :type
 
       # An object describing text to classify.
-      sig { params(text: String, type: Symbol).returns(T.attached_class) }
+      sig do
+        params(
+
+          text: String,
+
+          type: Symbol
+        )
+          .returns(T.attached_class)
+      end
       def self.new(
+
         # A string of text to classify.
         text:,
+
         # Always `text`.
+
         type: :text
       )
       end
 
-      sig { override.returns({ text: String, type: Symbol }) }
+      sig do
+        override.returns(
+          {text: String, type: Symbol}
+        )
+      end
       def to_hash
       end
+
     end
+
   end
 end

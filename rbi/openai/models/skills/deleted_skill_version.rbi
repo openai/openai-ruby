@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Skills
+
       class DeletedSkillVersion < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Skills::DeletedSkillVersion,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Skills::DeletedSkillVersion,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         sig { returns(String) }
         attr_accessor :id
@@ -27,29 +29,41 @@ module OpenAI
 
         sig do
           params(
+
             id: String,
+
             deleted: T::Boolean,
+
             version: String,
+
             object: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           id:,
+
           deleted:,
+
           # The deleted skill version.
           version:,
+
           object: :"skill.version.deleted"
         )
         end
 
         sig do
           override.returns(
-            { id: String, deleted: T::Boolean, object: Symbol, version: String }
+            {id: String, deleted: T::Boolean, object: Symbol, version: String}
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

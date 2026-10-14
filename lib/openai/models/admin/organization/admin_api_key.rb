@@ -56,21 +56,28 @@ module OpenAI
           # @!method initialize(id:, created_at:, expires_at:, owner:, redacted_value:, last_used_at: nil, name: nil, object: :"organization.admin_api_key")
           #   Represents an individual Admin API key in an org.
           #
-          #   @param id [String] The identifier, which can be referenced in API endpoints
+          #   @param id [String]
+          #     The identifier, which can be referenced in API endpoints
           #
-          #   @param created_at [Integer] The Unix timestamp (in seconds) of when the API key was created
+          #   @param created_at [Integer]
+          #     The Unix timestamp (in seconds) of when the API key was created
           #
-          #   @param expires_at [Integer, nil] The Unix timestamp (in seconds) of when the API key expires
+          #   @param expires_at [Integer, nil]
+          #     The Unix timestamp (in seconds) of when the API key expires
           #
           #   @param owner [OpenAI::Models::Admin::Organization::AdminAPIKey::Owner]
           #
-          #   @param redacted_value [String] The redacted value of the API key
+          #   @param redacted_value [String]
+          #     The redacted value of the API key
           #
-          #   @param last_used_at [Integer, nil] The Unix timestamp (in seconds) of when the API key was last used
+          #   @param last_used_at [Integer, nil]
+          #     The Unix timestamp (in seconds) of when the API key was last used
           #
-          #   @param name [String, nil] The name of the API key
+          #   @param name [String, nil]
+          #     The name of the API key
           #
-          #   @param object [Symbol, :"organization.admin_api_key"] The object type, which is always `organization.admin_api_key`
+          #   @param object [Symbol, :"organization.admin_api_key"]
+          #     The object type, which is always `organization.admin_api_key`
 
           # @see OpenAI::Models::Admin::Organization::AdminAPIKey#owner
           class Owner < OpenAI::Internal::Type::BaseModel
@@ -111,17 +118,23 @@ module OpenAI
             optional :type, String
 
             # @!method initialize(id: nil, created_at: nil, name: nil, object: nil, role: nil, type: nil)
-            #   @param id [String] The identifier, which can be referenced in API endpoints
+            #   @param id [String]
+            #     The identifier, which can be referenced in API endpoints
             #
-            #   @param created_at [Integer] The Unix timestamp (in seconds) of when the user was created
+            #   @param created_at [Integer]
+            #     The Unix timestamp (in seconds) of when the user was created
             #
-            #   @param name [String] The name of the user
+            #   @param name [String]
+            #     The name of the user
             #
-            #   @param object [String] The object type, which is always organization.user
+            #   @param object [String]
+            #     The object type, which is always organization.user
             #
-            #   @param role [String] Always `owner`
+            #   @param role [String]
+            #     Always `owner`
             #
-            #   @param type [String] Always `user`
+            #   @param type [String]
+            #     Always `user`
           end
         end
       end

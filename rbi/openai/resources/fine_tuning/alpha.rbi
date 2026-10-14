@@ -2,8 +2,11 @@
 
 module OpenAI
   module Resources
+
     class FineTuning
+
       class Alpha
+
         # Manage fine-tuning jobs to tailor a model to your specific training data.
         sig { returns(OpenAI::Resources::FineTuning::Alpha::Graders) }
         attr_reader :graders
@@ -13,6 +16,8 @@ module OpenAI
         def self.new(client:)
         end
       end
+
     end
+
   end
 end

@@ -11,6 +11,7 @@ module OpenAI
         | OpenAI::Responses::ResponseCodeInterpreterCallCompletedEvent
         | OpenAI::Responses::ResponseCodeInterpreterCallInProgressEvent
         | OpenAI::Responses::ResponseCodeInterpreterCallInterpretingEvent
+        | OpenAI::Responses::ResponseCompactionCompactingEvent
         | OpenAI::Responses::ResponseCompletedEvent
         | OpenAI::Responses::ResponseContentPartAddedEvent
         | OpenAI::Responses::ResponseContentPartDoneEvent
@@ -21,6 +22,11 @@ module OpenAI
         | OpenAI::Responses::ResponseFileSearchCallSearchingEvent
         | OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent
         | OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent
+        | OpenAI::Responses::ResponseShellCallCommandAddedEvent
+        | OpenAI::Responses::ResponseShellCallCommandDeltaEvent
+        | OpenAI::Responses::ResponseShellCallCommandDoneEvent
+        | OpenAI::Responses::ResponseShellCallOutputContentDeltaEvent
+        | OpenAI::Responses::ResponseShellCallOutputContentDoneEvent
         | OpenAI::Responses::ResponseInProgressEvent
         | OpenAI::Responses::ResponseFailedEvent
         | OpenAI::Responses::ResponseIncompleteEvent

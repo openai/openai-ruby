@@ -30,21 +30,23 @@ module OpenAI
         optional :previous_item_id, String, nil?: true
 
         # @!method initialize(event_id:, item:, previous_item_id: nil, type: :"conversation.item.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::ConversationItemDone} for more details.
-        #
         #   Returned when a conversation item is finalized.
         #
         #   The event will include the full content of the Item except for audio data, which
         #   can be retrieved separately with a `conversation.item.retrieve` event if needed.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest] A single item within a Realtime conversation.
+        #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest]
+        #     A single item within a Realtime conversation.
         #
-        #   @param previous_item_id [String, nil] The ID of the item that precedes this one, if any. This is used to
+        #   @param previous_item_id [String, nil]
+        #     The ID of the item that precedes this one, if any. This is used to maintain
+        #     ordering when items are inserted.
         #
-        #   @param type [Symbol, :"conversation.item.done"] The event type, must be `conversation.item.done`.
+        #   @param type [Symbol, :"conversation.item.done"]
+        #     The event type, must be `conversation.item.done`.
       end
     end
   end

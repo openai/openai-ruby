@@ -35,20 +35,22 @@ module OpenAI
         optional :object, enum: -> { OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent::Object }
 
         # @!method initialize(id:, created_at:, data:, object: nil, type: :"fine_tuning.job.succeeded")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent} for more details.
-        #
         #   Sent when a fine-tuning job has succeeded.
         #
-        #   @param id [String] The unique ID of the event.
+        #   @param id [String]
+        #     The unique ID of the event.
         #
-        #   @param created_at [Integer] The Unix timestamp (in seconds) of when the fine-tuning job succeeded.
+        #   @param created_at [Integer]
+        #     The Unix timestamp (in seconds) of when the fine-tuning job succeeded.
         #
-        #   @param data [OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::Data] Event data payload.
+        #   @param data [OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::Data]
+        #     Event data payload.
         #
-        #   @param object [Symbol, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::Object] The object of the event. Always `event`.
+        #   @param object [Symbol, OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::Object]
+        #     The object of the event. Always `event`.
         #
-        #   @param type [Symbol, :"fine_tuning.job.succeeded"] The type of the event. Always `fine_tuning.job.succeeded`.
+        #   @param type [Symbol, :"fine_tuning.job.succeeded"]
+        #     The type of the event. Always `fine_tuning.job.succeeded`.
 
         # @see OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent#data
         class Data < OpenAI::Internal::Type::BaseModel
@@ -59,13 +61,10 @@ module OpenAI
           required :id, String
 
           # @!method initialize(id:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Webhooks::FineTuningJobSucceededWebhookEvent::Data} for more
-          #   details.
-          #
           #   Event data payload.
           #
-          #   @param id [String] The unique ID of the fine-tuning job.
+          #   @param id [String]
+          #     The unique ID of the fine-tuning job.
         end
 
         # The object of the event. Always `event`.

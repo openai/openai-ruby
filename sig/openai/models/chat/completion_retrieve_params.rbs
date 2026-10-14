@@ -2,7 +2,7 @@ module OpenAI
   module Models
     module Chat
       type completion_retrieve_params =
-        { completion_id: String } & OpenAI::Internal::Type::request_parameters
+        { completion_id: String, ?request_options: OpenAI::request_opts }
 
       class CompletionRetrieveParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -17,7 +17,7 @@ module OpenAI
 
         def to_hash: -> {
           completion_id: String,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

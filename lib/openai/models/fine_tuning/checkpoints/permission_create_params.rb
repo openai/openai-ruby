@@ -23,7 +23,8 @@ module OpenAI
           # @!method initialize(fine_tuned_model_checkpoint:, project_ids:, request_options: {})
           #   @param fine_tuned_model_checkpoint [String]
           #
-          #   @param project_ids [Array<String>] The project identifiers to grant access to.
+          #   @param project_ids [Array<String>]
+          #     The project identifiers to grant access to.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
         end

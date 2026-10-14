@@ -9,8 +9,12 @@ module OpenAI
           # @!attribute data
           #
           #   @return [Array<OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data>]
-          required :data,
-                   -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data] }
+          required(
+            :data,
+            -> {
+              OpenAI::Internal::Type::ArrayOf[OpenAI::Models::FineTuning::Checkpoints::PermissionRetrieveResponse::Data]
+            }
+          )
 
           # @!attribute has_more
           #
@@ -68,13 +72,17 @@ module OpenAI
             #   The `checkpoint.permission` object represents a permission for a fine-tuned
             #   model checkpoint.
             #
-            #   @param id [String] The permission identifier, which can be referenced in the API endpoints.
+            #   @param id [String]
+            #     The permission identifier, which can be referenced in the API endpoints.
             #
-            #   @param created_at [Integer] The Unix timestamp (in seconds) for when the permission was created.
+            #   @param created_at [Integer]
+            #     The Unix timestamp (in seconds) for when the permission was created.
             #
-            #   @param project_id [String] The project identifier that the permission is for.
+            #   @param project_id [String]
+            #     The project identifier that the permission is for.
             #
-            #   @param object [Symbol, :"checkpoint.permission"] The object type, which is always "checkpoint.permission".
+            #   @param object [Symbol, :"checkpoint.permission"]
+            #     The object type, which is always "checkpoint.permission".
           end
         end
       end

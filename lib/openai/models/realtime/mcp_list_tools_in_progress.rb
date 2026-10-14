@@ -25,11 +25,14 @@ module OpenAI
         # @!method initialize(event_id:, item_id:, type: :"mcp_list_tools.in_progress")
         #   Returned when listing MCP tools is in progress for an item.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item_id [String] The ID of the MCP list tools item.
+        #   @param item_id [String]
+        #     The ID of the MCP list tools item.
         #
-        #   @param type [Symbol, :"mcp_list_tools.in_progress"] The event type, must be `mcp_list_tools.in_progress`.
+        #   @param type [Symbol, :"mcp_list_tools.in_progress"]
+        #     The event type, must be `mcp_list_tools.in_progress`.
       end
     end
   end

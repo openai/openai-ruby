@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeTranslationInputAudioBufferAppendEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeTranslationInputAudioBufferAppendEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeTranslationInputAudioBufferAppendEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Base64-encoded 24 kHz PCM16 mono audio bytes.
         sig { returns(String) }
@@ -44,26 +46,41 @@ module OpenAI
         # audio and later resumes, model time treats the resumed audio as contiguous with
         # the previous audio rather than as a real-world pause.
         sig do
-          params(audio: String, event_id: String, type: Symbol).returns(
-            T.attached_class
+          params(
+
+            audio: String,
+
+            event_id: String,
+
+            type: Symbol
           )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Base64-encoded 24 kHz PCM16 mono audio bytes.
           audio:,
+
           # Optional client-generated ID used to identify this event.
           event_id: nil,
+
           # The event type, must be `session.input_audio_buffer.append`.
+
           type: :"session.input_audio_buffer.append"
         )
         end
 
         sig do
-          override.returns({ audio: String, type: Symbol, event_id: String })
+          override.returns(
+            {audio: String, type: Symbol, event_id: String}
+          )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_function_call_output =
+        String | ::Array[OpenAI::Models::Beta::input_content]
+
+      module AgentFunctionCallOutput
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_function_call_output]
+
+        InputContentArray: OpenAI::Internal::Type::Converter
+      end
+    end
+  end
+end

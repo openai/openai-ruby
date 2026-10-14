@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class RealtimeMcpToolCall < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeMcpToolCall,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeMcpToolCall,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique ID of the tool call.
         sig { returns(String) }
@@ -37,7 +39,7 @@ module OpenAI
         attr_accessor :approval_request_id
 
         # The error from the tool call, if any.
-        sig do
+        sig {
           returns(
             T.nilable(
               T.any(
@@ -47,7 +49,7 @@ module OpenAI
               )
             )
           )
-        end
+        }
         attr_accessor :error
 
         # The output from the tool call.
@@ -57,39 +59,56 @@ module OpenAI
         # A Realtime item representing an invocation of a tool on an MCP server.
         sig do
           params(
+
             id: String,
+
             arguments: String,
+
             name: String,
+
             server_label: String,
+
             approval_request_id: T.nilable(String),
-            error:
-              T.nilable(
-                T.any(
-                  OpenAI::Realtime::RealtimeMcpProtocolError::OrHash,
-                  OpenAI::Realtime::RealtimeMcpToolExecutionError::OrHash,
-                  OpenAI::Realtime::RealtimeMcphttpError::OrHash
-                )
-              ),
+
+            error: T.nilable(
+              T.any(
+                OpenAI::Realtime::RealtimeMcpProtocolError::OrHash,
+                OpenAI::Realtime::RealtimeMcpToolExecutionError::OrHash,
+                OpenAI::Realtime::RealtimeMcphttpError::OrHash
+              )
+            ),
+
             output: T.nilable(String),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique ID of the tool call.
           id:,
+
           # A JSON string of the arguments passed to the tool.
           arguments:,
+
           # The name of the tool that was run.
           name:,
+
           # The label of the MCP server running the tool.
           server_label:,
+
           # The ID of an associated approval request, if any.
           approval_request_id: nil,
+
           # The error from the tool call, if any.
           error: nil,
+
           # The output from the tool call.
           output: nil,
+
           # The type of the item. Always `mcp_call`.
+
           type: :mcp_call
         )
         end
@@ -103,14 +122,13 @@ module OpenAI
               server_label: String,
               type: Symbol,
               approval_request_id: T.nilable(String),
-              error:
-                T.nilable(
-                  T.any(
-                    OpenAI::Realtime::RealtimeMcpProtocolError,
-                    OpenAI::Realtime::RealtimeMcpToolExecutionError,
-                    OpenAI::Realtime::RealtimeMcphttpError
-                  )
-                ),
+              error: T.nilable(
+                T.any(
+                  OpenAI::Realtime::RealtimeMcpProtocolError,
+                  OpenAI::Realtime::RealtimeMcpToolExecutionError,
+                  OpenAI::Realtime::RealtimeMcphttpError
+                )
+              ),
               output: T.nilable(String)
             }
           )
@@ -122,24 +140,23 @@ module OpenAI
         module Error
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeMcpProtocolError,
-                OpenAI::Realtime::RealtimeMcpToolExecutionError,
-                OpenAI::Realtime::RealtimeMcphttpError
-              )
-            end
-
-          sig do
-            override.returns(
-              T::Array[OpenAI::Realtime::RealtimeMcpToolCall::Error::Variants]
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Realtime::RealtimeMcpProtocolError,
+              OpenAI::Realtime::RealtimeMcpToolExecutionError,
+              OpenAI::Realtime::RealtimeMcphttpError
             )
-          end
+          }
+
+          sig { override.returns(T::Array[OpenAI::Realtime::RealtimeMcpToolCall::Error::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

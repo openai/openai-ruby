@@ -30,9 +30,11 @@ module OpenAI
             # @!method initialize(project_id:, group_id:, role:, request_options: {})
             #   @param project_id [String]
             #
-            #   @param group_id [String] Identifier of the group to add to the project.
+            #   @param group_id [String]
+            #     Identifier of the group to add to the project.
             #
-            #   @param role [String] Identifier of the project role to grant to the group.
+            #   @param role [String]
+            #     Identifier of the project role to grant to the group.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

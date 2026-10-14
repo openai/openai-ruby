@@ -2,14 +2,18 @@
 
 module OpenAI
   module Models
+
     class SkillListParams < OpenAI::Internal::Type::BaseModel
+
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      OrHash =
-        T.type_alias do
-          T.any(OpenAI::SkillListParams, OpenAI::Internal::AnyHash)
-        end
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::SkillListParams,
+          OpenAI::Internal::AnyHash
+        )
+      end
 
       # Identifier for the last item from the previous pagination request
       sig { returns(T.nilable(String)) }
@@ -35,20 +39,29 @@ module OpenAI
 
       sig do
         params(
+
           after: String,
+
           limit: Integer,
+
           order: OpenAI::SkillListParams::Order::OrSymbol,
+
           request_options: OpenAI::RequestOptions::OrHash
-        ).returns(T.attached_class)
+        )
+          .returns(T.attached_class)
       end
       def self.new(
+
         # Identifier for the last item from the previous pagination request
         after: nil,
+
         # Number of items to retrieve
         limit: nil,
+
         # Sort order of results by timestamp. Use `asc` for ascending order or `desc` for
         # descending order.
         order: nil,
+
         request_options: {}
       )
       end
@@ -71,21 +84,18 @@ module OpenAI
       module Order
         extend OpenAI::Internal::Type::Enum
 
-        TaggedSymbol =
-          T.type_alias { T.all(Symbol, OpenAI::SkillListParams::Order) }
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::SkillListParams::Order) }
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         ASC = T.let(:asc, OpenAI::SkillListParams::Order::TaggedSymbol)
         DESC = T.let(:desc, OpenAI::SkillListParams::Order::TaggedSymbol)
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::SkillListParams::Order::TaggedSymbol]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::SkillListParams::Order::TaggedSymbol]) }
         def self.values
         end
       end
+
     end
+
   end
 end

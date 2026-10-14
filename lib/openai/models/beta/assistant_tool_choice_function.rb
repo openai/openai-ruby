@@ -11,7 +11,8 @@ module OpenAI
         required :name, String
 
         # @!method initialize(name:)
-        #   @param name [String] The name of the function to call.
+        #   @param name [String]
+        #     The name of the function to call.
       end
     end
   end

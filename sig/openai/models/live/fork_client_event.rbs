@@ -1,0 +1,24 @@
+module OpenAI
+  module Models
+    module Live
+      type fork_client_event =
+        OpenAI::Live::ForkSessionStartEvent
+        | OpenAI::Live::SessionUpdateEvent
+        | OpenAI::Live::InputAudioAppendEvent
+        | OpenAI::Live::InputAudioMuteEvent
+        | OpenAI::Live::InputAudioUnmuteEvent
+        | OpenAI::Live::InstructionsAppendEvent
+        | OpenAI::Live::ThinkingAppendEvent
+        | OpenAI::Live::CommentaryAppendEvent
+        | OpenAI::Live::ResponseItemCreateEvent
+        | OpenAI::Live::ResponseCreateEvent
+        | OpenAI::Live::SessionCloseEvent
+
+      module ForkClientEvent
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Live::fork_client_event]
+      end
+    end
+  end
+end

@@ -2,7 +2,9 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
       # set to `null` to turn off, in which case the client must manually trigger model
       # response.
@@ -22,22 +24,20 @@ module OpenAI
       module RealtimeAudioInputTurnDetection
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
-            T.any(
-              OpenAI::Realtime::RealtimeAudioInputTurnDetection::ServerVad,
-              OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad
-            )
-          end
+        Variants = T.type_alias do
+          T.any(
+            OpenAI::Realtime::RealtimeAudioInputTurnDetection::ServerVad,
+            OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad
+          )
+        end
 
         class ServerVad < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::ServerVad,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Realtime::RealtimeAudioInputTurnDetection::ServerVad,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Type of turn detection, `server_vad` to turn on simple Server VAD.
           sig { returns(Symbol) }
@@ -113,16 +113,25 @@ module OpenAI
           # detected and off after a period of silence.
           sig do
             params(
+
               create_response: T::Boolean,
+
               idle_timeout_ms: T.nilable(Integer),
+
               interrupt_response: T::Boolean,
+
               prefix_padding_ms: Integer,
+
               silence_duration_ms: Integer,
+
               threshold: Float,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Whether or not to automatically generate a response when a VAD stop event
             # occurs. If `interrupt_response` is set to `false` this may fail to create a
             # response if the model is already responding.
@@ -130,6 +139,7 @@ module OpenAI
             # If both `create_response` and `interrupt_response` are set to `false`, the model
             # will never respond automatically but VAD events will still be emitted.
             create_response: nil,
+
             # Optional timeout after which a model response will be triggered automatically.
             # This is useful for situations in which a long pause from the user is unexpected,
             # such as a phone call. The model will effectively prompt the user to continue the
@@ -143,6 +153,7 @@ module OpenAI
             # Response) will be emitted when the timeout is reached. Idle timeout is currently
             # only supported for `server_vad` mode.
             idle_timeout_ms: nil,
+
             # Whether or not to automatically interrupt (cancel) any ongoing response with
             # output to the default conversation (i.e. `conversation` of `auto`) when a VAD
             # start event occurs. If `true` then the response will be cancelled, otherwise it
@@ -151,18 +162,23 @@ module OpenAI
             # If both `create_response` and `interrupt_response` are set to `false`, the model
             # will never respond automatically but VAD events will still be emitted.
             interrupt_response: nil,
+
             # Used only for `server_vad` mode. Amount of audio to include before the VAD
             # detected speech (in milliseconds). Defaults to 300ms.
             prefix_padding_ms: nil,
+
             # Used only for `server_vad` mode. Duration of silence to detect speech stop (in
             # milliseconds). Defaults to 500ms. With shorter values the model will respond
             # more quickly, but may jump in on short pauses from the user.
             silence_duration_ms: nil,
+
             # Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this
             # defaults to 0.5. A higher threshold will require louder audio to activate the
             # model, and thus might perform better in noisy environments.
             threshold: nil,
+
             # Type of turn detection, `server_vad` to turn on simple Server VAD.
+
             type: :server_vad
           )
           end
@@ -182,16 +198,16 @@ module OpenAI
           end
           def to_hash
           end
+
         end
 
         class SemanticVad < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # Type of turn detection, `semantic_vad` to turn on Semantic VAD.
           sig { returns(Symbol) }
@@ -209,21 +225,14 @@ module OpenAI
           # will wait longer for the user to continue speaking, `high` will respond more
           # quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
           # and `high` have max timeouts of 8s, 4s, and 2s respectively.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::OrSymbol
-              )
-            )
-          end
+          sig {
+            returns(T.nilable(OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::OrSymbol))
+          }
           attr_reader :eagerness
 
-          sig do
-            params(
-              eagerness:
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::OrSymbol
-            ).void
-          end
+          sig {
+            params(eagerness: OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::OrSymbol).void
+          }
           attr_writer :eagerness
 
           # Whether or not to automatically interrupt any ongoing response with output to
@@ -239,27 +248,36 @@ module OpenAI
           # user has finished speaking.
           sig do
             params(
+
               create_response: T::Boolean,
-              eagerness:
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::OrSymbol,
+
+              eagerness: OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::OrSymbol,
+
               interrupt_response: T::Boolean,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # Whether or not to automatically generate a response when a VAD stop event
             # occurs.
             create_response: nil,
+
             # Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
             # will wait longer for the user to continue speaking, `high` will respond more
             # quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
             # and `high` have max timeouts of 8s, 4s, and 2s respectively.
             eagerness: nil,
+
             # Whether or not to automatically interrupt any ongoing response with output to
             # the default conversation (i.e. `conversation` of `auto`) when a VAD start event
             # occurs.
             interrupt_response: nil,
+
             # Type of turn detection, `semantic_vad` to turn on Semantic VAD.
+
             type: :semantic_vad
           )
           end
@@ -269,8 +287,7 @@ module OpenAI
               {
                 type: Symbol,
                 create_response: T::Boolean,
-                eagerness:
-                  OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::OrSymbol,
+                eagerness: OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::OrSymbol,
                 interrupt_response: T::Boolean
               }
             )
@@ -285,58 +302,36 @@ module OpenAI
           module Eagerness
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            LOW =
-              T.let(
-                :low,
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol
-              )
-            MEDIUM =
-              T.let(
-                :medium,
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol
-              )
-            HIGH =
-              T.let(
-                :high,
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol
-              )
-            AUTO =
-              T.let(
-                :auto,
-                OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol
-              )
+            LOW = T.let(:low, OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol)
+            MEDIUM = T.let(
+              :medium,
+              OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol
+            )
+            HIGH = T.let(:high, OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol)
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol
-                ]
+                T::Array[OpenAI::Realtime::RealtimeAudioInputTurnDetection::SemanticVad::Eagerness::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
         end
 
-        sig do
-          override.returns(
-            T::Array[
-              OpenAI::Realtime::RealtimeAudioInputTurnDetection::Variants
-            ]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::Realtime::RealtimeAudioInputTurnDetection::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

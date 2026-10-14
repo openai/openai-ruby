@@ -2,14 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaEasyInputMessage = Beta::BetaEasyInputMessage
 
     module Beta
+
       class BetaEasyInputMessage < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Beta::BetaEasyInputMessage, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaEasyInputMessage,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Text, image, or audio input to the model, used to generate a response. Can also
         # contain previous assistant responses.
@@ -25,22 +30,14 @@ module OpenAI
         # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
         # sending follow-up requests, preserve and resend phase on all assistant messages
         # — dropping it can degrade performance. Not used for user messages.
-        sig do
-          returns(
-            T.nilable(OpenAI::Beta::BetaEasyInputMessage::Phase::OrSymbol)
-          )
-        end
+        sig { returns(T.nilable(OpenAI::Beta::BetaEasyInputMessage::Phase::OrSymbol)) }
         attr_accessor :phase
 
         # The type of the message input. Always `message`.
-        sig do
-          returns(T.nilable(OpenAI::Beta::BetaEasyInputMessage::Type::OrSymbol))
-        end
+        sig { returns(T.nilable(OpenAI::Beta::BetaEasyInputMessage::Type::OrSymbol)) }
         attr_reader :type
 
-        sig do
-          params(type: OpenAI::Beta::BetaEasyInputMessage::Type::OrSymbol).void
-        end
+        sig { params(type: OpenAI::Beta::BetaEasyInputMessage::Type::OrSymbol).void }
         attr_writer :type
 
         # A message input to the model with a role indicating instruction following
@@ -50,26 +47,35 @@ module OpenAI
         # interactions.
         sig do
           params(
+
             content: OpenAI::Beta::BetaEasyInputMessage::Content::Variants,
+
             role: OpenAI::Beta::BetaEasyInputMessage::Role::OrSymbol,
-            phase:
-              T.nilable(OpenAI::Beta::BetaEasyInputMessage::Phase::OrSymbol),
+
+            phase: T.nilable(OpenAI::Beta::BetaEasyInputMessage::Phase::OrSymbol),
+
             type: OpenAI::Beta::BetaEasyInputMessage::Type::OrSymbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Text, image, or audio input to the model, used to generate a response. Can also
           # contain previous assistant responses.
           content:,
+
           # The role of the message input. One of `user`, `assistant`, `system`, or
           # `developer`.
           role:,
+
           # Labels an `assistant` message as intermediate commentary (`commentary`) or the
           # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
           # sending follow-up requests, preserve and resend phase on all assistant messages
           # — dropping it can degrade performance. Not used for user messages.
           phase: nil,
+
           # The type of the message input. Always `message`.
+
           type: nil
         )
         end
@@ -79,8 +85,7 @@ module OpenAI
             {
               content: OpenAI::Beta::BetaEasyInputMessage::Content::Variants,
               role: OpenAI::Beta::BetaEasyInputMessage::Role::OrSymbol,
-              phase:
-                T.nilable(OpenAI::Beta::BetaEasyInputMessage::Phase::OrSymbol),
+              phase: T.nilable(OpenAI::Beta::BetaEasyInputMessage::Phase::OrSymbol),
               type: OpenAI::Beta::BetaEasyInputMessage::Type::OrSymbol
             }
           )
@@ -93,21 +98,12 @@ module OpenAI
         module Content
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                String,
-                T::Array[OpenAI::Beta::BetaResponseInputContent::Variants]
-              )
-            end
+          Variants = T.type_alias { T.any(String, T::Array[OpenAI::Beta::BetaResponseInputContent::Variants]) }
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Beta::BetaEasyInputMessage::Content::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Beta::BetaEasyInputMessage::Content::Variants]) }
           def self.variants
           end
+
         end
 
         # The role of the message input. One of `user`, `assistant`, `system`, or
@@ -115,35 +111,15 @@ module OpenAI
         module Role
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Beta::BetaEasyInputMessage::Role)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaEasyInputMessage::Role) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          USER =
-            T.let(:user, OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol)
-          ASSISTANT =
-            T.let(
-              :assistant,
-              OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol
-            )
-          SYSTEM =
-            T.let(
-              :system,
-              OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol
-            )
-          DEVELOPER =
-            T.let(
-              :developer,
-              OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol
-            )
+          USER = T.let(:user, OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol)
+          ASSISTANT = T.let(:assistant, OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol)
+          SYSTEM = T.let(:system, OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol)
+          DEVELOPER = T.let(:developer, OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Beta::BetaEasyInputMessage::Role::TaggedSymbol]) }
           def self.values
           end
         end
@@ -155,28 +131,13 @@ module OpenAI
         module Phase
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Beta::BetaEasyInputMessage::Phase)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaEasyInputMessage::Phase) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          COMMENTARY =
-            T.let(
-              :commentary,
-              OpenAI::Beta::BetaEasyInputMessage::Phase::TaggedSymbol
-            )
-          FINAL_ANSWER =
-            T.let(
-              :final_answer,
-              OpenAI::Beta::BetaEasyInputMessage::Phase::TaggedSymbol
-            )
+          COMMENTARY = T.let(:commentary, OpenAI::Beta::BetaEasyInputMessage::Phase::TaggedSymbol)
+          FINAL_ANSWER = T.let(:final_answer, OpenAI::Beta::BetaEasyInputMessage::Phase::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Beta::BetaEasyInputMessage::Phase::TaggedSymbol]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Beta::BetaEasyInputMessage::Phase::TaggedSymbol]) }
           def self.values
           end
         end
@@ -185,27 +146,19 @@ module OpenAI
         module Type
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Beta::BetaEasyInputMessage::Type)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::BetaEasyInputMessage::Type) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          MESSAGE =
-            T.let(
-              :message,
-              OpenAI::Beta::BetaEasyInputMessage::Type::TaggedSymbol
-            )
+          MESSAGE = T.let(:message, OpenAI::Beta::BetaEasyInputMessage::Type::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Beta::BetaEasyInputMessage::Type::TaggedSymbol]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Beta::BetaEasyInputMessage::Type::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

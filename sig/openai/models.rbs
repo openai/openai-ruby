@@ -65,6 +65,18 @@ module OpenAI
 
   module CustomToolInputFormat = OpenAI::Models::CustomToolInputFormat
 
+  class Decision = OpenAI::Models::Decision
+
+  class DecisionCreateParams = OpenAI::Models::DecisionCreateParams
+
+  class DecisionInputImage = OpenAI::Models::DecisionInputImage
+
+  class DecisionInputMessage = OpenAI::Models::DecisionInputMessage
+
+  module DecisionInputPart = OpenAI::Models::DecisionInputPart
+
+  class DecisionInputText = OpenAI::Models::DecisionInputText
+
   class DeletedSkill = OpenAI::Models::DeletedSkill
 
   class Embedding = OpenAI::Models::Embedding
@@ -147,6 +159,8 @@ module OpenAI
 
   class ImagesResponse = OpenAI::Models::ImagesResponse
 
+  module Live = OpenAI::Models::Live
+
   Metadata: OpenAI::Internal::Type::Converter
 
   class Model = OpenAI::Models::Model
@@ -194,6 +208,8 @@ module OpenAI
   module Responses = OpenAI::Models::Responses
 
   module ResponsesModel = OpenAI::Models::ResponsesModel
+
+  module Safety = OpenAI::Models::Safety
 
   class Skill = OpenAI::Models::Skill
 

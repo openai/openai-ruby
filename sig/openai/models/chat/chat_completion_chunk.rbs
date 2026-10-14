@@ -9,40 +9,152 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice],
           created: Integer,
           model: String,
-          object: :"chat.completion.chunk",
-          moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
-          service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
-          system_fingerprint: String,
-          usage: OpenAI::CompletionUsage?
+          ?object: :"chat.completion.chunk",
+          ?moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
+          ?obfuscation: String,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
+          ?system_fingerprint: String,
+          ?usage: OpenAI::CompletionUsage?
         }
 
       class ChatCompletionChunk < OpenAI::Internal::Type::BaseModel
+        # A unique identifier for the chat completion. Each chunk has the same ID.
         attr_accessor id: String
 
+        # A list of chat completion choices. Can contain more than one elements if `n` is
+        # greater than 1. Can also be empty for the last chunk if you set
+        # `stream_options: {"include_usage": true}`.
         attr_accessor choices: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice]
 
+        # The Unix timestamp (in seconds) of when the chat completion was created. Each
+        # chunk has the same timestamp.
         attr_accessor created: Integer
 
+        # The model to generate the completion.
         attr_accessor model: String
 
+        # The object type, which is always `chat.completion.chunk`.
         attr_accessor object: :"chat.completion.chunk"
 
+        # Moderation results for the request input and generated output. Present on the
+        # moderation chunk when moderated completions are requested.
         attr_accessor moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?
 
+        # An obfuscation string added to normalize the size of streamed chunks as a
+        # mitigation to certain side-channel attacks. The field is included by default and
+        # omitted when `stream_options.include_obfuscation` is `false`.
+        attr_reader obfuscation: String?
+
+        # An obfuscation string added to normalize the size of streamed chunks as a
+        # mitigation to certain side-channel attacks. The field is included by default and
+        # omitted when `stream_options.include_obfuscation` is `false`.
+        def obfuscation=: (String) -> String
+
+        # Specifies the processing type used for serving the request.
+        #
+        # - If set to 'auto', then the request will be processed with the service tier
+        #   configured in the Project settings. Unless otherwise configured, the Project
+        #   will use 'default'.
+        # - If set to 'default', then the request will be processed with the standard
+        #   pricing and performance for the selected model.
+        # - If set to
+        #   '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #   the request will be processed with the Flex Processing service tier.
+        # - To opt-in to
+        #   [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #   request level, include the `service_tier=fast` or `service_tier=priority`
+        #   parameter for Responses or Chat Completions. The response will show
+        #   `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #   `priority` in your request.
+        # - When not set, the default behavior is 'auto'.
+        #
+        # When the `service_tier` parameter is set, the response body will include the
+        # `service_tier` value based on the processing mode actually used to serve the
+        # request. This response value may be different from the value set in the
+        # parameter.
         attr_accessor service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?
 
+        # This fingerprint represents the backend configuration that the model runs with.
+        # Can be used in conjunction with the `seed` request parameter to understand when
+        # backend changes have been made that might impact determinism.
         attr_reader system_fingerprint: String?
 
+        # This fingerprint represents the backend configuration that the model runs with.
+        # Can be used in conjunction with the `seed` request parameter to understand when
+        # backend changes have been made that might impact determinism.
         def system_fingerprint=: (String) -> String
 
+        # An optional field that will only be present when you set
+        # `stream_options: {"include_usage": true}` in your request. When present, it
+        # contains a null value **except for the last chunk** which contains the token
+        # usage statistics for the entire request.
+        #
+        # **NOTE:** If the stream is interrupted or cancelled, you may not receive the
+        # final usage chunk which contains the total token usage for the request.
         attr_accessor usage: OpenAI::CompletionUsage?
 
+        # @param id
+        #   A unique identifier for the chat completion. Each chunk has the same ID.
+        # @param choices
+        #   A list of chat completion choices. Can contain more than one elements if `n` is
+        #   greater than 1. Can also be empty for the last chunk if you set
+        #   `stream_options: {"include_usage": true}`.
+        # @param created
+        #   The Unix timestamp (in seconds) of when the chat completion was created. Each
+        #   chunk has the same timestamp.
+        # @param model
+        #   The model to generate the completion.
+        # @param moderation
+        #   Moderation results for the request input and generated output. Present on the
+        #   moderation chunk when moderated completions are requested.
+        # @param obfuscation
+        #   An obfuscation string added to normalize the size of streamed chunks as a
+        #   mitigation to certain side-channel attacks. The field is included by default and
+        #   omitted when `stream_options.include_obfuscation` is `false`.
+        # @param service_tier
+        #   Specifies the processing type used for serving the request.
+        #
+        #   - If set to 'auto', then the request will be processed with the service tier
+        #     configured in the Project settings. Unless otherwise configured, the Project
+        #     will use 'default'.
+        #   - If set to 'default', then the request will be processed with the standard
+        #     pricing and performance for the selected model.
+        #   - If set to
+        #     '[flex](https://developers.openai.com/api/docs/guides/flex-processing)', then
+        #     the request will be processed with the Flex Processing service tier.
+        #   - To opt-in to
+        #     [Fast mode](https://developers.openai.com/api/docs/guides/fast-mode) at the
+        #     request level, include the `service_tier=fast` or `service_tier=priority`
+        #     parameter for Responses or Chat Completions. The response will show
+        #     `service_tier=priority` regardless of if you specify `service_tier=fast` or
+        #     `priority` in your request.
+        #   - When not set, the default behavior is 'auto'.
+        #
+        #   When the `service_tier` parameter is set, the response body will include the
+        #   `service_tier` value based on the processing mode actually used to serve the
+        #   request. This response value may be different from the value set in the
+        #   parameter.
+        # @param system_fingerprint
+        #   This fingerprint represents the backend configuration that the model runs with.
+        #   Can be used in conjunction with the `seed` request parameter to understand when
+        #   backend changes have been made that might impact determinism.
+        # @param usage
+        #   An optional field that will only be present when you set
+        #   `stream_options: {"include_usage": true}` in your request. When present, it
+        #   contains a null value **except for the last chunk** which contains the token
+        #   usage statistics for the entire request.
+        #
+        #   **NOTE:** If the stream is interrupted or cancelled, you may not receive the
+        #   final usage chunk which contains the total token usage for the request.
+        # @param object
+        #   The object type, which is always `chat.completion.chunk`.
         def initialize: (
           id: String,
           choices: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice],
           created: Integer,
           model: String,
           ?moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
+          ?obfuscation: String,
           ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
           ?system_fingerprint: String,
           ?usage: OpenAI::CompletionUsage?,
@@ -54,66 +166,114 @@ module OpenAI
           choices: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice],
           created: Integer,
           model: String,
-          object: :"chat.completion.chunk",
-          moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
-          service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
-          system_fingerprint: String,
-          usage: OpenAI::CompletionUsage?
+          ?object: :"chat.completion.chunk",
+          ?moderation: OpenAI::Chat::ChatCompletionChunk::Moderation?,
+          ?obfuscation: String,
+          ?service_tier: OpenAI::Models::Chat::ChatCompletionChunk::service_tier?,
+          ?system_fingerprint: String,
+          ?usage: OpenAI::CompletionUsage?
         }
 
         type choice =
           {
             delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta,
-            finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
             index: Integer,
-            logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
+            ?finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
+            ?logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
           }
 
         class Choice < OpenAI::Internal::Type::BaseModel
+          # A chat completion delta generated by streamed model responses. Streamed audio
+          # can arrive in partial updates with an ID, base64 data, or transcript text. The
+          # final audio update contains only its expiry timestamp.
           attr_accessor delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta
 
-          attr_accessor finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?
-
+          # The index of the choice in the list of choices.
           attr_accessor index: Integer
 
+          # The reason the model stopped generating tokens. This will be `stop` if the model
+          # hit a natural stop point or a provided stop sequence, `length` if the maximum
+          # number of tokens specified in the request was reached, `content_filter` if
+          # content was omitted due to a flag from our content filters, `tool_calls` if the
+          # model called a tool, or `function_call` (deprecated) if the model called a
+          # function. Omitted from the final audio update containing only
+          # `delta.audio.expires_at`.
+          attr_accessor finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?
+
+          # Log probability information for the choice.
           attr_accessor logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
 
+          # @param delta
+          #   A chat completion delta generated by streamed model responses. Streamed audio
+          #   can arrive in partial updates with an ID, base64 data, or transcript text. The
+          #   final audio update contains only its expiry timestamp.
+          # @param index
+          #   The index of the choice in the list of choices.
+          # @param finish_reason
+          #   The reason the model stopped generating tokens. This will be `stop` if the model
+          #   hit a natural stop point or a provided stop sequence, `length` if the maximum
+          #   number of tokens specified in the request was reached, `content_filter` if
+          #   content was omitted due to a flag from our content filters, `tool_calls` if the
+          #   model called a tool, or `function_call` (deprecated) if the model called a
+          #   function. Omitted from the final audio update containing only
+          #   `delta.audio.expires_at`.
+          # @param logprobs
+          #   Log probability information for the choice.
           def initialize: (
             delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta,
-            finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
             index: Integer,
+            ?finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
             ?logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
           ) -> void
 
           def to_hash: -> {
             delta: OpenAI::Chat::ChatCompletionChunk::Choice::Delta,
-            finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
             index: Integer,
-            logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
+            ?finish_reason: OpenAI::Models::Chat::ChatCompletionChunk::Choice::finish_reason?,
+            ?logprobs: OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs?
           }
 
           type delta =
             {
-              content: String?,
-              function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
-              refusal: String?,
-              role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
-              tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
+              ?audio: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::Audio,
+              ?content: String?,
+              ?function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+              ?refusal: String?,
+              ?role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
+              ?tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             }
 
           class Delta < OpenAI::Internal::Type::BaseModel
+            # A partial audio response. Audio chunks may carry an ID, base64 data, or
+            # transcript text; the final audio update contains only its expiry timestamp.
+            attr_reader audio: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::Audio?
+
+            # A partial audio response. Audio chunks may carry an ID, base64 data, or
+            # transcript text; the final audio update contains only its expiry timestamp.
+            def audio=: (
+              OpenAI::Chat::ChatCompletionChunk::Choice::Delta::Audio
+            ) -> OpenAI::Chat::ChatCompletionChunk::Choice::Delta::Audio
+
+            # The contents of the chunk message.
             attr_accessor content: String?
 
+            # Deprecated and replaced by `tool_calls`. The name and arguments of a function
+            # that should be called, as generated by the model.
             attr_reader function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall?
 
+            # Deprecated and replaced by `tool_calls`. The name and arguments of a function
+            # that should be called, as generated by the model.
             def function_call=: (
               OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall
             ) -> OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall
 
+            # The refusal message generated by the model.
             attr_accessor refusal: String?
 
+            # The role of the author of this message.
             attr_reader role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role?
 
+            # The role of the author of this message.
             def role=: (
               OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role
             ) -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role
@@ -124,7 +284,20 @@ module OpenAI
               ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             ) -> ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
 
+            # @param audio
+            #   A partial audio response. Audio chunks may carry an ID, base64 data, or
+            #   transcript text; the final audio update contains only its expiry timestamp.
+            # @param content
+            #   The contents of the chunk message.
+            # @param function_call
+            #   Deprecated and replaced by `tool_calls`. The name and arguments of a function
+            #   that should be called, as generated by the model.
+            # @param refusal
+            #   The refusal message generated by the model.
+            # @param role
+            #   The role of the author of this message.
             def initialize: (
+              ?audio: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::Audio,
               ?content: String?,
               ?function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
               ?refusal: String?,
@@ -133,27 +306,107 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              content: String?,
-              function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
-              refusal: String?,
-              role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
-              tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
+              ?audio: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::Audio,
+              ?content: String?,
+              ?function_call: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::FunctionCall,
+              ?refusal: String?,
+              ?role: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::role,
+              ?tool_calls: ::Array[OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall]
             }
 
-            type function_call = { arguments: String, name: String }
+            type audio =
+              {
+                ?id: String,
+                ?data: String,
+                ?expires_at: Integer,
+                ?transcript: String
+              }
+
+            class Audio < OpenAI::Internal::Type::BaseModel
+              # Unique identifier for this audio response.
+              attr_reader id: String?
+
+              # Unique identifier for this audio response.
+              def id=: (String) -> String
+
+              # Base64 encoded audio bytes generated by the model, in the format specified in
+              # the request.
+              attr_reader data: String?
+
+              # Base64 encoded audio bytes generated by the model, in the format specified in
+              # the request.
+              def data=: (String) -> String
+
+              # The Unix timestamp (in seconds) for when this audio response will no longer be
+              # accessible on the server for use in multi-turn conversations.
+              attr_reader expires_at: Integer?
+
+              # The Unix timestamp (in seconds) for when this audio response will no longer be
+              # accessible on the server for use in multi-turn conversations.
+              def expires_at=: (Integer) -> Integer
+
+              # Transcript text from this audio chunk.
+              attr_reader transcript: String?
+
+              # Transcript text from this audio chunk.
+              def transcript=: (String) -> String
+
+              # @param id
+              #   Unique identifier for this audio response.
+              # @param data
+              #   Base64 encoded audio bytes generated by the model, in the format specified in
+              #   the request.
+              # @param expires_at
+              #   The Unix timestamp (in seconds) for when this audio response will no longer be
+              #   accessible on the server for use in multi-turn conversations.
+              # @param transcript
+              #   Transcript text from this audio chunk.
+              def initialize: (
+                ?id: String,
+                ?data: String,
+                ?expires_at: Integer,
+                ?transcript: String
+              ) -> void
+
+              def to_hash: -> {
+                ?id: String,
+                ?data: String,
+                ?expires_at: Integer,
+                ?transcript: String
+              }
+            end
+
+            type function_call = { ?arguments: String, ?name: String }
 
             class FunctionCall < OpenAI::Internal::Type::BaseModel
+              # The arguments to call the function with, as generated by the model in JSON
+              # format. Note that the model does not always generate valid JSON, and may
+              # hallucinate parameters not defined by your function schema. Validate the
+              # arguments in your code before calling your function.
               attr_reader arguments: String?
 
+              # The arguments to call the function with, as generated by the model in JSON
+              # format. Note that the model does not always generate valid JSON, and may
+              # hallucinate parameters not defined by your function schema. Validate the
+              # arguments in your code before calling your function.
               def arguments=: (String) -> String
 
+              # The name of the function to call.
               attr_reader name: String?
 
+              # The name of the function to call.
               def name=: (String) -> String
 
+              # @param arguments
+              #   The arguments to call the function with, as generated by the model in JSON
+              #   format. Note that the model does not always generate valid JSON, and may
+              #   hallucinate parameters not defined by your function schema. Validate the
+              #   arguments in your code before calling your function.
+              # @param name
+              #   The name of the function to call.
               def initialize: (?arguments: String, ?name: String) -> void
 
-              def to_hash: -> { arguments: String, name: String }
+              def to_hash: -> { ?arguments: String, ?name: String }
             end
 
             type role = :developer | :system | :user | :assistant | :tool
@@ -173,16 +426,18 @@ module OpenAI
             type tool_call =
               {
                 index: Integer,
-                id: String,
-                function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+                ?id: String,
+                ?function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                ?type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               }
 
             class ToolCall < OpenAI::Internal::Type::BaseModel
               attr_accessor index: Integer
 
+              # The ID of the tool call.
               attr_reader id: String?
 
+              # The ID of the tool call.
               def id=: (String) -> String
 
               attr_reader function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function?
@@ -191,12 +446,18 @@ module OpenAI
                 OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function
               ) -> OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function
 
+              # The type of the tool. Currently, only `function` is supported.
               attr_reader type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_?
 
+              # The type of the tool. Currently, only `function` is supported.
               def type=: (
                 OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               ) -> OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
 
+              # @param id
+              #   The ID of the tool call.
+              # @param type
+              #   The type of the tool. Currently, only `function` is supported.
               def initialize: (
                 index: Integer,
                 ?id: String,
@@ -206,25 +467,42 @@ module OpenAI
 
               def to_hash: -> {
                 index: Integer,
-                id: String,
-                function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
-                type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
+                ?id: String,
+                ?function: OpenAI::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::Function,
+                ?type: OpenAI::Models::Chat::ChatCompletionChunk::Choice::Delta::ToolCall::type_
               }
 
-              type function = { arguments: String, name: String }
+              type function = { ?arguments: String, ?name: String }
 
               class Function < OpenAI::Internal::Type::BaseModel
+                # The arguments to call the function with, as generated by the model in JSON
+                # format. Note that the model does not always generate valid JSON, and may
+                # hallucinate parameters not defined by your function schema. Validate the
+                # arguments in your code before calling your function.
                 attr_reader arguments: String?
 
+                # The arguments to call the function with, as generated by the model in JSON
+                # format. Note that the model does not always generate valid JSON, and may
+                # hallucinate parameters not defined by your function schema. Validate the
+                # arguments in your code before calling your function.
                 def arguments=: (String) -> String
 
+                # The name of the function to call.
                 attr_reader name: String?
 
+                # The name of the function to call.
                 def name=: (String) -> String
 
+                # @param arguments
+                #   The arguments to call the function with, as generated by the model in JSON
+                #   format. Note that the model does not always generate valid JSON, and may
+                #   hallucinate parameters not defined by your function schema. Validate the
+                #   arguments in your code before calling your function.
+                # @param name
+                #   The name of the function to call.
                 def initialize: (?arguments: String, ?name: String) -> void
 
-                def to_hash: -> { arguments: String, name: String }
+                def to_hash: -> { ?arguments: String, ?name: String }
               end
 
               type type_ = :function
@@ -261,10 +539,16 @@ module OpenAI
             }
 
           class Logprobs < OpenAI::Internal::Type::BaseModel
+            # A list of message content tokens with log probability information.
             attr_accessor content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
 
+            # A list of message refusal tokens with log probability information.
             attr_accessor refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
 
+            # @param content
+            #   A list of message content tokens with log probability information.
+            # @param refusal
+            #   A list of message refusal tokens with log probability information.
             def initialize: (
               content: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?,
               refusal: ::Array[OpenAI::Chat::ChatCompletionTokenLogprob]?
@@ -284,10 +568,16 @@ module OpenAI
           }
 
         class Moderation < OpenAI::Internal::Type::BaseModel
+          # Moderation for the request input.
           attr_accessor input: OpenAI::Models::Chat::ChatCompletionChunk::Moderation::input
 
+          # Moderation for the generated output.
           attr_accessor output: OpenAI::Models::Chat::ChatCompletionChunk::Moderation::output
 
+          # @param input
+          #   Moderation for the request input.
+          # @param output
+          #   Moderation for the generated output.
           def initialize: (
             input: OpenAI::Models::Chat::ChatCompletionChunk::Moderation::input,
             output: OpenAI::Models::Chat::ChatCompletionChunk::Moderation::output
@@ -309,16 +599,25 @@ module OpenAI
               {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
             class ModerationResults < OpenAI::Internal::Type::BaseModel
+              # The moderation model used to generate the results.
               attr_accessor model: String
 
+              # A list of moderation results.
               attr_accessor results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result]
 
+              # The object type, which is always `moderation_results`.
               attr_accessor type: :moderation_results
 
+              # @param model
+              #   The moderation model used to generate the results.
+              # @param results
+              #   A list of moderation results.
+              # @param type
+              #   The object type, which is always `moderation_results`.
               def initialize: (
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result],
@@ -328,7 +627,7 @@ module OpenAI
               def to_hash: -> {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
               type result =
@@ -338,22 +637,44 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
               class Result < OpenAI::Internal::Type::BaseModel
+                # A dictionary of moderation categories to booleans, True if the input is flagged
+                # under this category.
                 attr_accessor categories: ::Hash[Symbol, bool]
 
+                # Which modalities of input are reflected by the score for each category.
                 attr_accessor category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::category_applied_input_type]]
 
+                # A dictionary of moderation categories to scores.
                 attr_accessor category_scores: ::Hash[Symbol, Float]
 
+                # A boolean indicating whether the content was flagged by any category.
                 attr_accessor flagged: bool
 
+                # The moderation model that produced this result.
                 attr_accessor model: String
 
+                # The object type, which was always `moderation_result` for successful moderation
+                # results.
                 attr_accessor type: :moderation_result
 
+                # @param categories
+                #   A dictionary of moderation categories to booleans, True if the input is flagged
+                #   under this category.
+                # @param category_applied_input_types
+                #   Which modalities of input are reflected by the score for each category.
+                # @param category_scores
+                #   A dictionary of moderation categories to scores.
+                # @param flagged
+                #   A boolean indicating whether the content was flagged by any category.
+                # @param model
+                #   The moderation model that produced this result.
+                # @param type
+                #   The object type, which was always `moderation_result` for successful moderation
+                #   results.
                 def initialize: (
                   categories: ::Hash[Symbol, bool],
                   category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Input::ModerationResults::Result::category_applied_input_type]],
@@ -369,7 +690,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
                 type category_applied_input_type = :text | :image
@@ -385,22 +706,31 @@ module OpenAI
               end
             end
 
-            type error = { code: String, message: String, type: :error }
+            type error = { code: String, message: String, ?type: :error }
 
             class Error < OpenAI::Internal::Type::BaseModel
+              # The error code.
               attr_accessor code: String
 
+              # The error message.
               attr_accessor message: String
 
+              # The object type, which is always `error`.
               attr_accessor type: :error
 
+              # @param code
+              #   The error code.
+              # @param message
+              #   The error message.
+              # @param type
+              #   The object type, which is always `error`.
               def initialize: (
                 code: String,
                 message: String,
                 ?type: :error
               ) -> void
 
-              def to_hash: -> { code: String, message: String, type: :error }
+              def to_hash: -> { code: String, message: String, ?type: :error }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Moderation::input]
@@ -417,16 +747,25 @@ module OpenAI
               {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
             class ModerationResults < OpenAI::Internal::Type::BaseModel
+              # The moderation model used to generate the results.
               attr_accessor model: String
 
+              # A list of moderation results.
               attr_accessor results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result]
 
+              # The object type, which is always `moderation_results`.
               attr_accessor type: :moderation_results
 
+              # @param model
+              #   The moderation model used to generate the results.
+              # @param results
+              #   A list of moderation results.
+              # @param type
+              #   The object type, which is always `moderation_results`.
               def initialize: (
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result],
@@ -436,7 +775,7 @@ module OpenAI
               def to_hash: -> {
                 model: String,
                 results: ::Array[OpenAI::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result],
-                type: :moderation_results
+                ?type: :moderation_results
               }
 
               type result =
@@ -446,22 +785,44 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
               class Result < OpenAI::Internal::Type::BaseModel
+                # A dictionary of moderation categories to booleans, True if the input is flagged
+                # under this category.
                 attr_accessor categories: ::Hash[Symbol, bool]
 
+                # Which modalities of input are reflected by the score for each category.
                 attr_accessor category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::category_applied_input_type]]
 
+                # A dictionary of moderation categories to scores.
                 attr_accessor category_scores: ::Hash[Symbol, Float]
 
+                # A boolean indicating whether the content was flagged by any category.
                 attr_accessor flagged: bool
 
+                # The moderation model that produced this result.
                 attr_accessor model: String
 
+                # The object type, which was always `moderation_result` for successful moderation
+                # results.
                 attr_accessor type: :moderation_result
 
+                # @param categories
+                #   A dictionary of moderation categories to booleans, True if the input is flagged
+                #   under this category.
+                # @param category_applied_input_types
+                #   Which modalities of input are reflected by the score for each category.
+                # @param category_scores
+                #   A dictionary of moderation categories to scores.
+                # @param flagged
+                #   A boolean indicating whether the content was flagged by any category.
+                # @param model
+                #   The moderation model that produced this result.
+                # @param type
+                #   The object type, which was always `moderation_result` for successful moderation
+                #   results.
                 def initialize: (
                   categories: ::Hash[Symbol, bool],
                   category_applied_input_types: ::Hash[Symbol, ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Moderation::Output::ModerationResults::Result::category_applied_input_type]],
@@ -477,7 +838,7 @@ module OpenAI
                   category_scores: ::Hash[Symbol, Float],
                   flagged: bool,
                   model: String,
-                  type: :moderation_result
+                  ?type: :moderation_result
                 }
 
                 type category_applied_input_type = :text | :image
@@ -493,22 +854,31 @@ module OpenAI
               end
             end
 
-            type error = { code: String, message: String, type: :error }
+            type error = { code: String, message: String, ?type: :error }
 
             class Error < OpenAI::Internal::Type::BaseModel
+              # The error code.
               attr_accessor code: String
 
+              # The error message.
               attr_accessor message: String
 
+              # The object type, which is always `error`.
               attr_accessor type: :error
 
+              # @param code
+              #   The error code.
+              # @param message
+              #   The error message.
+              # @param type
+              #   The object type, which is always `error`.
               def initialize: (
                 code: String,
                 message: String,
                 ?type: :error
               ) -> void
 
-              def to_hash: -> { code: String, message: String, type: :error }
+              def to_hash: -> { code: String, message: String, ?type: :error }
             end
 
             def self?.variants: -> ::Array[OpenAI::Models::Chat::ChatCompletionChunk::Moderation::output]

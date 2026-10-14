@@ -25,11 +25,14 @@ module OpenAI
         # @!method initialize(data:, media_type: :"application/zip", type: :base64)
         #   Inline skill payload
         #
-        #   @param data [String] Base64-encoded skill zip bundle.
+        #   @param data [String]
+        #     Base64-encoded skill zip bundle.
         #
-        #   @param media_type [Symbol, :"application/zip"] The media type of the inline skill payload. Must be `application/zip`.
+        #   @param media_type [Symbol, :"application/zip"]
+        #     The media type of the inline skill payload. Must be `application/zip`.
         #
-        #   @param type [Symbol, :base64] The type of the inline skill source. Must be `base64`.
+        #   @param type [Symbol, :base64]
+        #     The type of the inline skill source. Must be `base64`.
       end
     end
 

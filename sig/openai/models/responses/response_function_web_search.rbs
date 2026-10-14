@@ -6,18 +6,32 @@ module OpenAI
           id: String,
           action: OpenAI::Models::Responses::ResponseFunctionWebSearch::action,
           status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status,
-          type: :web_search_call
+          ?type: :web_search_call
         }
 
       class ResponseFunctionWebSearch < OpenAI::Internal::Type::BaseModel
+        # The unique ID of the web search tool call.
         attr_accessor id: String
 
+        # An object describing the specific action taken in this web search call. Includes
+        # details on how the model used the web (search, open_page, find_in_page).
         attr_accessor action: OpenAI::Models::Responses::ResponseFunctionWebSearch::action
 
+        # The status of the web search tool call.
         attr_accessor status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status
 
+        # The type of the web search tool call. Always `web_search_call`.
         attr_accessor type: :web_search_call
 
+        # @param id
+        #   The unique ID of the web search tool call.
+        # @param action
+        #   An object describing the specific action taken in this web search call. Includes
+        #   details on how the model used the web (search, open_page, find_in_page).
+        # @param status
+        #   The status of the web search tool call.
+        # @param type
+        #   The type of the web search tool call. Always `web_search_call`.
         def initialize: (
           id: String,
           action: OpenAI::Models::Responses::ResponseFunctionWebSearch::action,
@@ -29,42 +43,57 @@ module OpenAI
           id: String,
           action: OpenAI::Models::Responses::ResponseFunctionWebSearch::action,
           status: OpenAI::Models::Responses::ResponseFunctionWebSearch::status,
-          type: :web_search_call
+          ?type: :web_search_call
         }
 
         type action =
           OpenAI::Responses::ResponseFunctionWebSearch::Action::Search
           | OpenAI::Responses::ResponseFunctionWebSearch::Action::OpenPage
-          | OpenAI::Responses::ResponseFunctionWebSearch::Action::FindInPage
+          | OpenAI::Responses::ResponseFunctionWebSearch::Action::Find
 
         module Action
           extend OpenAI::Internal::Type::Union
 
           type search =
             {
-              type: :search,
-              queries: ::Array[String],
-              query: String,
-              sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
+              ?type: :search,
+              ?queries: ::Array[String],
+              ?query: String,
+              ?sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
             }
 
           class Search < OpenAI::Internal::Type::BaseModel
+            # The action type.
             attr_accessor type: :search
 
+            # The search queries.
             attr_reader queries: ::Array[String]?
 
+            # The search queries.
             def queries=: (::Array[String]) -> ::Array[String]
 
+            # The search query.
             attr_reader query: String?
 
+            # The search query.
             def query=: (String) -> String
 
+            # The sources used in the search.
             attr_reader sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]?
 
+            # The sources used in the search.
             def sources=: (
               ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
             ) -> ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
 
+            # @param queries
+            #   The search queries.
+            # @param query
+            #   The search query.
+            # @param sources
+            #   The sources used in the search.
+            # @param type
+            #   The action type.
             def initialize: (
               ?queries: ::Array[String],
               ?query: String,
@@ -73,47 +102,68 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
-              type: :search,
-              queries: ::Array[String],
-              query: String,
-              sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
+              ?type: :search,
+              ?queries: ::Array[String],
+              ?query: String,
+              ?sources: ::Array[OpenAI::Responses::ResponseFunctionWebSearch::Action::Search::Source]
             }
 
-            type source = { type: :url, url: String }
+            type source = { ?type: :url, url: String }
 
             class Source < OpenAI::Internal::Type::BaseModel
+              # The type of source. Always `url`.
               attr_accessor type: :url
 
+              # The URL of the source.
               attr_accessor url: String
 
+              # @param url
+              #   The URL of the source.
+              # @param type
+              #   The type of source. Always `url`.
               def initialize: (url: String, ?type: :url) -> void
 
-              def to_hash: -> { type: :url, url: String }
+              def to_hash: -> { ?type: :url, url: String }
             end
           end
 
-          type open_page = { type: :open_page, url: String? }
+          type open_page = { ?type: :open_page, ?url: String? }
 
           class OpenPage < OpenAI::Internal::Type::BaseModel
+            # The action type.
             attr_accessor type: :open_page
 
+            # The URL opened by the model.
             attr_accessor url: String?
 
+            # @param url
+            #   The URL opened by the model.
+            # @param type
+            #   The action type.
             def initialize: (?url: String?, ?type: :open_page) -> void
 
-            def to_hash: -> { type: :open_page, url: String? }
+            def to_hash: -> { ?type: :open_page, ?url: String? }
           end
 
           type find_in_page =
-            { pattern: String, type: :find_in_page, url: String }
+            { pattern: String, ?type: :find_in_page, url: String }
 
-          class FindInPage < OpenAI::Internal::Type::BaseModel
+          class Find < OpenAI::Internal::Type::BaseModel
+            # The pattern or text to search for within the page.
             attr_accessor pattern: String
 
+            # The action type.
             attr_accessor type: :find_in_page
 
+            # The URL of the page searched for the pattern.
             attr_accessor url: String
 
+            # @param pattern
+            #   The pattern or text to search for within the page.
+            # @param url
+            #   The URL of the page searched for the pattern.
+            # @param type
+            #   The action type.
             def initialize: (
               pattern: String,
               url: String,
@@ -122,7 +172,7 @@ module OpenAI
 
             def to_hash: -> {
               pattern: String,
-              type: :find_in_page,
+              ?type: :find_in_page,
               url: String
             }
           end
@@ -130,7 +180,8 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::action]
         end
 
-        type status = :in_progress | :searching | :completed | :failed
+        type status =
+          :in_progress | :searching | :completed | :failed | :incomplete
 
         module Status
           extend OpenAI::Internal::Type::Enum
@@ -139,6 +190,7 @@ module OpenAI
           SEARCHING: :searching
           COMPLETED: :completed
           FAILED: :failed
+          INCOMPLETE: :incomplete
 
           def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseFunctionWebSearch::status]
         end

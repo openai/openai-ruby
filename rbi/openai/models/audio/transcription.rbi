@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Audio
+
       class Transcription < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Audio::Transcription, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Audio::Transcription,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The transcribed text.
         sig { returns(String) }
@@ -15,75 +20,70 @@ module OpenAI
 
         # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
         # array indicates that no language could be reliably detected.
-        sig do
-          returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionLanguage]))
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Audio::TranscriptionLanguage])) }
         attr_reader :languages
 
-        sig do
-          params(
-            languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash]
-          ).void
-        end
+        sig { params(languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash]).void }
         attr_writer :languages
 
         # The log probabilities of the tokens in the transcription. Only returned with the
         # models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
         # to the `include` array.
-        sig do
-          returns(T.nilable(T::Array[OpenAI::Audio::Transcription::Logprob]))
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Audio::Transcription::Logprob])) }
         attr_reader :logprobs
 
-        sig do
-          params(
-            logprobs: T::Array[OpenAI::Audio::Transcription::Logprob::OrHash]
-          ).void
-        end
+        sig { params(logprobs: T::Array[OpenAI::Audio::Transcription::Logprob::OrHash]).void }
         attr_writer :logprobs
 
         # Token usage statistics for the request.
-        sig do
-          returns(T.nilable(OpenAI::Audio::Transcription::Usage::Variants))
-        end
+        sig { returns(T.nilable(OpenAI::Audio::Transcription::Usage::Variants)) }
         attr_reader :usage
 
-        sig do
+        sig {
           params(
-            usage:
-              T.any(
-                OpenAI::Audio::Transcription::Usage::Tokens::OrHash,
-                OpenAI::Audio::Transcription::Usage::Duration::OrHash
-              )
-          ).void
-        end
+            usage: T.any(
+              OpenAI::Audio::Transcription::Usage::Tokens::OrHash,
+              OpenAI::Audio::Transcription::Usage::Duration::OrHash
+            )
+          )
+            .void
+        }
         attr_writer :usage
 
         # Represents a transcription response returned by model, based on the provided
         # input.
         sig do
           params(
+
             text: String,
+
             languages: T::Array[OpenAI::Audio::TranscriptionLanguage::OrHash],
+
             logprobs: T::Array[OpenAI::Audio::Transcription::Logprob::OrHash],
-            usage:
-              T.any(
-                OpenAI::Audio::Transcription::Usage::Tokens::OrHash,
-                OpenAI::Audio::Transcription::Usage::Duration::OrHash
-              )
-          ).returns(T.attached_class)
+
+            usage: T.any(
+              OpenAI::Audio::Transcription::Usage::Tokens::OrHash,
+              OpenAI::Audio::Transcription::Usage::Duration::OrHash
+            )
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The transcribed text.
           text:,
+
           # The languages detected in the audio. Returned by `gpt-transcribe`. An empty
           # array indicates that no language could be reliably detected.
           languages: nil,
+
           # The log probabilities of the tokens in the transcription. Only returned with the
           # models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe` if `logprobs` is added
           # to the `include` array.
           logprobs: nil,
+
           # Token usage statistics for the request.
+
           usage: nil
         )
         end
@@ -102,13 +102,12 @@ module OpenAI
         end
 
         class Logprob < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Audio::Transcription::Logprob,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Audio::Transcription::Logprob,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The token in the transcription.
           sig { returns(T.nilable(String)) }
@@ -133,50 +132,54 @@ module OpenAI
 
           sig do
             params(
+
               token: String,
+
               bytes: T::Array[Float],
+
               logprob: Float
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The token in the transcription.
             token: nil,
+
             # The bytes of the token.
             bytes: nil,
+
             # The log probability of the token.
+
             logprob: nil
           )
           end
 
           sig do
             override.returns(
-              { token: String, bytes: T::Array[Float], logprob: Float }
+              {token: String, bytes: T::Array[Float], logprob: Float}
             )
           end
           def to_hash
           end
+
         end
 
         # Token usage statistics for the request.
         module Usage
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Audio::Transcription::Usage::Tokens,
-                OpenAI::Audio::Transcription::Usage::Duration
-              )
-            end
+          Variants = T.type_alias {
+            T.any(OpenAI::Audio::Transcription::Usage::Tokens, OpenAI::Audio::Transcription::Usage::Duration)
+          }
 
           class Tokens < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Audio::Transcription::Usage::Tokens,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Audio::Transcription::Usage::Tokens,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Number of input tokens billed for this request.
             sig { returns(Integer) }
@@ -195,44 +198,46 @@ module OpenAI
             attr_accessor :type
 
             # Details about the input tokens billed for this request.
-            sig do
-              returns(
-                T.nilable(
-                  OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails
-                )
-              )
-            end
+            sig { returns(T.nilable(OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails)) }
             attr_reader :input_token_details
 
-            sig do
-              params(
-                input_token_details:
-                  OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails::OrHash
-              ).void
-            end
+            sig {
+              params(input_token_details: OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails::OrHash).void
+            }
             attr_writer :input_token_details
 
             # Usage statistics for models billed by token usage.
             sig do
               params(
+
                 input_tokens: Integer,
+
                 output_tokens: Integer,
+
                 total_tokens: Integer,
-                input_token_details:
-                  OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails::OrHash,
+
+                input_token_details: OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails::OrHash,
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Number of input tokens billed for this request.
               input_tokens:,
+
               # Number of output tokens generated.
               output_tokens:,
+
               # Total number of tokens used (input + output).
               total_tokens:,
+
               # Details about the input tokens billed for this request.
               input_token_details: nil,
+
               # The type of the usage object. Always `tokens` for this variant.
+
               type: :tokens
             )
             end
@@ -244,8 +249,7 @@ module OpenAI
                   output_tokens: Integer,
                   total_tokens: Integer,
                   type: Symbol,
-                  input_token_details:
-                    OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails
+                  input_token_details: OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails
                 }
               )
             end
@@ -253,13 +257,12 @@ module OpenAI
             end
 
             class InputTokenDetails < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Audio::Transcription::Usage::Tokens::InputTokenDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Number of audio tokens billed for this request.
               sig { returns(T.nilable(Integer)) }
@@ -277,36 +280,43 @@ module OpenAI
 
               # Details about the input tokens billed for this request.
               sig do
-                params(audio_tokens: Integer, text_tokens: Integer).returns(
-                  T.attached_class
+                params(
+
+                  audio_tokens: Integer,
+
+                  text_tokens: Integer
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Number of audio tokens billed for this request.
                 audio_tokens: nil,
+
                 # Number of text tokens billed for this request.
+
                 text_tokens: nil
               )
               end
 
               sig do
                 override.returns(
-                  { audio_tokens: Integer, text_tokens: Integer }
+                  {audio_tokens: Integer, text_tokens: Integer}
                 )
               end
               def to_hash
               end
+
             end
           end
 
           class Duration < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Audio::Transcription::Usage::Duration,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Audio::Transcription::Usage::Duration,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Duration of the input audio in seconds.
             sig { returns(Float) }
@@ -318,30 +328,44 @@ module OpenAI
 
             # Usage statistics for models billed by audio input duration.
             sig do
-              params(seconds: Float, type: Symbol).returns(T.attached_class)
+              params(
+
+                seconds: Float,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Duration of the input audio in seconds.
               seconds:,
+
               # The type of the usage object. Always `duration` for this variant.
+
               type: :duration
             )
             end
 
-            sig { override.returns({ seconds: Float, type: Symbol }) }
+            sig do
+              override.returns(
+                {seconds: Float, type: Symbol}
+              )
+            end
             def to_hash
             end
+
           end
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::Audio::Transcription::Usage::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Audio::Transcription::Usage::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

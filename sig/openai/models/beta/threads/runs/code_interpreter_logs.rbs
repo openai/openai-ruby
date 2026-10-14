@@ -4,24 +4,34 @@ module OpenAI
       module Threads
         module Runs
           type code_interpreter_logs =
-            { index: Integer, type: :logs, logs: String }
+            { index: Integer, ?type: :logs, ?logs: String }
 
           class CodeInterpreterLogs < OpenAI::Internal::Type::BaseModel
+            # The index of the output in the outputs array.
             attr_accessor index: Integer
 
+            # Always `logs`.
             attr_accessor type: :logs
 
+            # The text output from the Code Interpreter tool call.
             attr_reader logs: String?
 
+            # The text output from the Code Interpreter tool call.
             def logs=: (String) -> String
 
+            # @param index
+            #   The index of the output in the outputs array.
+            # @param logs
+            #   The text output from the Code Interpreter tool call.
+            # @param type
+            #   Always `logs`.
             def initialize: (
               index: Integer,
               ?logs: String,
               ?type: :logs
             ) -> void
 
-            def to_hash: -> { index: Integer, type: :logs, logs: String }
+            def to_hash: -> { index: Integer, ?type: :logs, ?logs: String }
           end
         end
       end

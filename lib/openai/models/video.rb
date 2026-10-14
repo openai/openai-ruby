@@ -84,36 +84,47 @@ module OpenAI
       required :status, enum: -> { OpenAI::Video::Status }
 
       # @!method initialize(id:, completed_at:, created_at:, error:, expires_at:, model:, progress:, prompt:, remixed_from_video_id:, seconds:, size:, status:, object: :video)
-      #   Some parameter documentations has been truncated, see {OpenAI::Models::Video}
-      #   for more details.
-      #
       #   Structured information describing a generated video job.
       #
-      #   @param id [String] Unique identifier for the video job.
+      #   @param id [String]
+      #     Unique identifier for the video job.
       #
-      #   @param completed_at [Integer, nil] Unix timestamp (seconds) for when the job completed, if finished.
+      #   @param completed_at [Integer, nil]
+      #     Unix timestamp (seconds) for when the job completed, if finished.
       #
-      #   @param created_at [Integer] Unix timestamp (seconds) for when the job was created.
+      #   @param created_at [Integer]
+      #     Unix timestamp (seconds) for when the job was created.
       #
-      #   @param error [OpenAI::Models::VideoCreateError, nil] Error payload that explains why generation failed, if applicable.
+      #   @param error [OpenAI::Models::VideoCreateError, nil]
+      #     Error payload that explains why generation failed, if applicable.
       #
-      #   @param expires_at [Integer, nil] Unix timestamp (seconds) for when the downloadable assets expire, if set.
+      #   @param expires_at [Integer, nil]
+      #     Unix timestamp (seconds) for when the downloadable assets expire, if set.
       #
-      #   @param model [String, Symbol, OpenAI::Models::VideoModel] The video generation model that produced the job.
+      #   @param model [String, Symbol, OpenAI::Models::VideoModel]
+      #     The video generation model that produced the job.
       #
-      #   @param progress [Integer] Approximate completion percentage for the generation task.
+      #   @param progress [Integer]
+      #     Approximate completion percentage for the generation task.
       #
-      #   @param prompt [String, nil] The prompt that was used to generate the video.
+      #   @param prompt [String, nil]
+      #     The prompt that was used to generate the video.
       #
-      #   @param remixed_from_video_id [String, nil] Identifier of the source video if this video is a remix.
+      #   @param remixed_from_video_id [String, nil]
+      #     Identifier of the source video if this video is a remix.
       #
-      #   @param seconds [String, Symbol, OpenAI::Models::VideoSeconds] Duration of the generated clip in seconds. For extensions, this is the stitched
+      #   @param seconds [String, Symbol, OpenAI::Models::VideoSeconds]
+      #     Duration of the generated clip in seconds. For extensions, this is the stitched
+      #     total duration.
       #
-      #   @param size [Symbol, OpenAI::Models::VideoSize] The resolution of the generated video.
+      #   @param size [Symbol, OpenAI::Models::VideoSize]
+      #     The resolution of the generated video.
       #
-      #   @param status [Symbol, OpenAI::Models::Video::Status] Current lifecycle status of the video job.
+      #   @param status [Symbol, OpenAI::Models::Video::Status]
+      #     Current lifecycle status of the video job.
       #
-      #   @param object [Symbol, :video] The object type, which is always `video`.
+      #   @param object [Symbol, :video]
+      #     The object type, which is always `video`.
 
       # Duration of the generated clip in seconds. For extensions, this is the stitched
       # total duration.

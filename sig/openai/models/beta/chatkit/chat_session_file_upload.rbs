@@ -6,12 +6,21 @@ module OpenAI
           { enabled: bool, max_file_size: Integer?, max_files: Integer? }
 
         class ChatSessionFileUpload < OpenAI::Internal::Type::BaseModel
+          # Indicates if uploads are enabled for the session.
           attr_accessor enabled: bool
 
+          # Maximum upload size in megabytes.
           attr_accessor max_file_size: Integer?
 
+          # Maximum number of uploads allowed during the session.
           attr_accessor max_files: Integer?
 
+          # @param enabled
+          #   Indicates if uploads are enabled for the session.
+          # @param max_file_size
+          #   Maximum upload size in megabytes.
+          # @param max_files
+          #   Maximum number of uploads allowed during the session.
           def initialize: (
             enabled: bool,
             max_file_size: Integer?,

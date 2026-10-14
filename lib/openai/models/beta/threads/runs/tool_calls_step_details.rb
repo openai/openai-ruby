@@ -21,14 +21,15 @@ module OpenAI
             required :type, const: :tool_calls
 
             # @!method initialize(tool_calls:, type: :tool_calls)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails} for more details.
-            #
             #   Details of the tool call.
             #
-            #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall>] An array of tool calls the run step was involved in. These can be associated wit
+            #   @param tool_calls [Array<OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall, OpenAI::Models::Beta::Threads::Runs::FileSearchToolCall, OpenAI::Models::Beta::Threads::Runs::FunctionToolCall>]
+            #     An array of tool calls the run step was involved in. These can be associated
+            #     with one of three types of tools: `code_interpreter`, `file_search`, or
+            #     `function`.
             #
-            #   @param type [Symbol, :tool_calls] Always `tool_calls`.
+            #   @param type [Symbol, :tool_calls]
+            #     Always `tool_calls`.
           end
         end
       end

@@ -6,14 +6,24 @@ module OpenAI
           type tool_calls_step_details =
             {
               tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
-              type: :tool_calls
+              ?type: :tool_calls
             }
 
           class ToolCallsStepDetails < OpenAI::Internal::Type::BaseModel
+            # An array of tool calls the run step was involved in. These can be associated
+            # with one of three types of tools: `code_interpreter`, `file_search`, or
+            # `function`.
             attr_accessor tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call]
 
+            # Always `tool_calls`.
             attr_accessor type: :tool_calls
 
+            # @param tool_calls
+            #   An array of tool calls the run step was involved in. These can be associated
+            #   with one of three types of tools: `code_interpreter`, `file_search`, or
+            #   `function`.
+            # @param type
+            #   Always `tool_calls`.
             def initialize: (
               tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
               ?type: :tool_calls
@@ -21,7 +31,7 @@ module OpenAI
 
             def to_hash: -> {
               tool_calls: ::Array[OpenAI::Models::Beta::Threads::Runs::tool_call],
-              type: :tool_calls
+              ?type: :tool_calls
             }
           end
         end

@@ -38,15 +38,20 @@ module OpenAI
         #   Returned when an Item is done streaming. Also emitted when a Response is
         #   interrupted, incomplete, or cancelled.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest] A single item within a Realtime conversation.
+        #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest]
+        #     A single item within a Realtime conversation.
         #
-        #   @param output_index [Integer] The index of the output item in the Response.
+        #   @param output_index [Integer]
+        #     The index of the output item in the Response.
         #
-        #   @param response_id [String] The ID of the Response to which the item belongs.
+        #   @param response_id [String]
+        #     The ID of the Response to which the item belongs.
         #
-        #   @param type [Symbol, :"response.output_item.done"] The event type, must be `response.output_item.done`.
+        #   @param type [Symbol, :"response.output_item.done"]
+        #     The event type, must be `response.output_item.done`.
       end
     end
   end

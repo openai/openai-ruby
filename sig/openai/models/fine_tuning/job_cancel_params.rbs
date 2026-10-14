@@ -2,8 +2,7 @@ module OpenAI
   module Models
     module FineTuning
       type job_cancel_params =
-        { fine_tuning_job_id: String }
-        & OpenAI::Internal::Type::request_parameters
+        { fine_tuning_job_id: String, ?request_options: OpenAI::request_opts }
 
       class JobCancelParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -18,7 +17,7 @@ module OpenAI
 
         def to_hash: -> {
           fine_tuning_job_id: String,
-          request_options: OpenAI::RequestOptions
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

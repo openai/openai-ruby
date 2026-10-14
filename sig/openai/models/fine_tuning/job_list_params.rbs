@@ -2,23 +2,50 @@ module OpenAI
   module Models
     module FineTuning
       type job_list_params =
-        { after: String, limit: Integer, metadata: ::Hash[Symbol, String]? }
-        & OpenAI::Internal::Type::request_parameters
+        {
+          ?after: String,
+          ?limit: Integer,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?request_options: OpenAI::request_opts
+        }
 
       class JobListParams < OpenAI::Internal::Type::BaseModel
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
+        # Identifier for the last job from the previous pagination request.
         attr_reader after: String?
 
+        # Identifier for the last job from the previous pagination request.
         def after=: (String) -> String
 
+        # Number of fine-tuning jobs to retrieve.
         attr_reader limit: Integer?
 
+        # Number of fine-tuning jobs to retrieve.
         def limit=: (Integer) -> Integer
 
+        # Optional metadata filter. To filter, use the syntax `metadata[k]=v`. Omitting
+        # the parameter or passing an empty object applies no metadata filter. An empty
+        # value, such as `metadata[k]=`, filters for that key with an empty string value.
+        # To select jobs with null metadata, send the literal query string
+        # `metadata=null`. Nullable caller types do not specify how a client serializes
+        # null for a deep-object parameter. Use a raw query parameter if the client omits
+        # null. Do not combine the two query forms.
         attr_accessor metadata: ::Hash[Symbol, String]?
 
+        # @param after
+        #   Identifier for the last job from the previous pagination request.
+        # @param limit
+        #   Number of fine-tuning jobs to retrieve.
+        # @param metadata
+        #   Optional metadata filter. To filter, use the syntax `metadata[k]=v`. Omitting
+        #   the parameter or passing an empty object applies no metadata filter. An empty
+        #   value, such as `metadata[k]=`, filters for that key with an empty string value.
+        #   To select jobs with null metadata, send the literal query string
+        #   `metadata=null`. Nullable caller types do not specify how a client serializes
+        #   null for a deep-object parameter. Use a raw query parameter if the client omits
+        #   null. Do not combine the two query forms.
         def initialize: (
           ?after: String,
           ?limit: Integer,
@@ -27,10 +54,10 @@ module OpenAI
         ) -> void
 
         def to_hash: -> {
-          after: String,
-          limit: Integer,
-          metadata: ::Hash[Symbol, String]?,
-          request_options: OpenAI::RequestOptions
+          ?after: String,
+          ?limit: Integer,
+          ?metadata: ::Hash[Symbol, String]?,
+          ?request_options: OpenAI::RequestOptions
         }
       end
     end

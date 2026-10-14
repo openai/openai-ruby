@@ -17,9 +17,11 @@ module OpenAI
         optional :file_search, -> { OpenAI::Beta::FileSearchTool::FileSearch }
 
         # @!method initialize(file_search: nil, type: :file_search)
-        #   @param file_search [OpenAI::Models::Beta::FileSearchTool::FileSearch] Overrides for the file search tool.
+        #   @param file_search [OpenAI::Models::Beta::FileSearchTool::FileSearch]
+        #     Overrides for the file search tool.
         #
-        #   @param type [Symbol, :file_search] The type of tool being defined: `file_search`
+        #   @param type [Symbol, :file_search]
+        #     The type of tool being defined: `file_search`
 
         # @see OpenAI::Models::Beta::FileSearchTool#file_search
         class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -30,7 +32,7 @@ module OpenAI
           #
           #   Note that the file search tool may output fewer than `max_num_results` results.
           #   See the
-          #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+          #   [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
           #   for more information.
           #
           #   @return [Integer, nil]
@@ -41,21 +43,32 @@ module OpenAI
           #   will use the `auto` ranker and a score_threshold of 0.
           #
           #   See the
-          #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+          #   [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
           #   for more information.
           #
           #   @return [OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions, nil]
           optional :ranking_options, -> { OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions }
 
           # @!method initialize(max_num_results: nil, ranking_options: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::FileSearchTool::FileSearch} for more details.
-          #
           #   Overrides for the file search tool.
           #
-          #   @param max_num_results [Integer] The maximum number of results the file search tool should output. The default is
+          #   @param max_num_results [Integer]
+          #     The maximum number of results the file search tool should output. The default is
+          #     20 for `gpt-4*` models and 5 for `gpt-3.5-turbo`. This number should be between
+          #     1 and 50 inclusive.
           #
-          #   @param ranking_options [OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions] The ranking options for the file search. If not specified, the file search tool
+          #     Note that the file search tool may output fewer than `max_num_results` results.
+          #     See the
+          #     [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+          #     for more information.
+          #
+          #   @param ranking_options [OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions]
+          #     The ranking options for the file search. If not specified, the file search tool
+          #     will use the `auto` ranker and a score_threshold of 0.
+          #
+          #     See the
+          #     [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
+          #     for more information.
 
           # @see OpenAI::Models::Beta::FileSearchTool::FileSearch#ranking_options
           class RankingOptions < OpenAI::Internal::Type::BaseModel
@@ -74,20 +87,20 @@ module OpenAI
             optional :ranker, enum: -> { OpenAI::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker }
 
             # @!method initialize(score_threshold:, ranker: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions} for more
-            #   details.
-            #
             #   The ranking options for the file search. If not specified, the file search tool
             #   will use the `auto` ranker and a score_threshold of 0.
             #
             #   See the
-            #   [file search tool documentation](https://platform.openai.com/docs/assistants/tools/file-search#customizing-file-search-settings)
+            #   [file search tool documentation](https://developers.openai.com/api/docs/guides/tools-file-search#retrieval-customization)
             #   for more information.
             #
-            #   @param score_threshold [Float] The score threshold for the file search. All values must be a floating point num
+            #   @param score_threshold [Float]
+            #     The score threshold for the file search. All values must be a floating point
+            #     number between 0 and 1.
             #
-            #   @param ranker [Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker] The ranker to use for the file search. If not specified will use the `auto` rank
+            #   @param ranker [Symbol, OpenAI::Models::Beta::FileSearchTool::FileSearch::RankingOptions::Ranker]
+            #     The ranker to use for the file search. If not specified will use the `auto`
+            #     ranker.
 
             # The ranker to use for the file search. If not specified will use the `auto`
             # ranker.

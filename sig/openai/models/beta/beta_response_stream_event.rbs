@@ -13,6 +13,7 @@ module OpenAI
         | OpenAI::Beta::BetaResponseCodeInterpreterCallCompletedEvent
         | OpenAI::Beta::BetaResponseCodeInterpreterCallInProgressEvent
         | OpenAI::Beta::BetaResponseCodeInterpreterCallInterpretingEvent
+        | OpenAI::Beta::BetaResponseCompactionCompactingEvent
         | OpenAI::Beta::BetaResponseCompletedEvent
         | OpenAI::Beta::BetaResponseContentPartAddedEvent
         | OpenAI::Beta::BetaResponseContentPartDoneEvent
@@ -23,6 +24,11 @@ module OpenAI
         | OpenAI::Beta::BetaResponseFileSearchCallSearchingEvent
         | OpenAI::Beta::BetaResponseFunctionCallArgumentsDeltaEvent
         | OpenAI::Beta::BetaResponseFunctionCallArgumentsDoneEvent
+        | OpenAI::Beta::BetaResponseShellCallCommandAddedEvent
+        | OpenAI::Beta::BetaResponseShellCallCommandDeltaEvent
+        | OpenAI::Beta::BetaResponseShellCallCommandDoneEvent
+        | OpenAI::Beta::BetaResponseShellCallOutputContentDeltaEvent
+        | OpenAI::Beta::BetaResponseShellCallOutputContentDoneEvent
         | OpenAI::Beta::BetaResponseInProgressEvent
         | OpenAI::Beta::BetaResponseFailedEvent
         | OpenAI::Beta::BetaResponseIncompleteEvent

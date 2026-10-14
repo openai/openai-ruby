@@ -20,19 +20,23 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> {
-                   OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller]
-                 },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller]
+          },
+          nil?: true
+        )
 
         # @!attribute allowed_tools
         #   List of allowed tool names or a filter object.
         #
         #   @return [Array<String>, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter, nil]
-        optional :allowed_tools,
-                 union: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools },
-                 nil?: true
+        optional(
+          :allowed_tools,
+          union: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::AllowedTools },
+          nil?: true
+        )
 
         # @!attribute authorization
         #   An OAuth access token that can be used with a remote MCP server, either with a
@@ -43,10 +47,16 @@ module OpenAI
         optional :authorization, String
 
         # @!attribute connector_id
+        #   @deprecated
+        #
         #   Identifier for service connectors, like those available in ChatGPT. One of
         #   `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
         #   service connectors
-        #   [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+        #   [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+        #
+        #   This field is deprecated for models released after September 1, 2026. Use
+        #   `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+        #   through a Secure MCP Tunnel.
         #
         #   Currently supported `connector_id` values are:
         #
@@ -79,9 +89,11 @@ module OpenAI
         #   Specify which of the MCP server's tools require approval.
         #
         #   @return [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting, nil]
-        optional :require_approval,
-                 union: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval },
-                 nil?: true
+        optional(
+          :require_approval,
+          union: -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval },
+          nil?: true
+        )
 
         # @!attribute server_description
         #   Optional description of the MCP server, used to provide more context.
@@ -104,37 +116,68 @@ module OpenAI
         optional :tunnel_id, String
 
         # @!method initialize(server_label:, allowed_callers: nil, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool} for more details.
-        #
         #   Give the model access to additional tools via remote Model Context Protocol
         #   (MCP) servers.
-        #   [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+        #   [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
         #
-        #   @param server_label [String] A label for this MCP server, used to identify it in tool calls.
+        #   @param server_label [String]
+        #     A label for this MCP server, used to identify it in tool calls.
         #
-        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller>, nil] The tool invocation context(s).
+        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedCaller>, nil]
+        #     The tool invocation context(s).
         #
-        #   @param allowed_tools [Array<String>, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter, nil] List of allowed tool names or a filter object.
+        #   @param allowed_tools [Array<String>, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter, nil]
+        #     List of allowed tool names or a filter object.
         #
-        #   @param authorization [String] An OAuth access token that can be used with a remote MCP server, either
+        #   @param authorization [String]
+        #     An OAuth access token that can be used with a remote MCP server, either with a
+        #     custom MCP server URL or a service connector. Your application must handle the
+        #     OAuth authorization flow and provide the token here.
         #
-        #   @param connector_id [Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::ConnectorID] Identifier for service connectors, like those available in ChatGPT. One of
+        #   @param connector_id [Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::ConnectorID]
+        #     Identifier for service connectors, like those available in ChatGPT. One of
+        #     `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+        #     service connectors
+        #     [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
         #
-        #   @param defer_loading [Boolean] Whether this MCP tool is deferred and discovered via tool search.
+        #     This field is deprecated for models released after September 1, 2026. Use
+        #     `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+        #     through a Secure MCP Tunnel.
         #
-        #   @param headers [Hash{Symbol=>String}, nil] Optional HTTP headers to send to the MCP server. Use for authentication
+        #     Currently supported `connector_id` values are:
         #
-        #   @param require_approval [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting, nil] Specify which of the MCP server's tools require approval.
+        #     - Dropbox: `connector_dropbox`
+        #     - Gmail: `connector_gmail`
+        #     - Google Calendar: `connector_googlecalendar`
+        #     - Google Drive: `connector_googledrive`
+        #     - Microsoft Teams: `connector_microsoftteams`
+        #     - Outlook Calendar: `connector_outlookcalendar`
+        #     - Outlook Email: `connector_outlookemail`
+        #     - SharePoint: `connector_sharepoint`
         #
-        #   @param server_description [String] Optional description of the MCP server, used to provide more context.
+        #   @param defer_loading [Boolean]
+        #     Whether this MCP tool is deferred and discovered via tool search.
         #
-        #   @param server_url [String] The URL for the MCP server. One of `server_url`, `connector_id`, or
+        #   @param headers [Hash{Symbol=>String}, nil]
+        #     Optional HTTP headers to send to the MCP server. Use for authentication or other
+        #     purposes.
         #
-        #   @param tunnel_id [String] The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+        #   @param require_approval [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting, nil]
+        #     Specify which of the MCP server's tools require approval.
         #
-        #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
-
+        #   @param server_description [String]
+        #     Optional description of the MCP server, used to provide more context.
+        #
+        #   @param server_url [String]
+        #     The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+        #     must be provided.
+        #
+        #   @param tunnel_id [String]
+        #     The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+        #     `server_url`, `connector_id`, or `tunnel_id` must be provided.
+        #
+        #   @param type [Symbol, :mcp]
+        #     The type of the MCP tool. Always `mcp`.
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 
@@ -174,15 +217,16 @@ module OpenAI
             optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(read_only: nil, tool_names: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::AllowedTools::McpToolFilter}
-            #   for more details.
-            #
             #   A filter object to specify which tools are allowed.
             #
-            #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+            #   @param read_only [Boolean]
+            #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+            #     is
+            #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+            #     it will match this filter.
             #
-            #   @param tool_names [Array<String>] List of allowed tool names.
+            #   @param tool_names [Array<String>]
+            #     List of allowed tool names.
           end
 
           # @!method self.variants
@@ -192,10 +236,16 @@ module OpenAI
           StringArray = OpenAI::Internal::Type::ArrayOf[String]
         end
 
+        # @deprecated
+        #
         # Identifier for service connectors, like those available in ChatGPT. One of
         # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
         # service connectors
-        # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+        # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+        #
+        # This field is deprecated for models released after September 1, 2026. Use
+        # `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+        # through a Secure MCP Tunnel.
         #
         # Currently supported `connector_id` values are:
         #
@@ -246,27 +296,29 @@ module OpenAI
             #   A filter object to specify which tools are allowed.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always, nil]
-            optional :always,
-                     -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always }
+            optional(
+              :always,
+              -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always }
+            )
 
             # @!attribute never
             #   A filter object to specify which tools are allowed.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never, nil]
-            optional :never,
-                     -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never }
+            optional(
+              :never,
+              -> { OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never }
+            )
 
             # @!method initialize(always: nil, never: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter}
-            #   for more details.
-            #
             #   Specify which of the MCP server's tools require approval. Can be `always`,
             #   `never`, or a filter object associated with tools that require approval.
             #
-            #   @param always [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always] A filter object to specify which tools are allowed.
+            #   @param always [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always]
+            #     A filter object to specify which tools are allowed.
             #
-            #   @param never [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never] A filter object to specify which tools are allowed.
+            #   @param never [OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never]
+            #     A filter object to specify which tools are allowed.
 
             # @see OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter#always
             class Always < OpenAI::Internal::Type::BaseModel
@@ -286,15 +338,16 @@ module OpenAI
               optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
               # @!method initialize(read_only: nil, tool_names: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Always}
-              #   for more details.
-              #
               #   A filter object to specify which tools are allowed.
               #
-              #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+              #   @param read_only [Boolean]
+              #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              #     is
+              #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              #     it will match this filter.
               #
-              #   @param tool_names [Array<String>] List of allowed tool names.
+              #   @param tool_names [Array<String>]
+              #     List of allowed tool names.
             end
 
             # @see OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter#never
@@ -315,15 +368,16 @@ module OpenAI
               optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
               # @!method initialize(read_only: nil, tool_names: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::Never}
-              #   for more details.
-              #
               #   A filter object to specify which tools are allowed.
               #
-              #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+              #   @param read_only [Boolean]
+              #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+              #     is
+              #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+              #     it will match this filter.
               #
-              #   @param tool_names [Array<String>] List of allowed tool names.
+              #   @param tool_names [Array<String>]
+              #     List of allowed tool names.
             end
           end
 

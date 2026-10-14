@@ -1,0 +1,13 @@
+module OpenAI
+  module Models
+    module Responses
+      type response_steer_pending_reason = :waiting_for_required_input | String
+
+      module ResponseSteerPendingReason
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Responses::response_steer_pending_reason]
+      end
+    end
+  end
+end

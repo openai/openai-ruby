@@ -38,15 +38,20 @@ module OpenAI
         #   Emitted when the system is in the process of retrieving the list of available
         #   MCP tools.
         #
-        #   @param item_id [String] The ID of the MCP tool call item that is being processed.
+        #   @param item_id [String]
+        #     The ID of the MCP tool call item that is being processed.
         #
-        #   @param output_index [Integer] The index of the output item that is being processed.
+        #   @param output_index [Integer]
+        #     The index of the output item that is being processed.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param agent [OpenAI::Models::Beta::BetaResponseMcpListToolsInProgressEvent::Agent, nil] The agent that owns this multi-agent streaming event.
+        #   @param agent [OpenAI::Models::Beta::BetaResponseMcpListToolsInProgressEvent::Agent, nil]
+        #     The agent that owns this multi-agent streaming event.
         #
-        #   @param type [Symbol, :"response.mcp_list_tools.in_progress"] The type of the event. Always 'response.mcp_list_tools.in_progress'.
+        #   @param type [Symbol, :"response.mcp_list_tools.in_progress"]
+        #     The type of the event. Always 'response.mcp_list_tools.in_progress'.
 
         # @see OpenAI::Models::Beta::BetaResponseMcpListToolsInProgressEvent#agent
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -59,7 +64,8 @@ module OpenAI
           # @!method initialize(agent_name:)
           #   The agent that owns this multi-agent streaming event.
           #
-          #   @param agent_name [String] The canonical name of the agent that produced this item.
+          #   @param agent_name [String]
+          #     The canonical name of the agent that produced this item.
         end
       end
     end

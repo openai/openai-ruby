@@ -7,22 +7,28 @@ module OpenAI
         module Projects
           type project_data_retention =
             {
-              object: :"project.data_retention",
+              ?object: :"project.data_retention",
               type: OpenAI::Models::Admin::Organization::Projects::ProjectDataRetention::type_
             }
 
           class ProjectDataRetention < OpenAI::Internal::Type::BaseModel
+            # The object type, which is always `project.data_retention`.
             attr_accessor object: :"project.data_retention"
 
+            # The configured project data retention type.
             attr_accessor type: OpenAI::Models::Admin::Organization::Projects::ProjectDataRetention::type_
 
+            # @param type
+            #   The configured project data retention type.
+            # @param object
+            #   The object type, which is always `project.data_retention`.
             def initialize: (
               type: OpenAI::Models::Admin::Organization::Projects::ProjectDataRetention::type_,
               ?object: :"project.data_retention"
             ) -> void
 
             def to_hash: -> {
-              object: :"project.data_retention",
+              ?object: :"project.data_retention",
               type: OpenAI::Models::Admin::Organization::Projects::ProjectDataRetention::type_
             }
 

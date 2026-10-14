@@ -2,26 +2,24 @@
 
 module OpenAI
   module Models
+
     module Realtime
+
       class ClientSecretCreateResponse < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Models::Realtime::ClientSecretCreateResponse,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Models::Realtime::ClientSecretCreateResponse,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Expiration timestamp for the client secret, in seconds since epoch.
         sig { returns(Integer) }
         attr_accessor :expires_at
 
         # The session configuration for either a realtime or transcription session.
-        sig do
-          returns(
-            OpenAI::Models::Realtime::ClientSecretCreateResponse::Session::Variants
-          )
-        end
+        sig { returns(OpenAI::Models::Realtime::ClientSecretCreateResponse::Session::Variants) }
         attr_accessor :session
 
         # The generated client secret value.
@@ -31,21 +29,28 @@ module OpenAI
         # Response from creating a session and client secret for the Realtime API.
         sig do
           params(
+
             expires_at: Integer,
-            session:
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateResponse::OrHash,
-                OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::OrHash
-              ),
+
+            session: T.any(
+              OpenAI::Realtime::RealtimeSessionCreateResponse::OrHash,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse::OrHash
+            ),
+
             value: String
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Expiration timestamp for the client secret, in seconds since epoch.
           expires_at:,
+
           # The session configuration for either a realtime or transcription session.
           session:,
+
           # The generated client secret value.
+
           value:
         )
         end
@@ -54,8 +59,7 @@ module OpenAI
           override.returns(
             {
               expires_at: Integer,
-              session:
-                OpenAI::Models::Realtime::ClientSecretCreateResponse::Session::Variants,
+              session: OpenAI::Models::Realtime::ClientSecretCreateResponse::Session::Variants,
               value: String
             }
           )
@@ -67,25 +71,22 @@ module OpenAI
         module Session
           extend OpenAI::Internal::Type::Union
 
-          Variants =
-            T.type_alias do
-              T.any(
-                OpenAI::Realtime::RealtimeSessionCreateResponse,
-                OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse
-              )
-            end
-
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Models::Realtime::ClientSecretCreateResponse::Session::Variants
-              ]
+          Variants = T.type_alias {
+            T.any(
+              OpenAI::Realtime::RealtimeSessionCreateResponse,
+              OpenAI::Realtime::RealtimeTranscriptionSessionCreateResponse
             )
-          end
+          }
+
+          sig { override.returns(T::Array[OpenAI::Models::Realtime::ClientSecretCreateResponse::Session::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

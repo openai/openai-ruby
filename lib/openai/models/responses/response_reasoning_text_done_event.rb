@@ -41,22 +41,25 @@ module OpenAI
         required :type, const: :"response.reasoning_text.done"
 
         # @!method initialize(content_index:, item_id:, output_index:, sequence_number:, text:, type: :"response.reasoning_text.done")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Responses::ResponseReasoningTextDoneEvent} for more details.
-        #
         #   Emitted when a reasoning text is completed.
         #
-        #   @param content_index [Integer] The index of the reasoning content part.
+        #   @param content_index [Integer]
+        #     The index of the reasoning content part.
         #
-        #   @param item_id [String] The ID of the item this reasoning text is associated with.
+        #   @param item_id [String]
+        #     The ID of the item this reasoning text is associated with.
         #
-        #   @param output_index [Integer] The index of the output item this reasoning text is associated with.
+        #   @param output_index [Integer]
+        #     The index of the output item this reasoning text is associated with.
         #
-        #   @param sequence_number [Integer] The sequence number of this event.
+        #   @param sequence_number [Integer]
+        #     The sequence number of this event.
         #
-        #   @param text [String] The full text of the completed reasoning content.
+        #   @param text [String]
+        #     The full text of the completed reasoning content.
         #
-        #   @param type [Symbol, :"response.reasoning_text.done"] The type of the event. Always `response.reasoning_text.done`.
+        #   @param type [Symbol, :"response.reasoning_text.done"]
+        #     The type of the event. Always `response.reasoning_text.done`.
       end
     end
   end

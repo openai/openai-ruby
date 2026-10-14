@@ -2,16 +2,19 @@
 
 module OpenAI
   module Models
+
     module FineTuning
+
       module Jobs
+
         class FineTuningJobCheckpoint < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The checkpoint identifier, which can be referenced in the API endpoints.
           sig { returns(String) }
@@ -30,17 +33,10 @@ module OpenAI
           attr_accessor :fine_tuning_job_id
 
           # Metrics at the step number during the fine-tuning job.
-          sig do
-            returns(OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics)
-          end
+          sig { returns(OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics) }
           attr_reader :metrics
 
-          sig do
-            params(
-              metrics:
-                OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics::OrHash
-            ).void
-          end
+          sig { params(metrics: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics::OrHash).void }
           attr_writer :metrics
 
           # The object type, which is always "fine_tuning.job.checkpoint".
@@ -55,30 +51,45 @@ module OpenAI
           # fine-tuning job that is ready to use.
           sig do
             params(
+
               id: String,
+
               created_at: Integer,
+
               fine_tuned_model_checkpoint: String,
+
               fine_tuning_job_id: String,
-              metrics:
-                OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics::OrHash,
+
+              metrics: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics::OrHash,
+
               step_number: Integer,
+
               object: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The checkpoint identifier, which can be referenced in the API endpoints.
             id:,
+
             # The Unix timestamp (in seconds) for when the checkpoint was created.
             created_at:,
+
             # The name of the fine-tuned checkpoint model that is created.
             fine_tuned_model_checkpoint:,
+
             # The name of the fine-tuning job that this checkpoint was created from.
             fine_tuning_job_id:,
+
             # Metrics at the step number during the fine-tuning job.
             metrics:,
+
             # The step number that the checkpoint was created at.
             step_number:,
+
             # The object type, which is always "fine_tuning.job.checkpoint".
+
             object: :"fine_tuning.job.checkpoint"
           )
           end
@@ -90,8 +101,7 @@ module OpenAI
                 created_at: Integer,
                 fine_tuned_model_checkpoint: String,
                 fine_tuning_job_id: String,
-                metrics:
-                  OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+                metrics: OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
                 object: Symbol,
                 step_number: Integer
               }
@@ -101,13 +111,12 @@ module OpenAI
           end
 
           class Metrics < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::FineTuning::Jobs::FineTuningJobCheckpoint::Metrics,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             sig { returns(T.nilable(Float)) }
             attr_reader :full_valid_loss
@@ -154,22 +163,37 @@ module OpenAI
             # Metrics at the step number during the fine-tuning job.
             sig do
               params(
+
                 full_valid_loss: Float,
+
                 full_valid_mean_token_accuracy: Float,
+
                 step: Float,
+
                 train_loss: Float,
+
                 train_mean_token_accuracy: Float,
+
                 valid_loss: Float,
+
                 valid_mean_token_accuracy: Float
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               full_valid_loss: nil,
+
               full_valid_mean_token_accuracy: nil,
+
               step: nil,
+
               train_loss: nil,
+
               train_mean_token_accuracy: nil,
+
               valid_loss: nil,
+
               valid_mean_token_accuracy: nil
             )
             end
@@ -189,9 +213,14 @@ module OpenAI
             end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

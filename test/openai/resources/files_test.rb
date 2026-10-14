@@ -12,16 +12,16 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        bytes: Integer,
-        created_at: Integer,
-        filename: String,
-        object: Symbol,
-        purpose: OpenAI::FileObject::Purpose,
-        status: OpenAI::FileObject::Status,
-        expires_at: Integer | nil,
-        status_details: String | nil
-      }
+          id: String,
+          bytes: Integer,
+          created_at: Integer,
+          filename: String,
+          object: Symbol,
+          purpose: OpenAI::FileObject::Purpose,
+          status: OpenAI::FileObject::Status,
+          expires_at: Integer | nil,
+          status_details: String | nil
+        }
     end
   end
 
@@ -34,16 +34,16 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        bytes: Integer,
-        created_at: Integer,
-        filename: String,
-        object: Symbol,
-        purpose: OpenAI::FileObject::Purpose,
-        status: OpenAI::FileObject::Status,
-        expires_at: Integer | nil,
-        status_details: String | nil
-      }
+          id: String,
+          bytes: Integer,
+          created_at: Integer,
+          filename: String,
+          object: Symbol,
+          purpose: OpenAI::FileObject::Purpose,
+          status: OpenAI::FileObject::Status,
+          expires_at: Integer | nil,
+          status_details: String | nil
+        }
     end
   end
 
@@ -54,7 +54,8 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
       response => OpenAI::Internal::CursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -63,16 +64,16 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        bytes: Integer,
-        created_at: Integer,
-        filename: String,
-        object: Symbol,
-        purpose: OpenAI::FileObject::Purpose,
-        status: OpenAI::FileObject::Status,
-        expires_at: Integer | nil,
-        status_details: String | nil
-      }
+          id: String,
+          bytes: Integer,
+          created_at: Integer,
+          filename: String,
+          object: Symbol,
+          purpose: OpenAI::FileObject::Purpose,
+          status: OpenAI::FileObject::Status,
+          expires_at: Integer | nil,
+          status_details: String | nil
+        }
     end
   end
 
@@ -85,10 +86,10 @@ class OpenAI::Test::Resources::FilesTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 

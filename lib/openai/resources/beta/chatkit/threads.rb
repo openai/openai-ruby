@@ -9,7 +9,8 @@ module OpenAI
           #
           # @overload retrieve(thread_id, request_options: {})
           #
-          # @param thread_id [String] Identifier of the ChatKit thread to retrieve.
+          # @param thread_id [String]
+          #   Identifier of the ChatKit thread to retrieve.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -20,28 +21,34 @@ module OpenAI
             @client.request(
               method: :get,
               path: ["chatkit/threads/%1$s", thread_id],
+              headers: {"openai-beta" => "chatkit_beta=v1"},
               model: OpenAI::Beta::ChatKit::ChatKitThread,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **params[:request_options].to_h}
+              options: params[:request_options]
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Beta::ChatKit::ThreadListParams} for more details.
-          #
           # List ChatKit threads with optional pagination and user filters.
           #
           # @overload list(after: nil, before: nil, limit: nil, order: nil, user: nil, request_options: {})
           #
-          # @param after [String] List items created after this thread item ID. Defaults to null for the first pag
+          # @param after [String]
+          #   List items created after this thread item ID. Defaults to null for the first
+          #   page.
           #
-          # @param before [String] List items created before this thread item ID. Defaults to null for the newest r
+          # @param before [String]
+          #   List items created before this thread item ID. Defaults to null for the newest
+          #   results.
           #
-          # @param limit [Integer] Maximum number of thread items to return. Defaults to 20.
+          # @param limit [Integer]
+          #   Maximum number of thread items to return. Defaults to 20.
           #
-          # @param order [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListParams::Order] Sort order for results by creation time. Defaults to `desc`.
+          # @param order [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListParams::Order]
+          #   Sort order for results by creation time. Defaults to `desc`.
           #
-          # @param user [String] Filter threads that belong to this user identifier. Defaults to null to return a
+          # @param user [String]
+          #   Filter threads that belong to this user identifier. Defaults to null to return
+          #   all users.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -55,10 +62,11 @@ module OpenAI
               method: :get,
               path: "chatkit/threads",
               query: query,
+              headers: {"openai-beta" => "chatkit_beta=v1"},
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Beta::ChatKit::ChatKitThread,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}
+              options: options
             )
           end
 
@@ -66,7 +74,8 @@ module OpenAI
           #
           # @overload delete(thread_id, request_options: {})
           #
-          # @param thread_id [String] Identifier of the ChatKit thread to delete.
+          # @param thread_id [String]
+          #   Identifier of the ChatKit thread to delete.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -77,28 +86,33 @@ module OpenAI
             @client.request(
               method: :delete,
               path: ["chatkit/threads/%1$s", thread_id],
+              headers: {"openai-beta" => "chatkit_beta=v1"},
               model: OpenAI::Models::Beta::ChatKit::ThreadDeleteResponse,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **params[:request_options].to_h}
+              options: params[:request_options]
             )
           end
 
-          # Some parameter documentations has been truncated, see
-          # {OpenAI::Models::Beta::ChatKit::ThreadListItemsParams} for more details.
-          #
           # List items that belong to a ChatKit thread.
           #
           # @overload list_items(thread_id, after: nil, before: nil, limit: nil, order: nil, request_options: {})
           #
-          # @param thread_id [String] Identifier of the ChatKit thread whose items are requested.
+          # @param thread_id [String]
+          #   Identifier of the ChatKit thread whose items are requested.
           #
-          # @param after [String] List items created after this thread item ID. Defaults to null for the first pag
+          # @param after [String]
+          #   List items created after this thread item ID. Defaults to null for the first
+          #   page.
           #
-          # @param before [String] List items created before this thread item ID. Defaults to null for the newest r
+          # @param before [String]
+          #   List items created before this thread item ID. Defaults to null for the newest
+          #   results.
           #
-          # @param limit [Integer] Maximum number of thread items to return. Defaults to 20.
+          # @param limit [Integer]
+          #   Maximum number of thread items to return. Defaults to 20.
           #
-          # @param order [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::Order] Sort order for results by creation time. Defaults to `desc`.
+          # @param order [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::Order]
+          #   Sort order for results by creation time. Defaults to `desc`.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
@@ -112,10 +126,11 @@ module OpenAI
               method: :get,
               path: ["chatkit/threads/%1$s/items", thread_id],
               query: query,
+              headers: {"openai-beta" => "chatkit_beta=v1"},
               page: OpenAI::Internal::ConversationCursorPage,
               model: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data,
               security: {bearer_auth: true},
-              options: {extra_headers: {"OpenAI-Beta" => "chatkit_beta=v1"}, **options}
+              options: options
             )
           end
 

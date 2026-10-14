@@ -3,24 +3,30 @@ module OpenAI
     module Beta
       module Threads
         type refusal_delta_block =
-          { index: Integer, type: :refusal, refusal: String }
+          { index: Integer, ?type: :refusal, ?refusal: String }
 
         class RefusalDeltaBlock < OpenAI::Internal::Type::BaseModel
+          # The index of the refusal part in the message.
           attr_accessor index: Integer
 
+          # Always `refusal`.
           attr_accessor type: :refusal
 
           attr_reader refusal: String?
 
           def refusal=: (String) -> String
 
+          # @param index
+          #   The index of the refusal part in the message.
+          # @param type
+          #   Always `refusal`.
           def initialize: (
             index: Integer,
             ?refusal: String,
             ?type: :refusal
           ) -> void
 
-          def to_hash: -> { index: Integer, type: :refusal, refusal: String }
+          def to_hash: -> { index: Integer, ?type: :refusal, ?refusal: String }
         end
       end
     end

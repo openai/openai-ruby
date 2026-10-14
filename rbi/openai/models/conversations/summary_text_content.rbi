@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Conversations
+
       class SummaryTextContent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Conversations::SummaryTextContent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Conversations::SummaryTextContent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # A summary of the reasoning output from the model so far.
         sig { returns(String) }
@@ -21,19 +23,37 @@ module OpenAI
         attr_accessor :type
 
         # A summary text from the model.
-        sig { params(text: String, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(
+
+            text: String,
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
         def self.new(
+
           # A summary of the reasoning output from the model so far.
           text:,
+
           # The type of the object. Always `summary_text`.
+
           type: :summary_text
         )
         end
 
-        sig { override.returns({ text: String, type: Symbol }) }
+        sig do
+          override.returns(
+            {text: String, type: Symbol}
+          )
+        end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

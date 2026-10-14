@@ -1,0 +1,19 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type vault_status_filter =
+          OpenAI::Models::Beta::Agents::vault_status
+          | ::Array[OpenAI::Models::Beta::Agents::vault_status]
+
+        module VaultStatusFilter
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::vault_status_filter]
+
+          VaultStatusArray: OpenAI::Internal::Type::Converter
+        end
+      end
+    end
+  end
+end

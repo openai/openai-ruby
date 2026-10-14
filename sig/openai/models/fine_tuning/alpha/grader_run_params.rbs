@@ -6,22 +6,49 @@ module OpenAI
           {
             grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
             model_sample: String,
-            item: top
+            ?item: top,
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class GraderRunParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # The grader used for the fine-tuning job.
           attr_accessor grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader
 
+          # The model sample to be evaluated. This value will be used to populate the
+          # `sample` namespace. See
+          # [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          # details. The `output_json` variable will be populated if the model sample is a
+          # valid JSON string.
           attr_accessor model_sample: String
 
+          # The dataset item provided to the grader. This will be used to populate the
+          # `item` namespace. See
+          # [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          # details.
           attr_reader item: top?
 
+          # The dataset item provided to the grader. This will be used to populate the
+          # `item` namespace. See
+          # [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          # details.
           def item=: (top) -> top
 
+          # @param grader
+          #   The grader used for the fine-tuning job.
+          # @param model_sample
+          #   The model sample to be evaluated. This value will be used to populate the
+          #   `sample` namespace. See
+          #   [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          #   details. The `output_json` variable will be populated if the model sample is a
+          #   valid JSON string.
+          # @param item
+          #   The dataset item provided to the grader. This will be used to populate the
+          #   `item` namespace. See
+          #   [the guide](https://developers.openai.com/api/docs/guides/graders) for more
+          #   details.
           def initialize: (
             grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
             model_sample: String,
@@ -32,8 +59,8 @@ module OpenAI
           def to_hash: -> {
             grader: OpenAI::Models::FineTuning::Alpha::GraderRunParams::grader,
             model_sample: String,
-            item: top,
-            request_options: OpenAI::RequestOptions
+            ?item: top,
+            ?request_options: OpenAI::RequestOptions
           }
 
           type grader =

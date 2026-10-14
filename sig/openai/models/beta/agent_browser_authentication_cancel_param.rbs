@@ -1,0 +1,21 @@
+module OpenAI
+  module Models
+    module Beta
+      type agent_browser_authentication_cancel_param =
+        { ?action: :cancel, ?type: :browser_authentication }
+
+      class AgentBrowserAuthenticationCancelParam < OpenAI::Internal::Type::BaseModel
+        attr_accessor action: :cancel
+
+        attr_accessor type: :browser_authentication
+
+        def initialize: (
+          ?action: :cancel,
+          ?type: :browser_authentication
+        ) -> void
+
+        def to_hash: -> { ?action: :cancel, ?type: :browser_authentication }
+      end
+    end
+  end
+end

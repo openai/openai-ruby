@@ -28,11 +28,14 @@ module OpenAI
         #   item does not exist in the conversation history, in which case the server will
         #   respond with an error.
         #
-        #   @param item_id [String] The ID of the item to delete.
+        #   @param item_id [String]
+        #     The ID of the item to delete.
         #
-        #   @param event_id [String] Optional client-generated ID used to identify this event.
+        #   @param event_id [String]
+        #     Optional client-generated ID used to identify this event.
         #
-        #   @param type [Symbol, :"conversation.item.delete"] The event type, must be `conversation.item.delete`.
+        #   @param type [Symbol, :"conversation.item.delete"]
+        #     The event type, must be `conversation.item.delete`.
       end
     end
   end

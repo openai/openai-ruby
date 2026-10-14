@@ -6,18 +6,30 @@ module OpenAI
           description: String,
           name: String,
           source: OpenAI::Responses::InlineSkillSource,
-          type: :inline
+          ?type: :inline
         }
 
       class InlineSkill < OpenAI::Internal::Type::BaseModel
+        # The description of the skill.
         attr_accessor description: String
 
+        # The name of the skill.
         attr_accessor name: String
 
+        # Inline skill payload
         attr_accessor source: OpenAI::Responses::InlineSkillSource
 
+        # Defines an inline skill for this request.
         attr_accessor type: :inline
 
+        # @param description
+        #   The description of the skill.
+        # @param name
+        #   The name of the skill.
+        # @param source
+        #   Inline skill payload
+        # @param type
+        #   Defines an inline skill for this request.
         def initialize: (
           description: String,
           name: String,
@@ -29,7 +41,7 @@ module OpenAI
           description: String,
           name: String,
           source: OpenAI::Responses::InlineSkillSource,
-          type: :inline
+          ?type: :inline
         }
       end
     end

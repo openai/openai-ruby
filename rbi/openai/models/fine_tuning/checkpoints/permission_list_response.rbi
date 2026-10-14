@@ -2,16 +2,19 @@
 
 module OpenAI
   module Models
+
     module FineTuning
+
       module Checkpoints
+
         class PermissionListResponse < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Models::FineTuning::Checkpoints::PermissionListResponse,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The permission identifier, which can be referenced in the API endpoints.
           sig { returns(String) }
@@ -33,38 +36,47 @@ module OpenAI
           # model checkpoint.
           sig do
             params(
+
               id: String,
+
               created_at: Integer,
+
               project_id: String,
+
               object: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The permission identifier, which can be referenced in the API endpoints.
             id:,
+
             # The Unix timestamp (in seconds) for when the permission was created.
             created_at:,
+
             # The project identifier that the permission is for.
             project_id:,
+
             # The object type, which is always "checkpoint.permission".
+
             object: :"checkpoint.permission"
           )
           end
 
           sig do
             override.returns(
-              {
-                id: String,
-                created_at: Integer,
-                object: Symbol,
-                project_id: String
-              }
+              {id: String, created_at: Integer, object: Symbol, project_id: String}
             )
           end
           def to_hash
           end
+
         end
+
       end
+
     end
+
   end
 end

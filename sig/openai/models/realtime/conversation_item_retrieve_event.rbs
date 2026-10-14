@@ -4,19 +4,29 @@ module OpenAI
       type conversation_item_retrieve_event =
         {
           item_id: String,
-          type: :"conversation.item.retrieve",
-          event_id: String
+          ?type: :"conversation.item.retrieve",
+          ?event_id: String
         }
 
       class ConversationItemRetrieveEvent < OpenAI::Internal::Type::BaseModel
+        # The ID of the item to retrieve.
         attr_accessor item_id: String
 
+        # The event type, must be `conversation.item.retrieve`.
         attr_accessor type: :"conversation.item.retrieve"
 
+        # Optional client-generated ID used to identify this event.
         attr_reader event_id: String?
 
+        # Optional client-generated ID used to identify this event.
         def event_id=: (String) -> String
 
+        # @param item_id
+        #   The ID of the item to retrieve.
+        # @param event_id
+        #   Optional client-generated ID used to identify this event.
+        # @param type
+        #   The event type, must be `conversation.item.retrieve`.
         def initialize: (
           item_id: String,
           ?event_id: String,
@@ -25,8 +35,8 @@ module OpenAI
 
         def to_hash: -> {
           item_id: String,
-          type: :"conversation.item.retrieve",
-          event_id: String
+          ?type: :"conversation.item.retrieve",
+          ?event_id: String
         }
       end
     end

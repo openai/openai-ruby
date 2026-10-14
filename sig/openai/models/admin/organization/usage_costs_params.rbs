@@ -5,54 +5,124 @@ module OpenAI
         type usage_costs_params =
           {
             start_time: Integer,
-            api_key_ids: ::Array[String],
-            bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
-            end_time: Integer,
-            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
-            limit: Integer,
-            page: String,
-            project_ids: ::Array[String]
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
+            ?limit: Integer,
+            ?line_items: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::request_opts
           }
-          & OpenAI::Internal::Type::request_parameters
 
         class UsageCostsParams < OpenAI::Internal::Type::BaseModel
           extend OpenAI::Internal::Type::RequestParameters::Converter
           include OpenAI::Internal::Type::RequestParameters
 
+          # Start time (Unix seconds) of the query time range, inclusive.
           attr_accessor start_time: Integer
 
+          # Return only costs for these API keys.
           attr_reader api_key_ids: ::Array[String]?
 
+          # Return only costs for these API keys.
           def api_key_ids=: (::Array[String]) -> ::Array[String]
 
+          # Width of each time bucket in response. Currently only `1d` is supported, default
+          # to `1d`.
           attr_reader bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width?
 
+          # Width of each time bucket in response. Currently only `1d` is supported, default
+          # to `1d`.
           def bucket_width=: (
             OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width
           ) -> OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width
 
+          # End time (Unix seconds) of the query time range, exclusive.
           attr_reader end_time: Integer?
 
+          # End time (Unix seconds) of the query time range, exclusive.
           def end_time=: (Integer) -> Integer
 
+          # Group the costs by the specified fields. Supported fields include `project_id`,
+          # `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          # `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          # organization and requested time range. Unsupported combinations return HTTP 400.
+          # When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          # activity and `unlabeled` for all other activity. Without source grouping,
+          # `api_source` is null.
           attr_reader group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]?
 
+          # Group the costs by the specified fields. Supported fields include `project_id`,
+          # `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          # `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          # organization and requested time range. Unsupported combinations return HTTP 400.
+          # When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          # activity and `unlabeled` for all other activity. Without source grouping,
+          # `api_source` is null.
           def group_by=: (
             ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
           ) -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
 
+          # A limit on the number of buckets to be returned. Limit can range between 1 and
+          # 180, and the default is 7.
           attr_reader limit: Integer?
 
+          # A limit on the number of buckets to be returned. Limit can range between 1 and
+          # 180, and the default is 7.
           def limit=: (Integer) -> Integer
 
+          # Return only costs for these exact line item names. Each value must match the
+          # complete `line_item` value, for example `gpt-6-astra, input_tokens`.
+          attr_reader line_items: ::Array[String]?
+
+          # Return only costs for these exact line item names. Each value must match the
+          # complete `line_item` value, for example `gpt-6-astra, input_tokens`.
+          def line_items=: (::Array[String]) -> ::Array[String]
+
+          # A cursor for use in pagination. Corresponding to the `next_page` field from the
+          # previous response.
           attr_reader page: String?
 
+          # A cursor for use in pagination. Corresponding to the `next_page` field from the
+          # previous response.
           def page=: (String) -> String
 
+          # Return only costs for these projects.
           attr_reader project_ids: ::Array[String]?
 
+          # Return only costs for these projects.
           def project_ids=: (::Array[String]) -> ::Array[String]
 
+          # @param start_time
+          #   Start time (Unix seconds) of the query time range, inclusive.
+          # @param api_key_ids
+          #   Return only costs for these API keys.
+          # @param bucket_width
+          #   Width of each time bucket in response. Currently only `1d` is supported, default
+          #   to `1d`.
+          # @param end_time
+          #   End time (Unix seconds) of the query time range, exclusive.
+          # @param group_by
+          #   Group the costs by the specified fields. Supported fields include `project_id`,
+          #   `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          #   `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          #   organization and requested time range. Unsupported combinations return HTTP 400.
+          #   When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          #   activity and `unlabeled` for all other activity. Without source grouping,
+          #   `api_source` is null.
+          # @param limit
+          #   A limit on the number of buckets to be returned. Limit can range between 1 and
+          #   180, and the default is 7.
+          # @param line_items
+          #   Return only costs for these exact line item names. Each value must match the
+          #   complete `line_item` value, for example `gpt-6-astra, input_tokens`.
+          # @param page
+          #   A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #   previous response.
+          # @param project_ids
+          #   Return only costs for these projects.
           def initialize: (
             start_time: Integer,
             ?api_key_ids: ::Array[String],
@@ -60,6 +130,7 @@ module OpenAI
             ?end_time: Integer,
             ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
             ?limit: Integer,
+            ?line_items: ::Array[String],
             ?page: String,
             ?project_ids: ::Array[String],
             ?request_options: OpenAI::request_opts
@@ -67,14 +138,15 @@ module OpenAI
 
           def to_hash: -> {
             start_time: Integer,
-            api_key_ids: ::Array[String],
-            bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
-            end_time: Integer,
-            group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
-            limit: Integer,
-            page: String,
-            project_ids: ::Array[String],
-            request_options: OpenAI::RequestOptions
+            ?api_key_ids: ::Array[String],
+            ?bucket_width: OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width,
+            ?end_time: Integer,
+            ?group_by: ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by],
+            ?limit: Integer,
+            ?line_items: ::Array[String],
+            ?page: String,
+            ?project_ids: ::Array[String],
+            ?request_options: OpenAI::RequestOptions
           }
 
           type bucket_width = :"1d"
@@ -87,14 +159,17 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::bucket_width]
           end
 
-          type group_by = :project_id | :line_item | :api_key_id
+          type group_by =
+            :project_id | :user_id | :line_item | :api_key_id | :api_source
 
           module GroupBy
             extend OpenAI::Internal::Type::Enum
 
             PROJECT_ID: :project_id
+            USER_ID: :user_id
             LINE_ITEM: :line_item
             API_KEY_ID: :api_key_id
+            API_SOURCE: :api_source
 
             def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::UsageCostsParams::group_by]
           end

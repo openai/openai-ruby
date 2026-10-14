@@ -14,16 +14,31 @@ module OpenAI
           }
 
         class ChatKitAttachment < OpenAI::Internal::Type::BaseModel
+          # Identifier for the attachment.
           attr_accessor id: String
 
+          # MIME type of the attachment.
           attr_accessor mime_type: String
 
+          # Original display name for the attachment.
           attr_accessor name: String
 
+          # Preview URL for rendering the attachment inline.
           attr_accessor preview_url: String?
 
+          # Attachment discriminator.
           attr_accessor type: OpenAI::Models::Beta::ChatKit::ChatKitAttachment::type_
 
+          # @param id
+          #   Identifier for the attachment.
+          # @param mime_type
+          #   MIME type of the attachment.
+          # @param name
+          #   Original display name for the attachment.
+          # @param preview_url
+          #   Preview URL for rendering the attachment inline.
+          # @param type
+          #   Attachment discriminator.
           def initialize: (
             id: String,
             mime_type: String,

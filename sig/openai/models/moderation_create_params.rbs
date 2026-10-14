@@ -3,22 +3,40 @@ module OpenAI
     type moderation_create_params =
       {
         input: OpenAI::Models::ModerationCreateParams::input,
-        model: OpenAI::Models::ModerationCreateParams::model
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::request_opts
       }
-      & OpenAI::Internal::Type::request_parameters
 
     class ModerationCreateParams < OpenAI::Internal::Type::BaseModel
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
+      # Input (or inputs) to classify. Can be a single string, an array of strings, or
+      # an array of multi-modal input objects similar to other models.
       attr_accessor input: OpenAI::Models::ModerationCreateParams::input
 
+      # The content moderation model you would like to use. Learn more in
+      # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      # and learn about available models
+      # [here](https://developers.openai.com/api/docs/guides/moderation).
       attr_reader model: OpenAI::Models::ModerationCreateParams::model?
 
+      # The content moderation model you would like to use. Learn more in
+      # [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      # and learn about available models
+      # [here](https://developers.openai.com/api/docs/guides/moderation).
       def model=: (
         OpenAI::Models::ModerationCreateParams::model
       ) -> OpenAI::Models::ModerationCreateParams::model
 
+      # @param input
+      #   Input (or inputs) to classify. Can be a single string, an array of strings, or
+      #   an array of multi-modal input objects similar to other models.
+      # @param model
+      #   The content moderation model you would like to use. Learn more in
+      #   [the moderation guide](https://developers.openai.com/api/docs/guides/moderation),
+      #   and learn about available models
+      #   [here](https://developers.openai.com/api/docs/guides/moderation).
       def initialize: (
         input: OpenAI::Models::ModerationCreateParams::input,
         ?model: OpenAI::Models::ModerationCreateParams::model,
@@ -27,8 +45,8 @@ module OpenAI
 
       def to_hash: -> {
         input: OpenAI::Models::ModerationCreateParams::input,
-        model: OpenAI::Models::ModerationCreateParams::model,
-        request_options: OpenAI::RequestOptions
+        ?model: OpenAI::Models::ModerationCreateParams::model,
+        ?request_options: OpenAI::RequestOptions
       }
 
       type input =

@@ -2,16 +2,19 @@
 
 module OpenAI
   module Models
+
     module Beta
+
       module Threads
+
         class FileCitationDeltaAnnotation < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Beta::Threads::FileCitationDeltaAnnotation,
-                OpenAI::Internal::AnyHash
-              )
-            end
+
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::Threads::FileCitationDeltaAnnotation,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The index of the annotation in the text content part.
           sig { returns(Integer) }
@@ -27,21 +30,10 @@ module OpenAI
           sig { params(end_index: Integer).void }
           attr_writer :end_index
 
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation)) }
           attr_reader :file_citation
 
-          sig do
-            params(
-              file_citation:
-                OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation::OrHash
-            ).void
-          end
+          sig { params(file_citation: OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation::OrHash).void }
           attr_writer :file_citation
 
           sig { returns(T.nilable(Integer)) }
@@ -62,24 +54,37 @@ module OpenAI
           # uses the "file_search" tool to search files.
           sig do
             params(
+
               index: Integer,
+
               end_index: Integer,
-              file_citation:
-                OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation::OrHash,
+
+              file_citation: OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation::OrHash,
+
               start_index: Integer,
+
               text: String,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The index of the annotation in the text content part.
             index:,
+
             end_index: nil,
+
             file_citation: nil,
+
             start_index: nil,
+
             # The text in the message content that needs to be replaced.
             text: nil,
+
             # Always `file_citation`.
+
             type: :file_citation
           )
           end
@@ -90,8 +95,7 @@ module OpenAI
                 index: Integer,
                 type: Symbol,
                 end_index: Integer,
-                file_citation:
-                  OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+                file_citation: OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
                 start_index: Integer,
                 text: String
               }
@@ -101,13 +105,12 @@ module OpenAI
           end
 
           class FileCitation < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Threads::FileCitationDeltaAnnotation::FileCitation,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The ID of the specific File the citation is from.
             sig { returns(T.nilable(String)) }
@@ -124,22 +127,40 @@ module OpenAI
             attr_writer :quote
 
             sig do
-              params(file_id: String, quote: String).returns(T.attached_class)
+              params(
+
+                file_id: String,
+
+                quote: String
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The ID of the specific File the citation is from.
               file_id: nil,
+
               # The specific quote in the file.
+
               quote: nil
             )
             end
 
-            sig { override.returns({ file_id: String, quote: String }) }
+            sig do
+              override.returns(
+                {file_id: String, quote: String}
+              )
+            end
             def to_hash
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

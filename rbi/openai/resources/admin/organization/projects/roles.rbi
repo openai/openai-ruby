@@ -2,20 +2,26 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Projects
+
           class Roles
+
             # Creates a custom role for a project.
-            sig do
+            sig {
               params(
                 project_id: String,
                 permissions: T::Array[String],
                 role_name: String,
                 description: T.nilable(String),
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(OpenAI::Admin::Organization::Role)
-            end
+              )
+                .returns(OpenAI::Admin::Organization::Role)
+            }
             def create(
               # The ID of the project to update.
               project_id,
@@ -30,13 +36,11 @@ module OpenAI
             end
 
             # Retrieves a project role.
-            sig do
-              params(
-                role_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(OpenAI::Admin::Organization::Role)
-            end
+            sig {
+              params(role_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+                OpenAI::Admin::Organization::Role
+              )
+            }
             def retrieve(
               # The ID of the role to retrieve.
               role_id,
@@ -47,7 +51,7 @@ module OpenAI
             end
 
             # Updates an existing project role.
-            sig do
+            sig {
               params(
                 role_id: String,
                 project_id: String,
@@ -55,8 +59,9 @@ module OpenAI
                 permissions: T.nilable(T::Array[String]),
                 role_name: T.nilable(String),
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(OpenAI::Admin::Organization::Role)
-            end
+              )
+                .returns(OpenAI::Admin::Organization::Role)
+            }
             def update(
               # Path param: The ID of the role to update.
               role_id,
@@ -73,20 +78,16 @@ module OpenAI
             end
 
             # Lists the roles configured for a project.
-            sig do
+            sig {
               params(
                 project_id: String,
                 after: String,
                 limit: Integer,
-                order:
-                  OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol,
+                order: OpenAI::Admin::Organization::Projects::RoleListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
-                OpenAI::Internal::NextCursorPage[
-                  OpenAI::Admin::Organization::Role
-                ]
               )
-            end
+                .returns(OpenAI::Internal::NextCursorPage[OpenAI::Admin::Organization::Role])
+            }
             def list(
               # The ID of the project to inspect.
               project_id,
@@ -102,15 +103,11 @@ module OpenAI
             end
 
             # Deletes a custom role from a project.
-            sig do
-              params(
-                role_id: String,
-                project_id: String,
-                request_options: OpenAI::RequestOptions::OrHash
-              ).returns(
+            sig {
+              params(role_id: String, project_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
                 OpenAI::Models::Admin::Organization::Projects::RoleDeleteResponse
               )
-            end
+            }
             def delete(
               # The ID of the role to delete.
               role_id,
@@ -125,8 +122,12 @@ module OpenAI
             def self.new(client:)
             end
           end
+
         end
+
       end
+
     end
+
   end
 end

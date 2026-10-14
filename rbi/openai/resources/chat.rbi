@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class Chat
+
       # Given a list of messages comprising a conversation, the model will return a
       # response.
       sig { returns(OpenAI::Resources::Chat::Completions) }
@@ -13,5 +15,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

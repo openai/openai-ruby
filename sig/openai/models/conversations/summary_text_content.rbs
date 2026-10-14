@@ -1,16 +1,22 @@
 module OpenAI
   module Models
     module Conversations
-      type summary_text_content = { text: String, type: :summary_text }
+      type summary_text_content = { text: String, ?type: :summary_text }
 
       class SummaryTextContent < OpenAI::Internal::Type::BaseModel
+        # A summary of the reasoning output from the model so far.
         attr_accessor text: String
 
+        # The type of the object. Always `summary_text`.
         attr_accessor type: :summary_text
 
+        # @param text
+        #   A summary of the reasoning output from the model so far.
+        # @param type
+        #   The type of the object. Always `summary_text`.
         def initialize: (text: String, ?type: :summary_text) -> void
 
-        def to_hash: -> { text: String, type: :summary_text }
+        def to_hash: -> { text: String, ?type: :summary_text }
       end
     end
   end

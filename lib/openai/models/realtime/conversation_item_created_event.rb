@@ -31,9 +31,6 @@ module OpenAI
         optional :previous_item_id, String, nil?: true
 
         # @!method initialize(event_id:, item:, previous_item_id: nil, type: :"conversation.item.created")
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::ConversationItemCreatedEvent} for more details.
-        #
         #   Returned when a conversation item is created. There are several scenarios that
         #   produce this event:
         #
@@ -46,13 +43,19 @@ module OpenAI
         #   - The client has sent a `conversation.item.create` event to add a new Item to
         #     the Conversation.
         #
-        #   @param event_id [String] The unique ID of the server event.
+        #   @param event_id [String]
+        #     The unique ID of the server event.
         #
-        #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest] A single item within a Realtime conversation.
+        #   @param item [OpenAI::Models::Realtime::RealtimeConversationItemSystemMessage, OpenAI::Models::Realtime::RealtimeConversationItemUserMessage, OpenAI::Models::Realtime::RealtimeConversationItemAssistantMessage, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCall, OpenAI::Models::Realtime::RealtimeConversationItemFunctionCallOutput, OpenAI::Models::Realtime::RealtimeMcpApprovalResponse, OpenAI::Models::Realtime::RealtimeMcpListTools, OpenAI::Models::Realtime::RealtimeMcpToolCall, OpenAI::Models::Realtime::RealtimeMcpApprovalRequest]
+        #     A single item within a Realtime conversation.
         #
-        #   @param previous_item_id [String, nil] The ID of the preceding item in the Conversation context, allows the
+        #   @param previous_item_id [String, nil]
+        #     The ID of the preceding item in the Conversation context, allows the client to
+        #     understand the order of the conversation. Can be `null` if the item has no
+        #     predecessor.
         #
-        #   @param type [Symbol, :"conversation.item.created"] The event type, must be `conversation.item.created`.
+        #   @param type [Symbol, :"conversation.item.created"]
+        #     The event type, must be `conversation.item.created`.
       end
     end
   end

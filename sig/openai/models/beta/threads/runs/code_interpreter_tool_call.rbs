@@ -7,16 +7,27 @@ module OpenAI
             {
               id: String,
               code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-              type: :code_interpreter
+              ?type: :code_interpreter
             }
 
           class CodeInterpreterToolCall < OpenAI::Internal::Type::BaseModel
+            # The ID of the tool call.
             attr_accessor id: String
 
+            # The Code Interpreter tool call definition.
             attr_accessor code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter
 
+            # The type of tool call. This is always going to be `code_interpreter` for this
+            # type of tool call.
             attr_accessor type: :code_interpreter
 
+            # @param id
+            #   The ID of the tool call.
+            # @param code_interpreter
+            #   The Code Interpreter tool call definition.
+            # @param type
+            #   The type of tool call. This is always going to be `code_interpreter` for this
+            #   type of tool call.
             def initialize: (
               id: String,
               code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
@@ -26,7 +37,7 @@ module OpenAI
             def to_hash: -> {
               id: String,
               code_interpreter: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter,
-              type: :code_interpreter
+              ?type: :code_interpreter
             }
 
             type code_interpreter =
@@ -36,10 +47,20 @@ module OpenAI
               }
 
             class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+              # The input to the Code Interpreter tool call.
               attr_accessor input: String
 
+              # The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              # or more items, including text (`logs`) or images (`image`). Each of these are
+              # represented by a different object type.
               attr_accessor outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::output]
 
+              # @param input
+              #   The input to the Code Interpreter tool call.
+              # @param outputs
+              #   The outputs from the Code Interpreter tool call. Code Interpreter can output one
+              #   or more items, including text (`logs`) or images (`image`). Each of these are
+              #   represented by a different object type.
               def initialize: (
                 input: String,
                 outputs: ::Array[OpenAI::Models::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::output]
@@ -57,29 +78,38 @@ module OpenAI
               module Output
                 extend OpenAI::Internal::Type::Union
 
-                type logs = { logs: String, type: :logs }
+                type logs = { logs: String, ?type: :logs }
 
                 class Logs < OpenAI::Internal::Type::BaseModel
+                  # The text output from the Code Interpreter tool call.
                   attr_accessor logs: String
 
+                  # Always `logs`.
                   attr_accessor type: :logs
 
+                  # @param logs
+                  #   The text output from the Code Interpreter tool call.
+                  # @param type
+                  #   Always `logs`.
                   def initialize: (logs: String, ?type: :logs) -> void
 
-                  def to_hash: -> { logs: String, type: :logs }
+                  def to_hash: -> { logs: String, ?type: :logs }
                 end
 
                 type image =
                   {
                     image: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                    type: :image
+                    ?type: :image
                   }
 
                 class Image < OpenAI::Internal::Type::BaseModel
                   attr_accessor image: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image
 
+                  # Always `image`.
                   attr_accessor type: :image
 
+                  # @param type
+                  #   Always `image`.
                   def initialize: (
                     image: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
                     ?type: :image
@@ -87,14 +117,19 @@ module OpenAI
 
                   def to_hash: -> {
                     image: OpenAI::Beta::Threads::Runs::CodeInterpreterToolCall::CodeInterpreter::Output::Image::Image,
-                    type: :image
+                    ?type: :image
                   }
 
                   type image = { file_id: String }
 
                   class Image < OpenAI::Internal::Type::BaseModel
+                    # The [file](https://developers.openai.com/api/reference/resources/files) ID of
+                    # the image.
                     attr_accessor file_id: String
 
+                    # @param file_id
+                    #   The [file](https://developers.openai.com/api/reference/resources/files) ID of
+                    #   the image.
                     def initialize: (file_id: String) -> void
 
                     def to_hash: -> { file_id: String }

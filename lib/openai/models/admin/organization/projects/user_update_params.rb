@@ -31,7 +31,8 @@ module OpenAI
             #
             #   @param user_id [String]
             #
-            #   @param role [String, nil] `owner` or `member`
+            #   @param role [String, nil]
+            #     `owner` or `member`
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

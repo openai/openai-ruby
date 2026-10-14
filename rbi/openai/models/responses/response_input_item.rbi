@@ -2,7 +2,9 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       # A message input to the model with a role indicating instruction following
       # hierarchy. Instructions given with the `developer` or `system` role take
       # precedence over instructions given with the `user` role. Messages with the
@@ -11,56 +13,55 @@ module OpenAI
       module ResponseInputItem
         extend OpenAI::Internal::Type::Union
 
-        Variants =
-          T.type_alias do
+        Variants = T.type_alias do
+          T.any(
+            OpenAI::Responses::EasyInputMessage,
+            OpenAI::Responses::ResponseInputItem::Message,
+            OpenAI::Responses::ResponseOutputMessage,
+            OpenAI::Responses::ResponseFileSearchToolCall,
+            OpenAI::Responses::ResponseComputerToolCall,
+            OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
+            OpenAI::Responses::ResponseFunctionWebSearch,
+            OpenAI::Responses::ResponseFunctionToolCall,
+            OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
+            OpenAI::Responses::ResponseInputItem::ToolSearchCall,
+            OpenAI::Responses::ResponseToolSearchOutputItemParam,
+            OpenAI::Responses::ResponseInputItem::AdditionalTools,
+            OpenAI::Responses::ResponseConfigurationUpdateItemParam,
+            OpenAI::Responses::ResponseReasoningItem,
+            OpenAI::Responses::ResponseCompactionItemParam,
+            OpenAI::Responses::ResponseInputItem::ImageGenerationCall,
+            OpenAI::Responses::ResponseCodeInterpreterToolCall,
+            OpenAI::Responses::ResponseInputItem::LocalShellCall,
+            OpenAI::Responses::ResponseInputItem::LocalShellCallOutput,
+            OpenAI::Responses::ResponseInputItem::ShellCall,
+            OpenAI::Responses::ResponseInputItem::ShellCallOutput,
+            OpenAI::Responses::ResponseInputItem::ApplyPatchCall,
+            OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput,
+            OpenAI::Responses::ResponseInputItem::McpListTools,
+            OpenAI::Responses::ResponseInputItem::McpApprovalRequest,
+            OpenAI::Responses::ResponseInputItem::McpApprovalResponse,
+            OpenAI::Responses::ResponseInputItem::McpCall,
+            OpenAI::Responses::ResponseCustomToolCallOutput,
+            OpenAI::Responses::ResponseCustomToolCall,
+            OpenAI::Responses::ResponseInputItem::CompactionTrigger,
+            OpenAI::Responses::ResponseInputItem::ItemReference,
+            OpenAI::Responses::ResponseInputItem::Program,
+            OpenAI::Responses::ResponseInputItem::ProgramOutput
+          )
+        end
+
+        class Message < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
             T.any(
-              OpenAI::Responses::EasyInputMessage,
               OpenAI::Responses::ResponseInputItem::Message,
-              OpenAI::Responses::ResponseOutputMessage,
-              OpenAI::Responses::ResponseFileSearchToolCall,
-              OpenAI::Responses::ResponseComputerToolCall,
-              OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
-              OpenAI::Responses::ResponseFunctionWebSearch,
-              OpenAI::Responses::ResponseFunctionToolCall,
-              OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
-              OpenAI::Responses::ResponseInputItem::ToolSearchCall,
-              OpenAI::Responses::ResponseToolSearchOutputItemParam,
-              OpenAI::Responses::ResponseInputItem::AdditionalTools,
-              OpenAI::Responses::ResponseReasoningItem,
-              OpenAI::Responses::ResponseCompactionItemParam,
-              OpenAI::Responses::ResponseInputItem::ImageGenerationCall,
-              OpenAI::Responses::ResponseCodeInterpreterToolCall,
-              OpenAI::Responses::ResponseInputItem::LocalShellCall,
-              OpenAI::Responses::ResponseInputItem::LocalShellCallOutput,
-              OpenAI::Responses::ResponseInputItem::ShellCall,
-              OpenAI::Responses::ResponseInputItem::ShellCallOutput,
-              OpenAI::Responses::ResponseInputItem::ApplyPatchCall,
-              OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput,
-              OpenAI::Responses::ResponseInputItem::McpListTools,
-              OpenAI::Responses::ResponseInputItem::McpApprovalRequest,
-              OpenAI::Responses::ResponseInputItem::McpApprovalResponse,
-              OpenAI::Responses::ResponseInputItem::McpCall,
-              OpenAI::Responses::ResponseCustomToolCallOutput,
-              OpenAI::Responses::ResponseCustomToolCall,
-              OpenAI::Responses::ResponseInputItem::CompactionTrigger,
-              OpenAI::Responses::ResponseInputItem::ItemReference,
-              OpenAI::Responses::ResponseInputItem::Program,
-              OpenAI::Responses::ResponseInputItem::ProgramOutput
+              OpenAI::Internal::AnyHash
             )
           end
 
-        class Message < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::Message,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
           # A list of one or many input items to the model, containing different content
           # types.
-          sig do
+          sig {
             returns(
               T::Array[
                 T.any(
@@ -70,52 +71,26 @@ module OpenAI
                 )
               ]
             )
-          end
+          }
           attr_accessor :content
 
           # The role of the message input. One of `user`, `system`, or `developer`.
-          sig do
-            returns(
-              OpenAI::Responses::ResponseInputItem::Message::Role::OrSymbol
-            )
-          end
+          sig { returns(OpenAI::Responses::ResponseInputItem::Message::Role::OrSymbol) }
           attr_accessor :role
 
           # The status of item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::Message::Status::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::Message::Status::OrSymbol)) }
           attr_reader :status
 
-          sig do
-            params(
-              status:
-                OpenAI::Responses::ResponseInputItem::Message::Status::OrSymbol
-            ).void
-          end
+          sig { params(status: OpenAI::Responses::ResponseInputItem::Message::Status::OrSymbol).void }
           attr_writer :status
 
           # The type of the message input. Always set to `message`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::Message::Type::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::Message::Type::OrSymbol)) }
           attr_reader :type
 
-          sig do
-            params(
-              type:
-                OpenAI::Responses::ResponseInputItem::Message::Type::OrSymbol
-            ).void
-          end
+          sig { params(type: OpenAI::Responses::ResponseInputItem::Message::Type::OrSymbol).void }
           attr_writer :type
 
           # A message input to the model with a role indicating instruction following
@@ -123,32 +98,38 @@ module OpenAI
           # precedence over instructions given with the `user` role.
           sig do
             params(
-              content:
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::ResponseInputText::OrHash,
-                    OpenAI::Responses::ResponseInputImage::OrHash,
-                    OpenAI::Responses::ResponseInputFile::OrHash
-                  )
-                ],
-              role:
-                OpenAI::Responses::ResponseInputItem::Message::Role::OrSymbol,
-              status:
-                OpenAI::Responses::ResponseInputItem::Message::Status::OrSymbol,
-              type:
-                OpenAI::Responses::ResponseInputItem::Message::Type::OrSymbol
-            ).returns(T.attached_class)
+
+              content: T::Array[
+                T.any(
+                  OpenAI::Responses::ResponseInputText::OrHash,
+                  OpenAI::Responses::ResponseInputImage::OrHash,
+                  OpenAI::Responses::ResponseInputFile::OrHash
+                )
+              ],
+
+              role: OpenAI::Responses::ResponseInputItem::Message::Role::OrSymbol,
+
+              status: OpenAI::Responses::ResponseInputItem::Message::Status::OrSymbol,
+
+              type: OpenAI::Responses::ResponseInputItem::Message::Type::OrSymbol
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # A list of one or many input items to the model, containing different content
             # types.
             content:,
+
             # The role of the message input. One of `user`, `system`, or `developer`.
             role:,
+
             # The status of item. One of `in_progress`, `completed`, or `incomplete`.
             # Populated when items are returned via API.
             status: nil,
+
             # The type of the message input. Always set to `message`.
+
             type: nil
           )
           end
@@ -156,20 +137,16 @@ module OpenAI
           sig do
             override.returns(
               {
-                content:
-                  T::Array[
-                    T.any(
-                      OpenAI::Responses::ResponseInputText,
-                      OpenAI::Responses::ResponseInputImage,
-                      OpenAI::Responses::ResponseInputFile
-                    )
-                  ],
-                role:
-                  OpenAI::Responses::ResponseInputItem::Message::Role::OrSymbol,
-                status:
-                  OpenAI::Responses::ResponseInputItem::Message::Status::OrSymbol,
-                type:
-                  OpenAI::Responses::ResponseInputItem::Message::Type::OrSymbol
+                content: T::Array[
+                  T.any(
+                    OpenAI::Responses::ResponseInputText,
+                    OpenAI::Responses::ResponseInputImage,
+                    OpenAI::Responses::ResponseInputFile
+                  )
+                ],
+                role: OpenAI::Responses::ResponseInputItem::Message::Role::OrSymbol,
+                status: OpenAI::Responses::ResponseInputItem::Message::Status::OrSymbol,
+                type: OpenAI::Responses::ResponseInputItem::Message::Type::OrSymbol
               }
             )
           end
@@ -180,38 +157,14 @@ module OpenAI
           module Role
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::Message::Role
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::Message::Role) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            USER =
-              T.let(
-                :user,
-                OpenAI::Responses::ResponseInputItem::Message::Role::TaggedSymbol
-              )
-            SYSTEM =
-              T.let(
-                :system,
-                OpenAI::Responses::ResponseInputItem::Message::Role::TaggedSymbol
-              )
-            DEVELOPER =
-              T.let(
-                :developer,
-                OpenAI::Responses::ResponseInputItem::Message::Role::TaggedSymbol
-              )
+            USER = T.let(:user, OpenAI::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
+            SYSTEM = T.let(:system, OpenAI::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
+            DEVELOPER = T.let(:developer, OpenAI::Responses::ResponseInputItem::Message::Role::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::Message::Role::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::Message::Role::TaggedSymbol]) }
             def self.values
             end
           end
@@ -221,38 +174,14 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::Message::Status
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::Message::Status) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::Message::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::Message::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::Message::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(:in_progress, OpenAI::Responses::ResponseInputItem::Message::Status::TaggedSymbol)
+            COMPLETED = T.let(:completed, OpenAI::Responses::ResponseInputItem::Message::Status::TaggedSymbol)
+            INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseInputItem::Message::Status::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::Message::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::Message::Status::TaggedSymbol]) }
             def self.values
             end
           end
@@ -261,58 +190,34 @@ module OpenAI
           module Type
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::Message::Type
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::Message::Type) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            MESSAGE =
-              T.let(
-                :message,
-                OpenAI::Responses::ResponseInputItem::Message::Type::TaggedSymbol
-              )
+            MESSAGE = T.let(:message, OpenAI::Responses::ResponseInputItem::Message::Type::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::Message::Type::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::Message::Type::TaggedSymbol]) }
             def self.values
             end
           end
         end
 
         class ComputerCallOutput < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ComputerCallOutput,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The ID of the computer tool call that produced the output.
           sig { returns(String) }
           attr_accessor :call_id
 
           # A computer screenshot image used with the computer use tool.
-          sig do
-            returns(OpenAI::Responses::ResponseComputerToolCallOutputScreenshot)
-          end
+          sig { returns(OpenAI::Responses::ResponseComputerToolCallOutputScreenshot) }
           attr_reader :output
 
-          sig do
-            params(
-              output:
-                OpenAI::Responses::ResponseComputerToolCallOutputScreenshot::OrHash
-            ).void
-          end
+          sig { params(output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot::OrHash).void }
           attr_writer :output
 
           # The type of the computer tool call output. Always `computer_call_output`.
@@ -325,62 +230,59 @@ module OpenAI
 
           # The safety checks reported by the API that have been acknowledged by the
           # developer.
-          sig do
+          sig {
             returns(
-              T.nilable(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck
-                ]
-              )
+              T.nilable(T::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck])
             )
-          end
+          }
           attr_accessor :acknowledged_safety_checks
 
           # The status of the message input. One of `in_progress`, `completed`, or
           # `incomplete`. Populated when input items are returned via API.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol)) }
           attr_accessor :status
 
           # The output of a computer tool call.
           sig do
             params(
+
               call_id: String,
-              output:
-                OpenAI::Responses::ResponseComputerToolCallOutputScreenshot::OrHash,
+
+              output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot::OrHash,
+
               id: T.nilable(String),
-              acknowledged_safety_checks:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck::OrHash
-                  ]
-                ),
-              status:
-                T.nilable(
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol
-                ),
+
+              acknowledged_safety_checks: T.nilable(
+                T::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck::OrHash]
+              ),
+
+              status: T.nilable(OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The ID of the computer tool call that produced the output.
             call_id:,
+
             # A computer screenshot image used with the computer use tool.
             output:,
+
             # The ID of the computer tool call output.
             id: nil,
+
             # The safety checks reported by the API that have been acknowledged by the
             # developer.
             acknowledged_safety_checks: nil,
+
             # The status of the message input. One of `in_progress`, `completed`, or
             # `incomplete`. Populated when input items are returned via API.
             status: nil,
+
             # The type of the computer tool call output. Always `computer_call_output`.
+
             type: :computer_call_output
           )
           end
@@ -389,20 +291,13 @@ module OpenAI
             override.returns(
               {
                 call_id: String,
-                output:
-                  OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
+                output: OpenAI::Responses::ResponseComputerToolCallOutputScreenshot,
                 type: Symbol,
                 id: T.nilable(String),
-                acknowledged_safety_checks:
-                  T.nilable(
-                    T::Array[
-                      OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck
-                    ]
-                  ),
-                status:
-                  T.nilable(
-                    OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol
-                  )
+                acknowledged_safety_checks: T.nilable(
+                  T::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck]
+                ),
+                status: T.nilable(OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::OrSymbol)
               }
             )
           end
@@ -410,13 +305,12 @@ module OpenAI
           end
 
           class AcknowledgedSafetyCheck < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ComputerCallOutput::AcknowledgedSafetyCheck,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The ID of the pending safety check.
             sig { returns(String) }
@@ -433,32 +327,37 @@ module OpenAI
             # A pending safety check for the computer call.
             sig do
               params(
+
                 id: String,
+
                 code: T.nilable(String),
+
                 message: T.nilable(String)
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The ID of the pending safety check.
               id:,
+
               # The type of the pending safety check.
               code: nil,
+
               # Details about the pending safety check.
+
               message: nil
             )
             end
 
             sig do
               override.returns(
-                {
-                  id: String,
-                  code: T.nilable(String),
-                  message: T.nilable(String)
-                }
+                {id: String, code: T.nilable(String), message: T.nilable(String)}
               )
             end
             def to_hash
             end
+
           end
 
           # The status of the message input. One of `in_progress`, `completed`, or
@@ -466,62 +365,42 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
+            )
+            COMPLETED = T.let(
+              :completed,
+              OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
+            )
+            INCOMPLETE = T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
+            )
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ComputerCallOutput::Status::TaggedSymbol])
+            }
             def self.values
             end
           end
         end
 
         class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-          # The unique ID of the function tool call generated by the model.
-          sig { returns(String) }
-          attr_accessor :call_id
-
-          # Text, image, or file output of the function tool call.
-          sig do
-            returns(
-              OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Output::Variants
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::FunctionCallOutput,
+              OpenAI::Internal::AnyHash
             )
           end
+
+          # Text, image, or file output of the function tool call.
+          sig { returns(OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Output::Variants) }
           attr_accessor :output
 
           # The type of the function tool call output. Always `function_call_output`.
@@ -533,8 +412,12 @@ module OpenAI
           sig { returns(T.nilable(String)) }
           attr_accessor :id
 
+          # The unique ID of the function tool call generated by the model.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :call_id
+
           # The execution context that produced this tool call.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T.any(
@@ -543,7 +426,7 @@ module OpenAI
                 )
               )
             )
-          end
+          }
           attr_accessor :caller_
 
           # The name of the tool that produced the output.
@@ -556,56 +439,63 @@ module OpenAI
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           # Populated when items are returned via API.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol)) }
           attr_accessor :status
 
           # The output of a function tool call.
           sig do
             params(
-              call_id: String,
-              output:
-                OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Output::Variants,
+
+              output: OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Output::Variants,
+
               id: T.nilable(String),
-              caller_:
-                T.nilable(
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct::OrHash,
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program::OrHash
-                  )
-                ),
+
+              call_id: T.nilable(String),
+
+              caller_: T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program::OrHash
+                )
+              ),
+
               name: T.nilable(String),
+
               namespace: T.nilable(String),
-              status:
-                T.nilable(
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol
-                ),
+
+              status: T.nilable(OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
-            # The unique ID of the function tool call generated by the model.
-            call_id:,
+
             # Text, image, or file output of the function tool call.
             output:,
+
             # The unique ID of the function tool call output. Populated when this item is
             # returned via API.
             id: nil,
+
+            # The unique ID of the function tool call generated by the model.
+            call_id: nil,
+
             # The execution context that produced this tool call.
             caller_: nil,
+
             # The name of the tool that produced the output.
             name: nil,
+
             # The namespace of the tool that produced the output.
             namespace: nil,
+
             # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
             # Populated when items are returned via API.
             status: nil,
+
             # The type of the function tool call output. Always `function_call_output`.
+
             type: :function_call_output
           )
           end
@@ -613,24 +503,19 @@ module OpenAI
           sig do
             override.returns(
               {
-                call_id: String,
-                output:
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Output::Variants,
+                output: OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Output::Variants,
                 type: Symbol,
                 id: T.nilable(String),
-                caller_:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct,
-                      OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program
-                    )
-                  ),
+                call_id: T.nilable(String),
+                caller_: T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct,
+                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program
+                  )
+                ),
                 name: T.nilable(String),
                 namespace: T.nilable(String),
-                status:
-                  T.nilable(
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol
-                  )
+                status: T.nilable(OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::OrSymbol)
               }
             )
           end
@@ -641,72 +526,73 @@ module OpenAI
           module Output
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  String,
-                  T::Array[
-                    OpenAI::Responses::ResponseFunctionCallOutputItem::Variants
-                  ]
-                )
-              end
+            Variants = T.type_alias {
+              T.any(String, T::Array[OpenAI::Responses::ResponseFunctionCallOutputItem::Variants])
+            }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Output::Variants
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Output::Variants])
+            }
             def self.variants
             end
+
           end
 
           # The execution context that produced this tool call.
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct,
+                OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program
+              )
+            }
 
             class Direct < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The caller type. Always `direct`.
               sig { returns(Symbol) }
               attr_accessor :type
 
-              sig { params(type: Symbol).returns(T.attached_class) }
+              sig do
+                params(
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
               def self.new(
+
                 # The caller type. Always `direct`.
+
                 type: :direct
               )
               end
 
-              sig { override.returns({ type: Symbol }) }
+              sig do
+                override.returns(
+                  {type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
             class Program < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The call ID of the program item that produced this tool call.
               sig { returns(String) }
@@ -717,32 +603,41 @@ module OpenAI
               attr_accessor :type
 
               sig do
-                params(caller_id: String, type: Symbol).returns(
-                  T.attached_class
+                params(
+
+                  caller_id: String,
+
+                  type: Symbol
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The call ID of the program item that produced this tool call.
                 caller_id:,
+
                 # The caller type. Always `program`.
+
                 type: :program
               )
               end
 
-              sig { override.returns({ caller_id: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {caller_id: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Variants
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Caller::Variants])
+            }
             def self.variants
             end
+
           end
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
@@ -750,51 +645,39 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
+            )
+            COMPLETED = T.let(
+              :completed,
+              OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
+            )
+            INCOMPLETE = T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
+            )
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::FunctionCallOutput::Status::TaggedSymbol])
+            }
             def self.values
             end
           end
         end
 
         class ToolSearchCall < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ToolSearchCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The arguments supplied to the tool search call.
           sig { returns(T.anything) }
@@ -813,59 +696,52 @@ module OpenAI
           attr_accessor :call_id
 
           # Whether tool search was executed by the server or by the client.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::OrSymbol)) }
           attr_reader :execution
 
-          sig do
-            params(
-              execution:
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::OrSymbol
-            ).void
-          end
+          sig { params(execution: OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::OrSymbol).void }
           attr_writer :execution
 
           # The status of the tool search call.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::OrSymbol)) }
           attr_accessor :status
 
           sig do
             params(
+
               arguments: T.anything,
+
               id: T.nilable(String),
+
               call_id: T.nilable(String),
-              execution:
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::OrSymbol,
-              status:
-                T.nilable(
-                  OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::OrSymbol
-                ),
+
+              execution: OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::OrSymbol,
+
+              status: T.nilable(OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::OrSymbol),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The arguments supplied to the tool search call.
             arguments:,
+
             # The unique ID of this tool search call.
             id: nil,
+
             # The unique ID of the tool search call generated by the model.
             call_id: nil,
+
             # Whether tool search was executed by the server or by the client.
             execution: nil,
+
             # The status of the tool search call.
             status: nil,
+
             # The item type. Always `tool_search_call`.
+
             type: :tool_search_call
           )
           end
@@ -877,12 +753,8 @@ module OpenAI
                 type: Symbol,
                 id: T.nilable(String),
                 call_id: T.nilable(String),
-                execution:
-                  OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::OrSymbol,
-                status:
-                  T.nilable(
-                    OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::OrSymbol
-                  )
+                execution: OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::OrSymbol,
+                status: T.nilable(OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::OrSymbol)
               }
             )
           end
@@ -893,33 +765,17 @@ module OpenAI
           module Execution
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            SERVER =
-              T.let(
-                :server,
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::TaggedSymbol
-              )
-            CLIENT =
-              T.let(
-                :client,
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::TaggedSymbol
-              )
+            SERVER = T.let(:server, OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::TaggedSymbol)
+            CLIENT = T.let(:client, OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ToolSearchCall::Execution::TaggedSymbol])
+            }
             def self.values
             end
           end
@@ -928,58 +784,38 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::TaggedSymbol
+            )
+            COMPLETED = T.let(:completed, OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::TaggedSymbol)
+            INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ToolSearchCall::Status::TaggedSymbol])
+            }
             def self.values
             end
           end
         end
 
         class AdditionalTools < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::AdditionalTools,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::AdditionalTools,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The role that provided the additional tools. Only `developer` is supported.
           sig { returns(Symbol) }
           attr_accessor :role
 
           # A list of additional tools made available at this item.
-          sig do
+          sig {
             returns(
               T::Array[
                 T.any(
@@ -1002,7 +838,7 @@ module OpenAI
                 )
               ]
             )
-          end
+          }
           attr_accessor :tools
 
           # The item type. Always `additional_tools`.
@@ -1015,40 +851,49 @@ module OpenAI
 
           sig do
             params(
-              tools:
-                T::Array[
-                  T.any(
-                    OpenAI::Responses::FunctionTool::OrHash,
-                    OpenAI::Responses::FileSearchTool::OrHash,
-                    OpenAI::Responses::ComputerTool::OrHash,
-                    OpenAI::Responses::ComputerUsePreviewTool::OrHash,
-                    OpenAI::Responses::Tool::Mcp::OrHash,
-                    OpenAI::Responses::Tool::CodeInterpreter::OrHash,
-                    OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
-                    OpenAI::Responses::Tool::ImageGeneration::OrHash,
-                    OpenAI::Responses::Tool::LocalShell::OrHash,
-                    OpenAI::Responses::FunctionShellTool::OrHash,
-                    OpenAI::Responses::CustomTool::OrHash,
-                    OpenAI::Responses::NamespaceTool::OrHash,
-                    OpenAI::Responses::ToolSearchTool::OrHash,
-                    OpenAI::Responses::ApplyPatchTool::OrHash,
-                    OpenAI::Responses::WebSearchTool::OrHash,
-                    OpenAI::Responses::WebSearchPreviewTool::OrHash
-                  )
-                ],
+
+              tools: T::Array[
+                T.any(
+                  OpenAI::Responses::FunctionTool::OrHash,
+                  OpenAI::Responses::FileSearchTool::OrHash,
+                  OpenAI::Responses::ComputerTool::OrHash,
+                  OpenAI::Responses::ComputerUsePreviewTool::OrHash,
+                  OpenAI::Responses::Tool::Mcp::OrHash,
+                  OpenAI::Responses::Tool::CodeInterpreter::OrHash,
+                  OpenAI::Responses::Tool::ProgrammaticToolCalling::OrHash,
+                  OpenAI::Responses::Tool::ImageGeneration::OrHash,
+                  OpenAI::Responses::Tool::LocalShell::OrHash,
+                  OpenAI::Responses::FunctionShellTool::OrHash,
+                  OpenAI::Responses::CustomTool::OrHash,
+                  OpenAI::Responses::NamespaceTool::OrHash,
+                  OpenAI::Responses::ToolSearchTool::OrHash,
+                  OpenAI::Responses::ApplyPatchTool::OrHash,
+                  OpenAI::Responses::WebSearchTool::OrHash,
+                  OpenAI::Responses::WebSearchPreviewTool::OrHash
+                )
+              ],
+
               id: T.nilable(String),
+
               role: Symbol,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # A list of additional tools made available at this item.
             tools:,
+
             # The unique ID of this additional tools item.
             id: nil,
+
             # The role that provided the additional tools. Only `developer` is supported.
             role: :developer,
+
             # The item type. Always `additional_tools`.
+
             type: :additional_tools
           )
           end
@@ -1057,27 +902,26 @@ module OpenAI
             override.returns(
               {
                 role: Symbol,
-                tools:
-                  T::Array[
-                    T.any(
-                      OpenAI::Responses::FunctionTool,
-                      OpenAI::Responses::FileSearchTool,
-                      OpenAI::Responses::ComputerTool,
-                      OpenAI::Responses::ComputerUsePreviewTool,
-                      OpenAI::Responses::Tool::Mcp,
-                      OpenAI::Responses::Tool::CodeInterpreter,
-                      OpenAI::Responses::Tool::ProgrammaticToolCalling,
-                      OpenAI::Responses::Tool::ImageGeneration,
-                      OpenAI::Responses::Tool::LocalShell,
-                      OpenAI::Responses::FunctionShellTool,
-                      OpenAI::Responses::CustomTool,
-                      OpenAI::Responses::NamespaceTool,
-                      OpenAI::Responses::ToolSearchTool,
-                      OpenAI::Responses::ApplyPatchTool,
-                      OpenAI::Responses::WebSearchTool,
-                      OpenAI::Responses::WebSearchPreviewTool
-                    )
-                  ],
+                tools: T::Array[
+                  T.any(
+                    OpenAI::Responses::FunctionTool,
+                    OpenAI::Responses::FileSearchTool,
+                    OpenAI::Responses::ComputerTool,
+                    OpenAI::Responses::ComputerUsePreviewTool,
+                    OpenAI::Responses::Tool::Mcp,
+                    OpenAI::Responses::Tool::CodeInterpreter,
+                    OpenAI::Responses::Tool::ProgrammaticToolCalling,
+                    OpenAI::Responses::Tool::ImageGeneration,
+                    OpenAI::Responses::Tool::LocalShell,
+                    OpenAI::Responses::FunctionShellTool,
+                    OpenAI::Responses::CustomTool,
+                    OpenAI::Responses::NamespaceTool,
+                    OpenAI::Responses::ToolSearchTool,
+                    OpenAI::Responses::ApplyPatchTool,
+                    OpenAI::Responses::WebSearchTool,
+                    OpenAI::Responses::WebSearchPreviewTool
+                  )
+                ],
                 type: Symbol,
                 id: T.nilable(String)
               }
@@ -1085,16 +929,16 @@ module OpenAI
           end
           def to_hash
           end
+
         end
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ImageGenerationCall,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ImageGenerationCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the image generation call.
           sig { returns(String) }
@@ -1105,35 +949,112 @@ module OpenAI
           attr_accessor :result
 
           # The status of the image generation call.
-          sig do
-            returns(
-              OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::OrSymbol
-            )
-          end
+          sig { returns(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::OrSymbol) }
           attr_accessor :status
 
           # The type of the image generation call. Always `image_generation_call`.
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # The action used for image generation.
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Action::OrSymbol)) }
+          attr_accessor :action
+
+          # The background setting used for generation.
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Background::OrSymbol)) }
+          attr_accessor :background
+
+          # Details of a moderation failure, when available.
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error)) }
+          attr_reader :error
+
+          sig { params(error: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::OrHash).void }
+          attr_writer :error
+
+          # The output format used for generation.
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::OrSymbol)) }
+          attr_accessor :output_format
+
+          # The quality of the image generated by the image generation tool call. One of
+          # `low`, `medium`, `high`, `xhigh`, `max`, or `auto`.
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::OrSymbol)) }
+          attr_accessor :quality
+
+          # The prompt that was used after any model prompt rewriting.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :revised_prompt
+
+          # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          sig {
+            returns(T.nilable(T.any(String, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::OrSymbol)))
+          }
+          attr_accessor :size
+
           # An image generation request made by the model.
           sig do
             params(
+
               id: String,
+
               result: T.nilable(String),
-              status:
-                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::OrSymbol,
+
+              status: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::OrSymbol,
+
+              action: T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Action::OrSymbol),
+
+              background: T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Background::OrSymbol),
+
+              error: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::OrHash,
+
+              output_format: T.nilable(
+                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::OrSymbol
+              ),
+
+              quality: T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::OrSymbol),
+
+              revised_prompt: T.nilable(String),
+
+              size: T.nilable(T.any(String, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::OrSymbol)),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the image generation call.
             id:,
+
             # The generated image encoded in base64.
             result:,
+
             # The status of the image generation call.
             status:,
+
+            # The action used for image generation.
+            action: nil,
+
+            # The background setting used for generation.
+            background: nil,
+
+            # Details of a moderation failure, when available.
+            error: nil,
+
+            # The output format used for generation.
+            output_format: nil,
+
+            # The quality of the image generated by the image generation tool call. One of
+            # `low`, `medium`, `high`, `xhigh`, `max`, or `auto`.
+            quality: nil,
+
+            # The prompt that was used after any model prompt rewriting.
+            revised_prompt: nil,
+
+            # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+            size: nil,
+
             # The type of the image generation call. Always `image_generation_call`.
+
             type: :image_generation_call
           )
           end
@@ -1143,9 +1064,19 @@ module OpenAI
               {
                 id: String,
                 result: T.nilable(String),
-                status:
-                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::OrSymbol,
-                type: Symbol
+                status: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::OrSymbol,
+                type: Symbol,
+                action: T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Action::OrSymbol),
+                background: T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Background::OrSymbol),
+                error: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error,
+                output_format: T.nilable(
+                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::OrSymbol
+                ),
+                quality: T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::OrSymbol),
+                revised_prompt: T.nilable(String),
+                size: T.nilable(
+                  T.any(String, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::OrSymbol)
+                )
               }
             )
           end
@@ -1156,75 +1087,360 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol
+            IN_PROGRESS = T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol
+            )
+            COMPLETED = T.let(
+              :completed,
+              OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol
+            )
+            GENERATING = T.let(
+              :generating,
+              OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol
+            )
+            FAILED = T.let(:failed, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol)
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol]
               )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol
+            }
+            def self.values
+            end
+          end
+
+          # The action used for image generation.
+          module Action
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Action)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            GENERATE = T.let(:generate, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Action::TaggedSymbol)
+            EDIT = T.let(:edit, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Action::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Action::TaggedSymbol)
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Action::TaggedSymbol]
               )
-            GENERATING =
-              T.let(
-                :generating,
-                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol
+            }
+            def self.values
+            end
+          end
+
+          # The background setting used for generation.
+          module Background
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Background)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TRANSPARENT = T.let(
+              :transparent,
+              OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Background::TaggedSymbol
+            )
+            OPAQUE = T.let(:opaque, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Background::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Background::TaggedSymbol)
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Background::TaggedSymbol]
               )
-            FAILED =
-              T.let(
-                :failed,
-                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol
+            }
+            def self.values
+            end
+          end
+
+          class Error < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error,
+                OpenAI::Internal::AnyHash
               )
+            end
+
+            # The error code.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :code
+
+            # A description of the error.
+            sig { returns(String) }
+            attr_accessor :message
+
+            # The related request parameter.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :param
+
+            # The error type.
+            sig { returns(String) }
+            attr_accessor :type
+
+            # Public details for a `moderation_blocked` error, when available.
+            sig {
+              returns(T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails))
+            }
+            attr_reader :moderation_details
+
+            sig {
+              params(
+                moderation_details: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::OrHash
+              )
+                .void
+            }
+            attr_writer :moderation_details
+
+            # Details of a moderation failure, when available.
+            sig do
+              params(
+
+                code: T.nilable(String),
+
+                message: String,
+
+                param: T.nilable(String),
+
+                type: String,
+
+                moderation_details: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::OrHash
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The error code.
+              code:,
+
+              # A description of the error.
+              message:,
+
+              # The related request parameter.
+              param:,
+
+              # The error type.
+              type:,
+
+              # Public details for a `moderation_blocked` error, when available.
+
+              moderation_details: nil
+            )
+            end
 
             sig do
               override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Status::TaggedSymbol
-                ]
+                {
+                  code: T.nilable(String),
+                  message: String,
+                  param: T.nilable(String),
+                  type: String,
+                  moderation_details: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails
+                }
               )
             end
+            def to_hash
+            end
+
+            class ModerationDetails < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Public moderation categories. New category values may be added over time.
+              sig { returns(T::Array[String]) }
+              attr_accessor :categories
+
+              # The stage where moderation blocked the image generation call.
+              sig {
+                returns(
+                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::OrSymbol
+                )
+              }
+              attr_accessor :moderation_stage
+
+              # Public details for a `moderation_blocked` error, when available.
+              sig do
+                params(
+
+                  categories: T::Array[String],
+
+                  moderation_stage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::OrSymbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Public moderation categories. New category values may be added over time.
+                categories:,
+
+                # The stage where moderation blocked the image generation call.
+
+                moderation_stage:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    categories: T::Array[String],
+                    moderation_stage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::OrSymbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              # The stage where moderation blocked the image generation call.
+              module ModerationStage
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol = T.type_alias {
+                  T.all(
+                    Symbol,
+                    OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage
+                  )
+                }
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                INPUT = T.let(
+                  :input,
+                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                )
+                OUTPUT = T.let(
+                  :output,
+                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                )
+                UNKNOWN = T.let(
+                  :unknown,
+                  OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                )
+
+                sig {
+                  override.returns(
+                    T::Array[
+                      OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Error::ModerationDetails::ModerationStage::TaggedSymbol
+                    ]
+                  )
+                }
+                def self.values
+                end
+              end
+            end
+          end
+
+          # The output format used for generation.
+          module OutputFormat
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            PNG = T.let(:png, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+            WEBP = T.let(:webp, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+            JPEG = T.let(:jpeg, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol]
+              )
+            }
             def self.values
             end
+          end
+
+          # The quality of the image generated by the image generation tool call. One of
+          # `low`, `medium`, `high`, `xhigh`, `max`, or `auto`.
+          module Quality
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            LOW = T.let(:low, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::TaggedSymbol)
+            HIGH = T.let(:high, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::TaggedSymbol)
+            XHIGH = T.let(:xhigh, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::TaggedSymbol)
+            MAX = T.let(:max, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::TaggedSymbol)
+            AUTO = T.let(:auto, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::TaggedSymbol)
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Quality::TaggedSymbol]
+              )
+            }
+            def self.values
+            end
+          end
+
+          # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          module Size
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(String, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::TaggedSymbol)
+            }
+
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::Variants])
+            }
+            def self.variants
+            end
+
+            TaggedSymbol = T.type_alias do
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size)
+            end
+
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            SIZE_1024X1024 = T.let(
+              :"1024x1024",
+              OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::TaggedSymbol
+            )
+            SIZE_1024X1536 = T.let(
+              :"1024x1536",
+              OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::TaggedSymbol
+            )
+            SIZE_1536X1024 = T.let(
+              :"1536x1024",
+              OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::TaggedSymbol
+            )
+
           end
         end
 
         class LocalShellCall < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::LocalShellCall,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::LocalShellCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the local shell call.
           sig { returns(String) }
           attr_accessor :id
 
           # Execute a shell command on the server.
-          sig do
-            returns(
-              OpenAI::Responses::ResponseInputItem::LocalShellCall::Action
-            )
-          end
+          sig { returns(OpenAI::Responses::ResponseInputItem::LocalShellCall::Action) }
           attr_reader :action
 
-          sig do
-            params(
-              action:
-                OpenAI::Responses::ResponseInputItem::LocalShellCall::Action::OrHash
-            ).void
-          end
+          sig { params(action: OpenAI::Responses::ResponseInputItem::LocalShellCall::Action::OrHash).void }
           attr_writer :action
 
           # The unique ID of the local shell tool call generated by the model.
@@ -1232,11 +1448,7 @@ module OpenAI
           attr_accessor :call_id
 
           # The status of the local shell call.
-          sig do
-            returns(
-              OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::OrSymbol
-            )
-          end
+          sig { returns(OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::OrSymbol) }
           attr_accessor :status
 
           # The type of the local shell call. Always `local_shell_call`.
@@ -1246,25 +1458,35 @@ module OpenAI
           # A tool call to run a command on the local shell.
           sig do
             params(
+
               id: String,
-              action:
-                OpenAI::Responses::ResponseInputItem::LocalShellCall::Action::OrHash,
+
+              action: OpenAI::Responses::ResponseInputItem::LocalShellCall::Action::OrHash,
+
               call_id: String,
-              status:
-                OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::OrSymbol,
+
+              status: OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::OrSymbol,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the local shell call.
             id:,
+
             # Execute a shell command on the server.
             action:,
+
             # The unique ID of the local shell tool call generated by the model.
             call_id:,
+
             # The status of the local shell call.
             status:,
+
             # The type of the local shell call. Always `local_shell_call`.
+
             type: :local_shell_call
           )
           end
@@ -1273,11 +1495,9 @@ module OpenAI
             override.returns(
               {
                 id: String,
-                action:
-                  OpenAI::Responses::ResponseInputItem::LocalShellCall::Action,
+                action: OpenAI::Responses::ResponseInputItem::LocalShellCall::Action,
                 call_id: String,
-                status:
-                  OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::OrSymbol,
+                status: OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::OrSymbol,
                 type: Symbol
               }
             )
@@ -1286,13 +1506,12 @@ module OpenAI
           end
 
           class Action < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::LocalShellCall::Action,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputItem::LocalShellCall::Action,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The command to run.
             sig { returns(T::Array[String]) }
@@ -1321,26 +1540,40 @@ module OpenAI
             # Execute a shell command on the server.
             sig do
               params(
+
                 command: T::Array[String],
+
                 env: T::Hash[Symbol, String],
+
                 timeout_ms: T.nilable(Integer),
+
                 user: T.nilable(String),
+
                 working_directory: T.nilable(String),
+
                 type: Symbol
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The command to run.
               command:,
+
               # Environment variables to set for the command.
               env:,
+
               # Optional timeout in milliseconds for the command.
               timeout_ms: nil,
+
               # Optional user to run the command as.
               user: nil,
+
               # Optional working directory to run the command in.
               working_directory: nil,
+
               # The type of the local shell action. Always `exec`.
+
               type: :exec
             )
             end
@@ -1359,57 +1592,38 @@ module OpenAI
             end
             def to_hash
             end
+
           end
 
           # The status of the local shell call.
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::LocalShellCall::Status
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::LocalShellCall::Status) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::TaggedSymbol
+            )
+            COMPLETED = T.let(:completed, OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::TaggedSymbol)
+            INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::LocalShellCall::Status::TaggedSymbol])
+            }
             def self.values
             end
           end
         end
 
         class LocalShellCallOutput < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::LocalShellCallOutput,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::LocalShellCallOutput,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the local shell tool call generated by the model.
           sig { returns(String) }
@@ -1424,35 +1638,36 @@ module OpenAI
           attr_accessor :type
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::OrSymbol)) }
           attr_accessor :status
 
           # The output of a local shell tool call.
           sig do
             params(
+
               id: String,
+
               output: String,
-              status:
-                T.nilable(
-                  OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::OrSymbol
-                ),
+
+              status: T.nilable(OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::OrSymbol),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the local shell tool call generated by the model.
             id:,
+
             # A JSON string of the output of the local shell tool call.
             output:,
+
             # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
             status: nil,
+
             # The type of the local shell tool call output. Always `local_shell_call_output`.
+
             type: :local_shell_call_output
           )
           end
@@ -1463,10 +1678,7 @@ module OpenAI
                 id: String,
                 output: String,
                 type: Symbol,
-                status:
-                  T.nilable(
-                    OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::OrSymbol
-                  )
+                status: T.nilable(OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::OrSymbol)
               }
             )
           end
@@ -1477,64 +1689,47 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::TaggedSymbol
+            )
+            COMPLETED = T.let(
+              :completed,
+              OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::TaggedSymbol
+            )
+            INCOMPLETE = T.let(
+              :incomplete,
+              OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::TaggedSymbol
+            )
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::TaggedSymbol
-                ]
+                T::Array[OpenAI::Responses::ResponseInputItem::LocalShellCallOutput::Status::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
         end
 
         class ShellCall < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ShellCall,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ShellCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The shell commands and limits that describe how to run the tool call.
-          sig do
-            returns(OpenAI::Responses::ResponseInputItem::ShellCall::Action)
-          end
+          sig { returns(OpenAI::Responses::ResponseInputItem::ShellCall::Action) }
           attr_reader :action
 
-          sig do
-            params(
-              action:
-                OpenAI::Responses::ResponseInputItem::ShellCall::Action::OrHash
-            ).void
-          end
+          sig { params(action: OpenAI::Responses::ResponseInputItem::ShellCall::Action::OrHash).void }
           attr_writer :action
 
           # The unique ID of the shell tool call generated by the model.
@@ -1551,7 +1746,7 @@ module OpenAI
           attr_accessor :id
 
           # The execution context that produced this tool call.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T.any(
@@ -1560,77 +1755,69 @@ module OpenAI
                 )
               )
             )
-          end
+          }
           attr_accessor :caller_
 
           # The environment to execute the shell commands in.
-          sig do
-            returns(
-              T.nilable(
-                T.any(
-                  OpenAI::Responses::LocalEnvironment,
-                  OpenAI::Responses::ContainerReference
-                )
-              )
-            )
-          end
+          sig { returns(T.nilable(T.any(OpenAI::Responses::LocalEnvironment, OpenAI::Responses::ContainerReference))) }
           attr_accessor :environment
 
           # The status of the shell call. One of `in_progress`, `completed`, or
           # `incomplete`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::ShellCall::Status::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ShellCall::Status::OrSymbol)) }
           attr_accessor :status
 
           # A tool representing a request to execute one or more shell commands.
           sig do
             params(
-              action:
-                OpenAI::Responses::ResponseInputItem::ShellCall::Action::OrHash,
+
+              action: OpenAI::Responses::ResponseInputItem::ShellCall::Action::OrHash,
+
               call_id: String,
+
               id: T.nilable(String),
-              caller_:
-                T.nilable(
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct::OrHash,
-                    OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program::OrHash
-                  )
-                ),
-              environment:
-                T.nilable(
-                  T.any(
-                    OpenAI::Responses::LocalEnvironment::OrHash,
-                    OpenAI::Responses::ContainerReference::OrHash
-                  )
-                ),
-              status:
-                T.nilable(
-                  OpenAI::Responses::ResponseInputItem::ShellCall::Status::OrSymbol
-                ),
+
+              caller_: T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program::OrHash
+                )
+              ),
+
+              environment: T.nilable(
+                T.any(OpenAI::Responses::LocalEnvironment::OrHash, OpenAI::Responses::ContainerReference::OrHash)
+              ),
+
+              status: T.nilable(OpenAI::Responses::ResponseInputItem::ShellCall::Status::OrSymbol),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The shell commands and limits that describe how to run the tool call.
             action:,
+
             # The unique ID of the shell tool call generated by the model.
             call_id:,
+
             # The unique ID of the shell tool call. Populated when this item is returned via
             # API.
             id: nil,
+
             # The execution context that produced this tool call.
             caller_: nil,
+
             # The environment to execute the shell commands in.
             environment: nil,
+
             # The status of the shell call. One of `in_progress`, `completed`, or
             # `incomplete`.
             status: nil,
+
             # The type of the item. Always `shell_call`.
+
             type: :shell_call
           )
           end
@@ -1642,24 +1829,16 @@ module OpenAI
                 call_id: String,
                 type: Symbol,
                 id: T.nilable(String),
-                caller_:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct,
-                      OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program
-                    )
-                  ),
-                environment:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Responses::LocalEnvironment,
-                      OpenAI::Responses::ContainerReference
-                    )
-                  ),
-                status:
-                  T.nilable(
-                    OpenAI::Responses::ResponseInputItem::ShellCall::Status::OrSymbol
+                caller_: T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct,
+                    OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program
                   )
+                ),
+                environment: T.nilable(
+                  T.any(OpenAI::Responses::LocalEnvironment, OpenAI::Responses::ContainerReference)
+                ),
+                status: T.nilable(OpenAI::Responses::ResponseInputItem::ShellCall::Status::OrSymbol)
               }
             )
           end
@@ -1667,13 +1846,12 @@ module OpenAI
           end
 
           class Action < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::ShellCall::Action,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ShellCall::Action,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # Ordered shell commands for the execution environment to run.
             sig { returns(T::Array[String]) }
@@ -1691,80 +1869,95 @@ module OpenAI
             # The shell commands and limits that describe how to run the tool call.
             sig do
               params(
+
                 commands: T::Array[String],
+
                 max_output_length: T.nilable(Integer),
+
                 timeout_ms: T.nilable(Integer)
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # Ordered shell commands for the execution environment to run.
               commands:,
+
               # Maximum number of UTF-8 characters to capture from combined stdout and stderr
               # output.
               max_output_length: nil,
+
               # Maximum wall-clock time in milliseconds to allow the shell commands to run.
+
               timeout_ms: nil
             )
             end
 
             sig do
               override.returns(
-                {
-                  commands: T::Array[String],
-                  max_output_length: T.nilable(Integer),
-                  timeout_ms: T.nilable(Integer)
-                }
+                {commands: T::Array[String], max_output_length: T.nilable(Integer), timeout_ms: T.nilable(Integer)}
               )
             end
             def to_hash
             end
+
           end
 
           # The execution context that produced this tool call.
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct,
-                  OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct,
+                OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program
+              )
+            }
 
             class Direct < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The caller type. Always `direct`.
               sig { returns(Symbol) }
               attr_accessor :type
 
-              sig { params(type: Symbol).returns(T.attached_class) }
+              sig do
+                params(
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
               def self.new(
+
                 # The caller type. Always `direct`.
+
                 type: :direct
               )
               end
 
-              sig { override.returns({ type: Symbol }) }
+              sig do
+                override.returns(
+                  {type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
             class Program < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The call ID of the program item that produced this tool call.
               sig { returns(String) }
@@ -1775,55 +1968,53 @@ module OpenAI
               attr_accessor :type
 
               sig do
-                params(caller_id: String, type: Symbol).returns(
-                  T.attached_class
+                params(
+
+                  caller_id: String,
+
+                  type: Symbol
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The call ID of the program item that produced this tool call.
                 caller_id:,
+
                 # The caller type. Always `program`.
+
                 type: :program
               )
               end
 
-              sig { override.returns({ caller_id: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {caller_id: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ShellCall::Caller::Variants]) }
             def self.variants
             end
+
           end
 
           # The environment to execute the shell commands in.
           module Environment
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::LocalEnvironment,
-                  OpenAI::Responses::ContainerReference
-                )
-              end
+            Variants = T.type_alias {
+              T.any(OpenAI::Responses::LocalEnvironment, OpenAI::Responses::ContainerReference)
+            }
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ShellCall::Environment::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ShellCall::Environment::Variants]) }
             def self.variants
             end
+
           end
 
           # The status of the shell call. One of `in_progress`, `completed`, or
@@ -1831,51 +2022,26 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ShellCall::Status
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::ShellCall::Status) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::ShellCall::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::ShellCall::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::ShellCall::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(:in_progress, OpenAI::Responses::ResponseInputItem::ShellCall::Status::TaggedSymbol)
+            COMPLETED = T.let(:completed, OpenAI::Responses::ResponseInputItem::ShellCall::Status::TaggedSymbol)
+            INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseInputItem::ShellCall::Status::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ShellCall::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ShellCall::Status::TaggedSymbol]) }
             def self.values
             end
           end
         end
 
         class ShellCallOutput < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ShellCallOutput,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ShellCallOutput,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the shell tool call generated by the model.
           sig { returns(String) }
@@ -1883,13 +2049,7 @@ module OpenAI
 
           # Captured chunks of stdout and stderr output, along with their associated
           # outcomes.
-          sig do
-            returns(
-              T::Array[
-                OpenAI::Responses::ResponseFunctionShellCallOutputContent
-              ]
-            )
-          end
+          sig { returns(T::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent]) }
           attr_accessor :output
 
           # The type of the item. Always `shell_call_output`.
@@ -1902,7 +2062,7 @@ module OpenAI
           attr_accessor :id
 
           # The execution context that produced this tool call.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T.any(
@@ -1911,7 +2071,7 @@ module OpenAI
                 )
               )
             )
-          end
+          }
           attr_accessor :caller_
 
           # The maximum number of UTF-8 characters captured for this shell call's combined
@@ -1920,56 +2080,59 @@ module OpenAI
           attr_accessor :max_output_length
 
           # The status of the shell call output.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol)) }
           attr_accessor :status
 
           # The streamed output items emitted by a shell tool call.
           sig do
             params(
+
               call_id: String,
-              output:
-                T::Array[
-                  OpenAI::Responses::ResponseFunctionShellCallOutputContent::OrHash
-                ],
+
+              output: T::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent::OrHash],
+
               id: T.nilable(String),
-              caller_:
-                T.nilable(
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct::OrHash,
-                    OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program::OrHash
-                  )
-                ),
+
+              caller_: T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program::OrHash
+                )
+              ),
+
               max_output_length: T.nilable(Integer),
-              status:
-                T.nilable(
-                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol
-                ),
+
+              status: T.nilable(OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the shell tool call generated by the model.
             call_id:,
+
             # Captured chunks of stdout and stderr output, along with their associated
             # outcomes.
             output:,
+
             # The unique ID of the shell tool call output. Populated when this item is
             # returned via API.
             id: nil,
+
             # The execution context that produced this tool call.
             caller_: nil,
+
             # The maximum number of UTF-8 characters captured for this shell call's combined
             # output.
             max_output_length: nil,
+
             # The status of the shell call output.
             status: nil,
+
             # The type of the item. Always `shell_call_output`.
+
             type: :shell_call_output
           )
           end
@@ -1978,24 +2141,17 @@ module OpenAI
             override.returns(
               {
                 call_id: String,
-                output:
-                  T::Array[
-                    OpenAI::Responses::ResponseFunctionShellCallOutputContent
-                  ],
+                output: T::Array[OpenAI::Responses::ResponseFunctionShellCallOutputContent],
                 type: Symbol,
                 id: T.nilable(String),
-                caller_:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct,
-                      OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program
-                    )
-                  ),
-                max_output_length: T.nilable(Integer),
-                status:
-                  T.nilable(
-                    OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol
+                caller_: T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct,
+                    OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program
                   )
+                ),
+                max_output_length: T.nilable(Integer),
+                status: T.nilable(OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::OrSymbol)
               }
             )
           end
@@ -2006,47 +2162,57 @@ module OpenAI
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct,
-                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct,
+                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program
+              )
+            }
 
             class Direct < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The caller type. Always `direct`.
               sig { returns(Symbol) }
               attr_accessor :type
 
-              sig { params(type: Symbol).returns(T.attached_class) }
+              sig do
+                params(
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
               def self.new(
+
                 # The caller type. Always `direct`.
+
                 type: :direct
               )
               end
 
-              sig { override.returns({ type: Symbol }) }
+              sig do
+                override.returns(
+                  {type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
             class Program < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The call ID of the program item that produced this tool call.
               sig { returns(String) }
@@ -2057,83 +2223,72 @@ module OpenAI
               attr_accessor :type
 
               sig do
-                params(caller_id: String, type: Symbol).returns(
-                  T.attached_class
+                params(
+
+                  caller_id: String,
+
+                  type: Symbol
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The call ID of the program item that produced this tool call.
                 caller_id:,
+
                 # The caller type. Always `program`.
+
                 type: :program
               )
               end
 
-              sig { override.returns({ caller_id: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {caller_id: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ShellCallOutput::Caller::Variants]) }
             def self.variants
             end
+
           end
 
           # The status of the shell call output.
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
+            )
+            COMPLETED = T.let(:completed, OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol)
+            INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ShellCallOutput::Status::TaggedSymbol])
+            }
             def self.values
             end
           end
         end
 
         class ApplyPatchCall < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ApplyPatchCall,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ApplyPatchCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the apply patch tool call generated by the model.
           sig { returns(String) }
@@ -2141,7 +2296,7 @@ module OpenAI
 
           # The specific create, delete, or update instruction for the apply_patch tool
           # call.
-          sig do
+          sig {
             returns(
               T.any(
                 OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile,
@@ -2149,15 +2304,11 @@ module OpenAI
                 OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile
               )
             )
-          end
+          }
           attr_accessor :operation
 
           # The status of the apply patch tool call. One of `in_progress` or `completed`.
-          sig do
-            returns(
-              OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::OrSymbol
-            )
-          end
+          sig { returns(OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::OrSymbol) }
           attr_accessor :status
 
           # The type of the item. Always `apply_patch_call`.
@@ -2170,7 +2321,7 @@ module OpenAI
           attr_accessor :id
 
           # The execution context that produced this tool call.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T.any(
@@ -2179,47 +2330,58 @@ module OpenAI
                 )
               )
             )
-          end
+          }
           attr_accessor :caller_
 
           # A tool call representing a request to create, delete, or update files using diff
           # patches.
           sig do
             params(
+
               call_id: String,
-              operation:
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile::OrHash,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile::OrHash
-                ),
-              status:
-                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::OrSymbol,
+
+              operation: T.any(
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile::OrHash,
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile::OrHash,
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile::OrHash
+              ),
+
+              status: OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::OrSymbol,
+
               id: T.nilable(String),
-              caller_:
-                T.nilable(
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct::OrHash,
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program::OrHash
-                  )
-                ),
+
+              caller_: T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program::OrHash
+                )
+              ),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the apply patch tool call generated by the model.
             call_id:,
+
             # The specific create, delete, or update instruction for the apply_patch tool
             # call.
             operation:,
+
             # The status of the apply patch tool call. One of `in_progress` or `completed`.
             status:,
+
             # The unique ID of the apply patch tool call. Populated when this item is returned
             # via API.
             id: nil,
+
             # The execution context that produced this tool call.
             caller_: nil,
+
             # The type of the item. Always `apply_patch_call`.
+
             type: :apply_patch_call
           )
           end
@@ -2228,23 +2390,20 @@ module OpenAI
             override.returns(
               {
                 call_id: String,
-                operation:
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile,
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile,
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile
-                  ),
-                status:
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::OrSymbol,
+                operation: T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile,
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile,
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile
+                ),
+                status: OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::OrSymbol,
                 type: Symbol,
                 id: T.nilable(String),
-                caller_:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct,
-                      OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program
-                    )
+                caller_: T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct,
+                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program
                   )
+                )
               }
             )
           end
@@ -2256,23 +2415,21 @@ module OpenAI
           module Operation
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile,
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile,
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile
+              )
+            }
 
             class CreateFile < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::CreateFile,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Unified diff content to apply when creating the file.
               sig { returns(String) }
@@ -2288,35 +2445,47 @@ module OpenAI
 
               # Instruction for creating a new file via the apply_patch tool.
               sig do
-                params(diff: String, path: String, type: Symbol).returns(
-                  T.attached_class
+                params(
+
+                  diff: String,
+
+                  path: String,
+
+                  type: Symbol
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Unified diff content to apply when creating the file.
                 diff:,
+
                 # Path of the file to create relative to the workspace root.
                 path:,
+
                 # The operation type. Always `create_file`.
+
                 type: :create_file
               )
               end
 
               sig do
-                override.returns({ diff: String, path: String, type: Symbol })
+                override.returns(
+                  {diff: String, path: String, type: Symbol}
+                )
               end
               def to_hash
               end
+
             end
 
             class DeleteFile < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::DeleteFile,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Path of the file to delete relative to the workspace root.
               sig { returns(String) }
@@ -2328,29 +2497,42 @@ module OpenAI
 
               # Instruction for deleting an existing file via the apply_patch tool.
               sig do
-                params(path: String, type: Symbol).returns(T.attached_class)
+                params(
+
+                  path: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Path of the file to delete relative to the workspace root.
                 path:,
+
                 # The operation type. Always `delete_file`.
+
                 type: :delete_file
               )
               end
 
-              sig { override.returns({ path: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {path: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
             class UpdateFile < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::UpdateFile,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Unified diff content to apply to the existing file.
               sig { returns(String) }
@@ -2366,69 +2548,64 @@ module OpenAI
 
               # Instruction for updating an existing file via the apply_patch tool.
               sig do
-                params(diff: String, path: String, type: Symbol).returns(
-                  T.attached_class
+                params(
+
+                  diff: String,
+
+                  path: String,
+
+                  type: Symbol
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Unified diff content to apply to the existing file.
                 diff:,
+
                 # Path of the file to update relative to the workspace root.
                 path:,
+
                 # The operation type. Always `update_file`.
+
                 type: :update_file
               )
               end
 
               sig do
-                override.returns({ diff: String, path: String, type: Symbol })
+                override.returns(
+                  {diff: String, path: String, type: Symbol}
+                )
               end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::Variants
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Operation::Variants])
+            }
             def self.variants
             end
+
           end
 
           # The status of the apply patch tool call. One of `in_progress` or `completed`.
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(
+              :in_progress,
+              OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::TaggedSymbol
+            )
+            COMPLETED = T.let(:completed, OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Status::TaggedSymbol])
+            }
             def self.values
             end
           end
@@ -2437,47 +2614,57 @@ module OpenAI
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct,
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program
+              )
+            }
 
             class Direct < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The caller type. Always `direct`.
               sig { returns(Symbol) }
               attr_accessor :type
 
-              sig { params(type: Symbol).returns(T.attached_class) }
+              sig do
+                params(
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
               def self.new(
+
                 # The caller type. Always `direct`.
+
                 type: :direct
               )
               end
 
-              sig { override.returns({ type: Symbol }) }
+              sig do
+                override.returns(
+                  {type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
             class Program < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The call ID of the program item that produced this tool call.
               sig { returns(String) }
@@ -2488,54 +2675,56 @@ module OpenAI
               attr_accessor :type
 
               sig do
-                params(caller_id: String, type: Symbol).returns(
-                  T.attached_class
+                params(
+
+                  caller_id: String,
+
+                  type: Symbol
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The call ID of the program item that produced this tool call.
                 caller_id:,
+
                 # The caller type. Always `program`.
+
                 type: :program
               )
               end
 
-              sig { override.returns({ caller_id: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {caller_id: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Variants
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ApplyPatchCall::Caller::Variants]) }
             def self.variants
             end
+
           end
         end
 
         class ApplyPatchCallOutput < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the apply patch tool call generated by the model.
           sig { returns(String) }
           attr_accessor :call_id
 
           # The status of the apply patch tool call output. One of `completed` or `failed`.
-          sig do
-            returns(
-              OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::OrSymbol
-            )
-          end
+          sig { returns(OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::OrSymbol) }
           attr_accessor :status
 
           # The type of the item. Always `apply_patch_call_output`.
@@ -2548,7 +2737,7 @@ module OpenAI
           attr_accessor :id
 
           # The execution context that produced this tool call.
-          sig do
+          sig {
             returns(
               T.nilable(
                 T.any(
@@ -2557,7 +2746,7 @@ module OpenAI
                 )
               )
             )
-          end
+          }
           attr_accessor :caller_
 
           # Optional human-readable log text from the apply patch tool (e.g., patch results
@@ -2568,35 +2757,47 @@ module OpenAI
           # The streamed output emitted by an apply patch tool call.
           sig do
             params(
+
               call_id: String,
-              status:
-                OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::OrSymbol,
+
+              status: OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::OrSymbol,
+
               id: T.nilable(String),
-              caller_:
-                T.nilable(
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct::OrHash,
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program::OrHash
-                  )
-                ),
+
+              caller_: T.nilable(
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct::OrHash,
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program::OrHash
+                )
+              ),
+
               output: T.nilable(String),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the apply patch tool call generated by the model.
             call_id:,
+
             # The status of the apply patch tool call output. One of `completed` or `failed`.
             status:,
+
             # The unique ID of the apply patch tool call output. Populated when this item is
             # returned via API.
             id: nil,
+
             # The execution context that produced this tool call.
             caller_: nil,
+
             # Optional human-readable log text from the apply patch tool (e.g., patch results
             # or errors).
             output: nil,
+
             # The type of the item. Always `apply_patch_call_output`.
+
             type: :apply_patch_call_output
           )
           end
@@ -2605,17 +2806,15 @@ module OpenAI
             override.returns(
               {
                 call_id: String,
-                status:
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::OrSymbol,
+                status: OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::OrSymbol,
                 type: Symbol,
                 id: T.nilable(String),
-                caller_:
-                  T.nilable(
-                    T.any(
-                      OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct,
-                      OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program
-                    )
-                  ),
+                caller_: T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct,
+                    OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program
+                  )
+                ),
                 output: T.nilable(String)
               }
             )
@@ -2627,33 +2826,22 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status
-                )
-              end
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status)
+            }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::TaggedSymbol
-              )
-            FAILED =
-              T.let(
-                :failed,
-                OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::TaggedSymbol
-              )
+            COMPLETED = T.let(
+              :completed,
+              OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::TaggedSymbol
+            )
+            FAILED = T.let(:failed, OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::TaggedSymbol)
 
-            sig do
+            sig {
               override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::TaggedSymbol
-                ]
+                T::Array[OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Status::TaggedSymbol]
               )
-            end
+            }
             def self.values
             end
           end
@@ -2662,47 +2850,57 @@ module OpenAI
           module Caller
             extend OpenAI::Internal::Type::Union
 
-            Variants =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct,
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program
-                )
-              end
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct,
+                OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program
+              )
+            }
 
             class Direct < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Direct,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The caller type. Always `direct`.
               sig { returns(Symbol) }
               attr_accessor :type
 
-              sig { params(type: Symbol).returns(T.attached_class) }
+              sig do
+                params(
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
               def self.new(
+
                 # The caller type. Always `direct`.
+
                 type: :direct
               )
               end
 
-              sig { override.returns({ type: Symbol }) }
+              sig do
+                override.returns(
+                  {type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
             class Program < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Program,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The call ID of the program item that produced this tool call.
               sig { returns(String) }
@@ -2713,43 +2911,51 @@ module OpenAI
               attr_accessor :type
 
               sig do
-                params(caller_id: String, type: Symbol).returns(
-                  T.attached_class
+                params(
+
+                  caller_id: String,
+
+                  type: Symbol
                 )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The call ID of the program item that produced this tool call.
                 caller_id:,
+
                 # The caller type. Always `program`.
+
                 type: :program
               )
               end
 
-              sig { override.returns({ caller_id: String, type: Symbol }) }
+              sig do
+                override.returns(
+                  {caller_id: String, type: Symbol}
+                )
+              end
               def to_hash
               end
+
             end
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Variants
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ApplyPatchCallOutput::Caller::Variants])
+            }
             def self.variants
             end
+
           end
         end
 
         class McpListTools < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::McpListTools,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::McpListTools,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the list.
           sig { returns(String) }
@@ -2760,11 +2966,7 @@ module OpenAI
           attr_accessor :server_label
 
           # The tools available on the server.
-          sig do
-            returns(
-              T::Array[OpenAI::Responses::ResponseInputItem::McpListTools::Tool]
-            )
-          end
+          sig { returns(T::Array[OpenAI::Responses::ResponseInputItem::McpListTools::Tool]) }
           attr_accessor :tools
 
           # The type of the item. Always `mcp_list_tools`.
@@ -2778,26 +2980,35 @@ module OpenAI
           # A list of tools available on an MCP server.
           sig do
             params(
+
               id: String,
+
               server_label: String,
-              tools:
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::McpListTools::Tool::OrHash
-                ],
+
+              tools: T::Array[OpenAI::Responses::ResponseInputItem::McpListTools::Tool::OrHash],
+
               error: T.nilable(String),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the list.
             id:,
+
             # The label of the MCP server.
             server_label:,
+
             # The tools available on the server.
             tools:,
+
             # Error message if the server could not list tools.
             error: nil,
+
             # The type of the item. Always `mcp_list_tools`.
+
             type: :mcp_list_tools
           )
           end
@@ -2807,10 +3018,7 @@ module OpenAI
               {
                 id: String,
                 server_label: String,
-                tools:
-                  T::Array[
-                    OpenAI::Responses::ResponseInputItem::McpListTools::Tool
-                  ],
+                tools: T::Array[OpenAI::Responses::ResponseInputItem::McpListTools::Tool],
                 type: Symbol,
                 error: T.nilable(String)
               }
@@ -2820,13 +3028,12 @@ module OpenAI
           end
 
           class Tool < OpenAI::Internal::Type::BaseModel
-            OrHash =
-              T.type_alias do
-                T.any(
-                  OpenAI::Responses::ResponseInputItem::McpListTools::Tool,
-                  OpenAI::Internal::AnyHash
-                )
-              end
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputItem::McpListTools::Tool,
+                OpenAI::Internal::AnyHash
+              )
+            end
 
             # The JSON schema describing the tool's input.
             sig { returns(T.anything) }
@@ -2847,20 +3054,30 @@ module OpenAI
             # A tool available on an MCP server.
             sig do
               params(
+
                 input_schema: T.anything,
+
                 name: String,
+
                 annotations: T.nilable(T.anything),
+
                 description: T.nilable(String)
-              ).returns(T.attached_class)
+              )
+                .returns(T.attached_class)
             end
             def self.new(
+
               # The JSON schema describing the tool's input.
               input_schema:,
+
               # The name of the tool.
               name:,
+
               # Additional annotations about the tool.
               annotations: nil,
+
               # The description of the tool.
+
               description: nil
             )
             end
@@ -2877,17 +3094,17 @@ module OpenAI
             end
             def to_hash
             end
+
           end
         end
 
         class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::McpApprovalRequest,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::McpApprovalRequest,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the approval request.
           sig { returns(String) }
@@ -2912,50 +3129,56 @@ module OpenAI
           # A request for human approval of a tool invocation.
           sig do
             params(
+
               id: String,
+
               arguments: String,
+
               name: String,
+
               server_label: String,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the approval request.
             id:,
+
             # A JSON string of arguments for the tool.
             arguments:,
+
             # The name of the tool to run.
             name:,
+
             # The label of the MCP server making the request.
             server_label:,
+
             # The type of the item. Always `mcp_approval_request`.
+
             type: :mcp_approval_request
           )
           end
 
           sig do
             override.returns(
-              {
-                id: String,
-                arguments: String,
-                name: String,
-                server_label: String,
-                type: Symbol
-              }
+              {id: String, arguments: String, name: String, server_label: String, type: Symbol}
             )
           end
           def to_hash
           end
+
         end
 
         class McpApprovalResponse < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::McpApprovalResponse,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::McpApprovalResponse,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The ID of the approval request being answered.
           sig { returns(String) }
@@ -2980,23 +3203,35 @@ module OpenAI
           # A response to an MCP approval request.
           sig do
             params(
+
               approval_request_id: String,
+
               approve: T::Boolean,
+
               id: T.nilable(String),
+
               reason: T.nilable(String),
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The ID of the approval request being answered.
             approval_request_id:,
+
             # Whether the request was approved.
             approve:,
+
             # The unique ID of the approval response
             id: nil,
+
             # Optional reason for the decision.
             reason: nil,
+
             # The type of the item. Always `mcp_approval_response`.
+
             type: :mcp_approval_response
           )
           end
@@ -3014,16 +3249,16 @@ module OpenAI
           end
           def to_hash
           end
+
         end
 
         class McpCall < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::McpCall,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::McpCall,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of the tool call.
           sig { returns(String) }
@@ -3052,7 +3287,17 @@ module OpenAI
           attr_accessor :approval_request_id
 
           # The error from the tool call, if any.
-          sig { returns(T.nilable(String)) }
+          sig {
+            returns(
+              T.nilable(
+                T.any(
+                  OpenAI::Responses::McpToolCallError::McpProtocolError,
+                  OpenAI::Responses::McpToolCallError::McpToolExecutionError,
+                  OpenAI::Responses::McpToolCallError::HTTPError
+                )
+              )
+            )
+          }
           attr_accessor :error
 
           # The output from the tool call.
@@ -3061,59 +3306,73 @@ module OpenAI
 
           # The status of the tool call. One of `in_progress`, `completed`, `incomplete`,
           # `calling`, or `failed`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol)) }
           attr_reader :status
 
-          sig do
-            params(
-              status:
-                OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol
-            ).void
-          end
+          sig { params(status: OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol).void }
           attr_writer :status
 
           # An invocation of a tool on an MCP server.
           sig do
             params(
+
               id: String,
+
               arguments: String,
+
               name: String,
+
               server_label: String,
+
               approval_request_id: T.nilable(String),
-              error: T.nilable(String),
+
+              error: T.nilable(
+                T.any(
+                  OpenAI::Responses::McpToolCallError::McpProtocolError::OrHash,
+                  OpenAI::Responses::McpToolCallError::McpToolExecutionError::OrHash,
+                  OpenAI::Responses::McpToolCallError::HTTPError::OrHash
+                )
+              ),
+
               output: T.nilable(String),
-              status:
-                OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol,
+
+              status: OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of the tool call.
             id:,
+
             # A JSON string of the arguments passed to the tool.
             arguments:,
+
             # The name of the tool that was run.
             name:,
+
             # The label of the MCP server running the tool.
             server_label:,
+
             # Unique identifier for the MCP tool call approval request. Include this value in
             # a subsequent `mcp_approval_response` input to approve or reject the
             # corresponding tool call.
             approval_request_id: nil,
+
             # The error from the tool call, if any.
             error: nil,
+
             # The output from the tool call.
             output: nil,
+
             # The status of the tool call. One of `in_progress`, `completed`, `incomplete`,
             # `calling`, or `failed`.
             status: nil,
+
             # The type of the item. Always `mcp_call`.
+
             type: :mcp_call
           )
           end
@@ -3127,10 +3386,15 @@ module OpenAI
                 server_label: String,
                 type: Symbol,
                 approval_request_id: T.nilable(String),
-                error: T.nilable(String),
+                error: T.nilable(
+                  T.any(
+                    OpenAI::Responses::McpToolCallError::McpProtocolError,
+                    OpenAI::Responses::McpToolCallError::McpToolExecutionError,
+                    OpenAI::Responses::McpToolCallError::HTTPError
+                  )
+                ),
                 output: T.nilable(String),
-                status:
-                  OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol
+                status: OpenAI::Responses::ResponseInputItem::McpCall::Status::OrSymbol
               }
             )
           end
@@ -3142,129 +3406,99 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::McpCall::Status
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::McpCall::Status) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            IN_PROGRESS =
-              T.let(
-                :in_progress,
-                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
-              )
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
-              )
-            CALLING =
-              T.let(
-                :calling,
-                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
-              )
-            FAILED =
-              T.let(
-                :failed,
-                OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
-              )
+            IN_PROGRESS = T.let(:in_progress, OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol)
+            COMPLETED = T.let(:completed, OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol)
+            INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol)
+            CALLING = T.let(:calling, OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol)
+            FAILED = T.let(:failed, OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::McpCall::Status::TaggedSymbol]) }
             def self.values
             end
           end
         end
 
         class CompactionTrigger < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::CompactionTrigger,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::CompactionTrigger,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The type of the item. Always `compaction_trigger`.
           sig { returns(Symbol) }
           attr_accessor :type
 
           # Compacts the current context. Must be the final input item.
-          sig { params(type: Symbol).returns(T.attached_class) }
+          sig do
+            params(
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
           def self.new(
+
             # The type of the item. Always `compaction_trigger`.
+
             type: :compaction_trigger
           )
           end
 
-          sig { override.returns({ type: Symbol }) }
+          sig do
+            override.returns(
+              {type: Symbol}
+            )
+          end
           def to_hash
           end
+
         end
 
         class ItemReference < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ItemReference,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ItemReference,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The ID of the item to reference.
           sig { returns(String) }
           attr_accessor :id
 
           # The type of item to reference. Always `item_reference`.
-          sig do
-            returns(
-              T.nilable(
-                OpenAI::Responses::ResponseInputItem::ItemReference::Type::OrSymbol
-              )
-            )
-          end
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ItemReference::Type::OrSymbol)) }
           attr_accessor :type
 
           # An internal identifier for an item to reference.
           sig do
             params(
+
               id: String,
-              type:
-                T.nilable(
-                  OpenAI::Responses::ResponseInputItem::ItemReference::Type::OrSymbol
-                )
-            ).returns(T.attached_class)
+
+              type: T.nilable(OpenAI::Responses::ResponseInputItem::ItemReference::Type::OrSymbol)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The ID of the item to reference.
             id:,
+
             # The type of item to reference. Always `item_reference`.
+
             type: nil
           )
           end
 
           sig do
             override.returns(
-              {
-                id: String,
-                type:
-                  T.nilable(
-                    OpenAI::Responses::ResponseInputItem::ItemReference::Type::OrSymbol
-                  )
-              }
+              {id: String, type: T.nilable(OpenAI::Responses::ResponseInputItem::ItemReference::Type::OrSymbol)}
             )
           end
           def to_hash
@@ -3274,41 +3508,27 @@ module OpenAI
           module Type
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ItemReference::Type
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::ItemReference::Type) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            ITEM_REFERENCE =
-              T.let(
-                :item_reference,
-                OpenAI::Responses::ResponseInputItem::ItemReference::Type::TaggedSymbol
-              )
+            ITEM_REFERENCE = T.let(
+              :item_reference,
+              OpenAI::Responses::ResponseInputItem::ItemReference::Type::TaggedSymbol
+            )
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ItemReference::Type::TaggedSymbol
-                ]
-              )
-            end
+            sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ItemReference::Type::TaggedSymbol]) }
             def self.values
             end
           end
         end
 
         class Program < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::Program,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::Program,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of this program item.
           sig { returns(String) }
@@ -3332,50 +3552,56 @@ module OpenAI
 
           sig do
             params(
+
               id: String,
+
               call_id: String,
+
               code: String,
+
               fingerprint: String,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of this program item.
             id:,
+
             # The stable call ID of the program item.
             call_id:,
+
             # The JavaScript source executed by programmatic tool calling.
             code:,
+
             # Opaque program replay fingerprint that must be round-tripped.
             fingerprint:,
+
             # The item type. Always `program`.
+
             type: :program
           )
           end
 
           sig do
             override.returns(
-              {
-                id: String,
-                call_id: String,
-                code: String,
-                fingerprint: String,
-                type: Symbol
-              }
+              {id: String, call_id: String, code: String, fingerprint: String, type: Symbol}
             )
           end
           def to_hash
           end
+
         end
 
         class ProgramOutput < OpenAI::Internal::Type::BaseModel
-          OrHash =
-            T.type_alias do
-              T.any(
-                OpenAI::Responses::ResponseInputItem::ProgramOutput,
-                OpenAI::Internal::AnyHash
-              )
-            end
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseInputItem::ProgramOutput,
+              OpenAI::Internal::AnyHash
+            )
+          end
 
           # The unique ID of this program output item.
           sig { returns(String) }
@@ -3390,11 +3616,7 @@ module OpenAI
           attr_accessor :result
 
           # The terminal status of the program output.
-          sig do
-            returns(
-              OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::OrSymbol
-            )
-          end
+          sig { returns(OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::OrSymbol) }
           attr_accessor :status
 
           # The item type. Always `program_output`.
@@ -3403,24 +3625,35 @@ module OpenAI
 
           sig do
             params(
+
               id: String,
+
               call_id: String,
+
               result: String,
-              status:
-                OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::OrSymbol,
+
+              status: OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::OrSymbol,
+
               type: Symbol
-            ).returns(T.attached_class)
+            )
+              .returns(T.attached_class)
           end
           def self.new(
+
             # The unique ID of this program output item.
             id:,
+
             # The call ID of the program item.
             call_id:,
+
             # The result produced by the program item.
             result:,
+
             # The terminal status of the program output.
             status:,
+
             # The item type. Always `program_output`.
+
             type: :program_output
           )
           end
@@ -3431,8 +3664,7 @@ module OpenAI
                 id: String,
                 call_id: String,
                 result: String,
-                status:
-                  OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::OrSymbol,
+                status: OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::OrSymbol,
                 type: Symbol
               }
             )
@@ -3444,46 +3676,27 @@ module OpenAI
           module Status
             extend OpenAI::Internal::Type::Enum
 
-            TaggedSymbol =
-              T.type_alias do
-                T.all(
-                  Symbol,
-                  OpenAI::Responses::ResponseInputItem::ProgramOutput::Status
-                )
-              end
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::ResponseInputItem::ProgramOutput::Status) }
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-            COMPLETED =
-              T.let(
-                :completed,
-                OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::TaggedSymbol
-              )
-            INCOMPLETE =
-              T.let(
-                :incomplete,
-                OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::TaggedSymbol
-              )
+            COMPLETED = T.let(:completed, OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::TaggedSymbol)
+            INCOMPLETE = T.let(:incomplete, OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::TaggedSymbol)
 
-            sig do
-              override.returns(
-                T::Array[
-                  OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::TaggedSymbol
-                ]
-              )
-            end
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseInputItem::ProgramOutput::Status::TaggedSymbol])
+            }
             def self.values
             end
           end
         end
 
-        sig do
-          override.returns(
-            T::Array[OpenAI::Responses::ResponseInputItem::Variants]
-          )
-        end
+        sig { override.returns(T::Array[OpenAI::Responses::ResponseInputItem::Variants]) }
         def self.variants
         end
+
       end
+
     end
+
   end
 end

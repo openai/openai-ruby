@@ -1,0 +1,14 @@
+module OpenAI
+  module Resources
+    class Audio
+      class Voices
+        def create: (
+          body: OpenAI::Models::Audio::VoiceCreateParams::body,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Audio::Voice
+
+        def initialize: (client: OpenAI::Client) -> void
+      end
+    end
+  end
+end

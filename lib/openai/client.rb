@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "helpers/data_residency"
+
 module OpenAI
   class Client < OpenAI::Internal::Transport::BaseClient
     # Default max number of retries to attempt after a failed retryable request.
@@ -29,6 +31,9 @@ module OpenAI
 
     # @return [String, nil]
     attr_reader :webhook_secret
+
+    # @return [OpenAI::Resources::Decisions]
+    attr_reader :decisions
 
     # Given a prompt, the model will return one or more predicted completions, and can
     # also return the probabilities of alternative tokens at each position.
@@ -76,6 +81,9 @@ module OpenAI
     # @return [OpenAI::Resources::VectorStores]
     attr_reader :vector_stores
 
+    # @return [OpenAI::Resources::Safety]
+    attr_reader :safety
+
     # @return [OpenAI::Resources::Webhooks]
     attr_reader :webhooks
 
@@ -93,8 +101,12 @@ module OpenAI
     # @return [OpenAI::Resources::Admin]
     attr_reader :admin
 
+    # Create and manage model responses.
     # @return [OpenAI::Resources::Responses]
     attr_reader :responses
+
+    # @return [OpenAI::Resources::Live]
+    attr_reader :live
 
     # @return [OpenAI::Resources::Realtime]
     attr_reader :realtime
@@ -122,7 +134,9 @@ module OpenAI
     #
     # @return [Hash{String=>String}]
     private def auth_headers(security:)
-      {bearer_auth:, admin_api_key_auth:}.slice(*security.keys).values.reduce({}, :merge)
+      enabled_auth = {bearer_auth:, admin_api_key_auth:}.slice(*security.select { |_, enabled| enabled }.keys)
+      headers = enabled_auth.values.reduce({}, :merge)
+      headers.merge(enabled_auth.fetch(:bearer_auth, {}).slice("authorization"))
     end
 
     # @api private
@@ -158,25 +172,50 @@ module OpenAI
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
     # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
     #
+    # @param data_residency [Symbol, String, nil] Select `global`, `us`, `eu`, `ae`.
+    #   Mutually exclusive with an explicit `base_url` or `provider`.
+    #   This selects an endpoint; project and model eligibility still apply.
+    #
     # @param max_retries [Integer] Max number of retries to attempt after a failed retryable request.
     #
-    # @param timeout [Float]
+    # @param timeout [Float, nil]
     #
     # @param initial_retry_delay [Float]
     #
     # @param max_retry_delay [Float]
+    #
+    # @param http_client [#execute, nil] The HTTP client used to
+    #   execute SDK requests. Defaults to {OpenAI::NetHTTPClient}.
+    #
+    # @param logger [#debug, #info, #warn, #error, nil] Logger for SDK request diagnostics.
+    #
+    # @param log_level [Symbol, String, nil] SDK request log level. Defaults to
+    #   `ENV["OPENAI_LOG"]`, `:info` when `logger` is provided, and `:off` otherwise.
+    #
+    # @param on_retry [Proc, nil] Callback invoked immediately before an API retry delay.
     def initialize(
       api_key: ENV["OPENAI_API_KEY"],
       admin_api_key: ENV["OPENAI_ADMIN_KEY"],
       organization: ENV["OPENAI_ORG_ID"],
       project: ENV["OPENAI_PROJECT_ID"],
       webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
-      base_url: ENV["OPENAI_BASE_URL"],
+      base_url: OpenAI::Internal::OMIT,
+      data_residency: nil,
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
-      max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY
+      max_retry_delay: self.class::DEFAULT_MAX_RETRY_DELAY,
+      http_client: nil,
+      logger: nil,
+      log_level: nil,
+      on_retry: nil
     )
+      base_url = OpenAI::Internal::ClientOptions.resolve_data_residency(
+        data_residency,
+        base_url: base_url,
+        provider: defined?(provider) ? provider : nil
+      )
+      base_url = ENV["OPENAI_BASE_URL"] if base_url.equal?(OpenAI::Internal::OMIT)
       base_url ||= "https://api.openai.com/v1"
 
       headers = {
@@ -192,6 +231,7 @@ module OpenAI
             parsed[line[0...colon].strip] = line[(colon + 1)..].strip
           end
         end
+
         headers = parsed.merge(headers)
       end
 
@@ -205,9 +245,14 @@ module OpenAI
         max_retries: max_retries,
         initial_retry_delay: initial_retry_delay,
         max_retry_delay: max_retry_delay,
-        headers: headers
+        headers: headers,
+        http_client: http_client,
+        logger: logger,
+        log_level: log_level,
+        on_retry: on_retry
       )
 
+      @decisions = OpenAI::Resources::Decisions.new(client: self)
       @completions = OpenAI::Resources::Completions.new(client: self)
       @chat = OpenAI::Resources::Chat.new(client: self)
       @embeddings = OpenAI::Resources::Embeddings.new(client: self)
@@ -220,12 +265,14 @@ module OpenAI
       @fine_tuning = OpenAI::Resources::FineTuning.new(client: self)
       @graders = OpenAI::Resources::Graders.new(client: self)
       @vector_stores = OpenAI::Resources::VectorStores.new(client: self)
+      @safety = OpenAI::Resources::Safety.new(client: self)
       @webhooks = OpenAI::Resources::Webhooks.new(client: self)
       @beta = OpenAI::Resources::Beta.new(client: self)
       @batches = OpenAI::Resources::Batches.new(client: self)
       @uploads = OpenAI::Resources::Uploads.new(client: self)
       @admin = OpenAI::Resources::Admin.new(client: self)
       @responses = OpenAI::Resources::Responses.new(client: self)
+      @live = OpenAI::Resources::Live.new(client: self)
       @realtime = OpenAI::Resources::Realtime.new(client: self)
       @conversations = OpenAI::Resources::Conversations.new(client: self)
       @evals = OpenAI::Resources::Evals.new(client: self)

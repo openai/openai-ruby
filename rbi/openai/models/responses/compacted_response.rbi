@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class CompactedResponse < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::CompactedResponse,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::CompactedResponse,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique identifier for the compacted response.
         sig { returns(String) }
@@ -26,9 +28,7 @@ module OpenAI
 
         # The compacted list of output items. This is a list of all user messages,
         # followed by a single compaction item.
-        sig do
-          returns(T::Array[OpenAI::Responses::ResponseOutputItem::Variants])
-        end
+        sig { returns(T::Array[OpenAI::Responses::ResponseOutputItem::Variants]) }
         attr_accessor :output
 
         # Token accounting for the compaction pass, including cached, reasoning, and total
@@ -41,57 +41,68 @@ module OpenAI
 
         sig do
           params(
+
             id: String,
+
             created_at: Integer,
-            output:
-              T::Array[
-                T.any(
-                  OpenAI::Responses::ResponseOutputMessage::OrHash,
-                  OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                  OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
-                  OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
-                  OpenAI::Responses::ResponseComputerToolCall::OrHash,
-                  OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
-                  OpenAI::Responses::ResponseReasoningItem::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::Program::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::ProgramOutput::OrHash,
-                  OpenAI::Responses::ResponseToolSearchCall::OrHash,
-                  OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::AdditionalTools::OrHash,
-                  OpenAI::Responses::ResponseCompactionItem::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
-                  OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::LocalShellCallOutput::OrHash,
-                  OpenAI::Responses::ResponseFunctionShellToolCall::OrHash,
-                  OpenAI::Responses::ResponseFunctionShellToolCallOutput::OrHash,
-                  OpenAI::Responses::ResponseApplyPatchToolCall::OrHash,
-                  OpenAI::Responses::ResponseApplyPatchToolCallOutput::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash,
-                  OpenAI::Responses::ResponseOutputItem::McpApprovalResponse::OrHash,
-                  OpenAI::Responses::ResponseCustomToolCall::OrHash,
-                  OpenAI::Responses::ResponseCustomToolCallOutputItem::OrHash
-                )
-              ],
+
+            output: T::Array[
+              T.any(
+                OpenAI::Responses::ResponseOutputMessage::OrHash,
+                OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
+                OpenAI::Responses::ResponseFunctionToolCall::OrHash,
+                OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
+                OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                OpenAI::Responses::ResponseComputerToolCall::OrHash,
+                OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
+                OpenAI::Responses::ResponseReasoningItem::OrHash,
+                OpenAI::Responses::ResponseOutputItem::Program::OrHash,
+                OpenAI::Responses::ResponseOutputItem::ProgramOutput::OrHash,
+                OpenAI::Responses::ResponseToolSearchCall::OrHash,
+                OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
+                OpenAI::Responses::ResponseOutputItem::AdditionalTools::OrHash,
+                OpenAI::Responses::ResponseCompactionItem::OrHash,
+                OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
+                OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::LocalShellCallOutput::OrHash,
+                OpenAI::Responses::ResponseFunctionShellToolCall::OrHash,
+                OpenAI::Responses::ResponseFunctionShellToolCallOutput::OrHash,
+                OpenAI::Responses::ResponseApplyPatchToolCall::OrHash,
+                OpenAI::Responses::ResponseApplyPatchToolCallOutput::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash,
+                OpenAI::Responses::ResponseOutputItem::McpApprovalResponse::OrHash,
+                OpenAI::Responses::ResponseCustomToolCall::OrHash,
+                OpenAI::Responses::ResponseCustomToolCallOutputItem::OrHash
+              )
+            ],
+
             usage: OpenAI::Responses::ResponseUsage::OrHash,
+
             object: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique identifier for the compacted response.
           id:,
+
           # Unix timestamp (in seconds) when the compacted conversation was created.
           created_at:,
+
           # The compacted list of output items. This is a list of all user messages,
           # followed by a single compaction item.
           output:,
+
           # Token accounting for the compaction pass, including cached, reasoning, and total
           # tokens.
           usage:,
+
           # The object type. Always `response.compaction`.
+
           object: :"response.compaction"
         )
         end
@@ -109,7 +120,10 @@ module OpenAI
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

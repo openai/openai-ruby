@@ -4,22 +4,26 @@ module OpenAI
       module Alpha
         type grader_validate_response =
           {
-            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
+            ?grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
           }
 
         class GraderValidateResponse < OpenAI::Internal::Type::BaseModel
+          # The grader used for the fine-tuning job.
           attr_reader grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader?
 
+          # The grader used for the fine-tuning job.
           def grader=: (
             OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
           ) -> OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
 
+          # @param grader
+          #   The grader used for the fine-tuning job.
           def initialize: (
             ?grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
           ) -> void
 
           def to_hash: -> {
-            grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
+            ?grader: OpenAI::Models::FineTuning::Alpha::GraderValidateResponse::grader
           }
 
           type grader =

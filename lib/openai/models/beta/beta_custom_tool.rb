@@ -20,9 +20,18 @@ module OpenAI
         #   The tool invocation context(s).
         #
         #   @return [Array<Symbol, OpenAI::Models::Beta::BetaCustomTool::AllowedCaller>, nil]
-        optional :allowed_callers,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaCustomTool::AllowedCaller] },
-                 nil?: true
+        optional(
+          :allowed_callers,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::BetaCustomTool::AllowedCaller] },
+          nil?: true
+        )
+
+        # @!attribute async
+        #   Whether the tool response can be returned asynchronously versus immediately
+        #   returned on next response creation.
+        #
+        #   @return [Boolean, nil]
+        optional :async, OpenAI::Internal::Type::Boolean
 
         # @!attribute defer_loading
         #   Whether this tool should be deferred and discovered via tool search.
@@ -42,22 +51,31 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaCustomTool::Format::Text, OpenAI::Models::Beta::BetaCustomTool::Format::Grammar, nil]
         optional :format_, union: -> { OpenAI::Beta::BetaCustomTool::Format }, api_name: :format
 
-        # @!method initialize(name:, allowed_callers: nil, defer_loading: nil, description: nil, format_: nil, type: :custom)
+        # @!method initialize(name:, allowed_callers: nil, async: nil, defer_loading: nil, description: nil, format_: nil, type: :custom)
         #   A custom tool that processes input using a specified format. Learn more about
-        #   [custom tools](https://platform.openai.com/docs/guides/function-calling#custom-tools)
+        #   [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
         #
-        #   @param name [String] The name of the custom tool, used to identify it in tool calls.
+        #   @param name [String]
+        #     The name of the custom tool, used to identify it in tool calls.
         #
-        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Beta::BetaCustomTool::AllowedCaller>, nil] The tool invocation context(s).
+        #   @param allowed_callers [Array<Symbol, OpenAI::Models::Beta::BetaCustomTool::AllowedCaller>, nil]
+        #     The tool invocation context(s).
         #
-        #   @param defer_loading [Boolean] Whether this tool should be deferred and discovered via tool search.
+        #   @param async [Boolean]
+        #     Whether the tool response can be returned asynchronously versus immediately
+        #     returned on next response creation.
         #
-        #   @param description [String] Optional description of the custom tool, used to provide more context.
+        #   @param defer_loading [Boolean]
+        #     Whether this tool should be deferred and discovered via tool search.
         #
-        #   @param format_ [OpenAI::Models::Beta::BetaCustomTool::Format::Text, OpenAI::Models::Beta::BetaCustomTool::Format::Grammar] The input format for the custom tool. Default is unconstrained text.
+        #   @param description [String]
+        #     Optional description of the custom tool, used to provide more context.
         #
-        #   @param type [Symbol, :custom] The type of the custom tool. Always `custom`.
-
+        #   @param format_ [OpenAI::Models::Beta::BetaCustomTool::Format::Text, OpenAI::Models::Beta::BetaCustomTool::Format::Grammar]
+        #     The input format for the custom tool. Default is unconstrained text.
+        #
+        #   @param type [Symbol, :custom]
+        #     The type of the custom tool. Always `custom`.
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 
@@ -92,7 +110,8 @@ module OpenAI
             # @!method initialize(type: :text)
             #   Unconstrained free-form text.
             #
-            #   @param type [Symbol, :text] Unconstrained text format. Always `text`.
+            #   @param type [Symbol, :text]
+            #     Unconstrained text format. Always `text`.
           end
 
           class Grammar < OpenAI::Internal::Type::BaseModel
@@ -117,11 +136,14 @@ module OpenAI
             # @!method initialize(definition:, syntax:, type: :grammar)
             #   A grammar defined by the user.
             #
-            #   @param definition [String] The grammar definition.
+            #   @param definition [String]
+            #     The grammar definition.
             #
-            #   @param syntax [Symbol, OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::Syntax] The syntax of the grammar definition. One of `lark` or `regex`.
+            #   @param syntax [Symbol, OpenAI::Models::Beta::BetaCustomTool::Format::Grammar::Syntax]
+            #     The syntax of the grammar definition. One of `lark` or `regex`.
             #
-            #   @param type [Symbol, :grammar] Grammar format. Always `grammar`.
+            #   @param type [Symbol, :grammar]
+            #     Grammar format. Always `grammar`.
 
             # The syntax of the grammar definition. One of `lark` or `regex`.
             #

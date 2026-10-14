@@ -2,14 +2,19 @@
 
 module OpenAI
   module Models
+
     BetaToolChoiceCustom = Beta::BetaToolChoiceCustom
 
     module Beta
+
       class BetaToolChoiceCustom < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Beta::BetaToolChoiceCustom, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Beta::BetaToolChoiceCustom,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The name of the custom tool to call.
         sig { returns(String) }
@@ -20,19 +25,37 @@ module OpenAI
         attr_accessor :type
 
         # Use this option to force the model to call a specific custom tool.
-        sig { params(name: String, type: Symbol).returns(T.attached_class) }
+        sig do
+          params(
+
+            name: String,
+
+            type: Symbol
+          )
+            .returns(T.attached_class)
+        end
         def self.new(
+
           # The name of the custom tool to call.
           name:,
+
           # For custom tool calling, the type is always `custom`.
+
           type: :custom
         )
         end
 
-        sig { override.returns({ name: String, type: Symbol }) }
+        sig do
+          override.returns(
+            {name: String, type: Symbol}
+          )
+        end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

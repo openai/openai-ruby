@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class ResponseImageGenCallPartialImageEvent < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::Responses::ResponseImageGenCallPartialImageEvent,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::ResponseImageGenCallPartialImageEvent,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The unique identifier of the image generation item being processed.
         sig { returns(String) }
@@ -37,30 +39,92 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # The background setting that was used.
+        sig { returns(T.nilable(String)) }
+        attr_reader :background
+
+        sig { params(background: String).void }
+        attr_writer :background
+
+        # The output format that was used.
+        sig { returns(T.nilable(String)) }
+        attr_reader :output_format
+
+        sig { params(output_format: String).void }
+        attr_writer :output_format
+
+        # The image quality that was used.
+        sig { returns(T.nilable(String)) }
+        attr_reader :quality
+
+        sig { params(quality: String).void }
+        attr_writer :quality
+
+        # The image size that was used.
+        sig { returns(T.nilable(String)) }
+        attr_reader :size
+
+        sig { params(size: String).void }
+        attr_writer :size
+
         # Emitted when a partial image is available during image generation streaming.
         sig do
           params(
+
             item_id: String,
+
             output_index: Integer,
+
             partial_image_b64: String,
+
             partial_image_index: Integer,
+
             sequence_number: Integer,
+
+            background: String,
+
+            output_format: String,
+
+            quality: String,
+
+            size: String,
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The unique identifier of the image generation item being processed.
           item_id:,
+
           # The index of the output item in the response's output array.
           output_index:,
+
           # Base64-encoded partial image data, suitable for rendering as an image.
           partial_image_b64:,
+
           # 0-based index for the partial image (backend is 1-based, but this is 0-based for
           # the user).
           partial_image_index:,
+
           # The sequence number of the image generation item being processed.
           sequence_number:,
+
+          # The background setting that was used.
+          background: nil,
+
+          # The output format that was used.
+          output_format: nil,
+
+          # The image quality that was used.
+          quality: nil,
+
+          # The image size that was used.
+          size: nil,
+
           # The type of the event. Always 'response.image_generation_call.partial_image'.
+
           type: :"response.image_generation_call.partial_image"
         )
         end
@@ -73,13 +137,20 @@ module OpenAI
               partial_image_b64: String,
               partial_image_index: Integer,
               sequence_number: Integer,
-              type: Symbol
+              type: Symbol,
+              background: String,
+              output_format: String,
+              quality: String,
+              size: String
             }
           )
         end
         def to_hash
         end
+
       end
+
     end
+
   end
 end

@@ -7,6 +7,7 @@ module OpenAI
         attr_reader input_tokens: OpenAI::Resources::Beta::Responses::InputTokens
 
         def create: (
+          ?access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms,
           ?background: bool?,
           ?context_management: ::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]?,
           ?conversation: OpenAI::Models::Beta::ResponseCreateParams::conversation?,
@@ -43,6 +44,7 @@ module OpenAI
         ) -> OpenAI::Beta::BetaResponse
 
         def stream_raw: (
+          ?access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms,
           ?background: bool?,
           ?context_management: ::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]?,
           ?conversation: OpenAI::Models::Beta::ResponseCreateParams::conversation?,
@@ -76,7 +78,8 @@ module OpenAI
           ?user: String,
           ?betas: ::Array[OpenAI::Models::Beta::ResponseCreateParams::beta],
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::beta_response_stream_event]
+        ) -> OpenAI::Internal::Stream[(OpenAI::Models::Beta::beta_response_stream_event
+        | OpenAI::Streaming::UnknownStreamEvent)]
 
         def retrieve: (
           String response_id,
@@ -94,7 +97,8 @@ module OpenAI
           ?starting_after: Integer,
           ?betas: ::Array[OpenAI::Models::Beta::ResponseRetrieveParams::beta],
           ?request_options: OpenAI::request_opts
-        ) -> OpenAI::Internal::Stream[OpenAI::Models::Beta::beta_response_stream_event]
+        ) -> OpenAI::Internal::Stream[(OpenAI::Models::Beta::beta_response_stream_event
+        | OpenAI::Streaming::UnknownStreamEvent)]
 
         def delete: (
           String response_id,

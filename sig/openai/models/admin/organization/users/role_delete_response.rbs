@@ -6,10 +6,18 @@ module OpenAI
           type role_delete_response = { deleted: bool, object: String }
 
           class RoleDeleteResponse < OpenAI::Internal::Type::BaseModel
+            # Whether the assignment was removed.
             attr_accessor deleted: bool
 
+            # Identifier for the deleted assignment, such as `group.role.deleted` or
+            # `user.role.deleted`.
             attr_accessor object: String
 
+            # @param deleted
+            #   Whether the assignment was removed.
+            # @param object
+            #   Identifier for the deleted assignment, such as `group.role.deleted` or
+            #   `user.role.deleted`.
             def initialize: (deleted: bool, object: String) -> void
 
             def to_hash: -> { deleted: bool, object: String }

@@ -69,20 +69,23 @@ module OpenAI
           optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
           # @!method initialize(button:, x:, y_:, keys: nil, type: :click)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::Click} for more details.
-          #
           #   A click action.
           #
-          #   @param button [Symbol, OpenAI::Models::Beta::BetaComputerAction::Click::Button] Indicates which mouse button was pressed during the click. One of `left`, `right
+          #   @param button [Symbol, OpenAI::Models::Beta::BetaComputerAction::Click::Button]
+          #     Indicates which mouse button was pressed during the click. One of `left`,
+          #     `right`, `wheel`, `back`, or `forward`.
           #
-          #   @param x [Integer] The x-coordinate where the click occurred.
+          #   @param x [Integer]
+          #     The x-coordinate where the click occurred.
           #
-          #   @param y_ [Integer] The y-coordinate where the click occurred.
+          #   @param y_ [Integer]
+          #     The y-coordinate where the click occurred.
           #
-          #   @param keys [Array<String>, nil] The keys being held while clicking.
+          #   @param keys [Array<String>, nil]
+          #     The keys being held while clicking.
           #
-          #   @param type [Symbol, :click] Specifies the event type. For a click action, this property is always `click`.
+          #   @param type [Symbol, :click]
+          #     Specifies the event type. For a click action, this property is always `click`.
 
           # Indicates which mouse button was pressed during the click. One of `left`,
           # `right`, `wheel`, `back`, or `forward`.
@@ -129,18 +132,20 @@ module OpenAI
           required :y_, Integer, api_name: :y
 
           # @!method initialize(keys:, x:, y_:, type: :double_click)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::DoubleClick} for more details.
-          #
           #   A double click action.
           #
-          #   @param keys [Array<String>, nil] The keys being held while double-clicking.
+          #   @param keys [Array<String>, nil]
+          #     The keys being held while double-clicking.
           #
-          #   @param x [Integer] The x-coordinate where the double click occurred.
+          #   @param x [Integer]
+          #     The x-coordinate where the double click occurred.
           #
-          #   @param y_ [Integer] The y-coordinate where the double click occurred.
+          #   @param y_ [Integer]
+          #     The y-coordinate where the double click occurred.
           #
-          #   @param type [Symbol, :double_click] Specifies the event type. For a double click action, this property is always set
+          #   @param type [Symbol, :double_click]
+          #     Specifies the event type. For a double click action, this property is always set
+          #     to `double_click`.
         end
 
         class Drag < OpenAI::Internal::Type::BaseModel
@@ -172,17 +177,25 @@ module OpenAI
           optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
           # @!method initialize(path:, keys: nil, type: :drag)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::Drag} for more details.
-          #
           #   A drag action.
           #
-          #   @param path [Array<OpenAI::Models::Beta::BetaComputerAction::Drag::Path>] An array of coordinates representing the path of the drag action. Coordinates wi
+          #   @param path [Array<OpenAI::Models::Beta::BetaComputerAction::Drag::Path>]
+          #     An array of coordinates representing the path of the drag action. Coordinates
+          #     will appear as an array of objects, eg
           #
-          #   @param keys [Array<String>, nil] The keys being held while dragging the mouse.
+          #     ```
+          #     [
+          #       { x: 100, y: 200 },
+          #       { x: 200, y: 300 }
+          #     ]
+          #     ```
           #
-          #   @param type [Symbol, :drag] Specifies the event type. For a drag action, this property is always set to `dra
-
+          #   @param keys [Array<String>, nil]
+          #     The keys being held while dragging the mouse.
+          #
+          #   @param type [Symbol, :drag]
+          #     Specifies the event type. For a drag action, this property is always set to
+          #     `drag`.
           class Path < OpenAI::Internal::Type::BaseModel
             # @!attribute x
             #   The x-coordinate.
@@ -199,9 +212,11 @@ module OpenAI
             # @!method initialize(x:, y_:)
             #   An x/y coordinate pair, e.g. `{ x: 100, y: 200 }`.
             #
-            #   @param x [Integer] The x-coordinate.
+            #   @param x [Integer]
+            #     The x-coordinate.
             #
-            #   @param y_ [Integer] The y-coordinate.
+            #   @param y_ [Integer]
+            #     The y-coordinate.
           end
         end
 
@@ -221,14 +236,15 @@ module OpenAI
           required :type, const: :keypress
 
           # @!method initialize(keys:, type: :keypress)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::Keypress} for more details.
-          #
           #   A collection of keypresses the model would like to perform.
           #
-          #   @param keys [Array<String>] The combination of keys the model is requesting to be pressed. This is an array
+          #   @param keys [Array<String>]
+          #     The combination of keys the model is requesting to be pressed. This is an array
+          #     of strings, each representing a key.
           #
-          #   @param type [Symbol, :keypress] Specifies the event type. For a keypress action, this property is always set to
+          #   @param type [Symbol, :keypress]
+          #     Specifies the event type. For a keypress action, this property is always set to
+          #     `keypress`.
         end
 
         class Move < OpenAI::Internal::Type::BaseModel
@@ -258,18 +274,20 @@ module OpenAI
           optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
           # @!method initialize(x:, y_:, keys: nil, type: :move)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::Move} for more details.
-          #
           #   A mouse move action.
           #
-          #   @param x [Integer] The x-coordinate to move to.
+          #   @param x [Integer]
+          #     The x-coordinate to move to.
           #
-          #   @param y_ [Integer] The y-coordinate to move to.
+          #   @param y_ [Integer]
+          #     The y-coordinate to move to.
           #
-          #   @param keys [Array<String>, nil] The keys being held while moving the mouse.
+          #   @param keys [Array<String>, nil]
+          #     The keys being held while moving the mouse.
           #
-          #   @param type [Symbol, :move] Specifies the event type. For a move action, this property is always set to `mov
+          #   @param type [Symbol, :move]
+          #     Specifies the event type. For a move action, this property is always set to
+          #     `move`.
         end
 
         class Screenshot < OpenAI::Internal::Type::BaseModel
@@ -281,12 +299,11 @@ module OpenAI
           required :type, const: :screenshot
 
           # @!method initialize(type: :screenshot)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::Screenshot} for more details.
-          #
           #   A screenshot action.
           #
-          #   @param type [Symbol, :screenshot] Specifies the event type. For a screenshot action, this property is always set t
+          #   @param type [Symbol, :screenshot]
+          #     Specifies the event type. For a screenshot action, this property is always set
+          #     to `screenshot`.
         end
 
         class Scroll < OpenAI::Internal::Type::BaseModel
@@ -328,22 +345,26 @@ module OpenAI
           optional :keys, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
           # @!method initialize(scroll_x:, scroll_y:, x:, y_:, keys: nil, type: :scroll)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::Scroll} for more details.
-          #
           #   A scroll action.
           #
-          #   @param scroll_x [Integer] The horizontal scroll distance.
+          #   @param scroll_x [Integer]
+          #     The horizontal scroll distance.
           #
-          #   @param scroll_y [Integer] The vertical scroll distance.
+          #   @param scroll_y [Integer]
+          #     The vertical scroll distance.
           #
-          #   @param x [Integer] The x-coordinate where the scroll occurred.
+          #   @param x [Integer]
+          #     The x-coordinate where the scroll occurred.
           #
-          #   @param y_ [Integer] The y-coordinate where the scroll occurred.
+          #   @param y_ [Integer]
+          #     The y-coordinate where the scroll occurred.
           #
-          #   @param keys [Array<String>, nil] The keys being held while scrolling.
+          #   @param keys [Array<String>, nil]
+          #     The keys being held while scrolling.
           #
-          #   @param type [Symbol, :scroll] Specifies the event type. For a scroll action, this property is always set to `s
+          #   @param type [Symbol, :scroll]
+          #     Specifies the event type. For a scroll action, this property is always set to
+          #     `scroll`.
         end
 
         class Type < OpenAI::Internal::Type::BaseModel
@@ -361,14 +382,14 @@ module OpenAI
           required :type, const: :type
 
           # @!method initialize(text:, type: :type)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::Type} for more details.
-          #
           #   An action to type in text.
           #
-          #   @param text [String] The text to type.
+          #   @param text [String]
+          #     The text to type.
           #
-          #   @param type [Symbol, :type] Specifies the event type. For a type action, this property is always set to `typ
+          #   @param type [Symbol, :type]
+          #     Specifies the event type. For a type action, this property is always set to
+          #     `type`.
         end
 
         class Wait < OpenAI::Internal::Type::BaseModel
@@ -380,12 +401,11 @@ module OpenAI
           required :type, const: :wait
 
           # @!method initialize(type: :wait)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaComputerAction::Wait} for more details.
-          #
           #   A wait action.
           #
-          #   @param type [Symbol, :wait] Specifies the event type. For a wait action, this property is always set to `wai
+          #   @param type [Symbol, :wait]
+          #     Specifies the event type. For a wait action, this property is always set to
+          #     `wait`.
         end
 
         # @!method self.variants

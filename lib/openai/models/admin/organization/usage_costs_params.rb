@@ -35,12 +35,19 @@ module OpenAI
           optional :end_time, Integer
 
           # @!attribute group_by
-          #   Group the costs by the specified fields. Support fields include `project_id`,
-          #   `line_item`, `api_key_id` and any combination of them.
+          #   Group the costs by the specified fields. Supported fields include `project_id`,
+          #   `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          #   `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          #   organization and requested time range. Unsupported combinations return HTTP 400.
+          #   When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          #   activity and `unlabeled` for all other activity. Without source grouping,
+          #   `api_source` is null.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCostsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCostsParams::GroupBy] }
+          )
 
           # @!attribute limit
           #   A limit on the number of buckets to be returned. Limit can range between 1 and
@@ -48,6 +55,13 @@ module OpenAI
           #
           #   @return [Integer, nil]
           optional :limit, Integer
+
+          # @!attribute line_items
+          #   Return only costs for these exact line item names. Each value must match the
+          #   complete `line_item` value, for example `gpt-6-astra, input_tokens`.
+          #
+          #   @return [Array<String>, nil]
+          optional :line_items, OpenAI::Internal::Type::ArrayOf[String]
 
           # @!attribute page
           #   A cursor for use in pagination. Corresponding to the `next_page` field from the
@@ -62,25 +76,43 @@ module OpenAI
           #   @return [Array<String>, nil]
           optional :project_ids, OpenAI::Internal::Type::ArrayOf[String]
 
-          # @!method initialize(start_time:, api_key_ids: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, page: nil, project_ids: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::UsageCostsParams} for more details.
+          # @!method initialize(start_time:, api_key_ids: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, line_items: nil, page: nil, project_ids: nil, request_options: {})
+          #   @param start_time [Integer]
+          #     Start time (Unix seconds) of the query time range, inclusive.
           #
-          #   @param start_time [Integer] Start time (Unix seconds) of the query time range, inclusive.
+          #   @param api_key_ids [Array<String>]
+          #     Return only costs for these API keys.
           #
-          #   @param api_key_ids [Array<String>] Return only costs for these API keys.
+          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::BucketWidth]
+          #     Width of each time bucket in response. Currently only `1d` is supported, default
+          #     to `1d`.
           #
-          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::BucketWidth] Width of each time bucket in response. Currently only `1d` is supported, default
+          #   @param end_time [Integer]
+          #     End time (Unix seconds) of the query time range, exclusive.
           #
-          #   @param end_time [Integer] End time (Unix seconds) of the query time range, exclusive.
+          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>]
+          #     Group the costs by the specified fields. Supported fields include `project_id`,
+          #     `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+          #     `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+          #     organization and requested time range. Unsupported combinations return HTTP 400.
+          #     When grouped by `api_source`, results use `agents_api` for attributed Agents API
+          #     activity and `unlabeled` for all other activity. Without source grouping,
+          #     `api_source` is null.
           #
-          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCostsParams::GroupBy>] Group the costs by the specified fields. Support fields include `project_id`, `l
+          #   @param limit [Integer]
+          #     A limit on the number of buckets to be returned. Limit can range between 1 and
+          #     180, and the default is 7.
           #
-          #   @param limit [Integer] A limit on the number of buckets to be returned. Limit can range between 1 and 1
+          #   @param line_items [Array<String>]
+          #     Return only costs for these exact line item names. Each value must match the
+          #     complete `line_item` value, for example `gpt-6-astra, input_tokens`.
           #
-          #   @param page [String] A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #   @param page [String]
+          #     A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #     previous response.
           #
-          #   @param project_ids [Array<String>] Return only costs for these projects.
+          #   @param project_ids [Array<String>]
+          #     Return only costs for these projects.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -99,8 +131,10 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             PROJECT_ID = :project_id
+            USER_ID = :user_id
             LINE_ITEM = :line_item
             API_KEY_ID = :api_key_id
+            API_SOURCE = :api_source
 
             # @!method self.values
             #   @return [Array<Symbol>]

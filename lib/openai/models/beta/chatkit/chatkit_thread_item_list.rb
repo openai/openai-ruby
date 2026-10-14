@@ -9,8 +9,10 @@ module OpenAI
           #   A list of items
           #
           #   @return [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem, OpenAI::Models::Beta::ChatKit::ChatKitThreadAssistantMessageItem, OpenAI::Models::Beta::ChatKit::ChatKitWidgetItem, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup>]
-          required :data,
-                   -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data] }
+          required(
+            :data,
+            -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data] }
+          )
 
           # @!attribute first_id
           #   The ID of the first item in the list.
@@ -39,15 +41,20 @@ module OpenAI
           # @!method initialize(data:, first_id:, has_more:, last_id:, object: :list)
           #   A paginated list of thread items rendered for the ChatKit API.
           #
-          #   @param data [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem, OpenAI::Models::Beta::ChatKit::ChatKitThreadAssistantMessageItem, OpenAI::Models::Beta::ChatKit::ChatKitWidgetItem, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup>] A list of items
+          #   @param data [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadUserMessageItem, OpenAI::Models::Beta::ChatKit::ChatKitThreadAssistantMessageItem, OpenAI::Models::Beta::ChatKit::ChatKitWidgetItem, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup>]
+          #     A list of items
           #
-          #   @param first_id [String, nil] The ID of the first item in the list.
+          #   @param first_id [String, nil]
+          #     The ID of the first item in the list.
           #
-          #   @param has_more [Boolean] Whether there are more items available.
+          #   @param has_more [Boolean]
+          #     Whether there are more items available.
           #
-          #   @param last_id [String, nil] The ID of the last item in the list.
+          #   @param last_id [String, nil]
+          #     The ID of the last item in the list.
           #
-          #   @param object [Symbol, :list] The type of object returned, must be `list`.
+          #   @param object [Symbol, :list]
+          #     The type of object returned, must be `list`.
 
           # User-authored messages within a thread.
           module Data
@@ -65,8 +72,10 @@ module OpenAI
             variant :"chatkit.widget", -> { OpenAI::Beta::ChatKit::ChatKitWidgetItem }
 
             # Record of a client side tool invocation initiated by the assistant.
-            variant :"chatkit.client_tool_call",
-                    -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall }
+            variant(
+              :"chatkit.client_tool_call",
+              -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall }
+            )
 
             # Task emitted by the workflow to show progress and status updates.
             variant :"chatkit.task", -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask }
@@ -122,8 +131,10 @@ module OpenAI
               #   Execution status for the tool call.
               #
               #   @return [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status]
-              required :status,
-                       enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status }
+              required(
+                :status,
+                enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status }
+              )
 
               # @!attribute thread_id
               #   Identifier of the parent thread.
@@ -138,31 +149,38 @@ module OpenAI
               required :type, const: :"chatkit.client_tool_call"
 
               # @!method initialize(id:, arguments:, call_id:, created_at:, name:, output:, status:, thread_id:, object: :"chatkit.thread_item", type: :"chatkit.client_tool_call")
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall}
-              #   for more details.
-              #
               #   Record of a client side tool invocation initiated by the assistant.
               #
-              #   @param id [String] Identifier of the thread item.
+              #   @param id [String]
+              #     Identifier of the thread item.
               #
-              #   @param arguments [String] JSON-encoded arguments that were sent to the tool.
+              #   @param arguments [String]
+              #     JSON-encoded arguments that were sent to the tool.
               #
-              #   @param call_id [String] Identifier for the client tool call.
+              #   @param call_id [String]
+              #     Identifier for the client tool call.
               #
-              #   @param created_at [Integer] Unix timestamp (in seconds) for when the item was created.
+              #   @param created_at [Integer]
+              #     Unix timestamp (in seconds) for when the item was created.
               #
-              #   @param name [String] Tool name that was invoked.
+              #   @param name [String]
+              #     Tool name that was invoked.
               #
-              #   @param output [String, nil] JSON-encoded output captured from the tool. Defaults to null while execution is
+              #   @param output [String, nil]
+              #     JSON-encoded output captured from the tool. Defaults to null while execution is
+              #     in progress.
               #
-              #   @param status [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status] Execution status for the tool call.
+              #   @param status [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitClientToolCall::Status]
+              #     Execution status for the tool call.
               #
-              #   @param thread_id [String] Identifier of the parent thread.
+              #   @param thread_id [String]
+              #     Identifier of the parent thread.
               #
-              #   @param object [Symbol, :"chatkit.thread_item"] Type discriminator that is always `chatkit.thread_item`.
+              #   @param object [Symbol, :"chatkit.thread_item"]
+              #     Type discriminator that is always `chatkit.thread_item`.
               #
-              #   @param type [Symbol, :"chatkit.client_tool_call"] Type discriminator that is always `chatkit.client_tool_call`.
+              #   @param type [Symbol, :"chatkit.client_tool_call"]
+              #     Type discriminator that is always `chatkit.client_tool_call`.
 
               # Execution status for the tool call.
               #
@@ -213,8 +231,10 @@ module OpenAI
               #   Subtype for the task.
               #
               #   @return [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType]
-              required :task_type,
-                       enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType }
+              required(
+                :task_type,
+                enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType }
+              )
 
               # @!attribute thread_id
               #   Identifier of the parent thread.
@@ -231,21 +251,29 @@ module OpenAI
               # @!method initialize(id:, created_at:, heading:, summary:, task_type:, thread_id:, object: :"chatkit.thread_item", type: :"chatkit.task")
               #   Task emitted by the workflow to show progress and status updates.
               #
-              #   @param id [String] Identifier of the thread item.
+              #   @param id [String]
+              #     Identifier of the thread item.
               #
-              #   @param created_at [Integer] Unix timestamp (in seconds) for when the item was created.
+              #   @param created_at [Integer]
+              #     Unix timestamp (in seconds) for when the item was created.
               #
-              #   @param heading [String, nil] Optional heading for the task. Defaults to null when not provided.
+              #   @param heading [String, nil]
+              #     Optional heading for the task. Defaults to null when not provided.
               #
-              #   @param summary [String, nil] Optional summary that describes the task. Defaults to null when omitted.
+              #   @param summary [String, nil]
+              #     Optional summary that describes the task. Defaults to null when omitted.
               #
-              #   @param task_type [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType] Subtype for the task.
+              #   @param task_type [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTask::TaskType]
+              #     Subtype for the task.
               #
-              #   @param thread_id [String] Identifier of the parent thread.
+              #   @param thread_id [String]
+              #     Identifier of the parent thread.
               #
-              #   @param object [Symbol, :"chatkit.thread_item"] Type discriminator that is always `chatkit.thread_item`.
+              #   @param object [Symbol, :"chatkit.thread_item"]
+              #     Type discriminator that is always `chatkit.thread_item`.
               #
-              #   @param type [Symbol, :"chatkit.task"] Type discriminator that is always `chatkit.task`.
+              #   @param type [Symbol, :"chatkit.task"]
+              #     Type discriminator that is always `chatkit.task`.
 
               # Subtype for the task.
               #
@@ -284,8 +312,14 @@ module OpenAI
               #   Tasks included in the group.
               #
               #   @return [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task>]
-              required :tasks,
-                       -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task] }
+              required(
+                :tasks,
+                -> {
+                  OpenAI::Internal::Type::ArrayOf[
+                    OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task
+                  ]
+                }
+              )
 
               # @!attribute thread_id
               #   Identifier of the parent thread.
@@ -302,18 +336,23 @@ module OpenAI
               # @!method initialize(id:, created_at:, tasks:, thread_id:, object: :"chatkit.thread_item", type: :"chatkit.task_group")
               #   Collection of workflow tasks grouped together in the thread.
               #
-              #   @param id [String] Identifier of the thread item.
+              #   @param id [String]
+              #     Identifier of the thread item.
               #
-              #   @param created_at [Integer] Unix timestamp (in seconds) for when the item was created.
+              #   @param created_at [Integer]
+              #     Unix timestamp (in seconds) for when the item was created.
               #
-              #   @param tasks [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task>] Tasks included in the group.
+              #   @param tasks [Array<OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task>]
+              #     Tasks included in the group.
               #
-              #   @param thread_id [String] Identifier of the parent thread.
+              #   @param thread_id [String]
+              #     Identifier of the parent thread.
               #
-              #   @param object [Symbol, :"chatkit.thread_item"] Type discriminator that is always `chatkit.thread_item`.
+              #   @param object [Symbol, :"chatkit.thread_item"]
+              #     Type discriminator that is always `chatkit.thread_item`.
               #
-              #   @param type [Symbol, :"chatkit.task_group"] Type discriminator that is always `chatkit.task_group`.
-
+              #   @param type [Symbol, :"chatkit.task_group"]
+              #     Type discriminator that is always `chatkit.task_group`.
               class Task < OpenAI::Internal::Type::BaseModel
                 # @!attribute heading
                 #   Optional heading for the grouped task. Defaults to null when not provided.
@@ -331,21 +370,22 @@ module OpenAI
                 #   Subtype for the grouped task.
                 #
                 #   @return [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::Type]
-                required :type,
-                         enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::Type }
+                required(
+                  :type,
+                  enum: -> { OpenAI::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::Type }
+                )
 
                 # @!method initialize(heading:, summary:, type:)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task}
-                #   for more details.
-                #
                 #   Task entry that appears within a TaskGroup.
                 #
-                #   @param heading [String, nil] Optional heading for the grouped task. Defaults to null when not provided.
+                #   @param heading [String, nil]
+                #     Optional heading for the grouped task. Defaults to null when not provided.
                 #
-                #   @param summary [String, nil] Optional summary that describes the grouped task. Defaults to null when omitted.
+                #   @param summary [String, nil]
+                #     Optional summary that describes the grouped task. Defaults to null when omitted.
                 #
-                #   @param type [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::Type] Subtype for the grouped task.
+                #   @param type [Symbol, OpenAI::Models::Beta::ChatKit::ChatKitThreadItemList::Data::ChatKitTaskGroup::Task::Type]
+                #     Subtype for the grouped task.
 
                 # Subtype for the grouped task.
                 #

@@ -12,26 +12,26 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        error: OpenAI::FineTuning::FineTuningJob::Error | nil,
-        fine_tuned_model: String | nil,
-        finished_at: Integer | nil,
-        hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
-        model: String,
-        object: Symbol,
-        organization_id: String,
-        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        seed: Integer,
-        status: OpenAI::FineTuning::FineTuningJob::Status,
-        trained_tokens: Integer | nil,
-        training_file: String,
-        validation_file: String | nil,
-        estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        method_: OpenAI::FineTuning::FineTuningJob::Method | nil
-      }
+          id: String,
+          created_at: Integer,
+          error: OpenAI::FineTuning::FineTuningJob::Error | nil,
+          fine_tuned_model: String | nil,
+          finished_at: Integer | nil,
+          hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
+          model: String,
+          object: Symbol,
+          organization_id: String,
+          result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          seed: Integer,
+          status: OpenAI::FineTuning::FineTuningJob::Status,
+          trained_tokens: Integer | nil,
+          training_file: String,
+          validation_file: String | nil,
+          estimated_finish: Integer | nil,
+          integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          method_: OpenAI::FineTuning::FineTuningJob::Method | nil
+        }
     end
   end
 
@@ -44,26 +44,26 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        error: OpenAI::FineTuning::FineTuningJob::Error | nil,
-        fine_tuned_model: String | nil,
-        finished_at: Integer | nil,
-        hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
-        model: String,
-        object: Symbol,
-        organization_id: String,
-        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        seed: Integer,
-        status: OpenAI::FineTuning::FineTuningJob::Status,
-        trained_tokens: Integer | nil,
-        training_file: String,
-        validation_file: String | nil,
-        estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        method_: OpenAI::FineTuning::FineTuningJob::Method | nil
-      }
+          id: String,
+          created_at: Integer,
+          error: OpenAI::FineTuning::FineTuningJob::Error | nil,
+          fine_tuned_model: String | nil,
+          finished_at: Integer | nil,
+          hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
+          model: String,
+          object: Symbol,
+          organization_id: String,
+          result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          seed: Integer,
+          status: OpenAI::FineTuning::FineTuningJob::Status,
+          trained_tokens: Integer | nil,
+          training_file: String,
+          validation_file: String | nil,
+          estimated_finish: Integer | nil,
+          integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          method_: OpenAI::FineTuning::FineTuningJob::Method | nil
+        }
     end
   end
 
@@ -74,7 +74,8 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
       response => OpenAI::Internal::CursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -83,26 +84,26 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        error: OpenAI::FineTuning::FineTuningJob::Error | nil,
-        fine_tuned_model: String | nil,
-        finished_at: Integer | nil,
-        hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
-        model: String,
-        object: Symbol,
-        organization_id: String,
-        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        seed: Integer,
-        status: OpenAI::FineTuning::FineTuningJob::Status,
-        trained_tokens: Integer | nil,
-        training_file: String,
-        validation_file: String | nil,
-        estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        method_: OpenAI::FineTuning::FineTuningJob::Method | nil
-      }
+          id: String,
+          created_at: Integer,
+          error: OpenAI::FineTuning::FineTuningJob::Error | nil,
+          fine_tuned_model: String | nil,
+          finished_at: Integer | nil,
+          hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
+          model: String,
+          object: Symbol,
+          organization_id: String,
+          result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          seed: Integer,
+          status: OpenAI::FineTuning::FineTuningJob::Status,
+          trained_tokens: Integer | nil,
+          training_file: String,
+          validation_file: String | nil,
+          estimated_finish: Integer | nil,
+          integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          method_: OpenAI::FineTuning::FineTuningJob::Method | nil
+        }
     end
   end
 
@@ -115,26 +116,26 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        error: OpenAI::FineTuning::FineTuningJob::Error | nil,
-        fine_tuned_model: String | nil,
-        finished_at: Integer | nil,
-        hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
-        model: String,
-        object: Symbol,
-        organization_id: String,
-        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        seed: Integer,
-        status: OpenAI::FineTuning::FineTuningJob::Status,
-        trained_tokens: Integer | nil,
-        training_file: String,
-        validation_file: String | nil,
-        estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        method_: OpenAI::FineTuning::FineTuningJob::Method | nil
-      }
+          id: String,
+          created_at: Integer,
+          error: OpenAI::FineTuning::FineTuningJob::Error | nil,
+          fine_tuned_model: String | nil,
+          finished_at: Integer | nil,
+          hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
+          model: String,
+          object: Symbol,
+          organization_id: String,
+          result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          seed: Integer,
+          status: OpenAI::FineTuning::FineTuningJob::Status,
+          trained_tokens: Integer | nil,
+          training_file: String,
+          validation_file: String | nil,
+          estimated_finish: Integer | nil,
+          integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          method_: OpenAI::FineTuning::FineTuningJob::Method | nil
+        }
     end
   end
 
@@ -145,7 +146,8 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
       response => OpenAI::Internal::CursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -154,14 +156,14 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created_at: Integer,
-        level: OpenAI::FineTuning::FineTuningJobEvent::Level,
-        message: String,
-        object: Symbol,
-        data: OpenAI::Internal::Type::Unknown | nil,
-        type: OpenAI::FineTuning::FineTuningJobEvent::Type | nil
-      }
+          id: String,
+          created_at: Integer,
+          level: OpenAI::FineTuning::FineTuningJobEvent::Level,
+          message: String,
+          object: Symbol,
+          data: OpenAI::Internal::Type::Unknown | nil,
+          type: OpenAI::FineTuning::FineTuningJobEvent::Type | nil
+        }
     end
   end
 
@@ -174,26 +176,26 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        error: OpenAI::FineTuning::FineTuningJob::Error | nil,
-        fine_tuned_model: String | nil,
-        finished_at: Integer | nil,
-        hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
-        model: String,
-        object: Symbol,
-        organization_id: String,
-        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        seed: Integer,
-        status: OpenAI::FineTuning::FineTuningJob::Status,
-        trained_tokens: Integer | nil,
-        training_file: String,
-        validation_file: String | nil,
-        estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        method_: OpenAI::FineTuning::FineTuningJob::Method | nil
-      }
+          id: String,
+          created_at: Integer,
+          error: OpenAI::FineTuning::FineTuningJob::Error | nil,
+          fine_tuned_model: String | nil,
+          finished_at: Integer | nil,
+          hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
+          model: String,
+          object: Symbol,
+          organization_id: String,
+          result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          seed: Integer,
+          status: OpenAI::FineTuning::FineTuningJob::Status,
+          trained_tokens: Integer | nil,
+          training_file: String,
+          validation_file: String | nil,
+          estimated_finish: Integer | nil,
+          integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          method_: OpenAI::FineTuning::FineTuningJob::Method | nil
+        }
     end
   end
 
@@ -206,26 +208,26 @@ class OpenAI::Test::Resources::FineTuning::JobsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created_at: Integer,
-        error: OpenAI::FineTuning::FineTuningJob::Error | nil,
-        fine_tuned_model: String | nil,
-        finished_at: Integer | nil,
-        hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
-        model: String,
-        object: Symbol,
-        organization_id: String,
-        result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
-        seed: Integer,
-        status: OpenAI::FineTuning::FineTuningJob::Status,
-        trained_tokens: Integer | nil,
-        training_file: String,
-        validation_file: String | nil,
-        estimated_finish: Integer | nil,
-        integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
-        metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
-        method_: OpenAI::FineTuning::FineTuningJob::Method | nil
-      }
+          id: String,
+          created_at: Integer,
+          error: OpenAI::FineTuning::FineTuningJob::Error | nil,
+          fine_tuned_model: String | nil,
+          finished_at: Integer | nil,
+          hyperparameters: OpenAI::FineTuning::FineTuningJob::Hyperparameters,
+          model: String,
+          object: Symbol,
+          organization_id: String,
+          result_files: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          seed: Integer,
+          status: OpenAI::FineTuning::FineTuningJob::Status,
+          trained_tokens: Integer | nil,
+          training_file: String,
+          validation_file: String | nil,
+          estimated_finish: Integer | nil,
+          integrations: ^(OpenAI::Internal::Type::ArrayOf[OpenAI::FineTuning::FineTuningJobWandbIntegrationObject]) | nil,
+          metadata: ^(OpenAI::Internal::Type::HashOf[String]) | nil,
+          method_: OpenAI::FineTuning::FineTuningJob::Method | nil
+        }
     end
   end
 end

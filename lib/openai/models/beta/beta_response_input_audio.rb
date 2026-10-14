@@ -16,14 +16,12 @@ module OpenAI
         required :type, const: :input_audio
 
         # @!method initialize(input_audio:, type: :input_audio)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::BetaResponseInputAudio} for more details.
-        #
         #   An audio input to the model.
         #
         #   @param input_audio [OpenAI::Models::Beta::BetaResponseInputAudio::InputAudio]
         #
-        #   @param type [Symbol, :input_audio] The type of the input item. Always `input_audio`.
+        #   @param type [Symbol, :input_audio]
+        #     The type of the input item. Always `input_audio`.
 
         # @see OpenAI::Models::Beta::BetaResponseInputAudio#input_audio
         class InputAudio < OpenAI::Internal::Type::BaseModel
@@ -37,17 +35,18 @@ module OpenAI
           #   The format of the audio data. Currently supported formats are `mp3` and `wav`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::BetaResponseInputAudio::InputAudio::Format]
-          required :format_,
-                   enum: -> { OpenAI::Beta::BetaResponseInputAudio::InputAudio::Format },
-                   api_name: :format
+          required(
+            :format_,
+            enum: -> { OpenAI::Beta::BetaResponseInputAudio::InputAudio::Format },
+            api_name: :format
+          )
 
           # @!method initialize(data:, format_:)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::BetaResponseInputAudio::InputAudio} for more details.
+          #   @param data [String]
+          #     Base64-encoded audio data.
           #
-          #   @param data [String] Base64-encoded audio data.
-          #
-          #   @param format_ [Symbol, OpenAI::Models::Beta::BetaResponseInputAudio::InputAudio::Format] The format of the audio data. Currently supported formats are `mp3` and
+          #   @param format_ [Symbol, OpenAI::Models::Beta::BetaResponseInputAudio::InputAudio::Format]
+          #     The format of the audio data. Currently supported formats are `mp3` and `wav`.
 
           # The format of the audio data. Currently supported formats are `mp3` and `wav`.
           #

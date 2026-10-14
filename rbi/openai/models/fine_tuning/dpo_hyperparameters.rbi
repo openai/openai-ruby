@@ -2,15 +2,17 @@
 
 module OpenAI
   module Models
+
     module FineTuning
+
       class DpoHyperparameters < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(
-              OpenAI::FineTuning::DpoHyperparameters,
-              OpenAI::Internal::AnyHash
-            )
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::FineTuning::DpoHyperparameters,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # Number of examples in each batch. A larger batch size means that model
         # parameters are updated less frequently, but with lower variance.
@@ -47,24 +49,34 @@ module OpenAI
         # The hyperparameters used for the DPO fine-tuning job.
         sig do
           params(
+
             batch_size: T.any(Symbol, Integer),
+
             beta: T.any(Symbol, Float),
+
             learning_rate_multiplier: T.any(Symbol, Float),
+
             n_epochs: T.any(Symbol, Integer)
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # Number of examples in each batch. A larger batch size means that model
           # parameters are updated less frequently, but with lower variance.
           batch_size: nil,
+
           # The beta value for the DPO method. A higher beta value will increase the weight
           # of the penalty between the policy and reference model.
           beta: nil,
+
           # Scaling factor for the learning rate. A smaller learning rate may be useful to
           # avoid overfitting.
           learning_rate_multiplier: nil,
+
           # The number of epochs to train the model for. An epoch refers to one full cycle
           # through the training dataset.
+
           n_epochs: nil
         )
         end
@@ -89,15 +101,10 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Integer) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::DpoHyperparameters::BatchSize::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::DpoHyperparameters::BatchSize::Variants]) }
           def self.variants
           end
+
         end
 
         # The beta value for the DPO method. A higher beta value will increase the weight
@@ -107,13 +114,10 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Float) }
 
-          sig do
-            override.returns(
-              T::Array[OpenAI::FineTuning::DpoHyperparameters::Beta::Variants]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::DpoHyperparameters::Beta::Variants]) }
           def self.variants
           end
+
         end
 
         # Scaling factor for the learning rate. A smaller learning rate may be useful to
@@ -123,15 +127,10 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Float) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::DpoHyperparameters::LearningRateMultiplier::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::DpoHyperparameters::LearningRateMultiplier::Variants]) }
           def self.variants
           end
+
         end
 
         # The number of epochs to train the model for. An epoch refers to one full cycle
@@ -141,17 +140,15 @@ module OpenAI
 
           Variants = T.type_alias { T.any(Symbol, Integer) }
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::FineTuning::DpoHyperparameters::NEpochs::Variants
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::FineTuning::DpoHyperparameters::NEpochs::Variants]) }
           def self.variants
           end
+
         end
+
       end
+
     end
+
   end
 end

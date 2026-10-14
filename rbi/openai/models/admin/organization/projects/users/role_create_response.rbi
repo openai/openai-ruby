@@ -2,18 +2,23 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         module Projects
+
           module Users
+
             class RoleCreateResponse < OpenAI::Internal::Type::BaseModel
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Models::Admin::Organization::Projects::Users::RoleCreateResponse,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Models::Admin::Organization::Projects::Users::RoleCreateResponse,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # Always `user.role`.
               sig { returns(Symbol) }
@@ -23,36 +28,38 @@ module OpenAI
               sig { returns(OpenAI::Admin::Organization::Role) }
               attr_reader :role
 
-              sig do
-                params(role: OpenAI::Admin::Organization::Role::OrHash).void
-              end
+              sig { params(role: OpenAI::Admin::Organization::Role::OrHash).void }
               attr_writer :role
 
               # Represents an individual `user` within an organization.
               sig { returns(OpenAI::Admin::Organization::OrganizationUser) }
               attr_reader :user
 
-              sig do
-                params(
-                  user: OpenAI::Admin::Organization::OrganizationUser::OrHash
-                ).void
-              end
+              sig { params(user: OpenAI::Admin::Organization::OrganizationUser::OrHash).void }
               attr_writer :user
 
               # Role assignment linking a user to a role.
               sig do
                 params(
+
                   role: OpenAI::Admin::Organization::Role::OrHash,
+
                   user: OpenAI::Admin::Organization::OrganizationUser::OrHash,
+
                   object: Symbol
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # Details about a role that can be assigned through the public Roles API.
                 role:,
+
                 # Represents an individual `user` within an organization.
                 user:,
+
                 # Always `user.role`.
+
                 object: :"user.role"
               )
               end
@@ -68,10 +75,16 @@ module OpenAI
               end
               def to_hash
               end
+
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

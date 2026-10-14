@@ -15,7 +15,7 @@ module OpenAI
 
             # @!attribute assistant_id
             #   The ID of the
-            #   [assistant](https://platform.openai.com/docs/api-reference/assistants)
+            #   [assistant](https://developers.openai.com/api/docs/assistants/migration)
             #   associated with the run step.
             #
             #   @return [String]
@@ -77,8 +77,8 @@ module OpenAI
             required :object, const: :"thread.run.step"
 
             # @!attribute run_id
-            #   The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that
-            #   this run step is a part of.
+            #   The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
+            #   that this run step is a part of.
             #
             #   @return [String]
             required :run_id, String
@@ -97,8 +97,9 @@ module OpenAI
             required :step_details, union: -> { OpenAI::Beta::Threads::Runs::RunStep::StepDetails }
 
             # @!attribute thread_id
-            #   The ID of the [thread](https://platform.openai.com/docs/api-reference/threads)
-            #   that was run.
+            #   The ID of the
+            #   [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+            #   run.
             #
             #   @return [String]
             required :thread_id, String
@@ -117,42 +118,69 @@ module OpenAI
             required :usage, -> { OpenAI::Beta::Threads::Runs::RunStep::Usage }, nil?: true
 
             # @!method initialize(id:, assistant_id:, cancelled_at:, completed_at:, created_at:, expired_at:, failed_at:, last_error:, metadata:, run_id:, status:, step_details:, thread_id:, type:, usage:, object: :"thread.run.step")
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::Threads::Runs::RunStep} for more details.
-            #
             #   Represents a step in execution of a run.
             #
-            #   @param id [String] The identifier of the run step, which can be referenced in API endpoints.
+            #   @param id [String]
+            #     The identifier of the run step, which can be referenced in API endpoints.
             #
-            #   @param assistant_id [String] The ID of the [assistant](https://platform.openai.com/docs/api-reference/assista
+            #   @param assistant_id [String]
+            #     The ID of the
+            #     [assistant](https://developers.openai.com/api/docs/assistants/migration)
+            #     associated with the run step.
             #
-            #   @param cancelled_at [Integer, nil] The Unix timestamp (in seconds) for when the run step was cancelled.
+            #   @param cancelled_at [Integer, nil]
+            #     The Unix timestamp (in seconds) for when the run step was cancelled.
             #
-            #   @param completed_at [Integer, nil] The Unix timestamp (in seconds) for when the run step completed.
+            #   @param completed_at [Integer, nil]
+            #     The Unix timestamp (in seconds) for when the run step completed.
             #
-            #   @param created_at [Integer] The Unix timestamp (in seconds) for when the run step was created.
+            #   @param created_at [Integer]
+            #     The Unix timestamp (in seconds) for when the run step was created.
             #
-            #   @param expired_at [Integer, nil] The Unix timestamp (in seconds) for when the run step expired. A step is conside
+            #   @param expired_at [Integer, nil]
+            #     The Unix timestamp (in seconds) for when the run step expired. A step is
+            #     considered expired if the parent run is expired.
             #
-            #   @param failed_at [Integer, nil] The Unix timestamp (in seconds) for when the run step failed.
+            #   @param failed_at [Integer, nil]
+            #     The Unix timestamp (in seconds) for when the run step failed.
             #
-            #   @param last_error [OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, nil] The last error associated with this run step. Will be `null` if there are no err
+            #   @param last_error [OpenAI::Models::Beta::Threads::Runs::RunStep::LastError, nil]
+            #     The last error associated with this run step. Will be `null` if there are no
+            #     errors.
             #
-            #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+            #   @param metadata [Hash{Symbol=>String}, nil]
+            #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+            #     for storing additional information about the object in a structured format, and
+            #     querying for objects via API or the dashboard.
             #
-            #   @param run_id [String] The ID of the [run](https://platform.openai.com/docs/api-reference/runs) that th
+            #     Keys are strings with a maximum length of 64 characters. Values are strings with
+            #     a maximum length of 512 characters.
             #
-            #   @param status [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status] The status of the run step, which can be either `in_progress`, `cancelled`, `fai
+            #   @param run_id [String]
+            #     The ID of the [run](https://developers.openai.com/api/docs/assistants/migration)
+            #     that this run step is a part of.
             #
-            #   @param step_details [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails] The details of the run step.
+            #   @param status [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Status]
+            #     The status of the run step, which can be either `in_progress`, `cancelled`,
+            #     `failed`, `completed`, or `expired`.
             #
-            #   @param thread_id [String] The ID of the [thread](https://platform.openai.com/docs/api-reference/threads) t
+            #   @param step_details [OpenAI::Models::Beta::Threads::Runs::MessageCreationStepDetails, OpenAI::Models::Beta::Threads::Runs::ToolCallsStepDetails]
+            #     The details of the run step.
             #
-            #   @param type [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type] The type of run step, which can be either `message_creation` or `tool_calls`.
+            #   @param thread_id [String]
+            #     The ID of the
+            #     [thread](https://developers.openai.com/api/docs/assistants/migration) that was
+            #     run.
             #
-            #   @param usage [OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, nil] Usage statistics related to the run step. This value will be `null` while the ru
+            #   @param type [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::Type]
+            #     The type of run step, which can be either `message_creation` or `tool_calls`.
             #
-            #   @param object [Symbol, :"thread.run.step"] The object type, which is always `thread.run.step`.
+            #   @param usage [OpenAI::Models::Beta::Threads::Runs::RunStep::Usage, nil]
+            #     Usage statistics related to the run step. This value will be `null` while the
+            #     run step's status is `in_progress`.
+            #
+            #   @param object [Symbol, :"thread.run.step"]
+            #     The object type, which is always `thread.run.step`.
 
             # @see OpenAI::Models::Beta::Threads::Runs::RunStep#last_error
             class LastError < OpenAI::Internal::Type::BaseModel
@@ -172,9 +200,11 @@ module OpenAI
               #   The last error associated with this run step. Will be `null` if there are no
               #   errors.
               #
-              #   @param code [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code] One of `server_error` or `rate_limit_exceeded`.
+              #   @param code [Symbol, OpenAI::Models::Beta::Threads::Runs::RunStep::LastError::Code]
+              #     One of `server_error` or `rate_limit_exceeded`.
               #
-              #   @param message [String] A human-readable description of the error.
+              #   @param message [String]
+              #     A human-readable description of the error.
 
               # One of `server_error` or `rate_limit_exceeded`.
               #
@@ -262,11 +292,14 @@ module OpenAI
               #   Usage statistics related to the run step. This value will be `null` while the
               #   run step's status is `in_progress`.
               #
-              #   @param completion_tokens [Integer] Number of completion tokens used over the course of the run step.
+              #   @param completion_tokens [Integer]
+              #     Number of completion tokens used over the course of the run step.
               #
-              #   @param prompt_tokens [Integer] Number of prompt tokens used over the course of the run step.
+              #   @param prompt_tokens [Integer]
+              #     Number of prompt tokens used over the course of the run step.
               #
-              #   @param total_tokens [Integer] Total number of tokens used (prompt + completion).
+              #   @param total_tokens [Integer]
+              #     Total number of tokens used (prompt + completion).
             end
           end
         end

@@ -1,0 +1,33 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Sessions
+          class Subagents
+            class Turns
+              attr_reader items: OpenAI::Resources::Beta::Agents::Sessions::Subagents::Turns::Items
+
+              def retrieve: (
+                String turn_id,
+                session_id: String,
+                subagent_id: String,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::Beta::Agents::Sessions::Turn
+
+              def list: (
+                String subagent_id,
+                session_id: String,
+                ?after: String,
+                ?limit: Integer,
+                ?order: OpenAI::Models::Beta::Agents::Sessions::Subagents::TurnListParams::order,
+                ?request_options: OpenAI::request_opts
+              ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agents::Sessions::Turn]
+
+              def initialize: (client: OpenAI::Client) -> void
+            end
+          end
+        end
+      end
+    end
+  end
+end

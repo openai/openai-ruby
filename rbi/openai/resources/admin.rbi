@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       sig { returns(OpenAI::Resources::Admin::Organization) }
       attr_reader :organization
 
@@ -11,5 +13,6 @@ module OpenAI
       def self.new(client:)
       end
     end
+
   end
 end

@@ -20,7 +20,8 @@ module OpenAI
         #
         #   @param function [OpenAI::Models::FunctionDefinition]
         #
-        #   @param type [Symbol, :function] The type of the tool. Currently, only `function` is supported.
+        #   @param type [Symbol, :function]
+        #     The type of the tool. Currently, only `function` is supported.
       end
     end
 

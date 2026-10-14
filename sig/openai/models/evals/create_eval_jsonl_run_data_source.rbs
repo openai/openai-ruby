@@ -4,14 +4,20 @@ module OpenAI
       type create_eval_jsonl_run_data_source =
         {
           source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source,
-          type: :jsonl
+          ?type: :jsonl
         }
 
       class CreateEvalJSONLRunDataSource < OpenAI::Internal::Type::BaseModel
+        # Determines what populates the `item` namespace in the data source.
         attr_accessor source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source
 
+        # The type of data source. Always `jsonl`.
         attr_accessor type: :jsonl
 
+        # @param source
+        #   Determines what populates the `item` namespace in the data source.
+        # @param type
+        #   The type of data source. Always `jsonl`.
         def initialize: (
           source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source,
           ?type: :jsonl
@@ -19,7 +25,7 @@ module OpenAI
 
         def to_hash: -> {
           source: OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source,
-          type: :jsonl
+          ?type: :jsonl
         }
 
         type source =
@@ -32,14 +38,20 @@ module OpenAI
           type file_content =
             {
               content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content],
-              type: :file_content
+              ?type: :file_content
             }
 
           class FileContent < OpenAI::Internal::Type::BaseModel
+            # The content of the jsonl file.
             attr_accessor content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content]
 
+            # The type of jsonl source. Always `file_content`.
             attr_accessor type: :file_content
 
+            # @param content
+            #   The content of the jsonl file.
+            # @param type
+            #   The type of jsonl source. Always `file_content`.
             def initialize: (
               content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content],
               ?type: :file_content
@@ -47,11 +59,11 @@ module OpenAI
 
             def to_hash: -> {
               content: ::Array[OpenAI::Evals::CreateEvalJSONLRunDataSource::Source::FileContent::Content],
-              type: :file_content
+              ?type: :file_content
             }
 
             type content =
-              { item: ::Hash[Symbol, top], sample: ::Hash[Symbol, top] }
+              { item: ::Hash[Symbol, top], ?sample: ::Hash[Symbol, top] }
 
             class Content < OpenAI::Internal::Type::BaseModel
               attr_accessor item: ::Hash[Symbol, top]
@@ -67,21 +79,27 @@ module OpenAI
 
               def to_hash: -> {
                 item: ::Hash[Symbol, top],
-                sample: ::Hash[Symbol, top]
+                ?sample: ::Hash[Symbol, top]
               }
             end
           end
 
-          type file_id = { id: String, type: :file_id }
+          type file_id = { id: String, ?type: :file_id }
 
           class FileID < OpenAI::Internal::Type::BaseModel
+            # The identifier of the file.
             attr_accessor id: String
 
+            # The type of jsonl source. Always `file_id`.
             attr_accessor type: :file_id
 
+            # @param id
+            #   The identifier of the file.
+            # @param type
+            #   The type of jsonl source. Always `file_id`.
             def initialize: (id: String, ?type: :file_id) -> void
 
-            def to_hash: -> { id: String, type: :file_id }
+            def to_hash: -> { id: String, ?type: :file_id }
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Evals::CreateEvalJSONLRunDataSource::source]

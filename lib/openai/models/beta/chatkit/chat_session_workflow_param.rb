@@ -16,8 +16,12 @@ module OpenAI
           #   values must be primitive types, and the map defaults to an empty object.
           #
           #   @return [Hash{Symbol=>String, Boolean, Float}, nil]
-          optional :state_variables,
-                   -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::StateVariable] }
+          optional(
+            :state_variables,
+            -> {
+              OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::StateVariable]
+            }
+          )
 
           # @!attribute tracing
           #   Optional tracing overrides for the workflow invocation. When omitted, tracing is
@@ -33,19 +37,21 @@ module OpenAI
           optional :version, String
 
           # @!method initialize(id:, state_variables: nil, tracing: nil, version: nil)
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam} for more details.
-          #
           #   Workflow reference and overrides applied to the chat session.
           #
-          #   @param id [String] Identifier for the workflow invoked by the session.
+          #   @param id [String]
+          #     Identifier for the workflow invoked by the session.
           #
-          #   @param state_variables [Hash{Symbol=>String, Boolean, Float}] State variables forwarded to the workflow. Keys may be up to 64 characters, valu
+          #   @param state_variables [Hash{Symbol=>String, Boolean, Float}]
+          #     State variables forwarded to the workflow. Keys may be up to 64 characters,
+          #     values must be primitive types, and the map defaults to an empty object.
           #
-          #   @param tracing [OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::Tracing] Optional tracing overrides for the workflow invocation. When omitted, tracing is
+          #   @param tracing [OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam::Tracing]
+          #     Optional tracing overrides for the workflow invocation. When omitted, tracing is
+          #     enabled by default.
           #
-          #   @param version [String] Specific workflow version to run. Defaults to the latest deployed version.
-
+          #   @param version [String]
+          #     Specific workflow version to run. Defaults to the latest deployed version.
           module StateVariable
             extend OpenAI::Internal::Type::Union
 
@@ -71,7 +77,8 @@ module OpenAI
             #   Optional tracing overrides for the workflow invocation. When omitted, tracing is
             #   enabled by default.
             #
-            #   @param enabled [Boolean] Whether tracing is enabled during the session. Defaults to true.
+            #   @param enabled [Boolean]
+            #     Whether tracing is enabled during the session. Defaults to true.
           end
         end
       end

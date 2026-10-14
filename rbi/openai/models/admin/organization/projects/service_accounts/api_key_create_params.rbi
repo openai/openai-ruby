@@ -2,21 +2,26 @@
 
 module OpenAI
   module Models
+
     module Admin
+
       module Organization
+
         module Projects
+
           module ServiceAccounts
+
             class APIKeyCreateParams < OpenAI::Internal::Type::BaseModel
+
               extend OpenAI::Internal::Type::RequestParameters::Converter
               include OpenAI::Internal::Type::RequestParameters
 
-              OrHash =
-                T.type_alias do
-                  T.any(
-                    OpenAI::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams,
-                    OpenAI::Internal::AnyHash
-                  )
-                end
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Admin::Organization::Projects::ServiceAccounts::APIKeyCreateParams,
+                  OpenAI::Internal::AnyHash
+                )
+              end
 
               # The ID of the project.
               sig { returns(String) }
@@ -25,6 +30,10 @@ module OpenAI
               # The ID of the service account.
               sig { returns(String) }
               attr_accessor :service_account_id
+
+              # Number of seconds until the API key expires.
+              sig { returns(T.nilable(Integer)) }
+              attr_accessor :expires_in_seconds
 
               # API key name.
               sig { returns(T.nilable(String)) }
@@ -42,22 +51,38 @@ module OpenAI
 
               sig do
                 params(
+
                   project_id: String,
+
                   service_account_id: String,
+
+                  expires_in_seconds: T.nilable(Integer),
+
                   name: String,
+
                   scopes: T::Array[String],
+
                   request_options: OpenAI::RequestOptions::OrHash
-                ).returns(T.attached_class)
+                )
+                  .returns(T.attached_class)
               end
               def self.new(
+
                 # The ID of the project.
                 project_id:,
+
                 # The ID of the service account.
                 service_account_id:,
+
+                # Number of seconds until the API key expires.
+                expires_in_seconds: nil,
+
                 # API key name.
                 name: nil,
+
                 # API key scopes.
                 scopes: nil,
+
                 request_options: {}
               )
               end
@@ -67,6 +92,7 @@ module OpenAI
                   {
                     project_id: String,
                     service_account_id: String,
+                    expires_in_seconds: T.nilable(Integer),
                     name: String,
                     scopes: T::Array[String],
                     request_options: OpenAI::RequestOptions
@@ -75,10 +101,16 @@ module OpenAI
               end
               def to_hash
               end
+
             end
+
           end
+
         end
+
       end
+
     end
+
   end
 end

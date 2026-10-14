@@ -39,10 +39,10 @@ module OpenAI
 
         # @!attribute model
         #   ID of the model to use. You can use the
-        #   [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-        #   see all of your available models, or see our
-        #   [Model overview](https://platform.openai.com/docs/models) for descriptions of
-        #   them.
+        #   [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+        #   API to see all of your available models, or see our
+        #   [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+        #   of them.
         #
         #   @return [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model, nil]
         optional :model, union: -> { OpenAI::Beta::AssistantUpdateParams::Model }
@@ -58,7 +58,7 @@ module OpenAI
         #   are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
         #   reasoning effort can result in faster responses and fewer tokens used on
         #   reasoning in a response. Not all reasoning models support every value. See the
-        #   [reasoning guide](https://platform.openai.com/docs/guides/reasoning) for
+        #   [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
         #   model-specific support.
         #
         #   @return [Symbol, OpenAI::Models::ReasoningEffort, nil]
@@ -66,14 +66,14 @@ module OpenAI
 
         # @!attribute response_format
         #   Specifies the format that the model must output. Compatible with
-        #   [GPT-4o](https://platform.openai.com/docs/models#gpt-4o),
-        #   [GPT-4 Turbo](https://platform.openai.com/docs/models#gpt-4-turbo-and-gpt-4),
-        #   and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
+        #   [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+        #   [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+        #   all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
         #
         #   Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
         #   Outputs which ensures the model will match your supplied JSON schema. Learn more
         #   in the
-        #   [Structured Outputs guide](https://platform.openai.com/docs/guides/structured-outputs).
+        #   [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
         #
         #   Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
         #   message the model generates is valid JSON.
@@ -125,40 +125,93 @@ module OpenAI
         optional :top_p, Float, nil?: true
 
         # @!method initialize(assistant_id:, description: nil, instructions: nil, metadata: nil, model: nil, name: nil, reasoning_effort: nil, response_format: nil, temperature: nil, tool_resources: nil, tools: nil, top_p: nil, request_options: {})
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Beta::AssistantUpdateParams} for more details.
-        #
         #   @param assistant_id [String]
         #
-        #   @param description [String, nil] The description of the assistant. The maximum length is 512 characters.
+        #   @param description [String, nil]
+        #     The description of the assistant. The maximum length is 512 characters.
         #
-        #   @param instructions [String, nil] The system instructions that the assistant uses. The maximum length is 256,000 c
+        #   @param instructions [String, nil]
+        #     The system instructions that the assistant uses. The maximum length is 256,000
+        #     characters.
         #
-        #   @param metadata [Hash{Symbol=>String}, nil] Set of 16 key-value pairs that can be attached to an object. This can be
+        #   @param metadata [Hash{Symbol=>String}, nil]
+        #     Set of 16 key-value pairs that can be attached to an object. This can be useful
+        #     for storing additional information about the object in a structured format, and
+        #     querying for objects via API or the dashboard.
         #
-        #   @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model] ID of the model to use. You can use the [List models](https://platform.openai.co
+        #     Keys are strings with a maximum length of 64 characters. Values are strings with
+        #     a maximum length of 512 characters.
         #
-        #   @param name [String, nil] The name of the assistant. The maximum length is 256 characters.
+        #   @param model [String, Symbol, OpenAI::Models::Beta::AssistantUpdateParams::Model]
+        #     ID of the model to use. You can use the
+        #     [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+        #     API to see all of your available models, or see our
+        #     [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+        #     of them.
         #
-        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil] Constrains effort on reasoning for reasoning models. Currently supported
+        #   @param name [String, nil]
+        #     The name of the assistant. The maximum length is 256 characters.
         #
-        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil] Specifies the format that the model must output. Compatible with [GPT-4o](https:
+        #   @param reasoning_effort [Symbol, OpenAI::Models::ReasoningEffort, nil]
+        #     Constrains effort on reasoning for reasoning models. Currently supported values
+        #     are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
+        #     reasoning effort can result in faster responses and fewer tokens used on
+        #     reasoning in a response. Not all reasoning models support every value. See the
+        #     [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
+        #     model-specific support.
         #
-        #   @param temperature [Float, nil] What sampling temperature to use, between 0 and 2. Higher values like 0.8 will m
+        #   @param response_format [Symbol, :auto, OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONObject, OpenAI::Models::ResponseFormatJSONSchema, nil]
+        #     Specifies the format that the model must output. Compatible with
+        #     [GPT-4o](https://developers.openai.com/api/docs/models/gpt-4o),
+        #     [GPT-4 Turbo](https://developers.openai.com/api/docs/models/gpt-4-turbo), and
+        #     all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
         #
-        #   @param tool_resources [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, nil] A set of resources that are used by the assistant's tools. The resources are spe
+        #     Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
+        #     Outputs which ensures the model will match your supplied JSON schema. Learn more
+        #     in the
+        #     [Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs).
         #
-        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>] A list of tool enabled on the assistant. There can be a maximum of 128 tools per
+        #     Setting to `{ "type": "json_object" }` enables JSON mode, which ensures the
+        #     message the model generates is valid JSON.
         #
-        #   @param top_p [Float, nil] An alternative to sampling with temperature, called nucleus sampling, where the
+        #     **Important:** when using JSON mode, you **must** also instruct the model to
+        #     produce JSON yourself via a system or user message. Without this, the model may
+        #     generate an unending stream of whitespace until the generation reaches the token
+        #     limit, resulting in a long-running and seemingly "stuck" request. Also note that
+        #     the message content may be partially cut off if `finish_reason="length"`, which
+        #     indicates the generation exceeded `max_tokens` or the conversation exceeded the
+        #     max context length.
+        #
+        #   @param temperature [Float, nil]
+        #     What sampling temperature to use, between 0 and 2. Higher values like 0.8 will
+        #     make the output more random, while lower values like 0.2 will make it more
+        #     focused and deterministic.
+        #
+        #   @param tool_resources [OpenAI::Models::Beta::AssistantUpdateParams::ToolResources, nil]
+        #     A set of resources that are used by the assistant's tools. The resources are
+        #     specific to the type of tool. For example, the `code_interpreter` tool requires
+        #     a list of file IDs, while the `file_search` tool requires a list of vector store
+        #     IDs.
+        #
+        #   @param tools [Array<OpenAI::Models::Beta::CodeInterpreterTool, OpenAI::Models::Beta::FileSearchTool, OpenAI::Models::Beta::FunctionTool>]
+        #     A list of tool enabled on the assistant. There can be a maximum of 128 tools per
+        #     assistant. Tools can be of types `code_interpreter`, `file_search`, or
+        #     `function`.
+        #
+        #   @param top_p [Float, nil]
+        #     An alternative to sampling with temperature, called nucleus sampling, where the
+        #     model considers the results of the tokens with top_p probability mass. So 0.1
+        #     means only the tokens comprising the top 10% probability mass are considered.
+        #
+        #     We generally recommend altering this or temperature but not both.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
         # ID of the model to use. You can use the
-        # [List models](https://platform.openai.com/docs/api-reference/models/list) API to
-        # see all of your available models, or see our
-        # [Model overview](https://platform.openai.com/docs/models) for descriptions of
-        # them.
+        # [List models](https://developers.openai.com/api/reference/resources/models/methods/list)
+        # API to see all of your available models, or see our
+        # [Model overview](https://developers.openai.com/api/docs/models) for descriptions
+        # of them.
         module Model
           extend OpenAI::Internal::Type::Union
 
@@ -327,26 +380,26 @@ module OpenAI
           class CodeInterpreter < OpenAI::Internal::Type::BaseModel
             # @!attribute file_ids
             #   Overrides the list of
-            #   [file](https://platform.openai.com/docs/api-reference/files) IDs made available
-            #   to the `code_interpreter` tool. There can be a maximum of 20 files associated
-            #   with the tool.
+            #   [file](https://developers.openai.com/api/reference/resources/files) IDs made
+            #   available to the `code_interpreter` tool. There can be a maximum of 20 files
+            #   associated with the tool.
             #
             #   @return [Array<String>, nil]
             optional :file_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(file_ids: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::CodeInterpreter}
-            #   for more details.
-            #
-            #   @param file_ids [Array<String>] Overrides the list of [file](https://platform.openai.com/docs/api-reference/file
+            #   @param file_ids [Array<String>]
+            #     Overrides the list of
+            #     [file](https://developers.openai.com/api/reference/resources/files) IDs made
+            #     available to the `code_interpreter` tool. There can be a maximum of 20 files
+            #     associated with the tool.
           end
 
           # @see OpenAI::Models::Beta::AssistantUpdateParams::ToolResources#file_search
           class FileSearch < OpenAI::Internal::Type::BaseModel
             # @!attribute vector_store_ids
             #   Overrides the
-            #   [vector store](https://platform.openai.com/docs/api-reference/vector-stores/object)
+            #   [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
             #   attached to this assistant. There can be a maximum of 1 vector store attached to
             #   the assistant.
             #
@@ -354,11 +407,11 @@ module OpenAI
             optional :vector_store_ids, OpenAI::Internal::Type::ArrayOf[String]
 
             # @!method initialize(vector_store_ids: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Beta::AssistantUpdateParams::ToolResources::FileSearch} for
-            #   more details.
-            #
-            #   @param vector_store_ids [Array<String>] Overrides the [vector store](https://platform.openai.com/docs/api-reference/vect
+            #   @param vector_store_ids [Array<String>]
+            #     Overrides the
+            #     [vector store](https://developers.openai.com/api/reference/resources/vector_stores)
+            #     attached to this assistant. There can be a maximum of 1 vector store attached to
+            #     the assistant.
           end
         end
       end

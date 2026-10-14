@@ -4,8 +4,8 @@ module OpenAI
       module Threads
         type text_delta =
           {
-            annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
-            value: String
+            ?annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
+            ?value: String
           }
 
         class TextDelta < OpenAI::Internal::Type::BaseModel
@@ -15,18 +15,22 @@ module OpenAI
             ::Array[OpenAI::Models::Beta::Threads::annotation_delta]
           ) -> ::Array[OpenAI::Models::Beta::Threads::annotation_delta]
 
+          # The data that makes up the text.
           attr_reader value: String?
 
+          # The data that makes up the text.
           def value=: (String) -> String
 
+          # @param value
+          #   The data that makes up the text.
           def initialize: (
             ?annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
             ?value: String
           ) -> void
 
           def to_hash: -> {
-            annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
-            value: String
+            ?annotations: ::Array[OpenAI::Models::Beta::Threads::annotation_delta],
+            ?value: String
           }
         end
       end

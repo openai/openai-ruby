@@ -41,18 +41,21 @@ module OpenAI
           optional :order, enum: -> { OpenAI::Beta::ChatKit::ThreadListItemsParams::Order }
 
           # @!method initialize(thread_id:, after: nil, before: nil, limit: nil, order: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Beta::ChatKit::ThreadListItemsParams} for more details.
-          #
           #   @param thread_id [String]
           #
-          #   @param after [String] List items created after this thread item ID. Defaults to null for the first pag
+          #   @param after [String]
+          #     List items created after this thread item ID. Defaults to null for the first
+          #     page.
           #
-          #   @param before [String] List items created before this thread item ID. Defaults to null for the newest r
+          #   @param before [String]
+          #     List items created before this thread item ID. Defaults to null for the newest
+          #     results.
           #
-          #   @param limit [Integer] Maximum number of thread items to return. Defaults to 20.
+          #   @param limit [Integer]
+          #     Maximum number of thread items to return. Defaults to 20.
           #
-          #   @param order [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::Order] Sort order for results by creation time. Defaults to `desc`.
+          #   @param order [Symbol, OpenAI::Models::Beta::ChatKit::ThreadListItemsParams::Order]
+          #     Sort order for results by creation time. Defaults to `desc`.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

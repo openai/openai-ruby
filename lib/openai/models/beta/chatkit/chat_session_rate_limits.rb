@@ -14,7 +14,8 @@ module OpenAI
           # @!method initialize(max_requests_per_1_minute:)
           #   Active per-minute request limit for the session.
           #
-          #   @param max_requests_per_1_minute [Integer] Maximum allowed requests per one-minute window.
+          #   @param max_requests_per_1_minute [Integer]
+          #     Maximum allowed requests per one-minute window.
         end
       end
     end

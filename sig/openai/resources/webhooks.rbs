@@ -1,9 +1,65 @@
 module OpenAI
   module Resources
     class Webhooks
+      attr_reader event_types: OpenAI::Resources::Webhooks::EventTypes
+
+      def create: (
+        event_types: ::Array[OpenAI::Models::Webhooks::WebhookCreateParams::event_type],
+        name: String,
+        url: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpointWithSecret
+
+      def retrieve: (
+        String webhook_endpoint_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpoint
+
+      def update: (
+        String webhook_endpoint_id,
+        ?event_types: ::Array[OpenAI::Models::Webhooks::WebhookUpdateParams::event_type],
+        ?name: String,
+        ?url: String,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpoint
+
+      def list: (
+        ?after: String?,
+        ?limit: Integer,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Internal::CursorPage[OpenAI::Webhooks::WebhookEndpoint]
+
+      def delete: (
+        String webhook_endpoint_id,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::DeletedWebhookEndpoint
+
+      def rotate_secret: (
+        String webhook_endpoint_id,
+        ?keep_old_secret_active_for_24_hours: bool,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpointWithSecret
+
+      def test_: (
+        String webhook_endpoint_id,
+        event_type: OpenAI::Models::Webhooks::WebhookTestParams::event_type,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Webhooks::WebhookEndpointTestResult
+
       def unwrap: (
-        String payload
-      ) -> (OpenAI::Webhooks::BatchCancelledWebhookEvent
+        String payload,
+        ?Hash[String | Symbol, String] headers,
+        ?String? webhook_secret
+      ) -> (OpenAI::Webhooks::AgentEnvironmentExpiredWebhookEvent
+      | OpenAI::Webhooks::AgentEnvironmentFailedWebhookEvent
+      | OpenAI::Webhooks::AgentEnvironmentReadyWebhookEvent
+      | OpenAI::Webhooks::AgentEnvironmentSuspendedWebhookEvent
+      | OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent
+      | OpenAI::Webhooks::AgentSessionCreatedWebhookEvent
+      | OpenAI::Webhooks::AgentSessionFailedWebhookEvent
+      | OpenAI::Webhooks::AgentSessionIdleWebhookEvent
+      | OpenAI::Webhooks::AgentSessionInProgressWebhookEvent
+      | OpenAI::Webhooks::BatchCancelledWebhookEvent
       | OpenAI::Webhooks::BatchCompletedWebhookEvent
       | OpenAI::Webhooks::BatchExpiredWebhookEvent
       | OpenAI::Webhooks::BatchFailedWebhookEvent
@@ -14,11 +70,23 @@ module OpenAI
       | OpenAI::Webhooks::FineTuningJobFailedWebhookEvent
       | OpenAI::Webhooks::FineTuningJobSucceededWebhookEvent
       | OpenAI::Webhooks::LiveCallIncomingWebhookEvent
+      | OpenAI::Webhooks::LiveTransportIncomingWebhookEvent
       | OpenAI::Webhooks::RealtimeCallIncomingWebhookEvent
       | OpenAI::Webhooks::ResponseCancelledWebhookEvent
       | OpenAI::Webhooks::ResponseCompletedWebhookEvent
       | OpenAI::Webhooks::ResponseFailedWebhookEvent
-      | OpenAI::Webhooks::ResponseIncompleteWebhookEvent)
+      | OpenAI::Webhooks::ResponseIncompleteWebhookEvent
+      | OpenAI::Webhooks::SafetyAlertCreatedWebhookEvent
+      | OpenAI::Webhooks::SafetyDeactivationIssuedWebhookEvent
+      | OpenAI::Webhooks::SafetyOrgAlertCreatedWebhookEvent
+      | OpenAI::Webhooks::SafetyWarningIssuedWebhookEvent)
+
+      def verify_signature: (
+        String payload,
+        Hash[String | Symbol, String] headers,
+        ?String? webhook_secret,
+        ?Integer tolerance
+      ) -> void
 
       def initialize: (client: OpenAI::Client) -> void
     end

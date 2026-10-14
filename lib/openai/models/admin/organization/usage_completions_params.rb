@@ -43,12 +43,16 @@ module OpenAI
 
           # @!attribute group_by
           #   Group the usage data by the specified fields. Support fields include
-          #   `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier` or any
-          #   combination of them.
+          #   `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+          #   `api_source` or any combination of them. When grouped by `api_source`, results
+          #   use `agents_api` for attributed Agents API activity and `unlabeled` for all
+          #   other activity. Without source grouping, `api_source` is null.
           #
           #   @return [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCompletionsParams::GroupBy>, nil]
-          optional :group_by,
-                   -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy] }
+          optional(
+            :group_by,
+            -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy] }
+          )
 
           # @!attribute limit
           #   Specifies the number of buckets to return.
@@ -86,30 +90,49 @@ module OpenAI
           optional :user_ids, OpenAI::Internal::Type::ArrayOf[String]
 
           # @!method initialize(start_time:, api_key_ids: nil, batch: nil, bucket_width: nil, end_time: nil, group_by: nil, limit: nil, models: nil, page: nil, project_ids: nil, user_ids: nil, request_options: {})
-          #   Some parameter documentations has been truncated, see
-          #   {OpenAI::Models::Admin::Organization::UsageCompletionsParams} for more details.
+          #   @param start_time [Integer]
+          #     Start time (Unix seconds) of the query time range, inclusive.
           #
-          #   @param start_time [Integer] Start time (Unix seconds) of the query time range, inclusive.
+          #   @param api_key_ids [Array<String>]
+          #     Return only usage for these API keys.
           #
-          #   @param api_key_ids [Array<String>] Return only usage for these API keys.
+          #   @param batch [Boolean]
+          #     If `true`, return batch jobs only. If `false`, return non-batch jobs only. By
+          #     default, return both.
           #
-          #   @param batch [Boolean] If `true`, return batch jobs only. If `false`, return non-batch jobs only. By de
+          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageCompletionsParams::BucketWidth]
+          #     Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+          #     supported, default to `1d`.
           #
-          #   @param bucket_width [Symbol, OpenAI::Models::Admin::Organization::UsageCompletionsParams::BucketWidth] Width of each time bucket in response. Currently `1m`, `1h` and `1d` are support
+          #   @param end_time [Integer]
+          #     End time (Unix seconds) of the query time range, exclusive.
           #
-          #   @param end_time [Integer] End time (Unix seconds) of the query time range, exclusive.
+          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCompletionsParams::GroupBy>]
+          #     Group the usage data by the specified fields. Support fields include
+          #     `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+          #     `api_source` or any combination of them. When grouped by `api_source`, results
+          #     use `agents_api` for attributed Agents API activity and `unlabeled` for all
+          #     other activity. Without source grouping, `api_source` is null.
           #
-          #   @param group_by [Array<Symbol, OpenAI::Models::Admin::Organization::UsageCompletionsParams::GroupBy>] Group the usage data by the specified fields. Support fields include `project_id
+          #   @param limit [Integer]
+          #     Specifies the number of buckets to return.
           #
-          #   @param limit [Integer] Specifies the number of buckets to return.
+          #     - `bucket_width=1d`: default: 7, max: 31
+          #     - `bucket_width=1h`: default: 24, max: 168
+          #     - `bucket_width=1m`: default: 60, max: 1440
           #
-          #   @param models [Array<String>] Return only usage for these models.
+          #   @param models [Array<String>]
+          #     Return only usage for these models.
           #
-          #   @param page [String] A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #   @param page [String]
+          #     A cursor for use in pagination. Corresponding to the `next_page` field from the
+          #     previous response.
           #
-          #   @param project_ids [Array<String>] Return only usage for these projects.
+          #   @param project_ids [Array<String>]
+          #     Return only usage for these projects.
           #
-          #   @param user_ids [Array<String>] Return only usage for these users.
+          #   @param user_ids [Array<String>]
+          #     Return only usage for these users.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -135,6 +158,7 @@ module OpenAI
             MODEL = :model
             BATCH = :batch
             SERVICE_TIER = :service_tier
+            API_SOURCE = :api_source
 
             # @!method self.values
             #   @return [Array<Symbol>]

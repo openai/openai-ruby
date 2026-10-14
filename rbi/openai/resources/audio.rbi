@@ -2,7 +2,9 @@
 
 module OpenAI
   module Resources
+
     class Audio
+
       # Turn audio into text or text into audio.
       sig { returns(OpenAI::Resources::Audio::Transcriptions) }
       attr_reader :transcriptions
@@ -15,10 +17,15 @@ module OpenAI
       sig { returns(OpenAI::Resources::Audio::Speech) }
       attr_reader :speech
 
+      # Turn audio into text or text into audio.
+      sig { returns(OpenAI::Resources::Audio::Voices) }
+      attr_reader :voices
+
       # @api private
       sig { params(client: OpenAI::Client).returns(T.attached_class) }
       def self.new(client:)
       end
     end
+
   end
 end

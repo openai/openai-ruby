@@ -4,19 +4,22 @@ module OpenAI
 
     module Beta
       type beta_response_container_reference =
-        { container_id: String, type: :container_reference }
+        { container_id: String, ?type: :container_reference }
 
       class BetaResponseContainerReference < OpenAI::Internal::Type::BaseModel
         attr_accessor container_id: String
 
+        # The environment type. Always `container_reference`.
         attr_accessor type: :container_reference
 
+        # @param type
+        #   The environment type. Always `container_reference`.
         def initialize: (
           container_id: String,
           ?type: :container_reference
         ) -> void
 
-        def to_hash: -> { container_id: String, type: :container_reference }
+        def to_hash: -> { container_id: String, ?type: :container_reference }
       end
     end
   end

@@ -12,20 +12,20 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        completed_at: Integer | nil,
-        created_at: Integer,
-        error: OpenAI::VideoCreateError | nil,
-        expires_at: Integer | nil,
-        model: OpenAI::VideoModel,
-        object: Symbol,
-        progress: Integer,
-        prompt: String | nil,
-        remixed_from_video_id: String | nil,
-        seconds: OpenAI::Video::Seconds,
-        size: OpenAI::VideoSize,
-        status: OpenAI::Video::Status
-      }
+          id: String,
+          completed_at: Integer | nil,
+          created_at: Integer,
+          error: OpenAI::VideoCreateError | nil,
+          expires_at: Integer | nil,
+          model: OpenAI::VideoModel,
+          object: Symbol,
+          progress: Integer,
+          prompt: String | nil,
+          remixed_from_video_id: String | nil,
+          seconds: OpenAI::Video::Seconds,
+          size: OpenAI::VideoSize,
+          status: OpenAI::Video::Status
+        }
     end
   end
 
@@ -38,20 +38,20 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        completed_at: Integer | nil,
-        created_at: Integer,
-        error: OpenAI::VideoCreateError | nil,
-        expires_at: Integer | nil,
-        model: OpenAI::VideoModel,
-        object: Symbol,
-        progress: Integer,
-        prompt: String | nil,
-        remixed_from_video_id: String | nil,
-        seconds: OpenAI::Video::Seconds,
-        size: OpenAI::VideoSize,
-        status: OpenAI::Video::Status
-      }
+          id: String,
+          completed_at: Integer | nil,
+          created_at: Integer,
+          error: OpenAI::VideoCreateError | nil,
+          expires_at: Integer | nil,
+          model: OpenAI::VideoModel,
+          object: Symbol,
+          progress: Integer,
+          prompt: String | nil,
+          remixed_from_video_id: String | nil,
+          seconds: OpenAI::Video::Seconds,
+          size: OpenAI::VideoSize,
+          status: OpenAI::Video::Status
+        }
     end
   end
 
@@ -62,7 +62,8 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
       response => OpenAI::Internal::ConversationCursorPage
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -71,20 +72,20 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        completed_at: Integer | nil,
-        created_at: Integer,
-        error: OpenAI::VideoCreateError | nil,
-        expires_at: Integer | nil,
-        model: OpenAI::VideoModel,
-        object: Symbol,
-        progress: Integer,
-        prompt: String | nil,
-        remixed_from_video_id: String | nil,
-        seconds: OpenAI::Video::Seconds,
-        size: OpenAI::VideoSize,
-        status: OpenAI::Video::Status
-      }
+          id: String,
+          completed_at: Integer | nil,
+          created_at: Integer,
+          error: OpenAI::VideoCreateError | nil,
+          expires_at: Integer | nil,
+          model: OpenAI::VideoModel,
+          object: Symbol,
+          progress: Integer,
+          prompt: String | nil,
+          remixed_from_video_id: String | nil,
+          seconds: OpenAI::Video::Seconds,
+          size: OpenAI::VideoSize,
+          status: OpenAI::Video::Status
+        }
     end
   end
 
@@ -97,10 +98,10 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: Symbol
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
     end
   end
 
@@ -113,10 +114,10 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String | nil,
-        created_at: Integer,
-        name: String | nil
-      }
+          id: String | nil,
+          created_at: Integer,
+          name: String | nil
+        }
     end
   end
 
@@ -137,20 +138,20 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        completed_at: Integer | nil,
-        created_at: Integer,
-        error: OpenAI::VideoCreateError | nil,
-        expires_at: Integer | nil,
-        model: OpenAI::VideoModel,
-        object: Symbol,
-        progress: Integer,
-        prompt: String | nil,
-        remixed_from_video_id: String | nil,
-        seconds: OpenAI::Video::Seconds,
-        size: OpenAI::VideoSize,
-        status: OpenAI::Video::Status
-      }
+          id: String,
+          completed_at: Integer | nil,
+          created_at: Integer,
+          error: OpenAI::VideoCreateError | nil,
+          expires_at: Integer | nil,
+          model: OpenAI::VideoModel,
+          object: Symbol,
+          progress: Integer,
+          prompt: String | nil,
+          remixed_from_video_id: String | nil,
+          seconds: OpenAI::Video::Seconds,
+          size: OpenAI::VideoSize,
+          status: OpenAI::Video::Status
+        }
     end
   end
 
@@ -163,20 +164,20 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        completed_at: Integer | nil,
-        created_at: Integer,
-        error: OpenAI::VideoCreateError | nil,
-        expires_at: Integer | nil,
-        model: OpenAI::VideoModel,
-        object: Symbol,
-        progress: Integer,
-        prompt: String | nil,
-        remixed_from_video_id: String | nil,
-        seconds: OpenAI::Video::Seconds,
-        size: OpenAI::VideoSize,
-        status: OpenAI::Video::Status
-      }
+          id: String,
+          completed_at: Integer | nil,
+          created_at: Integer,
+          error: OpenAI::VideoCreateError | nil,
+          expires_at: Integer | nil,
+          model: OpenAI::VideoModel,
+          object: Symbol,
+          progress: Integer,
+          prompt: String | nil,
+          remixed_from_video_id: String | nil,
+          seconds: OpenAI::Video::Seconds,
+          size: OpenAI::VideoSize,
+          status: OpenAI::Video::Status
+        }
     end
   end
 
@@ -189,10 +190,10 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String | nil,
-        created_at: Integer,
-        name: String | nil
-      }
+          id: String | nil,
+          created_at: Integer,
+          name: String | nil
+        }
     end
   end
 
@@ -205,20 +206,20 @@ class OpenAI::Test::Resources::VideosTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        completed_at: Integer | nil,
-        created_at: Integer,
-        error: OpenAI::VideoCreateError | nil,
-        expires_at: Integer | nil,
-        model: OpenAI::VideoModel,
-        object: Symbol,
-        progress: Integer,
-        prompt: String | nil,
-        remixed_from_video_id: String | nil,
-        seconds: OpenAI::Video::Seconds,
-        size: OpenAI::VideoSize,
-        status: OpenAI::Video::Status
-      }
+          id: String,
+          completed_at: Integer | nil,
+          created_at: Integer,
+          error: OpenAI::VideoCreateError | nil,
+          expires_at: Integer | nil,
+          model: OpenAI::VideoModel,
+          object: Symbol,
+          progress: Integer,
+          prompt: String | nil,
+          remixed_from_video_id: String | nil,
+          seconds: OpenAI::Video::Seconds,
+          size: OpenAI::VideoSize,
+          status: OpenAI::Video::Status
+        }
     end
   end
 end

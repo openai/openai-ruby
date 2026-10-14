@@ -2,31 +2,30 @@
 
 module OpenAI
   module Resources
+
     class Admin
+
       class Organization
+
         class Usage
+
           # Get audio speeches usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageAudioSpeechesParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageAudioSpeechesParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageAudioSpeechesParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageAudioSpeechesParams::GroupBy::OrSymbol],
               limit: Integer,
               models: T::Array[String],
               page: String,
               project_ids: T::Array[String],
               user_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageAudioSpeechesResponse)
+          }
           def audio_speeches(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -60,27 +59,22 @@ module OpenAI
           end
 
           # Get audio transcriptions usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageAudioTranscriptionsParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageAudioTranscriptionsParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageAudioTranscriptionsParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageAudioTranscriptionsParams::GroupBy::OrSymbol],
               limit: Integer,
               models: T::Array[String],
               page: String,
               project_ids: T::Array[String],
               user_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageAudioTranscriptionsResponse)
+          }
           def audio_transcriptions(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -114,24 +108,19 @@ module OpenAI
           end
 
           # Get code interpreter sessions usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
-              bucket_width:
-                OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageCodeInterpreterSessionsParams::GroupBy::OrSymbol],
               limit: Integer,
               page: String,
               project_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageCodeInterpreterSessionsResponse)
+          }
           def code_interpreter_sessions(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -159,28 +148,23 @@ module OpenAI
           end
 
           # Get completions usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
               batch: T::Boolean,
-              bucket_width:
-                OpenAI::Admin::Organization::UsageCompletionsParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageCompletionsParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageCompletionsParams::GroupBy::OrSymbol],
               limit: Integer,
               models: T::Array[String],
               page: String,
               project_ids: T::Array[String],
               user_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageCompletionsResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageCompletionsResponse)
+          }
           def completions(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -195,8 +179,10 @@ module OpenAI
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
             # Group the usage data by the specified fields. Support fields include
-            # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier` or any
-            # combination of them.
+            # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+            # `api_source` or any combination of them. When grouped by `api_source`, results
+            # use `agents_api` for attributed Agents API activity and `unlabeled` for all
+            # other activity. Without source grouping, `api_source` is null.
             group_by: nil,
             # Specifies the number of buckets to return.
             #
@@ -218,23 +204,21 @@ module OpenAI
           end
 
           # Get costs details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageCostsParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageCostsParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageCostsParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageCostsParams::GroupBy::OrSymbol],
               limit: Integer,
+              line_items: T::Array[String],
               page: String,
               project_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Admin::Organization::UsageCostsResponse)
-          end
+            )
+              .returns(OpenAI::Models::Admin::Organization::UsageCostsResponse)
+          }
           def costs(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -245,12 +229,20 @@ module OpenAI
             bucket_width: nil,
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
-            # Group the costs by the specified fields. Support fields include `project_id`,
-            # `line_item`, `api_key_id` and any combination of them.
+            # Group the costs by the specified fields. Supported fields include `project_id`,
+            # `user_id`, `line_item`, `api_key_id`, and `api_source`. Support for combining
+            # `user_id` with `project_id` grouping or the `project_ids` filter depends on the
+            # organization and requested time range. Unsupported combinations return HTTP 400.
+            # When grouped by `api_source`, results use `agents_api` for attributed Agents API
+            # activity and `unlabeled` for all other activity. Without source grouping,
+            # `api_source` is null.
             group_by: nil,
             # A limit on the number of buckets to be returned. Limit can range between 1 and
             # 180, and the default is 7.
             limit: nil,
+            # Return only costs for these exact line item names. Each value must match the
+            # complete `line_item` value, for example `gpt-6-astra, input_tokens`.
+            line_items: nil,
             # A cursor for use in pagination. Corresponding to the `next_page` field from the
             # previous response.
             page: nil,
@@ -260,28 +252,79 @@ module OpenAI
           )
           end
 
+          # Get Decisions API usage details for the organization.
+          sig {
+            params(
+              start_time: Integer,
+              api_key_ids: T.nilable(T::Array[String]),
+              batch: T.nilable(T::Boolean),
+              bucket_width: T.nilable(OpenAI::Admin::Organization::UsageDecisionsParams::BucketWidth::OrSymbol),
+              end_time: T.nilable(Integer),
+              group_by: T.nilable(T::Array[OpenAI::Admin::Organization::UsageDecisionsParams::GroupBy::OrSymbol]),
+              limit: T.nilable(Integer),
+              models: T.nilable(T::Array[String]),
+              page: T.nilable(String),
+              project_ids: T.nilable(T::Array[String]),
+              user_ids: T.nilable(T::Array[String]),
+              request_options: OpenAI::RequestOptions::OrHash
+            )
+              .returns(OpenAI::Models::Admin::Organization::UsageDecisionsResponse)
+          }
+          def decisions(
+            # Start time (Unix seconds) of the query time range, inclusive.
+            start_time:,
+            # Return only usage for these API keys.
+            api_key_ids: nil,
+            # If `true`, return batch jobs only. If `false`, return non-batch jobs only. By
+            # default, return both.
+            batch: nil,
+            # Width of each time bucket in response. Currently `1m`, `1h` and `1d` are
+            # supported, default to `1d`.
+            bucket_width: nil,
+            # End time (Unix seconds) of the query time range, exclusive.
+            end_time: nil,
+            # Group the usage data by the specified fields. Support fields include
+            # `project_id`, `user_id`, `api_key_id`, `model`, `batch`, `service_tier`,
+            # `api_source` or any combination of them. When grouped by `api_source`, results
+            # use `agents_api` for attributed Agents API activity and `unlabeled` for all
+            # other activity. Without source grouping, `api_source` is null.
+            group_by: nil,
+            # Specifies the number of buckets to return.
+            #
+            # - `bucket_width=1d`: default: 7, max: 31
+            # - `bucket_width=1h`: default: 24, max: 168
+            # - `bucket_width=1m`: default: 60, max: 1440
+            limit: nil,
+            # Return only usage for these models.
+            models: nil,
+            # A cursor for use in pagination. Corresponding to the `next_page` field from the
+            # previous response.
+            page: nil,
+            # Return only usage for these projects.
+            project_ids: nil,
+            # Return only usage for these users.
+            user_ids: nil,
+            request_options: {}
+          )
+          end
+
           # Get embeddings usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageEmbeddingsParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageEmbeddingsParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageEmbeddingsParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageEmbeddingsParams::GroupBy::OrSymbol],
               limit: Integer,
               models: T::Array[String],
               page: String,
               project_ids: T::Array[String],
               user_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageEmbeddingsResponse)
+          }
           def embeddings(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -315,27 +358,22 @@ module OpenAI
           end
 
           # Get file search calls usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageFileSearchCallsParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageFileSearchCallsParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageFileSearchCallsParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageFileSearchCallsParams::GroupBy::OrSymbol],
               limit: Integer,
               page: String,
               project_ids: T::Array[String],
               user_ids: T::Array[String],
               vector_store_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageFileSearchCallsResponse)
+          }
           def file_search_calls(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -370,33 +408,24 @@ module OpenAI
           end
 
           # Get images usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageImagesParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageImagesParams::GroupBy::OrSymbol],
               limit: Integer,
               models: T::Array[String],
               page: String,
               project_ids: T::Array[String],
-              sizes:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol
-                ],
-              sources:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol
-                ],
+              sizes: T::Array[OpenAI::Admin::Organization::UsageImagesParams::Size::OrSymbol],
+              sources: T::Array[OpenAI::Admin::Organization::UsageImagesParams::Source::OrSymbol],
               user_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(OpenAI::Models::Admin::Organization::UsageImagesResponse)
-          end
+            )
+              .returns(OpenAI::Models::Admin::Organization::UsageImagesResponse)
+          }
           def images(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -437,27 +466,22 @@ module OpenAI
           end
 
           # Get moderations usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageModerationsParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageModerationsParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageModerationsParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageModerationsParams::GroupBy::OrSymbol],
               limit: Integer,
               models: T::Array[String],
               page: String,
               project_ids: T::Array[String],
               user_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageModerationsResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageModerationsResponse)
+          }
           def moderations(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -491,24 +515,19 @@ module OpenAI
           end
 
           # Get vector stores usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
-              bucket_width:
-                OpenAI::Admin::Organization::UsageVectorStoresParams::BucketWidth::OrSymbol,
+              bucket_width: OpenAI::Admin::Organization::UsageVectorStoresParams::BucketWidth::OrSymbol,
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageVectorStoresParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageVectorStoresParams::GroupBy::OrSymbol],
               limit: Integer,
               page: String,
               project_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageVectorStoresResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageVectorStoresResponse)
+          }
           def vector_stores(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -536,31 +555,23 @@ module OpenAI
           end
 
           # Get web search calls usage details for the organization.
-          sig do
+          sig {
             params(
               start_time: Integer,
               api_key_ids: T::Array[String],
-              bucket_width:
-                OpenAI::Admin::Organization::UsageWebSearchCallsParams::BucketWidth::OrSymbol,
-              context_levels:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageWebSearchCallsParams::ContextLevel::OrSymbol
-                ],
+              bucket_width: OpenAI::Admin::Organization::UsageWebSearchCallsParams::BucketWidth::OrSymbol,
+              context_levels: T::Array[OpenAI::Admin::Organization::UsageWebSearchCallsParams::ContextLevel::OrSymbol],
               end_time: Integer,
-              group_by:
-                T::Array[
-                  OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy::OrSymbol
-                ],
+              group_by: T::Array[OpenAI::Admin::Organization::UsageWebSearchCallsParams::GroupBy::OrSymbol],
               limit: Integer,
               models: T::Array[String],
               page: String,
               project_ids: T::Array[String],
               user_ids: T::Array[String],
               request_options: OpenAI::RequestOptions::OrHash
-            ).returns(
-              OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse
             )
-          end
+              .returns(OpenAI::Models::Admin::Organization::UsageWebSearchCallsResponse)
+          }
           def web_search_calls(
             # Start time (Unix seconds) of the query time range, inclusive.
             start_time:,
@@ -574,8 +585,10 @@ module OpenAI
             # End time (Unix seconds) of the query time range, exclusive.
             end_time: nil,
             # Group the usage data by the specified fields. Support fields include
-            # `project_id`, `user_id`, `api_key_id`, `model`, `context_level` or any
-            # combination of them.
+            # `project_id`, `user_id`, `api_key_id`, `model`, `context_level`, `api_source` or
+            # any combination of them. When grouped by `api_source`, results use `agents_api`
+            # for attributed Agents API activity and `unlabeled` for all other activity.
+            # Without source grouping, `api_source` is null.
             group_by: nil,
             # Specifies the number of buckets to return.
             #
@@ -601,7 +614,10 @@ module OpenAI
           def self.new(client:)
           end
         end
+
       end
+
     end
+
   end
 end

@@ -41,8 +41,10 @@ module OpenAI
         #   transcription.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Include>, nil]
-        optional :include,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Include] }
+        optional(
+          :include,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Include] }
+        )
 
         # @!attribute instructions
         #   The default system instructions (i.e. system message) prepended to model calls.
@@ -66,8 +68,10 @@ module OpenAI
         #   `inf` for the maximum available tokens for a given model. Defaults to `inf`.
         #
         #   @return [Integer, Symbol, :inf, nil]
-        optional :max_output_tokens,
-                 union: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::MaxOutputTokens }
+        optional(
+          :max_output_tokens,
+          union: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::MaxOutputTokens }
+        )
 
         # @!attribute model
         #   The Realtime model used for this session.
@@ -82,12 +86,14 @@ module OpenAI
         #   request both `text` and `audio` at the same time.
         #
         #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::OutputModality>, nil]
-        optional :output_modalities,
-                 -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::OutputModality] }
+        optional(
+          :output_modalities,
+          -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::OutputModality] }
+        )
 
         # @!attribute prompt
         #   Reference to a prompt template and its variables.
-        #   [Learn more](https://platform.openai.com/docs/guides/text?api-mode=responses#reusable-prompts).
+        #   [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
         #
         #   @return [OpenAI::Models::Responses::ResponsePrompt, nil]
         optional :prompt, -> { OpenAI::Responses::ResponsePrompt }, nil?: true
@@ -109,8 +115,10 @@ module OpenAI
         #   Tools available to the model.
         #
         #   @return [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool>, nil]
-        optional :tools,
-                 -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool] }
+        optional(
+          :tools,
+          -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool] }
+        )
 
         # @!attribute tracing
         #   Realtime API can write session traces to the
@@ -148,42 +156,98 @@ module OpenAI
         optional :truncation, union: -> { OpenAI::Realtime::RealtimeTruncation }
 
         # @!method initialize(id:, audio: nil, expires_at: nil, include: nil, instructions: nil, max_output_tokens: nil, model: nil, output_modalities: nil, prompt: nil, reasoning: nil, tool_choice: nil, tools: nil, tracing: nil, truncation: nil, object: :"realtime.session", type: :realtime)
-        #   Some parameter documentations has been truncated, see
-        #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse} for more details.
-        #
         #   A Realtime session configuration object.
         #
-        #   @param id [String] Unique identifier for the session that looks like `sess_1234567890abcdef`.
+        #   @param id [String]
+        #     Unique identifier for the session that looks like `sess_1234567890abcdef`.
         #
-        #   @param audio [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio] Configuration for input and output audio.
+        #   @param audio [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio]
+        #     Configuration for input and output audio.
         #
-        #   @param expires_at [Integer] Expiration timestamp for the session, in seconds since epoch.
+        #   @param expires_at [Integer]
+        #     Expiration timestamp for the session, in seconds since epoch.
         #
-        #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Include>] Additional fields to include in server outputs.
+        #   @param include [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Include>]
+        #     Additional fields to include in server outputs.
         #
-        #   @param instructions [String] The default system instructions (i.e. system message) prepended to model calls.
+        #     `item.input_audio_transcription.logprobs`: Include logprobs for input audio
+        #     transcription.
         #
-        #   @param max_output_tokens [Integer, Symbol, :inf] Maximum number of output tokens for a single assistant response,
+        #   @param instructions [String]
+        #     The default system instructions (i.e. system message) prepended to model calls.
+        #     This field allows the client to guide the model on desired responses. The model
+        #     can be instructed on response content and format, (e.g. "be extremely succinct",
+        #     "act friendly", "here are examples of good responses") and on audio behavior
+        #     (e.g. "talk quickly", "inject emotion into your voice", "laugh frequently"). The
+        #     instructions are not guaranteed to be followed by the model, but they provide
+        #     guidance to the model on the desired behavior.
         #
-        #   @param model [String, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model] The Realtime model used for this session.
+        #     Note that the server sets default instructions which will be used if this field
+        #     is not set and are visible in the `session.created` event at the start of the
+        #     session.
         #
-        #   @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::OutputModality>] The set of modalities the model can respond with. It defaults to `["audio"]`, in
+        #   @param max_output_tokens [Integer, Symbol, :inf]
+        #     Maximum number of output tokens for a single assistant response, inclusive of
+        #     tool calls. Provide an integer between 1 and 4096 to limit output tokens, or
+        #     `inf` for the maximum available tokens for a given model. Defaults to `inf`.
         #
-        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil] Reference to a prompt template and its variables.
+        #   @param model [String, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model]
+        #     The Realtime model used for this session.
         #
-        #   @param reasoning [OpenAI::Models::Realtime::RealtimeReasoning] Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
+        #   @param output_modalities [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::OutputModality>]
+        #     The set of modalities the model can respond with. It defaults to `["audio"]`,
+        #     indicating that the model will respond with audio plus a transcript. `["text"]`
+        #     can be used to make the model respond with text only. It is not possible to
+        #     request both `text` and `audio` at the same time.
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp] How the model chooses tools. Provide one of the string modes or force a specific
+        #   @param prompt [OpenAI::Models::Responses::ResponsePrompt, nil]
+        #     Reference to a prompt template and its variables.
+        #     [Learn more](https://developers.openai.com/api/docs/guides/text?api-mode=responses#version-prompts-in-code).
         #
-        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool>] Tools available to the model.
+        #   @param reasoning [OpenAI::Models::Realtime::RealtimeReasoning]
+        #     Configuration for reasoning-capable Realtime models such as `gpt-realtime-2`.
         #
-        #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration, nil] Realtime API can write session traces to the [Traces Dashboard](https://platform
+        #   @param tool_choice [Symbol, OpenAI::Models::Responses::ToolChoiceOptions, OpenAI::Models::Responses::ToolChoiceFunction, OpenAI::Models::Responses::ToolChoiceMcp]
+        #     How the model chooses tools. Provide one of the string modes or force a specific
+        #     function/MCP tool.
         #
-        #   @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio] When the number of tokens in a conversation exceeds the model's input token limi
+        #   @param tools [Array<OpenAI::Models::Realtime::RealtimeFunctionTool, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool>]
+        #     Tools available to the model.
         #
-        #   @param object [Symbol, :"realtime.session"] The object type. Always `realtime.session`.
+        #   @param tracing [Symbol, :auto, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration, nil]
+        #     Realtime API can write session traces to the
+        #     [Traces Dashboard](https://platform.openai.com/logs?api=traces). Set to null to
+        #     disable tracing. Once tracing is enabled for a session, the configuration cannot
+        #     be modified.
         #
-        #   @param type [Symbol, :realtime] The type of session to create. Always `realtime` for the Realtime API.
+        #     `auto` will create a trace for the session with default values for the workflow
+        #     name, group id, and metadata.
+        #
+        #   @param truncation [Symbol, OpenAI::Models::Realtime::RealtimeTruncation::RealtimeTruncationStrategy, OpenAI::Models::Realtime::RealtimeTruncationRetentionRatio]
+        #     When the number of tokens in a conversation exceeds the model's input token
+        #     limit, the conversation be truncated, meaning messages (starting from the
+        #     oldest) will not be included in the model's context. A 32k context model with
+        #     4,096 max output tokens can only include 28,224 tokens in the context before
+        #     truncation occurs.
+        #
+        #     Clients can configure truncation behavior to truncate with a lower max token
+        #     limit, which is an effective way to control token usage and cost.
+        #
+        #     Truncation will reduce the number of cached tokens on the next turn (busting the
+        #     cache), since messages are dropped from the beginning of the context. However,
+        #     clients can also configure truncation to retain messages up to a fraction of the
+        #     maximum context size, which will reduce the need for future truncations and thus
+        #     improve the cache rate.
+        #
+        #     Truncation can be disabled entirely, which means the server will never truncate
+        #     but would instead return an error if the conversation exceeds the model's input
+        #     token limit.
+        #
+        #   @param object [Symbol, :"realtime.session"]
+        #     The object type. Always `realtime.session`.
+        #
+        #   @param type [Symbol, :realtime]
+        #     The type of session to create. Always `realtime` for the Realtime API.
 
         # @see OpenAI::Models::Realtime::RealtimeSessionCreateResponse#audio
         class Audio < OpenAI::Internal::Type::BaseModel
@@ -219,8 +283,10 @@ module OpenAI
             #   perception of the input audio.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction, nil]
-            optional :noise_reduction,
-                     -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction }
+            optional(
+              :noise_reduction,
+              -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction }
+            )
 
             # @!attribute transcription
             #
@@ -246,24 +312,44 @@ module OpenAI
             #   `null`; VAD is not supported.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad, nil]
-            optional :turn_detection,
-                     union: -> {
-                       OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
-                     },
-                     nil?: true
+            optional(
+              :turn_detection,
+              union: -> {
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection
+              },
+              nil?: true
+            )
 
             # @!method initialize(format_: nil, noise_reduction: nil, transcription: nil, turn_detection: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input} for more
-            #   details.
+            #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA]
+            #     The format of the input audio.
             #
-            #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA] The format of the input audio.
-            #
-            #   @param noise_reduction [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction] Configuration for input audio noise reduction. This can be set to `null` to turn
+            #   @param noise_reduction [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction]
+            #     Configuration for input audio noise reduction. This can be set to `null` to turn
+            #     off. Noise reduction filters audio added to the input audio buffer before it is
+            #     sent to VAD and the model. Filtering the audio can improve VAD and turn
+            #     detection accuracy (reducing false positives) and model performance by improving
+            #     perception of the input audio.
             #
             #   @param transcription [OpenAI::Models::Realtime::AudioTranscription]
             #
-            #   @param turn_detection [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad, nil] Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+            #   @param turn_detection [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad, nil]
+            #     Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
+            #     set to `null` to turn off, in which case the client must manually trigger model
+            #     response.
+            #
+            #     Server VAD means that the model will detect the start and end of speech based on
+            #     audio volume and respond at the end of user speech.
+            #
+            #     Semantic VAD is more advanced and uses a turn detection model (in conjunction
+            #     with VAD) to semantically estimate whether the user has finished speaking, then
+            #     dynamically sets a timeout based on this probability. For example, if user audio
+            #     trails off with "uhhm", the model will score a low probability of turn end and
+            #     wait longer for the user to continue speaking. This can be useful for more
+            #     natural conversations, but may have a higher latency.
+            #
+            #     For `gpt-realtime-whisper` transcription sessions, turn detection must be set to
+            #     `null`; VAD is not supported.
 
             # @see OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input#noise_reduction
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
@@ -276,17 +362,16 @@ module OpenAI
               optional :type, enum: -> { OpenAI::Realtime::NoiseReductionType }
 
               # @!method initialize(type: nil)
-              #   Some parameter documentations has been truncated, see
-              #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::NoiseReduction}
-              #   for more details.
-              #
               #   Configuration for input audio noise reduction. This can be set to `null` to turn
               #   off. Noise reduction filters audio added to the input audio buffer before it is
               #   sent to VAD and the model. Filtering the audio can improve VAD and turn
               #   detection accuracy (reducing false positives) and model performance by improving
               #   perception of the input audio.
               #
-              #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType] Type of noise reduction. `near_field` is for close-talking microphones such as h
+              #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType]
+              #     Type of noise reduction. `near_field` is for close-talking microphones such as
+              #     headphones, `far_field` is for far-field microphones such as laptop or
+              #     conference room microphones.
             end
 
             # Configuration for turn detection, ether Server VAD or Semantic VAD. This can be
@@ -313,12 +398,16 @@ module OpenAI
               discriminator :type
 
               # Server-side voice activity detection (VAD) which flips on when user speech is detected and off after a period of silence.
-              variant :server_vad,
-                      -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad }
+              variant(
+                :server_vad,
+                -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad }
+              )
 
               # Server-side semantic turn detection which uses a model to determine when the user has finished speaking.
-              variant :semantic_vad,
-                      -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad }
+              variant(
+                :semantic_vad,
+                -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad }
+              )
 
               class ServerVad < OpenAI::Internal::Type::BaseModel
                 # @!attribute type
@@ -391,26 +480,56 @@ module OpenAI
                 optional :threshold, Float
 
                 # @!method initialize(create_response: nil, idle_timeout_ms: nil, interrupt_response: nil, prefix_padding_ms: nil, silence_duration_ms: nil, threshold: nil, type: :server_vad)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::ServerVad}
-                #   for more details.
-                #
                 #   Server-side voice activity detection (VAD) which flips on when user speech is
                 #   detected and off after a period of silence.
                 #
-                #   @param create_response [Boolean] Whether or not to automatically generate a response when a VAD stop event occurs
+                #   @param create_response [Boolean]
+                #     Whether or not to automatically generate a response when a VAD stop event
+                #     occurs. If `interrupt_response` is set to `false` this may fail to create a
+                #     response if the model is already responding.
                 #
-                #   @param idle_timeout_ms [Integer, nil] Optional timeout after which a model response will be triggered automatically. T
+                #     If both `create_response` and `interrupt_response` are set to `false`, the model
+                #     will never respond automatically but VAD events will still be emitted.
                 #
-                #   @param interrupt_response [Boolean] Whether or not to automatically interrupt (cancel) any ongoing response with out
+                #   @param idle_timeout_ms [Integer, nil]
+                #     Optional timeout after which a model response will be triggered automatically.
+                #     This is useful for situations in which a long pause from the user is unexpected,
+                #     such as a phone call. The model will effectively prompt the user to continue the
+                #     conversation based on the current context.
                 #
-                #   @param prefix_padding_ms [Integer] Used only for `server_vad` mode. Amount of audio to include before the VAD detec
+                #     The timeout value will be applied after the last model response's audio has
+                #     finished playing, i.e. it's set to the `response.done` time plus audio playback
+                #     duration.
                 #
-                #   @param silence_duration_ms [Integer] Used only for `server_vad` mode. Duration of silence to detect speech stop (in m
+                #     An `input_audio_buffer.timeout_triggered` event (plus events associated with the
+                #     Response) will be emitted when the timeout is reached. Idle timeout is currently
+                #     only supported for `server_vad` mode.
                 #
-                #   @param threshold [Float] Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this
+                #   @param interrupt_response [Boolean]
+                #     Whether or not to automatically interrupt (cancel) any ongoing response with
+                #     output to the default conversation (i.e. `conversation` of `auto`) when a VAD
+                #     start event occurs. If `true` then the response will be cancelled, otherwise it
+                #     will continue until complete.
                 #
-                #   @param type [Symbol, :server_vad] Type of turn detection, `server_vad` to turn on simple Server VAD.
+                #     If both `create_response` and `interrupt_response` are set to `false`, the model
+                #     will never respond automatically but VAD events will still be emitted.
+                #
+                #   @param prefix_padding_ms [Integer]
+                #     Used only for `server_vad` mode. Amount of audio to include before the VAD
+                #     detected speech (in milliseconds). Defaults to 300ms.
+                #
+                #   @param silence_duration_ms [Integer]
+                #     Used only for `server_vad` mode. Duration of silence to detect speech stop (in
+                #     milliseconds). Defaults to 500ms. With shorter values the model will respond
+                #     more quickly, but may jump in on short pauses from the user.
+                #
+                #   @param threshold [Float]
+                #     Used only for `server_vad` mode. Activation threshold for VAD (0.0 to 1.0), this
+                #     defaults to 0.5. A higher threshold will require louder audio to activate the
+                #     model, and thus might perform better in noisy environments.
+                #
+                #   @param type [Symbol, :server_vad]
+                #     Type of turn detection, `server_vad` to turn on simple Server VAD.
               end
 
               class SemanticVad < OpenAI::Internal::Type::BaseModel
@@ -434,8 +553,12 @@ module OpenAI
                 #   and `high` have max timeouts of 8s, 4s, and 2s respectively.
                 #
                 #   @return [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::Eagerness, nil]
-                optional :eagerness,
-                         enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::Eagerness }
+                optional(
+                  :eagerness,
+                  enum: -> {
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::Eagerness
+                  }
+                )
 
                 # @!attribute interrupt_response
                 #   Whether or not to automatically interrupt any ongoing response with output to
@@ -446,20 +569,26 @@ module OpenAI
                 optional :interrupt_response, OpenAI::Internal::Type::Boolean
 
                 # @!method initialize(create_response: nil, eagerness: nil, interrupt_response: nil, type: :semantic_vad)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad}
-                #   for more details.
-                #
                 #   Server-side semantic turn detection which uses a model to determine when the
                 #   user has finished speaking.
                 #
-                #   @param create_response [Boolean] Whether or not to automatically generate a response when a VAD stop event occurs
+                #   @param create_response [Boolean]
+                #     Whether or not to automatically generate a response when a VAD stop event
+                #     occurs.
                 #
-                #   @param eagerness [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::Eagerness] Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
+                #   @param eagerness [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input::TurnDetection::SemanticVad::Eagerness]
+                #     Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
+                #     will wait longer for the user to continue speaking, `high` will respond more
+                #     quickly. `auto` is the default and is equivalent to `medium`. `low`, `medium`,
+                #     and `high` have max timeouts of 8s, 4s, and 2s respectively.
                 #
-                #   @param interrupt_response [Boolean] Whether or not to automatically interrupt any ongoing response with output to th
+                #   @param interrupt_response [Boolean]
+                #     Whether or not to automatically interrupt any ongoing response with output to
+                #     the default conversation (i.e. `conversation` of `auto`) when a VAD start event
+                #     occurs.
                 #
-                #   @param type [Symbol, :semantic_vad] Type of turn detection, `semantic_vad` to turn on Semantic VAD.
+                #   @param type [Symbol, :semantic_vad]
+                #     Type of turn detection, `semantic_vad` to turn on Semantic VAD.
 
                 # Used only for `semantic_vad` mode. The eagerness of the model to respond. `low`
                 # will wait longer for the user to continue speaking, `high` will respond more
@@ -515,15 +644,23 @@ module OpenAI
             optional :voice, union: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice }
 
             # @!method initialize(format_: nil, speed: nil, voice: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output} for
-            #   more details.
+            #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA]
+            #     The format of the output audio.
             #
-            #   @param format_ [OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCM, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMU, OpenAI::Models::Realtime::RealtimeAudioFormats::AudioPCMA] The format of the output audio.
+            #   @param speed [Float]
+            #     The speed of the model's spoken response as a multiple of the original speed.
+            #     1.0 is the default speed. 0.25 is the minimum speed. 1.5 is the maximum speed.
+            #     This value can only be changed in between model turns, not while a response is
+            #     in progress.
             #
-            #   @param speed [Float] The speed of the model's spoken response as a multiple of the original speed.
+            #     This parameter is a post-processing adjustment to the audio after it is
+            #     generated, it's also possible to prompt the model to speak faster or slower.
             #
-            #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice] The voice the model uses to respond. Voice cannot be changed during the
+            #   @param voice [String, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice]
+            #     The voice the model uses to respond. Voice cannot be changed during the session
+            #     once the model has responded with audio at least once. Current voice options are
+            #     `alloy`, `ash`, `ballad`, `coral`, `echo`, `sage`, `shimmer`, `verse`, `marin`,
+            #     and `cedar`. We recommend `marin` and `cedar` for best quality.
 
             # The voice the model uses to respond. Voice cannot be changed during the session
             # once the model has responded with audio at least once. Current voice options are
@@ -536,31 +673,47 @@ module OpenAI
 
               variant String
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::ALLOY }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::ALLOY }
+              )
 
               variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::ASH }
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::BALLAD }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::BALLAD }
+              )
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::CORAL }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::CORAL }
+              )
 
               variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::ECHO }
 
               variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::SAGE }
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::SHIMMER }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::SHIMMER }
+              )
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::VERSE }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::VERSE }
+              )
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::MARIN }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::MARIN }
+              )
 
-              variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::CEDAR }
+              variant(
+                const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::CEDAR }
+              )
 
               # @!method self.variants
               #   @return [Array(String, Symbol)]
 
               define_sorbet_constant!(:Variants) do
-                T.type_alias { T.any(String, OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::TaggedSymbol) }
+                T.type_alias {
+                  T.any(String, OpenAI::Realtime::RealtimeSessionCreateResponse::Audio::Output::Voice::TaggedSymbol)
+                }
               end
 
               # @!group
@@ -628,29 +781,55 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2024_10_01
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2024_12_17
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_REALTIME_PREVIEW_2025_06_03
+            }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_MINI_REALTIME_PREVIEW }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_MINI_REALTIME_PREVIEW }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 }
+          variant(
+            const: -> {
+              OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17
+            }
+          )
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI_2025_10_06 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI_2025_10_06 }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI_2025_12_15 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_REALTIME_MINI_2025_12_15 }
+          )
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_1_5 }
 
           variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI }
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI_2025_10_06 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI_2025_10_06 }
+          )
 
-          variant const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI_2025_12_15 }
+          variant(
+            const: -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Model::GPT_AUDIO_MINI_2025_12_15 }
+          )
 
           # @!method self.variants
           #   @return [Array(String, Symbol)]
@@ -723,14 +902,14 @@ module OpenAI
 
         # Give the model access to additional tools via remote Model Context Protocol
         # (MCP) servers.
-        # [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+        # [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
         module Tool
           extend OpenAI::Internal::Type::Union
 
           variant -> { OpenAI::Realtime::RealtimeFunctionTool }
 
           # Give the model access to additional tools via remote Model Context Protocol
-          # (MCP) servers. [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+          # (MCP) servers. [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
           variant -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool }
 
           class McpTool < OpenAI::Internal::Type::BaseModel
@@ -750,21 +929,27 @@ module OpenAI
             #   The tool invocation context(s).
             #
             #   @return [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller>, nil]
-            optional :allowed_callers,
-                     -> {
-                       OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller]
-                     },
-                     nil?: true
+            optional(
+              :allowed_callers,
+              -> {
+                OpenAI::Internal::Type::ArrayOf[
+                  enum: OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller
+                ]
+              },
+              nil?: true
+            )
 
             # @!attribute allowed_tools
             #   List of allowed tool names or a filter object.
             #
             #   @return [Array<String>, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter, nil]
-            optional :allowed_tools,
-                     union: -> {
-                       OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools
-                     },
-                     nil?: true
+            optional(
+              :allowed_tools,
+              union: -> {
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools
+              },
+              nil?: true
+            )
 
             # @!attribute authorization
             #   An OAuth access token that can be used with a remote MCP server, either with a
@@ -775,10 +960,16 @@ module OpenAI
             optional :authorization, String
 
             # @!attribute connector_id
+            #   @deprecated
+            #
             #   Identifier for service connectors, like those available in ChatGPT. One of
             #   `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
             #   service connectors
-            #   [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+            #   [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+            #
+            #   This field is deprecated for models released after September 1, 2026. Use
+            #   `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+            #   through a Secure MCP Tunnel.
             #
             #   Currently supported `connector_id` values are:
             #
@@ -792,8 +983,10 @@ module OpenAI
             #   - SharePoint: `connector_sharepoint`
             #
             #   @return [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID, nil]
-            optional :connector_id,
-                     enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID }
+            optional(
+              :connector_id,
+              enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID }
+            )
 
             # @!attribute defer_loading
             #   Whether this MCP tool is deferred and discovered via tool search.
@@ -812,11 +1005,13 @@ module OpenAI
             #   Specify which of the MCP server's tools require approval.
             #
             #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting, nil]
-            optional :require_approval,
-                     union: -> {
-                       OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval
-                     },
-                     nil?: true
+            optional(
+              :require_approval,
+              union: -> {
+                OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval
+              },
+              nil?: true
+            )
 
             # @!attribute server_description
             #   Optional description of the MCP server, used to provide more context.
@@ -839,38 +1034,68 @@ module OpenAI
             optional :tunnel_id, String
 
             # @!method initialize(server_label:, allowed_callers: nil, allowed_tools: nil, authorization: nil, connector_id: nil, defer_loading: nil, headers: nil, require_approval: nil, server_description: nil, server_url: nil, tunnel_id: nil, type: :mcp)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool} for
-            #   more details.
-            #
             #   Give the model access to additional tools via remote Model Context Protocol
             #   (MCP) servers.
-            #   [Learn more about MCP](https://platform.openai.com/docs/guides/tools-remote-mcp).
+            #   [Learn more about MCP](https://developers.openai.com/api/docs/guides/tools-connectors-mcp).
             #
-            #   @param server_label [String] A label for this MCP server, used to identify it in tool calls.
+            #   @param server_label [String]
+            #     A label for this MCP server, used to identify it in tool calls.
             #
-            #   @param allowed_callers [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller>, nil] The tool invocation context(s).
+            #   @param allowed_callers [Array<Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller>, nil]
+            #     The tool invocation context(s).
             #
-            #   @param allowed_tools [Array<String>, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter, nil] List of allowed tool names or a filter object.
+            #   @param allowed_tools [Array<String>, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter, nil]
+            #     List of allowed tool names or a filter object.
             #
-            #   @param authorization [String] An OAuth access token that can be used with a remote MCP server, either
+            #   @param authorization [String]
+            #     An OAuth access token that can be used with a remote MCP server, either with a
+            #     custom MCP server URL or a service connector. Your application must handle the
+            #     OAuth authorization flow and provide the token here.
             #
-            #   @param connector_id [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID] Identifier for service connectors, like those available in ChatGPT. One of
+            #   @param connector_id [Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::ConnectorID]
+            #     Identifier for service connectors, like those available in ChatGPT. One of
+            #     `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
+            #     service connectors
+            #     [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
             #
-            #   @param defer_loading [Boolean] Whether this MCP tool is deferred and discovered via tool search.
+            #     This field is deprecated for models released after September 1, 2026. Use
+            #     `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+            #     through a Secure MCP Tunnel.
             #
-            #   @param headers [Hash{Symbol=>String}, nil] Optional HTTP headers to send to the MCP server. Use for authentication
+            #     Currently supported `connector_id` values are:
             #
-            #   @param require_approval [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting, nil] Specify which of the MCP server's tools require approval.
+            #     - Dropbox: `connector_dropbox`
+            #     - Gmail: `connector_gmail`
+            #     - Google Calendar: `connector_googlecalendar`
+            #     - Google Drive: `connector_googledrive`
+            #     - Microsoft Teams: `connector_microsoftteams`
+            #     - Outlook Calendar: `connector_outlookcalendar`
+            #     - Outlook Email: `connector_outlookemail`
+            #     - SharePoint: `connector_sharepoint`
             #
-            #   @param server_description [String] Optional description of the MCP server, used to provide more context.
+            #   @param defer_loading [Boolean]
+            #     Whether this MCP tool is deferred and discovered via tool search.
             #
-            #   @param server_url [String] The URL for the MCP server. One of `server_url`, `connector_id`, or
+            #   @param headers [Hash{Symbol=>String}, nil]
+            #     Optional HTTP headers to send to the MCP server. Use for authentication or other
+            #     purposes.
             #
-            #   @param tunnel_id [String] The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+            #   @param require_approval [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter, Symbol, OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting, nil]
+            #     Specify which of the MCP server's tools require approval.
             #
-            #   @param type [Symbol, :mcp] The type of the MCP tool. Always `mcp`.
-
+            #   @param server_description [String]
+            #     Optional description of the MCP server, used to provide more context.
+            #
+            #   @param server_url [String]
+            #     The URL for the MCP server. One of `server_url`, `connector_id`, or `tunnel_id`
+            #     must be provided.
+            #
+            #   @param tunnel_id [String]
+            #     The Secure MCP Tunnel ID to use instead of a direct server URL. One of
+            #     `server_url`, `connector_id`, or `tunnel_id` must be provided.
+            #
+            #   @param type [Symbol, :mcp]
+            #     The type of the MCP tool. Always `mcp`.
             module AllowedCaller
               extend OpenAI::Internal::Type::Enum
 
@@ -888,10 +1113,16 @@ module OpenAI
               extend OpenAI::Internal::Type::Union
 
               # A string array of allowed tool names
-              variant -> { OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::StringArray }
+              variant(
+                -> {
+                  OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::StringArray
+                }
+              )
 
               # A filter object to specify which tools are allowed.
-              variant -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter }
+              variant(
+                -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter }
+              )
 
               class McpToolFilter < OpenAI::Internal::Type::BaseModel
                 # @!attribute read_only
@@ -910,15 +1141,16 @@ module OpenAI
                 optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
                 # @!method initialize(read_only: nil, tool_names: nil)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedTools::McpToolFilter}
-                #   for more details.
-                #
                 #   A filter object to specify which tools are allowed.
                 #
-                #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+                #   @param read_only [Boolean]
+                #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                #     is
+                #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                #     it will match this filter.
                 #
-                #   @param tool_names [Array<String>] List of allowed tool names.
+                #   @param tool_names [Array<String>]
+                #     List of allowed tool names.
               end
 
               # @!method self.variants
@@ -928,10 +1160,16 @@ module OpenAI
               StringArray = OpenAI::Internal::Type::ArrayOf[String]
             end
 
+            # @deprecated
+            #
             # Identifier for service connectors, like those available in ChatGPT. One of
             # `server_url`, `connector_id`, or `tunnel_id` must be provided. Learn more about
             # service connectors
-            # [here](https://platform.openai.com/docs/guides/tools-remote-mcp#connectors).
+            # [here](https://developers.openai.com/api/docs/guides/tools-connectors-mcp#connectors).
+            #
+            # This field is deprecated for models released after September 1, 2026. Use
+            # `server_url` to connect to a remote MCP server, or `tunnel_id` to connect
+            # through a Secure MCP Tunnel.
             #
             # Currently supported `connector_id` values are:
             #
@@ -970,39 +1208,53 @@ module OpenAI
               # Specify which of the MCP server's tools require approval. Can be
               # `always`, `never`, or a filter object associated with tools
               # that require approval.
-              variant -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter }
+              variant(
+                -> {
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter
+                }
+              )
 
               # Specify a single approval policy for all tools. One of `always` or
               # `never`. When set to `always`, all tools will require approval. When
               # set to `never`, all tools will not require approval.
-              variant enum: -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting }
+              variant(
+                enum: -> {
+                  OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting
+                }
+              )
 
               class McpToolApprovalFilter < OpenAI::Internal::Type::BaseModel
                 # @!attribute always
                 #   A filter object to specify which tools are allowed.
                 #
                 #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always, nil]
-                optional :always,
-                         -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always }
+                optional(
+                  :always,
+                  -> {
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always
+                  }
+                )
 
                 # @!attribute never
                 #   A filter object to specify which tools are allowed.
                 #
                 #   @return [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never, nil]
-                optional :never,
-                         -> { OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never }
+                optional(
+                  :never,
+                  -> {
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never
+                  }
+                )
 
                 # @!method initialize(always: nil, never: nil)
-                #   Some parameter documentations has been truncated, see
-                #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter}
-                #   for more details.
-                #
                 #   Specify which of the MCP server's tools require approval. Can be `always`,
                 #   `never`, or a filter object associated with tools that require approval.
                 #
-                #   @param always [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always] A filter object to specify which tools are allowed.
+                #   @param always [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always]
+                #     A filter object to specify which tools are allowed.
                 #
-                #   @param never [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never] A filter object to specify which tools are allowed.
+                #   @param never [OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never]
+                #     A filter object to specify which tools are allowed.
 
                 # @see OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter#always
                 class Always < OpenAI::Internal::Type::BaseModel
@@ -1022,15 +1274,16 @@ module OpenAI
                   optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
                   # @!method initialize(read_only: nil, tool_names: nil)
-                  #   Some parameter documentations has been truncated, see
-                  #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Always}
-                  #   for more details.
-                  #
                   #   A filter object to specify which tools are allowed.
                   #
-                  #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+                  #   @param read_only [Boolean]
+                  #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                  #     is
+                  #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                  #     it will match this filter.
                   #
-                  #   @param tool_names [Array<String>] List of allowed tool names.
+                  #   @param tool_names [Array<String>]
+                  #     List of allowed tool names.
                 end
 
                 # @see OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter#never
@@ -1051,15 +1304,16 @@ module OpenAI
                   optional :tool_names, OpenAI::Internal::Type::ArrayOf[String]
 
                   # @!method initialize(read_only: nil, tool_names: nil)
-                  #   Some parameter documentations has been truncated, see
-                  #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::Never}
-                  #   for more details.
-                  #
                   #   A filter object to specify which tools are allowed.
                   #
-                  #   @param read_only [Boolean] Indicates whether or not a tool modifies data or is read-only. If an
+                  #   @param read_only [Boolean]
+                  #     Indicates whether or not a tool modifies data or is read-only. If an MCP server
+                  #     is
+                  #     [annotated with `readOnlyHint`](https://modelcontextprotocol.io/specification/2025-06-18/schema#toolannotations-readonlyhint),
+                  #     it will match this filter.
                   #
-                  #   @param tool_names [Array<String>] List of allowed tool names.
+                  #   @param tool_names [Array<String>]
+                  #     List of allowed tool names.
                 end
               end
 
@@ -1126,17 +1380,19 @@ module OpenAI
             optional :workflow_name, String
 
             # @!method initialize(group_id: nil, metadata: nil, workflow_name: nil)
-            #   Some parameter documentations has been truncated, see
-            #   {OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Tracing::TracingConfiguration}
-            #   for more details.
-            #
             #   Granular configuration for tracing.
             #
-            #   @param group_id [String] The group id to attach to this trace to enable filtering and
+            #   @param group_id [String]
+            #     The group id to attach to this trace to enable filtering and grouping in the
+            #     Traces Dashboard.
             #
-            #   @param metadata [Object] The arbitrary metadata to attach to this trace to enable
+            #   @param metadata [Object]
+            #     The arbitrary metadata to attach to this trace to enable filtering in the Traces
+            #     Dashboard.
             #
-            #   @param workflow_name [String] The name of the workflow to attach to this trace. This is used to
+            #   @param workflow_name [String]
+            #     The name of the workflow to attach to this trace. This is used to name the trace
+            #     in the Traces Dashboard.
           end
 
           # @!method self.variants

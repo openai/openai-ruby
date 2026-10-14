@@ -1,6 +1,7 @@
 # typed: strong
 
 module OpenAI
+
   Admin = OpenAI::Models::Admin
 
   AllModels = OpenAI::Models::AllModels
@@ -59,14 +60,25 @@ module OpenAI
 
   ContentProvenanceCheck = OpenAI::Models::ContentProvenanceCheck
 
-  ContentProvenanceCheckCreateParams =
-    OpenAI::Models::ContentProvenanceCheckCreateParams
+  ContentProvenanceCheckCreateParams = OpenAI::Models::ContentProvenanceCheckCreateParams
 
   Conversations = OpenAI::Models::Conversations
 
   CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
 
   CustomToolInputFormat = OpenAI::Models::CustomToolInputFormat
+
+  Decision = OpenAI::Models::Decision
+
+  DecisionCreateParams = OpenAI::Models::DecisionCreateParams
+
+  DecisionInputImage = OpenAI::Models::DecisionInputImage
+
+  DecisionInputMessage = OpenAI::Models::DecisionInputMessage
+
+  DecisionInputPart = OpenAI::Models::DecisionInputPart
+
+  DecisionInputText = OpenAI::Models::DecisionInputText
 
   DeletedSkill = OpenAI::Models::DeletedSkill
 
@@ -90,8 +102,7 @@ module OpenAI
 
   Evals = OpenAI::Models::Evals
 
-  EvalStoredCompletionsDataSourceConfig =
-    OpenAI::Models::EvalStoredCompletionsDataSourceConfig
+  EvalStoredCompletionsDataSourceConfig = OpenAI::Models::EvalStoredCompletionsDataSourceConfig
 
   EvalUpdateParams = OpenAI::Models::EvalUpdateParams
 
@@ -121,8 +132,7 @@ module OpenAI
 
   FunctionDefinition = OpenAI::Models::FunctionDefinition
 
-  FunctionParameters =
-    T.let(OpenAI::Models::FunctionParameters, OpenAI::Internal::Type::Converter)
+  FunctionParameters = T.let(OpenAI::Models::FunctionParameters, OpenAI::Internal::Type::Converter)
 
   Graders = OpenAI::Models::Graders
 
@@ -152,6 +162,8 @@ module OpenAI
 
   ImagesResponse = OpenAI::Models::ImagesResponse
 
+  Live = OpenAI::Models::Live
+
   Metadata = T.let(OpenAI::Models::Metadata, OpenAI::Internal::Type::Converter)
 
   Model = OpenAI::Models::Model
@@ -178,8 +190,7 @@ module OpenAI
 
   OAuthErrorCode = OpenAI::Models::OAuthErrorCode
 
-  OtherFileChunkingStrategyObject =
-    OpenAI::Models::OtherFileChunkingStrategyObject
+  OtherFileChunkingStrategyObject = OpenAI::Models::OtherFileChunkingStrategyObject
 
   Realtime = OpenAI::Models::Realtime
 
@@ -201,6 +212,8 @@ module OpenAI
 
   ResponsesModel = OpenAI::Models::ResponsesModel
 
+  Safety = OpenAI::Models::Safety
+
   Skill = OpenAI::Models::Skill
 
   SkillCreateParams = OpenAI::Models::SkillCreateParams
@@ -219,11 +232,9 @@ module OpenAI
 
   StaticFileChunkingStrategy = OpenAI::Models::StaticFileChunkingStrategy
 
-  StaticFileChunkingStrategyObject =
-    OpenAI::Models::StaticFileChunkingStrategyObject
+  StaticFileChunkingStrategyObject = OpenAI::Models::StaticFileChunkingStrategyObject
 
-  StaticFileChunkingStrategyObjectParam =
-    OpenAI::Models::StaticFileChunkingStrategyObjectParam
+  StaticFileChunkingStrategyObjectParam = OpenAI::Models::StaticFileChunkingStrategyObjectParam
 
   Upload = OpenAI::Models::Upload
 
@@ -284,4 +295,5 @@ module OpenAI
   VideoSize = OpenAI::Models::VideoSize
 
   Webhooks = OpenAI::Models::Webhooks
+
 end

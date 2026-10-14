@@ -1,0 +1,19 @@
+module OpenAI
+  module Resources
+    class Live
+      attr_reader sideband: OpenAI::Resources::Live::Sideband
+
+      attr_reader forks: OpenAI::Resources::Live::Forks
+
+      attr_reader sessions: OpenAI::Resources::Live::Sessions
+
+      def create: (
+        session: OpenAI::Live::MediaSessionConfig,
+        transport: OpenAI::Live::LiveCreateParams::Transport,
+        ?request_options: OpenAI::request_opts
+      ) -> OpenAI::Models::Live::LiveCreateResponse
+
+      def initialize: (client: OpenAI::Client) -> void
+    end
+  end
+end

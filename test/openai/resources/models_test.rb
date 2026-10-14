@@ -4,7 +4,7 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
   def test_retrieve
-    response = @openai.models.retrieve("gpt-4o-mini")
+    response = @openai.models.retrieve("gpt-6-astra")
 
     assert_pattern do
       response => OpenAI::Model
@@ -12,11 +12,12 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        created: Integer,
-        object: Symbol,
-        owned_by: String
-      }
+          id: String,
+          created: Integer,
+          object: Symbol,
+          owned_by: String,
+          shutdown_date: Date | nil
+        }
     end
   end
 
@@ -27,7 +28,8 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
       response => OpenAI::Internal::Page
     end
 
-    row = response.to_enum.first
+    # Validate this response only; pagination is covered with finite fixtures.
+    row = response.data&.first
     return if row.nil?
 
     assert_pattern do
@@ -36,11 +38,12 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       row => {
-        id: String,
-        created: Integer,
-        object: Symbol,
-        owned_by: String
-      }
+          id: String,
+          created: Integer,
+          object: Symbol,
+          owned_by: String,
+          shutdown_date: Date | nil
+        }
     end
   end
 
@@ -53,10 +56,10 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
 
     assert_pattern do
       response => {
-        id: String,
-        deleted: OpenAI::Internal::Type::Boolean,
-        object: String
-      }
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: String
+        }
     end
   end
 end

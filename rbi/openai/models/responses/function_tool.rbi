@@ -2,12 +2,17 @@
 
 module OpenAI
   module Models
+
     module Responses
+
       class FunctionTool < OpenAI::Internal::Type::BaseModel
-        OrHash =
-          T.type_alias do
-            T.any(OpenAI::Responses::FunctionTool, OpenAI::Internal::AnyHash)
-          end
+
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::Responses::FunctionTool,
+            OpenAI::Internal::AnyHash
+          )
+        end
 
         # The name of the function to call.
         sig { returns(String) }
@@ -26,14 +31,14 @@ module OpenAI
         attr_accessor :type
 
         # The tool invocation context(s).
-        sig do
-          returns(
-            T.nilable(
-              T::Array[OpenAI::Responses::FunctionTool::AllowedCaller::OrSymbol]
-            )
-          )
-        end
+        sig { returns(T.nilable(T::Array[OpenAI::Responses::FunctionTool::AllowedCaller::OrSymbol])) }
         attr_accessor :allowed_callers
+
+        sig { returns(T.nilable(T::Boolean)) }
+        attr_reader :async
+
+        sig { params(async: T::Boolean).void }
+        attr_writer :async
 
         # Whether this function is deferred and loaded via tool search.
         sig { returns(T.nilable(T::Boolean)) }
@@ -54,42 +59,59 @@ module OpenAI
 
         # Defines a function in your own code the model can choose to call. Learn more
         # about
-        # [function calling](https://platform.openai.com/docs/guides/function-calling).
+        # [function calling](https://developers.openai.com/api/docs/guides/function-calling).
         sig do
           params(
+
             name: String,
+
             parameters: T.nilable(T::Hash[Symbol, T.anything]),
+
             strict: T.nilable(T::Boolean),
-            allowed_callers:
-              T.nilable(
-                T::Array[
-                  OpenAI::Responses::FunctionTool::AllowedCaller::OrSymbol
-                ]
-              ),
+
+            allowed_callers: T.nilable(T::Array[OpenAI::Responses::FunctionTool::AllowedCaller::OrSymbol]),
+
+            async: T::Boolean,
+
             defer_loading: T::Boolean,
+
             description: T.nilable(String),
+
             output_schema: T.nilable(T::Hash[Symbol, T.anything]),
+
             type: Symbol
-          ).returns(T.attached_class)
+          )
+            .returns(T.attached_class)
         end
         def self.new(
+
           # The name of the function to call.
           name:,
+
           # A JSON schema object describing the parameters of the function.
           parameters:,
+
           # Whether strict parameter validation is enforced for this function tool.
           strict:,
+
           # The tool invocation context(s).
           allowed_callers: nil,
+
+          async: nil,
+
           # Whether this function is deferred and loaded via tool search.
           defer_loading: nil,
+
           # A description of the function. Used by the model to determine whether or not to
           # call the function.
           description: nil,
+
           # A JSON schema object describing the JSON value encoded in string outputs for
           # this function.
           output_schema: nil,
+
           # The type of the function tool. Always `function`.
+
           type: :function
         )
         end
@@ -101,12 +123,8 @@ module OpenAI
               parameters: T.nilable(T::Hash[Symbol, T.anything]),
               strict: T.nilable(T::Boolean),
               type: Symbol,
-              allowed_callers:
-                T.nilable(
-                  T::Array[
-                    OpenAI::Responses::FunctionTool::AllowedCaller::OrSymbol
-                  ]
-                ),
+              allowed_callers: T.nilable(T::Array[OpenAI::Responses::FunctionTool::AllowedCaller::OrSymbol]),
+              async: T::Boolean,
               defer_loading: T::Boolean,
               description: T.nilable(String),
               output_schema: T.nilable(T::Hash[Symbol, T.anything])
@@ -119,34 +137,20 @@ module OpenAI
         module AllowedCaller
           extend OpenAI::Internal::Type::Enum
 
-          TaggedSymbol =
-            T.type_alias do
-              T.all(Symbol, OpenAI::Responses::FunctionTool::AllowedCaller)
-            end
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::FunctionTool::AllowedCaller) }
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-          DIRECT =
-            T.let(
-              :direct,
-              OpenAI::Responses::FunctionTool::AllowedCaller::TaggedSymbol
-            )
-          PROGRAMMATIC =
-            T.let(
-              :programmatic,
-              OpenAI::Responses::FunctionTool::AllowedCaller::TaggedSymbol
-            )
+          DIRECT = T.let(:direct, OpenAI::Responses::FunctionTool::AllowedCaller::TaggedSymbol)
+          PROGRAMMATIC = T.let(:programmatic, OpenAI::Responses::FunctionTool::AllowedCaller::TaggedSymbol)
 
-          sig do
-            override.returns(
-              T::Array[
-                OpenAI::Responses::FunctionTool::AllowedCaller::TaggedSymbol
-              ]
-            )
-          end
+          sig { override.returns(T::Array[OpenAI::Responses::FunctionTool::AllowedCaller::TaggedSymbol]) }
           def self.values
           end
         end
+
       end
+
     end
+
   end
 end

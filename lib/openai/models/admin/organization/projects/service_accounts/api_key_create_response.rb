@@ -38,16 +38,32 @@ module OpenAI
               #   @return [String]
               required :value, String
 
-              # @!method initialize(id:, created_at:, name:, value:, object: :"organization.project.service_account.api_key")
-              #   @param id [String] The identifier of the API key.
+              # @!attribute expires_at
+              #   The Unix timestamp (in seconds) when the API key expires, or null if it does not
+              #   expire.
               #
-              #   @param created_at [Integer] The Unix timestamp (in seconds) when the API key was created.
+              #   @return [Integer, nil]
+              optional :expires_at, Integer, nil?: true
+
+              # @!method initialize(id:, created_at:, name:, value:, expires_at: nil, object: :"organization.project.service_account.api_key")
+              #   @param id [String]
+              #     The identifier of the API key.
               #
-              #   @param name [String] The name of the API key.
+              #   @param created_at [Integer]
+              #     The Unix timestamp (in seconds) when the API key was created.
               #
-              #   @param value [String] The unredacted API key value.
+              #   @param name [String]
+              #     The name of the API key.
               #
-              #   @param object [Symbol, :"organization.project.service_account.api_key"] The object type, which is always `organization.project.service_account.api_key`
+              #   @param value [String]
+              #     The unredacted API key value.
+              #
+              #   @param expires_at [Integer, nil]
+              #     The Unix timestamp (in seconds) when the API key expires, or null if it does not
+              #     expire.
+              #
+              #   @param object [Symbol, :"organization.project.service_account.api_key"]
+              #     The object type, which is always `organization.project.service_account.api_key`
             end
           end
         end
