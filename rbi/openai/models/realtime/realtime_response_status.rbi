@@ -100,6 +100,13 @@ module OpenAI
           sig { params(code: String).void }
           attr_writer :code
 
+          # A human-readable error message.
+          sig { returns(T.nilable(String)) }
+          attr_reader :message
+
+          sig { params(message: String).void }
+          attr_writer :message
+
           # The type of error.
           sig { returns(T.nilable(String)) }
           attr_reader :type
@@ -114,6 +121,8 @@ module OpenAI
 
               code: String,
 
+              message: String,
+
               type: String
             )
               .returns(T.attached_class)
@@ -123,6 +132,9 @@ module OpenAI
             # Error code, if any.
             code: nil,
 
+            # A human-readable error message.
+            message: nil,
+
             # The type of error.
 
             type: nil
@@ -131,7 +143,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {code: String, type: String}
+              {code: String, message: String, type: String}
             )
           end
           def to_hash
