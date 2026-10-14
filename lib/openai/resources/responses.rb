@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../helpers/streaming/response_stream_resource"
+
 require_relative "../helpers/structured_output/response_parser"
 
 module OpenAI
