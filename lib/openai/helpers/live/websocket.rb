@@ -63,6 +63,7 @@ module OpenAI
     # send session.start and observe session.started before further commands.
     class Connection < OpenAI::WebSocket::Connection
       include OpenAI::WebSocket::Protocol
+      include OpenAI::WebSocket::GuardedConnection
 
       # @api private
       def initialize(socket:, url:)
@@ -75,58 +76,6 @@ module OpenAI
 
       def send_event(event)
         send_raw(encode_client_event(event))
-      end
-
-      def closed? = @poisoned || @closed || super
-
-      def close(code: 1000, reason: "")
-        @poisoned || @closed ? abort : super
-        @closed = true
-        nil
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
-      end
-
-      # @api private
-      def abort
-        super
-        @closed = true
-        nil
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
-      end
-
-      private def write_text(text)
-        complete = false
-        super
-        complete = true
-        nil
-      rescue StandardError
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
-      ensure
-        # Also retire a possibly buffered write when cancellation bypasses
-        # StandardError, before another sender or normal cleanup can flush it.
-        @poisoned = true unless complete
-      end
-
-      private def read_raw_message
-        raise connection_error("Cannot read from a failed Live WebSocket.") if @poisoned
-        return nil if @closed
-        text = super
-        @closed = text.nil?
-        text
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
-      end
-
-      private def socket_closed?
-        super
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
       end
 
       private def encode_client_event(event)
@@ -243,6 +192,9 @@ module OpenAI
           children.each { |child| pending << [child, false] }
         end
       end
+
+      private def transport_error = OpenAI::Errors::LiveConnectionError.new(url: @url)
+      private def failed_read_message = "Cannot read from a failed Live WebSocket."
 
       private def connection_error(message)
         OpenAI::Errors::LiveConnectionError.new(url: @url, message: message)
