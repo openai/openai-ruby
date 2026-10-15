@@ -28,10 +28,6 @@ module OpenAI
         # Learn more about [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
         variant :json_schema, -> { OpenAI::Responses::ResponseFormatTextJSONSchemaConfig }
 
-        # An {OpenAI::BaseModel} can be provided and implicitly converted into {OpenAI::Models::Responses::ResponseFormatTextJSONSchemaConfig}.
-        # See examples for more details.
-        #
-        # Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
         variant -> { OpenAI::StructuredOutput::JsonSchemaConverter }
 
         # JSON object response format. An older method of generating JSON responses.

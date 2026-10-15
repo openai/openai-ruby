@@ -41498,6 +41498,7 @@ components:
             anyOf:
             - $ref: '#/components/schemas/ResponseFormatText'
             - $ref: '#/components/schemas/ResponseFormatJsonSchema'
+              x-openai-ruby-json-schema-input: true
             - $ref: '#/components/schemas/ResponseFormatJsonObject'
           audio:
             type:
@@ -69131,6 +69132,7 @@ components:
       anyOf:
       - $ref: '#/components/schemas/ResponseFormatText'
       - $ref: '#/components/schemas/TextResponseFormatJsonSchema'
+        x-openai-ruby-json-schema-input: true
       - $ref: '#/components/schemas/ResponseFormatJsonObject'
       discriminator:
         propertyName: type
@@ -69282,6 +69284,7 @@ components:
         propertyName: type
       anyOf:
       - $ref: '#/components/schemas/FunctionTool'
+        x-openai-ruby-json-schema-input: true
       - $ref: '#/components/schemas/FileSearchTool'
       - $ref: '#/components/schemas/ComputerTool'
       - $ref: '#/components/schemas/ComputerUsePreviewTool'

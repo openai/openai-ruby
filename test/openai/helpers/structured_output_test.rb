@@ -3,6 +3,21 @@
 require_relative "../test_helper"
 
 class OpenAI::Test::StructuredOutputTest < Minitest::Test
+  def test_schema_converter_union_registration_preserves_order
+    adapter = OpenAI::StructuredOutput::JsonSchemaConverter
+    unions = {
+      OpenAI::Chat::CompletionCreateParams::ResponseFormat => OpenAI::ResponseFormatJSONSchema,
+      OpenAI::Responses::ResponseFormatTextConfig => OpenAI::Responses::ResponseFormatTextJSONSchemaConfig,
+      OpenAI::Responses::Tool => OpenAI::Responses::FunctionTool
+    }
+
+    unions.each do |union, schema|
+      variants = union.variants
+      assert_equal(1, variants.count(adapter), union.name)
+      assert_equal(variants.index(schema) + 1, variants.index(adapter), union.name)
+    end
+  end
+
   def test_misuse
     test_cases = [
       OpenAI::Internal::Type::HashOf[String],

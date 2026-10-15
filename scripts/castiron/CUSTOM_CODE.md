@@ -23,8 +23,9 @@ generation ownership remain visible in the report; do not change exclusions or
 checkpoints to hide customization. Non-text custom patches fail as uncountable.
 
 The ceiling is defined in [`.castiron-ratchet.json`](../../.castiron-ratchet.json).
-The policy file contains only an integer `schema_version` (currently 1) and a
-nonnegative integer `max_custom_patch_lines`. Missing, deleted, renamed, executable, symlinked,
+Migration policy contains an integer `schema_version` of 1 and a
+nonnegative integer `max_custom_patch_lines`. Strict schema v2 is described below.
+Missing, deleted, renamed, executable, symlinked,
 malformed, or unsupported policy files fail closed. There is no disable flag or
 automatic budget update command.
 
@@ -34,6 +35,41 @@ fit the measured usage. Human approval is contributor and agent policy plus norm
 review, not an automated claim that GitHub can identify who operated an account.
 
 ## Trusted CI
+
+### Strict generated-file ownership
+
+Schema v1 remains migration mode with its existing patch budget. An SDK with
+zero customizations can opt into schema v2 through a policy-only PR:
+
+```json
+{ "schema_version": 2, "generated_files": "strict", "max_custom_patch_lines": 0 }
+```
+
+First land shared compiler/verifier support and regenerate the SDK, including
+`scripts/castiron/generated-files.json`. Then activate strict policy. Both the
+main policy and a proposed activation are enforced; strict policy cannot be
+downgraded. A policy change cannot be combined with SDK or generated-source edits.
+SDK promotion rejects policy-file changes; submit the policy-only PR directly
+in the SDK repository.
+
+Strict mode compares generated paths, final file bytes, and Git modes against
+the manifest in the verified generated snapshot. The candidate's manifest is
+also checked exactly. Header removal, deletion, renaming, symlink substitution,
+or manifest edits cannot exempt a generated file. Generated workflow/action
+hashes are covered by the manifest even though the legacy patch counter and
+public snapshot publication continue to exclude those subtrees. Handwritten
+files and repository-owned governance remain outside generated ownership.
+
+The existing required `Castiron / custom-code budget` status fails on any strict
+violation. Its trusted-main execution and merge-queue checks remain mandatory.
+Local generation validates before integration and publication using compiler-owned
+code. New generated snapshots still require the existing generation/promotion
+provenance and review controls; a self-computed hash is not approval to publish.
+
+Agents must fix inputs/compiler code or handwritten extensions, regenerate, and
+verify. Never patch generated files or the manifest, disable strict mode, change
+ownership exclusions, or rewrite provenance to get a passing result. Verification
+failure must preserve edits for inspection rather than overwrite them.
 
 The custom-code workflow pair separates candidate execution from trusted checks:
 
