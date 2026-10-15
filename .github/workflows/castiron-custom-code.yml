@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  REPORTER_SHA256: af3b7d933a462eff47e964d73ad0bc1b502e7e8cb5ae13944c03a2505a023be1
+  REPORTER_SHA256: 157ed30ac9d54d20fe5f7e625dc8ee5958beb91cc7e30aaa97cfba8fb3e06e21
 
 jobs:
   queue-signal:

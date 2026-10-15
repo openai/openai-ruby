@@ -102,14 +102,14 @@ def included(path: bytes) -> bool:
     return not path.startswith(EXCLUDED)
 
 
-def tree_entries(repo: Path, commit: str) -> dict[bytes, Entry]:
+def tree_entries(repo: Path, commit: str, *, include_workflows: bool = False) -> dict[bytes, Entry]:
     result: dict[bytes, Entry] = {}
     for record in git(repo, "ls-tree", "-r", "-z", require_sha(commit)).split(b"\0"):
         if not record:
             continue
         metadata, path = record.split(b"\t", 1)
         mode, kind, oid = metadata.split(b" ")
-        if not included(path):
+        if not include_workflows and not included(path):
             continue
         if kind != b"blob" or mode not in {b"100644", b"100755", b"120000"}:
             raise ReportError(f"unsupported Git entry: {path!r}")
@@ -420,6 +420,7 @@ def prepare_public_snapshot(
     git(destination, "add", "--", ".castiron.stats.yml")
     return {
         "commit": snapshot,
+        "base_commit": base_snapshot,
         "branch": codegen_branch,
         "previous": previous,
         "hash": baseline["hash"],
