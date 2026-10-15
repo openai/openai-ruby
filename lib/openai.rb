@@ -308,6 +308,7 @@ require_relative "openai/models/admin/organization/projects/api_key_delete_respo
 require_relative "openai/models/admin/organization/projects/api_key_list_params"
 require_relative "openai/models/admin/organization/projects/api_key_retrieve_params"
 require_relative "openai/models/admin/organization/projects/api_key_update_params"
+require_relative "openai/models/admin/organization/projects/api_key_update_scopes_params"
 require_relative "openai/models/admin/organization/projects/certificate_activate_params"
 require_relative "openai/models/admin/organization/projects/certificate_activate_response"
 require_relative "openai/models/admin/organization/projects/certificate_deactivate_params"
@@ -1649,3 +1650,5 @@ require_relative "openai/helpers/beta/agents/creation_stream"
 require_relative "openai/helpers/agents/session_stream"
 require_relative "openai/helpers/beta/agents/function_tool"
 require_relative "openai/helpers/agents/message"
+
+require_relative "openai/helpers/admin/organization/projects/api_keys"
