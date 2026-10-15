@@ -46,7 +46,7 @@ module OpenAI
         #   The schema for the response format, described as a JSON Schema object. Learn how
         #   to build JSON schemas [here](https://json-schema.org/).
         #
-        #   @return [Hash{Symbol=>Object}, nil]
+        #   @return [Hash{Symbol=>Object}, OpenAI::StructuredOutput::JsonSchemaConverter, nil]
         optional(
           :schema,
           union: -> {
@@ -78,7 +78,7 @@ module OpenAI
         #     A description of what the response format is for, used by the model to determine
         #     how to respond in the format.
         #
-        #   @param schema [Hash{Symbol=>Object}]
+        #   @param schema [Hash{Symbol=>Object}, OpenAI::StructuredOutput::JsonSchemaConverter]
         #     The schema for the response format, described as a JSON Schema object. Learn how
         #     to build JSON schemas [here](https://json-schema.org/).
         #

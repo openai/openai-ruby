@@ -9,6 +9,7 @@ file and its workflows are generated from shared Castiron templates.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import importlib.util
 import json
@@ -44,7 +45,7 @@ def unique_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return value
 
 
-def read_budget(repo: Path, revision: str) -> int:
+def read_policy(repo: Path, revision: str) -> dict[str, Any]:
     revision = report.require_sha(revision)
     entry = report.git(repo, "ls-tree", revision, "--", POLICY).split()
     if len(entry) != 4 or entry[:2] != [b"100644", b"blob"]:
@@ -57,14 +58,141 @@ def read_budget(repo: Path, revision: str) -> int:
     if not isinstance(value, dict):
         raise ValueError("budget file must be an object")  # noqa: TRY004 - malformed policy is a value error
     value = cast(dict[str, Any], value)
-    if set(value) != {"schema_version", "max_custom_patch_lines"}:
-        raise ValueError("budget file must contain only schema_version and max_custom_patch_lines")
-    if type(value["schema_version"]) is not int or value["schema_version"] != 1:
+    version = value.get("schema_version")
+    if type(version) is not int or version not in (1, 2):
         raise ValueError("unsupported budget schema_version")
+    keys = {"schema_version", "max_custom_patch_lines"}
+    if version == 2:
+        keys.add("generated_files")
+    if set(value) != keys:
+        raise ValueError("budget file contains missing or unsupported fields")
     limit = value["max_custom_patch_lines"]
     if type(limit) is not int or limit < 0:
         raise ValueError("max_custom_patch_lines must be a nonnegative integer")
-    return limit
+    if version == 2 and (value["generated_files"] != "strict" or limit != 0):
+        raise ValueError("schema v2 requires generated_files=strict and a zero budget")
+    return value
+
+
+def read_budget(repo: Path, revision: str) -> int:
+    return read_policy(repo, revision)["max_custom_patch_lines"]
+
+
+def strict_policy(repo: Path, revision: str) -> bool:
+    return read_policy(repo, revision)["schema_version"] == 2
+
+
+MANIFEST = b"scripts/castiron/generated-files.json"
+
+
+def generated_manifest(repo: Path, generated: str) -> dict[bytes, dict[str, str]]:
+    """Read ownership from the verified snapshot, never the candidate's manifest."""
+    entries = report.tree_entries(repo, generated, include_workflows=True)
+    entry = entries.get(MANIFEST)
+    if entry is None or entry.mode != b"100644":
+        raise ValueError(
+            "strict mode requires a generated ownership manifest; regenerate with Castiron"
+        )
+    blobs = report.read_blobs(repo, entries)
+    value = json.loads(blobs[entry.oid], object_pairs_hook=unique_keys)
+    if (
+        not isinstance(value, dict)
+        or set(value) != {"schema_version", "files"}
+        or type(value["schema_version"]) is not int
+        or value["schema_version"] != 1
+        or not isinstance(value["files"], dict)
+    ):
+        raise ValueError("invalid generated ownership manifest")
+    files: dict[bytes, dict[str, str]] = {}
+    for name, identity in value["files"].items():
+        if (
+            not isinstance(name, str)
+            or not name
+            or "\\" in name
+            or "\0" in name
+            or any(part in ("", ".", "..", ".git") for part in name.split("/"))
+        ):
+            raise ValueError("invalid generated manifest path")
+        path = name.encode("utf-8")
+        if path == MANIFEST:
+            raise ValueError("generated manifest cannot include itself")
+        if (
+            not isinstance(identity, dict)
+            or set(identity) != {"mode", "sha256"}
+            or identity["mode"] not in ("100644", "100755")
+            or not isinstance(identity["sha256"], str)
+            or not report.HASH.fullmatch(identity["sha256"])
+        ):
+            raise ValueError(f"invalid generated identity: {name}")
+        files[path] = identity
+    # Private snapshots must bind every generated file, including workflows and
+    # actions omitted from the legacy hash. Public snapshots retain these
+    # identities but deliberately omit their private blobs.
+    snapshot_paths = set(entries) - {MANIFEST}
+    if snapshot_paths - files.keys() or any(
+        report.included(path) for path in files.keys() - snapshot_paths
+    ):
+        raise ValueError("generated manifest does not cover the verified snapshot exactly")
+    for path, identity in files.items():
+        if path in entries:
+            actual = entries[path]
+            if (
+                actual.mode.decode() != identity["mode"]
+                or hashlib.sha256(blobs[actual.oid]).hexdigest() != identity["sha256"]
+            ):
+                raise ValueError(f"manifest disagrees with generated snapshot: {path.decode()}")
+    # The manifest is itself immutable, bound by the existing snapshot hash.
+    files[MANIFEST] = {"mode": "100644", "sha256": hashlib.sha256(blobs[entry.oid]).hexdigest()}
+    return files
+
+
+def verify_generated(
+    repo: Path,
+    generated: str,
+    head: str,
+    *,
+    previous: str | None = None,
+    worktree: bool = False,
+) -> list[str]:
+    files = generated_manifest(repo, generated)
+    old = generated_manifest(repo, previous) if previous and previous != generated else files
+    entries = report.tree_entries(repo, head, include_workflows=True)
+    blobs = report.read_blobs(repo, {p: e for p, e in entries.items() if p in files})
+    failures: list[str] = []
+    for path, identity in files.items():
+        entry = entries.get(path)
+        content = blobs.get(entry.oid) if entry else None
+        mode = entry.mode.decode() if entry else None
+        if worktree:
+            full = repo / path.decode()
+            # Never follow a symlink introduced by an agent or formatter.
+            unsafe = any(
+                (repo / Path(*Path(path.decode()).parts[:i])).is_symlink()
+                for i in range(1, len(Path(path.decode()).parts) + 1)
+            )
+            if unsafe or not full.is_file():
+                content, mode = None, None
+            else:
+                content = full.read_bytes()
+                mode = "100755" if full.stat().st_mode & 0o111 else "100644"
+        if (
+            content is None
+            or mode != identity["mode"]
+            or hashlib.sha256(content).hexdigest() != identity["sha256"]
+        ):
+            failures.append(
+                f"{path.decode()}: differs from Castiron output; change inputs/compiler or handwritten code"
+            )
+    for path in old.keys() - files.keys():
+        retired = repo / path.decode()
+        present = (
+            retired.is_symlink() or (retired.exists() and not retired.is_dir())
+            if worktree
+            else path in entries
+        )
+        if present:
+            failures.append(f"{path.decode()}: retired generated file remains in candidate")
+    return failures
 
 
 def changed_paths(repo: Path, base: str, head: str) -> set[bytes]:
@@ -96,6 +224,8 @@ def check_isolation(repo: Path, base: str, head: str) -> int | None:
     paths = changed_paths(repo, base, head)
     if POLICY.encode() not in paths:
         return None
+    if strict_policy(repo, base) and not strict_policy(repo, head):
+        raise ValueError("strict generated-file ownership cannot be downgraded")
     if paths != {POLICY.encode()}:
         raise ValueError(ISOLATION_MESSAGE)
     return proposed
@@ -188,9 +318,24 @@ def evaluate(
         checked_limit = min([limit, *proposed_limits])
         result["checked_limit"] = checked_limit
         state = "success" if total <= checked_limit else "failure"
-        checks["budget"] = outcome(
-            state, f"+{added} / -{removed} = {total} custom lines; limit {checked_limit}."
-        )
+        description = f"+{added} / -{removed} = {total} custom lines; limit {checked_limit}."
+        # Main's strict policy applies even if the candidate tries to remove it.
+        # A proposed activation must itself satisfy the stricter contract.
+        if (
+            strict_policy(repo, policy_sha)
+            or strict_policy(repo, base)
+            or strict_policy(repo, head)
+        ):
+            violations = verify_generated(
+                repo, measured["after"]["commit"], head, previous=measured["before"]["commit"]
+            )
+            result["strict_violations"] = violations
+            if violations:
+                state = "failure"
+                description = "Strict generated-file verification failed: " + "; ".join(violations)
+            else:
+                description += " All generated files exactly match the verified manifest."
+        checks["budget"] = outcome(state, description)
     except (report.ReportError, ValueError, UnicodeError, KeyError) as exc:
         checks["budget"] = outcome("failure", str(exc))
     return result, patch
@@ -419,6 +564,13 @@ def github_evaluate(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
+    generated = commands.add_parser("verify-generated")
+    generated.add_argument("--repo", type=Path, required=True)
+    generated.add_argument("--policy-ref", required=True)
+    generated.add_argument("--generated", required=True)
+    generated.add_argument("--previous-generated")
+    generated.add_argument("--head", required=True)
+    generated.add_argument("--worktree", action="store_true")
     local = commands.add_parser("check")
     local.add_argument("--base", required=True)
     local.add_argument("--head", required=True)
@@ -433,6 +585,28 @@ def main() -> int:
         command.add_argument("--repo", type=Path, required=True)
         command.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
+    if args.command == "verify-generated":
+        # Local pipeline integration pins policy and checkpoint before merging.
+        # Legacy SDKs without a policy retain their existing behavior.
+        try:
+            policy_ref = report.require_sha(args.policy_ref)
+            if not report.git(args.repo, "ls-tree", policy_ref, "--", POLICY):
+                return 0
+            if not strict_policy(args.repo, policy_ref):
+                return 0
+            failures = verify_generated(
+                args.repo,
+                args.generated,
+                args.head,
+                previous=args.previous_generated,
+                worktree=args.worktree,
+            )
+            if failures:
+                raise ValueError("\n".join(failures))
+        except (ValueError, OSError, report.ReportError) as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
+        return 0
     try:
         if args.command == "check":
             result, patch = evaluate(

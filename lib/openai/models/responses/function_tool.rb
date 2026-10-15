@@ -13,7 +13,7 @@ module OpenAI
         # @!attribute parameters
         #   A JSON schema object describing the parameters of the function.
         #
-        #   @return [Hash{Symbol=>Object}, nil]
+        #   @return [Hash{Symbol=>Object}, OpenAI::StructuredOutput::JsonSchemaConverter, nil]
         required(
           :parameters,
           union: -> {
@@ -80,7 +80,7 @@ module OpenAI
         #   @param name [String]
         #     The name of the function to call.
         #
-        #   @param parameters [Hash{Symbol=>Object}, nil]
+        #   @param parameters [Hash{Symbol=>Object}, OpenAI::StructuredOutput::JsonSchemaConverter, nil]
         #     A JSON schema object describing the parameters of the function.
         #
         #   @param strict [Boolean, nil]
