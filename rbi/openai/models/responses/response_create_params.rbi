@@ -268,12 +268,7 @@ module OpenAI
         sig { returns(T.nilable(OpenAI::Responses::ResponseTextConfig)) }
         attr_reader :text
 
-        sig {
-          params(
-            text: T.any(OpenAI::Responses::ResponseTextConfig::OrHash, OpenAI::StructuredOutput::JsonSchemaConverter)
-          )
-            .void
-        }
+        sig { params(text: OpenAI::Responses::ResponseTextConfig::OrHash).void }
         attr_writer :text
 
         # How the model should select which tool (or tools) to use when generating a

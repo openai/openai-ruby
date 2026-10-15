@@ -19,6 +19,8 @@ module OpenAI
             OpenAI::Live::SessionUpdatedEvent,
             OpenAI::Live::InputAudioMutedEvent,
             OpenAI::Live::InputAudioUnmutedEvent,
+            OpenAI::Live::OutputAudioFixturePlayingEvent,
+            OpenAI::Live::OutputAudioFixturePlayedEvent,
             OpenAI::Live::InstructionsAppendedEvent,
             OpenAI::Live::ThinkingAppendedEvent,
             OpenAI::Live::CommentaryAppendedEvent,

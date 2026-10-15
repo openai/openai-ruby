@@ -379,14 +379,7 @@ module OpenAI
         #   [function tools](https://developers.openai.com/api/docs/guides/function-calling).
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>, nil]
-        optional(
-          :tools,
-          -> {
-            OpenAI::Internal::Type::ArrayOf[
-              OpenAI::UnionOf[OpenAI::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter]
-            ]
-          }
-        )
+        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionTool] }
 
         # @!attribute top_logprobs
         #   An integer between 0 and 20 specifying the maximum number of most likely tokens
@@ -1079,8 +1072,6 @@ module OpenAI
           # JSON Schema response format. Used to generate structured JSON responses.
           # Learn more about [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
           variant :json_schema, -> { OpenAI::ResponseFormatJSONSchema }
-
-          variant -> { OpenAI::StructuredOutput::JsonSchemaConverter }
 
           # JSON object response format. An older method of generating JSON responses.
           # Using `json_schema` is recommended for models that support it. Note that the

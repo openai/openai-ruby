@@ -1,0 +1,42 @@
+module OpenAI
+  module Models
+    module Live
+      type output_audio_fixture_play_event =
+        {
+          audio: String,
+          ?type: :"session.output_audio.fixture.play",
+          ?event_id: String?
+        }
+
+      class OutputAudioFixturePlayEvent < OpenAI::Internal::Type::BaseModel
+        # Base64-encoded raw mono PCM16 audio, little-endian, at 24 kHz. Do not include a
+        # WAV or other container header.
+        attr_accessor audio: String
+
+        attr_accessor type: :"session.output_audio.fixture.play"
+
+        # Optional client identifier for correlating this command with a server event's
+        # client_event_id or error.client_event_id.
+        attr_accessor event_id: String?
+
+        # @param audio
+        #   Base64-encoded raw mono PCM16 audio, little-endian, at 24 kHz. Do not include a
+        #   WAV or other container header.
+        # @param event_id
+        #   Optional client identifier for correlating this command with a server event's
+        #   client_event_id or error.client_event_id.
+        def initialize: (
+          audio: String,
+          ?event_id: String?,
+          ?type: :"session.output_audio.fixture.play"
+        ) -> void
+
+        def to_hash: -> {
+          audio: String,
+          ?type: :"session.output_audio.fixture.play",
+          ?event_id: String?
+        }
+      end
+    end
+  end
+end

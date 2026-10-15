@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "../../../../helpers/beta/agents/files"
-
 module OpenAI
   module Resources
     class Beta
