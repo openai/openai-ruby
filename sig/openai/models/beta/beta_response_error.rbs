@@ -7,7 +7,9 @@ module OpenAI
         {
           code: OpenAI::Models::Beta::BetaResponseError::code,
           message: String,
-          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment
+          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment,
+          ?param: String?,
+          ?type: String?
         }
 
       class BetaResponseError < OpenAI::Internal::Type::BaseModel
@@ -23,20 +25,34 @@ module OpenAI
           OpenAI::Beta::BetaResponseError::Misalignment
         ) -> OpenAI::Beta::BetaResponseError::Misalignment
 
+        # The request parameter associated with the error, or null if none was recorded.
+        attr_accessor param: String?
+
+        # The original error type, or null if it was not recorded.
+        attr_accessor type: String?
+
         # @param code
         #   The error code for the response.
         # @param message
         #   A human-readable description of the error.
+        # @param param
+        #   The request parameter associated with the error, or null if none was recorded.
+        # @param type
+        #   The original error type, or null if it was not recorded.
         def initialize: (
           code: OpenAI::Models::Beta::BetaResponseError::code,
           message: String,
-          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment
+          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment,
+          ?param: String?,
+          ?type: String?
         ) -> void
 
         def to_hash: -> {
           code: OpenAI::Models::Beta::BetaResponseError::code,
           message: String,
-          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment
+          ?misalignment: OpenAI::Beta::BetaResponseError::Misalignment,
+          ?param: String?,
+          ?type: String?
         }
 
         type code =
