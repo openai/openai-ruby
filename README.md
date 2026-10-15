@@ -1212,6 +1212,28 @@ All parameter and response objects inherit from `OpenAI::Internal::Type::BaseMod
 
 4. Helpers such as `#to_h`, `#deep_to_h`, `#to_json`, and `#to_yaml`.
 
+### Updating project API-key scopes
+
+Use `update_scopes` to replace a project's API-key restrictions without changing
+its expiration. Configure an admin API key with permission to write project API
+keys:
+
+```ruby
+client = OpenAI::Client.new(admin_api_key: ENV.fetch("OPENAI_ADMIN_KEY"))
+key = client.admin.organization.projects.api_keys.update_scopes(
+  "key_example",
+  project_id: "proj_example",
+  scopes: ["api.all.read"]
+)
+```
+
+An empty `scopes: []` removes key restrictions (All permissions), subject to the
+owner's effective access; it does **not** mean no access. This does not change
+roles or grant administrative permissions. Expired keys cannot be updated, and
+scope changes follow the same authentication-cache propagation as dashboard edits.
+The response contains the redacted key, never its secret. Use the existing
+`update(..., expires_in_seconds: ...)` method to change expiration.
+
 ### Making custom or undocumented requests
 
 #### Undocumented properties
