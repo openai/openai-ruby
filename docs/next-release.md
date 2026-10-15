@@ -13,13 +13,38 @@ select the version using [VERSIONING.md](../VERSIONING.md) before release.
 2. Require pull-request review, CODEOWNERS, CI and CodeQL for `next`; prohibit
    branch deletion and force pushes. Repository rules must support the chosen
    synchronization merge method. Main's existing rules remain authoritative.
-3. Verify the trusted custom-code reporter and budget statuses support PRs and
-   merge groups targeting `next` before requiring those statuses there. The
-   current trusted budget path only supports `main`; do not bypass it or raise
-   the budget to start the release branch.
+3. The trusted custom-code checker on `main` supports PRs and merge groups
+   targeting `main` or `next`. It compares against the actual target while
+   taking executable checker code and budget policy from `main`. Validate the
+   hosted PR and queue paths before requiring its statuses on `next`; do not
+   bypass checks or raise the budget to start the release branch.
 4. Verify generation and promotion can explicitly target `next`. A candidate
    branch name alone is not a release-target selector. Until target support is
    validated, do not promote breaking generated changes through the stable path.
+
+## Hosted checker rollout
+
+Keep validation and required-check activation as separate reviewed steps.
+For each hosted case, retain the PR number, exact candidate and target SHAs,
+trusted main-policy SHA, source workflow run, trusted publisher run, and both
+status results. A passing PR result alone is not merge-queue evidence.
+
+Exercise passing PRs and real merge-queue candidates on both `main` and `next`.
+Also verify fork PRs, retargeting, over-budget changes, mixed budget/code changes,
+and policy movement. Keep deliberately failing probes unmerged and close them
+when their evidence is recorded. Any lasting budget change needs its own
+budget-only PR and normal review.
+
+After the evidence is reviewed, add these exact required statuses to `next`,
+bound to GitHub Actions, while retaining all existing checks and protections:
+
+- `Castiron / budget-only change`
+- `Castiron / custom-code budget`
+
+The trusted main policy must remain authoritative even when `next` has a
+different policy file. Queue validation must reject stale policy, target or
+membership identities. This rollout does not enable generation, promotion or
+publishing to a new target.
 
 ## Per-change workflow
 
