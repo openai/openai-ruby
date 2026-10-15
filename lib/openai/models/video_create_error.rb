@@ -27,7 +27,19 @@ module OpenAI
       #   @return [OpenAI::Models::VideoCreateError::Misalignment, nil]
       optional :misalignment, -> { OpenAI::VideoCreateError::Misalignment }
 
-      # @!method initialize(code:, message:, headers: nil, misalignment: nil)
+      # @!attribute param
+      #   The request parameter associated with the error, or null if none was recorded.
+      #
+      #   @return [String, nil]
+      optional :param, String, nil?: true
+
+      # @!attribute type
+      #   The original error type, or null if it was not recorded.
+      #
+      #   @return [String, nil]
+      optional :type, String, nil?: true
+
+      # @!method initialize(code:, message:, headers: nil, misalignment: nil, param: nil, type: nil)
       #   An error that occurred while generating the response.
       #
       #   @param code [String]
@@ -41,6 +53,12 @@ module OpenAI
       #     any.
       #
       #   @param misalignment [OpenAI::Models::VideoCreateError::Misalignment]
+      #
+      #   @param param [String, nil]
+      #     The request parameter associated with the error, or null if none was recorded.
+      #
+      #   @param type [String, nil]
+      #     The original error type, or null if it was not recorded.
 
       # @see OpenAI::Models::VideoCreateError#misalignment
       class Misalignment < OpenAI::Internal::Type::BaseModel
