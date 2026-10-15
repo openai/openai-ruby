@@ -383,10 +383,7 @@ module OpenAI
           :tools,
           -> {
             OpenAI::Internal::Type::ArrayOf[
-              union: OpenAI::UnionOf[
-                OpenAI::Chat::ChatCompletionTool,
-                OpenAI::StructuredOutput::JsonSchemaConverter
-              ]
+              OpenAI::UnionOf[OpenAI::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter]
             ]
           }
         )

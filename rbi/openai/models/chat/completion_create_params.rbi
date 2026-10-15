@@ -420,9 +420,8 @@ module OpenAI
           params(
             tools: T::Array[
               T.any(
-                OpenAI::StructuredOutput::JsonSchemaConverter,
-                OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
-                OpenAI::Chat::ChatCompletionCustomTool::OrHash
+                T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash),
+                OpenAI::StructuredOutput::JsonSchemaConverter
               )
             ]
           )

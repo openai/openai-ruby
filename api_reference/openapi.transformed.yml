@@ -41650,6 +41650,7 @@ components:
                 propertyName: type
               x-stainless-go-variant-constructor:
                 naming: chat_completion_{variant}_tool
+            x-openai-ruby-json-schema-input: true
           tool_choice:
             $ref: '#/components/schemas/ChatCompletionToolChoiceOption'
           parallel_tool_calls:
