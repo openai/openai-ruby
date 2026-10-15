@@ -1,8 +1,8 @@
 schema_version: 1
-generation_id: f3c53e1c-6506-4550-bd8a-7fee53120cd9
+generation_id: c8d786be-8466-4bd8-b236-fceb0b8a6a34
 openapi_spec_hash: 584126216dafceccf915afcd9cd15c75
 openapi_transformed_spec_hash: bf8f859ca7f432d56f3472d31e725c21
 config_hash: 8a3adac99ab65e389039edf35adb8b3b
-codegen_sha: 4c5a010d32ff2fb48277ed276f47aed449484773
+codegen_sha: 2f5a96d841cdefe744ff019ce968f86ef3db4afd
 codegen_hash: 1e151be788ef04f3076e28132ef01aca9c70e2ea0f1227c7d87c3d7336ab1c44
-public_codegen_sha: e9e9f6ca66178337735f8392d92453222e0ebfaa
+public_codegen_sha: 2e66165a05bebe118dd371dd984f365cd7053c4e
