@@ -20,6 +20,7 @@ module OpenAI
             OpenAI::Live::InputAudioAppendEvent,
             OpenAI::Live::InputAudioMuteEvent,
             OpenAI::Live::InputAudioUnmuteEvent,
+            OpenAI::Live::OutputAudioFixturePlayEvent,
             OpenAI::Live::InstructionsAppendEvent,
             OpenAI::Live::ThinkingAppendEvent,
             OpenAI::Live::CommentaryAppendEvent,
