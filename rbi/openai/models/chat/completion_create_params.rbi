@@ -405,7 +405,10 @@ module OpenAI
         sig {
           params(
             tools: T::Array[
-              T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash)
+              T.any(
+                T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash),
+                OpenAI::StructuredOutput::JsonSchemaConverter
+              )
             ]
           )
             .void

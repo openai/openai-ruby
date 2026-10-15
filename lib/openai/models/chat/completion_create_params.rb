@@ -379,7 +379,14 @@ module OpenAI
         #   [function tools](https://developers.openai.com/api/docs/guides/function-calling).
         #
         #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>, nil]
-        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionTool] }
+        optional(
+          :tools,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::UnionOf[OpenAI::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter]
+            ]
+          }
+        )
 
         # @!attribute top_logprobs
         #   An integer between 0 and 20 specifying the maximum number of most likely tokens

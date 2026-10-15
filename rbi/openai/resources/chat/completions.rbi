@@ -90,7 +90,10 @@ module OpenAI
               OpenAI::Chat::ChatCompletionNamedToolChoiceCustom::OrHash
             ),
             tools: T::Array[
-              T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash)
+              T.any(
+                T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash),
+                OpenAI::StructuredOutput::JsonSchemaConverter
+              )
             ],
             top_logprobs: T.nilable(Integer),
             top_p: T.nilable(Float),
