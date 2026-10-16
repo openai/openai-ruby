@@ -18,7 +18,8 @@ class OpenAI::Test::Resources::Audio::VoicesTest < OpenAI::Test::ResourceTest
           created_at: Integer,
           name: String,
           object: Symbol,
-          type: OpenAI::Audio::Voice::Type
+          type: OpenAI::Audio::Voice::Type,
+          prompt: String | nil
         }
     end
   end

@@ -35,8 +35,17 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Audio::Voice::Type]
         required :type, enum: -> { OpenAI::Audio::Voice::Type }
 
-        # @!method initialize(id:, created_at:, name:, type:, object: :"audio.voice")
-        #   A custom voice that can be used for audio output.
+        # @!attribute prompt
+        #   The original text prompt used to create the voice. Present for prompt-generated
+        #   voices with a stored prompt; omitted for audio-sample voices and older voices
+        #   without a stored prompt.
+        #
+        #   @return [String, nil]
+        optional :prompt, String
+
+        # @!method initialize(id:, created_at:, name:, type:, prompt: nil, object: :"audio.voice")
+        #   A custom voice that can be used for audio output. Voices created from text
+        #   prompts are supported only in Live.
         #
         #   @param id [String]
         #     The voice identifier, which can be referenced in API endpoints.
@@ -50,6 +59,11 @@ module OpenAI
         #   @param type [Symbol, OpenAI::Models::Audio::Voice::Type]
         #     How the voice was created.
         #
+        #   @param prompt [String]
+        #     The original text prompt used to create the voice. Present for prompt-generated
+        #     voices with a stored prompt; omitted for audio-sample voices and older voices
+        #     without a stored prompt.
+        #
         #   @param object [Symbol, :"audio.voice"]
         #     The object type, which is always `audio.voice`.
 
@@ -60,6 +74,7 @@ module OpenAI
           extend OpenAI::Internal::Type::Enum
 
           AUDIO_SAMPLE = :audio_sample
+          PROMPT = :prompt
 
           # @!method self.values
           #   @return [Array<Symbol>]
