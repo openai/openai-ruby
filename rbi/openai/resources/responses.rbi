@@ -53,7 +53,7 @@ module OpenAI
           store: T.nilable(T::Boolean),
           stream_options: T.nilable(OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash),
           temperature: T.nilable(Float),
-          text: OpenAI::Responses::ResponseTextConfig::OrHash,
+          text: T.any(OpenAI::Responses::ResponseTextConfig::OrHash, OpenAI::StructuredOutput::JsonSchemaConverter),
           tool_choice: T.any(
             OpenAI::Responses::ToolChoiceOptions::OrSymbol,
             OpenAI::Responses::ToolChoiceAllowed::OrHash,
@@ -358,7 +358,7 @@ module OpenAI
           store: T.nilable(T::Boolean),
           stream_options: T.nilable(OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash),
           temperature: T.nilable(Float),
-          text: OpenAI::Responses::ResponseTextConfig::OrHash,
+          text: T.any(OpenAI::Responses::ResponseTextConfig::OrHash, OpenAI::StructuredOutput::JsonSchemaConverter),
           tool_choice: T.any(
             OpenAI::Responses::ToolChoiceOptions::OrSymbol,
             OpenAI::Responses::ToolChoiceAllowed::OrHash,

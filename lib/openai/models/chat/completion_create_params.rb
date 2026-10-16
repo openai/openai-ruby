@@ -270,7 +270,7 @@ module OpenAI
         #   ensures the message the model generates is valid JSON. Using `json_schema` is
         #   preferred for models that support it.
         #
-        #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject, nil]
+        #   @return [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::StructuredOutput::JsonSchemaConverter, OpenAI::Models::ResponseFormatJSONObject, nil]
         optional :response_format, union: -> { OpenAI::Chat::CompletionCreateParams::ResponseFormat }
 
         # @!attribute safety_identifier
@@ -378,8 +378,15 @@ module OpenAI
         #   or
         #   [function tools](https://developers.openai.com/api/docs/guides/function-calling).
         #
-        #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>, nil]
-        optional :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Chat::ChatCompletionTool] }
+        #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool, OpenAI::StructuredOutput::JsonSchemaConverter>, nil]
+        optional(
+          :tools,
+          -> {
+            OpenAI::Internal::Type::ArrayOf[
+              OpenAI::UnionOf[OpenAI::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter]
+            ]
+          }
+        )
 
         # @!attribute top_logprobs
         #   An integer between 0 and 20 specifying the maximum number of most likely tokens
@@ -593,7 +600,7 @@ module OpenAI
         #     [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
         #     model-specific support.
         #
-        #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::Models::ResponseFormatJSONObject]
+        #   @param response_format [OpenAI::Models::ResponseFormatText, OpenAI::Models::ResponseFormatJSONSchema, OpenAI::StructuredOutput::JsonSchemaConverter, OpenAI::Models::ResponseFormatJSONObject]
         #     An object specifying the format that the model must output.
         #
         #     Setting to `{ "type": "json_schema", "json_schema": {...} }` enables Structured
@@ -678,7 +685,7 @@ module OpenAI
         #     `none` is the default when no tools are present. `auto` is the default if tools
         #     are present.
         #
-        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>]
+        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool, OpenAI::StructuredOutput::JsonSchemaConverter>]
         #     A list of tools the model may call. You can provide either
         #     [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
         #     or
@@ -1072,6 +1079,8 @@ module OpenAI
           # JSON Schema response format. Used to generate structured JSON responses.
           # Learn more about [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
           variant :json_schema, -> { OpenAI::ResponseFormatJSONSchema }
+
+          variant -> { OpenAI::StructuredOutput::JsonSchemaConverter }
 
           # JSON object response format. An older method of generating JSON responses.
           # Using `json_schema` is recommended for models that support it. Note that the

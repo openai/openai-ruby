@@ -264,8 +264,11 @@ module OpenAI
         # preferred for models that support it.
         sig {
           returns(
-            T.nilable(
-              T.any(OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONSchema, OpenAI::ResponseFormatJSONObject)
+            T.any(
+              T.nilable(
+                T.any(OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONSchema, OpenAI::ResponseFormatJSONObject)
+              ),
+              OpenAI::StructuredOutput::JsonSchemaConverter
             )
           )
         }
@@ -274,9 +277,12 @@ module OpenAI
         sig {
           params(
             response_format: T.any(
-              OpenAI::ResponseFormatText::OrHash,
-              OpenAI::ResponseFormatJSONSchema::OrHash,
-              OpenAI::ResponseFormatJSONObject::OrHash
+              T.any(
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash
+              ),
+              OpenAI::StructuredOutput::JsonSchemaConverter
             )
           )
             .void
@@ -405,7 +411,10 @@ module OpenAI
         sig {
           params(
             tools: T::Array[
-              T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash)
+              T.any(
+                T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash),
+                OpenAI::StructuredOutput::JsonSchemaConverter
+              )
             ]
           )
             .void
@@ -512,9 +521,12 @@ module OpenAI
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
 
             response_format: T.any(
-              OpenAI::ResponseFormatText::OrHash,
-              OpenAI::ResponseFormatJSONSchema::OrHash,
-              OpenAI::ResponseFormatJSONObject::OrHash
+              T.any(
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash
+              ),
+              OpenAI::StructuredOutput::JsonSchemaConverter
             ),
 
             safety_identifier: T.nilable(String),
@@ -539,7 +551,10 @@ module OpenAI
             ),
 
             tools: T::Array[
-              T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash)
+              T.any(
+                T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash),
+                OpenAI::StructuredOutput::JsonSchemaConverter
+              )
             ],
 
             top_logprobs: T.nilable(Integer),
@@ -901,7 +916,12 @@ module OpenAI
                 OpenAI::Chat::ChatCompletionNamedToolChoice,
                 OpenAI::Chat::ChatCompletionNamedToolChoiceCustom
               ),
-              tools: T::Array[T.any(OpenAI::Chat::ChatCompletionFunctionTool, OpenAI::Chat::ChatCompletionCustomTool)],
+              tools: T::Array[
+                T.any(
+                  T.any(OpenAI::Chat::ChatCompletionFunctionTool, OpenAI::Chat::ChatCompletionCustomTool),
+                  OpenAI::StructuredOutput::JsonSchemaConverter
+                )
+              ],
               top_logprobs: T.nilable(Integer),
               top_p: T.nilable(Float),
               user: String,
@@ -1473,7 +1493,10 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           Variants = T.type_alias {
-            T.any(OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONSchema, OpenAI::ResponseFormatJSONObject)
+            T.any(
+              T.any(OpenAI::ResponseFormatText, OpenAI::ResponseFormatJSONSchema, OpenAI::ResponseFormatJSONObject),
+              OpenAI::StructuredOutput::JsonSchemaConverter
+            )
           }
 
           sig { override.returns(T::Array[OpenAI::Chat::CompletionCreateParams::ResponseFormat::Variants]) }
