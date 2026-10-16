@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "../../helpers/streaming/chat_completion_resource"
+require_relative "../../helpers/structured_output/chat_completion_parser"
+
 module OpenAI
   module Resources
     class Chat
@@ -333,10 +336,15 @@ module OpenAI
             raise ArgumentError.new(message)
           end
 
+          model, tool_models = get_structured_output_models(parsed)
+
+          unwrap = OpenAI::Helpers::StructuredOutput::ChatCompletionParser.build_unwrap(model, tool_models)
+
           @client.request(
             method: :post,
             path: "chat/completions",
             body: parsed,
+            unwrap: unwrap,
             model: OpenAI::Chat::ChatCompletion,
             security: {bearer_auth: true},
             options: options
@@ -798,6 +806,14 @@ module OpenAI
             security: {bearer_auth: true},
             options: params[:request_options]
           )
+        end
+
+        def get_structured_output_models(parsed)
+          OpenAI::Helpers::StructuredOutput::ChatCompletionParser.get_models(parsed)
+        end
+
+        def build_tools_with_models(tools, tool_models)
+          OpenAI::Helpers::StructuredOutput::ChatCompletionParser.build_tools(tools, tool_models)
         end
 
         # @api private

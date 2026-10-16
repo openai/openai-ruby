@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "../helpers/streaming/response_stream_resource"
+require_relative "../helpers/structured_output/response_parser"
+
 module OpenAI
   module Resources
     # Create and manage model responses.
@@ -284,14 +287,21 @@ module OpenAI
       def create(params = {})
         parsed, options = OpenAI::Responses::ResponseCreateParams.dump_request(params)
         if parsed[:stream]
-          message = "Please use `#stream_raw` for the streaming use case."
+          message = "Please use `#stream` for the streaming use case."
           raise ArgumentError.new(message)
+        end
+
+        model, tool_models = get_structured_output_models(parsed)
+
+        unwrap = -> (raw) do
+          parse_structured_outputs!(raw, model, tool_models)
         end
 
         @client.request(
           method: :post,
           path: "responses",
           body: parsed,
+          unwrap: unwrap,
           model: OpenAI::Responses::Response,
           security: {bearer_auth: true},
           options: options
@@ -591,7 +601,7 @@ module OpenAI
       #
       # Retrieves a model response with the given ID.
       #
-      # @overload retrieve(response_id, include: nil, include_obfuscation: nil, starting_after: nil, request_options: {})
+      # @overload retrieve(response_id, include: nil, include_obfuscation: nil, starting_after: nil, text: nil, tools: nil, request_options: {})
       #
       # @param response_id [String]
       #   The ID of the response to retrieve.
@@ -611,6 +621,14 @@ module OpenAI
       # @param starting_after [Integer]
       #   The sequence number of the event after which to start streaming.
       #
+      # @param text [OpenAI::Responses::ResponseTextConfig, OpenAI::StructuredOutput::JsonSchemaConverter, Hash, nil]
+      #   The structured-output model used to parse retrieved text output. This is a local
+      #   parsing hint and is not sent to the API.
+      #
+      # @param tools [Array<OpenAI::Responses::FunctionTool, OpenAI::StructuredOutput::JsonSchemaConverter, Hash>, nil]
+      #   Structured-output models used to parse retrieved function tool calls. These are
+      #   local parsing hints and are not sent to the API.
+      #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
       #
       # @return [OpenAI::Models::Responses::Response]
@@ -618,16 +636,28 @@ module OpenAI
       # @see OpenAI::Models::Responses::ResponseRetrieveParams
       def retrieve(response_id, params = {})
         parsed, options = OpenAI::Responses::ResponseRetrieveParams.dump_request(params)
+        structured_output_params = parsed.slice(:text, :tools)
+        parsed.delete(:text)
+        parsed.delete(:tools)
         query = OpenAI::Internal::Util.encode_query_params(parsed)
         if parsed[:stream]
           message = "Please use `#retrieve_streaming` for the streaming use case."
           raise ArgumentError.new(message)
         end
 
+        model, tool_models = get_retrieval_structured_output_models(structured_output_params)
+
+        unwrap = if model || !tool_models.empty?
+          -> (raw) do
+            parse_retrieved_structured_outputs!(raw, model, tool_models)
+          end
+        end
+
         @client.request(
           method: :get,
           path: ["responses/%1$s", response_id],
           query: query,
+          unwrap: unwrap,
           model: OpenAI::Responses::Response,
           security: {bearer_auth: true},
           options: options
@@ -811,6 +841,22 @@ module OpenAI
           security: {bearer_auth: true},
           options: options
         )
+      end
+
+      private def parse_structured_outputs!(raw, model, tool_models)
+        OpenAI::Helpers::StructuredOutput::ResponseParser.parse!(raw, model, tool_models)
+      end
+
+      private def parse_retrieved_structured_outputs!(raw, model, tool_models)
+        OpenAI::Helpers::StructuredOutput::ResponseParser.parse_retrieved!(raw, model, tool_models)
+      end
+
+      private def get_structured_output_models(parsed)
+        OpenAI::Helpers::StructuredOutput::ResponseParser.get_models(parsed)
+      end
+
+      private def get_retrieval_structured_output_models(parsed)
+        OpenAI::Helpers::StructuredOutput::ResponseParser.get_retrieval_models(parsed)
       end
 
       # @api private
