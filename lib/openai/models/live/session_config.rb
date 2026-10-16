@@ -35,8 +35,8 @@ module OpenAI
 
         # @!attribute input
         #   Ordered text-only history supplied before startup. Supports developer, user, and
-        #   assistant messages with one text part each; at most 128 messages and 8,192
-        #   rendered tokens in total.
+        #   assistant messages with one text part each; at most 128 messages and a
+        #   configured rendered-token limit (8,192 by default).
         #
         #   @return [Array<OpenAI::Models::Live::InitialItem::Developer, OpenAI::Models::Live::InitialItem::User, OpenAI::Models::Live::InitialItem::Assistant>, nil]
         optional :input, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Live::InitialItem] }
@@ -83,8 +83,8 @@ module OpenAI
         #
         #   @param input [Array<OpenAI::Models::Live::InitialItem::Developer, OpenAI::Models::Live::InitialItem::User, OpenAI::Models::Live::InitialItem::Assistant>]
         #     Ordered text-only history supplied before startup. Supports developer, user, and
-        #     assistant messages with one text part each; at most 128 messages and 8,192
-        #     rendered tokens in total.
+        #     assistant messages with one text part each; at most 128 messages and a
+        #     configured rendered-token limit (8,192 by default).
         #
         #   @param instructions [String, nil]
         #     Frontend instructions for voice, conversation, interruptions, and when to

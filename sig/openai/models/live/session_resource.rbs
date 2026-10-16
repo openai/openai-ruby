@@ -57,13 +57,13 @@ module OpenAI
         attr_accessor delegation: OpenAI::Models::Live::SessionResource::delegation?
 
         # Ordered text-only history supplied before startup. Supports developer, user, and
-        # assistant messages with one text part each; at most 128 messages and 8,192
-        # rendered tokens in total.
+        # assistant messages with one text part each; at most 128 messages and a
+        # configured rendered-token limit (8,192 by default).
         attr_reader input: ::Array[OpenAI::Models::Live::initial_item]?
 
         # Ordered text-only history supplied before startup. Supports developer, user, and
-        # assistant messages with one text part each; at most 128 messages and 8,192
-        # rendered tokens in total.
+        # assistant messages with one text part each; at most 128 messages and a
+        # configured rendered-token limit (8,192 by default).
         def input=: (
           ::Array[OpenAI::Models::Live::initial_item]
         ) -> ::Array[OpenAI::Models::Live::initial_item]
@@ -105,8 +105,8 @@ module OpenAI
         #   application; use `responses` to let the API manage a Responses backend.
         # @param input
         #   Ordered text-only history supplied before startup. Supports developer, user, and
-        #   assistant messages with one text part each; at most 128 messages and 8,192
-        #   rendered tokens in total.
+        #   assistant messages with one text part each; at most 128 messages and a
+        #   configured rendered-token limit (8,192 by default).
         # @param instructions
         #   Frontend instructions for voice, conversation, interruptions, and when to
         #   delegate. Start with the
