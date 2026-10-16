@@ -5,6 +5,8 @@ module OpenAI
         input: OpenAI::Models::DecisionCreateParams::input,
         model: String,
         questions: ::Array[OpenAI::Models::DecisionCreateParams::question],
+        ?prompt_cache_key: String?,
+        ?prompt_cache_options: OpenAI::DecisionCreateParams::PromptCacheOptions?,
         ?safety_identifier: String?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Decision

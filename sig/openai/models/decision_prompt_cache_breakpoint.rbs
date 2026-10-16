@@ -1,0 +1,16 @@
+module OpenAI
+  module Models
+    type decision_prompt_cache_breakpoint = { ?mode: :explicit }
+
+    class DecisionPromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
+      # The breakpoint mode. Always `explicit`.
+      attr_accessor mode: :explicit
+
+      # @param mode
+      #   The breakpoint mode. Always `explicit`.
+      def initialize: (?mode: :explicit) -> void
+
+      def to_hash: -> { ?mode: :explicit }
+    end
+  end
+end

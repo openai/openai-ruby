@@ -1,15 +1,37 @@
 module OpenAI
   module Models
-    type decision_input_text = { text: String, ?type: :input_text }
+    type decision_input_text =
+      {
+        text: String,
+        ?type: :input_text,
+        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
+      }
 
     class DecisionInputText < OpenAI::Internal::Type::BaseModel
       attr_accessor text: String
 
       attr_accessor type: :input_text
 
-      def initialize: (text: String, ?type: :input_text) -> void
+      # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+      # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+      # token block.
+      attr_accessor prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
 
-      def to_hash: -> { text: String, ?type: :input_text }
+      # @param prompt_cache_breakpoint
+      #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+      #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+      #   token block.
+      def initialize: (
+        text: String,
+        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?,
+        ?type: :input_text
+      ) -> void
+
+      def to_hash: -> {
+        text: String,
+        ?type: :input_text,
+        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
+      }
     end
   end
 end

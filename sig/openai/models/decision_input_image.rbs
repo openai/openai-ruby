@@ -4,7 +4,8 @@ module OpenAI
       {
         image_url: String,
         ?type: :input_image,
-        ?detail: OpenAI::Models::DecisionInputImage::detail?
+        ?detail: OpenAI::Models::DecisionInputImage::detail?,
+        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
       }
 
     class DecisionInputImage < OpenAI::Internal::Type::BaseModel
@@ -17,21 +18,32 @@ module OpenAI
       # auto.
       attr_accessor detail: OpenAI::Models::DecisionInputImage::detail?
 
+      # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+      # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+      # token block.
+      attr_accessor prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
+
       # @param image_url
       #   A base64-encoded image in a data URL or a publicly accessible HTTP(S) image URL.
       # @param detail
       #   The image detail level, using the selected model's image profile. Defaults to
       #   auto.
+      # @param prompt_cache_breakpoint
+      #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+      #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+      #   token block.
       def initialize: (
         image_url: String,
         ?detail: OpenAI::Models::DecisionInputImage::detail?,
+        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?,
         ?type: :input_image
       ) -> void
 
       def to_hash: -> {
         image_url: String,
         ?type: :input_image,
-        ?detail: OpenAI::Models::DecisionInputImage::detail?
+        ?detail: OpenAI::Models::DecisionInputImage::detail?,
+        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
       }
 
       type detail = :low | :high | :auto | :original

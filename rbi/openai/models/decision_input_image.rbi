@@ -24,6 +24,15 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::DecisionInputImage::Detail::OrSymbol)) }
       attr_accessor :detail
 
+      # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+      # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+      # token block.
+      sig { returns(T.nilable(OpenAI::DecisionPromptCacheBreakpoint)) }
+      attr_reader :prompt_cache_breakpoint
+
+      sig { params(prompt_cache_breakpoint: T.nilable(OpenAI::DecisionPromptCacheBreakpoint::OrHash)).void }
+      attr_writer :prompt_cache_breakpoint
+
       # An image provided as a base64 data URL or a publicly accessible HTTP(S) URL.
       # File IDs are not supported.
       sig do
@@ -32,6 +41,8 @@ module OpenAI
           image_url: String,
 
           detail: T.nilable(OpenAI::DecisionInputImage::Detail::OrSymbol),
+
+          prompt_cache_breakpoint: T.nilable(OpenAI::DecisionPromptCacheBreakpoint::OrHash),
 
           type: Symbol
         )
@@ -46,13 +57,23 @@ module OpenAI
         # auto.
         detail: nil,
 
+        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+        # token block.
+        prompt_cache_breakpoint: nil,
+
         type: :input_image
       )
       end
 
       sig do
         override.returns(
-          {image_url: String, type: Symbol, detail: T.nilable(OpenAI::DecisionInputImage::Detail::OrSymbol)}
+          {
+            image_url: String,
+            type: Symbol,
+            detail: T.nilable(OpenAI::DecisionInputImage::Detail::OrSymbol),
+            prompt_cache_breakpoint: T.nilable(OpenAI::DecisionPromptCacheBreakpoint)
+          }
         )
       end
       def to_hash
