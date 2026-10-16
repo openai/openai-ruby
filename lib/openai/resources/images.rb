@@ -196,6 +196,7 @@ module OpenAI
           raise ArgumentError.new(message)
         end
 
+        parsed.delete(:safety_identifier) if parsed[:safety_identifier].nil?
         @client.request(
           method: :post,
           path: "images/edits",
@@ -341,6 +342,7 @@ module OpenAI
         end
 
         parsed.store(:stream, true)
+        parsed.delete(:safety_identifier) if parsed[:safety_identifier].nil?
         @client.request(
           method: :post,
           path: "images/edits",
