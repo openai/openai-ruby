@@ -310,8 +310,7 @@ module OpenAI
           query = {"model" => model.to_s.dup.freeze}.freeze
           build = lambda do |deadline|
             build_shared_websocket_connection_request(
-              path: "realtime/translations",
-              query: query,
+              request: realtime.translations.__websocket_request(query: query),
               websocket_base_url: websocket_base_url,
               options: options,
               deadline: deadline,

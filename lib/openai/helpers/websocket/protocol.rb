@@ -15,8 +15,9 @@ module OpenAI
 
       private def event_type(event, message:)
         raise ArgumentError, message unless event.is_a?(Hash)
+        raise ArgumentError, message if event.key?(:type) && event.key?("type")
 
-        type = event[:type]
+        type = event[:type] || event["type"]
         return type if type.is_a?(String) || type.is_a?(Symbol)
 
         raise ArgumentError, message

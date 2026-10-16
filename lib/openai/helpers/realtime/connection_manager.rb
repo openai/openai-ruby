@@ -25,7 +25,7 @@ module OpenAI
         base_url = websocket_base_url&.to_s&.dup&.freeze
         request = lambda do |&request_block|
           client.with_realtime_connection_request(
-            path: "realtime",
+            path: client.realtime.__websocket_request.fetch(:path),
             query: query,
             websocket_base_url: base_url,
             options: request_options,

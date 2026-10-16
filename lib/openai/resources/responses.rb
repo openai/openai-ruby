@@ -1,12 +1,30 @@
 # frozen_string_literal: true
 
 require_relative "../helpers/streaming/response_stream_resource"
+require_relative "../helpers/websocket/resource"
 require_relative "../helpers/structured_output/response_parser"
 
 module OpenAI
   module Resources
     # Create and manage model responses.
     class Responses
+      include OpenAI::WebSocket::Resource
+
+      # @api private
+      def __websocket_request(query: {})
+        {method: :get, path: "responses", query: query, security: {bearer_auth: true}}
+      end
+
+      # @api private
+      def __websocket_client_event
+        OpenAI::Models::Responses::ResponsesClientEvent
+      end
+
+      # @api private
+      def __websocket_server_event
+        OpenAI::Models::Responses::ResponsesServerEvent
+      end
+
       # Create and manage model responses.
       # @return [OpenAI::Resources::Responses::InputItems]
       attr_reader :input_items

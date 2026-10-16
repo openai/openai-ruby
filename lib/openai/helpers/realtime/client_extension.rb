@@ -166,8 +166,7 @@ module OpenAI
           deadline: nil
         )
           build_shared_websocket_connection_request(
-            path: path,
-            query: query,
+            request: realtime.__websocket_request(query: query).merge(path: path),
             websocket_base_url: websocket_base_url,
             options: options,
             deadline: deadline,
