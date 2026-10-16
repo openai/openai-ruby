@@ -6227,7 +6227,7 @@
     },
     "lib/openai/resources/webhooks.rb": {
       "mode": "100644",
-      "sha256": "581474763dbe7eb857bce1a9bbb1f424e03826681fb0fd8e215bae8c4ca7336d"
+      "sha256": "69db37bda1b9e5ae919dd7f9322030aac73cdb3ab4d952ea22b9b7deec306685"
     },
     "lib/openai/resources/webhooks/event_types.rb": {
       "mode": "100644",

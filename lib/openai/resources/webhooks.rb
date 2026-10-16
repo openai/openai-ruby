@@ -233,11 +233,11 @@ module OpenAI
         tolerance = 300
       )
         if webhook_secret.nil? || webhook_secret.strip.empty?
-          message = [
-            "The webhook secret must either be set using the env var, OPENAI_WEBHOOK_SECRET,",
-            "or passed to this function"
-          ].join(" ")
-          raise ArgumentError, message
+          raise(
+            ArgumentError,
+            "The webhook secret must either be set using the env var, OPENAI_WEBHOOK_SECRET, " \
+              "or passed to this function"
+          )
         end
 
         header_names = %w[webhook-signature webhook-timestamp webhook-id]
@@ -277,28 +277,24 @@ module OpenAI
           part.start_with?("v1,") ? part[3..] : part
         end
 
-        decoded_secret = webhook_secret
-        if webhook_secret.start_with?("whsec_")
-          decoded_secret = Base64.strict_decode64(webhook_secret.delete_prefix("whsec_"))
+        decoded_secret = if webhook_secret.start_with?("whsec_")
+          webhook_secret[6..].unpack1("m0")
+        else
+          webhook_secret
         end
 
         raise ArgumentError, "The webhook secret must not be empty" if decoded_secret.empty?
 
         signed_payload = "#{webhook_id}.#{timestamp_header}.#{payload}"
-        expected_signature = Base64.strict_encode64(
-          OpenSSL::HMAC.digest("sha256", decoded_secret, signed_payload)
-        )
-        verified = signatures.any? do |signature|
-          signature.bytesize == expected_signature.bytesize &&
-            OpenSSL.secure_compare(expected_signature, signature)
-        end
 
-        unless verified
-          raise(
-            OpenAI::Errors::InvalidWebhookSignatureError,
-            "The given webhook signature does not match the expected signature"
-          )
-        end
+        expected_signature = [OpenSSL::HMAC.digest("sha256", decoded_secret, signed_payload)].pack("m0")
+
+        return if signatures.any? { |signature| OpenSSL.secure_compare(expected_signature, signature) }
+
+        raise(
+          OpenAI::Errors::InvalidWebhookSignatureError,
+          "The given webhook signature does not match the expected signature"
+        )
       end
 
       # @api private
