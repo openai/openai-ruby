@@ -15,7 +15,7 @@ module OpenAI
         # Start a Live session after connecting to a stored session’s fork WebSocket. Send an empty `session` object to use the stored configuration.
         variant :"session.start", -> { OpenAI::Live::ForkSessionStartEvent }
 
-        # Update the delegation settings of an active Live session. The server acknowledges accepted changes with `session.updated`.
+        # Update the delegation settings or transcript triggers of an active Live session. The server acknowledges accepted changes with `session.updated`.
         variant :"session.update", -> { OpenAI::Live::SessionUpdateEvent }
 
         # Send audio to a Live session over its primary WebSocket. WebRTC and SIP sessions send audio over their media transport.
@@ -39,6 +39,15 @@ module OpenAI
         # Provide context the Live model can communicate to the user, optionally for an existing client delegation.
         variant :"session.commentary.append", -> { OpenAI::Live::CommentaryAppendEvent }
 
+        # Evaluate the configured questions using the current conversation and Decision inputs. Reusing an event_id is rejected for the lifetime of the session.
+        variant :"decision.create", -> { OpenAI::Live::DecisionCreateEvent }
+
+        # Append an input item for future decisions without starting an evaluation or changing Live voice context.
+        variant :"decision.item.create", -> { OpenAI::Live::DecisionItemCreateEvent }
+
+        # Delete an input item from future decisions without starting an evaluation or changing Live voice context.
+        variant :"decision.item.delete", -> { OpenAI::Live::DecisionItemDeleteEvent }
+
         # Add an input item to the Live session’s Responses backend. Requires Responses delegation; use `response.create` to request a response.
         variant :"response.item.create", -> { OpenAI::Live::ResponseItemCreateEvent }
 
@@ -49,7 +58,7 @@ module OpenAI
         variant :"session.close", -> { OpenAI::Live::SessionCloseEvent }
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Live::ForkSessionStartEvent, OpenAI::Models::Live::SessionUpdateEvent, OpenAI::Models::Live::InputAudioAppendEvent, OpenAI::Models::Live::InputAudioMuteEvent, OpenAI::Models::Live::InputAudioUnmuteEvent, OpenAI::Models::Live::OutputAudioFixturePlayEvent, OpenAI::Models::Live::InstructionsAppendEvent, OpenAI::Models::Live::ThinkingAppendEvent, OpenAI::Models::Live::CommentaryAppendEvent, OpenAI::Models::Live::ResponseItemCreateEvent, OpenAI::Models::Live::ResponseCreateEvent, OpenAI::Models::Live::SessionCloseEvent)]
+        #   @return [Array(OpenAI::Models::Live::ForkSessionStartEvent, OpenAI::Models::Live::SessionUpdateEvent, OpenAI::Models::Live::InputAudioAppendEvent, OpenAI::Models::Live::InputAudioMuteEvent, OpenAI::Models::Live::InputAudioUnmuteEvent, OpenAI::Models::Live::OutputAudioFixturePlayEvent, OpenAI::Models::Live::InstructionsAppendEvent, OpenAI::Models::Live::ThinkingAppendEvent, OpenAI::Models::Live::CommentaryAppendEvent, OpenAI::Models::Live::DecisionCreateEvent, OpenAI::Models::Live::DecisionItemCreateEvent, OpenAI::Models::Live::DecisionItemDeleteEvent, OpenAI::Models::Live::ResponseItemCreateEvent, OpenAI::Models::Live::ResponseCreateEvent, OpenAI::Models::Live::SessionCloseEvent)]
       end
     end
   end

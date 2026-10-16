@@ -12,7 +12,8 @@ module OpenAI
           ?delegation: OpenAI::Models::Live::SessionResource::delegation?,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
-          ?store: bool
+          ?store: bool,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         }
 
       class SessionResource < OpenAI::Internal::Type::BaseModel
@@ -53,7 +54,8 @@ module OpenAI
         def client=: (OpenAI::Live::ClientConfig) -> OpenAI::Live::ClientConfig
 
         # Who handles tasks delegated by the Live model. Omitted or null selects your
-        # application; use `responses` to let the API manage a Responses backend.
+        # application; use `responses` or `decisions` to delegate to the corresponding
+        # API.
         attr_accessor delegation: OpenAI::Models::Live::SessionResource::delegation?
 
         # Ordered text-only history supplied before startup. Supports developer, user, and
@@ -85,6 +87,20 @@ module OpenAI
         # to false for new sessions.
         def store=: (bool) -> bool
 
+        # At most one Decisions trigger per transcript event type. Triggers run
+        # independently of delegation. On update, omit triggers to keep the current
+        # configuration, send a list to replace it, or send an empty list to disable
+        # triggers.
+        attr_reader triggers: ::Array[OpenAI::Live::DecisionTrigger]?
+
+        # At most one Decisions trigger per transcript event type. Triggers run
+        # independently of delegation. On update, omit triggers to keep the current
+        # configuration, send a list to replace it, or send an empty list to disable
+        # triggers.
+        def triggers=: (
+          ::Array[OpenAI::Live::DecisionTrigger]
+        ) -> ::Array[OpenAI::Live::DecisionTrigger]
+
         # @param id
         #   The unique ID of the Live session. Use this ID for sideband connections,
         #   forking, and recording download.
@@ -102,7 +118,8 @@ module OpenAI
         #   session. Trusted sideband connections are unaffected.
         # @param delegation
         #   Who handles tasks delegated by the Live model. Omitted or null selects your
-        #   application; use `responses` to let the API manage a Responses backend.
+        #   application; use `responses` or `decisions` to delegate to the corresponding
+        #   API.
         # @param input
         #   Ordered text-only history supplied before startup. Supports developer, user, and
         #   assistant messages with one text part each; at most 128 messages and a
@@ -118,6 +135,11 @@ module OpenAI
         # @param store
         #   Whether to store the session for later forking and recording download. Defaults
         #   to false for new sessions.
+        # @param triggers
+        #   At most one Decisions trigger per transcript event type. Triggers run
+        #   independently of delegation. On update, omit triggers to keep the current
+        #   configuration, send a list to replace it, or send an empty list to disable
+        #   triggers.
         # @param status
         #   The status of the session snapshot. Always `active`, including the final
         #   snapshot in session.closed; use the event type to determine that the session has
@@ -132,6 +154,7 @@ module OpenAI
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
           ?store: bool,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger],
           ?status: :active
         ) -> void
 
@@ -145,7 +168,8 @@ module OpenAI
           ?delegation: OpenAI::Models::Live::SessionResource::delegation?,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
-          ?store: bool
+          ?store: bool,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         }
 
         type model = String | :"gpt-live-1"
@@ -241,6 +265,7 @@ module OpenAI
         type delegation =
           OpenAI::Live::ClientDelegation
           | OpenAI::Live::SessionResource::Delegation::Responses
+          | OpenAI::Live::SessionResource::Delegation::Decisions
 
         module Delegation
           extend OpenAI::Internal::Type::Union
@@ -272,6 +297,28 @@ module OpenAI
             def to_hash: -> {
               responses: OpenAI::Live::ResponsesDelegationConfig,
               ?type: :responses
+            }
+          end
+
+          type decisions =
+            {
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              ?type: :decisions
+            }
+
+          class Decisions < OpenAI::Internal::Type::BaseModel
+            attr_accessor decisions: OpenAI::Live::DecisionsDelegationConfig
+
+            attr_accessor type: :decisions
+
+            def initialize: (
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              ?type: :decisions
+            ) -> void
+
+            def to_hash: -> {
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              ?type: :decisions
             }
           end
 

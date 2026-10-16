@@ -23,6 +23,9 @@ module OpenAI
             OpenAI::Live::InstructionsAppendEvent,
             OpenAI::Live::ThinkingAppendEvent,
             OpenAI::Live::CommentaryAppendEvent,
+            OpenAI::Live::DecisionCreateEvent,
+            OpenAI::Live::DecisionItemCreateEvent,
+            OpenAI::Live::DecisionItemDeleteEvent,
             OpenAI::Live::ResponseItemCreateEvent,
             OpenAI::Live::ResponseCreateEvent,
             OpenAI::Live::SessionCloseEvent

@@ -72,11 +72,10 @@ module OpenAI
 
         class Delegation < OpenAI::Internal::Type::BaseModel
           # The unique ID of the delegation. Use this as delegation_id when replying to
-          # client-owned work or correlating Responses events.
+          # client-owned work or correlating backend events.
           attr_accessor id: String
 
-          # Where the Live model delegated the work: `client` for your application, or
-          # `responses` for the configured Responses backend.
+          # Where the Live model delegated the work: `client`, `responses`, or `decisions`.
           attr_accessor target: OpenAI::Models::Live::DelegationCreatedEvent::Delegation::target
 
           # The object type, always `delegation`.
@@ -92,10 +91,9 @@ module OpenAI
 
           # @param id
           #   The unique ID of the delegation. Use this as delegation_id when replying to
-          #   client-owned work or correlating Responses events.
+          #   client-owned work or correlating backend events.
           # @param target
-          #   Where the Live model delegated the work: `client` for your application, or
-          #   `responses` for the configured Responses backend.
+          #   Where the Live model delegated the work: `client`, `responses`, or `decisions`.
           # @param response_id
           #   The ID of the Responses API response associated with a Responses delegation.
           #   Omitted for client delegations.
@@ -115,7 +113,7 @@ module OpenAI
             ?response_id: String
           }
 
-          type target = :client | :responses
+          type target = :client | :responses | :decisions
 
           module Target
             extend OpenAI::Internal::Type::Union
@@ -124,6 +122,7 @@ module OpenAI
 
             CLIENT: :client
             RESPONSES: :responses
+            DECISIONS: :decisions
           end
         end
       end

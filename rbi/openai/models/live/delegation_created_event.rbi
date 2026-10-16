@@ -43,8 +43,8 @@ module OpenAI
         sig { params(client_event_id: String).void }
         attr_writer :client_event_id
 
-        # Returned when the Live model delegates work to your application or a Responses
-        # backend. Contains delegation metadata and the position on the session timeline
+        # Returned when the Live model delegates work to your application, Responses, or
+        # Decisions. Contains delegation metadata and the position on the session timeline
         # where the work was delegated.
         sig do
           params(
@@ -107,12 +107,11 @@ module OpenAI
           end
 
           # The unique ID of the delegation. Use this as delegation_id when replying to
-          # client-owned work or correlating Responses events.
+          # client-owned work or correlating backend events.
           sig { returns(String) }
           attr_accessor :id
 
-          # Where the Live model delegated the work: `client` for your application, or
-          # `responses` for the configured Responses backend.
+          # Where the Live model delegated the work: `client`, `responses`, or `decisions`.
           sig { returns(OpenAI::Live::DelegationCreatedEvent::Delegation::Target::OrSymbol) }
           attr_accessor :target
 
@@ -146,11 +145,10 @@ module OpenAI
           def self.new(
 
             # The unique ID of the delegation. Use this as delegation_id when replying to
-            # client-owned work or correlating Responses events.
+            # client-owned work or correlating backend events.
             id:,
 
-            # Where the Live model delegated the work: `client` for your application, or
-            # `responses` for the configured Responses backend.
+            # Where the Live model delegated the work: `client`, `responses`, or `decisions`.
             target:,
 
             # The ID of the Responses API response associated with a Responses delegation.
@@ -176,8 +174,7 @@ module OpenAI
           def to_hash
           end
 
-          # Where the Live model delegated the work: `client` for your application, or
-          # `responses` for the configured Responses backend.
+          # Where the Live model delegated the work: `client`, `responses`, or `decisions`.
           module Target
             extend OpenAI::Internal::Type::Union
 
@@ -195,6 +192,7 @@ module OpenAI
 
             CLIENT = T.let(:client, OpenAI::Live::DelegationCreatedEvent::Delegation::Target::TaggedSymbol)
             RESPONSES = T.let(:responses, OpenAI::Live::DelegationCreatedEvent::Delegation::Target::TaggedSymbol)
+            DECISIONS = T.let(:decisions, OpenAI::Live::DelegationCreatedEvent::Delegation::Target::TaggedSymbol)
 
           end
         end

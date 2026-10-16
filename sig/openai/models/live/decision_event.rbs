@@ -1,0 +1,102 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_event =
+        {
+          delegation_id: String?,
+          event: OpenAI::Live::DecisionEvent::Event,
+          event_id: String,
+          source_event_id: String?,
+          source_event_type: OpenAI::Models::Live::DecisionEvent::source_event_type?,
+          trigger_id: String?,
+          ?type: :"decision.event"
+        }
+
+      class DecisionEvent < OpenAI::Internal::Type::BaseModel
+        # The Live delegation ID, or null for a transcript trigger.
+        attr_accessor delegation_id: String?
+
+        attr_accessor event: OpenAI::Live::DecisionEvent::Event
+
+        # The unique ID of this Live server event.
+        attr_accessor event_id: String
+
+        # The event_id of the transcript delta that fired this trigger, or null for a
+        # delegation.
+        attr_accessor source_event_id: String?
+
+        attr_accessor source_event_type: OpenAI::Models::Live::DecisionEvent::source_event_type?
+
+        # The Live-assigned ID of this trigger firing, or null for a delegation.
+        attr_accessor trigger_id: String?
+
+        attr_accessor type: :"decision.event"
+
+        # @param delegation_id
+        #   The Live delegation ID, or null for a transcript trigger.
+        # @param event_id
+        #   The unique ID of this Live server event.
+        # @param source_event_id
+        #   The event_id of the transcript delta that fired this trigger, or null for a
+        #   delegation.
+        # @param trigger_id
+        #   The Live-assigned ID of this trigger firing, or null for a delegation.
+        def initialize: (
+          delegation_id: String?,
+          event: OpenAI::Live::DecisionEvent::Event,
+          event_id: String,
+          source_event_id: String?,
+          source_event_type: OpenAI::Models::Live::DecisionEvent::source_event_type?,
+          trigger_id: String?,
+          ?type: :"decision.event"
+        ) -> void
+
+        def to_hash: -> {
+          delegation_id: String?,
+          event: OpenAI::Live::DecisionEvent::Event,
+          event_id: String,
+          source_event_id: String?,
+          source_event_type: OpenAI::Models::Live::DecisionEvent::source_event_type?,
+          trigger_id: String?,
+          ?type: :"decision.event"
+        }
+
+        type event =
+          { decision: OpenAI::Decision, ?type: :"decision.completed" }
+
+        class Event < OpenAI::Internal::Type::BaseModel
+          # The native Decision API response, including its model, ordered answers, and
+          # token usage.
+          attr_accessor decision: OpenAI::Decision
+
+          attr_accessor type: :"decision.completed"
+
+          # @param decision
+          #   The native Decision API response, including its model, ordered answers, and
+          #   token usage.
+          def initialize: (
+            decision: OpenAI::Decision,
+            ?type: :"decision.completed"
+          ) -> void
+
+          def to_hash: -> {
+            decision: OpenAI::Decision,
+            ?type: :"decision.completed"
+          }
+        end
+
+        type source_event_type =
+          :"session.input_transcript.delta" | :"session.output_transcript.delta"
+
+        module SourceEventType
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionEvent::source_event_type]
+
+          SESSION_INPUT_TRANSCRIPT_DELTA: :"session.input_transcript.delta"
+          SESSION_OUTPUT_TRANSCRIPT_DELTA: :"session.output_transcript.delta"
+        end
+      end
+    end
+  end
+end
