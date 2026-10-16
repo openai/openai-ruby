@@ -1,6 +1,13 @@
 module OpenAI
   module Resources
     class Responses
+      include OpenAI::WebSocket::Resource
+      def __websocket_request: (
+        ?query: Hash[untyped, untyped]
+      ) -> Hash[Symbol, untyped]
+      def __websocket_client_event: -> untyped
+      def __websocket_server_event: -> untyped
+
       attr_reader input_items: OpenAI::Resources::Responses::InputItems
 
       attr_reader input_tokens: OpenAI::Resources::Responses::InputTokens

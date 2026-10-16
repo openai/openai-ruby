@@ -41,6 +41,7 @@ module OpenAI
     # @api private
     attr_reader :workload_identity_auth
 
+    # Generated resource accessors.
     # @return [OpenAI::Resources::Decisions]
     attr_reader :decisions
 
@@ -430,6 +431,7 @@ module OpenAI
         on_retry: self.on_retry()
       )
 
+      # Initialize generated resources.
       @decisions = OpenAI::Resources::Decisions.new(client: self)
       @completions = OpenAI::Resources::Completions.new(client: self)
       @chat = OpenAI::Resources::Chat.new(client: self)

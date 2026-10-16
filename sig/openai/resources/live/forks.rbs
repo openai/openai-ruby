@@ -2,6 +2,14 @@ module OpenAI
   module Resources
     class Live
       class Forks
+        include OpenAI::WebSocket::Resource
+        def __websocket_request: (
+          String session_id,
+          ?query: Hash[untyped, untyped]
+        ) -> Hash[Symbol, untyped]
+        def __websocket_client_event: -> untyped
+        def __websocket_server_event: -> untyped
+
         def initialize: (client: OpenAI::Client) -> void
       end
     end

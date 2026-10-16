@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Live
+      type sideband_server_event =
+        OpenAI::Live::SessionStartedEvent
+        | OpenAI::Live::SessionUpdatedEvent
+        | OpenAI::Live::InputAudioMutedEvent
+        | OpenAI::Live::InputAudioUnmutedEvent
+        | OpenAI::Live::OutputAudioFixturePlayingEvent
+        | OpenAI::Live::OutputAudioFixturePlayedEvent
+        | OpenAI::Live::InstructionsAppendedEvent
+        | OpenAI::Live::ThinkingAppendedEvent
+        | OpenAI::Live::CommentaryAppendedEvent
+        | OpenAI::Live::InputTranscriptDeltaEvent
+        | OpenAI::Live::OutputTranscriptDeltaEvent
+        | OpenAI::Live::DelegationCreatedEvent
+        | OpenAI::Live::DecisionEvent
+        | OpenAI::Live::DecisionItemCreatedEvent
+        | OpenAI::Live::DecisionItemDeletedEvent
+        | OpenAI::Live::ResponseEvent
+        | OpenAI::Live::SessionUsageUpdatedEvent
+        | OpenAI::Live::SessionClosedEvent
+        | OpenAI::Live::ErrorEvent
+        | OpenAI::Live::InfoEvent
+
+      module SidebandServerEvent
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::Live::sideband_server_event]
+      end
+    end
+  end
+end

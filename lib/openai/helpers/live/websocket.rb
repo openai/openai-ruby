@@ -257,8 +257,7 @@ module OpenAI
           websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
           build = lambda do |deadline|
             build_shared_websocket_connection_request(
-              path: path,
-              query: query,
+              request: live.__websocket_request(query: query).merge(path: path),
               websocket_base_url: websocket_base_url,
               options: options,
               deadline: deadline,
@@ -296,7 +295,7 @@ module OpenAI
         # not in the URL. This opens only the transport, never starts a session.
         def connect(websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
           open_live_websocket(
-            path: "live/sessions",
+            path: __websocket_request.fetch(:path),
             connection_class: OpenAI::Live::Connection,
             websocket_base_url: websocket_base_url,
             request_options: request_options,
@@ -381,7 +380,7 @@ class OpenAI::Resources::Live::Sideband
     end
 
     open_live_websocket(
-      path: ["live/sessions/%1$s/attach", session_id],
+      path: __websocket_request(session_id).fetch(:path),
       query: graceful_close.nil? ? {} : {"graceful_close" => graceful_close.to_s},
       connection_class: OpenAI::Live::SidebandConnection,
       websocket_base_url: websocket_base_url,
@@ -400,7 +399,7 @@ class OpenAI::Resources::Live::Forks
   # session: {} to inherit the recording, then wait for session.started.
   def connect(session_id, websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
     open_live_websocket(
-      path: ["live/sessions/%1$s/fork", session_id],
+      path: __websocket_request(session_id).fetch(:path),
       connection_class: OpenAI::Live::ForkConnection,
       websocket_base_url: websocket_base_url,
       request_options: request_options,
