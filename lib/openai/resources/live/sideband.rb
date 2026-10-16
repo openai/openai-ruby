@@ -15,12 +15,12 @@ module OpenAI
 
         # @api private
         def __websocket_client_event
-          OpenAI::Models::Live::ConnectClientEvent
+          OpenAI::Models::Live::SidebandClientEvent
         end
 
         # @api private
         def __websocket_server_event
-          OpenAI::Models::Live::ConnectServerEvent
+          OpenAI::Models::Live::SidebandServerEvent
         end
 
         # @api private
