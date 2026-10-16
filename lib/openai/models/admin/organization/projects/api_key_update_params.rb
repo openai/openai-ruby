@@ -23,12 +23,22 @@ module OpenAI
             # @!attribute expires_in_seconds
             #   Number of seconds from this request until the API key expires. Must comply with
             #   the organization and project expiry policies. Expired keys cannot be updated.
-            #   Retrying resets the expiry relative to the new request.
+            #   Retrying resets the expiry relative to the new request. Omit to keep the current
+            #   expiration.
             #
-            #   @return [Integer]
-            required :expires_in_seconds, Integer
+            #   @return [Integer, nil]
+            optional :expires_in_seconds, Integer
 
-            # @!method initialize(project_id:, api_key_id:, expires_in_seconds:, request_options: {})
+            # @!attribute scopes
+            #   Replace the API key scope restrictions. Omit to leave scopes unchanged. An empty
+            #   array removes key restrictions (All permissions), subject to the owner's
+            #   effective permissions. Use ["api.all.read"] for read-only access. Scopes do not
+            #   change the owner's roles or grant administrative permissions.
+            #
+            #   @return [Array<String>, nil]
+            optional :scopes, OpenAI::Internal::Type::ArrayOf[String]
+
+            # @!method initialize(project_id:, api_key_id:, expires_in_seconds: nil, scopes: nil, request_options: {})
             #   @param project_id [String]
             #
             #   @param api_key_id [String]
@@ -36,7 +46,14 @@ module OpenAI
             #   @param expires_in_seconds [Integer]
             #     Number of seconds from this request until the API key expires. Must comply with
             #     the organization and project expiry policies. Expired keys cannot be updated.
-            #     Retrying resets the expiry relative to the new request.
+            #     Retrying resets the expiry relative to the new request. Omit to keep the current
+            #     expiration.
+            #
+            #   @param scopes [Array<String>]
+            #     Replace the API key scope restrictions. Omit to leave scopes unchanged. An empty
+            #     array removes key restrictions (All permissions), subject to the owner's
+            #     effective permissions. Use ["api.all.read"] for read-only access. Scopes do not
+            #     change the owner's roles or grant administrative permissions.
             #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end

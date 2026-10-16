@@ -13,7 +13,8 @@ module OpenAI
             def update: (
               String api_key_id,
               project_id: String,
-              expires_in_seconds: Integer,
+              ?expires_in_seconds: Integer,
+              ?scopes: ::Array[String],
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey
 
