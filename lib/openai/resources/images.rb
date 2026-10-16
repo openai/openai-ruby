@@ -72,7 +72,7 @@ module OpenAI
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
       #
-      # @overload edit(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      # @overload edit(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #   The image(s) to edit. Must be a supported image file or an array of images.
@@ -157,6 +157,14 @@ module OpenAI
       #   Legacy response format parameter for retired image models. Unsupported for GPT
       #   image models, which always return base64-encoded images.
       #
+      # @param safety_identifier [String, nil]
+      #   A stable identifier for an end user in your organization, used for safety
+      #   monitoring and abuse detection. Hash a username or email address to avoid
+      #   sending identifying information. A non-empty value takes precedence over the
+      #   deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      #   when available.
+      #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+      #
       # @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil]
       #   The size of the generated images. Defaults to `auto`. For `gpt-image-2`,
       #   `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
@@ -171,8 +179,9 @@ module OpenAI
       #   models that allow automatic sizing.
       #
       # @param user [String]
-      #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #   and detect abuse.
+      #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      #   backward compatibility and is used when `safety_identifier` is omitted, null, or
+      #   empty.
       #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
@@ -207,7 +216,7 @@ module OpenAI
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
       #
-      # @overload edit_stream_raw(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      # @overload edit_stream_raw(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #   The image(s) to edit. Must be a supported image file or an array of images.
@@ -292,6 +301,14 @@ module OpenAI
       #   Legacy response format parameter for retired image models. Unsupported for GPT
       #   image models, which always return base64-encoded images.
       #
+      # @param safety_identifier [String, nil]
+      #   A stable identifier for an end user in your organization, used for safety
+      #   monitoring and abuse detection. Hash a username or email address to avoid
+      #   sending identifying information. A non-empty value takes precedence over the
+      #   deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      #   when available.
+      #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+      #
       # @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil]
       #   The size of the generated images. Defaults to `auto`. For `gpt-image-2`,
       #   `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
@@ -306,8 +323,9 @@ module OpenAI
       #   models that allow automatic sizing.
       #
       # @param user [String]
-      #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #   and detect abuse.
+      #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      #   backward compatibility and is used when `safety_identifier` is omitted, null, or
+      #   empty.
       #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
@@ -344,7 +362,7 @@ module OpenAI
       # Creates an image given a prompt using a GPT Image model.
       # [Learn more](https://developers.openai.com/api/docs/guides/images-vision).
       #
-      # @overload generate(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, style: nil, user: nil, request_options: {})
+      # @overload generate(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, style: nil, user: nil, request_options: {})
       #
       # @param prompt [String]
       #   A text description of the desired image(s). The maximum length is 32000
@@ -406,6 +424,14 @@ module OpenAI
       #   Legacy response format parameter for retired image models. Unsupported for GPT
       #   image models, which always return base64-encoded images.
       #
+      # @param safety_identifier [String, nil]
+      #   A stable identifier for an end user in your organization, used for safety
+      #   monitoring and abuse detection. Hash a username or email address to avoid
+      #   sending identifying information. A non-empty value takes precedence over the
+      #   deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      #   when available.
+      #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+      #
       # @param size [String, Symbol, OpenAI::Models::ImageGenerateParams::Size, nil]
       #   The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
       #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
@@ -423,8 +449,9 @@ module OpenAI
       #   models; describe the desired style in the prompt instead.
       #
       # @param user [String]
-      #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #   and detect abuse.
+      #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      #   backward compatibility and is used when `safety_identifier` is omitted, null, or
+      #   empty.
       #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
@@ -454,7 +481,7 @@ module OpenAI
       # Creates an image given a prompt using a GPT Image model.
       # [Learn more](https://developers.openai.com/api/docs/guides/images-vision).
       #
-      # @overload generate_stream_raw(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, style: nil, user: nil, request_options: {})
+      # @overload generate_stream_raw(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, style: nil, user: nil, request_options: {})
       #
       # @param prompt [String]
       #   A text description of the desired image(s). The maximum length is 32000
@@ -516,6 +543,14 @@ module OpenAI
       #   Legacy response format parameter for retired image models. Unsupported for GPT
       #   image models, which always return base64-encoded images.
       #
+      # @param safety_identifier [String, nil]
+      #   A stable identifier for an end user in your organization, used for safety
+      #   monitoring and abuse detection. Hash a username or email address to avoid
+      #   sending identifying information. A non-empty value takes precedence over the
+      #   deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      #   when available.
+      #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+      #
       # @param size [String, Symbol, OpenAI::Models::ImageGenerateParams::Size, nil]
       #   The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
       #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
@@ -533,8 +568,9 @@ module OpenAI
       #   models; describe the desired style in the prompt instead.
       #
       # @param user [String]
-      #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #   and detect abuse.
+      #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      #   backward compatibility and is used when `safety_identifier` is omitted, null, or
+      #   empty.
       #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       #
       # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]

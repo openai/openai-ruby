@@ -48,6 +48,12 @@ module OpenAI
       sig { params(usage: OpenAI::ImageEditCompletedEvent::Usage::OrHash).void }
       attr_writer :usage
 
+      # The effective safety identifier used for safety monitoring and abuse detection.
+      # This is the non-empty `safety_identifier` from the request, or the deprecated
+      # `user` value when `safety_identifier` is omitted, null, or empty.
+      sig { returns(T.nilable(String)) }
+      attr_accessor :safety_identifier
+
       # Emitted when image editing has completed and the final image is available.
       sig do
         params(
@@ -65,6 +71,8 @@ module OpenAI
           size: T.any(String, OpenAI::ImageEditCompletedEvent::Size::OrSymbol),
 
           usage: OpenAI::ImageEditCompletedEvent::Usage::OrHash,
+
+          safety_identifier: T.nilable(String),
 
           type: Symbol
         )
@@ -94,6 +102,11 @@ module OpenAI
         # generation.
         usage:,
 
+        # The effective safety identifier used for safety monitoring and abuse detection.
+        # This is the non-empty `safety_identifier` from the request, or the deprecated
+        # `user` value when `safety_identifier` is omitted, null, or empty.
+        safety_identifier: nil,
+
         # The type of the event. Always `image_edit.completed`.
 
         type: :"image_edit.completed"
@@ -110,7 +123,8 @@ module OpenAI
             quality: OpenAI::ImageEditCompletedEvent::Quality::TaggedSymbol,
             size: OpenAI::ImageEditCompletedEvent::Size::Variants,
             type: Symbol,
-            usage: OpenAI::ImageEditCompletedEvent::Usage
+            usage: OpenAI::ImageEditCompletedEvent::Usage,
+            safety_identifier: T.nilable(String)
           }
         )
       end

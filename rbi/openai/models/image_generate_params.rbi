@@ -85,6 +85,15 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol)) }
       attr_accessor :response_format
 
+      # A stable identifier for an end user in your organization, used for safety
+      # monitoring and abuse detection. Hash a username or email address to avoid
+      # sending identifying information. A non-empty value takes precedence over the
+      # deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      # when available.
+      # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+      sig { returns(T.nilable(String)) }
+      attr_accessor :safety_identifier
+
       # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
       # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
       # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
@@ -103,8 +112,9 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol)) }
       attr_accessor :style
 
-      # A unique identifier representing your end-user, which can help OpenAI to monitor
-      # and detect abuse.
+      # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      # backward compatibility and is used when `safety_identifier` is omitted, null, or
+      # empty.
       # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       sig { returns(T.nilable(String)) }
       attr_reader :user
@@ -134,6 +144,8 @@ module OpenAI
           quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
 
           response_format: T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
+
+          safety_identifier: T.nilable(String),
 
           size: T.nilable(T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)),
 
@@ -207,6 +219,14 @@ module OpenAI
         # image models, which always return base64-encoded images.
         response_format: nil,
 
+        # A stable identifier for an end user in your organization, used for safety
+        # monitoring and abuse detection. Hash a username or email address to avoid
+        # sending identifying information. A non-empty value takes precedence over the
+        # deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+        # when available.
+        # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+        safety_identifier: nil,
+
         # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
         # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
         # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
@@ -223,8 +243,9 @@ module OpenAI
         # models; describe the desired style in the prompt instead.
         style: nil,
 
-        # A unique identifier representing your end-user, which can help OpenAI to monitor
-        # and detect abuse.
+        # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+        # backward compatibility and is used when `safety_identifier` is omitted, null, or
+        # empty.
         # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
         user: nil,
 
@@ -245,6 +266,7 @@ module OpenAI
             partial_images: T.nilable(Integer),
             quality: T.nilable(OpenAI::ImageGenerateParams::Quality::OrSymbol),
             response_format: T.nilable(OpenAI::ImageGenerateParams::ResponseFormat::OrSymbol),
+            safety_identifier: T.nilable(String),
             size: T.nilable(T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)),
             style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
             user: String,

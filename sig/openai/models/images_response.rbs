@@ -7,6 +7,7 @@ module OpenAI
         ?data: ::Array[OpenAI::Image],
         ?output_format: OpenAI::Models::ImagesResponse::output_format,
         ?quality: OpenAI::Models::ImagesResponse::quality,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImagesResponse::size,
         ?usage: OpenAI::ImagesResponse::Usage
       }
@@ -49,6 +50,11 @@ module OpenAI
         OpenAI::Models::ImagesResponse::quality
       ) -> OpenAI::Models::ImagesResponse::quality
 
+      # The effective safety identifier used for safety monitoring and abuse detection.
+      # This is the non-empty `safety_identifier` from the request, or the deprecated
+      # `user` value when `safety_identifier` is omitted, null, or empty.
+      attr_accessor safety_identifier: String?
+
       # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       attr_reader size: OpenAI::Models::ImagesResponse::size?
 
@@ -77,6 +83,10 @@ module OpenAI
       # @param quality
       #   The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
       #   `max`.
+      # @param safety_identifier
+      #   The effective safety identifier used for safety monitoring and abuse detection.
+      #   This is the non-empty `safety_identifier` from the request, or the deprecated
+      #   `user` value when `safety_identifier` is omitted, null, or empty.
       # @param size
       #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       # @param usage
@@ -87,6 +97,7 @@ module OpenAI
         ?data: ::Array[OpenAI::Image],
         ?output_format: OpenAI::Models::ImagesResponse::output_format,
         ?quality: OpenAI::Models::ImagesResponse::quality,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImagesResponse::size,
         ?usage: OpenAI::ImagesResponse::Usage
       ) -> void
@@ -97,6 +108,7 @@ module OpenAI
         ?data: ::Array[OpenAI::Image],
         ?output_format: OpenAI::Models::ImagesResponse::output_format,
         ?quality: OpenAI::Models::ImagesResponse::quality,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImagesResponse::size,
         ?usage: OpenAI::ImagesResponse::Usage
       }
