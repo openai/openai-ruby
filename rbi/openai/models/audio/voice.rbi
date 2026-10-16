@@ -34,7 +34,17 @@ module OpenAI
         sig { returns(OpenAI::Audio::Voice::Type::TaggedSymbol) }
         attr_accessor :type
 
-        # A custom voice that can be used for audio output.
+        # The original text prompt used to create the voice. Present for prompt-generated
+        # voices with a stored prompt; omitted for audio-sample voices and older voices
+        # without a stored prompt.
+        sig { returns(T.nilable(String)) }
+        attr_reader :prompt
+
+        sig { params(prompt: String).void }
+        attr_writer :prompt
+
+        # A custom voice that can be used for audio output. Voices created from text
+        # prompts are supported only in Live.
         sig do
           params(
 
@@ -45,6 +55,8 @@ module OpenAI
             name: String,
 
             type: OpenAI::Audio::Voice::Type::OrSymbol,
+
+            prompt: String,
 
             object: Symbol
           )
@@ -64,6 +76,11 @@ module OpenAI
           # How the voice was created.
           type:,
 
+          # The original text prompt used to create the voice. Present for prompt-generated
+          # voices with a stored prompt; omitted for audio-sample voices and older voices
+          # without a stored prompt.
+          prompt: nil,
+
           # The object type, which is always `audio.voice`.
 
           object: :"audio.voice"
@@ -77,7 +94,8 @@ module OpenAI
               created_at: Integer,
               name: String,
               object: Symbol,
-              type: OpenAI::Audio::Voice::Type::TaggedSymbol
+              type: OpenAI::Audio::Voice::Type::TaggedSymbol,
+              prompt: String
             }
           )
         end
@@ -92,6 +110,7 @@ module OpenAI
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           AUDIO_SAMPLE = T.let(:audio_sample, OpenAI::Audio::Voice::Type::TaggedSymbol)
+          PROMPT = T.let(:prompt, OpenAI::Audio::Voice::Type::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Audio::Voice::Type::TaggedSymbol]) }
           def self.values

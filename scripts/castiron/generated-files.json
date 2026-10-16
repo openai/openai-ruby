@@ -891,7 +891,7 @@
     },
     "lib/openai/models/audio/speech_create_params.rb": {
       "mode": "100644",
-      "sha256": "3a7e4ad732001692a7107b7d91289478e62411d89d5712829b9f627cc43da872"
+      "sha256": "631b716b9432a787a9e1ecf72533f9382920f6f449960794d01171e6bb7a7691"
     },
     "lib/openai/models/audio/speech_model.rb": {
       "mode": "100644",
@@ -971,11 +971,11 @@
     },
     "lib/openai/models/audio/voice.rb": {
       "mode": "100644",
-      "sha256": "0a3d3f8fbc10a95ee1f8631cecfd79d4e26c5fc71a7b8f855e82ff6998166a15"
+      "sha256": "5a95e4169a178c9beb7d161075ae676f60f1cce590cbc1ccd491f2911c56c46c"
     },
     "lib/openai/models/audio/voice_create_params.rb": {
       "mode": "100644",
-      "sha256": "e3728005fdb6f656b326ee4d3212056a9a6ae88de953b97ba4243d64f1eb292b"
+      "sha256": "0a5b2a4ed3c1a7c3d22c693b47c047063176517c6a9cdf19ee63ba14812565fb"
     },
     "lib/openai/models/audio_model.rb": {
       "mode": "100644",
@@ -2899,7 +2899,7 @@
     },
     "lib/openai/models/chat/chat_completion_audio_param.rb": {
       "mode": "100644",
-      "sha256": "7ec587ffe1ccc6594915d80dcc17f1f605fb0d0cb2e21c00570cd6b58aacfb77"
+      "sha256": "1febd2689ec774f8e1785c1c4b5224c2fca827ebfae39abeb1c02525de67feae"
     },
     "lib/openai/models/chat/chat_completion_chunk.rb": {
       "mode": "100644",
@@ -4191,7 +4191,7 @@
     },
     "lib/openai/models/realtime/realtime_audio_config_output.rb": {
       "mode": "100644",
-      "sha256": "6d937cfae3347be8473768fcf693c4f6ba237a4f10edf576cc3702e1b08b7185"
+      "sha256": "fe211c1db9f02f8b316a2f94fa4fb36715e2ef66a6183615bcc71410bc438910"
     },
     "lib/openai/models/realtime/realtime_audio_formats.rb": {
       "mode": "100644",
@@ -4279,7 +4279,7 @@
     },
     "lib/openai/models/realtime/realtime_response_create_audio_output.rb": {
       "mode": "100644",
-      "sha256": "92b934fcf9735d3e7f567626b35c65705389a1ed54706fae270673624e0d31fb"
+      "sha256": "263ac892ec0b1d449614070878a1a0ab4cecd35647760ea9e727dfaa8435ebb3"
     },
     "lib/openai/models/realtime/realtime_response_create_mcp_tool.rb": {
       "mode": "100644",
@@ -5875,7 +5875,7 @@
     },
     "lib/openai/resources/audio/speech.rb": {
       "mode": "100644",
-      "sha256": "e9ab9968e6d006fe76040248d65c8b0d6f4484f46ad5fa0dd607256d7a72ca5f"
+      "sha256": "426044a6a2788936d81b9daa966cf29ddab4c830dfaa57d788394efc49c44c50"
     },
     "lib/openai/resources/audio/transcriptions.rb": {
       "mode": "100644",
@@ -5887,7 +5887,7 @@
     },
     "lib/openai/resources/audio/voices.rb": {
       "mode": "100644",
-      "sha256": "68af84a19528e448745eb4b0beabcfa96221aabef46930a819e032e5d47b4732"
+      "sha256": "e5b596af12cb89f53b3958177dd1704f0eb2321097eaedce5b394f44ea7ab676"
     },
     "lib/openai/resources/batches.rb": {
       "mode": "100644",
@@ -7111,7 +7111,7 @@
     },
     "rbi/openai/models/audio/speech_create_params.rbi": {
       "mode": "100644",
-      "sha256": "f23592cd65cebc77f4c0c67f28457c8190dbc76c0bd37867834b1c84ed27c498"
+      "sha256": "64253e976e7d710ea2b606f276238c60365789ef24cc315ba3336a9923e48cc5"
     },
     "rbi/openai/models/audio/speech_model.rbi": {
       "mode": "100644",
@@ -7191,11 +7191,11 @@
     },
     "rbi/openai/models/audio/voice.rbi": {
       "mode": "100644",
-      "sha256": "d50217a44925c85300eecd9ace1857fd6ad09cccf4b26714a221b738d1aba877"
+      "sha256": "011403212847d582a1d07d906016289637ddb5e477acb0bccf0cf82493e47204"
     },
     "rbi/openai/models/audio/voice_create_params.rbi": {
       "mode": "100644",
-      "sha256": "fb2b4c98e195ef60bc6a5c061ab0e4b2f6be065232f42e8410cad623e95f1fbc"
+      "sha256": "4f66ae5e71426344a652cd76df175b217111f47b82f9f4612d59205e97d32120"
     },
     "rbi/openai/models/audio_model.rbi": {
       "mode": "100644",
@@ -9119,7 +9119,7 @@
     },
     "rbi/openai/models/chat/chat_completion_audio_param.rbi": {
       "mode": "100644",
-      "sha256": "2282417f82687b96eb0a699638803df37a22a228fd0a95f746ed0b5761496c01"
+      "sha256": "c95354cf66d617f2165bd8452aa758bf1e322e740416410ca33e476f8f5c2cd2"
     },
     "rbi/openai/models/chat/chat_completion_chunk.rbi": {
       "mode": "100644",
@@ -10411,7 +10411,7 @@
     },
     "rbi/openai/models/realtime/realtime_audio_config_output.rbi": {
       "mode": "100644",
-      "sha256": "b54d08b48eceabf1f1b0b2bee168599ac53532aecf9ce61605dee95a408dc5f7"
+      "sha256": "6dea845f789cf0870d54f6e885e1f99470986ba48fc8c437720222ad8c74b69c"
     },
     "rbi/openai/models/realtime/realtime_audio_formats.rbi": {
       "mode": "100644",
@@ -10499,7 +10499,7 @@
     },
     "rbi/openai/models/realtime/realtime_response_create_audio_output.rbi": {
       "mode": "100644",
-      "sha256": "8de4a91722175c4feb0ffbbc8b9928c1c217786e65540e839e2ae98391e0bc12"
+      "sha256": "168ca9b2531d353fb123cb9326cd8fee156dc1d3ec66ae8833268aed1158ce4c"
     },
     "rbi/openai/models/realtime/realtime_response_create_mcp_tool.rbi": {
       "mode": "100644",
@@ -12095,7 +12095,7 @@
     },
     "rbi/openai/resources/audio/speech.rbi": {
       "mode": "100644",
-      "sha256": "47cf794abdd95766233de4283e71366aa768f5cfa7038087b0218bf3129345d7"
+      "sha256": "2b5f38022566a186e43e223244ea37c103f57d71885b9543088cf290a59dfe3f"
     },
     "rbi/openai/resources/audio/transcriptions.rbi": {
       "mode": "100644",
@@ -12107,7 +12107,7 @@
     },
     "rbi/openai/resources/audio/voices.rbi": {
       "mode": "100644",
-      "sha256": "90aada6031c9bc8bb887eb2f5ac1b0dc36f1d2f17cc6803705452abf57ce520a"
+      "sha256": "3d37ded7c7d2daede5f6d6f0b2e52c5b76087d19cee40f58e61cdc558be503ef"
     },
     "rbi/openai/resources/batches.rbi": {
       "mode": "100644",
@@ -13375,7 +13375,7 @@
     },
     "sig/openai/models/audio/speech_create_params.rbs": {
       "mode": "100644",
-      "sha256": "dba73eb2d9d1bc1ceed04be19bce1dec3afade004f10663923386dba443c79ec"
+      "sha256": "9da083b5018b03628b9a32a094570ab9e6f6d4b0ade0092bbd1c1b4926d0bc23"
     },
     "sig/openai/models/audio/speech_model.rbs": {
       "mode": "100644",
@@ -13455,11 +13455,11 @@
     },
     "sig/openai/models/audio/voice.rbs": {
       "mode": "100644",
-      "sha256": "69e84d199dcf5b4b1296dbe2be23ef53183905a08cd3baddf9322cd2a33ebbdb"
+      "sha256": "154ec589adb352ad130481f8ea3676403f5a08e5d8761bebfe311595f5c27d4f"
     },
     "sig/openai/models/audio/voice_create_params.rbs": {
       "mode": "100644",
-      "sha256": "892bfa042d0e1525415d910e4d4b7e76325be632bc775513788d73e7a8d29270"
+      "sha256": "36591e2dc79fae4ba558da937066afde7786cf9c58ced506d60238f418fbc309"
     },
     "sig/openai/models/audio_model.rbs": {
       "mode": "100644",
@@ -15383,7 +15383,7 @@
     },
     "sig/openai/models/chat/chat_completion_audio_param.rbs": {
       "mode": "100644",
-      "sha256": "38463a13fefa399a863904a8cf120b8cb305e4ea743aa97aa88bcc771bc2ab4e"
+      "sha256": "357a0c49f8811e77d8ace9f2429d6d1ee1c54b85e454c8f26d30e6b3dd05e9a3"
     },
     "sig/openai/models/chat/chat_completion_chunk.rbs": {
       "mode": "100644",
@@ -16675,7 +16675,7 @@
     },
     "sig/openai/models/realtime/realtime_audio_config_output.rbs": {
       "mode": "100644",
-      "sha256": "8d299a86a0c93fadec397657551c5a6e517ee099e1a97706512423af99e3db6b"
+      "sha256": "4d927af18d2f2107cbb82e178c33b58eebb3629b85e17b437613c13702c5beee"
     },
     "sig/openai/models/realtime/realtime_audio_formats.rbs": {
       "mode": "100644",
@@ -16763,7 +16763,7 @@
     },
     "sig/openai/models/realtime/realtime_response_create_audio_output.rbs": {
       "mode": "100644",
-      "sha256": "6db488c31f516d18beeadc1c982a868d979b1cacb2c1e99d4a83efdcd8034539"
+      "sha256": "8b350b537d8289df32edf2e4a4f880de2312a3c26fb8dabeca6562b50f1bfd03"
     },
     "sig/openai/models/realtime/realtime_response_create_mcp_tool.rbs": {
       "mode": "100644",
@@ -18875,7 +18875,7 @@
     },
     "test/openai/resources/audio/voices_test.rb": {
       "mode": "100644",
-      "sha256": "44aea594f21977b4395fc803407a6e5ca877c8d8e4ec8c940c176fa31cb7d70d"
+      "sha256": "e5d753c7a81c7f614316b762158b95c5f413a9f2dec56a513f7a35e6d69420fc"
     },
     "test/openai/resources/audio_test.rb": {
       "mode": "100644",
