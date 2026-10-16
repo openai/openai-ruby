@@ -37,9 +37,18 @@ module OpenAI
         attr_writer :client
 
         # Who handles tasks delegated by the Live model. Omitted or null selects your
-        # application; use `responses` to let the API manage a Responses backend.
+        # application; use `responses` or `decisions` to delegate to the corresponding
+        # API.
         sig {
-          returns(T.nilable(T.any(OpenAI::Live::ClientDelegation, OpenAI::Live::SessionConfig::Delegation::Responses)))
+          returns(
+            T.nilable(
+              T.any(
+                OpenAI::Live::ClientDelegation,
+                OpenAI::Live::SessionConfig::Delegation::Responses,
+                OpenAI::Live::SessionConfig::Delegation::Decisions
+              )
+            )
+          )
         }
         attr_accessor :delegation
 
@@ -93,6 +102,16 @@ module OpenAI
         sig { params(store: T::Boolean).void }
         attr_writer :store
 
+        # At most one Decisions trigger per transcript event type. Triggers run
+        # independently of delegation. On update, omit triggers to keep the current
+        # configuration, send a list to replace it, or send an empty list to disable
+        # triggers.
+        sig { returns(T.nilable(T::Array[OpenAI::Live::DecisionTrigger])) }
+        attr_reader :triggers
+
+        sig { params(triggers: T::Array[OpenAI::Live::DecisionTrigger::OrHash]).void }
+        attr_writer :triggers
+
         # Initial configuration for a Live session, including its model, conversation
         # instructions, audio, and delegated task handling.
         sig do
@@ -105,7 +124,11 @@ module OpenAI
             client: OpenAI::Live::ClientConfig::OrHash,
 
             delegation: T.nilable(
-              T.any(OpenAI::Live::ClientDelegation::OrHash, OpenAI::Live::SessionConfig::Delegation::Responses::OrHash)
+              T.any(
+                OpenAI::Live::ClientDelegation::OrHash,
+                OpenAI::Live::SessionConfig::Delegation::Responses::OrHash,
+                OpenAI::Live::SessionConfig::Delegation::Decisions::OrHash
+              )
             ),
 
             input: T::Array[
@@ -118,7 +141,9 @@ module OpenAI
 
             instructions: T.nilable(String),
 
-            store: T::Boolean
+            store: T::Boolean,
+
+            triggers: T::Array[OpenAI::Live::DecisionTrigger::OrHash]
           )
             .returns(T.attached_class)
         end
@@ -138,7 +163,8 @@ module OpenAI
           client: nil,
 
           # Who handles tasks delegated by the Live model. Omitted or null selects your
-          # application; use `responses` to let the API manage a Responses backend.
+          # application; use `responses` or `decisions` to delegate to the corresponding
+          # API.
           delegation: nil,
 
           # Ordered text-only history supplied before startup. Supports developer, user, and
@@ -157,8 +183,14 @@ module OpenAI
 
           # Whether to store the session for later forking and recording download. Defaults
           # to false for new sessions.
+          store: nil,
 
-          store: nil
+          # At most one Decisions trigger per transcript event type. Triggers run
+          # independently of delegation. On update, omit triggers to keep the current
+          # configuration, send a list to replace it, or send an empty list to disable
+          # triggers.
+
+          triggers: nil
         )
         end
 
@@ -169,7 +201,11 @@ module OpenAI
               audio: OpenAI::Live::SessionConfig::Audio,
               client: OpenAI::Live::ClientConfig,
               delegation: T.nilable(
-                T.any(OpenAI::Live::ClientDelegation, OpenAI::Live::SessionConfig::Delegation::Responses)
+                T.any(
+                  OpenAI::Live::ClientDelegation,
+                  OpenAI::Live::SessionConfig::Delegation::Responses,
+                  OpenAI::Live::SessionConfig::Delegation::Decisions
+                )
               ),
               input: T::Array[
                 T.any(
@@ -179,7 +215,8 @@ module OpenAI
                 )
               ],
               instructions: T.nilable(String),
-              store: T::Boolean
+              store: T::Boolean,
+              triggers: T::Array[OpenAI::Live::DecisionTrigger]
             }
           )
         end
@@ -353,12 +390,17 @@ module OpenAI
         end
 
         # Who handles tasks delegated by the Live model. Omitted or null selects your
-        # application; use `responses` to let the API manage a Responses backend.
+        # application; use `responses` or `decisions` to delegate to the corresponding
+        # API.
         module Delegation
           extend OpenAI::Internal::Type::Union
 
           Variants = T.type_alias {
-            T.any(OpenAI::Live::ClientDelegation, OpenAI::Live::SessionConfig::Delegation::Responses)
+            T.any(
+              OpenAI::Live::ClientDelegation,
+              OpenAI::Live::SessionConfig::Delegation::Responses,
+              OpenAI::Live::SessionConfig::Delegation::Decisions
+            )
           }
 
           class Responses < OpenAI::Internal::Type::BaseModel
@@ -406,6 +448,50 @@ module OpenAI
             sig do
               override.returns(
                 {responses: OpenAI::Live::ResponsesDelegationConfig, type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Decisions < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::SessionConfig::Delegation::Decisions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(OpenAI::Live::DecisionsDelegationConfig) }
+            attr_reader :decisions
+
+            sig { params(decisions: OpenAI::Live::DecisionsDelegationConfig::OrHash).void }
+            attr_writer :decisions
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                decisions: OpenAI::Live::DecisionsDelegationConfig::OrHash,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              decisions:,
+
+              type: :decisions
+            )
+            end
+
+            sig do
+              override.returns(
+                {decisions: OpenAI::Live::DecisionsDelegationConfig, type: Symbol}
               )
             end
             def to_hash

@@ -14,9 +14,9 @@ module OpenAI
           )
         end
 
-        # Sparse delegation updates. Omitted settings retain their values. The delegation
-        # type cannot change, including resetting Responses delegation to null or client.
-        # Model, frontend instructions, audio, and startup input are immutable.
+        # Sparse delegation and trigger updates. Omitted settings retain their values. The
+        # delegation type cannot change. Model, frontend instructions, audio, and startup
+        # input are immutable.
         sig { returns(OpenAI::Live::SessionUpdateConfig) }
         attr_reader :session
 
@@ -32,8 +32,8 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :event_id
 
-        # Update the delegation settings of an active Live session. The server
-        # acknowledges accepted changes with `session.updated`.
+        # Update the delegation settings or transcript triggers of an active Live session.
+        # The server acknowledges accepted changes with `session.updated`.
         sig do
           params(
 
@@ -47,9 +47,9 @@ module OpenAI
         end
         def self.new(
 
-          # Sparse delegation updates. Omitted settings retain their values. The delegation
-          # type cannot change, including resetting Responses delegation to null or client.
-          # Model, frontend instructions, audio, and startup input are immutable.
+          # Sparse delegation and trigger updates. Omitted settings retain their values. The
+          # delegation type cannot change. Model, frontend instructions, audio, and startup
+          # input are immutable.
           session:,
 
           # Optional client identifier for correlating this command with a server event's
