@@ -44,6 +44,8 @@ module OpenAI
             # keys cannot be updated. Retrying resets the expiration relative to the new
             # request. The response contains only the redacted key, not its secret.
             #
+            # To change only scope restrictions, use `update_scopes`.
+            #
             # @overload update(api_key_id, project_id:, expires_in_seconds:, request_options: {})
             #
             # @param api_key_id [String]

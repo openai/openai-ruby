@@ -363,7 +363,7 @@
     },
     "lib/openai/models/admin/organization/projects/api_key_update_params.rb": {
       "mode": "100644",
-      "sha256": "d37be1240cc4c26cd56daf7b0033fde5574f120509449f7bda549d2852d38f97"
+      "sha256": "f543c71c8b860a22f026c941a091316f04e6a41e64eb4d2c0ff1d7bad663d750"
     },
     "lib/openai/models/admin/organization/projects/certificate_activate_params.rb": {
       "mode": "100644",
@@ -5779,7 +5779,7 @@
     },
     "lib/openai/resources/admin/organization/projects/api_keys.rb": {
       "mode": "100644",
-      "sha256": "d6178972128302df131fe4df1094da56372cad7f1562a0e909d53e7ea0b9c07a"
+      "sha256": "a39817401be92f00612f8381b6e9a5187e0ed5e02e5378eb469f2c2369d13890"
     },
     "lib/openai/resources/admin/organization/projects/certificates.rb": {
       "mode": "100644",
@@ -6575,7 +6575,7 @@
     },
     "rbi/openai/models/admin/organization/projects/api_key_update_params.rbi": {
       "mode": "100644",
-      "sha256": "464c0999e9a02cf3b94bbdd53911647b24c3169189d1d0baed23e13489180038"
+      "sha256": "f5148aa016c4e1a73b00ebec861c8be5fedb5e76e43346e06b06b59024891b69"
     },
     "rbi/openai/models/admin/organization/projects/certificate_activate_params.rbi": {
       "mode": "100644",
@@ -11991,7 +11991,7 @@
     },
     "rbi/openai/resources/admin/organization/projects/api_keys.rbi": {
       "mode": "100644",
-      "sha256": "4d91ab2269441af6d1c4f659acb9586f81d8ba63e80cf388ace9169f3f933e5c"
+      "sha256": "d9ac722e92cb8afbb1e1d33a4aaae0b89c9e49eeb8566b66194e5e44ca733fb1"
     },
     "rbi/openai/resources/admin/organization/projects/certificates.rbi": {
       "mode": "100644",
@@ -12451,7 +12451,7 @@
     },
     "scripts/castiron/custom_code_budget.py": {
       "mode": "100644",
-      "sha256": "deeb0d41058fbc311d53c2bbaba11de5737cab3a91a643023a256f61fcf7cd4c"
+      "sha256": "e6f19706c26f9b996f7d6d5f8a654e54fbc8c49a5d2fce045c1996b119feee33"
     },
     "scripts/castiron/custom_code_report.py": {
       "mode": "100644",
@@ -12831,7 +12831,7 @@
     },
     "sig/openai/models/admin/organization/projects/api_key_update_params.rbs": {
       "mode": "100644",
-      "sha256": "4ede336c5f1b51c5877085f5040b54921fa5f6ba2fa1d4003e1af07870c5f9e6"
+      "sha256": "f9a441b791dbcb040e80543a83c11a6186eb9781096172fb1c2eed1b8489f029"
     },
     "sig/openai/models/admin/organization/projects/certificate_activate_params.rbs": {
       "mode": "100644",
@@ -18247,7 +18247,7 @@
     },
     "sig/openai/resources/admin/organization/projects/api_keys.rbs": {
       "mode": "100644",
-      "sha256": "8e0524322050725111d8d72c3626e0cadb5d7fde3db3d613a43bca80a3c367df"
+      "sha256": "adf527bb86891839e30b2dff7d951e93c277fd84d561ce4e4dc724c060cf219f"
     },
     "sig/openai/resources/admin/organization/projects/certificates.rbs": {
       "mode": "100644",
@@ -18743,7 +18743,7 @@
     },
     "test/openai/resources/admin/organization/projects/api_keys_test.rb": {
       "mode": "100644",
-      "sha256": "19c413a86aac4d03b64c11dc0e7ef611557347145fc14996a053423d8dacce29"
+      "sha256": "79ab96d7f7491a2cfbcbb855ce8da08a43e4cf51ae09b9e6a8925f60907523d9"
     },
     "test/openai/resources/admin/organization/projects/certificates_test.rb": {
       "mode": "100644",
