@@ -32,6 +32,7 @@ module OpenAI
     # @return [String, nil]
     attr_reader :webhook_secret
 
+    # Generated resource accessors.
     # @return [OpenAI::Resources::Decisions]
     attr_reader :decisions
 
@@ -252,6 +253,7 @@ module OpenAI
         on_retry: on_retry
       )
 
+      # Initialize generated resources.
       @decisions = OpenAI::Resources::Decisions.new(client: self)
       @completions = OpenAI::Resources::Completions.new(client: self)
       @chat = OpenAI::Resources::Chat.new(client: self)
