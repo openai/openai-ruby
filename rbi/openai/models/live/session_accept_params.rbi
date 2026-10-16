@@ -100,8 +100,8 @@ module OpenAI
           attr_accessor :delegation
 
           # Ordered text-only history supplied before startup. Supports developer, user, and
-          # assistant messages with one text part each; at most 128 messages and 8,192
-          # rendered tokens in total.
+          # assistant messages with one text part each; at most 128 messages and a
+          # configured rendered-token limit (8,192 by default).
           sig {
             returns(
               T.nilable(
@@ -196,8 +196,8 @@ module OpenAI
             delegation: nil,
 
             # Ordered text-only history supplied before startup. Supports developer, user, and
-            # assistant messages with one text part each; at most 128 messages and 8,192
-            # rendered tokens in total.
+            # assistant messages with one text part each; at most 128 messages and a
+            # configured rendered-token limit (8,192 by default).
             input: nil,
 
             # Frontend instructions for voice, conversation, interruptions, and when to
