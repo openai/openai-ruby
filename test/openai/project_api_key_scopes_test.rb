@@ -86,6 +86,38 @@ class OpenAI::Test::ProjectAPIKeyScopesTest < Minitest::Test
     assert_requested(stub, times: 1)
   end
 
+  def test_update_accepts_scopes_without_expiration
+    [["api.all.read"], []].each do |scopes|
+      stub = stub_update({scopes: scopes})
+      response = @keys.update("key_test", project_id: "project_test", scopes: scopes)
+      assert_equal("key_test", response.id)
+      assert_requested(stub, times: 1)
+    end
+  end
+
+  def test_update_accepts_scopes_and_expiration_together
+    stub = stub_update({scopes: ["api.all.read"], expires_in_seconds: 3600})
+    response = @keys.update(
+      "key_test",
+      project_id: "project_test",
+      scopes: ["api.all.read"],
+      expires_in_seconds: 3600
+    )
+    assert_equal("key_test", response.id)
+    assert_requested(stub, times: 1)
+  end
+
+  def test_update_model_omits_unspecified_expiration
+    params = OpenAI::Admin::Organization::Projects::APIKeyUpdateParams.new(
+      project_id: "project_test",
+      api_key_id: "key_test",
+      scopes: ["api.all.read"]
+    )
+    assert_nil(params.expires_in_seconds)
+    assert_equal(["api.all.read"], params.scopes)
+    refute_includes(params.to_hash.keys, :expires_in_seconds)
+  end
+
   def test_scope_model_exports_typed_scopes_without_expiry
     params = OpenAI::Admin::Organization::Projects::APIKeyUpdateScopesParams.new(
       project_id: "project_test",
