@@ -378,7 +378,7 @@ module OpenAI
         #   or
         #   [function tools](https://developers.openai.com/api/docs/guides/function-calling).
         #
-        #   @return [Array<OpenAI::Models::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter>, nil]
+        #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool, OpenAI::StructuredOutput::JsonSchemaConverter>, nil]
         optional(
           :tools,
           -> {
@@ -685,7 +685,7 @@ module OpenAI
         #     `none` is the default when no tools are present. `auto` is the default if tools
         #     are present.
         #
-        #   @param tools [Array<OpenAI::StructuredOutput::JsonSchemaConverter, OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>]
+        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool, OpenAI::StructuredOutput::JsonSchemaConverter>]
         #     A list of tools the model may call. You can provide either
         #     [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
         #     or
