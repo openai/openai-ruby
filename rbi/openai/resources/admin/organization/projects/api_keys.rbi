@@ -33,6 +33,8 @@ module OpenAI
             # value must satisfy the organization's and project's expiry policies. Expired
             # keys cannot be updated. Retrying resets the expiration relative to the new
             # request. The response contains only the redacted key, not its secret.
+            #
+            # To change only scope restrictions, use `update_scopes`.
             sig {
               params(
                 api_key_id: String,

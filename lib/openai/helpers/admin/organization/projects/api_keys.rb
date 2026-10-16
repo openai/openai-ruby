@@ -13,6 +13,8 @@ module OpenAI
             # An empty array removes key restrictions (All permissions), subject to the
             # owner's effective access. This does not change roles or grant admin permissions.
             # Changes follow the same authentication-cache propagation as dashboard edits.
+            # To update the expiration in the same request, pass
+            # `request_options: {extra_body: {expires_in_seconds: seconds}}`.
             #
             # @param api_key_id [String]
             # @param project_id [String]

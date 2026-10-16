@@ -50,6 +50,18 @@ class OpenAI::Test::ProjectAPIKeyScopesTest < Minitest::Test
     assert_requested(stub, times: 1)
   end
 
+  def test_scopes_and_expiration_can_be_updated_in_one_request
+    scopes = ["api.all.read"].freeze
+    options = {extra_body: {expires_in_seconds: 3600}.freeze}.freeze
+    stub = stub_update({scopes: scopes, expires_in_seconds: 3600})
+
+    @keys.update_scopes("key_test", project_id: "project_test", scopes: scopes, request_options: options)
+
+    assert_requested(stub, times: 1)
+    assert_equal({extra_body: {expires_in_seconds: 3600}}, options)
+    assert_equal(["api.all.read"], scopes)
+  end
+
   def test_request_options_and_inputs_are_preserved
     scopes = ["api.files.read"].freeze
     headers = {"X-Test-Request" => "scope-test"}.freeze
