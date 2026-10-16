@@ -9,7 +9,8 @@ module OpenAI
         quality: OpenAI::Models::ImageGenCompletedEvent::quality,
         size: OpenAI::Models::ImageGenCompletedEvent::size,
         ?type: :"image_generation.completed",
-        usage: OpenAI::ImageGenCompletedEvent::Usage
+        usage: OpenAI::ImageGenCompletedEvent::Usage,
+        ?safety_identifier: String?
       }
 
     class ImageGenCompletedEvent < OpenAI::Internal::Type::BaseModel
@@ -38,6 +39,11 @@ module OpenAI
       # generation.
       attr_accessor usage: OpenAI::ImageGenCompletedEvent::Usage
 
+      # The effective safety identifier used for safety monitoring and abuse detection.
+      # This is the non-empty `safety_identifier` from the request, or the deprecated
+      # `user` value when `safety_identifier` is omitted, null, or empty.
+      attr_accessor safety_identifier: String?
+
       # @param b64_json
       #   Base64-encoded image data, suitable for rendering as an image.
       # @param background
@@ -53,6 +59,10 @@ module OpenAI
       # @param usage
       #   For the GPT image models only, the token usage information for the image
       #   generation.
+      # @param safety_identifier
+      #   The effective safety identifier used for safety monitoring and abuse detection.
+      #   This is the non-empty `safety_identifier` from the request, or the deprecated
+      #   `user` value when `safety_identifier` is omitted, null, or empty.
       # @param type
       #   The type of the event. Always `image_generation.completed`.
       def initialize: (
@@ -63,6 +73,7 @@ module OpenAI
         quality: OpenAI::Models::ImageGenCompletedEvent::quality,
         size: OpenAI::Models::ImageGenCompletedEvent::size,
         usage: OpenAI::ImageGenCompletedEvent::Usage,
+        ?safety_identifier: String?,
         ?type: :"image_generation.completed"
       ) -> void
 
@@ -74,7 +85,8 @@ module OpenAI
         quality: OpenAI::Models::ImageGenCompletedEvent::quality,
         size: OpenAI::Models::ImageGenCompletedEvent::size,
         ?type: :"image_generation.completed",
-        usage: OpenAI::ImageGenCompletedEvent::Usage
+        usage: OpenAI::ImageGenCompletedEvent::Usage,
+        ?safety_identifier: String?
       }
 
       type background = :transparent | :opaque | :auto

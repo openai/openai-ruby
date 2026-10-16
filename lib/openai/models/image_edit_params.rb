@@ -130,6 +130,17 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageEditParams::ResponseFormat, nil]
       optional :response_format, enum: -> { OpenAI::ImageEditParams::ResponseFormat }, nil?: true
 
+      # @!attribute safety_identifier
+      #   A stable identifier for an end user in your organization, used for safety
+      #   monitoring and abuse detection. Hash a username or email address to avoid
+      #   sending identifying information. A non-empty value takes precedence over the
+      #   deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      #   when available.
+      #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+      #
+      #   @return [String, nil]
+      optional :safety_identifier, String, nil?: true
+
       # @!attribute size
       #   The size of the generated images. Defaults to `auto`. For `gpt-image-2`,
       #   `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
@@ -147,14 +158,17 @@ module OpenAI
       optional :size, union: -> { OpenAI::ImageEditParams::Size }, nil?: true
 
       # @!attribute user
-      #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #   and detect abuse.
+      #   @deprecated
+      #
+      #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      #   backward compatibility and is used when `safety_identifier` is omitted, null, or
+      #   empty.
       #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       #
       #   @return [String, nil]
       optional :user, String
 
-      # @!method initialize(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, size: nil, user: nil, request_options: {})
+      # @!method initialize(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
       #   @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #     The image(s) to edit. Must be a supported image file or an array of images.
       #
@@ -238,6 +252,14 @@ module OpenAI
       #     Legacy response format parameter for retired image models. Unsupported for GPT
       #     image models, which always return base64-encoded images.
       #
+      #   @param safety_identifier [String, nil]
+      #     A stable identifier for an end user in your organization, used for safety
+      #     monitoring and abuse detection. Hash a username or email address to avoid
+      #     sending identifying information. A non-empty value takes precedence over the
+      #     deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      #     when available.
+      #     [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+      #
       #   @param size [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil]
       #     The size of the generated images. Defaults to `auto`. For `gpt-image-2`,
       #     `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
@@ -252,8 +274,9 @@ module OpenAI
       #     models that allow automatic sizing.
       #
       #   @param user [String]
-      #     A unique identifier representing your end-user, which can help OpenAI to monitor
-      #     and detect abuse.
+      #     Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      #     backward compatibility and is used when `safety_identifier` is omitted, null, or
+      #     empty.
       #     [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       #
       #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]

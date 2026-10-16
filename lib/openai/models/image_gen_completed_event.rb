@@ -52,7 +52,15 @@ module OpenAI
       #   @return [OpenAI::Models::ImageGenCompletedEvent::Usage]
       required :usage, -> { OpenAI::ImageGenCompletedEvent::Usage }
 
-      # @!method initialize(b64_json:, background:, created_at:, output_format:, quality:, size:, usage:, type: :"image_generation.completed")
+      # @!attribute safety_identifier
+      #   The effective safety identifier used for safety monitoring and abuse detection.
+      #   This is the non-empty `safety_identifier` from the request, or the deprecated
+      #   `user` value when `safety_identifier` is omitted, null, or empty.
+      #
+      #   @return [String, nil]
+      optional :safety_identifier, String, nil?: true
+
+      # @!method initialize(b64_json:, background:, created_at:, output_format:, quality:, size:, usage:, safety_identifier: nil, type: :"image_generation.completed")
       #   Emitted when image generation has completed and the final image is available.
       #
       #   @param b64_json [String]
@@ -76,6 +84,11 @@ module OpenAI
       #   @param usage [OpenAI::Models::ImageGenCompletedEvent::Usage]
       #     For the GPT image models only, the token usage information for the image
       #     generation.
+      #
+      #   @param safety_identifier [String, nil]
+      #     The effective safety identifier used for safety monitoring and abuse detection.
+      #     This is the non-empty `safety_identifier` from the request, or the deprecated
+      #     `user` value when `safety_identifier` is omitted, null, or empty.
       #
       #   @param type [Symbol, :"image_generation.completed"]
       #     The type of the event. Always `image_generation.completed`.
