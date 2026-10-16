@@ -46,6 +46,12 @@ module OpenAI
       sig { params(quality: OpenAI::ImagesResponse::Quality::OrSymbol).void }
       attr_writer :quality
 
+      # The effective safety identifier used for safety monitoring and abuse detection.
+      # This is the non-empty `safety_identifier` from the request, or the deprecated
+      # `user` value when `safety_identifier` is omitted, null, or empty.
+      sig { returns(T.nilable(String)) }
+      attr_accessor :safety_identifier
+
       # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       sig { returns(T.nilable(OpenAI::ImagesResponse::Size::Variants)) }
       attr_reader :size
@@ -74,6 +80,8 @@ module OpenAI
 
           quality: OpenAI::ImagesResponse::Quality::OrSymbol,
 
+          safety_identifier: T.nilable(String),
+
           size: T.any(String, OpenAI::ImagesResponse::Size::OrSymbol),
 
           usage: OpenAI::ImagesResponse::Usage::OrHash
@@ -99,6 +107,11 @@ module OpenAI
         # `max`.
         quality: nil,
 
+        # The effective safety identifier used for safety monitoring and abuse detection.
+        # This is the non-empty `safety_identifier` from the request, or the deprecated
+        # `user` value when `safety_identifier` is omitted, null, or empty.
+        safety_identifier: nil,
+
         # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
         size: nil,
 
@@ -116,6 +129,7 @@ module OpenAI
             data: T::Array[OpenAI::Image],
             output_format: OpenAI::ImagesResponse::OutputFormat::TaggedSymbol,
             quality: OpenAI::ImagesResponse::Quality::TaggedSymbol,
+            safety_identifier: T.nilable(String),
             size: OpenAI::ImagesResponse::Size::Variants,
             usage: OpenAI::ImagesResponse::Usage
           }

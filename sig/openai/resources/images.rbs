@@ -24,6 +24,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageEditParams::quality?,
         ?response_format: OpenAI::Models::ImageEditParams::response_format?,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageEditParams::size?,
         ?user: String,
         ?request_options: OpenAI::request_opts
@@ -42,6 +43,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageEditParams::quality?,
         ?response_format: OpenAI::Models::ImageEditParams::response_format?,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageEditParams::size?,
         ?user: String,
         ?request_options: OpenAI::request_opts
@@ -58,6 +60,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
         ?user: String,
@@ -75,6 +78,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
         ?user: String,
