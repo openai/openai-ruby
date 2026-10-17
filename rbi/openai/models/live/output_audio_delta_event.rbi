@@ -79,7 +79,7 @@ module OpenAI
 
         sig do
           override.returns(
-            {delta: String, type: Symbol, end_ms: Integer, start_ms: Integer}
+            {delta: String, type: Symbol, end_ms: T.nilable(Integer), start_ms: T.nilable(Integer)}
           )
         end
         def to_hash
