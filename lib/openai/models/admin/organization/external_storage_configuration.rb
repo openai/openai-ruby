@@ -74,6 +74,7 @@ module OpenAI
 
             PENDING = :pending
             VALIDATED = :validated
+            DEGRADED = :degraded
             UNHEALTHY = :unhealthy
 
             # @!method self.values
