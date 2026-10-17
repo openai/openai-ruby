@@ -316,7 +316,13 @@ module OpenAI
           GPT_5_2025_08_07 = :"gpt-5-2025-08-07"
           GPT_5_MINI_2025_08_07 = :"gpt-5-mini-2025-08-07"
           GPT_5_NANO_2025_08_07 = :"gpt-5-nano-2025-08-07"
+          # @deprecated Announced shutdown date: 2027-01-14. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_1 = :"gpt-4.1"
+          # @deprecated Announced shutdown date: 2027-01-14. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_1_MINI = :"gpt-4.1-mini"
           GPT_4_1_NANO = :"gpt-4.1-nano"
           GPT_4_1_2025_04_14 = :"gpt-4.1-2025-04-14"
@@ -326,10 +332,16 @@ module OpenAI
           O3_MINI_2025_01_31 = :"o3-mini-2025-01-31"
           O1 = :o1
           O1_2024_12_17 = :"o1-2024-12-17"
+          # @deprecated Announced shutdown date: 2027-01-14. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O = :"gpt-4o"
           GPT_4O_2024_11_20 = :"gpt-4o-2024-11-20"
           GPT_4O_2024_08_06 = :"gpt-4o-2024-08-06"
           GPT_4O_2024_05_13 = :"gpt-4o-2024-05-13"
+          # @deprecated Announced shutdown date: 2027-01-14. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_MINI = :"gpt-4o-mini"
           GPT_4O_MINI_2024_07_18 = :"gpt-4o-mini-2024-07-18"
           GPT_4_5_PREVIEW = :"gpt-4.5-preview"
