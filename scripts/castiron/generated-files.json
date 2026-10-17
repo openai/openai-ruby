@@ -139,7 +139,7 @@
     },
     "lib/openai/models/admin/organization/external_storage_configuration.rb": {
       "mode": "100644",
-      "sha256": "7bb037e0024177b666b9fba7c1b92d7177fe322a8bf65fe42447cbb62a7c9f3f"
+      "sha256": "11a17aa2664316ae1112d122a662ed778a968ff684248a5d5b2f51ceeb25e504"
     },
     "lib/openai/models/admin/organization/external_storage_create_params.rb": {
       "mode": "100644",
@@ -6363,7 +6363,7 @@
     },
     "rbi/openai/models/admin/organization/external_storage_configuration.rbi": {
       "mode": "100644",
-      "sha256": "f60bf143cd10f03de9f1685e34cf2fa5fa76b53682b90e111a9838368667fac7"
+      "sha256": "29aca8d3d47fe1404ff1bc33aa67c2891986e39e67959981dc8ed51ff36e7b3d"
     },
     "rbi/openai/models/admin/organization/external_storage_create_params.rbi": {
       "mode": "100644",
@@ -12631,7 +12631,7 @@
     },
     "sig/openai/models/admin/organization/external_storage_configuration.rbs": {
       "mode": "100644",
-      "sha256": "15560b64c64ff828d2f4d7fa49dd40f699d969b6a8e7e213ecbd11236613c059"
+      "sha256": "2e82bb8cafd4420f9107a20701f823ca5ac04bc246409bd81a69d7ec1fc0c255"
     },
     "sig/openai/models/admin/organization/external_storage_create_params.rbs": {
       "mode": "100644",
