@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.106.0](https://github.com/openai/openai-ruby/compare/v0.105.0...v0.106.0) (2026-10-17)
+
+
+### Features
+
+* **api:** add Decisions prompt caching options ([#892](https://github.com/openai/openai-ruby/issues/892)) ([7b4dc7a](https://github.com/openai/openai-ruby/commit/7b4dc7adda7e1f7613aedd3efc29dba880e89dd2))
+* **api:** add degraded external storage status ([#901](https://github.com/openai/openai-ruby/issues/901)) ([e7207d2](https://github.com/openai/openai-ruby/commit/e7207d2b7b9de32649d98d6b6d2a24cdc1bd680b))
+
+
+### Chores
+
+* **api:** add Assistants model shutdown notices ([#900](https://github.com/openai/openai-ruby/issues/900)) ([41a6400](https://github.com/openai/openai-ruby/commit/41a6400762bea831604d19200724a481c0f5ac94))
+* **api:** add shutdown notices for GPT-4 model aliases ([#898](https://github.com/openai/openai-ruby/issues/898)) ([2162219](https://github.com/openai/openai-ruby/commit/216221935f3d4a4d7e6649582556049a401dcc08))
+
 ## [0.105.0](https://github.com/openai/openai-ruby/compare/v0.104.0...v0.105.0) (2026-10-16)
 
 
