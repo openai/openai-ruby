@@ -1066,7 +1066,13 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           GPT_5_CHAT_LATEST = :"gpt-5-chat-latest"
+          # @deprecated Announced shutdown date: 2027-01-14. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_1 = :"gpt-4.1"
+          # @deprecated Announced shutdown date: 2027-01-14. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4_1_MINI = :"gpt-4.1-mini"
           # @deprecated Announced shutdown date: 2026-10-23. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
@@ -1132,6 +1138,9 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           O1_MINI_2024_09_12 = :"o1-mini-2024-09-12"
+          # @deprecated Announced shutdown date: 2027-01-14. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O = :"gpt-4o"
           # @deprecated Announced shutdown date: 2027-01-14. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
@@ -1201,6 +1210,9 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           CODEX_MINI_LATEST = :"codex-mini-latest"
+          # @deprecated Announced shutdown date: 2027-01-14. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_MINI = :"gpt-4o-mini"
           # @deprecated Announced shutdown date: 2027-01-14. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
