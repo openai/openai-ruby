@@ -9471,11 +9471,11 @@
     },
     "rbi/openai/models/decision_create_params.rbi": {
       "mode": "100644",
-      "sha256": "b3e9c57830f0b644f55c9797dc5985699976f202ede22e41a952c1fa3b3c60a6"
+      "sha256": "200af910a40d036b66885e2cb75f1260002f7bc3fe2b2e163db9f1500c379603"
     },
     "rbi/openai/models/decision_input_image.rbi": {
       "mode": "100644",
-      "sha256": "9f0fe96734a787e7c8b9caf1badd8f9855fb14a47710ebaa6fb6cb7ba4f77c9e"
+      "sha256": "03253e96a1d26cf5d3d1bee8eedb0cac06ceaaf6855bd36227634bf8a84257ba"
     },
     "rbi/openai/models/decision_input_message.rbi": {
       "mode": "100644",
@@ -9487,7 +9487,7 @@
     },
     "rbi/openai/models/decision_input_text.rbi": {
       "mode": "100644",
-      "sha256": "2f8ea71a1bdb96c12492f5d4b9e623e80a075ac5e04221280e0a03360e388d8b"
+      "sha256": "3250ca08c3a41a81fa6a8f199f6adadeab69766ee2767c2dfea6ea0f1e2e60e8"
     },
     "rbi/openai/models/decision_prompt_cache_breakpoint.rbi": {
       "mode": "100644",
@@ -15739,11 +15739,11 @@
     },
     "sig/openai/models/decision_create_params.rbs": {
       "mode": "100644",
-      "sha256": "1dcf12660376a64be6f3af27f37e5ec316e2bcb2ec3047841705db83d0a6d3ad"
+      "sha256": "c351da2023cf645568e6d09b57492f8a1c0295b837180adbb918eec933b59169"
     },
     "sig/openai/models/decision_input_image.rbs": {
       "mode": "100644",
-      "sha256": "8475c5aea5b73b6807d459b14a10221ce4a6bc64ec6c4e8d34c77d54de628ae1"
+      "sha256": "a3ad8e6b54d431eb91f4e37e704dbd706ad9d3fd93feac253769bef8bc43d3e6"
     },
     "sig/openai/models/decision_input_message.rbs": {
       "mode": "100644",
@@ -15755,7 +15755,7 @@
     },
     "sig/openai/models/decision_input_text.rbs": {
       "mode": "100644",
-      "sha256": "4e8f1aac60063eccc5e99e65aa76fae772125ea4ffb6860a7bf1b76772ee392d"
+      "sha256": "13ef9d754ad08969f436587122696581b60ca8717c0fb6f3b211da396cd4e39c"
     },
     "sig/openai/models/decision_prompt_cache_breakpoint.rbs": {
       "mode": "100644",
@@ -18547,7 +18547,7 @@
     },
     "sig/openai/resources/decisions.rbs": {
       "mode": "100644",
-      "sha256": "003077bb25a19da17dff461fc7304d7b6f0d84440cf0357e48c4a8fe16b66a0c"
+      "sha256": "fd7ce16c59b1c7161c74b98e4cb31d016662ea960b0c58720fb15e2a9778c1ad"
     },
     "sig/openai/resources/embeddings.rbs": {
       "mode": "100644",

@@ -5,7 +5,8 @@ module OpenAI
         image_url: String,
         ?type: :input_image,
         ?detail: OpenAI::Models::DecisionInputImage::detail?,
-        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
+        ?prompt_cache_breakpoint: (OpenAI::DecisionPromptCacheBreakpoint
+        | OpenAI::Models::decision_prompt_cache_breakpoint)?
       }
 
     class DecisionInputImage < OpenAI::Internal::Type::BaseModel
@@ -21,7 +22,8 @@ module OpenAI
       # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
       # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
       # token block.
-      attr_accessor prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
+      attr_accessor prompt_cache_breakpoint: (OpenAI::DecisionPromptCacheBreakpoint
+      | OpenAI::Models::decision_prompt_cache_breakpoint)?
 
       # @param image_url
       #   A base64-encoded image in a data URL or a publicly accessible HTTP(S) image URL.
@@ -35,7 +37,8 @@ module OpenAI
       def initialize: (
         image_url: String,
         ?detail: OpenAI::Models::DecisionInputImage::detail?,
-        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?,
+        ?prompt_cache_breakpoint: (OpenAI::DecisionPromptCacheBreakpoint
+        | OpenAI::Models::decision_prompt_cache_breakpoint)?,
         ?type: :input_image
       ) -> void
 
@@ -43,7 +46,8 @@ module OpenAI
         image_url: String,
         ?type: :input_image,
         ?detail: OpenAI::Models::DecisionInputImage::detail?,
-        ?prompt_cache_breakpoint: OpenAI::DecisionPromptCacheBreakpoint?
+        ?prompt_cache_breakpoint: (OpenAI::DecisionPromptCacheBreakpoint
+        | OpenAI::Models::decision_prompt_cache_breakpoint)?
       }
 
       type detail = :low | :high | :auto | :original

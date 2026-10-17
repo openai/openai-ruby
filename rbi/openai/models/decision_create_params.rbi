@@ -54,11 +54,8 @@ module OpenAI
       # `ttl` defaults to `30m`, which is currently the only supported value. See the
       # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
       # for current details.
-      sig { returns(T.nilable(OpenAI::DecisionCreateParams::PromptCacheOptions)) }
-      attr_reader :prompt_cache_options
-
-      sig { params(prompt_cache_options: T.nilable(OpenAI::DecisionCreateParams::PromptCacheOptions::OrHash)).void }
-      attr_writer :prompt_cache_options
+      sig { returns(T.nilable(OpenAI::DecisionCreateParams::PromptCacheOptions::OrHash)) }
+      attr_accessor :prompt_cache_options
 
       # Opaque caller-provided end-user identifier, scoped by the verified org. Match
       # Responses' limit; this is never the authenticated user identity.
@@ -140,7 +137,7 @@ module OpenAI
               )
             ],
             prompt_cache_key: T.nilable(String),
-            prompt_cache_options: T.nilable(OpenAI::DecisionCreateParams::PromptCacheOptions),
+            prompt_cache_options: T.nilable(OpenAI::DecisionCreateParams::PromptCacheOptions::OrHash),
             safety_identifier: T.nilable(String),
             request_options: OpenAI::RequestOptions
           }

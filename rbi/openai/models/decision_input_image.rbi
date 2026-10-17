@@ -27,7 +27,7 @@ module OpenAI
       # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
       # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
       # token block.
-      sig { returns(T.nilable(OpenAI::DecisionPromptCacheBreakpoint)) }
+      sig { returns(T.nilable(OpenAI::DecisionPromptCacheBreakpoint::OrHash)) }
       attr_reader :prompt_cache_breakpoint
 
       sig { params(prompt_cache_breakpoint: T.nilable(OpenAI::DecisionPromptCacheBreakpoint::OrHash)).void }
@@ -72,7 +72,7 @@ module OpenAI
             image_url: String,
             type: Symbol,
             detail: T.nilable(OpenAI::DecisionInputImage::Detail::OrSymbol),
-            prompt_cache_breakpoint: T.nilable(OpenAI::DecisionPromptCacheBreakpoint)
+            prompt_cache_breakpoint: T.nilable(OpenAI::DecisionPromptCacheBreakpoint::OrHash)
           }
         )
       end
