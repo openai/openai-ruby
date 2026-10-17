@@ -6,7 +6,7 @@ module OpenAI
       # Use this endpoint to quickly answer classification or scoring questions about
       # some input. You can ask multiple questions in one request.
       #
-      # @overload create(input:, model:, questions:, safety_identifier: nil, request_options: {})
+      # @overload create(input:, model:, questions:, prompt_cache_key: nil, prompt_cache_options: nil, safety_identifier: nil, request_options: {})
       #
       # @param input [String, Array<OpenAI::Models::DecisionInputMessage>]
       #   The text or images to evaluate for every question. Provide a text string or user
@@ -20,6 +20,20 @@ module OpenAI
       # @param questions [Array<OpenAI::Models::DecisionCreateParams::Question::Predicate, OpenAI::Models::DecisionCreateParams::Question::Choice, OpenAI::Models::DecisionCreateParams::Question::Score>]
       #   Ask 1–200 questions about the input. Each question can be a predicate, choice,
       #   or score. Answers come back in the same order.
+      #
+      # @param prompt_cache_key [String, nil]
+      #   Partition prompt cache reuse by caller-provided key.
+      #
+      # @param prompt_cache_options [OpenAI::Models::DecisionCreateParams::PromptCacheOptions, nil]
+      #   Options for prompt caching. Supported for `gpt-5.6` and later models. By
+      #   default, OpenAI automatically chooses one implicit cache breakpoint. You can add
+      #   explicit breakpoints to content blocks with `prompt_cache_breakpoint`. Each
+      #   request can write up to four breakpoints. For cache matching, OpenAI considers
+      #   up to the latest 80 breakpoints in the conversation, without a content-block
+      #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
+      #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+      #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
+      #   for current details.
       #
       # @param safety_identifier [String, nil]
       #   Opaque caller-provided end-user identifier, scoped by the verified org. Match

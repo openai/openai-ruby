@@ -21,7 +21,15 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::DecisionInputImage::Detail, nil]
       optional :detail, enum: -> { OpenAI::DecisionInputImage::Detail }, nil?: true
 
-      # @!method initialize(image_url:, detail: nil, type: :input_image)
+      # @!attribute prompt_cache_breakpoint
+      #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+      #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+      #   token block.
+      #
+      #   @return [OpenAI::Models::DecisionPromptCacheBreakpoint, nil]
+      optional :prompt_cache_breakpoint, -> { OpenAI::DecisionPromptCacheBreakpoint }, nil?: true
+
+      # @!method initialize(image_url:, detail: nil, prompt_cache_breakpoint: nil, type: :input_image)
       #   An image provided as a base64 data URL or a publicly accessible HTTP(S) URL.
       #   File IDs are not supported.
       #
@@ -31,6 +39,11 @@ module OpenAI
       #   @param detail [Symbol, OpenAI::Models::DecisionInputImage::Detail, nil]
       #     The image detail level, using the selected model's image profile. Defaults to
       #     auto.
+      #
+      #   @param prompt_cache_breakpoint [OpenAI::Models::DecisionPromptCacheBreakpoint, nil]
+      #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
+      #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
+      #     token block.
       #
       #   @param type [Symbol, :input_image]
 

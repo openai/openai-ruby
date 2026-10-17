@@ -80,6 +80,8 @@ module OpenAI
 
   DecisionInputText = OpenAI::Models::DecisionInputText
 
+  DecisionPromptCacheBreakpoint = OpenAI::Models::DecisionPromptCacheBreakpoint
+
   DeletedSkill = OpenAI::Models::DeletedSkill
 
   Embedding = OpenAI::Models::Embedding
