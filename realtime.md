@@ -595,6 +595,18 @@ The examples in this guide cover local function calling, image input, and MCP
 approval through the generic Realtime connection API, alongside generated
 WebRTC/SDP call creation and sideband control of existing WebRTC and SIP calls.
 Continuous microphone capture, concurrent live captioning, full-duplex
-conversation, SIP call-ownership orchestration, and translation connections
-remain out of scope. Existing generated HTTP resources remain
-generated-code-owned.
+conversation, and SIP call-ownership orchestration are outside this guide's
+scope.
+
+## Translation connections
+
+The SDK also supports the separate Translation WebSocket protocol through
+`client.realtime.connect_translation(model: ...) { |connection| ... }`.
+It uses Translation event types rather than the Realtime events shown above.
+See the [Translation connection helper](lib/openai/helpers/realtime/translation.rb)
+and [server event types](lib/openai/models/realtime/realtime_translation_server_event.rb).
+
+After sending input, call `connection.finish(timeout: ...)` with a block to
+consume the remaining events through `session.closed`. Finish calls must be
+sequential, with no competing reader. Keep the connection inside its opening
+block so the SDK can clean it up when the block exits.
