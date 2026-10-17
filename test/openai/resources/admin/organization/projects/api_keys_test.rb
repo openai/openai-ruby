@@ -26,7 +26,11 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
   end
 
   def test_update_required_params
-    response = @openai.admin.organization.projects.api_keys.update("api_key_id", project_id: "project_id")
+    response = @openai.admin.organization.projects.api_keys.update(
+      "api_key_id",
+      project_id: "project_id",
+      scopes: ["api.all.read"]
+    )
 
     assert_pattern do
       response => OpenAI::Admin::Organization::Projects::ProjectAPIKey
