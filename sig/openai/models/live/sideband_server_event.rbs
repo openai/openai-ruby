@@ -23,6 +23,7 @@ module OpenAI
         | OpenAI::Live::ErrorEvent
         | OpenAI::Live::InfoEvent
         | OpenAI::Live::SidebandServerEvent::SessionInputAudioAppend
+        | OpenAI::Live::OutputAudioDeltaEvent
         | OpenAI::Live::SidebandServerEvent::TransportDtmfReceived
         | OpenAI::Live::SidebandServerEvent::TransportDtmfSend
         | OpenAI::Live::SidebandServerEvent::TransportRinging

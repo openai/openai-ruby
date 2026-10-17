@@ -3955,7 +3955,7 @@
     },
     "lib/openai/models/live/sideband_server_event.rb": {
       "mode": "100644",
-      "sha256": "855c0587df0122dc5e660c30dd9b565864ea69ce236f557e5813f796a99c9913"
+      "sha256": "178eb400b27ff594ebf8da8e2dd9a02bd7468aab8caee1389a563dcf29693480"
     },
     "lib/openai/models/live/thinking_append_event.rb": {
       "mode": "100644",
@@ -10055,7 +10055,7 @@
     },
     "rbi/openai/models/live/output_audio_delta_event.rbi": {
       "mode": "100644",
-      "sha256": "00c6031907c68e170c9ddbacdd0d359b7b3cd45c728a0d15dd79f58b1da537c8"
+      "sha256": "dca0d022f94753810d0858e222254728c2db4b230b987834992becb9ea5f0011"
     },
     "rbi/openai/models/live/output_audio_fixture_play_event.rbi": {
       "mode": "100644",
@@ -10179,7 +10179,7 @@
     },
     "rbi/openai/models/live/sideband_server_event.rbi": {
       "mode": "100644",
-      "sha256": "1d53c3c991cc15d3b4566454d741c0a7e3edf3ddb683ef6f7b5e4591cb711823"
+      "sha256": "6f9e74b7ab2d9ab7b89e8bf45c7c313d9bee8e1773872b39b42dce98c5855de7"
     },
     "rbi/openai/models/live/thinking_append_event.rbi": {
       "mode": "100644",
@@ -16447,7 +16447,7 @@
     },
     "sig/openai/models/live/sideband_server_event.rbs": {
       "mode": "100644",
-      "sha256": "cda152004e696f5fb7e3fd9f892a054bcb5c1b87157e0b4ef69a7cd5cd6642b5"
+      "sha256": "6dcb334d7e3d698eb838919e183a558c85ded0993cfac5cbd9fbea02ba7dd219"
     },
     "sig/openai/models/live/thinking_append_event.rbs": {
       "mode": "100644",

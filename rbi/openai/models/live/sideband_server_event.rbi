@@ -6,8 +6,7 @@ module OpenAI
     module Live
 
       # Server events received by an attached Live sideband WebSocket, including
-      # reflected input audio and transport notifications. Output audio deltas are
-      # delivered over the primary connection.
+      # reflected input and output audio and transport notifications.
       module SidebandServerEvent
         extend OpenAI::Internal::Type::Union
 
@@ -34,6 +33,7 @@ module OpenAI
             OpenAI::Live::ErrorEvent,
             OpenAI::Live::InfoEvent,
             OpenAI::Live::SidebandServerEvent::SessionInputAudioAppend,
+            OpenAI::Live::OutputAudioDeltaEvent,
             OpenAI::Live::SidebandServerEvent::TransportDtmfReceived,
             OpenAI::Live::SidebandServerEvent::TransportDtmfSend,
             OpenAI::Live::SidebandServerEvent::TransportRinging,
