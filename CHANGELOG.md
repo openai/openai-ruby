@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.105.0](https://github.com/openai/openai-ruby/compare/v0.104.0...v0.105.0) (2026-10-16)
+
+
+### Features
+
+* **api:** add safety identifiers to image requests and responses ([#894](https://github.com/openai/openai-ruby/issues/894)) ([d74e0d5](https://github.com/openai/openai-ruby/commit/d74e0d5737c34a2201780ceb961ac0f7302621cc))
+
+
+### Bug Fixes
+
+* **api:** omit nil safety identifiers from image edits ([#896](https://github.com/openai/openai-ruby/issues/896)) ([a4dbd91](https://github.com/openai/openai-ruby/commit/a4dbd91cbc38ae66a641353c9cc042956cd46bdf))
+
+
+### Chores
+
+* **api:** maintain webhook verification compatibility ([#893](https://github.com/openai/openai-ruby/issues/893)) ([adbde58](https://github.com/openai/openai-ruby/commit/adbde58c45c1241a49a89c03bdb1e350c0ea0ddb))
+
 ## [0.104.0](https://github.com/openai/openai-ruby/compare/v0.103.0...v0.104.0) (2026-10-16)
 
 
