@@ -1,10 +1,29 @@
 # frozen_string_literal: true
 
+require_relative "../../helpers/websocket/resource"
+
 module OpenAI
   module Resources
     class Beta
       # Create and manage model responses.
       class Responses
+        include OpenAI::WebSocket::Resource
+
+        # @api private
+        def __websocket_request(query: {})
+          {method: :get, path: "responses", query: query, security: {bearer_auth: true}}
+        end
+
+        # @api private
+        def __websocket_client_event
+          OpenAI::Models::Beta::BetaResponsesClientEvent
+        end
+
+        # @api private
+        def __websocket_server_event
+          OpenAI::Models::Beta::BetaResponsesServerEvent
+        end
+
         # Create and manage model responses.
         # @return [OpenAI::Resources::Beta::Responses::InputItems]
         attr_reader :input_items
