@@ -5919,7 +5919,7 @@
     },
     "lib/openai/resources/beta/agents/sessions.rb": {
       "mode": "100644",
-      "sha256": "b019a60adf8ae058098f414336dd565f57fbce9c89a50561419cf9082d8aac5d"
+      "sha256": "5c7716efce66c705549bdd9ed6aeef5e9ab17f6c614ba1524516816d98a05a7d"
     },
     "lib/openai/resources/beta/agents/sessions/artifacts.rb": {
       "mode": "100644",
@@ -12143,7 +12143,7 @@
     },
     "rbi/openai/resources/beta/agents/sessions.rbi": {
       "mode": "100644",
-      "sha256": "e6958f6544e3eeacadf3bcae3318a5b90acc120e553a52d5507731fd285bda90"
+      "sha256": "561bba1655f2c5215f39c6cb03ff000ac99ec0bd2af63a2e8aff8cd59b6c0e86"
     },
     "rbi/openai/resources/beta/agents/sessions/artifacts.rbi": {
       "mode": "100644",
@@ -18411,7 +18411,7 @@
     },
     "sig/openai/resources/beta/agents/sessions.rbs": {
       "mode": "100644",
-      "sha256": "2c6dbe13df05a584cded24f4812b8614191d25caa490117e4b5273b2ba32a098"
+      "sha256": "eac8f36fb18f18cba2bb7c786da528fcddf453fe2bbd27499a4f9f0e010398d9"
     },
     "sig/openai/resources/beta/agents/sessions/artifacts.rbs": {
       "mode": "100644",
