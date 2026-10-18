@@ -19143,7 +19143,7 @@
     },
     "test/openai/resources/moderations_test.rb": {
       "mode": "100644",
-      "sha256": "9f1b7fe1eb29712c8808ae01fd9719b936d0b586b3b5030f657c79b8fb179228"
+      "sha256": "cf6f6570ff398e430f79f40248d1e0505e5ca652fac6ff4733a4a3812e82a2af"
     },
     "test/openai/resources/realtime/calls_test.rb": {
       "mode": "100644",

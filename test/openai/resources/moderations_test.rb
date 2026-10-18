@@ -4,7 +4,7 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::ModerationsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
-    response = @openai.moderations.create(input: "I want to kill them.")
+    response = @openai.moderations.create(input: "...text to classify goes here...")
 
     assert_pattern do
       response => OpenAI::Models::ModerationCreateResponse
