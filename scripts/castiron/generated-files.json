@@ -5863,7 +5863,7 @@
     },
     "lib/openai/resources/admin/organization/usage.rb": {
       "mode": "100644",
-      "sha256": "bc336c44cbc0da2d698f00156fdf279c78dd32748c9bcc8ba2fc3c69943542e7"
+      "sha256": "c443de6d737ac28b80b2c19ca6fcec03a4a70d31ae00bedb502537b047394a9d"
     },
     "lib/openai/resources/admin/organization/users.rb": {
       "mode": "100644",
