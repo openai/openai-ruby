@@ -50,7 +50,7 @@ class OpenAI::Test::Resources::Beta::Agents::Vaults::CredentialsTest < OpenAI::T
   end
 
   def test_update_required_params
-    response = @openai.beta.agents.vaults.credentials.update("credential_id", vault_id: "vault_id")
+    response = @openai.beta.agents.vaults.credentials.update("credential_id", vault_id: "vault_id", metadata: {})
 
     assert_pattern do
       response => OpenAI::Beta::Agents::Vaults::Credential

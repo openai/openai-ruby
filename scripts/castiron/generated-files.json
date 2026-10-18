@@ -18955,7 +18955,7 @@
     },
     "test/openai/resources/beta/agents/vaults/credentials_test.rb": {
       "mode": "100644",
-      "sha256": "97d77910a1283f0157f83d470220f26b532092115a2b1a6118a6a170c6ddcae6"
+      "sha256": "d98b12e3f402bdd0ab360453d7b45776f1e9064f2541d27e3b25e656788f1931"
     },
     "test/openai/resources/beta/agents/vaults_test.rb": {
       "mode": "100644",
