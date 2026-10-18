@@ -34158,6 +34158,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RotateVaultCredentialParams'
+            example:
+              metadata: {}
         required: true
       responses:
         '200':
