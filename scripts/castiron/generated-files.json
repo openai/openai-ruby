@@ -5999,7 +5999,7 @@
     },
     "lib/openai/resources/beta/threads.rb": {
       "mode": "100644",
-      "sha256": "77aca2ead898089b2432558db72846b35f7008ba4e4ac102e9787e12e573a5d7"
+      "sha256": "8fc6555f7f32d62ebc7ea590c6ea1bc3a6423cf6fa2fffc55f75c36c765a27f6"
     },
     "lib/openai/resources/beta/threads/messages.rb": {
       "mode": "100644",
