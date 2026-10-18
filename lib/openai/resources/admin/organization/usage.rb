@@ -353,7 +353,8 @@ module OpenAI
           # @see OpenAI::Models::Admin::Organization::UsageDecisionsParams
           def decisions(params)
             parsed, options = OpenAI::Admin::Organization::UsageDecisionsParams.dump_request(params)
-            query = OpenAI::Internal::Util.encode_query_params(parsed)
+            # Nil optional filters mean unset; empty query values fail backend parsing.
+            query = OpenAI::Internal::Util.encode_query_params(parsed.compact)
             @client.request(
               method: :get,
               path: "organization/usage/decisions",
