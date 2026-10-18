@@ -4,7 +4,7 @@ require_relative "test_helper"
 require "async/http/server"
 require "async/websocket/server"
 require "async/websocket/adapters/http"
-require "socket"
+require "io/endpoint/bound_endpoint"
 require "timeout"
 
 class OpenAI::Test::WebSocketHandshakeTest < Minitest::Test
@@ -183,15 +183,16 @@ class OpenAI::Test::WebSocketHandshakeTest < Minitest::Test
   end
 
   private def with_server(app)
-    port = TCPServer.open("127.0.0.1", 0) { |socket| socket.addr[1] }
-    origin = "http://127.0.0.1:#{port}"
-    endpoint = Async::HTTP::Endpoint.parse(origin)
-    server = Async::HTTP::Server.new(app, endpoint)
-    Sync do |task|
-      serving = task.async { server.run.wait }
-      yield origin
+    Sync do
+      endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:0")
+      bound = endpoint.bound
+      port = bound.sockets.first.local_address.ip_port
+      server = Async::HTTP::Server.new(app, bound, protocol: endpoint.protocol, scheme: endpoint.scheme)
+      serving = server.run
+      yield "http://127.0.0.1:#{port}"
     ensure
       serving&.stop
+      bound&.close
     end
   end
 end
