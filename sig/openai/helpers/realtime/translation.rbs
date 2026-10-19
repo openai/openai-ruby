@@ -31,8 +31,6 @@ module OpenAI
         | ::Hash[Symbol | String, untyped]
 
       class UnknownTranslationServerEvent < OpenAI::Realtime::UnknownServerEvent
-        def inspect: -> String
-        alias to_s inspect
       end
       class TranslationConnection
         include Enumerable[OpenAI::Models::Realtime::translation_connection_server_event]

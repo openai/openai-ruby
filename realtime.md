@@ -497,8 +497,9 @@ Connection and protocol failures use distinct error classes:
 - `OpenAI::Errors::RealtimeProtocolError` exposes the invalid raw `data` and
   original `cause`.
 
-Default exception rendering, including `full_message`, omits the original
-cause's exception chain. Explicit `data` and `cause` access can expose remote
+For these connection and protocol errors, default rendering, including
+`full_message`, suppresses native cause chains, including exceptions active when
+an SDK state check fails. Explicit `data` and `cause` access can expose remote
 payloads or credentials; sanitize these values before logging or sharing them.
 
 The configured request timeout bounds WebSocket negotiation. It does not become

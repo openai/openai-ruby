@@ -34,7 +34,7 @@ module OpenAI
       end
 
       private def read_raw_message
-        raise connection_error(failed_read_message) if @poisoned
+        raise connection_error(failed_read_message), cause: nil if @poisoned
         return nil if @closed
         text = super
         @closed = text.nil?
@@ -94,7 +94,7 @@ module OpenAI
       def receive_raw = read_raw_message
 
       private def read_raw_message
-        raise connection_error("Cannot read from a failed WebSocket.") if @poisoned
+        raise connection_error("Cannot read from a failed WebSocket."), cause: nil if @poisoned
 
         message = @socket.read
         message&.to_str
@@ -104,7 +104,7 @@ module OpenAI
       #
       # @api private
       def send_raw(data)
-        raise connection_error(closed_send_message) if closed?
+        raise connection_error(closed_send_message), cause: nil if closed?
 
         text = data.dup
         text.force_encoding(Encoding::UTF_8) if text.encoding == Encoding::BINARY

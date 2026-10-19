@@ -21,7 +21,7 @@ class OpenAI::Test::RealtimeDiagnosticRenderingTest < Minitest::Test
 
   def test_unknown_event_rendering_omits_remote_values_but_preserves_explicit_access
     data = {type: "future.synthetic_type_marker", nested: {transcript: "synthetic_payload_marker"}}
-    [:realtime, :transcription, :sideband].each do |kind|
+    [:realtime, :transcription, :sideband, :translation].each do |kind|
       event = connect(kind, FakeTransport.new(FakeSocket.new(JSON.generate(data))), &:receive)
 
       assert_equal(data, event.data)
@@ -30,7 +30,7 @@ class OpenAI::Test::RealtimeDiagnosticRenderingTest < Minitest::Test
       assert_predicate(event, :frozen?)
       assert_predicate(event.data.fetch(:nested), :frozen?)
       [event.inspect, event.to_s, PP.pp(event, +"")].each do |rendered|
-        assert_includes(rendered, "UnknownServerEvent")
+        assert_includes(rendered, event.class.name)
         refute_includes(rendered, "synthetic_type_marker")
         refute_includes(rendered, "synthetic_payload_marker")
       end
@@ -112,6 +112,81 @@ class OpenAI::Test::RealtimeDiagnosticRenderingTest < Minitest::Test
     end
   end
 
+  def test_closed_send_errors_omit_ambient_causes
+    [:realtime, :transcription, :sideband, :translation].each do |kind|
+      connect(kind, FakeTransport.new(FakeSocket.new)) do |connection|
+        connection.close
+        assert_safe_state_error { connection.send_raw("{}") }
+      end
+    end
+  end
+
+  def test_failed_read_errors_omit_ambient_causes
+    [:realtime, :transcription, :sideband].each do |kind|
+      socket = FakeSocket.new
+      socket.define_singleton_method(:write) { |_text| raise IOError, "synthetic_write_failure" }
+      connect(kind, FakeTransport.new(socket)) do |connection|
+        assert_raises(IOError) { connection.send_raw("{}") }
+        assert_safe_state_error { connection.receive }
+      end
+    end
+  end
+
+  def test_translation_finish_owner_and_finished_send_errors_omit_ambient_causes
+    terminal = JSON.generate(type: "session.closed", event_id: "synthetic_closed")
+    connect(:translation, FakeTransport.new(FakeSocket.new(terminal))) do |connection|
+      connection.finish(timeout: 1) do |_event|
+        assert_safe_state_error { connection.finish(timeout: 1) { } }
+        assert_safe_state_error { connection.send_raw("{}") }
+        Fiber.new { assert_safe_state_error { connection.receive } }.resume
+      end
+
+      assert_safe_state_error { connection.send_raw("{}") }
+    end
+  end
+
+  def test_translation_unfinished_close_errors_omit_ambient_causes
+    connect(:translation, FakeTransport.new(FakeSocket.new)) do |connection|
+      assert_safe_state_error { connection.finish(timeout: 1) { } }
+      assert_safe_state_error { connection.finish(timeout: 1) { } }
+    end
+  end
+
+  def test_translation_cached_callback_failure_preserves_its_original_cause
+    terminal = JSON.generate(type: "session.closed", event_id: "synthetic_closed")
+    cause = IOError.new("synthetic_callback_cause")
+    connect(:translation, FakeTransport.new(FakeSocket.new(terminal))) do |connection|
+      original = assert_raises(RuntimeError) do
+        connection.finish(timeout: 1) { raise RuntimeError.new("synthetic_callback_failure"), cause: cause }
+      end
+
+      replayed = assert_raises(RuntimeError) do
+        begin
+          raise IOError, "synthetic_ambient_callback_marker"
+        rescue IOError
+          connection.finish(timeout: 1) { }
+        end
+      end
+
+      assert_same(original, replayed)
+      assert_same(cause, replayed.cause)
+      refute_includes(replayed.full_message(highlight: false), "synthetic_ambient_callback_marker")
+    end
+  end
+
+  private def assert_safe_state_error
+    error = assert_raises(OpenAI::Errors::WebSocketConnectionError) do
+      begin
+        raise IOError, "synthetic_ambient_state_marker"
+      rescue IOError
+        yield
+      end
+    end
+
+    assert_nil(error.cause)
+    assert_safe_error_rendering(error, "synthetic_ambient_state_marker")
+  end
+
   private def assert_safe_error_rendering(error, marker)
     [
       error.message,
@@ -131,6 +206,8 @@ class OpenAI::Test::RealtimeDiagnosticRenderingTest < Minitest::Test
       client.realtime.connect_transcription(transport: transport, &block)
     when :sideband
       client.realtime.connect_to_call(call_id: "rtc_synthetic", transport: transport, &block)
+    when :translation
+      client.realtime.connect_translation(model: "gpt-realtime-translate", transport: transport, &block)
     end
   end
 end
