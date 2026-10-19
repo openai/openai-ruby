@@ -75,6 +75,7 @@ module OpenAI
                 ?batch: bool?,
                 ?input_audio_tokens: Integer?,
                 ?:input_cache_write_12h_tokens => Integer?,
+                ?:input_cache_write_30m_tokens => Integer?,
                 ?input_cache_write_tokens: Integer?,
                 ?input_cached_audio_tokens: Integer?,
                 ?input_cached_image_tokens: Integer?,
@@ -128,6 +129,10 @@ module OpenAI
               # The aggregated number of input tokens written to the cache with a 12-hour
               # retention period.
               attr_accessor input_cache_write_12h_tokens: Integer?
+
+              # The aggregated number of input tokens written to the cache with a 30-minute
+              # retention period.
+              attr_accessor input_cache_write_30m_tokens: Integer?
 
               # The aggregated number of input tokens written to the cache with a 30-minute
               # retention period.
@@ -208,6 +213,9 @@ module OpenAI
               # @param input_cache_write_12h_tokens
               #   The aggregated number of input tokens written to the cache with a 12-hour
               #   retention period.
+              # @param input_cache_write_30m_tokens
+              #   The aggregated number of input tokens written to the cache with a 30-minute
+              #   retention period.
               # @param input_cache_write_tokens
               #   The aggregated number of input tokens written to the cache with a 30-minute
               #   retention period.
@@ -255,6 +263,7 @@ module OpenAI
                 ?batch: bool?,
                 ?input_audio_tokens: Integer?,
                 ?input_cache_write_12h_tokens: Integer?,
+                ?input_cache_write_30m_tokens: Integer?,
                 ?input_cache_write_tokens: Integer?,
                 ?input_cached_audio_tokens: Integer?,
                 ?input_cached_image_tokens: Integer?,
@@ -283,6 +292,7 @@ module OpenAI
                 ?batch: bool?,
                 ?input_audio_tokens: Integer?,
                 ?:input_cache_write_12h_tokens => Integer?,
+                ?:input_cache_write_30m_tokens => Integer?,
                 ?input_cache_write_tokens: Integer?,
                 ?input_cached_audio_tokens: Integer?,
                 ?input_cached_image_tokens: Integer?,

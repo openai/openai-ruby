@@ -186,6 +186,11 @@ module OpenAI
               # The aggregated number of input tokens written to the cache with a 30-minute
               # retention period.
               sig { returns(T.nilable(Integer)) }
+              attr_accessor :input_cache_write_30m_tokens
+
+              # The aggregated number of input tokens written to the cache with a 30-minute
+              # retention period.
+              sig { returns(T.nilable(Integer)) }
               attr_accessor :input_cache_write_tokens
 
               # The aggregated number of cached audio input tokens used.
@@ -273,6 +278,8 @@ module OpenAI
 
                   input_cache_write_12h_tokens: T.nilable(Integer),
 
+                  input_cache_write_30m_tokens: T.nilable(Integer),
+
                   input_cache_write_tokens: T.nilable(Integer),
 
                   input_cached_audio_tokens: T.nilable(Integer),
@@ -345,6 +352,10 @@ module OpenAI
 
                 # The aggregated number of input tokens written to the cache with a 30-minute
                 # retention period.
+                input_cache_write_30m_tokens: nil,
+
+                # The aggregated number of input tokens written to the cache with a 30-minute
+                # retention period.
                 input_cache_write_tokens: nil,
 
                 # The aggregated number of cached audio input tokens used.
@@ -414,6 +425,7 @@ module OpenAI
                     batch: T.nilable(T::Boolean),
                     input_audio_tokens: T.nilable(Integer),
                     input_cache_write_12h_tokens: T.nilable(Integer),
+                    input_cache_write_30m_tokens: T.nilable(Integer),
                     input_cache_write_tokens: T.nilable(Integer),
                     input_cached_audio_tokens: T.nilable(Integer),
                     input_cached_image_tokens: T.nilable(Integer),
