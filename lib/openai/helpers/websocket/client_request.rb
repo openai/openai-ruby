@@ -6,6 +6,34 @@ module OpenAI
     #
     # @api private
     module ClientRequest
+      # @api private
+      def with_websocket_connection_request(request:, websocket_base_url: nil, options: nil, &block)
+        build = lambda do |deadline|
+          build_shared_websocket_connection_request(
+            request: request,
+            websocket_base_url: websocket_base_url,
+            options: options,
+            deadline: deadline,
+            validate: lambda do |_value|
+              if @provider_runtime || x509_identity?(@copy_options.fetch(:workload_identity))
+                raise(
+                  OpenAI::Errors::Error,
+                  "This client authentication provider does not support WebSocket connections."
+                )
+              end
+            end,
+            invalid_base_url_message: "websocket_base_url must be an absolute HTTP or WebSocket URL without credentials, query, or fragment",
+            malformed_base_url_message: "websocket_base_url is not a valid URL",
+            preserve_base_url_cause: false,
+            extra_query_message: "Use query for WebSocket connection query parameters",
+            max_retries_message: "request_options max_retries is not supported for WebSocket connections",
+            timeout_error: -> (url, _cause) { BindingConnectionError.new(url: url) }
+          )
+        end
+
+        with_websocket_connection_retry(error_class: BindingConnectionError, build: build, &block)
+      end
+
       private def with_websocket_connection_retry(error_class:, build:)
         request, deadline = build.call(nil)
         handshake_completed = false
@@ -60,8 +88,7 @@ module OpenAI
       end
 
       private def build_shared_websocket_connection_request(
-        path:,
-        query:,
+        request:,
         websocket_base_url:,
         options:,
         deadline: nil,
@@ -73,6 +100,7 @@ module OpenAI
         max_retries_message:,
         timeout_error:
       )
+        path = request.fetch(:path)
         validate.call(websocket_base_url)
         websocket_uri = parse_shared_websocket_base_url(
           websocket_base_url,
@@ -86,10 +114,7 @@ module OpenAI
           max_retries_message: max_retries_message
         )
 
-        request = build_request(
-          {method: :get, path: path, query: query, security: {bearer_auth: true}},
-          opts
-        )
+        request = build_request(request, opts)
         error_request = websocket_uri ? with_shared_websocket_base_url(request, path:, base_url: websocket_uri) : request
         error_url = shared_websocket_url(error_request.fetch(:url))
 

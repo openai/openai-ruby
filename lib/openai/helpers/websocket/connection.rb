@@ -2,6 +2,64 @@
 
 module OpenAI
   module WebSocket
+    # Retire failed sockets and uncertain writes without changing the raw connection contract.
+    #
+    # @api private
+    module GuardedConnection
+      def closed? = @poisoned || @closed || super
+
+      def close(code: 1000, reason: "")
+        @poisoned || @closed ? abort : super
+        @closed = true
+        nil
+      rescue StandardError
+        @poisoned = true
+        raise transport_error, cause: nil
+      end
+
+      # @api private
+      def abort
+        super
+        @closed = true
+        nil
+      rescue StandardError
+        @poisoned = true
+        raise transport_error, cause: nil
+      end
+
+      private def write_text(text)
+        complete = false
+        super
+        complete = true
+        nil
+      rescue StandardError
+        raise transport_error, cause: nil
+      ensure
+        # Also retire a possibly buffered write when cancellation bypasses
+        # StandardError, before another sender or normal cleanup can flush it.
+        @poisoned = true unless complete
+      end
+
+      private def read_raw_message
+        raise connection_error(failed_read_message) if @poisoned
+        return nil if @closed
+        text = super
+        @closed = text.nil?
+        text
+      rescue StandardError
+        @poisoned = true
+        raise transport_error, cause: nil
+      end
+
+      private def socket_closed?
+        super
+      rescue StandardError
+        @poisoned = true
+        raise transport_error, cause: nil
+      end
+
+    end
+
     # Product-neutral socket lifecycle and text I/O.
     #
     # @api private

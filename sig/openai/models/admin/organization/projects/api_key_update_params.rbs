@@ -7,7 +7,8 @@ module OpenAI
             {
               project_id: String,
               api_key_id: String,
-              expires_in_seconds: Integer,
+              ?expires_in_seconds: Integer,
+              ?scopes: ::Array[String],
               ?request_options: OpenAI::request_opts
             }
 
@@ -21,24 +22,51 @@ module OpenAI
 
             # Number of seconds from this request until the API key expires. Must comply with
             # the organization and project expiry policies. Expired keys cannot be updated.
-            # Retrying resets the expiry relative to the new request.
-            attr_accessor expires_in_seconds: Integer
+            # Retrying resets the expiry relative to the new request. Omit to keep the current
+            # expiration.
+            attr_reader expires_in_seconds: Integer?
+
+            # Number of seconds from this request until the API key expires. Must comply with
+            # the organization and project expiry policies. Expired keys cannot be updated.
+            # Retrying resets the expiry relative to the new request. Omit to keep the current
+            # expiration.
+            def expires_in_seconds=: (Integer) -> Integer
+
+            # Replace the API key scope restrictions. Omit to leave scopes unchanged. An empty
+            # array removes key restrictions (All permissions), subject to the owner's
+            # effective permissions. Use ["api.all.read"] for read-only access. Scopes do not
+            # change the owner's roles or grant administrative permissions.
+            attr_reader scopes: ::Array[String]?
+
+            # Replace the API key scope restrictions. Omit to leave scopes unchanged. An empty
+            # array removes key restrictions (All permissions), subject to the owner's
+            # effective permissions. Use ["api.all.read"] for read-only access. Scopes do not
+            # change the owner's roles or grant administrative permissions.
+            def scopes=: (::Array[String]) -> ::Array[String]
 
             # @param expires_in_seconds
             #   Number of seconds from this request until the API key expires. Must comply with
             #   the organization and project expiry policies. Expired keys cannot be updated.
-            #   Retrying resets the expiry relative to the new request.
+            #   Retrying resets the expiry relative to the new request. Omit to keep the current
+            #   expiration.
+            # @param scopes
+            #   Replace the API key scope restrictions. Omit to leave scopes unchanged. An empty
+            #   array removes key restrictions (All permissions), subject to the owner's
+            #   effective permissions. Use ["api.all.read"] for read-only access. Scopes do not
+            #   change the owner's roles or grant administrative permissions.
             def initialize: (
               project_id: String,
               api_key_id: String,
-              expires_in_seconds: Integer,
+              ?expires_in_seconds: Integer,
+              ?scopes: ::Array[String],
               ?request_options: OpenAI::request_opts
             ) -> void
 
             def to_hash: -> {
               project_id: String,
               api_key_id: String,
-              expires_in_seconds: Integer,
+              ?expires_in_seconds: Integer,
+              ?scopes: ::Array[String],
               ?request_options: OpenAI::RequestOptions
             }
           end

@@ -77,6 +77,8 @@ module OpenAI
 
   class DecisionInputText = OpenAI::Models::DecisionInputText
 
+  class DecisionPromptCacheBreakpoint = OpenAI::Models::DecisionPromptCacheBreakpoint
+
   class DeletedSkill = OpenAI::Models::DeletedSkill
 
   class Embedding = OpenAI::Models::Embedding

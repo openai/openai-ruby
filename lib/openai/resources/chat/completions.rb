@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative "../../helpers/streaming/chat_completion_resource"
-
 require_relative "../../helpers/structured_output/chat_completion_parser"
 
 module OpenAI
@@ -350,14 +349,6 @@ module OpenAI
             security: {bearer_auth: true},
             options: options
           )
-        end
-
-        def get_structured_output_models(parsed)
-          OpenAI::Helpers::StructuredOutput::ChatCompletionParser.get_models(parsed)
-        end
-
-        def build_tools_with_models(tools, tool_models)
-          OpenAI::Helpers::StructuredOutput::ChatCompletionParser.build_tools(tools, tool_models)
         end
 
         # See {OpenAI::Resources::Chat::Completions#create} for non-streaming counterpart.
@@ -815,6 +806,14 @@ module OpenAI
             security: {bearer_auth: true},
             options: params[:request_options]
           )
+        end
+
+        def get_structured_output_models(parsed)
+          OpenAI::Helpers::StructuredOutput::ChatCompletionParser.get_models(parsed)
+        end
+
+        def build_tools_with_models(tools, tool_models)
+          OpenAI::Helpers::StructuredOutput::ChatCompletionParser.build_tools(tools, tool_models)
         end
 
         # @api private

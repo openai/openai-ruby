@@ -1,6 +1,13 @@
 module OpenAI
   module Resources
     class Realtime
+      include OpenAI::WebSocket::Resource
+      def __websocket_request: (
+        ?query: Hash[untyped, untyped]
+      ) -> Hash[Symbol, untyped]
+      def __websocket_client_event: -> untyped
+      def __websocket_server_event: -> untyped
+
       attr_reader client_secrets: OpenAI::Resources::Realtime::ClientSecrets
 
       attr_reader calls: OpenAI::Resources::Realtime::Calls

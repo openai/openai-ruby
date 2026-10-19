@@ -20,9 +20,13 @@ module OpenAI
             OpenAI::Live::InputAudioAppendEvent,
             OpenAI::Live::InputAudioMuteEvent,
             OpenAI::Live::InputAudioUnmuteEvent,
+            OpenAI::Live::OutputAudioFixturePlayEvent,
             OpenAI::Live::InstructionsAppendEvent,
             OpenAI::Live::ThinkingAppendEvent,
             OpenAI::Live::CommentaryAppendEvent,
+            OpenAI::Live::DecisionCreateEvent,
+            OpenAI::Live::DecisionItemCreateEvent,
+            OpenAI::Live::DecisionItemDeleteEvent,
             OpenAI::Live::ResponseItemCreateEvent,
             OpenAI::Live::ResponseCreateEvent,
             OpenAI::Live::SessionCloseEvent

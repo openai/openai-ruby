@@ -5,9 +5,9 @@ module OpenAI
     module Live
       class SessionUpdateEvent < OpenAI::Internal::Type::BaseModel
         # @!attribute session
-        #   Sparse delegation updates. Omitted settings retain their values. The delegation
-        #   type cannot change, including resetting Responses delegation to null or client.
-        #   Model, frontend instructions, audio, and startup input are immutable.
+        #   Sparse delegation and trigger updates. Omitted settings retain their values. The
+        #   delegation type cannot change. Model, frontend instructions, audio, and startup
+        #   input are immutable.
         #
         #   @return [OpenAI::Models::Live::SessionUpdateConfig]
         required :session, -> { OpenAI::Live::SessionUpdateConfig }
@@ -26,13 +26,13 @@ module OpenAI
         optional :event_id, String, nil?: true
 
         # @!method initialize(session:, event_id: nil, type: :"session.update")
-        #   Update the delegation settings of an active Live session. The server
-        #   acknowledges accepted changes with `session.updated`.
+        #   Update the delegation settings or transcript triggers of an active Live session.
+        #   The server acknowledges accepted changes with `session.updated`.
         #
         #   @param session [OpenAI::Models::Live::SessionUpdateConfig]
-        #     Sparse delegation updates. Omitted settings retain their values. The delegation
-        #     type cannot change, including resetting Responses delegation to null or client.
-        #     Model, frontend instructions, audio, and startup input are immutable.
+        #     Sparse delegation and trigger updates. Omitted settings retain their values. The
+        #     delegation type cannot change. Model, frontend instructions, audio, and startup
+        #     input are immutable.
         #
         #   @param event_id [String, nil]
         #     Optional client identifier for correlating this command with a server event's

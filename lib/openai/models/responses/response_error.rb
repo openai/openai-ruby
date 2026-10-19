@@ -21,7 +21,19 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponseError::Misalignment, nil]
         optional :misalignment, -> { OpenAI::Responses::ResponseError::Misalignment }
 
-        # @!method initialize(code:, message:, misalignment: nil)
+        # @!attribute param
+        #   The request parameter associated with the error, or null if none was recorded.
+        #
+        #   @return [String, nil]
+        optional :param, String, nil?: true
+
+        # @!attribute type
+        #   The original error type, or null if it was not recorded.
+        #
+        #   @return [String, nil]
+        optional :type, String, nil?: true
+
+        # @!method initialize(code:, message:, misalignment: nil, param: nil, type: nil)
         #   An error object returned when the model fails to generate a Response.
         #
         #   @param code [Symbol, OpenAI::Models::Responses::ResponseError::Code]
@@ -31,6 +43,12 @@ module OpenAI
         #     A human-readable description of the error.
         #
         #   @param misalignment [OpenAI::Models::Responses::ResponseError::Misalignment]
+        #
+        #   @param param [String, nil]
+        #     The request parameter associated with the error, or null if none was recorded.
+        #
+        #   @param type [String, nil]
+        #     The original error type, or null if it was not recorded.
 
         # The error code for the response.
         #

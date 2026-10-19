@@ -5,7 +5,9 @@ module OpenAI
         {
           code: OpenAI::Models::Responses::ResponseError::code,
           message: String,
-          ?misalignment: OpenAI::Responses::ResponseError::Misalignment
+          ?misalignment: OpenAI::Responses::ResponseError::Misalignment,
+          ?param: String?,
+          ?type: String?
         }
 
       class ResponseError < OpenAI::Internal::Type::BaseModel
@@ -21,20 +23,34 @@ module OpenAI
           OpenAI::Responses::ResponseError::Misalignment
         ) -> OpenAI::Responses::ResponseError::Misalignment
 
+        # The request parameter associated with the error, or null if none was recorded.
+        attr_accessor param: String?
+
+        # The original error type, or null if it was not recorded.
+        attr_accessor type: String?
+
         # @param code
         #   The error code for the response.
         # @param message
         #   A human-readable description of the error.
+        # @param param
+        #   The request parameter associated with the error, or null if none was recorded.
+        # @param type
+        #   The original error type, or null if it was not recorded.
         def initialize: (
           code: OpenAI::Models::Responses::ResponseError::code,
           message: String,
-          ?misalignment: OpenAI::Responses::ResponseError::Misalignment
+          ?misalignment: OpenAI::Responses::ResponseError::Misalignment,
+          ?param: String?,
+          ?type: String?
         ) -> void
 
         def to_hash: -> {
           code: OpenAI::Models::Responses::ResponseError::code,
           message: String,
-          ?misalignment: OpenAI::Responses::ResponseError::Misalignment
+          ?misalignment: OpenAI::Responses::ResponseError::Misalignment,
+          ?param: String?,
+          ?type: String?
         }
 
         type code =

@@ -2,27 +2,52 @@ module OpenAI
   module Models
     module Live
       type session_update_config =
-        { ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation? }
+        {
+          ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
+        }
 
       class SessionUpdateConfig < OpenAI::Internal::Type::BaseModel
         # Delegation settings to update. The delegation type must match the current
         # session; omitted settings retain their values.
         attr_accessor delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?
 
+        # At most one Decisions trigger per transcript event type. Triggers run
+        # independently of delegation. On update, omit triggers to keep the current
+        # configuration, send a list to replace it, or send an empty list to disable
+        # triggers.
+        attr_reader triggers: ::Array[OpenAI::Live::DecisionTrigger]?
+
+        # At most one Decisions trigger per transcript event type. Triggers run
+        # independently of delegation. On update, omit triggers to keep the current
+        # configuration, send a list to replace it, or send an empty list to disable
+        # triggers.
+        def triggers=: (
+          ::Array[OpenAI::Live::DecisionTrigger]
+        ) -> ::Array[OpenAI::Live::DecisionTrigger]
+
         # @param delegation
         #   Delegation settings to update. The delegation type must match the current
         #   session; omitted settings retain their values.
+        # @param triggers
+        #   At most one Decisions trigger per transcript event type. Triggers run
+        #   independently of delegation. On update, omit triggers to keep the current
+        #   configuration, send a list to replace it, or send an empty list to disable
+        #   triggers.
         def initialize: (
-          ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?
+          ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         ) -> void
 
         def to_hash: -> {
-          ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?
+          ?delegation: OpenAI::Models::Live::SessionUpdateConfig::delegation?,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         }
 
         type delegation =
           OpenAI::Live::ClientDelegation
           | OpenAI::Live::SessionUpdateConfig::Delegation::Responses
+          | OpenAI::Live::SessionUpdateConfig::Delegation::Decisions
 
         module Delegation
           extend OpenAI::Internal::Type::Union
@@ -60,6 +85,32 @@ module OpenAI
             def to_hash: -> {
               ?type: :responses,
               ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
+            }
+          end
+
+          type decisions =
+            {
+              ?type: :decisions,
+              ?decisions: OpenAI::Live::DecisionsDelegationUpdateConfig
+            }
+
+          class Decisions < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :decisions
+
+            attr_reader decisions: OpenAI::Live::DecisionsDelegationUpdateConfig?
+
+            def decisions=: (
+              OpenAI::Live::DecisionsDelegationUpdateConfig
+            ) -> OpenAI::Live::DecisionsDelegationUpdateConfig
+
+            def initialize: (
+              ?decisions: OpenAI::Live::DecisionsDelegationUpdateConfig,
+              ?type: :decisions
+            ) -> void
+
+            def to_hash: -> {
+              ?type: :decisions,
+              ?decisions: OpenAI::Live::DecisionsDelegationUpdateConfig
             }
           end
 

@@ -60,13 +60,14 @@ module OpenAI
             def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::provider]
           end
 
-          type status = :pending | :validated | :unhealthy
+          type status = :pending | :validated | :degraded | :unhealthy
 
           module Status
             extend OpenAI::Internal::Type::Enum
 
             PENDING: :pending
             VALIDATED: :validated
+            DEGRADED: :degraded
             UNHEALTHY: :unhealthy
 
             def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalStorageConfiguration::status]

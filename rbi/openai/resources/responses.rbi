@@ -6,6 +6,23 @@ module OpenAI
     # Create and manage model responses.
     class Responses
 
+      include OpenAI::WebSocket::Resource
+
+      # @api private
+      sig { params(query: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }
+      def __websocket_request(query: {})
+      end
+
+      # @api private
+      sig { returns(T.untyped) }
+      def __websocket_client_event
+      end
+
+      # @api private
+      sig { returns(T.untyped) }
+      def __websocket_server_event
+      end
+
       # Create and manage model responses.
       sig { returns(OpenAI::Resources::Responses::InputItems) }
       attr_reader :input_items
@@ -27,7 +44,7 @@ module OpenAI
       # [web search](https://developers.openai.com/api/docs/guides/tools-web-search) or
       # [file search](https://developers.openai.com/api/docs/guides/tools-file-search)
       # to use your own data as input for the model's response.
-      sig do
+      sig {
         params(
           access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms::OrHash,
           background: T.nilable(T::Boolean),
@@ -53,10 +70,7 @@ module OpenAI
           store: T.nilable(T::Boolean),
           stream_options: T.nilable(OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash),
           temperature: T.nilable(Float),
-          text: T.any(
-            OpenAI::Responses::ResponseTextConfig::OrHash,
-            OpenAI::StructuredOutput::JsonSchemaConverter
-          ),
+          text: T.any(OpenAI::Responses::ResponseTextConfig::OrHash, OpenAI::StructuredOutput::JsonSchemaConverter),
           tool_choice: T.any(
             OpenAI::Responses::ToolChoiceOptions::OrSymbol,
             OpenAI::Responses::ToolChoiceAllowed::OrHash,
@@ -96,7 +110,7 @@ module OpenAI
           request_options: OpenAI::RequestOptions::OrHash
         )
           .returns(OpenAI::Responses::Response)
-      end
+      }
       def create(
         # Domain-specific access programs to use for this request.
         access_programs: nil,
@@ -335,7 +349,7 @@ module OpenAI
       # [web search](https://developers.openai.com/api/docs/guides/tools-web-search) or
       # [file search](https://developers.openai.com/api/docs/guides/tools-file-search)
       # to use your own data as input for the model's response.
-      sig do
+      sig {
         params(
           access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms::OrHash,
           background: T.nilable(T::Boolean),
@@ -362,10 +376,7 @@ module OpenAI
           stream_options: T.nilable(OpenAI::Responses::ResponseCreateParams::StreamOptions::OrHash),
           temperature: T.nilable(Float),
           text: T.nilable(
-            T.any(
-              OpenAI::Responses::ResponseTextConfig::OrHash,
-              OpenAI::StructuredOutput::JsonSchemaConverter
-            )
+            T.any(OpenAI::Responses::ResponseTextConfig::OrHash, OpenAI::StructuredOutput::JsonSchemaConverter)
           ),
           tool_choice: T.any(
             OpenAI::Responses::ToolChoiceOptions::OrSymbol,
@@ -410,7 +421,7 @@ module OpenAI
               T.any(OpenAI::Responses::ResponseStreamEvent::Variants, OpenAI::Streaming::UnknownStreamEvent)
             ]
           )
-      end
+      }
       def stream_raw(
         # Domain-specific access programs to use for this request.
         access_programs: nil,
@@ -639,31 +650,25 @@ module OpenAI
       # See {OpenAI::Resources::Responses#retrieve_streaming} for streaming counterpart.
       #
       # Retrieves a model response with the given ID.
-      sig do
+      sig {
         params(
           response_id: String,
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
           include_obfuscation: T::Boolean,
           starting_after: Integer,
           text: T.nilable(
-            T.any(
-              OpenAI::Responses::ResponseTextConfig::OrHash,
-              OpenAI::StructuredOutput::JsonSchemaConverter::Input
-            )
+            T.any(OpenAI::Responses::ResponseTextConfig::OrHash, OpenAI::StructuredOutput::JsonSchemaConverter::Input)
           ),
           tools: T.nilable(
             T::Array[
-              T.any(
-                OpenAI::Responses::FunctionTool::OrHash,
-                OpenAI::StructuredOutput::JsonSchemaConverter::Input
-              )
+              T.any(OpenAI::Responses::FunctionTool::OrHash, OpenAI::StructuredOutput::JsonSchemaConverter::Input)
             ]
           ),
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
         )
           .returns(OpenAI::Responses::Response)
-      end
+      }
       def retrieve(
         # The ID of the response to retrieve.
         response_id,
@@ -679,11 +684,11 @@ module OpenAI
         include_obfuscation: nil,
         # The sequence number of the event after which to start streaming.
         starting_after: nil,
-        # The structured-output model used to parse retrieved text output. This is a
-        # local parsing hint and is not sent to the API.
+        # The structured-output model used to parse retrieved text output. This is a local
+        # parsing hint and is not sent to the API.
         text: nil,
-        # Structured-output models used to parse retrieved function tool calls. These
-        # are local parsing hints and are not sent to the API.
+        # Structured-output models used to parse retrieved function tool calls. These are
+        # local parsing hints and are not sent to the API.
         tools: nil,
         # There is no need to provide `stream:`. Instead, use `#retrieve_streaming` or
         # `#retrieve` for streaming and non-streaming use cases, respectively.
@@ -695,7 +700,7 @@ module OpenAI
       # See {OpenAI::Resources::Responses#retrieve} for non-streaming counterpart.
       #
       # Retrieves a model response with the given ID.
-      sig do
+      sig {
         params(
           response_id: String,
           include: T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol],
@@ -709,7 +714,7 @@ module OpenAI
               T.any(OpenAI::Responses::ResponseStreamEvent::Variants, OpenAI::Streaming::UnknownStreamEvent)
             ]
           )
-      end
+      }
       def retrieve_streaming(
         # The ID of the response to retrieve.
         response_id,
@@ -744,13 +749,11 @@ module OpenAI
       # Cancels a model response with the given ID. Only responses created with the
       # `background` parameter set to `true` can be cancelled.
       # [Learn more](https://developers.openai.com/api/docs/guides/background).
-      sig do
-        params(
-          response_id: String,
-          request_options: OpenAI::RequestOptions::OrHash
+      sig {
+        params(response_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+          OpenAI::Responses::Response
         )
-          .returns(OpenAI::Responses::Response)
-      end
+      }
       def cancel(
         # The ID of the response to cancel.
         response_id,
@@ -764,7 +767,7 @@ module OpenAI
       # [conversation state guide](https://developers.openai.com/api/docs/guides/conversation-state#managing-the-context-window).
       # For ZDR-compatible compaction details, see
       # [Compaction (advanced)](https://developers.openai.com/api/docs/guides/conversation-state#compaction-advanced).
-      sig do
+      sig {
         params(
           model: T.nilable(T.any(OpenAI::Responses::ResponseCompactParams::Model::OrSymbol, String)),
           input: T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants),
@@ -777,7 +780,7 @@ module OpenAI
           request_options: OpenAI::RequestOptions::OrHash
         )
           .returns(OpenAI::Responses::CompactedResponse)
-      end
+      }
       def compact(
         # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         # range of models with different capabilities, performance characteristics, and

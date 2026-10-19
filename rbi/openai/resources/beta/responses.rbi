@@ -8,6 +8,23 @@ module OpenAI
       # Create and manage model responses.
       class Responses
 
+        include OpenAI::WebSocket::Resource
+
+        # @api private
+        sig { params(query: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }
+        def __websocket_request(query: {})
+        end
+
+        # @api private
+        sig { returns(T.untyped) }
+        def __websocket_client_event
+        end
+
+        # @api private
+        sig { returns(T.untyped) }
+        def __websocket_server_event
+        end
+
         # Create and manage model responses.
         sig { returns(OpenAI::Resources::Beta::Responses::InputItems) }
         attr_reader :input_items

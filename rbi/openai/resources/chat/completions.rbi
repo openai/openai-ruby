@@ -36,7 +36,7 @@ module OpenAI
         #
         # Returns a chat completion object, or a streamed sequence of chat completion
         # chunk objects if the request is streamed.
-        sig do
+        sig {
           params(
             messages: T::Array[
               T.any(
@@ -72,10 +72,12 @@ module OpenAI
             prompt_cache_retention: T.nilable(OpenAI::Chat::CompletionCreateParams::PromptCacheRetention::OrSymbol),
             reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol),
             response_format: T.any(
-              OpenAI::ResponseFormatText::OrHash,
-              OpenAI::ResponseFormatJSONSchema::OrHash,
-              OpenAI::StructuredOutput::JsonSchemaConverter,
-              OpenAI::ResponseFormatJSONObject::OrHash
+              T.any(
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::ResponseFormatJSONSchema::OrHash,
+                OpenAI::ResponseFormatJSONObject::OrHash
+              ),
+              OpenAI::StructuredOutput::JsonSchemaConverter
             ),
             safety_identifier: T.nilable(String),
             seed: T.nilable(Integer),
@@ -92,9 +94,8 @@ module OpenAI
             ),
             tools: T::Array[
               T.any(
-                OpenAI::StructuredOutput::JsonSchemaConverter,
-                OpenAI::Chat::ChatCompletionFunctionTool::OrHash,
-                OpenAI::Chat::ChatCompletionCustomTool::OrHash
+                T.any(OpenAI::Chat::ChatCompletionFunctionTool::OrHash, OpenAI::Chat::ChatCompletionCustomTool::OrHash),
+                OpenAI::StructuredOutput::JsonSchemaConverter
               )
             ],
             top_logprobs: T.nilable(Integer),
@@ -106,7 +107,7 @@ module OpenAI
             request_options: OpenAI::RequestOptions::OrHash
           )
             .returns(OpenAI::Chat::ChatCompletion)
-        end
+        }
         def create(
           # A list of messages comprising the conversation so far. Depending on the
           # [model](https://developers.openai.com/api/docs/models) you use, different
@@ -386,7 +387,7 @@ module OpenAI
         #
         # Returns a chat completion object, or a streamed sequence of chat completion
         # chunk objects if the request is streamed.
-        sig do
+        sig {
           params(
             messages: T::Array[
               T.any(
@@ -451,7 +452,7 @@ module OpenAI
             request_options: OpenAI::RequestOptions::OrHash
           )
             .returns(OpenAI::Internal::Stream[OpenAI::Chat::ChatCompletionChunk])
-        end
+        }
         def stream_raw(
           # A list of messages comprising the conversation so far. Depending on the
           # [model](https://developers.openai.com/api/docs/models) you use, different
@@ -711,13 +712,11 @@ module OpenAI
 
         # Get a stored chat completion. Only Chat Completions that have been created with
         # the `store` parameter set to `true` will be returned.
-        sig do
-          params(
-            completion_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
+        sig {
+          params(completion_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Chat::ChatCompletion
           )
-            .returns(OpenAI::Chat::ChatCompletion)
-        end
+        }
         def retrieve(
           # The ID of the chat completion to retrieve.
           completion_id,
@@ -728,14 +727,14 @@ module OpenAI
         # Modify a stored chat completion. Only Chat Completions that have been created
         # with the `store` parameter set to `true` can be modified. Currently, the only
         # supported modification is to update the `metadata` field.
-        sig do
+        sig {
           params(
             completion_id: String,
             metadata: T.nilable(T::Hash[Symbol, String]),
             request_options: OpenAI::RequestOptions::OrHash
           )
             .returns(OpenAI::Chat::ChatCompletion)
-        end
+        }
         def update(
           # The ID of the chat completion to update.
           completion_id,
@@ -752,7 +751,7 @@ module OpenAI
 
         # List stored Chat Completions. Only Chat Completions that have been stored with
         # the `store` parameter set to `true` will be returned.
-        sig do
+        sig {
           params(
             after: String,
             limit: Integer,
@@ -762,7 +761,7 @@ module OpenAI
             request_options: OpenAI::RequestOptions::OrHash
           )
             .returns(OpenAI::Internal::CursorPage[OpenAI::Chat::ChatCompletion])
-        end
+        }
         def list(
           # Identifier for the last chat completion from the previous pagination request.
           after: nil,
@@ -783,13 +782,11 @@ module OpenAI
 
         # Delete a stored chat completion. Only Chat Completions that have been created
         # with the `store` parameter set to `true` can be deleted.
-        sig do
-          params(
-            completion_id: String,
-            request_options: OpenAI::RequestOptions::OrHash
+        sig {
+          params(completion_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
+            OpenAI::Chat::ChatCompletionDeleted
           )
-            .returns(OpenAI::Chat::ChatCompletionDeleted)
-        end
+        }
         def delete(
           # The ID of the chat completion to delete.
           completion_id,

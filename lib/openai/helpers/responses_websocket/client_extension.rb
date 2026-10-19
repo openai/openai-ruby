@@ -29,8 +29,7 @@ module OpenAI
           deadline: nil
         )
           build_shared_websocket_connection_request(
-            path: "responses",
-            query: {},
+            request: responses.__websocket_request,
             websocket_base_url: websocket_base_url,
             options: options,
             deadline: deadline,

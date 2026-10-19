@@ -28,6 +28,14 @@ module OpenAI
         sig { params(misalignment: OpenAI::Responses::ResponseError::Misalignment::OrHash).void }
         attr_writer :misalignment
 
+        # The request parameter associated with the error, or null if none was recorded.
+        sig { returns(T.nilable(String)) }
+        attr_accessor :param
+
+        # The original error type, or null if it was not recorded.
+        sig { returns(T.nilable(String)) }
+        attr_accessor :type
+
         # An error object returned when the model fails to generate a Response.
         sig do
           params(
@@ -36,7 +44,11 @@ module OpenAI
 
             message: String,
 
-            misalignment: OpenAI::Responses::ResponseError::Misalignment::OrHash
+            misalignment: OpenAI::Responses::ResponseError::Misalignment::OrHash,
+
+            param: T.nilable(String),
+
+            type: T.nilable(String)
           )
             .returns(T.attached_class)
         end
@@ -48,7 +60,14 @@ module OpenAI
           # A human-readable description of the error.
           message:,
 
-          misalignment: nil
+          misalignment: nil,
+
+          # The request parameter associated with the error, or null if none was recorded.
+          param: nil,
+
+          # The original error type, or null if it was not recorded.
+
+          type: nil
         )
         end
 
@@ -57,7 +76,9 @@ module OpenAI
             {
               code: OpenAI::Responses::ResponseError::Code::TaggedSymbol,
               message: String,
-              misalignment: OpenAI::Responses::ResponseError::Misalignment
+              misalignment: OpenAI::Responses::ResponseError::Misalignment,
+              param: T.nilable(String),
+              type: T.nilable(String)
             }
           )
         end

@@ -25,6 +25,12 @@ module OpenAI
         # Returned when a session.input_audio.unmute command is accepted. Input audio is sent to the model again.
         variant :"session.input_audio.unmuted", -> { OpenAI::Live::InputAudioUnmutedEvent }
 
+        # The existing playback path has accepted the validated audio fixture. This acknowledgment does not identify when the listener receives the first sample. The optional client_event_id echoes the play command.
+        variant :"session.output_audio.fixture.playing", -> { OpenAI::Live::OutputAudioFixturePlayingEvent }
+
+        # The complete audio fixture has drained from the server mixer and normal inference has resumed. Transport buffers may still contain audio; this event does not prove listener-side completion. The optional client_event_id echoes the play command. This event is not emitted for canceled or failed playback.
+        variant :"session.output_audio.fixture.played", -> { OpenAI::Live::OutputAudioFixturePlayedEvent }
+
         # Returned when a session.instructions.append command is accepted into the Live session timeline. Acknowledges the appended instructions without guaranteeing that the model has acted on them.
         variant :"session.instructions.appended", -> { OpenAI::Live::InstructionsAppendedEvent }
 
@@ -46,8 +52,17 @@ module OpenAI
         # A transcript fragment for assistant output audio in the Live session. Accumulate fragments in delivery order; these events do not define complete turns or include a transcript-done event.
         variant :"session.output_transcript.delta", -> { OpenAI::Live::OutputTranscriptDeltaEvent }
 
-        # Returned when the Live model delegates work to your application or a Responses backend. Contains delegation metadata and the position on the session timeline where the work was delegated.
+        # Returned when the Live model delegates work to your application, Responses, or Decisions. Contains delegation metadata and the position on the session timeline where the work was delegated.
         variant :"session.delegation.created", -> { OpenAI::Live::DelegationCreatedEvent }
+
+        # A Decision API event for a Live delegation or transcript trigger. For a trigger, source_event_id identifies the transcript delta that caused this evaluation.
+        variant :"decision.event", -> { OpenAI::Live::DecisionEvent }
+
+        # An input item was appended for future decisions.
+        variant :"decision.item.created", -> { OpenAI::Live::DecisionItemCreatedEvent }
+
+        # An input item was removed from future decisions.
+        variant :"decision.item.deleted", -> { OpenAI::Live::DecisionItemDeletedEvent }
 
         # A streaming Responses API event from a backend delegated to by the Live session. Use the outer delegation_id to associate the nested stream with its Live delegation.
         variant :"response.event", -> { OpenAI::Live::ResponseEvent }
@@ -299,7 +314,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Live::SessionStartedEvent, OpenAI::Models::Live::SessionUpdatedEvent, OpenAI::Models::Live::InputAudioMutedEvent, OpenAI::Models::Live::InputAudioUnmutedEvent, OpenAI::Models::Live::InstructionsAppendedEvent, OpenAI::Models::Live::ThinkingAppendedEvent, OpenAI::Models::Live::CommentaryAppendedEvent, OpenAI::Models::Live::ForkServerEvent::SessionInputAudioAppend, OpenAI::Models::Live::OutputAudioDeltaEvent, OpenAI::Models::Live::InputTranscriptDeltaEvent, OpenAI::Models::Live::OutputTranscriptDeltaEvent, OpenAI::Models::Live::DelegationCreatedEvent, OpenAI::Models::Live::ResponseEvent, OpenAI::Models::Live::SessionUsageUpdatedEvent, OpenAI::Models::Live::SessionClosedEvent, OpenAI::Models::Live::ErrorEvent, OpenAI::Models::Live::InfoEvent, OpenAI::Models::Live::ForkServerEvent::TransportDtmfReceived, OpenAI::Models::Live::ForkServerEvent::TransportDtmfSend, OpenAI::Models::Live::ForkServerEvent::TransportRinging, OpenAI::Models::Live::ForkServerEvent::TransportAnswered, OpenAI::Models::Live::ForkServerEvent::TransportFailed)]
+        #   @return [Array(OpenAI::Models::Live::SessionStartedEvent, OpenAI::Models::Live::SessionUpdatedEvent, OpenAI::Models::Live::InputAudioMutedEvent, OpenAI::Models::Live::InputAudioUnmutedEvent, OpenAI::Models::Live::OutputAudioFixturePlayingEvent, OpenAI::Models::Live::OutputAudioFixturePlayedEvent, OpenAI::Models::Live::InstructionsAppendedEvent, OpenAI::Models::Live::ThinkingAppendedEvent, OpenAI::Models::Live::CommentaryAppendedEvent, OpenAI::Models::Live::ForkServerEvent::SessionInputAudioAppend, OpenAI::Models::Live::OutputAudioDeltaEvent, OpenAI::Models::Live::InputTranscriptDeltaEvent, OpenAI::Models::Live::OutputTranscriptDeltaEvent, OpenAI::Models::Live::DelegationCreatedEvent, OpenAI::Models::Live::DecisionEvent, OpenAI::Models::Live::DecisionItemCreatedEvent, OpenAI::Models::Live::DecisionItemDeletedEvent, OpenAI::Models::Live::ResponseEvent, OpenAI::Models::Live::SessionUsageUpdatedEvent, OpenAI::Models::Live::SessionClosedEvent, OpenAI::Models::Live::ErrorEvent, OpenAI::Models::Live::InfoEvent, OpenAI::Models::Live::ForkServerEvent::TransportDtmfReceived, OpenAI::Models::Live::ForkServerEvent::TransportDtmfSend, OpenAI::Models::Live::ForkServerEvent::TransportRinging, OpenAI::Models::Live::ForkServerEvent::TransportAnswered, OpenAI::Models::Live::ForkServerEvent::TransportFailed)]
       end
     end
   end
