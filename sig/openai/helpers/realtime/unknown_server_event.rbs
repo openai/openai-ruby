@@ -8,6 +8,8 @@ module OpenAI
         # @api private
         def initialize: (data: ::Hash[Symbol, untyped]) -> void
         def to_h: -> ::Hash[Symbol, untyped]
+        def inspect: -> String
+        alias to_s inspect
       end
     end
   end
