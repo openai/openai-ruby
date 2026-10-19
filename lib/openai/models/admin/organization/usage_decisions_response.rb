@@ -137,6 +137,13 @@ module OpenAI
               #   @return [Integer, nil]
               optional :input_cache_write_12h_tokens, Integer, nil?: true
 
+              # @!attribute input_cache_write_30m_tokens
+              #   The aggregated number of input tokens written to the cache with a 30-minute
+              #   retention period.
+              #
+              #   @return [Integer, nil]
+              optional :input_cache_write_30m_tokens, Integer, nil?: true
+
               # @!attribute input_cache_write_tokens
               #   The aggregated number of input tokens written to the cache with a 30-minute
               #   retention period.
@@ -235,7 +242,7 @@ module OpenAI
               #   @return [String, nil]
               optional :user_id, String, nil?: true
 
-              # @!method initialize(input_tokens:, num_model_requests:, output_tokens:, api_key_id: nil, api_source: nil, batch: nil, input_audio_tokens: nil, input_cache_write_12h_tokens: nil, input_cache_write_tokens: nil, input_cached_audio_tokens: nil, input_cached_image_tokens: nil, input_cached_text_tokens: nil, input_cached_tokens: nil, input_image_tokens: nil, input_text_tokens: nil, input_uncached_tokens: nil, model: nil, output_audio_tokens: nil, output_image_tokens: nil, output_text_tokens: nil, project_id: nil, service_tier: nil, user_id: nil, object: :"organization.usage.decisions.result")
+              # @!method initialize(input_tokens:, num_model_requests:, output_tokens:, api_key_id: nil, api_source: nil, batch: nil, input_audio_tokens: nil, input_cache_write_12h_tokens: nil, input_cache_write_30m_tokens: nil, input_cache_write_tokens: nil, input_cached_audio_tokens: nil, input_cached_image_tokens: nil, input_cached_text_tokens: nil, input_cached_tokens: nil, input_image_tokens: nil, input_text_tokens: nil, input_uncached_tokens: nil, model: nil, output_audio_tokens: nil, output_image_tokens: nil, output_text_tokens: nil, project_id: nil, service_tier: nil, user_id: nil, object: :"organization.usage.decisions.result")
               #   The aggregated Decisions API usage details of the specific time bucket.
               #
               #   @param input_tokens [Integer]
@@ -270,6 +277,10 @@ module OpenAI
               #
               #   @param input_cache_write_12h_tokens [Integer, nil]
               #     The aggregated number of input tokens written to the cache with a 12-hour
+              #     retention period.
+              #
+              #   @param input_cache_write_30m_tokens [Integer, nil]
+              #     The aggregated number of input tokens written to the cache with a 30-minute
               #     retention period.
               #
               #   @param input_cache_write_tokens [Integer, nil]
