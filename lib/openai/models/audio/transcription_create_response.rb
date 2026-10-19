@@ -12,19 +12,20 @@ module OpenAI
       module TranscriptionCreateResponse
         extend OpenAI::Internal::Type::Union
 
-        # Represents a transcription response returned by model, based on the provided input.
-        variant -> { OpenAI::Audio::Transcription }
+        # Represents a verbose json transcription response returned by model, based on the provided input.
+        variant -> { OpenAI::Audio::TranscriptionVerbose }
 
         # Represents a diarized transcription response returned by the model, including the combined transcript and speaker-segment annotations.
         variant -> { OpenAI::Audio::TranscriptionDiarized }
 
-        # Represents a verbose json transcription response returned by model, based on the provided input.
-        variant -> { OpenAI::Audio::TranscriptionVerbose }
+        # Represents a transcription response returned by model, based on the provided input.
+        variant -> { OpenAI::Audio::Transcription }
 
+        # Text, SRT, and VTT responses retain the SDK's readable IO return value.
         variant StringIO
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Audio::Transcription, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::TranscriptionVerbose, StringIO)]
+        #   @return [Array(OpenAI::Models::Audio::TranscriptionVerbose, OpenAI::Models::Audio::TranscriptionDiarized, OpenAI::Models::Audio::Transcription, StringIO)]
       end
     end
   end

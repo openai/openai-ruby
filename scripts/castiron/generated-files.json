@@ -907,7 +907,7 @@
     },
     "lib/openai/models/audio/transcription_create_response.rb": {
       "mode": "100644",
-      "sha256": "adb92f225ca544b7538c4584e73f8b8e23bd17ddf554138bb3cd43a0e2fdf9c7"
+      "sha256": "50116f282b53874ef21cea13984c7bd6f801e6592984c5ac8f1dabb492793031"
     },
     "lib/openai/models/audio/transcription_diarized.rb": {
       "mode": "100644",
