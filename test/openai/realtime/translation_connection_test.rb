@@ -10,6 +10,53 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
 
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
 
+  def test_finish_remembers_terminal_receipt_when_the_callback_breaks
+    socket = FakeSocket.new(JSON.generate(type: "session.closed", event_id: "s1"))
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      terminal = nil
+      result = c.finish(timeout: 1) do |event|
+        terminal = event
+        break :done
+      end
+
+      assert_equal(:done, result)
+      assert_same(terminal, c.finish(timeout: 1) { flunk("must not replay terminal") })
+      assert_equal([{"type" => "session.close"}], socket.writes.map { JSON.parse(_1) })
+    end
+  end
+
+  def test_finish_remembers_terminal_receipt_when_the_callback_throws
+    socket = FakeSocket.new(JSON.generate(type: "session.closed", event_id: "s1"))
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      terminal = nil
+      result = catch(:finished) do
+        c.finish(timeout: 1) do |event|
+          terminal = event
+          throw(:finished, :done)
+        end
+      end
+
+      assert_equal(:done, result)
+      assert_same(terminal, c.finish(timeout: 1) { flunk("must not replay terminal") })
+      assert_equal([{"type" => "session.close"}], socket.writes.map { JSON.parse(_1) })
+    end
+  end
+
+  def test_finish_keeps_callback_errors_before_and_after_terminal_receipt
+    [
+      {type: "session.output_transcript.delta", event_id: "d1", delta: "last"},
+      {type: "session.closed", event_id: "s1"}
+    ].each do |payload|
+      socket = FakeSocket.new(JSON.generate(payload))
+      client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+        error = RuntimeError.new("callback failed")
+        assert_same(error, assert_raises(RuntimeError) { c.finish(timeout: 1) { raise error } })
+        assert_same(error, assert_raises(RuntimeError) { c.finish(timeout: 1) { flunk("must not replay") } })
+        assert_equal([{"type" => "session.close"}], socket.writes.map { JSON.parse(_1) })
+      end
+    end
+  end
+
   def test_finish_waits_for_an_admitted_injected_write_without_losing_its_reader
     release = Async::Condition.new
     socket = FakeSocket.new(
