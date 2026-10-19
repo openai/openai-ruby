@@ -6119,7 +6119,7 @@
     },
     "lib/openai/resources/images.rb": {
       "mode": "100644",
-      "sha256": "1395a65d0918b6495d6e0661738f0701ddd452bed6521b5eeb6015bd76fc7317"
+      "sha256": "4301cf080c8a01d7f782bdaacff7b4b4645a6dc27f452e08c139ce813d1dff8e"
     },
     "lib/openai/resources/live.rb": {
       "mode": "100644",
