@@ -348,7 +348,11 @@ module OpenAI
               uncertain_message: @inflight
             )
           elsif @state != :closed
-            @state = :recovering
+            if recoverable?(e) && @attempts < @max_attempts
+              @state = :recovering
+            else
+              fail_locked("Realtime reconnect stopped; the connection could not be recovered.")
+            end
           end
         end
 
