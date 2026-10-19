@@ -101,9 +101,13 @@ module OpenAI
         require "timeout"
 
         @read_state_mutex.synchronize do
-          return @finish_terminal if @finish_terminal
+          if @finish_owner
+            raise connection_error("Translation finish must run on the existing receive owner, between reads.")
+          end
+
           raise @finish_error if @finish_error
-          if @active_reads.positive? || @finish_requested || @finish_owner
+          return @finish_terminal if @finish_terminal
+          if @active_reads.positive? || @finish_requested
             raise connection_error("Translation finish must run on the existing receive owner, between reads.")
           end
 
@@ -114,11 +118,10 @@ module OpenAI
           Timeout.timeout(seconds, FinishTimeout) do
             write_text(encode_client_event(type: "session.close"), finish: true)
             while (event = receive)
+              terminal = event.is_a?(OpenAI::Realtime::RealtimeTranslationSessionClosedEvent)
+              @read_state_mutex.synchronize { @finish_terminal = event } if terminal
               yield(event)
-              if event.is_a?(OpenAI::Realtime::RealtimeTranslationSessionClosedEvent)
-                @read_state_mutex.synchronize { @finish_terminal = event }
-                return event
-              end
+              return event if terminal
             end
 
             raise connection_error("Translation socket closed before session.closed.")
@@ -236,13 +239,8 @@ module OpenAI
           return OpenAI::Realtime::UnknownTranslationServerEvent.new(data: parsed)
         end
 
-        # The converter copies unknown wire fields after known ones. A wire
-        # key spelled like a renamed Ruby field must not overwrite typed data.
-        model.fields.each do |name, field|
-          raise ArgumentError if name != field.fetch(:api_name) && parsed.key?(name)
-        end
-
-        coerce_event(OpenAI::Realtime::RealtimeTranslationServerEvent, parsed)
+        event = coerce_event(OpenAI::Realtime::RealtimeTranslationServerEvent, parsed)
+        validate_wire_field_names!(event, parsed)
       rescue StandardError, SystemStackError
         raise OpenAI::Errors::TranslationProtocolError.new, cause: nil
       end

@@ -5,6 +5,21 @@ require_relative "../responses_websocket/connection_test_support"
 class OpenAI::Test::WebSocketBindingTest < Minitest::Test
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
 
+  def test_nested_wire_alias_cannot_replace_a_typed_audio_format
+    audio = {format: {type: "audio/pcm", rate: 24_000}, future_field: {format_: "keep"}}
+    session = {type: "realtime", id: "s", model: "gpt-realtime", audio: {input: audio}}
+    payload = {type: "session.created", event_id: "e", session: session}
+    bad = {**payload, session: {**session, audio: {input: {**audio, format_: {type: "other"}}}}}
+    socket = FakeSocket.new(JSON.generate(bad), JSON.generate(payload))
+    Resource.new(client: client).connect("one", transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(OpenAI::Errors::WebSocketProtocolError) { connection.receive }
+      refute(connection.closed?)
+      input = connection.receive.session.audio.input
+      assert_instance_of(OpenAI::Realtime::RealtimeAudioFormats::AudioPCM, input.format_)
+      assert_equal({format_: "keep"}, input.to_h.fetch(:future_field))
+    end
+  end
+
   class Resource
     include OpenAI::WebSocket::Resource
 
