@@ -5,6 +5,22 @@ require_relative "connection_test_support"
 class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
   include OpenAI::Test::RealtimeConnectionTestSupport
 
+  def test_nested_wire_alias_cannot_replace_a_typed_audio_format
+    audio = {format: {type: "audio/pcm", rate: 24_000}, future_field: {format_: "keep"}}
+    session = {type: "realtime", id: "s", model: "gpt-realtime", audio: {input: audio}}
+    payload = {type: "session.created", event_id: "e", session: session}
+    bad = {**payload, session: {**session, audio: {input: {**audio, format_: {type: "other"}}}}}
+    socket = FakeSocket.new(JSON.generate(bad), JSON.generate(payload))
+    client.realtime.connect(model: "gpt-realtime", transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(OpenAI::Errors::RealtimeProtocolError) { connection.receive }
+      refute(connection.closed?)
+      input = connection.receive.session.audio.input
+      assert_instance_of(OpenAI::Realtime::RealtimeAudioFormats::AudioPCM, input.format_)
+      assert_equal(24_000, input.format_.rate)
+      assert_equal({format_: "keep"}, input.to_h.fetch(:future_field))
+    end
+  end
+
   class FailingCloseSocket < FakeSocket
     def close(code: 1000, reason: "")
       super

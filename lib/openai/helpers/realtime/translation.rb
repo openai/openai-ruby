@@ -236,13 +236,8 @@ module OpenAI
           return OpenAI::Realtime::UnknownTranslationServerEvent.new(data: parsed)
         end
 
-        # The converter copies unknown wire fields after known ones. A wire
-        # key spelled like a renamed Ruby field must not overwrite typed data.
-        model.fields.each do |name, field|
-          raise ArgumentError if name != field.fetch(:api_name) && parsed.key?(name)
-        end
-
-        coerce_event(OpenAI::Realtime::RealtimeTranslationServerEvent, parsed)
+        event = coerce_event(OpenAI::Realtime::RealtimeTranslationServerEvent, parsed)
+        validate_wire_field_names!(event, parsed)
       rescue StandardError, SystemStackError
         raise OpenAI::Errors::TranslationProtocolError.new, cause: nil
       end
