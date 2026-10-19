@@ -212,6 +212,7 @@ DEPENDENCIES
   async-websocket
   aws-sdk-core (~> 3)
   cgi
+  json (< 3)
   minitest (~> 6.0)
   minitest-hooks (>= 1.5.4)
   minitest-mock (~> 5.27)
