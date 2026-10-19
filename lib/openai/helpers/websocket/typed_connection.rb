@@ -50,12 +50,8 @@ module OpenAI
         _, model = @server_event_types.find { |event_type,| event_type === type.to_sym }
         return parsed unless model
 
-        # Unknown wire fields must not overwrite a known field's Ruby name.
-        model.fields.each do |name, field|
-          raise ArgumentError if name != field.fetch(:api_name) && parsed.key?(name)
-        end
-
-        coerce(@server_event, parsed)
+        event = coerce(@server_event, parsed)
+        validate_wire_field_names!(event, parsed)
       rescue StandardError, SystemStackError
         raise OpenAI::Errors::WebSocketProtocolError, "Invalid WebSocket server event.", cause: nil
       end

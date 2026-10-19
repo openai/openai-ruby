@@ -391,6 +391,57 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     end
   end
 
+  def test_incoming_audio_rejects_internal_field_names_without_poisoning_the_connection
+    [[client.live, []], [client.live.sideband, ["live_source"]], [client.live.forks, ["live_stored"]]].each do |
+        resource,
+        args
+      |
+      pcm = {type: "audio/pcm", rate: 24_000}
+      session = {id: "live_1", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"}
+      [{format: pcm, format_: {type: "other", rate: "invalid"}}, {format_: pcm}].each do |audio|
+        socket = FakeSocket.new(
+          JSON.generate(type: "session.started", event_id: "bad", session: session.merge(audio: audio)),
+          JSON.generate(type: "session.started", event_id: "good", session: session.merge(audio: {format: pcm}))
+        )
+        resource.connect(*args, transport: FakeTransport.new(socket)) do |connection|
+          error = assert_raises(OpenAI::Errors::LiveProtocolError) { connection.receive }
+          assert_nil(error.cause)
+          refute(connection.closed?)
+          event = connection.receive
+          assert_equal("good", event.event_id)
+          assert_instance_of(OpenAI::Live::AudioFormat::AudioPCM, event.session.audio.format_)
+          assert_equal(24_000, event.session.audio.format_.rate)
+        end
+      end
+    end
+  end
+
+  def test_incoming_audio_preserves_unknown_fields_outside_typed_aliases
+    [[client.live, []], [client.live.sideband, ["live_source"]], [client.live.forks, ["live_stored"]]].each do |
+        resource,
+        args
+      |
+      socket = FakeSocket.new(
+        JSON.generate(
+          type: "session.started",
+          event_id: "good",
+          session: {
+            id: "live_1",
+            model: "gpt-live-1",
+            expires_at: 2_000_000_000,
+            status: "active",
+            audio: {format: {type: "audio/pcm", rate: 24_000}, future_field: {format_: "keep"}}
+          }
+        )
+      )
+      resource.connect(*args, transport: FakeTransport.new(socket)) do |connection|
+        event = connection.receive
+        assert_instance_of(OpenAI::Live::AudioFormat::AudioPCM, event.session.audio.format_)
+        assert_equal({format_: "keep"}, event.session.audio.to_h.fetch(:future_field))
+      end
+    end
+  end
+
   def test_uncertain_write_cannot_be_replayed_on_later_sends_or_cleanup
     %i[typed raw].product([true, false]).each do |mode, explicit_close|
       socket = FakeSocket.new

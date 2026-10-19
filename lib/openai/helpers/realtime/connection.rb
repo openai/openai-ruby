@@ -49,7 +49,7 @@ module OpenAI
           raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: cause)
         end
 
-        event
+        validate_wire_field_names!(event, parsed)
       rescue OpenAI::Errors::RealtimeProtocolError
         raise
       rescue StandardError => e
