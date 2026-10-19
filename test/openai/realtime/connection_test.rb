@@ -665,6 +665,22 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     assert_equal(Encoding::UTF_8, socket.writes.fetch(0).encoding)
   end
 
+  def test_failed_write_preserves_its_error_and_retires_the_connection
+    socket = FakeSocket.new
+    failure = IOError.new("synthetic write failure")
+    socket.stub(:write, -> (_) { raise failure }) do
+      client.realtime.connect(model: "gpt-realtime-2.1", transport: FakeTransport.new(socket)) do |connection|
+        assert_same(failure, assert_raises(IOError) { connection.response.cancel })
+        assert_predicate(connection, :closed?)
+        assert_raises(OpenAI::Errors::RealtimeConnectionError) { connection.response.cancel }
+        assert_raises(OpenAI::Errors::RealtimeConnectionError) { connection.receive }
+      end
+    end
+
+    assert_predicate(socket, :aborted?)
+    assert_nil(socket.close_args)
+  end
+
   def test_block_exit_closes_normally_and_exceptional_exit_aborts
     normal_socket = FakeSocket.new
     client.realtime.connect(
