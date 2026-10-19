@@ -47,6 +47,45 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
     end
   end
 
+  def test_noisy_player_consumes_large_input_without_a_false_timeout
+    pipe = IO.method(:pipe)
+    short_reads = lambda do |**options|
+      pipe.call(**options).tap { |reader, _| reader.singleton_class.prepend(ShortDiagnosticReads) }
+    end
+
+    IO.stub(:pipe, short_reads) do
+      with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; STDIN.read") do
+        source = StringIO.new("audio" * 100_000)
+        error = assert_raises(Audio::PlaybackError) { Audio.play(source, timeout: 10) }
+        assert_equal("Audio playback failed.", error.message)
+        assert(source.eof?)
+        refute(source.closed?)
+      end
+    end
+  end
+
+  def test_noisy_player_exits_while_caller_source_remains_open
+    pipe = IO.method(:pipe)
+    short_reads = lambda do |**options|
+      pipe.call(**options).tap { |reader, _| reader.singleton_class.prepend(ShortDiagnosticReads) }
+    end
+
+    reader, writer = IO.pipe
+    begin
+      IO.stub(:pipe, short_reads) do
+        with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; exit 1") do
+          assert_raises(Audio::PlaybackError) { Audio.play(reader, timeout: 10) }
+        end
+      end
+
+      refute(reader.closed?)
+      refute(writer.closed?)
+    ensure
+      reader.close
+      writer.close
+    end
+  end
+
   def test_failed_player_and_incomplete_pcm_are_errors
     with_executable("ffplay", "STDIN.read; exit 1") do
       assert_raises(Audio::PlaybackError) { Audio.play(StringIO.new("audio"), timeout: 2) }
