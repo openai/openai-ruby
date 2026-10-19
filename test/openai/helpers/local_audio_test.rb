@@ -11,6 +11,10 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
 
   Audio = OpenAI::LocalAudio
 
+  module ShortDiagnosticReads
+    def read_nonblock(size, **options) = super([size, 512].min, **options)
+  end
+
   def with_executable(name, body)
     Dir.mktmpdir("openai-audio-test") do |directory|
       path = File.join(directory, name)
@@ -143,12 +147,20 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
   end
 
   def test_noisy_player_diagnostics_do_not_block_feeding
-    with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; STDIN.read") do
-      error = assert_raises(Audio::PlaybackError) do
-        Audio.play(StringIO.new("audio"), timeout: 10)
-      end
+    # Pipes can return short chunks even when the child writes large blocks.
+    pipe = IO.method(:pipe)
+    short_reads = lambda do |**options|
+      pipe.call(**options).tap { |reader, _writer| reader.singleton_class.prepend(ShortDiagnosticReads) }
+    end
 
-      assert_equal("Audio playback failed.", error.message)
+    IO.stub(:pipe, short_reads) do
+      with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; STDIN.read") do
+        error = assert_raises(Audio::PlaybackError) do
+          Audio.play(StringIO.new("audio"), timeout: 10)
+        end
+
+        assert_equal("Audio playback failed.", error.message)
+      end
     end
   end
 
