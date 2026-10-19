@@ -11,20 +11,32 @@ class OpenAI::Test::CanceledWriteTest < Minitest::Test
   # Only the underlying byte stream is controlled. The SDK socket, Async
   # connection and Protocol framer still encode, buffer and flush real frames.
   class BufferedStream
-    attr_reader :wire, :buffered, :flush_started
+    attr_reader :wire, :buffered, :flush_started, :read_started
 
-    def initialize
+    def initialize(gate_every_flush: false)
       @reader, @writer = IO.pipe
       @wire = +"".b
       @buffered = +"".b
       @flush_started = Async::Queue.new
+      @read_started = Async::Queue.new
       @wait = Async::Queue.new
+      @flush_wait = Async::Queue.new
+      @gate_every_flush = gate_every_flush
       @suspend_flush = true
     end
 
     def to_io = @writer
 
-    def read(_size) = @wait.dequeue
+    def read(size)
+      return "".b if size.zero?
+
+      @read_started.enqueue(true)
+      @wait.dequeue
+    end
+
+    def peer_close = @wait.enqueue("\x88\x00".b)
+
+    def release_flush = @flush_wait.enqueue(true)
 
     def write(bytes)
       @buffered << bytes
@@ -34,10 +46,10 @@ class OpenAI::Test::CanceledWriteTest < Minitest::Test
     def flush
       return if @buffered.empty?
 
-      if @suspend_flush
+      if @suspend_flush || @gate_every_flush
         @suspend_flush = false
         @flush_started.enqueue(true)
-        @wait.dequeue
+        @flush_wait.dequeue
       end
 
       raise IOError, "closed underlying stream" if @writer.closed?
@@ -61,8 +73,8 @@ class OpenAI::Test::CanceledWriteTest < Minitest::Test
   class Transport
     attr_reader :stream
 
-    def initialize
-      @stream = BufferedStream.new
+    def initialize(gate_every_flush: false)
+      @stream = BufferedStream.new(gate_every_flush: gate_every_flush)
     end
 
     def open(url:, **_)
@@ -98,13 +110,37 @@ class OpenAI::Test::CanceledWriteTest < Minitest::Test
     assert_canceled_write(:translation, OpenAI::Errors::TranslationConnectionError)
   end
 
-  private def assert_canceled_write(kind, error_class)
+  def test_realtime_canceled_write
+    assert_canceled_write(:realtime, OpenAI::Errors::RealtimeConnectionError)
+  end
+
+  def test_realtime_transcription_canceled_write
+    assert_canceled_write(:realtime_transcription, OpenAI::Errors::RealtimeConnectionError)
+  end
+
+  def test_realtime_sideband_canceled_write
+    assert_canceled_write(:realtime_sideband, OpenAI::Errors::RealtimeConnectionError)
+  end
+
+  def test_realtime_canceled_writes_cannot_flush_from_an_active_reader
+    [:realtime, :realtime_transcription, :realtime_sideband].each do |kind|
+      assert_canceled_write(kind, OpenAI::Errors::RealtimeConnectionError, active_reader: true)
+    end
+  end
+
+  def test_realtime_canceled_writes_abort_during_a_peer_close_reply
+    [:realtime, :realtime_transcription, :realtime_sideband].each do |kind|
+      assert_canceled_write(kind, OpenAI::Errors::RealtimeConnectionError, active_reader: true, closing_reader: true)
+    end
+  end
+
+  private def assert_canceled_write(kind, error_class, active_reader: false, closing_reader: false)
     # Cleanup on its own must be safe too, even if the application never tries
     # to send again. Use fresh connections for these two failure modes.
     [false, true].each do |try_again|
       Sync do |task|
         task.with_timeout(3) do
-          transport = Transport.new
+          transport = Transport.new(gate_every_flush: closing_reader)
           api = OpenAI::Client.new(api_key: "test-key", base_url: "https://example.com/v1")
           block = proc do |value|
             first, other, event = case kind
@@ -114,21 +150,57 @@ class OpenAI::Test::CanceledWriteTest < Minitest::Test
               [value, value, {type: "response.create"}]
             when :translation
               [value, value, {type: "session.input_audio_buffer.append", audio: "AA=="}]
+            when :realtime, :realtime_transcription, :realtime_sideband
+              [value, value, {type: "response.cancel"}]
             else
               [value, value, {type: "session.close"}]
             end
 
             receiver = task.async { assert_raises(error_class) { other.receive } } if kind == :managed
+            if active_reader
+              peer_reader = task.async do
+                other.receive
+              rescue OpenAI::Errors::WebSocketConnectionError
+                nil
+              end
+
+              transport.stream.read_started.dequeue
+            end
+
             sender = task.async { first.send_event(event) }
             transport.stream.flush_started.dequeue
             refute_empty(transport.stream.buffered, "the actual framer must have reached the stream")
+            if closing_reader
+              transport.stream.peer_close
+              transport.stream.flush_started.dequeue
+            end
+
             sender.stop
             sender.wait
+            if active_reader
+              if closing_reader
+                assert_predicate(transport.stream.to_io, :closed?)
+                transport.stream.release_flush
+              else
+                transport.stream.peer_close
+              end
+
+              peer_reader.wait
+            end
+
+            if [:realtime, :realtime_transcription, :realtime_sideband].include?(kind)
+              assert_predicate(other, :closed?)
+              assert_raises(error_class) { other.receive }
+            end
+
             assert_raises(error_class) { other.send_event(event) } if try_again
             if receiver
               receiver.wait
               assert_raises(error_class) { value.default.receive }
             end
+
+          ensure
+            peer_reader&.stop
           end
 
           case kind
@@ -152,6 +224,12 @@ class OpenAI::Test::CanceledWriteTest < Minitest::Test
             api.live.forks.connect("test-session", transport: transport, &block)
           when :translation
             api.realtime.connect_translation(model: "gpt-realtime-translate", transport: transport, &block)
+          when :realtime
+            api.realtime.connect(model: "gpt-realtime-2.1", transport: transport, &block)
+          when :realtime_transcription
+            api.realtime.connect_transcription(transport: transport, &block)
+          when :realtime_sideband
+            api.realtime.connect_to_call(call_id: "rtc_synthetic", transport: transport, &block)
           end
 
           assert_empty(transport.stream.wire, "canceled bytes must never be flushed (#{kind}, try again: #{try_again})")

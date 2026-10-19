@@ -61,6 +61,15 @@ module OpenAI
         send_raw(encode_client_event(event))
       end
 
+      private def write_text(text)
+        return super unless @recovery
+
+        # Recovery owns admission and uncertain sends; rejecting a full queue
+        # has not attempted a physical write and must leave this connection usable.
+        @recovery.write(text)
+        nil
+      end
+
       # Whether automatic recovery is opening or preparing a replacement socket.
       def reconnecting? = @recovery ? @recovery.reconnecting? : false
 

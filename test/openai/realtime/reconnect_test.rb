@@ -170,7 +170,7 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
     replacement = Socket.new(text_delta("acknowledged"), text_delta("ready"))
     transport = ChildTaskTransport.new(Socket.new(disconnected), replacement)
     callback = lambda do |connection|
-      connection.session.update(type: :realtime, instructions: "restored")
+      assert_nil(connection.session.update(type: :realtime, instructions: "restored"))
       assert_equal("acknowledged", connection.receive.delta)
       connection.flush_pending
     end
@@ -341,6 +341,37 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
       assert_raises(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
       connection.close
       receiver.wait
+    end
+  end
+
+  def test_queue_rejection_does_not_retire_the_recovered_connection
+    encoded = JSON.generate(type: "response.cancel")
+    [0, encoded.bytesize].each do |budget|
+      started = Queue.new
+      gate = Queue.new
+      replacement = Socket.new(text_delta("ready"), text_delta("still usable"))
+      transport = Transport.new(
+        Socket.new(disconnected),
+        -> {
+          started << true
+          gate.pop
+        }
+      )
+      connect(transport, max_queue_bytes: budget) do |connection|
+        receiver = Async::Task.current.async { connection.receive }
+        started.pop
+        connection.response.cancel if budget.positive?
+        assert_raises(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
+        refute_predicate(connection, :closed?)
+        gate << replacement
+        assert_equal("ready", receiver.wait.delta)
+        connection.flush_pending
+        connection.response.cancel
+        assert_equal("still usable", connection.receive.delta)
+        assert_empty(connection.pending_messages)
+      end
+
+      assert_equal([encoded] * (budget.positive? ? 2 : 1), replacement.writes)
     end
   end
 
