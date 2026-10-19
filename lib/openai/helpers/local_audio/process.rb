@@ -87,7 +87,9 @@ module OpenAI
             raise PlaybackError, "Audio player exited before the input ended." if @status
           end
 
-          io.wait_readable(0.05)
+          readers = [io]
+          readers << @error_reader if @error_reader && !@error_reader.closed?
+          IO.select(readers, nil, nil, 0.05)
         end
       end
 
@@ -97,7 +99,8 @@ module OpenAI
           check_deadline
           result = io.write_nonblock(bytes.byteslice(offset, 65_536), exception: false)
           if result == :wait_writable
-            io.wait_writable(0.05)
+            readers = @error_reader && !@error_reader.closed? ? [@error_reader] : []
+            IO.select(readers, [io], nil, 0.05)
           else
             offset += result
           end
