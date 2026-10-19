@@ -54,18 +54,27 @@ module OpenAI
           #   @return [String, nil]
           optional :code, String
 
+          # @!attribute message
+          #   A human-readable error message.
+          #
+          #   @return [String, nil]
+          optional :message, String
+
           # @!attribute type
           #   The type of error.
           #
           #   @return [String, nil]
           optional :type, String
 
-          # @!method initialize(code: nil, type: nil)
+          # @!method initialize(code: nil, message: nil, type: nil)
           #   A description of the error that caused the response to fail, populated when the
           #   `status` is `failed`.
           #
           #   @param code [String]
           #     Error code, if any.
+          #
+          #   @param message [String]
+          #     A human-readable error message.
           #
           #   @param type [String]
           #     The type of error.

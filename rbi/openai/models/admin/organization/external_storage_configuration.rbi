@@ -128,6 +128,7 @@ module OpenAI
               :validated,
               OpenAI::Admin::Organization::ExternalStorageConfiguration::Status::TaggedSymbol
             )
+            DEGRADED = T.let(:degraded, OpenAI::Admin::Organization::ExternalStorageConfiguration::Status::TaggedSymbol)
             UNHEALTHY = T.let(
               :unhealthy,
               OpenAI::Admin::Organization::ExternalStorageConfiguration::Status::TaggedSymbol

@@ -12,6 +12,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
         ?user: String,
@@ -82,6 +83,14 @@ module OpenAI
       # image models, which always return base64-encoded images.
       attr_accessor response_format: OpenAI::Models::ImageGenerateParams::response_format?
 
+      # A stable identifier for an end user in your organization, used for safety
+      # monitoring and abuse detection. Hash a username or email address to avoid
+      # sending identifying information. A non-empty value takes precedence over the
+      # deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      # when available.
+      # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
+      attr_accessor safety_identifier: String?
+
       # The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
       # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
       # `gpt-image-2.5-flare`, and `gpt-image-2.5-flare-2026-09-08`, arbitrary
@@ -98,13 +107,15 @@ module OpenAI
       # models; describe the desired style in the prompt instead.
       attr_accessor style: OpenAI::Models::ImageGenerateParams::style?
 
-      # A unique identifier representing your end-user, which can help OpenAI to monitor
-      # and detect abuse.
+      # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      # backward compatibility and is used when `safety_identifier` is omitted, null, or
+      # empty.
       # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       attr_reader user: String?
 
-      # A unique identifier representing your end-user, which can help OpenAI to monitor
-      # and detect abuse.
+      # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      # backward compatibility and is used when `safety_identifier` is omitted, null, or
+      # empty.
       # [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       def user=: (String) -> String
 
@@ -158,6 +169,13 @@ module OpenAI
       # @param response_format
       #   Legacy response format parameter for retired image models. Unsupported for GPT
       #   image models, which always return base64-encoded images.
+      # @param safety_identifier
+      #   A stable identifier for an end user in your organization, used for safety
+      #   monitoring and abuse detection. Hash a username or email address to avoid
+      #   sending identifying information. A non-empty value takes precedence over the
+      #   deprecated `user` parameter. If omitted, null, or empty, the API uses `user`
+      #   when available.
+      #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       # @param size
       #   The size of the generated images. For `gpt-image-2`, `gpt-image-2-2026-04-21`,
       #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
@@ -173,8 +191,9 @@ module OpenAI
       #   Legacy style parameter for retired image models. Unsupported for GPT image
       #   models; describe the desired style in the prompt instead.
       # @param user
-      #   A unique identifier representing your end-user, which can help OpenAI to monitor
-      #   and detect abuse.
+      #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
+      #   backward compatibility and is used when `safety_identifier` is omitted, null, or
+      #   empty.
       #   [Learn more](https://developers.openai.com/api/docs/guides/safety-best-practices#implement-safety-identifiers).
       def initialize: (
         prompt: String,
@@ -187,6 +206,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
         ?user: String,
@@ -204,6 +224,7 @@ module OpenAI
         ?partial_images: Integer?,
         ?quality: OpenAI::Models::ImageGenerateParams::quality?,
         ?response_format: OpenAI::Models::ImageGenerateParams::response_format?,
+        ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
         ?user: String,

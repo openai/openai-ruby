@@ -69,7 +69,7 @@ module OpenAI
           ?type: OpenAI::Models::Realtime::RealtimeResponseStatus::type_
         }
 
-        type error = { ?code: String, ?type: String }
+        type error = { ?code: String, ?message: String, ?type: String }
 
         class Error < OpenAI::Internal::Type::BaseModel
           # Error code, if any.
@@ -77,6 +77,12 @@ module OpenAI
 
           # Error code, if any.
           def code=: (String) -> String
+
+          # A human-readable error message.
+          attr_reader message: String?
+
+          # A human-readable error message.
+          def message=: (String) -> String
 
           # The type of error.
           attr_reader type: String?
@@ -86,11 +92,17 @@ module OpenAI
 
           # @param code
           #   Error code, if any.
+          # @param message
+          #   A human-readable error message.
           # @param type
           #   The type of error.
-          def initialize: (?code: String, ?type: String) -> void
+          def initialize: (
+            ?code: String,
+            ?message: String,
+            ?type: String
+          ) -> void
 
-          def to_hash: -> { ?code: String, ?type: String }
+          def to_hash: -> { ?code: String, ?message: String, ?type: String }
         end
 
         type reason =

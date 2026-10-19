@@ -1,0 +1,234 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_trigger =
+        {
+          decisions: OpenAI::Live::DecisionTrigger::Decisions,
+          event_type: OpenAI::Models::Live::DecisionTrigger::event_type,
+          ?type: :decisions
+        }
+
+      class DecisionTrigger < OpenAI::Internal::Type::BaseModel
+        # Questions evaluated using the current transcript and the session's shared
+        # Decision items.
+        attr_accessor decisions: OpenAI::Live::DecisionTrigger::Decisions
+
+        attr_accessor event_type: OpenAI::Models::Live::DecisionTrigger::event_type
+
+        attr_accessor type: :decisions
+
+        # @param decisions
+        #   Questions evaluated using the current transcript and the session's shared
+        #   Decision items.
+        def initialize: (
+          decisions: OpenAI::Live::DecisionTrigger::Decisions,
+          event_type: OpenAI::Models::Live::DecisionTrigger::event_type,
+          ?type: :decisions
+        ) -> void
+
+        def to_hash: -> {
+          decisions: OpenAI::Live::DecisionTrigger::Decisions,
+          event_type: OpenAI::Models::Live::DecisionTrigger::event_type,
+          ?type: :decisions
+        }
+
+        type decisions =
+          {
+            questions: ::Array[OpenAI::Models::Live::DecisionTrigger::Decisions::question]
+          }
+
+        class Decisions < OpenAI::Internal::Type::BaseModel
+          # Native Decision API questions evaluated together, in order.
+          attr_accessor questions: ::Array[OpenAI::Models::Live::DecisionTrigger::Decisions::question]
+
+          # @param questions
+          #   Native Decision API questions evaluated together, in order.
+          def initialize: (
+            questions: ::Array[OpenAI::Models::Live::DecisionTrigger::Decisions::question]
+          ) -> void
+
+          def to_hash: -> {
+            questions: ::Array[OpenAI::Models::Live::DecisionTrigger::Decisions::question]
+          }
+
+          type question =
+            OpenAI::Live::DecisionTrigger::Decisions::Question::Predicate
+            | OpenAI::Live::DecisionTrigger::Decisions::Question::Choice
+            | OpenAI::Live::DecisionTrigger::Decisions::Question::Score
+
+          module Question
+            extend OpenAI::Internal::Type::Union
+
+            type predicate =
+              { instructions: String, ?type: :predicate, ?name: String }
+
+            class Predicate < OpenAI::Internal::Type::BaseModel
+              attr_accessor instructions: String
+
+              # The type of the object. Always `predicate`.
+              attr_accessor type: :predicate
+
+              attr_reader name: String?
+
+              def name=: (String) -> String
+
+              # @param type
+              #   The type of the object. Always `predicate`.
+              def initialize: (
+                instructions: String,
+                ?name: String,
+                ?type: :predicate
+              ) -> void
+
+              def to_hash: -> {
+                instructions: String,
+                ?type: :predicate,
+                ?name: String
+              }
+            end
+
+            type choice =
+              {
+                choices: ::Array[OpenAI::Live::DecisionTrigger::Decisions::Question::Choice::Choice],
+                instructions: String,
+                ?type: :choice,
+                ?name: String
+              }
+
+            class Choice < OpenAI::Internal::Type::BaseModel
+              # Provide between 2 and 255 choices. Each choice must be unique.
+              attr_accessor choices: ::Array[OpenAI::Live::DecisionTrigger::Decisions::Question::Choice::Choice]
+
+              attr_accessor instructions: String
+
+              # The type of the object. Always `choice`.
+              attr_accessor type: :choice
+
+              attr_reader name: String?
+
+              def name=: (String) -> String
+
+              # @param choices
+              #   Provide between 2 and 255 choices. Each choice must be unique.
+              # @param type
+              #   The type of the object. Always `choice`.
+              def initialize: (
+                choices: ::Array[OpenAI::Live::DecisionTrigger::Decisions::Question::Choice::Choice],
+                instructions: String,
+                ?name: String,
+                ?type: :choice
+              ) -> void
+
+              def to_hash: -> {
+                choices: ::Array[OpenAI::Live::DecisionTrigger::Decisions::Question::Choice::Choice],
+                instructions: String,
+                ?type: :choice,
+                ?name: String
+              }
+
+              type choice =
+                {
+                  value: OpenAI::Models::Live::DecisionTrigger::Decisions::Question::Choice::Choice::value,
+                  ?description: String
+                }
+
+              class Choice < OpenAI::Internal::Type::BaseModel
+                # Choice values are typed: a string and a boolean with the same text are distinct.
+                attr_accessor value: OpenAI::Models::Live::DecisionTrigger::Decisions::Question::Choice::Choice::value
+
+                attr_reader description: String?
+
+                def description=: (String) -> String
+
+                # @param value
+                #   Choice values are typed: a string and a boolean with the same text are distinct.
+                def initialize: (
+                  value: OpenAI::Models::Live::DecisionTrigger::Decisions::Question::Choice::Choice::value,
+                  ?description: String
+                ) -> void
+
+                def to_hash: -> {
+                  value: OpenAI::Models::Live::DecisionTrigger::Decisions::Question::Choice::Choice::value,
+                  ?description: String
+                }
+
+                type value = String | bool
+
+                module Value
+                  extend OpenAI::Internal::Type::Union
+
+                  def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionTrigger::Decisions::Question::Choice::Choice::value]
+                end
+              end
+            end
+
+            type score =
+              {
+                instructions: String,
+                levels: ::Array[OpenAI::Live::DecisionTrigger::Decisions::Question::Score::Level],
+                ?type: :score,
+                ?name: String
+              }
+
+            class Score < OpenAI::Internal::Type::BaseModel
+              attr_accessor instructions: String
+
+              attr_accessor levels: ::Array[OpenAI::Live::DecisionTrigger::Decisions::Question::Score::Level]
+
+              # The type of the object. Always `score`.
+              attr_accessor type: :score
+
+              attr_reader name: String?
+
+              def name=: (String) -> String
+
+              # @param type
+              #   The type of the object. Always `score`.
+              def initialize: (
+                instructions: String,
+                levels: ::Array[OpenAI::Live::DecisionTrigger::Decisions::Question::Score::Level],
+                ?name: String,
+                ?type: :score
+              ) -> void
+
+              def to_hash: -> {
+                instructions: String,
+                levels: ::Array[OpenAI::Live::DecisionTrigger::Decisions::Question::Score::Level],
+                ?type: :score,
+                ?name: String
+              }
+
+              type level = { label: String, ?description: String }
+
+              class Level < OpenAI::Internal::Type::BaseModel
+                attr_accessor label: String
+
+                attr_reader description: String?
+
+                def description=: (String) -> String
+
+                def initialize: (label: String, ?description: String) -> void
+
+                def to_hash: -> { label: String, ?description: String }
+              end
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionTrigger::Decisions::question]
+          end
+        end
+
+        type event_type =
+          :"session.input_transcript.delta" | :"session.output_transcript.delta"
+
+        module EventType
+          extend OpenAI::Internal::Type::Enum
+
+          SESSION_INPUT_TRANSCRIPT_DELTA: :"session.input_transcript.delta"
+          SESSION_OUTPUT_TRANSCRIPT_DELTA: :"session.output_transcript.delta"
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::DecisionTrigger::event_type]
+        end
+      end
+    end
+  end
+end

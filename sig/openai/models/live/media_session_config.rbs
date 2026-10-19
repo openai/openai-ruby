@@ -9,7 +9,8 @@ module OpenAI
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
-          ?store: bool
+          ?store: bool,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         }
 
       class MediaSessionConfig < OpenAI::Internal::Type::BaseModel
@@ -36,17 +37,18 @@ module OpenAI
         def client=: (OpenAI::Live::ClientConfig) -> OpenAI::Live::ClientConfig
 
         # Who handles tasks delegated by the Live model. Omitted or null selects your
-        # application; use `responses` to let the API manage a Responses backend.
+        # application; use `responses` or `decisions` to delegate to the corresponding
+        # API.
         attr_accessor delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?
 
         # Ordered text-only history supplied before startup. Supports developer, user, and
-        # assistant messages with one text part each; at most 128 messages and 8,192
-        # rendered tokens in total.
+        # assistant messages with one text part each; at most 128 messages and a
+        # configured rendered-token limit (8,192 by default).
         attr_reader input: ::Array[OpenAI::Models::Live::initial_item]?
 
         # Ordered text-only history supplied before startup. Supports developer, user, and
-        # assistant messages with one text part each; at most 128 messages and 8,192
-        # rendered tokens in total.
+        # assistant messages with one text part each; at most 128 messages and a
+        # configured rendered-token limit (8,192 by default).
         def input=: (
           ::Array[OpenAI::Models::Live::initial_item]
         ) -> ::Array[OpenAI::Models::Live::initial_item]
@@ -68,6 +70,20 @@ module OpenAI
         # to false for new sessions.
         def store=: (bool) -> bool
 
+        # At most one Decisions trigger per transcript event type. Triggers run
+        # independently of delegation. On update, omit triggers to keep the current
+        # configuration, send a list to replace it, or send an empty list to disable
+        # triggers.
+        attr_reader triggers: ::Array[OpenAI::Live::DecisionTrigger]?
+
+        # At most one Decisions trigger per transcript event type. Triggers run
+        # independently of delegation. On update, omit triggers to keep the current
+        # configuration, send a list to replace it, or send an empty list to disable
+        # triggers.
+        def triggers=: (
+          ::Array[OpenAI::Live::DecisionTrigger]
+        ) -> ::Array[OpenAI::Live::DecisionTrigger]
+
         # @param model
         #   The Live model. Required in the session configuration for every transport; do
         #   not pass it as a URL query parameter.
@@ -79,11 +95,12 @@ module OpenAI
         #   session. Trusted sideband connections are unaffected.
         # @param delegation
         #   Who handles tasks delegated by the Live model. Omitted or null selects your
-        #   application; use `responses` to let the API manage a Responses backend.
+        #   application; use `responses` or `decisions` to delegate to the corresponding
+        #   API.
         # @param input
         #   Ordered text-only history supplied before startup. Supports developer, user, and
-        #   assistant messages with one text part each; at most 128 messages and 8,192
-        #   rendered tokens in total.
+        #   assistant messages with one text part each; at most 128 messages and a
+        #   configured rendered-token limit (8,192 by default).
         # @param instructions
         #   Frontend instructions for voice, conversation, interruptions, and when to
         #   delegate. Start with the
@@ -95,6 +112,11 @@ module OpenAI
         # @param store
         #   Whether to store the session for later forking and recording download. Defaults
         #   to false for new sessions.
+        # @param triggers
+        #   At most one Decisions trigger per transcript event type. Triggers run
+        #   independently of delegation. On update, omit triggers to keep the current
+        #   configuration, send a list to replace it, or send an empty list to disable
+        #   triggers.
         def initialize: (
           model: OpenAI::Models::Live::MediaSessionConfig::model,
           ?audio: OpenAI::Live::MediaSessionConfig::Audio,
@@ -102,7 +124,8 @@ module OpenAI
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
-          ?store: bool
+          ?store: bool,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         ) -> void
 
         def to_hash: -> {
@@ -112,7 +135,8 @@ module OpenAI
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
-          ?store: bool
+          ?store: bool,
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         }
 
         type model = String | :"gpt-live-1"
@@ -193,6 +217,7 @@ module OpenAI
         type delegation =
           OpenAI::Live::ClientDelegation
           | OpenAI::Live::MediaSessionConfig::Delegation::Responses
+          | OpenAI::Live::MediaSessionConfig::Delegation::Decisions
 
         module Delegation
           extend OpenAI::Internal::Type::Union
@@ -224,6 +249,28 @@ module OpenAI
             def to_hash: -> {
               responses: OpenAI::Live::ResponsesDelegationConfig,
               ?type: :responses
+            }
+          end
+
+          type decisions =
+            {
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              ?type: :decisions
+            }
+
+          class Decisions < OpenAI::Internal::Type::BaseModel
+            attr_accessor decisions: OpenAI::Live::DecisionsDelegationConfig
+
+            attr_accessor type: :decisions
+
+            def initialize: (
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              ?type: :decisions
+            ) -> void
+
+            def to_hash: -> {
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              ?type: :decisions
             }
           end
 

@@ -34,6 +34,14 @@ module OpenAI
       sig { params(misalignment: OpenAI::VideoCreateError::Misalignment::OrHash).void }
       attr_writer :misalignment
 
+      # The request parameter associated with the error, or null if none was recorded.
+      sig { returns(T.nilable(String)) }
+      attr_accessor :param
+
+      # The original error type, or null if it was not recorded.
+      sig { returns(T.nilable(String)) }
+      attr_accessor :type
+
       # An error that occurred while generating the response.
       sig do
         params(
@@ -44,7 +52,11 @@ module OpenAI
 
           headers: T::Hash[Symbol, String],
 
-          misalignment: OpenAI::VideoCreateError::Misalignment::OrHash
+          misalignment: OpenAI::VideoCreateError::Misalignment::OrHash,
+
+          param: T.nilable(String),
+
+          type: T.nilable(String)
         )
           .returns(T.attached_class)
       end
@@ -60,7 +72,14 @@ module OpenAI
         # any.
         headers: nil,
 
-        misalignment: nil
+        misalignment: nil,
+
+        # The request parameter associated with the error, or null if none was recorded.
+        param: nil,
+
+        # The original error type, or null if it was not recorded.
+
+        type: nil
       )
       end
 
@@ -70,7 +89,9 @@ module OpenAI
             code: String,
             message: String,
             headers: T::Hash[Symbol, String],
-            misalignment: OpenAI::VideoCreateError::Misalignment
+            misalignment: OpenAI::VideoCreateError::Misalignment,
+            param: T.nilable(String),
+            type: T.nilable(String)
           }
         )
       end

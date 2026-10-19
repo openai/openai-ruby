@@ -1,0 +1,183 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_item_create_event =
+        {
+          item: OpenAI::Live::DecisionItemCreateEvent::Item,
+          ?type: :"decision.item.create",
+          ?event_id: String?
+        }
+
+      class DecisionItemCreateEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item: OpenAI::Live::DecisionItemCreateEvent::Item
+
+        attr_accessor type: :"decision.item.create"
+
+        # Optional client identifier for correlating this command with a server event's
+        # client_event_id or error.client_event_id.
+        attr_accessor event_id: String?
+
+        # @param event_id
+        #   Optional client identifier for correlating this command with a server event's
+        #   client_event_id or error.client_event_id.
+        def initialize: (
+          item: OpenAI::Live::DecisionItemCreateEvent::Item,
+          ?event_id: String?,
+          ?type: :"decision.item.create"
+        ) -> void
+
+        def to_hash: -> {
+          item: OpenAI::Live::DecisionItemCreateEvent::Item,
+          ?type: :"decision.item.create",
+          ?event_id: String?
+        }
+
+        type item =
+          {
+            content: OpenAI::Models::Live::DecisionItemCreateEvent::Item::content,
+            ?role: :user,
+            ?id: String?,
+            ?type: OpenAI::Models::Live::DecisionItemCreateEvent::Item::type_
+          }
+
+        class Item < OpenAI::Internal::Type::BaseModel
+          # The text input to the model.
+          attr_accessor content: OpenAI::Models::Live::DecisionItemCreateEvent::Item::content
+
+          # The message role. Always `user`.
+          attr_accessor role: :user
+
+          # The unique ID of this message item.
+          attr_accessor id: String?
+
+          attr_reader type: OpenAI::Models::Live::DecisionItemCreateEvent::Item::type_?
+
+          def type=: (
+            OpenAI::Models::Live::DecisionItemCreateEvent::Item::type_
+          ) -> OpenAI::Models::Live::DecisionItemCreateEvent::Item::type_
+
+          # @param content
+          #   The text input to the model.
+          # @param id
+          #   The unique ID of this message item.
+          # @param role
+          #   The message role. Always `user`.
+          def initialize: (
+            content: OpenAI::Models::Live::DecisionItemCreateEvent::Item::content,
+            ?id: String?,
+            ?type: OpenAI::Models::Live::DecisionItemCreateEvent::Item::type_,
+            ?role: :user
+          ) -> void
+
+          def to_hash: -> {
+            content: OpenAI::Models::Live::DecisionItemCreateEvent::Item::content,
+            ?role: :user,
+            ?id: String?,
+            ?type: OpenAI::Models::Live::DecisionItemCreateEvent::Item::type_
+          }
+
+          type content =
+            String
+            | ::Array[OpenAI::Models::Live::DecisionItemCreateEvent::Item::Content::part]
+
+          module Content
+            extend OpenAI::Internal::Type::Union
+
+            type part =
+              OpenAI::Live::DecisionItemCreateEvent::Item::Content::Part::InputText
+              | OpenAI::Live::DecisionItemCreateEvent::Item::Content::Part::InputImage
+
+            module Part
+              extend OpenAI::Internal::Type::Union
+
+              type input_text = { text: String, ?type: :input_text }
+
+              class InputText < OpenAI::Internal::Type::BaseModel
+                # The text input to the model.
+                attr_accessor text: String
+
+                # The type of the input item. Always `input_text`.
+                attr_accessor type: :input_text
+
+                # @param text
+                #   The text input to the model.
+                # @param type
+                #   The type of the input item. Always `input_text`.
+                def initialize: (text: String, ?type: :input_text) -> void
+
+                def to_hash: -> { text: String, ?type: :input_text }
+              end
+
+              type input_image =
+                {
+                  image_url: String,
+                  ?type: :input_image,
+                  ?detail: OpenAI::Models::Live::DecisionItemCreateEvent::Item::Content::Part::InputImage::detail?
+                }
+
+              class InputImage < OpenAI::Internal::Type::BaseModel
+                # An inline image encoded as a data URL.
+                attr_accessor image_url: String
+
+                # The type of the input item. Always `input_image`.
+                attr_accessor type: :input_image
+
+                # The detail level of the image to be sent to the model. One of `high`, `low`,
+                # `auto`, or `original`. Defaults to `auto`.
+                attr_accessor detail: OpenAI::Models::Live::DecisionItemCreateEvent::Item::Content::Part::InputImage::detail?
+
+                # @param image_url
+                #   An inline image encoded as a data URL.
+                # @param detail
+                #   The detail level of the image to be sent to the model. One of `high`, `low`,
+                #   `auto`, or `original`. Defaults to `auto`.
+                # @param type
+                #   The type of the input item. Always `input_image`.
+                def initialize: (
+                  image_url: String,
+                  ?detail: OpenAI::Models::Live::DecisionItemCreateEvent::Item::Content::Part::InputImage::detail?,
+                  ?type: :input_image
+                ) -> void
+
+                def to_hash: -> {
+                  image_url: String,
+                  ?type: :input_image,
+                  ?detail: OpenAI::Models::Live::DecisionItemCreateEvent::Item::Content::Part::InputImage::detail?
+                }
+
+                type detail = :low | :high | :auto | :original
+
+                module Detail
+                  extend OpenAI::Internal::Type::Enum
+
+                  LOW: :low
+                  HIGH: :high
+                  AUTO: :auto
+                  ORIGINAL: :original
+
+                  def self?.values: -> ::Array[OpenAI::Models::Live::DecisionItemCreateEvent::Item::Content::Part::InputImage::detail]
+                end
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionItemCreateEvent::Item::Content::part]
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionItemCreateEvent::Item::content]
+
+            PartsArray: OpenAI::Internal::Type::Converter
+          end
+
+          type type_ = :message
+
+          module Type
+            extend OpenAI::Internal::Type::Enum
+
+            MESSAGE: :message
+
+            def self?.values: -> ::Array[OpenAI::Models::Live::DecisionItemCreateEvent::Item::type_]
+          end
+        end
+      end
+    end
+  end
+end

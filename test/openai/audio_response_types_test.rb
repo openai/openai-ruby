@@ -116,7 +116,7 @@ class OpenAI::Test::AudioResponseTypesTest < Minitest::Test
       voice = client.audio.voices.create(params)
       assert_instance_of(OpenAI::Audio::Voice, voice)
       assert_equal(:audio_sample, voice.type)
-      assert_equal([:audio_sample], OpenAI::Audio::Voice::Type.values)
+      assert_equal([:audio_sample, :prompt], OpenAI::Audio::Voice::Type.values.sort)
       assert_equal("voice_synthetic", voice.id)
       assert_requested(:post, "http://example.test/v1/audio/voices", times: 1) do |sent|
         assert_match(%r{\Amultipart/form-data; boundary=}, sent.headers.fetch("Content-Type"))

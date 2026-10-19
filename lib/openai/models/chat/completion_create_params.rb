@@ -378,15 +378,12 @@ module OpenAI
         #   or
         #   [function tools](https://developers.openai.com/api/docs/guides/function-calling).
         #
-        #   @return [Array<OpenAI::Models::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter>, nil]
+        #   @return [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool, OpenAI::StructuredOutput::JsonSchemaConverter>, nil]
         optional(
           :tools,
           -> {
             OpenAI::Internal::Type::ArrayOf[
-              union: OpenAI::UnionOf[
-                OpenAI::Chat::ChatCompletionTool,
-                OpenAI::StructuredOutput::JsonSchemaConverter
-              ]
+              OpenAI::UnionOf[OpenAI::Chat::ChatCompletionTool, OpenAI::StructuredOutput::JsonSchemaConverter]
             ]
           }
         )
@@ -688,7 +685,7 @@ module OpenAI
         #     `none` is the default when no tools are present. `auto` is the default if tools
         #     are present.
         #
-        #   @param tools [Array<OpenAI::StructuredOutput::JsonSchemaConverter, OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool>]
+        #   @param tools [Array<OpenAI::Models::Chat::ChatCompletionFunctionTool, OpenAI::Models::Chat::ChatCompletionCustomTool, OpenAI::StructuredOutput::JsonSchemaConverter>]
         #     A list of tools the model may call. You can provide either
         #     [custom tools](https://developers.openai.com/api/docs/guides/function-calling#custom-tools)
         #     or
@@ -1083,10 +1080,6 @@ module OpenAI
           # Learn more about [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
           variant :json_schema, -> { OpenAI::ResponseFormatJSONSchema }
 
-          # An {OpenAI::BaseModel} can be provided and implicitly converted into {OpenAI::Models::ResponseFormatJSONSchema}.
-          # See examples for more details.
-          #
-          # Learn more about [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
           variant -> { OpenAI::StructuredOutput::JsonSchemaConverter }
 
           # JSON object response format. An older method of generating JSON responses.

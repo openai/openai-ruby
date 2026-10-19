@@ -1,0 +1,18 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class APIKeys
+            def update_scopes: (
+              String api_key_id,
+              project_id: String,
+              scopes: ::Array[String],
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectAPIKey
+          end
+        end
+      end
+    end
+  end
+end

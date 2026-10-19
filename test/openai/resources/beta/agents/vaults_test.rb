@@ -40,7 +40,7 @@ class OpenAI::Test::Resources::Beta::Agents::VaultsTest < OpenAI::Test::Resource
   end
 
   def test_update
-    response = @openai.beta.agents.vaults.update("vault_id")
+    response = @openai.beta.agents.vaults.update("vault_id", name: "Research vault")
 
     assert_pattern do
       response => OpenAI::Beta::Agents::Vault

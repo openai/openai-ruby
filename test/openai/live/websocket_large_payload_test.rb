@@ -8,6 +8,23 @@ class OpenAI::Test::LiveWebSocketLargePayloadTest < Minitest::Test
   extend Minitest::Serial
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
 
+  def test_send_event_writes_max_duration_audio_fixture
+    # 30 seconds of raw mono PCM16 at 24 kHz, Base64-encoded without line breaks.
+    audio = ["\x00\x01" * (24_000 * 30)].pack("m0")
+    socket = FakeSocket.new
+
+    client.live.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.send_event(type: "session.output_audio.fixture.play", audio: audio)
+    end
+
+    assert_equal(1, socket.writes.size)
+    written = JSON.parse(socket.writes.fetch(0))
+    assert_equal("session.output_audio.fixture.play", written.fetch("type"))
+    written_audio = written.fetch("audio")
+    assert_equal(1_920_000, written_audio.bytesize)
+    assert_equal(Digest::SHA256.hexdigest(audio), Digest::SHA256.hexdigest(written_audio))
+  end
+
   def test_deep_schemas_survive_known_events_and_unknown_events_are_deeply_frozen
     schema = {type: "string"}
     4000.times { schema = {properties: {nested: schema}} }

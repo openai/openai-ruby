@@ -63,6 +63,7 @@ module OpenAI
     # send session.start and observe session.started before further commands.
     class Connection < OpenAI::WebSocket::Connection
       include OpenAI::WebSocket::Protocol
+      include OpenAI::WebSocket::GuardedConnection
 
       # @api private
       def initialize(socket:, url:)
@@ -75,58 +76,6 @@ module OpenAI
 
       def send_event(event)
         send_raw(encode_client_event(event))
-      end
-
-      def closed? = @poisoned || @closed || super
-
-      def close(code: 1000, reason: "")
-        @poisoned || @closed ? abort : super
-        @closed = true
-        nil
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
-      end
-
-      # @api private
-      def abort
-        super
-        @closed = true
-        nil
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
-      end
-
-      private def write_text(text)
-        complete = false
-        super
-        complete = true
-        nil
-      rescue StandardError
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
-      ensure
-        # Also retire a possibly buffered write when cancellation bypasses
-        # StandardError, before another sender or normal cleanup can flush it.
-        @poisoned = true unless complete
-      end
-
-      private def read_raw_message
-        raise connection_error("Cannot read from a failed Live WebSocket.") if @poisoned
-        return nil if @closed
-        text = super
-        @closed = text.nil?
-        text
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
-      end
-
-      private def socket_closed?
-        super
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::LiveConnectionError.new(url: @url), cause: nil
       end
 
       private def encode_client_event(event)
@@ -244,6 +193,9 @@ module OpenAI
         end
       end
 
+      private def transport_error = OpenAI::Errors::LiveConnectionError.new(url: @url)
+      private def failed_read_message = "Cannot read from a failed Live WebSocket."
+
       private def connection_error(message)
         OpenAI::Errors::LiveConnectionError.new(url: @url, message: message)
       end
@@ -305,8 +257,7 @@ module OpenAI
           websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
           build = lambda do |deadline|
             build_shared_websocket_connection_request(
-              path: path,
-              query: query,
+              request: live.__websocket_request(query: query).merge(path: path),
               websocket_base_url: websocket_base_url,
               options: options,
               deadline: deadline,
@@ -344,7 +295,7 @@ module OpenAI
         # not in the URL. This opens only the transport, never starts a session.
         def connect(websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
           open_live_websocket(
-            path: "live/sessions",
+            path: __websocket_request.fetch(:path),
             connection_class: OpenAI::Live::Connection,
             websocket_base_url: websocket_base_url,
             request_options: request_options,
@@ -429,7 +380,7 @@ class OpenAI::Resources::Live::Sideband
     end
 
     open_live_websocket(
-      path: ["live/sessions/%1$s/attach", session_id],
+      path: __websocket_request(session_id).fetch(:path),
       query: graceful_close.nil? ? {} : {"graceful_close" => graceful_close.to_s},
       connection_class: OpenAI::Live::SidebandConnection,
       websocket_base_url: websocket_base_url,
@@ -448,7 +399,7 @@ class OpenAI::Resources::Live::Forks
   # session: {} to inherit the recording, then wait for session.started.
   def connect(session_id, websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
     open_live_websocket(
-      path: ["live/sessions/%1$s/fork", session_id],
+      path: __websocket_request(session_id).fetch(:path),
       connection_class: OpenAI::Live::ForkConnection,
       websocket_base_url: websocket_base_url,
       request_options: request_options,

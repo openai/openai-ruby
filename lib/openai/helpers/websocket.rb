@@ -8,3 +8,7 @@ require_relative "websocket/connection_manager"
 require_relative "websocket/protocol"
 require_relative "websocket/async_websocket_transport"
 require_relative "websocket/client_request"
+require_relative "websocket/typed_connection"
+require_relative "websocket/resource"
+
+OpenAI::Client.include(OpenAI::WebSocket::ClientRequest)

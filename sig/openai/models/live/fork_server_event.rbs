@@ -6,6 +6,8 @@ module OpenAI
         | OpenAI::Live::SessionUpdatedEvent
         | OpenAI::Live::InputAudioMutedEvent
         | OpenAI::Live::InputAudioUnmutedEvent
+        | OpenAI::Live::OutputAudioFixturePlayingEvent
+        | OpenAI::Live::OutputAudioFixturePlayedEvent
         | OpenAI::Live::InstructionsAppendedEvent
         | OpenAI::Live::ThinkingAppendedEvent
         | OpenAI::Live::CommentaryAppendedEvent
@@ -14,6 +16,9 @@ module OpenAI
         | OpenAI::Live::InputTranscriptDeltaEvent
         | OpenAI::Live::OutputTranscriptDeltaEvent
         | OpenAI::Live::DelegationCreatedEvent
+        | OpenAI::Live::DecisionEvent
+        | OpenAI::Live::DecisionItemCreatedEvent
+        | OpenAI::Live::DecisionItemDeletedEvent
         | OpenAI::Live::ResponseEvent
         | OpenAI::Live::SessionUsageUpdatedEvent
         | OpenAI::Live::SessionClosedEvent

@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_item_delete_event =
+        { item_id: String, ?type: :"decision.item.delete", ?event_id: String? }
+
+      class DecisionItemDeleteEvent < OpenAI::Internal::Type::BaseModel
+        attr_accessor item_id: String
+
+        attr_accessor type: :"decision.item.delete"
+
+        # Optional client identifier for correlating this command with a server event's
+        # client_event_id or error.client_event_id.
+        attr_accessor event_id: String?
+
+        # @param event_id
+        #   Optional client identifier for correlating this command with a server event's
+        #   client_event_id or error.client_event_id.
+        def initialize: (
+          item_id: String,
+          ?event_id: String?,
+          ?type: :"decision.item.delete"
+        ) -> void
+
+        def to_hash: -> {
+          item_id: String,
+          ?type: :"decision.item.delete",
+          ?event_id: String?
+        }
+      end
+    end
+  end
+end

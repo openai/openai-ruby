@@ -109,10 +109,10 @@ module OpenAI
               delta: String,
               event_id: String,
               type: Symbol,
-              channels: Integer,
+              channels: T.nilable(Integer),
               elapsed_ms: T.nilable(Integer),
-              format_: OpenAI::Realtime::RealtimeTranslationOutputAudioDeltaEvent::Format::OrSymbol,
-              sample_rate: Integer
+              format_: T.nilable(OpenAI::Realtime::RealtimeTranslationOutputAudioDeltaEvent::Format::OrSymbol),
+              sample_rate: T.nilable(Integer)
             }
           )
         end

@@ -29,11 +29,13 @@ module OpenAI
         abort_after_block:,
         transport_error_factory: nil,
         transport_error_message: "transport must respond to open",
-        reserved_options_error_message: nil
+        reserved_options_error_message: nil,
+        connection_options: {}
       )
         @transport = transport
         @default_transport = default_transport
         @connection_class = connection_class
+        @connection_options = connection_options.dup.freeze
         @request = request
         @block_error_message = block_error_message
         @abort_after_block = abort_after_block
@@ -60,7 +62,7 @@ module OpenAI
               **@transport_options
             ) do |socket|
               mark_handshake_completed.call
-              connection = @connection_class.new(socket: socket, url: request.fetch(:url))
+              connection = @connection_class.new(socket: socket, url: request.fetch(:url), **@connection_options)
               begin
                 yield(connection)
               ensure

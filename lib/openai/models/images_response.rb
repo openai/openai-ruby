@@ -36,6 +36,14 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImagesResponse::Quality, nil]
       optional :quality, enum: -> { OpenAI::ImagesResponse::Quality }
 
+      # @!attribute safety_identifier
+      #   The effective safety identifier used for safety monitoring and abuse detection.
+      #   This is the non-empty `safety_identifier` from the request, or the deprecated
+      #   `user` value when `safety_identifier` is omitted, null, or empty.
+      #
+      #   @return [String, nil]
+      optional :safety_identifier, String, nil?: true
+
       # @!attribute size
       #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
@@ -48,7 +56,7 @@ module OpenAI
       #   @return [OpenAI::Models::ImagesResponse::Usage, nil]
       optional :usage, -> { OpenAI::ImagesResponse::Usage }
 
-      # @!method initialize(created:, background: nil, data: nil, output_format: nil, quality: nil, size: nil, usage: nil)
+      # @!method initialize(created:, background: nil, data: nil, output_format: nil, quality: nil, safety_identifier: nil, size: nil, usage: nil)
       #   The response from the image generation endpoint.
       #
       #   @param created [Integer]
@@ -67,6 +75,11 @@ module OpenAI
       #   @param quality [Symbol, OpenAI::Models::ImagesResponse::Quality]
       #     The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
       #     `max`.
+      #
+      #   @param safety_identifier [String, nil]
+      #     The effective safety identifier used for safety monitoring and abuse detection.
+      #     This is the non-empty `safety_identifier` from the request, or the deprecated
+      #     `user` value when `safety_identifier` is omitted, null, or empty.
       #
       #   @param size [String, Symbol, OpenAI::Models::ImagesResponse::Size]
       #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.

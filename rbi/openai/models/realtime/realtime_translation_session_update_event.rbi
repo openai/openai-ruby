@@ -64,7 +64,11 @@ module OpenAI
 
         sig do
           override.returns(
-            {session: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest, type: Symbol, event_id: String}
+            {
+              session: OpenAI::Realtime::RealtimeTranslationSessionUpdateRequest,
+              type: Symbol,
+              event_id: T.nilable(String)
+            }
           )
         end
         def to_hash

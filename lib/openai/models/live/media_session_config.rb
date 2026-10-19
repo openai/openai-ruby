@@ -27,15 +27,16 @@ module OpenAI
 
         # @!attribute delegation
         #   Who handles tasks delegated by the Live model. Omitted or null selects your
-        #   application; use `responses` to let the API manage a Responses backend.
+        #   application; use `responses` or `decisions` to delegate to the corresponding
+        #   API.
         #
-        #   @return [OpenAI::Models::Live::ClientDelegation, OpenAI::Models::Live::MediaSessionConfig::Delegation::Responses, nil]
+        #   @return [OpenAI::Models::Live::ClientDelegation, OpenAI::Models::Live::MediaSessionConfig::Delegation::Responses, OpenAI::Models::Live::MediaSessionConfig::Delegation::Decisions, nil]
         optional :delegation, union: -> { OpenAI::Live::MediaSessionConfig::Delegation }, nil?: true
 
         # @!attribute input
         #   Ordered text-only history supplied before startup. Supports developer, user, and
-        #   assistant messages with one text part each; at most 128 messages and 8,192
-        #   rendered tokens in total.
+        #   assistant messages with one text part each; at most 128 messages and a
+        #   configured rendered-token limit (8,192 by default).
         #
         #   @return [Array<OpenAI::Models::Live::InitialItem::Developer, OpenAI::Models::Live::InitialItem::User, OpenAI::Models::Live::InitialItem::Assistant>, nil]
         optional :input, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Live::InitialItem] }
@@ -59,7 +60,16 @@ module OpenAI
         #   @return [Boolean, nil]
         optional :store, OpenAI::Internal::Type::Boolean
 
-        # @!method initialize(model:, audio: nil, client: nil, delegation: nil, input: nil, instructions: nil, store: nil)
+        # @!attribute triggers
+        #   At most one Decisions trigger per transcript event type. Triggers run
+        #   independently of delegation. On update, omit triggers to keep the current
+        #   configuration, send a list to replace it, or send an empty list to disable
+        #   triggers.
+        #
+        #   @return [Array<OpenAI::Models::Live::DecisionTrigger>, nil]
+        optional :triggers, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Live::DecisionTrigger] }
+
+        # @!method initialize(model:, audio: nil, client: nil, delegation: nil, input: nil, instructions: nil, store: nil, triggers: nil)
         #   Startup configuration for a Live media session. Follow the
         #   [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting)
         #   when writing frontend instructions and the backend prompt under
@@ -77,14 +87,15 @@ module OpenAI
         #     Startup-only capabilities for an untrusted frontend attached to a unified WebRTC
         #     session. Trusted sideband connections are unaffected.
         #
-        #   @param delegation [OpenAI::Models::Live::ClientDelegation, OpenAI::Models::Live::MediaSessionConfig::Delegation::Responses, nil]
+        #   @param delegation [OpenAI::Models::Live::ClientDelegation, OpenAI::Models::Live::MediaSessionConfig::Delegation::Responses, OpenAI::Models::Live::MediaSessionConfig::Delegation::Decisions, nil]
         #     Who handles tasks delegated by the Live model. Omitted or null selects your
-        #     application; use `responses` to let the API manage a Responses backend.
+        #     application; use `responses` or `decisions` to delegate to the corresponding
+        #     API.
         #
         #   @param input [Array<OpenAI::Models::Live::InitialItem::Developer, OpenAI::Models::Live::InitialItem::User, OpenAI::Models::Live::InitialItem::Assistant>]
         #     Ordered text-only history supplied before startup. Supports developer, user, and
-        #     assistant messages with one text part each; at most 128 messages and 8,192
-        #     rendered tokens in total.
+        #     assistant messages with one text part each; at most 128 messages and a
+        #     configured rendered-token limit (8,192 by default).
         #
         #   @param instructions [String, nil]
         #     Frontend instructions for voice, conversation, interruptions, and when to
@@ -98,6 +109,12 @@ module OpenAI
         #   @param store [Boolean]
         #     Whether to store the session for later forking and recording download. Defaults
         #     to false for new sessions.
+        #
+        #   @param triggers [Array<OpenAI::Models::Live::DecisionTrigger>]
+        #     At most one Decisions trigger per transcript event type. Triggers run
+        #     independently of delegation. On update, omit triggers to keep the current
+        #     configuration, send a list to replace it, or send an empty list to disable
+        #     triggers.
 
         # The Live model. Required in the session configuration for every transport; do
         # not pass it as a URL query parameter.
@@ -179,7 +196,8 @@ module OpenAI
         end
 
         # Who handles tasks delegated by the Live model. Omitted or null selects your
-        # application; use `responses` to let the API manage a Responses backend.
+        # application; use `responses` or `decisions` to delegate to the corresponding
+        # API.
         #
         # @see OpenAI::Models::Live::MediaSessionConfig#delegation
         module Delegation
@@ -192,6 +210,8 @@ module OpenAI
 
           # Delegate tasks to a Responses model managed by the Live session.
           variant :responses, -> { OpenAI::Live::MediaSessionConfig::Delegation::Responses }
+
+          variant :decisions, -> { OpenAI::Live::MediaSessionConfig::Delegation::Decisions }
 
           class Responses < OpenAI::Internal::Type::BaseModel
             # @!attribute responses
@@ -218,8 +238,24 @@ module OpenAI
             #     The delegation owner. Always `responses` for tasks handled by the Responses API.
           end
 
+          class Decisions < OpenAI::Internal::Type::BaseModel
+            # @!attribute decisions
+            #
+            #   @return [OpenAI::Models::Live::DecisionsDelegationConfig]
+            required :decisions, -> { OpenAI::Live::DecisionsDelegationConfig }
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :decisions]
+            required :type, const: :decisions
+
+            # @!method initialize(decisions:, type: :decisions)
+            #   @param decisions [OpenAI::Models::Live::DecisionsDelegationConfig]
+            #   @param type [Symbol, :decisions]
+          end
+
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Live::ClientDelegation, OpenAI::Models::Live::MediaSessionConfig::Delegation::Responses)]
+          #   @return [Array(OpenAI::Models::Live::ClientDelegation, OpenAI::Models::Live::MediaSessionConfig::Delegation::Responses, OpenAI::Models::Live::MediaSessionConfig::Delegation::Decisions)]
         end
       end
     end

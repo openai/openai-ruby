@@ -38,8 +38,8 @@ module OpenAI
         optional :client_event_id, String
 
         # @!method initialize(delegation:, event_id:, offset_ms:, client_event_id: nil, type: :"session.delegation.created")
-        #   Returned when the Live model delegates work to your application or a Responses
-        #   backend. Contains delegation metadata and the position on the session timeline
+        #   Returned when the Live model delegates work to your application, Responses, or
+        #   Decisions. Contains delegation metadata and the position on the session timeline
         #   where the work was delegated.
         #
         #   @param delegation [OpenAI::Models::Live::DelegationCreatedEvent::Delegation]
@@ -64,14 +64,13 @@ module OpenAI
         class Delegation < OpenAI::Internal::Type::BaseModel
           # @!attribute id
           #   The unique ID of the delegation. Use this as delegation_id when replying to
-          #   client-owned work or correlating Responses events.
+          #   client-owned work or correlating backend events.
           #
           #   @return [String]
           required :id, String
 
           # @!attribute target
-          #   Where the Live model delegated the work: `client` for your application, or
-          #   `responses` for the configured Responses backend.
+          #   Where the Live model delegated the work: `client`, `responses`, or `decisions`.
           #
           #   @return [Symbol, OpenAI::Models::Live::DelegationCreatedEvent::Delegation::Target]
           required :target, union: -> { OpenAI::Live::DelegationCreatedEvent::Delegation::Target }
@@ -95,11 +94,10 @@ module OpenAI
           #
           #   @param id [String]
           #     The unique ID of the delegation. Use this as delegation_id when replying to
-          #     client-owned work or correlating Responses events.
+          #     client-owned work or correlating backend events.
           #
           #   @param target [Symbol, OpenAI::Models::Live::DelegationCreatedEvent::Delegation::Target]
-          #     Where the Live model delegated the work: `client` for your application, or
-          #     `responses` for the configured Responses backend.
+          #     Where the Live model delegated the work: `client`, `responses`, or `decisions`.
           #
           #   @param response_id [String]
           #     The ID of the Responses API response associated with a Responses delegation.
@@ -108,8 +106,7 @@ module OpenAI
           #   @param type [Symbol, :delegation]
           #     The object type, always `delegation`.
 
-          # Where the Live model delegated the work: `client` for your application, or
-          # `responses` for the configured Responses backend.
+          # Where the Live model delegated the work: `client`, `responses`, or `decisions`.
           #
           # @see OpenAI::Models::Live::DelegationCreatedEvent::Delegation#target
           module Target
@@ -118,6 +115,8 @@ module OpenAI
             variant const: -> { OpenAI::Models::Live::DelegationCreatedEvent::Delegation::Target::CLIENT }
 
             variant const: -> { OpenAI::Models::Live::DelegationCreatedEvent::Delegation::Target::RESPONSES }
+
+            variant const: -> { OpenAI::Models::Live::DelegationCreatedEvent::Delegation::Target::DECISIONS }
 
             # @!method self.variants
             #   @return [Array(Symbol)]
@@ -130,6 +129,7 @@ module OpenAI
 
             CLIENT = :client
             RESPONSES = :responses
+            DECISIONS = :decisions
 
             # @!endgroup
           end

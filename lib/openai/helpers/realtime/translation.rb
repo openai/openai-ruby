@@ -53,6 +53,7 @@ module OpenAI
     # read through session.closed before leaving the block to consume it.
     class TranslationConnection < OpenAI::WebSocket::Connection
       include OpenAI::WebSocket::Protocol
+      include OpenAI::WebSocket::GuardedConnection
 
       # Timeout implementations before Ruby 4 raise StandardError through the
       # scheduler. Cross transport error wrappers without changing raw callers.
@@ -135,27 +136,6 @@ module OpenAI
         end
       end
 
-      def closed? = @poisoned || @closed || super
-
-      def close(code: 1000, reason: "")
-        @poisoned || @closed ? abort : super
-        @closed = true
-        nil
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
-      end
-
-      # @api private
-      def abort
-        super
-        @closed = true
-        nil
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
-      end
-
       private def write_text(text, finish: false)
         @write_mutex.synchronize do
           if @finish_requested || (@finish_owner && !finish)
@@ -164,18 +144,7 @@ module OpenAI
 
           raise connection_error("Cannot send on a closed Realtime Translation WebSocket.") if closed?
           @finish_requested = true if finish
-          complete = false
-          begin
-            super(text)
-            complete = true
-            nil
-          rescue StandardError
-            raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
-          ensure
-            # Ruby's Timeout and task cancellation may bypass StandardError.
-            # Do not let ordinary cleanup flush an uncertain buffered write.
-            @poisoned = true unless complete
-          end
+          super(text)
         end
       end
 
@@ -189,24 +158,10 @@ module OpenAI
         end
 
         begin
-          raise connection_error("Cannot read from a failed Realtime Translation WebSocket.") if @poisoned
-          return nil if @closed
-          text = super
-          @closed = text.nil?
-          text
-        rescue StandardError
-          @poisoned = true
-          raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
+          super
         ensure
           @read_state_mutex.synchronize { @active_reads -= 1 }
         end
-      end
-
-      private def socket_closed?
-        super
-      rescue StandardError
-        @poisoned = true
-        raise OpenAI::Errors::TranslationConnectionError.new(url: @url), cause: nil
       end
 
       private def encode_client_event(event)
@@ -337,6 +292,9 @@ module OpenAI
         event
       end
 
+      private def transport_error = OpenAI::Errors::TranslationConnectionError.new(url: @url)
+      private def failed_read_message = "Cannot read from a failed Realtime Translation WebSocket."
+
       private def connection_error(message)
         OpenAI::Errors::TranslationConnectionError.new(url: @url, message: message)
       end
@@ -352,8 +310,7 @@ module OpenAI
           query = {"model" => model.to_s.dup.freeze}.freeze
           build = lambda do |deadline|
             build_shared_websocket_connection_request(
-              path: "realtime/translations",
-              query: query,
+              request: realtime.translations.__websocket_request(query: query),
               websocket_base_url: websocket_base_url,
               options: options,
               deadline: deadline,

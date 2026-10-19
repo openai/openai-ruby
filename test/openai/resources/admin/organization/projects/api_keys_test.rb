@@ -29,7 +29,7 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::APIKeysTest < Open
     response = @openai.admin.organization.projects.api_keys.update(
       "api_key_id",
       project_id: "project_id",
-      expires_in_seconds: 1
+      scopes: ["api.all.read"]
     )
 
     assert_pattern do
