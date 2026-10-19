@@ -46,14 +46,14 @@ module OpenAI
           state: state
         )
         if (cause = coercion_error(state))
-          raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: cause)
+          raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: cause), cause: nil
         end
 
         validate_wire_field_names!(event, parsed)
       rescue OpenAI::Errors::RealtimeProtocolError
         raise
       rescue StandardError => e
-        raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: e)
+        raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: e), cause: nil
       end
 
       # Validate, encode, and send a typed client event.

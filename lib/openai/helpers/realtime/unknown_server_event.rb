@@ -25,6 +25,11 @@ module OpenAI
       # @return [Hash{Symbol=>Object}]
       def to_h = @data
 
+      # Remote values, including the discriminator, require explicit access.
+      def inspect = "#<#{self.class}>"
+
+      alias to_s inspect
+
       private def freeze_json(value)
         case value
         when Hash

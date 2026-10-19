@@ -25,9 +25,6 @@ module OpenAI
   module Realtime
     # Future event data is accessible explicitly without leaking in diagnostics.
     class UnknownTranslationServerEvent < OpenAI::Realtime::UnknownServerEvent
-      def inspect = "#<#{self.class} type=#{@type.inspect}>"
-      alias to_s inspect
-
       private def freeze_json(value)
         pending = [value]
         visited = {}.compare_by_identity
@@ -102,13 +99,20 @@ module OpenAI
 
         @read_state_mutex.synchronize do
           if @finish_owner
-            raise connection_error("Translation finish must run on the existing receive owner, between reads.")
+            raise(
+              connection_error("Translation finish must run on the existing receive owner, between reads."),
+              cause: nil
+            )
           end
 
-          raise @finish_error if @finish_error
+          # SDK .cause accessors can expose diagnostics hidden from native rendering.
+          raise @finish_error, cause: Exception.instance_method(:cause).bind_call(@finish_error) if @finish_error
           return @finish_terminal if @finish_terminal
           if @active_reads.positive? || @finish_requested
-            raise connection_error("Translation finish must run on the existing receive owner, between reads.")
+            raise(
+              connection_error("Translation finish must run on the existing receive owner, between reads."),
+              cause: nil
+            )
           end
 
           @finish_owner = Fiber.current
@@ -124,7 +128,7 @@ module OpenAI
               return event if terminal
             end
 
-            raise connection_error("Translation socket closed before session.closed.")
+            raise connection_error("Translation socket closed before session.closed."), cause: nil
           end
 
         rescue FinishTimeout
@@ -142,10 +146,10 @@ module OpenAI
       private def write_text(text, finish: false)
         @write_mutex.synchronize do
           if @finish_requested || (@finish_owner && !finish)
-            raise connection_error("Cannot send after Translation finish was requested.")
+            raise connection_error("Cannot send after Translation finish was requested."), cause: nil
           end
 
-          raise connection_error("Cannot send on a closed Realtime Translation WebSocket.") if closed?
+          raise connection_error("Cannot send on a closed Realtime Translation WebSocket."), cause: nil if closed?
           @finish_requested = true if finish
           super(text)
         end
@@ -154,7 +158,10 @@ module OpenAI
       private def read_raw_message
         @read_state_mutex.synchronize do
           if @finish_owner && @finish_owner != Fiber.current
-            raise connection_error("Translation finish must run on the existing receive owner, between reads.")
+            raise(
+              connection_error("Translation finish must run on the existing receive owner, between reads."),
+              cause: nil
+            )
           end
 
           @active_reads += 1

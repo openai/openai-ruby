@@ -140,7 +140,7 @@ module OpenAI
         [request, deadline]
       rescue Timeout::Error => e
         error = timeout_error.call(error_url, e)
-        raise error, cause: error.cause
+        raise error, cause: nil
       end
 
       private def with_shared_websocket_base_url(request, path:, base_url:)

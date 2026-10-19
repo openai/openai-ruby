@@ -387,7 +387,8 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
       assert_equal(text, JSON.parse(first.writes.fetch(0)).fetch("response").fetch("instructions"))
       receiver = Async::Task.current.async { connection.receive }
       started.pop
-      assert_raises(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeReconnectError) { connection.flush_pending }
       connection.close
       receiver.wait
     end
@@ -810,8 +811,8 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
       receiver.wait
       flusher = Async::Task.current.async { connection.flush_pending }
       writing.pop
-      assert_raises(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
-      assert_raises(OpenAI::Errors::RealtimeReconnectError) { connection.take_pending_messages }
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeReconnectError) { connection.take_pending_messages }
       assert_equal([encoded], connection.pending_messages)
       write_gate << true
       flusher.wait
@@ -884,6 +885,19 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
 
   private def connect(transport, **options, &block)
     client.realtime.connect(model: "test-model", transport: transport, reconnect: true, **options, &block)
+  end
+
+  private def assert_no_ambient_cause(error_class)
+    error = assert_raises(error_class) do
+      begin
+        raise IOError, "synthetic_ambient_recovery_marker"
+      rescue IOError
+        yield
+      end
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message(highlight: false), "synthetic_ambient_recovery_marker")
   end
 
   private def connection_error(cause)

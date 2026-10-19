@@ -20,6 +20,12 @@ module OpenAI
         sig { returns(T::Hash[Symbol, T.untyped]) }
         def to_h
         end
+
+        sig { returns(String) }
+        def inspect
+        end
+
+        alias to_s inspect
       end
     end
   end
