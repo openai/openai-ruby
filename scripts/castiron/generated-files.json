@@ -743,7 +743,7 @@
     },
     "lib/openai/models/admin/organization/usage_audio_speeches_response.rb": {
       "mode": "100644",
-      "sha256": "2293d73ab618cc283a6429b9162952e7fbd81e023bea836c713c48e4abfd25d7"
+      "sha256": "7d2e9c881cebe594cb19ed92e747714a47cae3dbd5773040a5d98104629fda0f"
     },
     "lib/openai/models/admin/organization/usage_audio_transcriptions_params.rb": {
       "mode": "100644",
@@ -751,7 +751,7 @@
     },
     "lib/openai/models/admin/organization/usage_audio_transcriptions_response.rb": {
       "mode": "100644",
-      "sha256": "a800d95c3e58669b712877388b43a0662b030c4bed92928daa31e44c5b304438"
+      "sha256": "40e284e9ab2fa2cedef8d519c40dc58c3db79bac8cf06467b978b21ee72bc979"
     },
     "lib/openai/models/admin/organization/usage_code_interpreter_sessions_params.rb": {
       "mode": "100644",
@@ -759,7 +759,7 @@
     },
     "lib/openai/models/admin/organization/usage_code_interpreter_sessions_response.rb": {
       "mode": "100644",
-      "sha256": "93f1b8eb5c6dc8ff30afb3d5617bd554e15e48e2f4c3c026b5050de11d5b8c45"
+      "sha256": "c9ee0416e81b38ea647eb0a9df8dd04567c748d8c3acf489a1a7b94fbbce4370"
     },
     "lib/openai/models/admin/organization/usage_completions_params.rb": {
       "mode": "100644",
@@ -767,7 +767,7 @@
     },
     "lib/openai/models/admin/organization/usage_completions_response.rb": {
       "mode": "100644",
-      "sha256": "2bc93c487833e941d082b43885203539b0fb7278217a90d40bc25726bd677ba9"
+      "sha256": "f39c9a7a84a460a6fb2d8311e2be6583c143dee91003e34c0f19d8a51458cb47"
     },
     "lib/openai/models/admin/organization/usage_costs_params.rb": {
       "mode": "100644",
@@ -775,7 +775,7 @@
     },
     "lib/openai/models/admin/organization/usage_costs_response.rb": {
       "mode": "100644",
-      "sha256": "bb572acf0ab65d93094963605705f2753be55b5775479b31c68390404b85b50a"
+      "sha256": "9580786a708e635fec2a722a1b61bc087602156c7b9d085db4e94f0563b4cf55"
     },
     "lib/openai/models/admin/organization/usage_decisions_params.rb": {
       "mode": "100644",
@@ -783,7 +783,7 @@
     },
     "lib/openai/models/admin/organization/usage_decisions_response.rb": {
       "mode": "100644",
-      "sha256": "c06c70b45d2d5131be76068164f1c8cf83b1dc0f412d373537b6211c6757681d"
+      "sha256": "288c3455d5814d42a767c8cb24c3211c6a7b5da856cd49a53e129dfcc61d8722"
     },
     "lib/openai/models/admin/organization/usage_embeddings_params.rb": {
       "mode": "100644",
@@ -791,7 +791,7 @@
     },
     "lib/openai/models/admin/organization/usage_embeddings_response.rb": {
       "mode": "100644",
-      "sha256": "7fe13c90a29dd74afebeb3115f3db07ff98c79b26a940e6301c0055711d2627a"
+      "sha256": "86db4e95a6c95fcb51b9571a32796ba5b47b26c92b8e49754b121e185a228c99"
     },
     "lib/openai/models/admin/organization/usage_file_search_calls_params.rb": {
       "mode": "100644",
@@ -799,7 +799,7 @@
     },
     "lib/openai/models/admin/organization/usage_file_search_calls_response.rb": {
       "mode": "100644",
-      "sha256": "b6daba187be212113797ca2d214ff1abf9608cc25c6b93c1400de144c4071404"
+      "sha256": "59f087ad241f64e2f5934f6a7d404292114701566b5bb0b80ffb4c6eef4ac199"
     },
     "lib/openai/models/admin/organization/usage_images_params.rb": {
       "mode": "100644",
@@ -807,7 +807,7 @@
     },
     "lib/openai/models/admin/organization/usage_images_response.rb": {
       "mode": "100644",
-      "sha256": "bb0cf5d587e6e9d583f77e7b3359cf0f1d66167c942192ec2180816b5a7a5a9f"
+      "sha256": "7d2adb17d84e608771ea3dea860a96d1b4eb3a22010f58939f712467f761dbf2"
     },
     "lib/openai/models/admin/organization/usage_moderations_params.rb": {
       "mode": "100644",
@@ -815,7 +815,7 @@
     },
     "lib/openai/models/admin/organization/usage_moderations_response.rb": {
       "mode": "100644",
-      "sha256": "1de519a70ee9ecf0ed28e0dbc8d3b580322068bb5d4a758bd0cb5873abc24332"
+      "sha256": "356ad888f91ba682fe68de9fbd01fd1242d46bdbe5ac7bbf27aa7c1a24fe0f12"
     },
     "lib/openai/models/admin/organization/usage_vector_stores_params.rb": {
       "mode": "100644",
@@ -823,7 +823,7 @@
     },
     "lib/openai/models/admin/organization/usage_vector_stores_response.rb": {
       "mode": "100644",
-      "sha256": "4356050dd2b4d64c6bee7bba2a3608966f97858d9fc64031feb7a1b82d7db687"
+      "sha256": "7ed477772bdb84c2f07cbb78e5de198f794288539beba8050f190be3f557d8c0"
     },
     "lib/openai/models/admin/organization/usage_web_search_calls_params.rb": {
       "mode": "100644",
@@ -831,7 +831,7 @@
     },
     "lib/openai/models/admin/organization/usage_web_search_calls_response.rb": {
       "mode": "100644",
-      "sha256": "cb7a627e16986f441a1cfe80c7bb37f4305d3fb4386fcd4d52434f762212b3bc"
+      "sha256": "7b248b253069c13170fbd68c28f816ed34a544e4e13d3d5698f325972beb7c2f"
     },
     "lib/openai/models/admin/organization/user_delete_params.rb": {
       "mode": "100644",
@@ -6967,7 +6967,7 @@
     },
     "rbi/openai/models/admin/organization/usage_audio_speeches_response.rbi": {
       "mode": "100644",
-      "sha256": "4b31fb5d0fc6a25571a1b16a98825b28cafc3d228cf94aa6a0fe648d4095f919"
+      "sha256": "a76402b35535511b53eae21f88f813d3cb2d6e94797549a0d6ab1e7a7f25b16f"
     },
     "rbi/openai/models/admin/organization/usage_audio_transcriptions_params.rbi": {
       "mode": "100644",
@@ -6975,7 +6975,7 @@
     },
     "rbi/openai/models/admin/organization/usage_audio_transcriptions_response.rbi": {
       "mode": "100644",
-      "sha256": "538008d8f7fc442fdcd7c94874bb0a663a457edcae68f118d5b40ee13117230d"
+      "sha256": "7366f74d5a557f1a7b2cc3c43e9987e0cec573f1f1bdfe8882003398e51ef76f"
     },
     "rbi/openai/models/admin/organization/usage_code_interpreter_sessions_params.rbi": {
       "mode": "100644",
@@ -6983,7 +6983,7 @@
     },
     "rbi/openai/models/admin/organization/usage_code_interpreter_sessions_response.rbi": {
       "mode": "100644",
-      "sha256": "7fe21d8fa2b47bce150baade08bd560f8a543a579f4b7f8fdc532556cf19c312"
+      "sha256": "80523833ff6915402bc26c14d1920c8162dfdf90dcf275602d1393e5fe750912"
     },
     "rbi/openai/models/admin/organization/usage_completions_params.rbi": {
       "mode": "100644",
@@ -6991,7 +6991,7 @@
     },
     "rbi/openai/models/admin/organization/usage_completions_response.rbi": {
       "mode": "100644",
-      "sha256": "ac09c9cfa8b8547532393c754974664bbfffdddd984cdc7a5b860d92c0e84c6d"
+      "sha256": "b5a0a4854d1880f69835faa5beb2e92fff1267e6dedebb91079d186eb256e799"
     },
     "rbi/openai/models/admin/organization/usage_costs_params.rbi": {
       "mode": "100644",
@@ -6999,7 +6999,7 @@
     },
     "rbi/openai/models/admin/organization/usage_costs_response.rbi": {
       "mode": "100644",
-      "sha256": "ff7bc2e8bfc3754971885009482d88101e509c8e025d073535377261b8372b81"
+      "sha256": "736fbef69a7a344788b4885c9e701c257db2f55777fc67fd47afa62ce36fcc78"
     },
     "rbi/openai/models/admin/organization/usage_decisions_params.rbi": {
       "mode": "100644",
@@ -7007,7 +7007,7 @@
     },
     "rbi/openai/models/admin/organization/usage_decisions_response.rbi": {
       "mode": "100644",
-      "sha256": "758c09d2e7647b700f9c5be5c16032037821afed73df9b347578062fb83a8016"
+      "sha256": "764d66e16ba4ba272198dc52843a7466e56881300974fd97146d981d0a2fb83c"
     },
     "rbi/openai/models/admin/organization/usage_embeddings_params.rbi": {
       "mode": "100644",
@@ -7015,7 +7015,7 @@
     },
     "rbi/openai/models/admin/organization/usage_embeddings_response.rbi": {
       "mode": "100644",
-      "sha256": "af963e6cc3874e2db096c217781b223f3cef3846f0743164bb6e66df218c6e8c"
+      "sha256": "9a095415145d7b360b3a178e21316dbdcd9d956a97d40b57e79b1762df3ed2fd"
     },
     "rbi/openai/models/admin/organization/usage_file_search_calls_params.rbi": {
       "mode": "100644",
@@ -7023,7 +7023,7 @@
     },
     "rbi/openai/models/admin/organization/usage_file_search_calls_response.rbi": {
       "mode": "100644",
-      "sha256": "e07357c921f53cfc80cb6de14558c905583ad6f4e9ff965c6920bf68fb54fb8f"
+      "sha256": "0db086f5562b9d6405123daf9fdb8d623e0a7818c8c099cba3c23f8530aa446f"
     },
     "rbi/openai/models/admin/organization/usage_images_params.rbi": {
       "mode": "100644",
@@ -7031,7 +7031,7 @@
     },
     "rbi/openai/models/admin/organization/usage_images_response.rbi": {
       "mode": "100644",
-      "sha256": "204ccaaf6a9da4d6800aee49d997f7ee0d42ee3cf6f4dee3f22535108027cccf"
+      "sha256": "e69a6ff57e6438914af7ef896ec74f3080a67176e999eaee4a6e72ab2091df54"
     },
     "rbi/openai/models/admin/organization/usage_moderations_params.rbi": {
       "mode": "100644",
@@ -7039,7 +7039,7 @@
     },
     "rbi/openai/models/admin/organization/usage_moderations_response.rbi": {
       "mode": "100644",
-      "sha256": "6fcab7dda1f1c2b09fa9b535c701db4809f8dc59068cf5ae87ff0b43e685cffa"
+      "sha256": "0a27083b54cf998fead53d0f9c7dd4f4034f495980266071becce9891098e6d9"
     },
     "rbi/openai/models/admin/organization/usage_vector_stores_params.rbi": {
       "mode": "100644",
@@ -7047,7 +7047,7 @@
     },
     "rbi/openai/models/admin/organization/usage_vector_stores_response.rbi": {
       "mode": "100644",
-      "sha256": "d12facec8950d0e1cfdb9edb134df88a557dcfebde761a07327a0a510e0c2e7c"
+      "sha256": "1e2c25561c9f4bcab3e31bfc656bf61d45723606d4f89c30bde2f9fe43c8acf4"
     },
     "rbi/openai/models/admin/organization/usage_web_search_calls_params.rbi": {
       "mode": "100644",
@@ -7055,7 +7055,7 @@
     },
     "rbi/openai/models/admin/organization/usage_web_search_calls_response.rbi": {
       "mode": "100644",
-      "sha256": "74715b4e37bfb51f43bded777e0e527ab7c3ee553f541817d0cb3a586af52fdd"
+      "sha256": "c7ffa9a7217daabece2d5716cca45a1d7dddafe51312bedb20e08bbd06c0cf86"
     },
     "rbi/openai/models/admin/organization/user_delete_params.rbi": {
       "mode": "100644",
@@ -13235,7 +13235,7 @@
     },
     "sig/openai/models/admin/organization/usage_audio_speeches_response.rbs": {
       "mode": "100644",
-      "sha256": "bf25848bf7fd910abf8aa4d1ec6bdfab1fa3e80a0038682144b1aff8649467ae"
+      "sha256": "3397ae347ae088213455930358dd94faa1b2a278aeec2031791736aa8877ef65"
     },
     "sig/openai/models/admin/organization/usage_audio_transcriptions_params.rbs": {
       "mode": "100644",
@@ -13243,7 +13243,7 @@
     },
     "sig/openai/models/admin/organization/usage_audio_transcriptions_response.rbs": {
       "mode": "100644",
-      "sha256": "f1517a4d1c23bd7b81a6e7b11737ebeb922bdc0da52d93d6ba6257830368642c"
+      "sha256": "953c4534be67f970528afef64737a4ae4a74010b2cba48b14090ae42321f0143"
     },
     "sig/openai/models/admin/organization/usage_code_interpreter_sessions_params.rbs": {
       "mode": "100644",
@@ -13251,7 +13251,7 @@
     },
     "sig/openai/models/admin/organization/usage_code_interpreter_sessions_response.rbs": {
       "mode": "100644",
-      "sha256": "73fcb5baf98e34899da1ce17b4acb7f9e4f6710a423de7da21b5cd15dde2fa46"
+      "sha256": "2f740f33c44cab70dcfd1e715f5440be34fa0ba85cc93d9e5900dd7c45867189"
     },
     "sig/openai/models/admin/organization/usage_completions_params.rbs": {
       "mode": "100644",
@@ -13259,7 +13259,7 @@
     },
     "sig/openai/models/admin/organization/usage_completions_response.rbs": {
       "mode": "100644",
-      "sha256": "05579310cb776d4e8ca61f1f834153a667b85007ec8dd2b2eff1ac4760ffb26b"
+      "sha256": "9ef51886820ef6592c343110a368daddf23b9bd4b5458da5c43e66c6549e6ed8"
     },
     "sig/openai/models/admin/organization/usage_costs_params.rbs": {
       "mode": "100644",
@@ -13267,7 +13267,7 @@
     },
     "sig/openai/models/admin/organization/usage_costs_response.rbs": {
       "mode": "100644",
-      "sha256": "0a4ca5311f45b02cc8829a1a246e2ca028078b408b5538dafa74ae945306a803"
+      "sha256": "d52e00d09ba0399942abcb853d52f1c4b126af51ad6bd6b58125a0c7294b2285"
     },
     "sig/openai/models/admin/organization/usage_decisions_params.rbs": {
       "mode": "100644",
@@ -13275,7 +13275,7 @@
     },
     "sig/openai/models/admin/organization/usage_decisions_response.rbs": {
       "mode": "100644",
-      "sha256": "43da52061cd618f153138bfd287db27c33532d1c4e602de953325490de479e25"
+      "sha256": "0ce94e2df47effbb1f6910a6507b4fa1fb26e7a770394af51d2a2fd725d7e2ae"
     },
     "sig/openai/models/admin/organization/usage_embeddings_params.rbs": {
       "mode": "100644",
@@ -13283,7 +13283,7 @@
     },
     "sig/openai/models/admin/organization/usage_embeddings_response.rbs": {
       "mode": "100644",
-      "sha256": "8e43e4cbae680ac3a0124dba94e59fb366b94ea9caffa7e7585843546ba69608"
+      "sha256": "070d967bb790826bee6da72660bd8c1fd107feb25ae7558a1e1ee15944569028"
     },
     "sig/openai/models/admin/organization/usage_file_search_calls_params.rbs": {
       "mode": "100644",
@@ -13291,7 +13291,7 @@
     },
     "sig/openai/models/admin/organization/usage_file_search_calls_response.rbs": {
       "mode": "100644",
-      "sha256": "96ff13cf780ea324221a40f5ecdc810d679e4cb82138109011c14e6f5285e9ef"
+      "sha256": "57abb3edf5ae34173f9b6f2f990dfc593b1485ed1eb6fb70a1a8503ca0df1f4a"
     },
     "sig/openai/models/admin/organization/usage_images_params.rbs": {
       "mode": "100644",
@@ -13299,7 +13299,7 @@
     },
     "sig/openai/models/admin/organization/usage_images_response.rbs": {
       "mode": "100644",
-      "sha256": "642745c385685a9550372c31cb82b210873f60161566ef823e6e7d7ebee506d7"
+      "sha256": "27832b6db4aee74981a98bee0dc0609df6da33621f2573661a1cd299ad11feb2"
     },
     "sig/openai/models/admin/organization/usage_moderations_params.rbs": {
       "mode": "100644",
@@ -13307,7 +13307,7 @@
     },
     "sig/openai/models/admin/organization/usage_moderations_response.rbs": {
       "mode": "100644",
-      "sha256": "b3c11398c1f7a4fae7f1663ff13b1301f21869fd17caec821c770efa80eb9d99"
+      "sha256": "046c76ba8f701bd6aba5f26e185cb2fc9022f452ef24311fb142ab0e91f4e9b2"
     },
     "sig/openai/models/admin/organization/usage_vector_stores_params.rbs": {
       "mode": "100644",
@@ -13315,7 +13315,7 @@
     },
     "sig/openai/models/admin/organization/usage_vector_stores_response.rbs": {
       "mode": "100644",
-      "sha256": "0a7b227ca9a51e722dce763a585f1a1d89d5da0cd440e82fa33b11049fca6803"
+      "sha256": "be63cd62accb00bdcb61e3f2733b8223156df8f384f8c9bcb8fa8678f000f986"
     },
     "sig/openai/models/admin/organization/usage_web_search_calls_params.rbs": {
       "mode": "100644",
@@ -13323,7 +13323,7 @@
     },
     "sig/openai/models/admin/organization/usage_web_search_calls_response.rbs": {
       "mode": "100644",
-      "sha256": "e7c4e1048b75819ac42f9f32e79966731f8d95d0744537400cdb00ea3019aa4d"
+      "sha256": "639df8a3d944512488af33bcaf21d7675ef0477ba9578f2db349d60bd1c378e9"
     },
     "sig/openai/models/admin/organization/user_delete_params.rbs": {
       "mode": "100644",
