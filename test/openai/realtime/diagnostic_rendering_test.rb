@@ -136,7 +136,7 @@ class OpenAI::Test::RealtimeDiagnosticRenderingTest < Minitest::Test
     terminal = JSON.generate(type: "session.closed", event_id: "synthetic_closed")
     connect(:translation, FakeTransport.new(FakeSocket.new(terminal))) do |connection|
       connection.finish(timeout: 1) do |_event|
-        assert_safe_state_error { connection.finish(timeout: 1) { } }
+        assert_safe_state_error { connection.finish(timeout: 1) { flunk("must not consume another event") } }
         assert_safe_state_error { connection.send_raw("{}") }
         Fiber.new { assert_safe_state_error { connection.receive } }.resume
       end
@@ -147,8 +147,8 @@ class OpenAI::Test::RealtimeDiagnosticRenderingTest < Minitest::Test
 
   def test_translation_unfinished_close_errors_omit_ambient_causes
     connect(:translation, FakeTransport.new(FakeSocket.new)) do |connection|
-      assert_safe_state_error { connection.finish(timeout: 1) { } }
-      assert_safe_state_error { connection.finish(timeout: 1) { } }
+      assert_safe_state_error { connection.finish(timeout: 1) { flunk("must not consume an event") } }
+      assert_safe_state_error { connection.finish(timeout: 1) { flunk("must not consume an event") } }
     end
   end
 
@@ -164,7 +164,7 @@ class OpenAI::Test::RealtimeDiagnosticRenderingTest < Minitest::Test
         begin
           raise IOError, "synthetic_ambient_callback_marker"
         rescue IOError
-          connection.finish(timeout: 1) { }
+          connection.finish(timeout: 1) { flunk("must not replay a callback") }
         end
       end
 
@@ -172,6 +172,42 @@ class OpenAI::Test::RealtimeDiagnosticRenderingTest < Minitest::Test
       assert_same(cause, replayed.cause)
       refute_includes(replayed.full_message(highlight: false), "synthetic_ambient_callback_marker")
     end
+  end
+
+  def test_translation_cached_sdk_callback_failure_keeps_diagnostics_explicit
+    terminal = JSON.generate(type: "session.closed", event_id: "synthetic_closed")
+    connect(:realtime, FakeTransport.new(FakeSocket.new("synthetic_callback_parser_marker"))) do |standard|
+      connect(:translation, FakeTransport.new(FakeSocket.new(terminal))) do |translation|
+        original = assert_raises(OpenAI::Errors::RealtimeProtocolError) do
+          translation.finish(timeout: 1) { standard.receive }
+        end
+
+        assert_safe_error_rendering(original, "synthetic_callback_parser_marker")
+        replayed = assert_raises(OpenAI::Errors::RealtimeProtocolError) do
+          translation.finish(timeout: 1) { flunk("must not replay a callback") }
+        end
+
+        assert_same(original, replayed)
+        assert_instance_of(JSON::ParserError, replayed.cause)
+        assert_equal("synthetic_callback_parser_marker", replayed.data)
+        assert_safe_error_rendering(replayed, "synthetic_callback_parser_marker")
+      end
+    end
+  end
+
+  def test_translation_escaping_sdk_callback_failure_keeps_diagnostics_explicit
+    terminal = JSON.generate(type: "session.closed", event_id: "synthetic_closed")
+    error = assert_raises(OpenAI::Errors::RealtimeProtocolError) do
+      connect(:realtime, FakeTransport.new(FakeSocket.new("synthetic_callback_parser_marker"))) do |standard|
+        connect(:translation, FakeTransport.new(FakeSocket.new(terminal))) do |translation|
+          translation.finish(timeout: 1) { standard.receive }
+        end
+      end
+    end
+
+    assert_instance_of(JSON::ParserError, error.cause)
+    assert_equal("synthetic_callback_parser_marker", error.data)
+    assert_safe_error_rendering(error, "synthetic_callback_parser_marker")
   end
 
   private def assert_safe_state_error

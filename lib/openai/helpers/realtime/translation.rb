@@ -105,7 +105,8 @@ module OpenAI
             )
           end
 
-          raise @finish_error, cause: @finish_error.cause if @finish_error
+          # SDK .cause accessors can expose diagnostics hidden from native rendering.
+          raise @finish_error, cause: Exception.instance_method(:cause).bind_call(@finish_error) if @finish_error
           return @finish_terminal if @finish_terminal
           if @active_reads.positive? || @finish_requested
             raise(
