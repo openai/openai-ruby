@@ -57,6 +57,49 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
     end
   end
 
+  def test_finish_rejects_another_caller_during_terminal_callback_delivery
+    entered = Queue.new
+    release = Queue.new
+    failure = RuntimeError.new("terminal callback failed")
+    socket = FakeSocket.new(JSON.generate(type: "session.closed", event_id: "s1"))
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      finisher = Thread.new do
+        c.finish(timeout: 10) do |_event|
+          entered << true
+          release.pop
+          raise failure
+        end
+
+      rescue StandardError => error
+        error
+      end
+
+      begin
+        assert(entered.pop(timeout: 5), "terminal callback must start")
+        assert_raises(OpenAI::Errors::TranslationConnectionError) { c.finish(timeout: 1) { flunk } }
+      ensure
+        release << true
+        assert(finisher.join(5), "finisher must exit after callback release")
+      end
+
+      assert_same(failure, finisher.value)
+      assert_same(failure, assert_raises(RuntimeError) { c.finish(timeout: 1) { flunk } })
+      assert_equal([{"type" => "session.close"}], socket.writes.map { JSON.parse(_1) })
+    end
+  end
+
+  def test_finish_rejects_reentry_from_its_terminal_callback
+    socket = FakeSocket.new(JSON.generate(type: "session.closed", event_id: "s1"))
+    client.realtime.connect_translation(model: "gpt-realtime-translate", transport: FakeTransport.new(socket)) do |c|
+      terminal = c.finish(timeout: 1) do |_event|
+        assert_raises(OpenAI::Errors::TranslationConnectionError) { c.finish(timeout: 1) { flunk } }
+      end
+
+      assert_same(terminal, c.finish(timeout: 1) { flunk })
+      assert_equal([{"type" => "session.close"}], socket.writes.map { JSON.parse(_1) })
+    end
+  end
+
   def test_finish_waits_for_an_admitted_injected_write_without_losing_its_reader
     release = Async::Condition.new
     socket = FakeSocket.new(

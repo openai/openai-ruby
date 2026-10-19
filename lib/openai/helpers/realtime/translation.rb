@@ -101,9 +101,13 @@ module OpenAI
         require "timeout"
 
         @read_state_mutex.synchronize do
+          if @finish_owner
+            raise connection_error("Translation finish must run on the existing receive owner, between reads.")
+          end
+
           raise @finish_error if @finish_error
           return @finish_terminal if @finish_terminal
-          if @active_reads.positive? || @finish_requested || @finish_owner
+          if @active_reads.positive? || @finish_requested
             raise connection_error("Translation finish must run on the existing receive owner, between reads.")
           end
 
