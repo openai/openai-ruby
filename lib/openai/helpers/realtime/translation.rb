@@ -29,10 +29,7 @@ module OpenAI
 
     # Opening does not send any events. session.close flushes remaining output;
     # read through session.closed before leaving the block to consume it.
-    class TranslationConnection < OpenAI::WebSocket::Connection
-      include OpenAI::WebSocket::Protocol
-      include OpenAI::WebSocket::GuardedConnection
-
+    class TranslationConnection < OpenAI::WebSocket::TypedConnection
       # Timeout implementations before Ruby 4 raise StandardError through the
       # scheduler. Cross transport error wrappers without changing raw callers.
       # rubocop:disable Lint/InheritException
@@ -44,21 +41,17 @@ module OpenAI
 
       # @api private
       def initialize(socket:, url:)
-        super
+        super(
+          socket: socket,
+          url: url,
+          client_event: OpenAI::Realtime::RealtimeTranslationClientEvent,
+          server_event: OpenAI::Realtime::RealtimeTranslationServerEvent
+        )
         @poisoned = false
         @closed = false
         @write_mutex = Mutex.new
         @read_state_mutex = Mutex.new
         @active_reads = 0
-        @server_event_types = OpenAI::Realtime::RealtimeTranslationServerEvent.variants.to_h do |variant|
-          [variant.fields.fetch(:type).fetch(:const).to_s, variant]
-        end
-
-        @client_event_names = discriminator_values(OpenAI::Realtime::RealtimeTranslationClientEvent)
-      end
-
-      def send_event(event)
-        send_raw(encode_client_event(event))
       end
 
       # Request a final flush and yield every trailing event, including
@@ -155,34 +148,17 @@ module OpenAI
         end
       end
 
-      private def encode_client_event(event)
-        validate_event_tree!(event)
-        union = OpenAI::Realtime::RealtimeTranslationClientEvent
-        payload = OpenAI::Internal::Type::Converter.dump(union, event)
-        type = payload[:type] || payload["type"] if payload.is_a?(Hash)
-        raise ArgumentError unless (type.is_a?(String) || type.is_a?(Symbol)) && @client_event_names.key?(type.to_s)
+      private :parse_event
 
-        coerced = coerce_event(union, payload, outbound: true)
-        serialized = OpenAI::Internal::Type::Converter.dump(union, coerced)
-        validate_event_tree!(serialized, json_only: true)
-        generate_json(serialized)
-      rescue StandardError, SystemStackError
-        raise ArgumentError, "Invalid Realtime Translation client event.", cause: nil
-      end
+      private def coerce_client_event(payload) = coerce_event(@client_event, payload, outbound: true)
 
-      private def parse_event(data)
-        parsed = parse_json(data)
-        type = event_type(parsed, message: "Realtime Translation server event must be an object with a string type")
-        model = @server_event_types[type.to_s]
-        unless model
-          return OpenAI::Realtime::UnknownTranslationServerEvent.new(data: parsed)
-        end
+      private def coerce(type, value) = coerce_event(type, value)
 
-        event = coerce_event(OpenAI::Realtime::RealtimeTranslationServerEvent, parsed)
-        validate_wire_field_names!(event, parsed)
-      rescue StandardError, SystemStackError
-        raise OpenAI::Errors::TranslationProtocolError.new, cause: nil
-      end
+      private def client_event_error_message = "Invalid Realtime Translation client event."
+
+      private def unknown_server_event(payload) = OpenAI::Realtime::UnknownTranslationServerEvent.new(data: payload)
+
+      private def protocol_error = OpenAI::Errors::TranslationProtocolError.new
 
       private def transport_error = OpenAI::Errors::TranslationConnectionError.new(url: @url)
       private def failed_read_message = "Cannot read from a failed Realtime Translation WebSocket."
