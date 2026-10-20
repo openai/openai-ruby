@@ -65,6 +65,114 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_session_preserves_the_same_nested_unknown_event_as_direct_receive
+    schema = 105.times.reduce({type: "string"}) { |value, _| {nested: value} }
+    wire = JSON.generate({type: "response.future", schema: schema}, max_nesting: false)
+    assert_operator(wire.bytesize, :<, 2_000)
+    handler = lambda do |socket, _request|
+      assert_equal("response.create", read(socket).fetch("type"))
+      socket.write(::Protocol::WebSocket::TextMessage.new(wire))
+      socket.flush
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect do |connection|
+        connection.response.create(input: "synthetic")
+        event = connection.receive
+        assert_equal(schema, event.to_h.fetch(:schema))
+      end
+
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        session.default.send_event(type: "response.create", input: "synthetic")
+        event = session.default.receive
+        assert_equal(:"response.future", event.type)
+        assert_equal(schema, event.to_h.fetch(:schema))
+      end
+    end
+  end
+
+  def test_nested_output_items_are_collected_without_mutable_event_aliases
+    schema = 105.times.reduce({type: +"string"}) { |value, _| {nested: value} }
+    item = {
+      type: "function_call",
+      id: "fc_test",
+      call_id: "call_test",
+      name: "f",
+      arguments: "{}",
+      schema: schema
+    }
+    wire = JSON.generate(
+      {type: "response.output_item.done", sequence_number: 1, output_index: 0, item: item},
+      max_nesting: false
+    )
+    assert_operator(wire.bytesize, :<, 2_000)
+    handler = lambda do |socket, _request|
+      assert_equal("response.create", read(socket).fetch("type"))
+      write(socket, type: "response.created", sequence_number: 0, response: {id: "resp_test"})
+      socket.write(::Protocol::WebSocket::TextMessage.new(wire))
+      socket.flush
+      terminal = JSON.generate(
+        {
+          type: "response.completed",
+          sequence_number: 2,
+          response: {id: "resp_test", status: "completed", schema: schema}
+        },
+        max_nesting: false
+      )
+      socket.write(::Protocol::WebSocket::TextMessage.new(terminal))
+      socket.flush
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        lane = session.default
+        lane.send_event(type: "response.create", input: "synthetic")
+        assert_equal(:"response.created", lane.receive.type)
+        event = lane.receive
+        assert_equal(schema, event.item.to_h.fetch(:schema))
+        event.item.arguments.replace("caller change")
+        response = lane.get_final_response
+        assert_equal("{}", response.output.first.arguments)
+        assert_equal(schema, response.output.first.to_h.fetch(:schema))
+        assert_equal(schema, response.to_h.fetch(:schema))
+      end
+    end
+  end
+
+  def test_incremental_terminal_copy_accepts_nested_data_from_direct_receive
+    schema = 105.times.reduce({type: +"string"}) { |value, _| {nested: value} }
+    wire = JSON.generate(
+      {
+        type: "response.completed",
+        sequence_number: 1,
+        response: {id: "resp_test", status: "completed", output: [], schema: schema}
+      },
+      max_nesting: false
+    )
+    assert_operator(wire.bytesize, :<, 2_000)
+    handler = lambda do |socket, _request|
+      assert_equal("response.create", read(socket).fetch("type"))
+      socket.write(::Protocol::WebSocket::TextMessage.new(wire))
+      socket.flush
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect do |connection|
+        connection.response.create(input: "synthetic")
+        event = connection.receive
+        assert_equal(schema, event.response.to_h.fetch(:schema))
+        preview = OpenAI::Responses::IncrementalResponse.new
+        preview.add(event)
+        assert_equal(:terminal, preview.phase)
+        copy = preview.terminal_event
+        assert_equal(schema, copy.response.to_h.fetch(:schema))
+        copy.response.id.replace("snapshot change")
+        event.response.id.replace("event change")
+        assert_equal("resp_test", preview.terminal_event.response.id)
+      end
+    end
+  end
+
   def test_caller_fed_preview_reset_does_not_steal_a_reader_or_replace_lane_finals
     handler = lambda do |socket, _request|
       assert_equal(%w[left right], [read(socket)["stream_id"], read(socket)["stream_id"]])
