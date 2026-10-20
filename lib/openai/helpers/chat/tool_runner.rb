@@ -106,7 +106,16 @@ module OpenAI
             end
           end
 
+          audio = message.audio
+          if audio && (!audio[:id].is_a?(String) || audio[:id].empty?)
+            raise Error, "Expected an audio reference with a nonempty string ID"
+          end
+
           calls = message.tool_calls || []
+          if @params[:parallel_tool_calls] == false && calls.length > 1
+            raise Error, "Model returned multiple tool calls with parallel_tool_calls disabled"
+          end
+
           validate_tool_choice(calls)
           if choice.finish_reason == :stop && calls.empty? && message.function_call.nil?
             return [nil, nil]
@@ -124,7 +133,7 @@ module OpenAI
           prepared = calls.map { |call| prepare(call) }
           assistant = message.to_h.slice(:role, :content, :refusal)
           assistant[:tool_calls] = prepared.map { |call, _handler, _arguments| call }
-          assistant[:audio] = {id: message.audio.id} if message.audio
+          assistant[:audio] = {id: audio.id} if audio
           [assistant, prepared]
         rescue KeyError, NoMethodError, TypeError, OpenAI::Errors::ConversionError
           raise Error, "Malformed Chat Completion response", cause: nil
@@ -190,7 +199,7 @@ module OpenAI
             raise ArgumentError, "run_tools requires non-streaming function tools"
           end
 
-          controlled = %w[messages tools tool_choice n stream functions function_call]
+          controlled = %w[messages tools tool_choice parallel_tool_calls n stream functions function_call]
           if options[:extra_body]&.keys&.any? { |key| controlled.include?(key.to_s) }
             raise ArgumentError, "extra_body cannot override tool runner control parameters"
           end

@@ -73,7 +73,9 @@ puts(completion.choices.first.message.content)
 Handlers receive a parsed JSON object with **string keys**; validate application
 requirements in your callback. String results are sent unchanged; other results
 are JSON encoded. Callbacks execute sequentially, including when the model requests
-multiple tools in one response. Every advertised tool must have a matching handler.
+multiple tools in one response. Setting `parallel_tool_calls: false` limits each
+response to one tool call; the runner rejects larger batches before callbacks run.
+Every advertised tool must have a matching handler.
 The runner validates each batch before invoking callbacks, rejects repeated call
 IDs, enforces the initial `tool_choice` before returning or invoking callbacks, and
 enforces the `tool_choice.allowed_tools.tools` subset on every round. It

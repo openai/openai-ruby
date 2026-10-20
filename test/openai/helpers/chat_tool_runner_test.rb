@@ -208,6 +208,27 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
     assert_equal(1, transport.requests.length)
   end
 
+  def test_disabled_parallel_calls_reject_multiple_calls_before_callbacks_on_every_round
+    [[], [completion(calls: [call("first")])]].each do |previous|
+      transport, client = client_for(*previous, completion(calls: [call("a"), call("b")]))
+      executions = 0
+      assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+        run_tools(client, parallel_tool_calls: false, tool_handlers: {"lookup" => -> (_) { executions += 1 }})
+      end
+
+      assert_equal(previous.length, executions)
+      assert_equal(previous.length + 1, transport.requests.length)
+      assert(transport.requests.all? { |request| request[:body]["parallel_tool_calls"] == false })
+    end
+  end
+
+  def test_disabled_parallel_calls_allow_one_call_and_a_final_answer
+    transport, client = client_for(completion(calls: [call("a")]), completion)
+    result = run_tools(client, parallel_tool_calls: false)
+    assert_equal("Done", result.choices.first.message.content)
+    assert_equal("Sunny", transport.requests.last[:body]["messages"].last["content"])
+  end
+
   def test_allowed_tools_subset_rejects_entire_batch_before_callbacks
     [:auto, :required].each do |mode|
       transport, client = client_for(completion(calls: [call("a"), call("b", name: "excluded")]))
@@ -391,6 +412,35 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
 
       assert_equal(1, transport.requests.length)
     end
+  end
+
+  def test_invalid_audio_ids_never_dispatch_or_return
+    [nil, [call("a")]].each do |calls|
+      [{}, {id: nil}, {id: 123}, {id: ""}, {id: false}].each do |audio|
+        response = completion(calls: calls)
+        response[:choices].first[:message][:audio] = audio
+        transport, client = client_for(response)
+        assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+          run_tools(client, tool_handlers: {"lookup" => -> (_) { flunk("Malformed audio reference dispatched") }})
+        end
+
+        assert_equal(1, transport.requests.length)
+      end
+    end
+  end
+
+  def test_valid_audio_is_carried_forward_as_an_id_reference
+    response = completion(calls: [call("a")])
+    response[:choices].first[:message][:audio] = {
+      id: "audio_synthetic",
+      data: "synthetic-data",
+      expires_at: 123,
+      transcript: "synthetic-transcript"
+    }
+    transport, client = client_for(response, completion)
+    result = run_tools(client)
+    assert_equal("Done", result.choices.first.message.content)
+    assert_equal({"id" => "audio_synthetic"}, transport.requests.last[:body]["messages"][1]["audio"])
   end
 
   def test_invalid_json_responses_are_sanitized
@@ -651,6 +701,7 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
       {tools: [tool, tool]},
       {tools: [{type: :custom, custom: {name: "lookup"}}]},
       {request_options: {extra_body: {"stream" => true}}},
+      {request_options: {extra_body: {"parallel_tool_calls" => false}}},
       {request_options: {extra_body: {messages: []}}}
     ]
     invalid_options.each do |options|
