@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../responses_websocket/connection_test_support"
+require "openai/helpers/websocket/typed_resource"
 
 class OpenAI::Test::WebSocketBindingTest < Minitest::Test
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
@@ -31,6 +32,23 @@ class OpenAI::Test::WebSocketBindingTest < Minitest::Test
 
     def __websocket_client_event = OpenAI::Realtime::RealtimeClientEvent
     def __websocket_server_event = OpenAI::Realtime::RealtimeServerEvent
+  end
+
+  class TypedResource < Resource
+    include OpenAI::WebSocket::TypedResource
+  end
+
+  def test_typed_binding_uses_the_shared_connection_and_preserves_unknown_symbol_keys
+    socket = FakeSocket.new(JSON.generate(type: "future.event", extension: {label: "keep"}))
+    TypedResource.new(client: client).connect("workspace", transport: FakeTransport.new(socket)) do |connection|
+      assert_instance_of(OpenAI::WebSocket::TypedConnection, connection)
+      assert_equal({type: "future.event", extension: {label: "keep"}}, connection.receive)
+      connection.send_event(type: "response.cancel")
+    end
+
+    assert_equal([{"type" => "response.cancel"}], socket.writes.map { JSON.parse(_1) })
+    assert_equal(OpenAI::WebSocket::Resource, TypedResource.instance_method(:connect).owner)
+    assert_predicate(socket, :closed?)
   end
 
   class HookClient < OpenAI::Client
