@@ -1,14 +1,5 @@
 # Changelog
 
-## Unreleased
-
-### Bug Fixes
-
-* **realtime:** abort connections after failed or canceled WebSocket writes so
-  buffered application data cannot be flushed later. On a poisoned connection,
-  `close(code:, reason:)` aborts without a close handshake; the supplied code and
-  reason are not sent. ([#914](https://github.com/openai/openai-ruby/pull/914))
-
 ## [0.107.0](https://github.com/openai/openai-ruby/compare/v0.106.0...v0.107.0) (2026-10-20)
 
 
@@ -27,7 +18,7 @@
 * keep Realtime diagnostic rendering payload-free ([#924](https://github.com/openai/openai-ruby/issues/924)) ([3a29026](https://github.com/openai/openai-ruby/commit/3a29026ab177704dbe30d688fddd085e737dfc6d))
 * preserve deep JSON in WebSocket event codecs ([#928](https://github.com/openai/openai-ruby/issues/928)) ([57462c9](https://github.com/openai/openai-ruby/commit/57462c938e3b7602c456b0816e8873bd67fad241))
 * preserve typed Realtime event identity ([#931](https://github.com/openai/openai-ruby/issues/931)) ([9bb5618](https://github.com/openai/openai-ruby/commit/9bb56187c7eb0d72f992c76fed68369d34972d81))
-* **realtime:** abort interrupted WebSocket writes ([#914](https://github.com/openai/openai-ruby/issues/914)) ([d219f3d](https://github.com/openai/openai-ruby/commit/d219f3d0461dd96911429f1b89369eadd382f234))
+* **realtime:** abort connections after failed or canceled WebSocket writes so buffered application data cannot be flushed later. On a poisoned connection, `close(code:, reason:)` aborts without a close handshake; the supplied code and reason are not sent. ([#914](https://github.com/openai/openai-ruby/issues/914)) ([d219f3d](https://github.com/openai/openai-ruby/commit/d219f3d0461dd96911429f1b89369eadd382f234))
 * report terminal Realtime failures before transport cleanup ([#923](https://github.com/openai/openai-ruby/issues/923)) ([0d21d75](https://github.com/openai/openai-ruby/commit/0d21d751cd89621c6a32c0048c45ef6e5b7c1af4))
 * retain Translation completion across callback exits ([#921](https://github.com/openai/openai-ruby/issues/921)) ([e6fb44e](https://github.com/openai/openai-ruby/commit/e6fb44e57d233e657d982eee4cf27c6a5d7977c7))
 * share strict WebSocket model validation ([#929](https://github.com/openai/openai-ruby/issues/929)) ([51c6f0b](https://github.com/openai/openai-ruby/commit/51c6f0b73081f0f02f981d2beb4a8b129b2ec1ba))
