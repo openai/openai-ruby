@@ -1,9 +1,33 @@
 # frozen_string_literal: true
 
+require_relative "../chat/tool_runner"
+
 module OpenAI
   module Resources
     class Chat
       class Completions
+        # Run function tools until the model returns a final, non-streaming completion.
+        # Handlers receive a JSON object with string keys. String results are sent
+        # verbatim; other results are JSON encoded. Callback errors propagate without
+        # retrying callbacks or sending their exception text to the model.
+        # max_rounds bounds API calls (including the final answer), defaulting to 10.
+        # A forced tool choice applies only to the first round. Callbacks run serially.
+        #
+        # @param tool_handlers [Hash{String=>#call}]
+        # @param max_rounds [Integer]
+        # @param params [Hash] Other Chat Completions create parameters.
+        # @return [OpenAI::Models::Chat::ChatCompletion]
+        def run_tools(model:, messages:, tools:, tool_handlers:, max_rounds: 10, **params)
+          OpenAI::Helpers::Chat::ToolRunner
+            .new(
+              completions: self,
+              params: params.merge(model: model, messages: messages, tools: tools),
+              tool_handlers: tool_handlers,
+              max_rounds: max_rounds
+            )
+            .run
+        end
+
         def stream(params)
           parsed, options = OpenAI::Chat::CompletionCreateParams.dump_request(params)
 

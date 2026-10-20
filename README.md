@@ -50,6 +50,50 @@ stream.each do |event|
 end
 ```
 
+### Automatic Chat Completions tool runner
+
+`client.chat.completions.run_tools` runs your function callbacks, sends their results
+back to the model, and returns the final `ChatCompletion`. It accepts the same
+messages, function-tool definitions (including `OpenAI::BaseModel` schemas), and
+request options as `create`:
+
+```ruby
+completion = client.chat.completions.run_tools(
+  model: "gpt-4o-mini",
+  messages: [{role: :user, content: "What is the weather in Seattle?"}],
+  tools: [WeatherArguments], # An OpenAI::BaseModel with a city field.
+  tool_handlers: {
+    "WeatherArguments" => -> (arguments) { {temperature_c: 18, city: arguments.fetch("city")} }
+  },
+  max_rounds: 10
+)
+puts(completion.choices.first.message.content)
+```
+
+Handlers receive a parsed JSON object with **string keys**; validate application
+requirements in your callback. String results are sent unchanged; other results
+are JSON encoded. Callbacks execute sequentially, including when the model requests
+multiple tools in one response. Every advertised tool must have a matching handler.
+The runner validates each batch before invoking callbacks and rejects repeated call
+IDs. It does not mutate your input messages or append the conversation to them.
+
+This helper is non-streaming and supports one completion choice and function tools.
+`max_rounds` limits API calls, including the final answer; it raises
+`OpenAI::Helpers::Chat::ToolRunner::MaxRoundsError` before executing tools in the
+last allowed round. A forced `tool_choice` applies to the first round, then switches
+to `auto` while preserving any allowed-tools list. Other invalid or incomplete tool
+responses raise `OpenAI::Helpers::Chat::ToolRunner::Error`.
+
+Callback and API errors stop the run and propagate to your application. Callback
+exception text is never submitted as a tool result, and HTTP retries do not rerun
+callbacks. Earlier callback side effects are not rolled back; starting another run
+can execute tools again. Use application-level idempotency where needed. Request
+timeouts apply per API call, not to callback execution or the entire run.
+Caller-supplied request idempotency keys are scoped to each round, so retries keep
+the same key without colliding with the next round.
+
+See [the complete example](examples/chat/tool_runner.rb).
+
 ### Agents final output (beta)
 
 Collect final output from an Agents creation stream:

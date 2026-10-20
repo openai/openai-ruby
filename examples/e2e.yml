@@ -37,6 +37,9 @@ examples:
   examples/chat/streaming_tools.rb:
     status: covered
     expected_output: Tool call finalized
+  examples/chat/tool_runner.rb:
+    status: covered
+    expected_output: Tool runner completed.
   examples/demo.rb:
     status: covered
     expected_output: streaming request

@@ -11,6 +11,11 @@ class OpenAI::Test::ChatToolInputTypesTest < Minitest::Test
       <<~RUBY
         client.chat.completions.create(model: "gpt-4o-mini", messages: [], tools: [LookupTool])
         client.chat.completions.stream(model: "gpt-4o-mini", messages: [], tools: [LookupTool])
+        result = client.chat.completions.run_tools(
+          model: "gpt-4o-mini", messages: [], tools: [LookupTool],
+          tool_handlers: {"LookupTool" => -> (arguments) { arguments.fetch("query") }}, max_rounds: 3
+        )
+        T.assert_type!(result, OpenAI::Chat::ChatCompletion)
         client.chat.completions.stream_raw(
           model: "gpt-4o-mini",
           messages: [],
