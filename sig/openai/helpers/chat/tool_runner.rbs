@@ -1,0 +1,48 @@
+module OpenAI
+  module Helpers
+    module Chat
+      class ToolRunner
+        type handler = ^(Hash[String, untyped]) -> untyped
+
+        class Error < StandardError
+        end
+
+        class MaxRoundsError < Error
+        end
+
+        # @api private
+        def initialize: (
+          completions: OpenAI::Resources::Chat::Completions,
+          params: Hash[Symbol, untyped],
+          tool_handlers: Hash[String, handler],
+          max_rounds: Integer
+        ) -> void
+
+        # @api private
+        def run: -> OpenAI::Chat::ChatCompletion
+      end
+    end
+  end
+
+  module Resources
+    class Chat
+      class Completions
+        # @api private
+        def create_for_tool_runner: (
+          Hash[Symbol, untyped] params
+        ) -> OpenAI::Chat::ChatCompletion
+
+        def run_tools: (
+          model: String | Symbol,
+          messages: Array[untyped],
+          tools: Array[Class
+          | OpenAI::Chat::ChatCompletionFunctionTool
+          | Hash[Symbol, untyped]],
+          tool_handlers: Hash[String, OpenAI::Helpers::Chat::ToolRunner::handler],
+          ?max_rounds: Integer,
+          **untyped
+        ) -> OpenAI::Chat::ChatCompletion
+      end
+    end
+  end
+end

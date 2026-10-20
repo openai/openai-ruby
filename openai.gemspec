@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   ] +
     [
       "examples/audio/record_and_play.rb",
+      "examples/chat/tool_runner.rb",
       "examples/responses/websocket_workflows.rb",
       "examples/mtls_custom_http_client.rb",
       "examples/x509_workload_identity.rb",
