@@ -6243,7 +6243,7 @@
     },
     "rbi/openai/client.rbi": {
       "mode": "100644",
-      "sha256": "8bbe9e4867f42ce3ccb29eb8f079f32aab85fd667dfffa5d9f3bcbc0538b00ed"
+      "sha256": "8d1f2c93446cecf596ac8591c9e37e32d07337cb20266a9fe769d273c162a4b8"
     },
     "rbi/openai/helpers/data_residency.rbi": {
       "mode": "100644",
@@ -12511,7 +12511,7 @@
     },
     "sig/openai/client.rbs": {
       "mode": "100644",
-      "sha256": "3083c2da4cdda6cb061fd84a309672f8c88c7c027ad1387a51f660c8280b0c24"
+      "sha256": "82315dc32a2530b6f369e1f3ea302694f9e8bbcdc422abe6c260027c1b99283b"
     },
     "sig/openai/helpers/data_residency.rbs": {
       "mode": "100644",
