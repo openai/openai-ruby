@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "helpers/data_residency"
+require_relative "helpers/client_runtime"
 
 module OpenAI
   class Client < OpenAI::Internal::Transport::BaseClient
@@ -17,6 +18,10 @@ module OpenAI
     # Default max retry delay in seconds.
     DEFAULT_MAX_RETRY_DELAY = 8.0
 
+    WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER = "workload-identity-auth"
+    WORKLOAD_IDENTITY_DEADLINE_ERROR = Class.new(Timeout::Error)
+    private_constant :WORKLOAD_IDENTITY_DEADLINE_ERROR
+
     # @return [String, nil]
     attr_reader :api_key
 
@@ -31,6 +36,10 @@ module OpenAI
 
     # @return [String, nil]
     attr_reader :webhook_secret
+
+    # @return [OpenAI::Auth::WorkloadIdentityAuth, nil]
+    # @api private
+    attr_reader :workload_identity_auth
 
     # Generated resource accessors.
     # @return [OpenAI::Resources::Decisions]
@@ -135,9 +144,24 @@ module OpenAI
     #
     # @return [Hash{String=>String}]
     private def auth_headers(security:)
-      enabled_auth = {bearer_auth:, admin_api_key_auth:}.slice(*security.select { |_, enabled| enabled }.keys)
-      headers = enabled_auth.values.reduce({}, :merge)
-      headers.merge(enabled_auth.fetch(:bearer_auth, {}).slice("authorization"))
+      return {} if @provider_runtime
+
+      enabled_security = security.select { |_, enabled| enabled }
+      enabled_auth = {bearer_auth:, admin_api_key_auth:}.select { |scheme, _| enabled_security.key?(scheme) }
+      headers = enabled_auth.values.reduce({}) do |merged, authentication|
+        merged.merge(authentication) do |header, previous, current|
+          header == "authorization" ? previous : current
+        end
+      end
+
+      if headers.empty? && enabled_security.any?
+        raise(
+          ArgumentError,
+          "Could not resolve authentication method. Expected either api_key or admin_api_key to be set."
+        )
+      end
+
+      headers
     end
 
     # @api private
@@ -160,15 +184,24 @@ module OpenAI
 
     # Creates and returns a new client for interacting with the API.
     #
-    # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`
+    # @param api_key [String, nil] Defaults to `ENV["OPENAI_API_KEY"]`.
+    #   Mutually exclusive with `workload_identity`.
     #
     # @param admin_api_key [String, nil] Defaults to `ENV["OPENAI_ADMIN_KEY"]`
     #
-    # @param organization [String, nil] Defaults to `ENV["OPENAI_ORG_ID"]`
+    # @param workload_identity [OpenAI::Auth::WorkloadIdentity, OpenAI::Auth::X509WorkloadIdentity, nil]
+    #   OAuth2 workload identity configuration for token exchange authentication.
+    #   Mutually exclusive with `api_key`.
     #
-    # @param project [String, nil] Defaults to `ENV["OPENAI_PROJECT_ID"]`
+    # @param organization [String, nil] Defaults to `ENV["OPENAI_ORG_ID"]`.
+    #
+    # @param project [String, nil] Defaults to `ENV["OPENAI_PROJECT_ID"]`.
     #
     # @param webhook_secret [String, nil] Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
+    #
+    # @param provider [OpenAI::Provider, nil] Configure a supported
+    #   third-party provider. Provider authentication and routing cannot be combined
+    #   with top-level `api_key`, `admin_api_key`, `workload_identity`, or `base_url`.
     #
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
     # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
@@ -176,6 +209,9 @@ module OpenAI
     # @param data_residency [Symbol, String, nil] Select `global`, `us`, `eu`, `ae`.
     #   Mutually exclusive with an explicit `base_url` or `provider`.
     #   This selects an endpoint; project and model eligibility still apply.
+    #
+    # @param default_headers [Hash{String=>String, nil}, nil] Extra headers to send
+    #   with every request. Explicit values override `ENV["OPENAI_CUSTOM_HEADERS"]`.
     #
     # @param max_retries [Integer] Max number of retries to attempt after a failed retryable request.
     #
@@ -195,13 +231,16 @@ module OpenAI
     #
     # @param on_retry [Proc, nil] Callback invoked immediately before an API retry delay.
     def initialize(
-      api_key: ENV["OPENAI_API_KEY"],
-      admin_api_key: ENV["OPENAI_ADMIN_KEY"],
-      organization: ENV["OPENAI_ORG_ID"],
-      project: ENV["OPENAI_PROJECT_ID"],
-      webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
+      api_key: OpenAI::Internal::OMIT,
+      admin_api_key: OpenAI::Internal::OMIT,
+      workload_identity: nil,
+      organization: OpenAI::Internal::OMIT,
+      project: OpenAI::Internal::OMIT,
+      webhook_secret: OpenAI::Internal::OMIT,
+      provider: nil,
       base_url: OpenAI::Internal::OMIT,
       data_residency: nil,
+      default_headers: nil,
       max_retries: self.class::DEFAULT_MAX_RETRIES,
       timeout: self.class::DEFAULT_TIMEOUT_IN_SECONDS,
       initial_retry_delay: self.class::DEFAULT_INITIAL_RETRY_DELAY,
@@ -211,34 +250,153 @@ module OpenAI
       log_level: nil,
       on_retry: nil
     )
+      if Object.instance_method(:is_a?).bind_call(workload_identity, OpenAI::Auth::X509WorkloadIdentity) &&
+          !x509_identity?(workload_identity)
+        raise ArgumentError, "X509WorkloadIdentity subclasses are not supported"
+      end
+
+      x509_identity = x509_identity?(workload_identity)
+      if x509_identity && (configured_transport = workload_identity.transport)
+        if !http_client.nil? && !http_client.equal?(configured_transport)
+          raise ArgumentError, "X.509 workload identity must use its configured X.509 transport"
+        end
+
+        http_client = configured_transport
+      end
+
+      if x509_identity && !x509_transport?(http_client)
+        raise ArgumentError, "X.509 workload identity requires an attested X509Transport"
+      end
+
       base_url = OpenAI::Internal::ClientOptions.resolve_data_residency(
         data_residency,
         base_url: base_url,
-        provider: defined?(provider) ? provider : nil
+        provider: provider
       )
-      base_url = ENV["OPENAI_BASE_URL"] if base_url.equal?(OpenAI::Internal::OMIT)
-      base_url ||= "https://api.openai.com/v1"
+      if x509_transport?(http_client) && !data_residency.nil?
+        unless http_client.supports_data_residency?(data_residency)
+          raise ArgumentError, "X.509 data residency must match its attested OpenAI mTLS API origin"
+        end
+
+        base_url = "#{http_client.api_origin}/v1"
+      end
+
+      provider_runtime = nil
+      unless provider.nil?
+        provider_name = OpenAI::Internal::Provider.name(provider)
+        conflicts = {
+          api_key: api_key,
+          admin_api_key: admin_api_key,
+          workload_identity: workload_identity,
+          base_url: base_url
+        }.filter_map do |name, value|
+          name unless value.equal?(OpenAI::Internal::OMIT) || value.nil?
+        end
+
+        unless conflicts.empty?
+          formatted = conflicts.map { "`#{_1}`" }.join(", ")
+          message = "`provider` cannot be combined with top-level #{formatted}. Move provider " \
+            "authentication and routing options into `#{provider_name}(...)`."
+          raise ArgumentError, message
+        end
+
+        provider_runtime = OpenAI::Internal::Provider.configure(provider)
+      end
+
+      api_key = ENV["OPENAI_API_KEY"] if api_key.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+      if admin_api_key.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+        admin_api_key = ENV["OPENAI_ADMIN_KEY"]
+      end
+
+      if organization.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+        organization = ENV["OPENAI_ORG_ID"]
+      end
+
+      project = ENV["OPENAI_PROJECT_ID"] if project.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+      webhook_secret = ENV["OPENAI_WEBHOOK_SECRET"] if webhook_secret.equal?(OpenAI::Internal::OMIT)
+      base_url = ENV["OPENAI_BASE_URL"] if base_url.equal?(OpenAI::Internal::OMIT) && provider_runtime.nil?
+
+      api_key = nil if api_key.equal?(OpenAI::Internal::OMIT)
+      admin_api_key = nil if admin_api_key.equal?(OpenAI::Internal::OMIT)
+      organization = nil if organization.equal?(OpenAI::Internal::OMIT)
+      project = nil if project.equal?(OpenAI::Internal::OMIT)
+      webhook_secret = nil if webhook_secret.equal?(OpenAI::Internal::OMIT)
+      base_url = provider_runtime.base_url if provider_runtime
+      base_url = nil if base_url.equal?(OpenAI::Internal::OMIT)
+      base_url ||= if x509_transport?(http_client)
+        "#{http_client.api_origin}/v1"
+      else
+        "https://api.openai.com/v1"
+      end
+
+      if x509_identity
+        configured_uri = URI(base_url.to_s)
+        unless configured_uri.is_a?(URI::HTTPS) &&
+            configured_uri.userinfo.nil? &&
+            configured_uri.port == URI::HTTPS::DEFAULT_PORT &&
+            OpenAI::Internal::Util.uri_origin(configured_uri).casecmp?(http_client.api_origin)
+          raise ArgumentError, "X.509 workload identity requires its attested OpenAI mTLS API origin"
+        end
+      end
+
+      if !api_key.nil? && !workload_identity.nil?
+        raise ArgumentError, "`api_key` and `workload_identity` are mutually exclusive"
+      end
+
+      if provider_runtime.nil? && api_key.nil? && admin_api_key.nil? && workload_identity.nil?
+        raise(
+          ArgumentError,
+          "Missing credentials. Please pass an `api_key`, `workload_identity`, `admin_api_key`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
+        )
+      end
 
       headers = {
         "openai-organization" => (@organization = organization&.to_s),
         "openai-project" => (@project = project&.to_s)
       }
-      custom_headers_env = ENV["OPENAI_CUSTOM_HEADERS"]
+      parsed = {}
+      resolved_headers = default_headers.is_a?(OpenAI::Internal::ClientOptions::ResolvedHeaders)
+      custom_headers_env = ENV["OPENAI_CUSTOM_HEADERS"] unless provider_runtime || resolved_headers
       unless custom_headers_env.nil?
-        parsed = {}
         custom_headers_env.split("\n").each do |line|
           colon = line.index(":")
           unless colon.nil?
             parsed[line[0...colon].strip] = line[(colon + 1)..].strip
           end
         end
-
-        headers = parsed.merge(headers)
       end
 
-      @api_key = api_key&.to_s
+      client_headers = OpenAI::Internal::Util.normalized_headers(default_headers.to_h)
+      unless provider_runtime.nil?
+        provider_runtime.authentication_headers.each { client_headers.delete(_1) }
+      end
+
+      headers = OpenAI::Internal::Util.normalized_headers(parsed, headers, client_headers)
+
+      if workload_identity.nil?
+        @api_key = api_key&.to_s
+        @workload_identity_auth = nil
+      else
+        @api_key = WORKLOAD_IDENTITY_API_KEY_PLACEHOLDER
+        token_exchange = if x509_identity
+          OpenAI::Auth::X509TokenExchange.new(workload_identity, transport: http_client)
+        end
+
+        @workload_identity_auth = OpenAI::Auth::WorkloadIdentityAuth.new(
+          workload_identity,
+          organization&.to_s,
+          token_exchange_url: if x509_identity
+            "#{OpenAI::Auth::X509Transport::ISSUER_ORIGIN}/oauth/token"
+          else
+            OpenAI::Auth::WorkloadIdentityAuth::DEFAULT_TOKEN_EXCHANGE_URL
+          end,
+          token_exchange: token_exchange
+        )
+      end
+
       @admin_api_key = admin_api_key&.to_s
       @webhook_secret = webhook_secret&.to_s
+      @provider_runtime = provider_runtime
 
       super(
         base_url: base_url,
@@ -251,6 +409,26 @@ module OpenAI
         logger: logger,
         log_level: log_level,
         on_retry: on_retry
+      )
+
+      @copy_options = OpenAI::Internal::ClientOptions.capture(
+        api_key: api_key,
+        admin_api_key: @admin_api_key,
+        workload_identity: workload_identity,
+        organization: @organization,
+        project: @project,
+        webhook_secret: @webhook_secret,
+        provider: provider,
+        base_url: provider.nil? ? self.base_url.to_s : nil,
+        default_headers: OpenAI::Internal::Util.normalized_headers(parsed, client_headers),
+        max_retries: self.max_retries(),
+        timeout: self.timeout(),
+        initial_retry_delay: self.initial_retry_delay(),
+        max_retry_delay: self.max_retry_delay(),
+        http_client: requester,
+        logger: self.logger(),
+        log_level: self.log_level(),
+        on_retry: self.on_retry()
       )
 
       # Initialize generated resources.
