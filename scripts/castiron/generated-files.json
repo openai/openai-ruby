@@ -11,7 +11,7 @@
     },
     "lib/openai.rb": {
       "mode": "100644",
-      "sha256": "e16f1060a32748440e14ca40e86db300d3899650e68f0e522958d0cc67559a13"
+      "sha256": "aaec689454a713c514c0005849a4afe3fa16da54e7ff53727ec0a09feb3d3d50"
     },
     "lib/openai/.rubocop.generated.yml": {
       "mode": "100644",
@@ -19,7 +19,7 @@
     },
     "lib/openai/client.rb": {
       "mode": "100644",
-      "sha256": "ba1c5699fdc2188f8eed14efc4818074a7c1af8fae8332a95f3efc8f66452fe6"
+      "sha256": "69631f5e6b9778a91d1a7aa3108bd054c83c5245154ea00b63678c6c9eaaaaa8"
     },
     "lib/openai/helpers/data_residency.rb": {
       "mode": "100644",
@@ -6243,7 +6243,7 @@
     },
     "rbi/openai/client.rbi": {
       "mode": "100644",
-      "sha256": "8d1f2c93446cecf596ac8591c9e37e32d07337cb20266a9fe769d273c162a4b8"
+      "sha256": "4188344857c0e4a67cf59b411cfa1b72eee000f556b22520d1644e8a9caeb996"
     },
     "rbi/openai/helpers/data_residency.rbi": {
       "mode": "100644",
@@ -12511,7 +12511,7 @@
     },
     "sig/openai/client.rbs": {
       "mode": "100644",
-      "sha256": "82315dc32a2530b6f369e1f3ea302694f9e8bbcdc422abe6c260027c1b99283b"
+      "sha256": "037dc9d091dd2819763cd69dfb474bbf438924884181d8a15744c3b7f4873f74"
     },
     "sig/openai/helpers/data_residency.rbs": {
       "mode": "100644",
