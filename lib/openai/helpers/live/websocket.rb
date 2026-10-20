@@ -26,6 +26,8 @@ module OpenAI
     # A future server event retains its raw data, but routine diagnostics do not
     # render potentially sensitive audio, transcript, or session fields.
     class UnknownServerEvent
+      include OpenAI::WebSocket::Protocol
+
       attr_reader :type, :data
 
       def initialize(data:)
@@ -38,25 +40,6 @@ module OpenAI
       def inspect = "#<#{self.class} type=#{@type.inspect}>"
       alias to_s inspect
 
-      private def freeze_json(value)
-        pending = [value]
-        visited = {}.compare_by_identity
-        until pending.empty?
-          item = pending.pop
-          next if visited.key?(item)
-          visited[item] = true
-          case item
-          when Hash
-            item.each { |key, val| pending.push(key, val) }
-          when Array
-            pending.concat(item)
-          end
-
-          item.freeze
-        end
-
-        value
-      end
     end
 
     # A transport-open primary connection. Startup is owned by the caller:
@@ -87,13 +70,13 @@ module OpenAI
         coerced = coerce_event(client_event_type, payload, outbound: true)
         serialized = OpenAI::Internal::Type::Converter.dump(client_event_type, coerced)
         validate_event_tree!(serialized, json_only: true)
-        JSON.generate(serialized, max_nesting: false)
+        generate_json(serialized)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid Live client event.", cause: nil
       end
 
       private def parse_event(data)
-        parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
+        parsed = parse_json(data)
         type = event_type(parsed, message: "Live server event must be an object with a string type")
         unless @server_event_names.key?(type.to_s)
           return OpenAI::Live::UnknownServerEvent.new(data: parsed)

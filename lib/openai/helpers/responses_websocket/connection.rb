@@ -51,7 +51,13 @@ module OpenAI
         assert_owner!
         raise connection_error("Cannot send on a closed Responses WebSocket.") if poisoned? || closed?
 
-        write_encoded(JSON.generate(encode_client_event(event)))
+        encoded = begin
+          generate_json(encode_client_event(event))
+        rescue SystemStackError
+          raise OpenAI::Errors::ResponsesClientEventError.new, cause: nil
+        end
+
+        write_encoded(encoded)
       rescue OpenAI::Errors::ResponsesConnectionError,
         OpenAI::Errors::ResponsesClientEventError,
         OpenAI::Errors::ResponsesSendError
@@ -107,7 +113,7 @@ module OpenAI
       def closed? = @state == :closed || super
 
       private def parse_event(data)
-        parsed = JSON.parse(data, symbolize_names: true)
+        parsed = parse_json(data)
         type = event_type(parsed, message: "Responses server event must be a JSON object")
         unless @server_event_names.key?(type.to_s)
           return OpenAI::Responses::UnknownServerEvent.new(data: parsed)
@@ -122,7 +128,7 @@ module OpenAI
         validate_wire_field_names!(event, parsed)
       rescue OpenAI::Errors::ResponsesProtocolError
         raise
-      rescue StandardError
+      rescue StandardError, SystemStackError
         raise OpenAI::Errors::ResponsesProtocolError.new, cause: nil
       end
 
@@ -210,34 +216,33 @@ module OpenAI
         raise connection_error("Responses WebSocket connections are single-owner.")
       end
 
-      private def validate_event_tree!(value, active = {}.compare_by_identity)
-        case value
-        when OpenAI::Internal::Type::BaseModel
-          guard_cycle!(value, active)
-          begin
+      private def validate_event_tree!(value)
+        active = {}.compare_by_identity
+        pending = [[value, false]]
+        until pending.empty?
+          value, exiting = pending.pop
+          if exiting
+            active.delete(value)
+            next
+          end
+
+          children = case value
+          when OpenAI::Internal::Type::BaseModel
             data = value.to_h
             reject_duplicate_serialized_model_keys!(value.class, data)
-            validate_event_tree!(data, active)
-          ensure
-            active.delete(value)
+            [data]
+          when Hash
+            reject_duplicate_semantic_keys!(value)
+            value.values
+          when Array
+            value
+          else
+            next
           end
 
-        when Hash
           guard_cycle!(value, active)
-          reject_duplicate_semantic_keys!(value)
-          begin
-            value.each_value { |item| validate_event_tree!(item, active) }
-          ensure
-            active.delete(value)
-          end
-
-        when Array
-          guard_cycle!(value, active)
-          begin
-            value.each { |item| validate_event_tree!(item, active) }
-          ensure
-            active.delete(value)
-          end
+          pending << [value, true]
+          children.reverse_each { |child| pending << [child, false] }
         end
 
         nil
@@ -273,18 +278,33 @@ module OpenAI
       end
 
       private def normalize_event_keys(value)
-        case value
-        when Hash
-          value.to_h do |key, item|
-            normalized_key = key.is_a?(String) ? key.to_sym : key
-            [normalized_key, normalize_event_keys(item)]
-          end
+        return value unless value.is_a?(Hash) || value.is_a?(Array)
 
-        when Array
-          value.map { |item| normalize_event_keys(item) }
-        else
-          value
+        result = value.is_a?(Hash) ? {} : []
+        copies = {}.compare_by_identity
+        copies[value] = result
+        pending = [[value, result]]
+        until pending.empty?
+          source, destination = pending.pop
+          entries = source.is_a?(Hash) ? source.each_pair : source.each_with_index.lazy.map { |item, index|
+            [index, item]
+          }
+          entries.each do |key, item|
+            if item.is_a?(Hash) || item.is_a?(Array)
+              unless copies.key?(item)
+                copies[item] = item.is_a?(Hash) ? {} : []
+                pending << [item, copies.fetch(item)]
+              end
+
+              item = copies.fetch(item)
+            end
+
+            normalized_key = key.is_a?(String) ? key.to_sym : key
+            destination[normalized_key] = item
+          end
         end
+
+        result
       end
 
       private def connection_error(message)
