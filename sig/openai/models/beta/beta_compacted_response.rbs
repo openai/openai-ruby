@@ -8,7 +8,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           ?object: :"response.compaction",
-          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          output: ::Array[OpenAI::Models::Beta::beta_response_item],
           usage: OpenAI::Beta::BetaResponseUsage
         }
 
@@ -24,7 +24,7 @@ module OpenAI
 
         # The compacted list of output items. This is a list of all user messages,
         # followed by a single compaction item.
-        attr_accessor output: ::Array[OpenAI::Models::Beta::beta_response_output_item]
+        attr_accessor output: ::Array[OpenAI::Models::Beta::beta_response_item]
 
         # Token accounting for the compaction pass, including cached, reasoning, and total
         # tokens.
@@ -45,7 +45,7 @@ module OpenAI
         def initialize: (
           id: String,
           created_at: Integer,
-          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          output: ::Array[OpenAI::Models::Beta::beta_response_item],
           usage: OpenAI::Beta::BetaResponseUsage,
           ?object: :"response.compaction"
         ) -> void
@@ -54,7 +54,7 @@ module OpenAI
           id: String,
           created_at: Integer,
           ?object: :"response.compaction",
-          output: ::Array[OpenAI::Models::Beta::beta_response_output_item],
+          output: ::Array[OpenAI::Models::Beta::beta_response_item],
           usage: OpenAI::Beta::BetaResponseUsage
         }
       end

@@ -30,7 +30,7 @@ module OpenAI
 
         # The compacted list of output items. This is a list of all user messages,
         # followed by a single compaction item.
-        sig { returns(T::Array[OpenAI::Beta::BetaResponseOutputItem::Variants]) }
+        sig { returns(T::Array[OpenAI::Beta::BetaResponseItem::Variants]) }
         attr_accessor :output
 
         # Token accounting for the compaction pass, including cached, reasoning, and total
@@ -50,36 +50,38 @@ module OpenAI
 
             output: T::Array[
               T.any(
+                OpenAI::Beta::BetaResponseInputMessageItem::OrHash,
                 OpenAI::Beta::BetaResponseOutputMessage::OrHash,
                 OpenAI::Beta::BetaResponseFileSearchToolCall::OrHash,
-                OpenAI::Beta::BetaResponseFunctionToolCall::OrHash,
-                OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::AgentMessage::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::MultiAgentCall::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::MultiAgentCallOutput::OrHash,
-                OpenAI::Beta::BetaResponseFunctionWebSearch::OrHash,
                 OpenAI::Beta::BetaResponseComputerToolCall::OrHash,
                 OpenAI::Beta::BetaResponseComputerToolCallOutputItem::OrHash,
-                OpenAI::Beta::BetaResponseReasoningItem::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::Program::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::ProgramOutput::OrHash,
+                OpenAI::Beta::BetaResponseFunctionWebSearch::OrHash,
+                OpenAI::Beta::BetaResponseFunctionToolCallItem::OrHash,
+                OpenAI::Beta::BetaResponseFunctionToolCallOutputItem::OrHash,
+                OpenAI::Beta::BetaResponseItem::AgentMessage::OrHash,
+                OpenAI::Beta::BetaResponseItem::MultiAgentCall::OrHash,
+                OpenAI::Beta::BetaResponseItem::MultiAgentCallOutput::OrHash,
                 OpenAI::Beta::BetaResponseToolSearchCall::OrHash,
                 OpenAI::Beta::BetaResponseToolSearchOutputItem::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::AdditionalTools::OrHash,
+                OpenAI::Beta::BetaResponseItem::AdditionalTools::OrHash,
+                OpenAI::Beta::BetaResponseConfigurationUpdateItem::OrHash,
+                OpenAI::Beta::BetaResponseReasoningItem::OrHash,
+                OpenAI::Beta::BetaResponseItem::Program::OrHash,
+                OpenAI::Beta::BetaResponseItem::ProgramOutput::OrHash,
                 OpenAI::Beta::BetaResponseCompactionItem::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::ImageGenerationCall::OrHash,
+                OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OrHash,
                 OpenAI::Beta::BetaResponseCodeInterpreterToolCall::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::LocalShellCall::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::LocalShellCallOutput::OrHash,
+                OpenAI::Beta::BetaResponseItem::LocalShellCall::OrHash,
+                OpenAI::Beta::BetaResponseItem::LocalShellCallOutput::OrHash,
                 OpenAI::Beta::BetaResponseFunctionShellToolCall::OrHash,
                 OpenAI::Beta::BetaResponseFunctionShellToolCallOutput::OrHash,
                 OpenAI::Beta::BetaResponseApplyPatchToolCall::OrHash,
                 OpenAI::Beta::BetaResponseApplyPatchToolCallOutput::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::McpCall::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::McpListTools::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::McpApprovalRequest::OrHash,
-                OpenAI::Beta::BetaResponseOutputItem::McpApprovalResponse::OrHash,
-                OpenAI::Beta::BetaResponseCustomToolCall::OrHash,
+                OpenAI::Beta::BetaResponseItem::McpListTools::OrHash,
+                OpenAI::Beta::BetaResponseItem::McpApprovalRequest::OrHash,
+                OpenAI::Beta::BetaResponseItem::McpApprovalResponse::OrHash,
+                OpenAI::Beta::BetaResponseItem::McpCall::OrHash,
+                OpenAI::Beta::BetaResponseCustomToolCallItem::OrHash,
                 OpenAI::Beta::BetaResponseCustomToolCallOutputItem::OrHash
               )
             ],
@@ -118,7 +120,7 @@ module OpenAI
               id: String,
               created_at: Integer,
               object: Symbol,
-              output: T::Array[OpenAI::Beta::BetaResponseOutputItem::Variants],
+              output: T::Array[OpenAI::Beta::BetaResponseItem::Variants],
               usage: OpenAI::Beta::BetaResponseUsage
             }
           )

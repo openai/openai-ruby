@@ -30,6 +30,7 @@ module OpenAI
       end
 
       private def encode_client_event(event)
+        validate_client_tree!(event)
         event_type(event, message: "Invalid WebSocket client event.") if event.is_a?(Hash)
         payload = @client_event ? OpenAI::Internal::Type::Converter.dump(@client_event, event) : event
         type = event_type(payload, message: "Invalid WebSocket client event.")
@@ -39,6 +40,7 @@ module OpenAI
 
         payload = coerce(@client_event, payload) if @client_event
         payload = OpenAI::Internal::Type::Converter.dump(@client_event, payload) if @client_event
+        validate_client_tree!(payload, json_only: true)
         JSON.generate(payload, max_nesting: false)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid WebSocket client event.", cause: nil
@@ -50,12 +52,8 @@ module OpenAI
         _, model = @server_event_types.find { |event_type,| event_type === type.to_sym }
         return parsed unless model
 
-        # Unknown wire fields must not overwrite a known field's Ruby name.
-        model.fields.each do |name, field|
-          raise ArgumentError if name != field.fetch(:api_name) && parsed.key?(name)
-        end
-
-        coerce(@server_event, parsed)
+        event = coerce(@server_event, parsed)
+        validate_wire_field_names!(event, parsed)
       rescue StandardError, SystemStackError
         raise OpenAI::Errors::WebSocketProtocolError, "Invalid WebSocket server event.", cause: nil
       end

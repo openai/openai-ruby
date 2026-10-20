@@ -170,7 +170,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           id: String,
           created_at: Integer,
           object: Symbol,
-          output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseOutputItem]),
+          output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseItem]),
           usage: OpenAI::Beta::BetaResponseUsage
         }
     end

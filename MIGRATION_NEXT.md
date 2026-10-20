@@ -1,0 +1,16 @@
+# Compaction output in the next major
+
+GA and beta compaction output now uses the broader `ResponseItem` union. A compacted history may contain retained user, system or developer messages as well as output items and compaction records. Ordinary Responses output types are unchanged.
+
+Code that annotates compaction output as `ResponseOutputItem` or assumes every message is assistant output must accept the broader union. Check the concrete message class and role before reading content: input messages contain input content, while assistant output messages contain output content. Update Ruby, RBI and RBS collection annotations accordingly.
+
+Some concrete item classes also change: function calls in compacted output use `ResponseFunctionToolCallItem` (and `BetaResponseFunctionToolCallItem` for beta). Update class-based branches accordingly. Audio content is not added to the existing input-content union by this change; unrecognized content retains its raw fields.
+
+To continue a conversation, preserve the complete compacted history, including compaction records:
+
+```ruby
+compacted = client.responses.compact(model: model, input: history)
+response = client.responses.create(model: model, input: compacted.deep_to_h.fetch(:output))
+```
+
+The same pattern applies to `client.beta.responses`. Treat unknown future item types conservatively and retain their fields when forwarding the history. This change does not publish a new package or change the server's wire format.

@@ -179,55 +179,6 @@ module OpenAI
         raise ArgumentError, "Invalid Realtime Translation client event.", cause: nil
       end
 
-      # A merged string-keyed JSON event and symbol-keyed override must not
-      # silently change the command or the configuration that is sent.
-      private def validate_client_tree!(event, json_only: false)
-        visited = {}.compare_by_identity
-        pending = [event]
-        until pending.empty?
-          item = pending.pop
-          next if visited.key?(item)
-          visited[item] = true
-          case item
-          when OpenAI::Internal::Type::BaseModel
-            raise ArgumentError if json_only
-            validate_model_constants!(item)
-            pending << item.to_h
-          when Hash
-            names = {}
-            item.each do |key, value|
-              raise ArgumentError unless key.is_a?(String) || key.is_a?(Symbol)
-              name = key.to_s
-              raise ArgumentError if names.key?(name)
-              names[name] = true
-              pending << value
-            end
-
-          when Array
-            pending.concat(item)
-          when NilClass, TrueClass, FalseClass, String, Integer, Float, Symbol
-            next
-          else
-            raise ArgumentError if json_only
-          end
-        end
-      end
-
-      private def validate_model_constants!(model)
-        model.to_h.each do |name, actual|
-          key = name.is_a?(String) ? name.to_sym : name
-          field = model.class.known_fields[key]
-          next unless field
-          const = field.fetch(:const)
-          next if const == OpenAI::Internal::OMIT
-          if const.is_a?(Symbol)
-            raise ArgumentError unless (actual.is_a?(String) || actual.is_a?(Symbol)) && actual.to_s == const.to_s
-          elsif actual != const
-            raise ArgumentError
-          end
-        end
-      end
-
       private def parse_event(data)
         parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
         type = event_type(parsed, message: "Realtime Translation server event must be an object with a string type")

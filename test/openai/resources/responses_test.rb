@@ -170,7 +170,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           id: String,
           created_at: Integer,
           object: Symbol,
-          output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputItem]),
+          output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseItem]),
           usage: OpenAI::Responses::ResponseUsage
         }
     end
