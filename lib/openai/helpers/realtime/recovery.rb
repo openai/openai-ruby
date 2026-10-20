@@ -76,7 +76,7 @@ module OpenAI
 
       def take_pending_messages
         @mutex.synchronize do
-          raise state_error("Cannot remove queued events while flushing.") if @flushing
+          raise state_error("Cannot remove queued events while flushing."), cause: nil if @flushing
 
           messages = @pending
           @pending = []
@@ -106,7 +106,7 @@ module OpenAI
 
           if @state != :open || @flushing
             if @max_queue_bytes.zero? || @pending_bytes + [text.bytesize, 1].max > @max_queue_bytes
-              raise OpenAI::Errors::RealtimeQueueFullError
+              raise OpenAI::Errors::RealtimeQueueFullError, cause: nil
             end
 
             @pending << text.dup.freeze
@@ -124,13 +124,15 @@ module OpenAI
 
       def flush_pending
         if Fiber.current.equal?(@owner_fiber)
-          raise state_error("Queue flush interrupted; remaining events were not sent.") unless flush
+          raise state_error("Queue flush interrupted; remaining events were not sent."), cause: nil unless flush
           return nil
         end
 
         reply = @mutex.synchronize do
           raise @error, cause: nil if @error
-          raise state_error("Cannot flush until the replacement connection is ready.") unless @state == :open
+          unless @state == :open
+            raise state_error("Cannot flush until the replacement connection is ready."), cause: nil
+          end
 
           register(:flush).tap { @commands << [:flush, nil, _1, @generation] }
         end
@@ -348,7 +350,11 @@ module OpenAI
               uncertain_message: @inflight
             )
           elsif @state != :closed
-            @state = :recovering
+            if recoverable?(e) && @attempts < @max_attempts
+              @state = :recovering
+            else
+              fail_locked("Realtime reconnect stopped; the connection could not be recovered.")
+            end
           end
         end
 

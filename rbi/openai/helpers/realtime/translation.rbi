@@ -36,11 +36,6 @@ module OpenAI
   module Models
     module Realtime
       class UnknownTranslationServerEvent < OpenAI::Realtime::UnknownServerEvent
-        sig { returns(String) }
-        def inspect
-        end
-
-        alias to_s inspect
       end
 
       class TranslationConnection

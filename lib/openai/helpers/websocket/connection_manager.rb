@@ -73,7 +73,8 @@ module OpenAI
 
         rescue StandardError => error
           raise if @transport_error_factory.nil?
-          raise block_error, cause: block_error.cause if block_error
+          # Preserve the native chain, not an SDK accessor's explicit diagnostics.
+          raise block_error, cause: Exception.instance_method(:cause).bind_call(block_error) if block_error
           raise @transport_error_factory.call(url: request.fetch(:url), error: error), cause: nil
         end
       end

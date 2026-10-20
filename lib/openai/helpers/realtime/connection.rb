@@ -46,19 +46,28 @@ module OpenAI
           state: state
         )
         if (cause = coercion_error(state))
-          raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: cause)
+          raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: cause), cause: nil
         end
 
-        event
+        validate_wire_field_names!(event, parsed)
       rescue OpenAI::Errors::RealtimeProtocolError
         raise
       rescue StandardError => e
-        raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: e)
+        raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: e), cause: nil
       end
 
       # Validate, encode, and send a typed client event.
       def send_event(event)
         send_raw(encode_client_event(event))
+      end
+
+      private def write_text(text)
+        return super unless @recovery
+
+        # Recovery owns admission and uncertain sends; rejecting a full queue
+        # has not attempted a physical write and must leave this connection usable.
+        @recovery.write(text)
+        nil
       end
 
       # Whether automatic recovery is opening or preparing a replacement socket.

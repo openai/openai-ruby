@@ -468,6 +468,8 @@ Malformed known events raise `OpenAI::Errors::RealtimeProtocolError`. A valid
 JSON object with a newer, unknown event discriminator is returned as
 `OpenAI::Realtime::UnknownServerEvent`, preserving its deeply frozen payload so
 an additive service event does not terminate an otherwise healthy session.
+Its `inspect` and `to_s` output omits remote values. Access `type`, `data`, or
+`to_h` explicitly when those values are needed.
 
 ```ruby
 connection.each do |event|
@@ -494,6 +496,11 @@ Connection and protocol failures use distinct error classes:
   `cause`, and a failed upgrade's `http_status` when available.
 - `OpenAI::Errors::RealtimeProtocolError` exposes the invalid raw `data` and
   original `cause`.
+
+For these connection and protocol errors, default rendering, including
+`full_message`, suppresses native cause chains, including exceptions active when
+an SDK state check fails. Explicit `data` and `cause` access can expose remote
+payloads or credentials; sanitize these values before logging or sharing them.
 
 The configured request timeout bounds WebSocket negotiation. It does not become
 an idle-session deadline after the connection is established.

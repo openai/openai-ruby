@@ -114,11 +114,12 @@ module OpenAI
         end
 
         state = OpenAI::Internal::Type::Converter.new_coerce_state
-        OpenAI::Internal::Type::Converter.coerce(
+        event = OpenAI::Internal::Type::Converter.coerce(
           OpenAI::Responses::ResponsesServerEvent,
           parsed,
           state: state
         )
+        validate_wire_field_names!(event, parsed)
       rescue OpenAI::Errors::ResponsesProtocolError
         raise
       rescue StandardError

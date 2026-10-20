@@ -100,6 +100,7 @@ module OpenAI
         end
 
         event = coerce_event(server_event_type, parsed)
+        validate_wire_field_names!(event, parsed)
         validate_event_tree!(event)
         event
       rescue StandardError, SystemStackError

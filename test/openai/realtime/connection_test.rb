@@ -5,6 +5,22 @@ require_relative "connection_test_support"
 class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
   include OpenAI::Test::RealtimeConnectionTestSupport
 
+  def test_nested_wire_alias_cannot_replace_a_typed_audio_format
+    audio = {format: {type: "audio/pcm", rate: 24_000}, future_field: {format_: "keep"}}
+    session = {type: "realtime", id: "s", model: "gpt-realtime", audio: {input: audio}}
+    payload = {type: "session.created", event_id: "e", session: session}
+    bad = {**payload, session: {**session, audio: {input: {**audio, format_: {type: "other"}}}}}
+    socket = FakeSocket.new(JSON.generate(bad), JSON.generate(payload))
+    client.realtime.connect(model: "gpt-realtime", transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(OpenAI::Errors::RealtimeProtocolError) { connection.receive }
+      refute(connection.closed?)
+      input = connection.receive.session.audio.input
+      assert_instance_of(OpenAI::Realtime::RealtimeAudioFormats::AudioPCM, input.format_)
+      assert_equal(24_000, input.format_.rate)
+      assert_equal({format_: "keep"}, input.to_h.fetch(:future_field))
+    end
+  end
+
   class FailingCloseSocket < FakeSocket
     def close(code: 1000, reason: "")
       super
@@ -663,6 +679,22 @@ class OpenAI::Test::RealtimeConnectionTest < Minitest::Test
     end
 
     assert_equal(Encoding::UTF_8, socket.writes.fetch(0).encoding)
+  end
+
+  def test_failed_write_preserves_its_error_and_retires_the_connection
+    socket = FakeSocket.new
+    failure = IOError.new("synthetic write failure")
+    socket.stub(:write, -> (_) { raise failure }) do
+      client.realtime.connect(model: "gpt-realtime-2.1", transport: FakeTransport.new(socket)) do |connection|
+        assert_same(failure, assert_raises(IOError) { connection.response.cancel })
+        assert_predicate(connection, :closed?)
+        assert_raises(OpenAI::Errors::RealtimeConnectionError) { connection.response.cancel }
+        assert_raises(OpenAI::Errors::RealtimeConnectionError) { connection.receive }
+      end
+    end
+
+    assert_predicate(socket, :aborted?)
+    assert_nil(socket.close_args)
   end
 
   def test_block_exit_closes_normally_and_exceptional_exit_aborts
