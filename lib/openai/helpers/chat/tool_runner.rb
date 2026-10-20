@@ -47,6 +47,7 @@ module OpenAI
             raise ArgumentError, "Tool definitions and tool_handlers must have matching, unique string names"
           end
 
+          @allowed_names = allowed_tool_names(names)
           @seen = {}
           @params.fetch(:messages).each do |message|
             Array(message[:tool_calls]).each { |call| @seen[call[:id]] = true }
@@ -56,9 +57,7 @@ module OpenAI
         # @api private
         def run
           @max_rounds.times do |round|
-            completion = @completions.create(
-              @params.merge(request_options: @request_options.child("chat.tool_runner.round.#{round}"))
-            )
+            completion = create_completion(round)
             unless completion.choices.length == 1
               raise Error, "run_tools requires exactly one completion choice"
             end
@@ -96,7 +95,7 @@ module OpenAI
             # Preserve the caller's allowed-tools restriction, when supplied.
             choice = @params[:tool_choice]
             @params[:tool_choice] = if choice.is_a?(Hash) && choice[:type].to_s == "allowed_tools"
-              choice.merge(mode: :auto)
+              choice.merge(allowed_tools: choice.fetch(:allowed_tools).merge(mode: :auto))
             else
               :auto
             end
@@ -104,6 +103,39 @@ module OpenAI
         end
 
         private
+
+        def create_completion(round)
+          @completions.create(
+            @params.merge(request_options: @request_options.child("chat.tool_runner.round.#{round}"))
+          )
+        rescue KeyError, NoMethodError, TypeError, OpenAI::Errors::ConversionError
+          # The create parser may reject malformed function payloads before the
+          # runner can inspect them. Keep this rescue outside callback execution.
+          raise Error, "Malformed Chat Completion response", cause: nil
+        end
+
+        def allowed_tool_names(names)
+          choice = @params[:tool_choice]
+          return names unless choice.is_a?(Hash) && (choice[:type] || choice["type"]).to_s == "allowed_tools"
+
+          choice = OpenAI::Chat::ChatCompletionAllowedToolChoice.dump(choice, state: {can_retry: true})
+          @params[:tool_choice] = choice
+          allowed = choice[:allowed_tools]
+          unless allowed.is_a?(Hash) && allowed[:tools].is_a?(Array)
+            raise ArgumentError, "allowed_tools must include a tools array"
+          end
+
+          allowed[:tools].map do |tool|
+            type = tool[:type] || tool["type"] if tool.is_a?(Hash)
+            function = tool[:function] || tool["function"] if tool.is_a?(Hash)
+            name = function[:name] || function["name"] if function.is_a?(Hash)
+            unless type.to_s == "function" && names.include?(name)
+              raise ArgumentError, "allowed_tools must reference registered function tools"
+            end
+
+            name
+          end
+        end
 
         def validate_options(options)
           unless @params[:n].nil? || @params[:n] == 1
@@ -136,11 +168,19 @@ module OpenAI
             raise Error, "Expected a function tool call with a new, nonempty ID"
           end
 
-          handler = @handlers[call.function.name]
+          function = call.function
+          unless function.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall::Function)
+            raise Error, "Expected a function tool payload"
+          end
+
+          handler = @handlers[function.name]
           raise Error, "Model requested an unregistered function tool" unless handler
+          unless @allowed_names.include?(function.name)
+            raise Error, "Model requested a function tool that is not allowed"
+          end
 
           arguments = begin
-            JSON.parse(call.function.arguments)
+            JSON.parse(function.arguments)
           rescue JSON::ParserError, TypeError
             raise Error, "Function arguments must be a valid JSON object", cause: nil
           end
@@ -151,9 +191,11 @@ module OpenAI
           wire_call = {
             id: call.id,
             type: :function,
-            function: {name: call.function.name, arguments: call.function.arguments}
+            function: {name: function.name, arguments: function.arguments}
           }
           [wire_call, handler, arguments]
+        rescue OpenAI::Errors::ConversionError
+          raise Error, "Malformed function tool payload", cause: nil
         end
       end
     end

@@ -118,19 +118,100 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
   end
 
   def test_allowed_tools_restriction_survives_continuation
-    transport, client = client_for(completion(calls: [call("a")]), completion)
-    run_tools(
-      client,
-      tool_choice: {
-        type: :allowed_tools,
-        mode: :required,
-        tools: [{type: :function, function: {name: "lookup"}}]
+    choices = [
+      {type: :allowed_tools, allowed_tools: {mode: :required, tools: [{type: :function, function: {name: "lookup"}}]}},
+      OpenAI::Chat::ChatCompletionAllowedToolChoice.new(
+        allowed_tools: OpenAI::Chat::ChatCompletionAllowedTools.new(
+          mode: :required,
+          tools: [{type: :function, function: {name: "lookup"}}]
+        )
+      ),
+      {
+        "type" => "allowed_tools",
+        "allowed_tools" => {
+          "mode" => "required",
+          "tools" => [{"type" => "function", "function" => {"name" => "lookup"}}]
+        }
       }
+    ]
+    choices.each do |choice|
+      transport, client = client_for(completion(calls: [call("a")]), completion)
+      original = JSON.generate(choice)
+      run_tools(client, tool_choice: choice)
+      first = transport.requests.first[:body].fetch("tool_choice")
+      followup = transport.requests.last[:body].fetch("tool_choice")
+      assert_equal("required", first.dig("allowed_tools", "mode"))
+      assert_equal(first.merge("allowed_tools" => first.fetch("allowed_tools").merge("mode" => "auto")), followup)
+      refute(followup.key?("mode"))
+      assert_equal(original, JSON.generate(choice))
+    end
+  end
+
+  def test_allowed_tools_subset_rejects_entire_batch_before_callbacks
+    [:auto, :required].each do |mode|
+      transport, client = client_for(completion(calls: [call("a"), call("b", name: "excluded")]))
+      definitions = [tool, tool.merge(function: tool.fetch(:function).merge(name: "excluded"))]
+      error = assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+        run_tools(
+          client,
+          tools: definitions,
+          tool_choice: {
+            type: :allowed_tools,
+            allowed_tools: {mode: mode, tools: [{type: :function, function: {name: "lookup"}}]}
+          },
+          tool_handlers: {
+            "lookup" => -> (_) { flunk("Allowed callback ran before the whole batch was validated") },
+            "excluded" => -> (_) { flunk("Excluded callback ran") }
+          }
+        )
+      end
+
+      assert_includes(error.message, "not allowed")
+      assert_equal(1, transport.requests.length)
+    end
+  end
+
+  def test_allowed_tools_subset_remains_enforced_on_later_rounds
+    transport, client = client_for(
+      completion(calls: [call("a")]),
+      completion(calls: [call("b"), call("c", name: "excluded")])
     )
-    choice = transport.requests.last[:body].fetch("tool_choice")
-    assert_equal("allowed_tools", choice["type"])
-    assert_equal("auto", choice["mode"])
-    assert_equal("lookup", choice["tools"].first["function"]["name"])
+    executions = 0
+    definitions = [tool, tool.merge(function: tool.fetch(:function).merge(name: "excluded"))]
+    assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+      run_tools(
+        client,
+        tools: definitions,
+        tool_choice: {
+          type: :allowed_tools,
+          allowed_tools: {mode: :required, tools: [{type: :function, function: {name: "lookup"}}]}
+        },
+        tool_handlers: {
+          "lookup" => -> (_) { executions += 1 },
+          "excluded" => -> (_) { flunk("Excluded callback ran") }
+        }
+      )
+    end
+
+    assert_equal(1, executions)
+    assert_equal(2, transport.requests.length)
+  end
+
+  def test_invalid_allowed_tools_configurations_fail_before_network
+    [
+      nil,
+      {mode: :auto},
+      {mode: :auto, tools: [nil]},
+      {mode: :auto, tools: [{type: :custom, custom: {name: "lookup"}}]},
+      {mode: :auto, tools: [{type: :function, function: {name: "unregistered"}}]}
+    ].each do |allowed|
+      transport, client = client_for
+      assert_raises(ArgumentError) do
+        run_tools(client, tool_choice: {type: :allowed_tools, allowed_tools: allowed})
+      end
+
+      assert_empty(transport.requests)
+    end
   end
 
   def test_entire_batch_validates_before_callbacks
@@ -142,6 +223,26 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
 
       refute_includes(error.message, "secret")
       assert_equal(1, transport.requests.length)
+    end
+  end
+
+  def test_malformed_function_payloads_raise_runner_error_before_any_callback
+    invalid_calls = [
+      call("b").except(:function),
+      call("b").merge(function: nil),
+      call("b").merge(function: "synthetic-private"),
+      call("b").merge(function: {}),
+      call("b").merge(function: {name: 123, arguments: "{}"}),
+      call("b").merge(function: {name: "lookup", arguments: {city: "synthetic-private"}})
+    ]
+    invalid_calls.each do |invalid|
+      transport, client = client_for(completion(calls: [call("a"), invalid]))
+      error = assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+        run_tools(client, tool_handlers: {"lookup" => -> (_) { flunk("Malformed batch dispatched") }})
+      end
+
+      assert_equal(1, transport.requests.length)
+      refute_includes(error.full_message, "synthetic-private")
     end
   end
 
@@ -229,6 +330,17 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
     assert_equal(1, executions)
     assert_equal(3, transport.requests.length)
     assert_equal(transport.requests[1][:body], transport.requests[2][:body])
+  end
+
+  def test_callback_type_errors_are_not_wrapped_as_malformed_responses
+    transport, client = client_for(completion(calls: [call("a")]))
+    failure = TypeError.new("synthetic callback failure")
+    raised = assert_raises(TypeError) do
+      run_tools(client, tool_handlers: {"lookup" => -> (_) { raise failure }})
+    end
+
+    assert_same(failure, raised)
+    assert_equal(1, transport.requests.length)
   end
 
   def test_idempotency_keys_are_distinct_per_round_and_stable_on_retry

@@ -11,6 +11,24 @@ module OpenAI
 
         class MaxRoundsError < Error
         end
+
+        # @api private
+        sig do
+          params(
+            completions: OpenAI::Resources::Chat::Completions,
+            params: T::Hash[Symbol, T.untyped],
+            tool_handlers: T::Hash[String, Handler],
+            max_rounds: Integer
+          )
+            .void
+        end
+        def initialize(completions:, params:, tool_handlers:, max_rounds:)
+        end
+
+        # @api private
+        sig { returns(OpenAI::Chat::ChatCompletion) }
+        def run
+        end
       end
     end
   end

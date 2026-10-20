@@ -74,8 +74,9 @@ Handlers receive a parsed JSON object with **string keys**; validate application
 requirements in your callback. String results are sent unchanged; other results
 are JSON encoded. Callbacks execute sequentially, including when the model requests
 multiple tools in one response. Every advertised tool must have a matching handler.
-The runner validates each batch before invoking callbacks and rejects repeated call
-IDs. It does not mutate your input messages or append the conversation to them.
+The runner validates each batch before invoking callbacks, rejects repeated call
+IDs, and enforces the `tool_choice.allowed_tools.tools` subset on every round. It
+does not mutate your input messages or append the conversation to them.
 
 This helper is non-streaming and supports one completion choice and function tools.
 `max_rounds` limits API calls, including the final answer; it raises
