@@ -11,6 +11,10 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
 
   Audio = OpenAI::LocalAudio
 
+  module ShortDiagnosticReads
+    def read_nonblock(size, **options) = super([size, 512].min, **options)
+  end
+
   def with_executable(name, body)
     Dir.mktmpdir("openai-audio-test") do |directory|
       path = File.join(directory, name)
@@ -40,6 +44,45 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
       assert_nil(Audio.play(source, timeout: 2))
       refute(source.closed?)
       assert(source.eof?)
+    end
+  end
+
+  def test_noisy_player_consumes_large_input_without_a_false_timeout
+    pipe = IO.method(:pipe)
+    short_reads = lambda do |**options|
+      pipe.call(**options).tap { |reader, _| reader.singleton_class.prepend(ShortDiagnosticReads) }
+    end
+
+    IO.stub(:pipe, short_reads) do
+      with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; STDIN.read") do
+        source = StringIO.new("audio" * 100_000)
+        error = assert_raises(Audio::PlaybackError) { Audio.play(source, timeout: 10) }
+        assert_equal("Audio playback failed.", error.message)
+        assert(source.eof?)
+        refute(source.closed?)
+      end
+    end
+  end
+
+  def test_noisy_player_exits_while_caller_source_remains_open
+    pipe = IO.method(:pipe)
+    short_reads = lambda do |**options|
+      pipe.call(**options).tap { |reader, _| reader.singleton_class.prepend(ShortDiagnosticReads) }
+    end
+
+    reader, writer = IO.pipe
+    begin
+      IO.stub(:pipe, short_reads) do
+        with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; exit 1") do
+          assert_raises(Audio::PlaybackError) { Audio.play(reader, timeout: 10) }
+        end
+      end
+
+      refute(reader.closed?)
+      refute(writer.closed?)
+    ensure
+      reader.close
+      writer.close
     end
   end
 
@@ -143,12 +186,20 @@ class OpenAI::Test::LocalAudioTest < Minitest::Test
   end
 
   def test_noisy_player_diagnostics_do_not_block_feeding
-    with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; STDIN.read") do
-      error = assert_raises(Audio::PlaybackError) do
-        Audio.play(StringIO.new("audio"), timeout: 10)
-      end
+    # Pipes can return short chunks even when the child writes large blocks.
+    pipe = IO.method(:pipe)
+    short_reads = lambda do |**options|
+      pipe.call(**options).tap { |reader, _writer| reader.singleton_class.prepend(ShortDiagnosticReads) }
+    end
 
-      assert_equal("Audio playback failed.", error.message)
+    IO.stub(:pipe, short_reads) do
+      with_executable("ffplay", "128.times { STDERR.write('x' * 65_536) }; STDIN.read") do
+        error = assert_raises(Audio::PlaybackError) do
+          Audio.play(StringIO.new("audio"), timeout: 10)
+        end
+
+        assert_equal("Audio playback failed.", error.message)
+      end
     end
   end
 

@@ -52,6 +52,26 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
     end
   end
 
+  class GatedCleanupTransport < Transport
+    attr_reader :cleanup_started, :release_cleanup
+
+    def initialize(*steps)
+      super
+      @cleanup_started = Queue.new
+      @release_cleanup = Queue.new
+    end
+
+    def open(**request, &block)
+      first = @requests.empty?
+      super(**request, &block)
+    ensure
+      if first
+        @cleanup_started << true
+        @release_cleanup.pop
+      end
+    end
+  end
+
   class ChildTaskTransport < Transport
     def open(**request, &block)
       Async::Task.current.async { super(**request, &block) }.wait
@@ -114,6 +134,35 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
     end
   end
 
+  def test_permanent_receive_failure_settles_before_transport_cleanup
+    assert_failure_before_cleanup(disconnected(1008), max_reconnect_attempts: 3)
+  end
+
+  def test_exhausted_receive_failure_settles_before_transport_cleanup
+    assert_failure_before_cleanup(disconnected, max_reconnect_attempts: 0)
+  end
+
+  def test_retry_waits_for_transport_cleanup
+    transport = GatedCleanupTransport.new(Socket.new(disconnected), Socket.new(text_delta("recovered")))
+    received = Queue.new
+    worker = Thread.new { connect(transport) { |connection| received << connection.receive.delta } }
+    begin
+      assert(transport.cleanup_started.pop(timeout: 3))
+      assert_equal(1, transport.requests.length)
+      assert_nil(received.pop(timeout: 0.1))
+      transport.release_cleanup << true
+      assert_equal("recovered", received.pop(timeout: 3))
+    ensure
+      transport.release_cleanup << true
+      worker.join(3)
+      refute_predicate(worker, :alive?)
+      worker.value unless worker.alive?
+    end
+
+    assert_equal(2, transport.requests.length)
+    assert_equal(1, transport.max_active)
+  end
+
   def test_retry_budget_bounds_flapping_connections
     sockets = Array.new(4) { Socket.new(disconnected) }
     transport = Transport.new(*sockets)
@@ -170,7 +219,7 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
     replacement = Socket.new(text_delta("acknowledged"), text_delta("ready"))
     transport = ChildTaskTransport.new(Socket.new(disconnected), replacement)
     callback = lambda do |connection|
-      connection.session.update(type: :realtime, instructions: "restored")
+      assert_nil(connection.session.update(type: :realtime, instructions: "restored"))
       assert_equal("acknowledged", connection.receive.delta)
       connection.flush_pending
     end
@@ -338,9 +387,41 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
       assert_equal(text, JSON.parse(first.writes.fetch(0)).fetch("response").fetch("instructions"))
       receiver = Async::Task.current.async { connection.receive }
       started.pop
-      assert_raises(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeReconnectError) { connection.flush_pending }
       connection.close
       receiver.wait
+    end
+  end
+
+  def test_queue_rejection_does_not_retire_the_recovered_connection
+    encoded = JSON.generate(type: "response.cancel")
+    [0, encoded.bytesize].each do |budget|
+      started = Queue.new
+      gate = Queue.new
+      replacement = Socket.new(text_delta("ready"), text_delta("still usable"))
+      transport = Transport.new(
+        Socket.new(disconnected),
+        -> {
+          started << true
+          gate.pop
+        }
+      )
+      connect(transport, max_queue_bytes: budget) do |connection|
+        receiver = Async::Task.current.async { connection.receive }
+        started.pop
+        connection.response.cancel if budget.positive?
+        assert_raises(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
+        refute_predicate(connection, :closed?)
+        gate << replacement
+        assert_equal("ready", receiver.wait.delta)
+        connection.flush_pending
+        connection.response.cancel
+        assert_equal("still usable", connection.receive.delta)
+        assert_empty(connection.pending_messages)
+      end
+
+      assert_equal([encoded] * (budget.positive? ? 2 : 1), replacement.writes)
     end
   end
 
@@ -730,8 +811,8 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
       receiver.wait
       flusher = Async::Task.current.async { connection.flush_pending }
       writing.pop
-      assert_raises(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
-      assert_raises(OpenAI::Errors::RealtimeReconnectError) { connection.take_pending_messages }
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeQueueFullError) { connection.response.cancel }
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeReconnectError) { connection.take_pending_messages }
       assert_equal([encoded], connection.pending_messages)
       write_gate << true
       flusher.wait
@@ -771,8 +852,52 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
     assert_includes(error.unsent_messages.first, "private retained prompt")
   end
 
+  private def assert_failure_before_cleanup(error, max_reconnect_attempts:)
+    socket = Socket.new(error)
+    transport = GatedCleanupTransport.new(socket)
+    received = Queue.new
+    worker = Thread.new do
+      connect(transport, max_reconnect_attempts: max_reconnect_attempts) do |connection|
+        begin
+          connection.receive
+        rescue OpenAI::Errors::RealtimeReconnectError => failure
+          received << failure
+        end
+      end
+
+    rescue OpenAI::Errors::RealtimeReconnectError
+      # The enclosing block repeats the same terminal recovery failure.
+      nil
+    end
+
+    begin
+      assert(transport.cleanup_started.pop(timeout: 3))
+      assert_predicate(socket, :aborted?)
+      assert_instance_of(OpenAI::Errors::RealtimeReconnectError, received.pop(timeout: 0.2))
+      assert_equal(1, transport.requests.length)
+    ensure
+      transport.release_cleanup << true
+      worker.join(3)
+      refute_predicate(worker, :alive?)
+      worker.value unless worker.alive?
+    end
+  end
+
   private def connect(transport, **options, &block)
     client.realtime.connect(model: "test-model", transport: transport, reconnect: true, **options, &block)
+  end
+
+  private def assert_no_ambient_cause(error_class)
+    error = assert_raises(error_class) do
+      begin
+        raise IOError, "synthetic_ambient_recovery_marker"
+      rescue IOError
+        yield
+      end
+    end
+
+    assert_nil(error.cause)
+    refute_includes(error.full_message(highlight: false), "synthetic_ambient_recovery_marker")
   end
 
   private def connection_error(cause)

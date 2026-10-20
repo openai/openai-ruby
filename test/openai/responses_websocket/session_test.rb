@@ -1607,7 +1607,15 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
           else
             Async::WebSocket::Adapters::HTTP.open(request) do |socket|
               handler.call(socket, request)
-              assert_nil(socket.read) if wait_for_close
+              if wait_for_close
+                begin
+                  assert_nil(socket.read)
+                rescue IO::Stream::ConnectionResetError
+                  # An intentional session abort can reset TCP with unread frames.
+                  nil
+                end
+              end
+
             rescue EOFError, Protocol::WebSocket::ClosedError
               # The session aborts its owned reader when its block exits.
               nil

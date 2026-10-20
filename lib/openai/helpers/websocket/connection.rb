@@ -28,20 +28,13 @@ module OpenAI
       end
 
       private def write_text(text)
-        complete = false
         super
-        complete = true
-        nil
       rescue StandardError
         raise transport_error, cause: nil
-      ensure
-        # Also retire a possibly buffered write when cancellation bypasses
-        # StandardError, before another sender or normal cleanup can flush it.
-        @poisoned = true unless complete
       end
 
       private def read_raw_message
-        raise connection_error(failed_read_message) if @poisoned
+        raise connection_error(failed_read_message), cause: nil if @poisoned
         return nil if @closed
         text = super
         @closed = text.nil?
@@ -73,6 +66,7 @@ module OpenAI
       def initialize(socket:, url:)
         @socket = socket
         @url = url
+        @poisoned = false
       end
 
       # Yield server events until the remote peer closes the connection.
@@ -100,6 +94,8 @@ module OpenAI
       def receive_raw = read_raw_message
 
       private def read_raw_message
+        raise connection_error("Cannot read from a failed WebSocket."), cause: nil if @poisoned
+
         message = @socket.read
         message&.to_str
       end
@@ -108,7 +104,7 @@ module OpenAI
       #
       # @api private
       def send_raw(data)
-        raise connection_error(closed_send_message) if closed?
+        raise connection_error(closed_send_message), cause: nil if closed?
 
         text = data.dup
         text.force_encoding(Encoding::UTF_8) if text.encoding == Encoding::BINARY
@@ -120,6 +116,7 @@ module OpenAI
 
       # Close the connection.
       def close(code: 1000, reason: "")
+        return abort if @poisoned
         return if socket_closed?
 
         @socket.close(code: code, reason: reason)
@@ -137,7 +134,7 @@ module OpenAI
       end
 
       # @return [Boolean]
-      def closed? = socket_closed?
+      def closed? = @poisoned || socket_closed?
 
       private def parse_event(_data)
         raise NotImplementedError
@@ -154,8 +151,22 @@ module OpenAI
       private def socket_closed? = @socket.closed?
 
       private def write_text(text)
+        complete = false
         @socket.write(text)
+        complete = true
         nil
+      ensure
+        unless complete
+          # Retire the physical socket immediately: an already-running reader
+          # can otherwise flush buffered application bytes while replying to close.
+          @poisoned = true
+          begin
+            @socket.abort
+          rescue StandardError
+            # Preserve the original write failure or cancellation.
+            nil
+          end
+        end
       end
     end
   end

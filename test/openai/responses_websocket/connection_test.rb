@@ -5,6 +5,28 @@ require_relative "connection_test_support"
 class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
   include OpenAI::Test::ResponsesWebSocketConnectionTestSupport
 
+  def test_nested_wire_alias_cannot_replace_a_typed_tool_caller
+    item = {
+      type: "function_call",
+      id: "fc_1",
+      name: "f",
+      arguments: "{}",
+      call_id: "call_1",
+      caller: {type: "direct"},
+      future_field: {caller_: "keep"}
+    }
+    payload = {type: "response.output_item.added", sequence_number: 1, output_index: 0, item: item}
+    bad = {**payload, item: {**item, caller_: {type: "other"}}}
+    socket = FakeSocket.new(JSON.generate(bad), JSON.generate(payload))
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(OpenAI::Errors::ResponsesProtocolError) { connection.receive }
+      refute(connection.closed?)
+      received = connection.receive.item
+      assert_instance_of(OpenAI::Responses::ResponseFunctionToolCall::Caller::Direct, received.caller_)
+      assert_equal({caller_: "keep"}, received.to_h.fetch(:future_field))
+    end
+  end
+
   class SerializerMetadataProbe < OpenAI::Internal::Type::BaseModel
     required :type, const: :future
     optional :ruby_name, String, api_name: :apiName

@@ -171,7 +171,9 @@ module OpenAI
           @connection.read
         rescue StandardError => e
           error = @error_factory.call(url: @url, cause: e)
-          raise error, cause: error.cause
+          # The factory retains explicit diagnostics; do not render them as a
+          # native exception chain, which can include payloads or credentials.
+          raise error, cause: nil
         end
 
         def write(message)
@@ -179,14 +181,14 @@ module OpenAI
           @connection.flush
         rescue StandardError => e
           error = @error_factory.call(url: @url, cause: e)
-          raise error, cause: error.cause
+          raise error, cause: nil
         end
 
         def close(code: 1000, reason: "")
           @connection.close(code, reason)
         rescue StandardError => e
           error = @error_factory.call(url: @url, cause: e)
-          raise error, cause: error.cause
+          raise error, cause: nil
         end
 
         # @api private
@@ -197,7 +199,7 @@ module OpenAI
           @aborted = true
         rescue StandardError => e
           error = @error_factory.call(url: @url, cause: e)
-          raise error, cause: error.cause
+          raise error, cause: nil
         end
 
         # @api private
@@ -302,7 +304,7 @@ module OpenAI
         raise if e.equal?(block_error)
 
         error = @error_factory.call(url: url, cause: e, http_status: handshake_status(e))
-        raise error, cause: error.cause
+        raise error, cause: nil
       end
 
       private def negotiation_options(_endpoint_options) = {}
@@ -373,7 +375,7 @@ module OpenAI
           "#{@product_name} WebSockets require the `async-websocket` gem. " \
             "Add `gem \"async-websocket\"` to your Gemfile."
         error = @error_factory.call(url: url, message: message, cause: e)
-        raise error, cause: error.cause
+        raise error, cause: nil
       end
 
       private def authority(url, include_default_port: false)

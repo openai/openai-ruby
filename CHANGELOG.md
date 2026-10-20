@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Bug Fixes
+
+* **realtime:** abort connections after failed or canceled WebSocket writes so
+  buffered application data cannot be flushed later. On a poisoned connection,
+  `close(code:, reason:)` aborts without a close handshake; the supplied code and
+  reason are not sent. ([#914](https://github.com/openai/openai-ruby/pull/914))
+
 ## [0.106.0](https://github.com/openai/openai-ruby/compare/v0.105.0...v0.106.0) (2026-10-17)
 
 
