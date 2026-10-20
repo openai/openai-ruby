@@ -29,26 +29,31 @@ module OpenAI
         end
 
         # @api private
-        # Restrict malformed-response handling to parsing, preserving transport errors.
+        # Buffer through the normal transport, then decode inside the runner's
+        # error boundary. Transport exceptions remain outside that boundary.
         def create_for_tool_runner(params)
           parsed, options = OpenAI::Chat::CompletionCreateParams.dump_request(params)
           model, tool_models = get_structured_output_models(parsed)
           parse = OpenAI::Helpers::StructuredOutput::ChatCompletionParser.build_unwrap(model, tool_models)
-          unwrap = lambda do |raw|
-            parse.call(raw)
-          rescue KeyError, NoMethodError, TypeError, OpenAI::Errors::ConversionError
-            raise OpenAI::Helpers::Chat::ToolRunner::Error, "Malformed Chat Completion response", cause: nil
-          end
-
-          @client.request(
+          response = @client.request(
             method: :post,
             path: "chat/completions",
             body: parsed,
-            unwrap: unwrap,
-            model: OpenAI::Chat::ChatCompletion,
+            model: StringIO,
             security: {bearer_auth: true},
             options: options
           )
+
+          begin
+            raw = JSON.parse(response.string, symbolize_names: true)
+            completion = OpenAI::Internal::Type::Converter.coerce(OpenAI::Chat::ChatCompletion, parse.call(raw))
+            completion._set_last_response(response.last_response)
+            completion
+          rescue JSON::ParserError, KeyError, NoMethodError, TypeError, OpenAI::Errors::ConversionError
+            raise OpenAI::Helpers::Chat::ToolRunner::Error, "Malformed Chat Completion response", cause: nil
+          ensure
+            response.close
+          end
         end
 
         def stream(params)

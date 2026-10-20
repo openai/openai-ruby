@@ -25,6 +25,7 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
       response = @responses.shift
       raise "Unexpected request" unless response
       raise response if response.is_a?(Exception)
+      return response if response.is_a?(OpenAI::HTTPClient::Response)
 
       status, body = response.is_a?(Array) ? response : [200, response]
       OpenAI::HTTPClient::Response.new(
@@ -343,6 +344,104 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
     end
   end
 
+  def test_missing_or_mistyped_assistant_text_fields_never_dispatch_or_return
+    [:content, :refusal].each do |field|
+      [nil, [call("a")]].each do |calls|
+        [:missing, 123, false, {private: "synthetic-private"}, []].each do |value|
+          response = completion(calls: calls)
+          message = response[:choices].first[:message]
+          if value == :missing
+            message.delete(field)
+          else
+            message[field] = value
+          end
+
+          transport, client = client_for(response)
+          error = assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+            run_tools(client, tool_handlers: {"lookup" => -> (_) { flunk("Malformed assistant message dispatched") }})
+          end
+
+          assert_equal(1, transport.requests.length)
+          refute_includes(error.full_message, "synthetic-private")
+        end
+      end
+    end
+  end
+
+  def test_raw_tool_call_identity_is_validated_before_any_callback
+    invalid_calls = [
+      call("b").except(:type),
+      call("b").merge(type: nil),
+      call("b").merge(type: "other"),
+      call(123),
+      call("b", name: 123)
+    ]
+    invalid_calls.each do |invalid|
+      transport, client = client_for(completion(calls: [call("a"), invalid]))
+      assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+        run_tools(
+          client,
+          tools: [tool, tool.merge(function: tool.fetch(:function).merge(name: "123"))],
+          tool_handlers: {
+            "lookup" => -> (_) { flunk("Malformed batch dispatched") },
+            "123" => -> (_) { flunk("Coerced function name dispatched") }
+          }
+        )
+      end
+
+      assert_equal(1, transport.requests.length)
+    end
+  end
+
+  def test_invalid_json_responses_are_sanitized
+    ["", "{\"synthetic-private\":", "synthetic-private", "{\"choices\":[{\"message\":{\"content\":\"synthetic-private"].each do |
+        body
+      |
+      response = OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json"},
+        body: body
+      )
+      transport, = client_for(response)
+      log = StringIO.new
+      client = OpenAI::Client.new(
+        api_key: "synthetic-key",
+        http_client: transport,
+        max_retries: 0,
+        logger: Logger.new(log),
+        log_level: :debug
+      )
+      error = assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+        run_tools(client, tool_handlers: {"lookup" => -> (_) { flunk("Malformed JSON dispatched") }})
+      end
+
+      assert_nil(error.cause)
+      refute_includes(error.full_message, "synthetic-private")
+      refute_includes(log.string, "synthetic-private")
+      assert_equal(1, transport.requests.length)
+    end
+  end
+
+  def test_response_metadata_and_raw_body_opt_in_are_preserved
+    [false, true].each do |include_raw_body|
+      body = JSON.pretty_generate(completion)
+      response = OpenAI::HTTPClient::Response.new(
+        status: 200,
+        headers: {"content-type" => "application/json", "x-request-id" => "req_synthetic"},
+        body: body
+      )
+      _, client = client_for(response)
+      result = run_tools(client, request_options: {include_raw_body: include_raw_body})
+      assert_equal(200, result.last_response.status)
+      assert_equal("req_synthetic", result.last_response.request_id)
+      if include_raw_body
+        assert_equal(body, result.last_response.body)
+      else
+        assert_nil(result.last_response.body)
+      end
+    end
+  end
+
   def test_arguments_must_be_json_objects_and_parse_errors_do_not_leak_content
     ["[1]", "null", "\"synthetic-private\"", "{\"synthetic-private\":"].each do |arguments|
       _, client = client_for(completion(calls: [call("a", arguments: arguments)]))
@@ -441,7 +540,7 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
   end
 
   def test_custom_transport_errors_propagate_unchanged
-    [KeyError, NoMethodError, TypeError].each do |error_class|
+    [KeyError, NoMethodError, TypeError, JSON::ParserError].each do |error_class|
       failure = error_class.new("synthetic transport failure")
       transport, client = client_for(failure)
       raised = assert_raises(error_class) { run_tools(client) }

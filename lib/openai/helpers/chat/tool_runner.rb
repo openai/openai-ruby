@@ -99,6 +99,13 @@ module OpenAI
             raise Error, "Expected an assistant message"
           end
 
+          [:content, :refusal].each do |field|
+            value = message[field]
+            unless message.to_h.key?(field) && (value.nil? || value.is_a?(String))
+              raise Error, "Expected assistant content and refusal to be strings or null"
+            end
+          end
+
           calls = message.tool_calls || []
           validate_tool_choice(calls)
           if choice.finish_reason == :stop && calls.empty? && message.function_call.nil?
@@ -199,14 +206,17 @@ module OpenAI
 
         def prepare(call)
           unless call.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall) &&
-              call.id.is_a?(String) &&
+              [:function, "function"].include?(call[:type]) &&
+              call[:id].is_a?(String) &&
               !call.id.empty? &&
               !@seen.key?(call.id)
             raise Error, "Expected a function tool call with a new, nonempty ID"
           end
 
           function = call.function
-          unless function.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall::Function)
+          unless function.is_a?(OpenAI::Chat::ChatCompletionMessageFunctionToolCall::Function) &&
+              function[:name].is_a?(String) &&
+              function[:arguments].is_a?(String)
             raise Error, "Expected a function tool payload"
           end
 
