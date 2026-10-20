@@ -24,6 +24,7 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
       @requests << {body: JSON.parse(request.body), headers: request.headers}
       response = @responses.shift
       raise "Unexpected request" unless response
+      raise response if response.is_a?(Exception)
 
       status, body = response.is_a?(Array) ? response : [200, response]
       OpenAI::HTTPClient::Response.new(
@@ -147,6 +148,65 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
     end
   end
 
+  def test_required_and_forced_choices_reject_final_answers_on_first_round
+    choices = [
+      :required,
+      "required",
+      {type: :function, function: {name: "lookup"}},
+      {"type" => "function", "function" => {"name" => "lookup"}},
+      OpenAI::Chat::ChatCompletionNamedToolChoice.new(function: {name: "lookup"}),
+      {type: :allowed_tools, allowed_tools: {mode: :required, tools: [{type: :function, function: {name: "lookup"}}]}}
+    ]
+    choices.each do |choice|
+      transport, client = client_for(completion)
+      assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+        run_tools(client, tool_choice: choice)
+      end
+
+      assert_equal(1, transport.requests.length)
+    end
+  end
+
+  def test_disabled_or_different_forced_tool_rejects_entire_batch_before_callbacks
+    choices = [
+      :none,
+      "none",
+      {type: :function, function: {name: "lookup"}},
+      {"type" => "function", "function" => {"name" => "lookup"}},
+      OpenAI::Chat::ChatCompletionNamedToolChoice.new(function: {name: "lookup"})
+    ]
+    choices.each do |choice|
+      transport, client = client_for(completion(calls: [call("a"), call("b", name: "other")]))
+      assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+        run_tools(
+          client,
+          tool_choice: choice,
+          tools: [tool, tool.merge(function: tool.fetch(:function).merge(name: "other"))],
+          tool_handlers: {
+            "lookup" => -> (_) { flunk("Callback ran before the whole batch was validated") },
+            "other" => -> (_) { flunk("Disallowed callback ran") }
+          }
+        )
+      end
+
+      assert_equal(1, transport.requests.length)
+    end
+  end
+
+  def test_required_choice_allows_a_final_answer_after_tool_execution
+    transport, client = client_for(completion(calls: [call("a")]), completion)
+    result = run_tools(client, tool_choice: :required)
+    assert_equal("Done", result.choices.first.message.content)
+    assert_equal("auto", transport.requests.last[:body]["tool_choice"])
+  end
+
+  def test_disabled_tools_allow_a_final_answer
+    transport, client = client_for(completion)
+    result = run_tools(client, tool_choice: :none)
+    assert_equal("Done", result.choices.first.message.content)
+    assert_equal(1, transport.requests.length)
+  end
+
   def test_allowed_tools_subset_rejects_entire_batch_before_callbacks
     [:auto, :required].each do |mode|
       transport, client = client_for(completion(calls: [call("a"), call("b", name: "excluded")]))
@@ -246,6 +306,43 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
     end
   end
 
+  def test_malformed_completion_fields_raise_runner_error_before_any_callback
+    paths = [
+      [:choices],
+      [:choices, 0],
+      [:choices, 0, :message],
+      [:choices, 0, :finish_reason],
+      [:choices, 0, :message, :role],
+      [:choices, 0, :message, :tool_calls]
+    ]
+    paths.each do |path|
+      [nil, "synthetic-private", 123, {}].each do |value|
+        response = completion(calls: [call("a")])
+        parent = path.length == 1 ? response : response.dig(*path[0...-1])
+        parent[path.last] = value
+        transport, client = client_for(response)
+        error = assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error, "Malformed #{path.inspect}") do
+          run_tools(client, tool_handlers: {"lookup" => -> (_) { flunk("Malformed completion dispatched") }})
+        end
+
+        assert_equal(1, transport.requests.length)
+        refute_includes(error.full_message, "synthetic-private")
+      end
+    end
+  end
+
+  def test_missing_required_completion_fields_raise_runner_error
+    [[:choices], [:choices, 0, :message], [:choices, 0, :finish_reason], [:choices, 0, :message, :role]].each do |path|
+      response = completion(calls: [call("a")])
+      parent = path.length == 1 ? response : response.dig(*path[0...-1])
+      parent.delete(path.last)
+      _, client = client_for(response)
+      assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do
+        run_tools(client, tool_handlers: {"lookup" => -> (_) { flunk("Malformed completion dispatched") }})
+      end
+    end
+  end
+
   def test_arguments_must_be_json_objects_and_parse_errors_do_not_leak_content
     ["[1]", "null", "\"synthetic-private\"", "{\"synthetic-private\":"].each do |arguments|
       _, client = client_for(completion(calls: [call("a", arguments: arguments)]))
@@ -341,6 +438,16 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
 
     assert_same(failure, raised)
     assert_equal(1, transport.requests.length)
+  end
+
+  def test_custom_transport_errors_propagate_unchanged
+    [KeyError, NoMethodError, TypeError].each do |error_class|
+      failure = error_class.new("synthetic transport failure")
+      transport, client = client_for(failure)
+      raised = assert_raises(error_class) { run_tools(client) }
+      assert_same(failure, raised)
+      assert_equal(1, transport.requests.length)
+    end
   end
 
   def test_idempotency_keys_are_distinct_per_round_and_stable_on_retry

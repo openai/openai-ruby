@@ -27,6 +27,11 @@ module OpenAI
   module Resources
     class Chat
       class Completions
+        # @api private
+        def create_for_tool_runner: (
+          Hash[Symbol, untyped] params
+        ) -> OpenAI::Chat::ChatCompletion
+
         def run_tools: (
           model: String | Symbol,
           messages: Array[untyped],

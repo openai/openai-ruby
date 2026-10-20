@@ -75,7 +75,8 @@ requirements in your callback. String results are sent unchanged; other results
 are JSON encoded. Callbacks execute sequentially, including when the model requests
 multiple tools in one response. Every advertised tool must have a matching handler.
 The runner validates each batch before invoking callbacks, rejects repeated call
-IDs, and enforces the `tool_choice.allowed_tools.tools` subset on every round. It
+IDs, enforces the initial `tool_choice` before returning or invoking callbacks, and
+enforces the `tool_choice.allowed_tools.tools` subset on every round. It
 does not mutate your input messages or append the conversation to them.
 
 This helper is non-streaming and supports one completion choice and function tools.
@@ -85,9 +86,9 @@ last allowed round. A forced `tool_choice` applies to the first round, then swit
 to `auto` while preserving any allowed-tools list. Other invalid or incomplete tool
 responses raise `OpenAI::Helpers::Chat::ToolRunner::Error`.
 
-Callback and API errors stop the run and propagate to your application. Callback
-exception text is never submitted as a tool result, and HTTP retries do not rerun
-callbacks. Earlier callback side effects are not rolled back; starting another run
+Callback, transport, and API errors stop the run and propagate to your application.
+Callback exception text is never submitted as a tool result, and HTTP retries do
+not rerun callbacks. Earlier callback side effects are not rolled back; starting another run
 can execute tools again. Use application-level idempotency where needed. Request
 timeouts apply per API call, not to callback execution or the entire run.
 Caller-supplied request idempotency keys are scoped to each round, so retries keep

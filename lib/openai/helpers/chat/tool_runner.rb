@@ -58,32 +58,9 @@ module OpenAI
         def run
           @max_rounds.times do |round|
             completion = create_completion(round)
-            unless completion.choices.length == 1
-              raise Error, "run_tools requires exactly one completion choice"
-            end
+            assistant, prepared = prepare_completion(completion, round)
+            return completion unless assistant
 
-            choice = completion.choices.first
-            message = choice.message
-            raise Error, "Expected an assistant message" unless message.role == :assistant
-
-            calls = message.tool_calls || []
-            if choice.finish_reason == :stop && calls.empty? && message.function_call.nil?
-              return completion
-            end
-
-            unless [:stop, :tool_calls].include?(choice.finish_reason) && !calls.empty? && message.function_call.nil?
-              raise Error, "Completion did not finish normally or provide complete function tool calls"
-            end
-
-            if round + 1 == @max_rounds
-              raise MaxRoundsError, "Tool runner reached max_rounds before a final completion"
-            end
-
-            # Prepare the entire batch before allowing any callback side effects.
-            prepared = calls.map { |call| prepare(call) }
-            assistant = message.to_h.slice(:role, :content, :refusal)
-            assistant[:tool_calls] = prepared.map { |call, _handler, _arguments| call }
-            assistant[:audio] = {id: message.audio.id} if message.audio
             @params[:messages] << assistant
             prepared.each do |call, handler, arguments|
               output = handler.call(arguments)
@@ -105,13 +82,70 @@ module OpenAI
         private
 
         def create_completion(round)
-          @completions.create(
+          @completions.create_for_tool_runner(
             @params.merge(request_options: @request_options.child("chat.tool_runner.round.#{round}"))
           )
+        end
+
+        # Keep response validation separate from transport and callback execution.
+        def prepare_completion(completion, round)
+          unless completion.choices.length == 1
+            raise Error, "run_tools requires exactly one completion choice"
+          end
+
+          choice = completion.choices.first
+          message = choice.message
+          unless message.to_h.key?(:role) && message.role == :assistant
+            raise Error, "Expected an assistant message"
+          end
+
+          calls = message.tool_calls || []
+          validate_tool_choice(calls)
+          if choice.finish_reason == :stop && calls.empty? && message.function_call.nil?
+            return [nil, nil]
+          end
+
+          unless [:stop, :tool_calls].include?(choice.finish_reason) && !calls.empty? && message.function_call.nil?
+            raise Error, "Completion did not finish normally or provide complete function tool calls"
+          end
+
+          if round + 1 == @max_rounds
+            raise MaxRoundsError, "Tool runner reached max_rounds before a final completion"
+          end
+
+          # Prepare the entire batch before allowing any callback side effects.
+          prepared = calls.map { |call| prepare(call) }
+          assistant = message.to_h.slice(:role, :content, :refusal)
+          assistant[:tool_calls] = prepared.map { |call, _handler, _arguments| call }
+          assistant[:audio] = {id: message.audio.id} if message.audio
+          [assistant, prepared]
         rescue KeyError, NoMethodError, TypeError, OpenAI::Errors::ConversionError
-          # The create parser may reject malformed function payloads before the
-          # runner can inspect them. Keep this rescue outside callback execution.
           raise Error, "Malformed Chat Completion response", cause: nil
+        end
+
+        def validate_tool_choice(calls)
+          choice = @params[:tool_choice]
+          if choice == :none || choice == "none"
+            raise Error, "Model requested tools when tool_choice is none" unless calls.empty?
+            return
+          end
+
+          required = choice == :required || choice == "required"
+          if choice.is_a?(Hash)
+            case (choice[:type] || choice["type"]).to_s
+            when "allowed_tools"
+              required = choice.fetch(:allowed_tools).fetch(:mode).to_s == "required"
+            when "function"
+              required = true
+              function = choice[:function] || choice["function"]
+              name = function[:name] || function["name"]
+              unless calls.all? { |call| call.function.name == name }
+                raise Error, "Model did not call the forced function tool"
+              end
+            end
+          end
+
+          raise Error, "Model returned no tool calls for a required tool choice" if required && calls.empty?
         end
 
         def allowed_tool_names(names)
