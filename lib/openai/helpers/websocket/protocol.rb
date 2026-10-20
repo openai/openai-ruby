@@ -103,7 +103,7 @@ module OpenAI
         event
       end
 
-      private def validate_event_tree!(event, json_only: false)
+      private def validate_event_tree!(event, json_only: false, strict_keys: true)
         ancestors = {}.compare_by_identity
         pending = [[event, false]]
         until pending.empty?
@@ -120,12 +120,14 @@ module OpenAI
             validate_model_fields!(value)
             [data]
           when Hash
-            keys = {}
-            value.each_key do |key|
-              raise ArgumentError unless key.is_a?(String) || key.is_a?(Symbol)
-              name = key.to_s
-              raise ArgumentError if keys.key?(name)
-              keys[name] = true
+            if strict_keys
+              keys = {}
+              value.each_key do |key|
+                raise ArgumentError unless key.is_a?(String) || key.is_a?(Symbol)
+                name = key.to_s
+                raise ArgumentError if keys.key?(name)
+                keys[name] = true
+              end
             end
 
             value.values

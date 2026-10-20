@@ -94,6 +94,10 @@ module OpenAI
           validate_discriminator!(event, @client_event_names, kind: "client")
         end
 
+        # Preserve permissive raw JSON keys while checking original typed models
+        # before union conversion can replace their identities or renamed fields.
+        validate_event_tree!(event, strict_keys: false)
+
         normalized = OpenAI::Internal::Type::Converter.dump(
           OpenAI::Realtime::RealtimeClientEvent,
           event
