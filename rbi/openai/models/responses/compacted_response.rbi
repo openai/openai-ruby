@@ -28,7 +28,7 @@ module OpenAI
 
         # The compacted list of output items. This is a list of all user messages,
         # followed by a single compaction item.
-        sig { returns(T::Array[OpenAI::Responses::ResponseOutputItem::Variants]) }
+        sig { returns(T::Array[OpenAI::Responses::ResponseItem::Variants]) }
         attr_accessor :output
 
         # Token accounting for the compaction pass, including cached, reasoning, and total
@@ -48,33 +48,35 @@ module OpenAI
 
             output: T::Array[
               T.any(
+                OpenAI::Responses::ResponseInputMessageItem::OrHash,
                 OpenAI::Responses::ResponseOutputMessage::OrHash,
                 OpenAI::Responses::ResponseFileSearchToolCall::OrHash,
-                OpenAI::Responses::ResponseFunctionToolCall::OrHash,
-                OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
-                OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
                 OpenAI::Responses::ResponseComputerToolCall::OrHash,
                 OpenAI::Responses::ResponseComputerToolCallOutputItem::OrHash,
-                OpenAI::Responses::ResponseReasoningItem::OrHash,
-                OpenAI::Responses::ResponseOutputItem::Program::OrHash,
-                OpenAI::Responses::ResponseOutputItem::ProgramOutput::OrHash,
+                OpenAI::Responses::ResponseFunctionWebSearch::OrHash,
+                OpenAI::Responses::ResponseFunctionToolCallItem::OrHash,
+                OpenAI::Responses::ResponseFunctionToolCallOutputItem::OrHash,
                 OpenAI::Responses::ResponseToolSearchCall::OrHash,
                 OpenAI::Responses::ResponseToolSearchOutputItem::OrHash,
-                OpenAI::Responses::ResponseOutputItem::AdditionalTools::OrHash,
+                OpenAI::Responses::ResponseItem::AdditionalTools::OrHash,
+                OpenAI::Responses::ResponseConfigurationUpdateItem::OrHash,
+                OpenAI::Responses::ResponseReasoningItem::OrHash,
+                OpenAI::Responses::ResponseItem::Program::OrHash,
+                OpenAI::Responses::ResponseItem::ProgramOutput::OrHash,
                 OpenAI::Responses::ResponseCompactionItem::OrHash,
-                OpenAI::Responses::ResponseOutputItem::ImageGenerationCall::OrHash,
+                OpenAI::Responses::ResponseItem::ImageGenerationCall::OrHash,
                 OpenAI::Responses::ResponseCodeInterpreterToolCall::OrHash,
-                OpenAI::Responses::ResponseOutputItem::LocalShellCall::OrHash,
-                OpenAI::Responses::ResponseOutputItem::LocalShellCallOutput::OrHash,
+                OpenAI::Responses::ResponseItem::LocalShellCall::OrHash,
+                OpenAI::Responses::ResponseItem::LocalShellCallOutput::OrHash,
                 OpenAI::Responses::ResponseFunctionShellToolCall::OrHash,
                 OpenAI::Responses::ResponseFunctionShellToolCallOutput::OrHash,
                 OpenAI::Responses::ResponseApplyPatchToolCall::OrHash,
                 OpenAI::Responses::ResponseApplyPatchToolCallOutput::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpCall::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpListTools::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpApprovalRequest::OrHash,
-                OpenAI::Responses::ResponseOutputItem::McpApprovalResponse::OrHash,
-                OpenAI::Responses::ResponseCustomToolCall::OrHash,
+                OpenAI::Responses::ResponseItem::McpListTools::OrHash,
+                OpenAI::Responses::ResponseItem::McpApprovalRequest::OrHash,
+                OpenAI::Responses::ResponseItem::McpApprovalResponse::OrHash,
+                OpenAI::Responses::ResponseItem::McpCall::OrHash,
+                OpenAI::Responses::ResponseCustomToolCallItem::OrHash,
                 OpenAI::Responses::ResponseCustomToolCallOutputItem::OrHash
               )
             ],
@@ -113,7 +115,7 @@ module OpenAI
               id: String,
               created_at: Integer,
               object: Symbol,
-              output: T::Array[OpenAI::Responses::ResponseOutputItem::Variants],
+              output: T::Array[OpenAI::Responses::ResponseItem::Variants],
               usage: OpenAI::Responses::ResponseUsage
             }
           )
