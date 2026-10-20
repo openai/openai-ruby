@@ -39,13 +39,13 @@ module OpenAI
 
         payload = coerce(@client_event, payload) if @client_event
         payload = OpenAI::Internal::Type::Converter.dump(@client_event, payload) if @client_event
-        JSON.generate(payload, max_nesting: false)
+        generate_json(payload)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid WebSocket client event.", cause: nil
       end
 
       def parse_event(data)
-        parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
+        parsed = parse_json(data)
         type = event_type(parsed, message: "WebSocket server event must be an object with a string type")
         _, model = @server_event_types.find { |event_type,| event_type === type.to_sym }
         return parsed unless model

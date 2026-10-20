@@ -6,6 +6,31 @@ module OpenAI
     #
     # @api private
     module Protocol
+      # JSON schemas and extension data do not have a transport-specific depth limit.
+      private def parse_json(data) = JSON.parse(data, symbolize_names: true, max_nesting: false)
+
+      private def generate_json(value) = JSON.generate(value, max_nesting: false)
+
+      private def freeze_json(value)
+        pending = [value]
+        visited = {}.compare_by_identity
+        until pending.empty?
+          item = pending.pop
+          next if visited.key?(item)
+          visited[item] = true
+          case item
+          when Hash
+            item.each { |key, val| pending.push(key, val) }
+          when Array
+            pending.concat(item)
+          end
+
+          item.freeze
+        end
+
+        value
+      end
+
       # Unknown wire keys must not replace a selected model's renamed Ruby fields.
       private def validate_wire_field_names!(event, payload)
         pending = [[event, payload]]

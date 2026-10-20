@@ -25,25 +25,6 @@ module OpenAI
   module Realtime
     # Future event data is accessible explicitly without leaking in diagnostics.
     class UnknownTranslationServerEvent < OpenAI::Realtime::UnknownServerEvent
-      private def freeze_json(value)
-        pending = [value]
-        visited = {}.compare_by_identity
-        until pending.empty?
-          item = pending.pop
-          next if visited.key?(item)
-          visited[item] = true
-          case item
-          when Hash
-            item.each { |key, val| pending.push(key, val) }
-          when Array
-            pending.concat(item)
-          end
-
-          item.freeze
-        end
-
-        value
-      end
     end
 
     # Opening does not send any events. session.close flushes remaining output;
@@ -184,7 +165,7 @@ module OpenAI
         coerced = coerce_event(union, payload, outbound: true)
         serialized = OpenAI::Internal::Type::Converter.dump(union, coerced)
         validate_client_tree!(serialized, json_only: true)
-        JSON.generate(serialized, max_nesting: false)
+        generate_json(serialized)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid Realtime Translation client event.", cause: nil
       end
@@ -239,7 +220,7 @@ module OpenAI
       end
 
       private def parse_event(data)
-        parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
+        parsed = parse_json(data)
         type = event_type(parsed, message: "Realtime Translation server event must be an object with a string type")
         model = @server_event_types[type.to_s]
         unless model
