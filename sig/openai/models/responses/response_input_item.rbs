@@ -1907,17 +1907,22 @@ module OpenAI
           end
         end
 
-        type compaction_trigger = { ?type: :compaction_trigger }
+        type compaction_trigger = { ?type: :compaction_trigger, ?id: String? }
 
         class CompactionTrigger < OpenAI::Internal::Type::BaseModel
           # The type of the item. Always `compaction_trigger`.
           attr_accessor type: :compaction_trigger
 
+          # The unique ID of this compaction trigger.
+          attr_accessor id: String?
+
+          # @param id
+          #   The unique ID of this compaction trigger.
           # @param type
           #   The type of the item. Always `compaction_trigger`.
-          def initialize: (?type: :compaction_trigger) -> void
+          def initialize: (?id: String?, ?type: :compaction_trigger) -> void
 
-          def to_hash: -> { ?type: :compaction_trigger }
+          def to_hash: -> { ?type: :compaction_trigger, ?id: String? }
         end
 
         type item_reference =

@@ -2177,8 +2177,17 @@ module OpenAI
           #   @return [Symbol, :compaction_trigger]
           required :type, const: :compaction_trigger
 
-          # @!method initialize(type: :compaction_trigger)
+          # @!attribute id
+          #   The unique ID of this compaction trigger.
+          #
+          #   @return [String, nil]
+          optional :id, String, nil?: true
+
+          # @!method initialize(id: nil, type: :compaction_trigger)
           #   Compacts the current context. Must be the final input item.
+          #
+          #   @param id [String, nil]
+          #     The unique ID of this compaction trigger.
           #
           #   @param type [Symbol, :compaction_trigger]
           #     The type of the item. Always `compaction_trigger`.

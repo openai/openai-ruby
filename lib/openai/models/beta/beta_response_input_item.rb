@@ -3082,14 +3082,23 @@ module OpenAI
           #   @return [Symbol, :compaction_trigger]
           required :type, const: :compaction_trigger
 
+          # @!attribute id
+          #   The unique ID of this compaction trigger.
+          #
+          #   @return [String, nil]
+          optional :id, String, nil?: true
+
           # @!attribute agent
           #   The agent that produced this item.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger::Agent, nil]
           optional :agent, -> { OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent }, nil?: true
 
-          # @!method initialize(agent: nil, type: :compaction_trigger)
+          # @!method initialize(id: nil, agent: nil, type: :compaction_trigger)
           #   Compacts the current context. Must be the final input item.
+          #
+          #   @param id [String, nil]
+          #     The unique ID of this compaction trigger.
           #
           #   @param agent [OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger::Agent, nil]
           #     The agent that produced this item.

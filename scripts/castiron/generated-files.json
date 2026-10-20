@@ -2007,7 +2007,7 @@
     },
     "lib/openai/models/beta/beta_response_input_item.rb": {
       "mode": "100644",
-      "sha256": "2e6045ea1e86fb855868a33f1f0b8487245ffe809dbf792765bb0275c50610bd"
+      "sha256": "5a39acd28b2944a2ae0ca7d79d87cbf9f3f282c123ae42d4733f2ca68148a5b1"
     },
     "lib/openai/models/beta/beta_response_input_message_content_list.rb": {
       "mode": "100644",
@@ -4963,7 +4963,7 @@
     },
     "lib/openai/models/responses/response_input_item.rb": {
       "mode": "100644",
-      "sha256": "299a1145026683725cd2570e547dd93af69aab6ccb63286109d09a48d61b96b6"
+      "sha256": "a4c91323b1c0ed6ca4e78dce34d640bc3d6c055e3277dfe0fb24384d4b519ca8"
     },
     "lib/openai/models/responses/response_input_message_content_list.rb": {
       "mode": "100644",
@@ -8231,7 +8231,7 @@
     },
     "rbi/openai/models/beta/beta_response_input_item.rbi": {
       "mode": "100644",
-      "sha256": "0a95aa80c322879469a6e54cc0ba1b773a772bacc50df59d0636548e17099606"
+      "sha256": "79907dcd7c92d660419e2e924f4e96fc7edd1235fdcd51c7c6f8711864a5a185"
     },
     "rbi/openai/models/beta/beta_response_input_message_content_list.rbi": {
       "mode": "100644",
@@ -11187,7 +11187,7 @@
     },
     "rbi/openai/models/responses/response_input_item.rbi": {
       "mode": "100644",
-      "sha256": "5fbb5b3e0a09285f5e059b75ffb68deb3e0fa44028a543b2c9833d6b3d41b322"
+      "sha256": "55ebd0366239cde93f21e88a18fc828809a1fd2f850255808879a11183b91640"
     },
     "rbi/openai/models/responses/response_input_message_content_list.rbi": {
       "mode": "100644",
@@ -14499,7 +14499,7 @@
     },
     "sig/openai/models/beta/beta_response_input_item.rbs": {
       "mode": "100644",
-      "sha256": "a2e1d85065ae6c1bf9d5d58d3d5fa4fbe9cc6a688105411c2af4f3b32138c1fe"
+      "sha256": "b47240fb982f51c9b8d109b071494c8a5aa1990bf1bae24b30205c8cd73ebd5b"
     },
     "sig/openai/models/beta/beta_response_input_message_content_list.rbs": {
       "mode": "100644",
@@ -17455,7 +17455,7 @@
     },
     "sig/openai/models/responses/response_input_item.rbs": {
       "mode": "100644",
-      "sha256": "70a28deac87c426a9cdd0a1af723169233d715ada951c6aec95efba00a0dc929"
+      "sha256": "892fccb7edaf895f67eea30a3b3f433c4b3c5d5f2246b146870af01fa27b2cc5"
     },
     "sig/openai/models/responses/response_input_message_content_list.rbs": {
       "mode": "100644",
