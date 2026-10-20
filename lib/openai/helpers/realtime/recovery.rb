@@ -306,8 +306,14 @@ module OpenAI
             # Shutdown must not mask the operation's result or prevent cleanup.
             nil
           ensure
-            physical.abort
-            @physical = nil
+            pending_error = $ERROR_INFO
+            begin
+              physical.abort
+            rescue StandardError
+              raise if pending_error.nil?
+            ensure
+              @physical = nil
+            end
           end
         end
       end
