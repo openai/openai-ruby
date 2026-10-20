@@ -126,6 +126,9 @@ module OpenAI
           end
 
           allowed[:tools].map do |tool|
+            type = nil
+            function = nil
+            name = nil
             type = tool[:type] || tool["type"] if tool.is_a?(Hash)
             function = tool[:function] || tool["function"] if tool.is_a?(Hash)
             name = function[:name] || function["name"] if function.is_a?(Hash)
