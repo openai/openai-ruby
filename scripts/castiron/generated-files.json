@@ -11,7 +11,7 @@
     },
     "lib/openai.rb": {
       "mode": "100644",
-      "sha256": "c3c1b599a0f10b729925d77c6478a88a733e819a3aad5fd564d530c127431c45"
+      "sha256": "e16f1060a32748440e14ca40e86db300d3899650e68f0e522958d0cc67559a13"
     },
     "lib/openai/.rubocop.generated.yml": {
       "mode": "100644",
@@ -10783,7 +10783,7 @@
     },
     "rbi/openai/models/response_format_json_schema.rbi": {
       "mode": "100644",
-      "sha256": "ede6f557d2bb5eed53140568d631c2327e2691f676fd75e89bc3c6ad73834c66"
+      "sha256": "5c48dfa66764938f2953ebad18da49451835e108e11926445858d3518f3d6cca"
     },
     "rbi/openai/models/response_format_text.rbi": {
       "mode": "100644",
