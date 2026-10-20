@@ -156,7 +156,7 @@ module OpenAI
       end
 
       private def encode_client_event(event)
-        validate_client_tree!(event)
+        validate_event_tree!(event)
         union = OpenAI::Realtime::RealtimeTranslationClientEvent
         payload = OpenAI::Internal::Type::Converter.dump(union, event)
         type = payload[:type] || payload["type"] if payload.is_a?(Hash)
@@ -164,7 +164,7 @@ module OpenAI
 
         coerced = coerce_event(union, payload, outbound: true)
         serialized = OpenAI::Internal::Type::Converter.dump(union, coerced)
-        validate_client_tree!(serialized, json_only: true)
+        validate_event_tree!(serialized, json_only: true)
         generate_json(serialized)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid Realtime Translation client event.", cause: nil
@@ -182,51 +182,6 @@ module OpenAI
         validate_wire_field_names!(event, parsed)
       rescue StandardError, SystemStackError
         raise OpenAI::Errors::TranslationProtocolError.new, cause: nil
-      end
-
-      private def coerce_event(union, payload, outbound: false)
-        state = OpenAI::Internal::Type::Converter.new_coerce_state(request_only: outbound)
-        event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
-        raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
-        ancestors = {}.compare_by_identity
-        pending = [[event, false]]
-        until pending.empty?
-          value, exiting = pending.pop
-          if exiting
-            ancestors.delete(value)
-            next
-          end
-
-          children = case value
-          when OpenAI::Internal::Type::BaseModel
-            data = value.to_h
-            validate_model_constants!(value)
-            value.class.fields.each do |name, field|
-              const = field.fetch(:const)
-              if field.fetch(:required) &&
-                  field.fetch(:mode) != (outbound ? :coerce : :dump) &&
-                  (!outbound || const == OpenAI::Internal::OMIT) &&
-                  !data.key?(name)
-                raise ArgumentError
-              end
-            end
-
-            data.values
-          when Hash
-            value.values
-          when Array
-            value
-          else
-            next
-          end
-
-          raise ArgumentError if ancestors.key?(value)
-          ancestors[value] = true
-          pending << [value, true]
-          children.each { |child| pending << [child, false] }
-        end
-
-        event
       end
 
       private def transport_error = OpenAI::Errors::TranslationConnectionError.new(url: @url)
