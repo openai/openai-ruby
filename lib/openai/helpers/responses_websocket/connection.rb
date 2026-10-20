@@ -286,7 +286,9 @@ module OpenAI
         pending = [[value, result]]
         until pending.empty?
           source, destination = pending.pop
-          entries = source.is_a?(Hash) ? source.each_pair : source.each_with_index.map { |item, index| [index, item] }
+          entries = source.is_a?(Hash) ? source.each_pair : source.each_with_index.lazy.map { |item, index|
+            [index, item]
+          }
           entries.each do |key, item|
             if item.is_a?(Hash) || item.is_a?(Array)
               unless copies.key?(item)

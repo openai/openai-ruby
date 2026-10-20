@@ -46,6 +46,61 @@ class OpenAI::Test::WebSocketBindingTest < Minitest::Test
     def __websocket_client_event = OpenAI::Realtime::RealtimeTranslationSessionCloseEvent
   end
 
+  def test_translation_entrypoints_reject_changed_typed_constants_before_writing
+    [:specialized, :generic].each do |entrypoint|
+      socket = FakeSocket.new
+      check = lambda do |connection|
+        invalid = [
+          OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new(
+            type: :"session.input_audio_buffer.append",
+            audio: "AA=="
+          ),
+          OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new(
+            {"type" => "session.input_audio_buffer.append", "audio" => "AA=="}
+          ),
+          OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new(
+            extension: OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new(type: :"session.update")
+          )
+        ]
+        invalid.each do |event|
+          error = assert_raises(ArgumentError) { connection.send_event(event) }
+          assert_nil(error.cause)
+          assert_empty(socket.writes)
+          refute_predicate(connection, :closed?)
+        end
+
+        connection.send_event(OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new({"type" => "session.close"}))
+        connection.send_event(type: "session.input_audio_buffer.append", audio: "AA==", future_field: {label: "keep"})
+      end
+
+      if entrypoint == :specialized
+        client.realtime.connect_translation(model: "synthetic", transport: FakeTransport.new(socket), &check)
+      else
+        client.realtime.translations.connect(transport: FakeTransport.new(socket), &check)
+      end
+
+      assert_equal(
+        [
+          {"type" => "session.close"},
+          {"type" => "session.input_audio_buffer.append", "audio" => "AA==", "future_field" => {"label" => "keep"}}
+        ],
+        socket.writes.map { JSON.parse(_1) }
+      )
+    end
+  end
+
+  def test_generic_binding_rejects_nested_duplicate_json_keys_before_dumping
+    socket = FakeSocket.new
+    client.realtime.translations.connect(transport: FakeTransport.new(socket)) do |connection|
+      event = {type: "session.close", extension: {"label" => "first", :label => "second"}}
+      assert_raises(ArgumentError) { connection.send_event(event) }
+      assert_empty(socket.writes)
+      connection.send_event(type: "session.close", extension: {label: "keep"})
+    end
+
+    assert_equal({"type" => "session.close", "extension" => {"label" => "keep"}}, JSON.parse(socket.writes.fetch(0)))
+  end
+
   class OpenClientEvent < OpenAI::Internal::Type::BaseModel
     required :type, String
   end

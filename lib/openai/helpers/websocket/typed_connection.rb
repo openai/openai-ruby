@@ -30,6 +30,7 @@ module OpenAI
       end
 
       private def encode_client_event(event)
+        validate_client_tree!(event)
         event_type(event, message: "Invalid WebSocket client event.") if event.is_a?(Hash)
         payload = @client_event ? OpenAI::Internal::Type::Converter.dump(@client_event, event) : event
         type = event_type(payload, message: "Invalid WebSocket client event.")
@@ -39,6 +40,7 @@ module OpenAI
 
         payload = coerce(@client_event, payload) if @client_event
         payload = OpenAI::Internal::Type::Converter.dump(@client_event, payload) if @client_event
+        validate_client_tree!(payload, json_only: true)
         generate_json(payload)
       rescue StandardError, SystemStackError
         raise ArgumentError, "Invalid WebSocket client event.", cause: nil
