@@ -11,7 +11,7 @@
     },
     "lib/openai.rb": {
       "mode": "100644",
-      "sha256": "aaec689454a713c514c0005849a4afe3fa16da54e7ff53727ec0a09feb3d3d50"
+      "sha256": "6ccaed7db3ec8a05d13bd77ce896fa18978c1edbef0b0fffc0766dc8c2b0fa15"
     },
     "lib/openai/.rubocop.generated.yml": {
       "mode": "100644",
