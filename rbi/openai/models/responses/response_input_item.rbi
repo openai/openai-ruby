@@ -3433,15 +3433,24 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # The unique ID of this compaction trigger.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :id
+
           # Compacts the current context. Must be the final input item.
           sig do
             params(
+
+              id: T.nilable(String),
 
               type: Symbol
             )
               .returns(T.attached_class)
           end
           def self.new(
+
+            # The unique ID of this compaction trigger.
+            id: nil,
 
             # The type of the item. Always `compaction_trigger`.
 
@@ -3451,7 +3460,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {type: Symbol}
+              {type: Symbol, id: T.nilable(String)}
             )
           end
           def to_hash

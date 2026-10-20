@@ -2756,6 +2756,7 @@ module OpenAI
         type compaction_trigger =
           {
             ?type: :compaction_trigger,
+            ?id: String?,
             ?agent: OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent?
           }
 
@@ -2763,20 +2764,27 @@ module OpenAI
           # The type of the item. Always `compaction_trigger`.
           attr_accessor type: :compaction_trigger
 
+          # The unique ID of this compaction trigger.
+          attr_accessor id: String?
+
           # The agent that produced this item.
           attr_accessor agent: OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent?
 
+          # @param id
+          #   The unique ID of this compaction trigger.
           # @param agent
           #   The agent that produced this item.
           # @param type
           #   The type of the item. Always `compaction_trigger`.
           def initialize: (
+            ?id: String?,
             ?agent: OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent?,
             ?type: :compaction_trigger
           ) -> void
 
           def to_hash: -> {
             ?type: :compaction_trigger,
+            ?id: String?,
             ?agent: OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent?
           }
 
