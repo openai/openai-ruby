@@ -242,6 +242,8 @@ module OpenAI
         return data unless value.is_a?(OpenAI::Internal::Type::BaseModel)
 
         OpenAI::Internal::Type::Converter.coerce(value.class, data)
+      rescue SystemStackError
+        raise SessionError, "Could not copy the Responses WebSocket event.", cause: nil
       end
     end
   end

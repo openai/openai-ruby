@@ -119,7 +119,7 @@ module OpenAI
           @state.handle_event(@decoder.decode(data))
         end
 
-      rescue StandardError => error
+      rescue StandardError, SystemStackError => error
         @error = error.is_a?(SessionError) ? error : SessionError.new("Could not collect the Responses final response.")
         clear
       end
@@ -548,6 +548,9 @@ module OpenAI
           consumed(bytes)
           raise
         end
+
+      rescue SystemStackError
+        raise SessionError, "Could not buffer the Responses WebSocket event.", cause: nil
       end
 
       private def stop_reader

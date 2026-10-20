@@ -91,6 +91,87 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_session_serializer_failure_wakes_all_lanes_and_rejects_later_sends
+    handler = lambda do |socket, _request|
+      assert_equal("response.create", read(socket).fetch("type"))
+      write(socket, type: "response.future", marker: "synthetic event")
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        def session.generate_json(_value)
+          raise SystemStackError, "synthetic private event contents"
+        end
+
+        other = session.lane("other")
+        waiter = Async::Task.current.async do
+          assert_raises(OpenAI::Responses::SessionError) { other.receive }
+        end
+
+        session.default.send_event(type: "response.create", input: "synthetic")
+        error = assert_raises(OpenAI::Responses::SessionError) { session.default.receive }
+        assert_same(error, waiter.wait)
+        assert_same(
+          error,
+          assert_raises(OpenAI::Responses::SessionError) { other.send_event(type: "response.create") }
+        )
+        refute_includes(error.full_message, "synthetic private event contents")
+      end
+    end
+  end
+
+  def test_collection_serializer_failure_retains_the_received_event_and_reports_final_error
+    handler = lambda do |socket, _request|
+      assert_equal("response.create", read(socket).fetch("type"))
+      write(socket, type: "response.created", sequence_number: 0, response: {id: "resp_test"})
+      write(
+        socket,
+        type: "response.output_item.done",
+        sequence_number: 1,
+        output_index: 0,
+        item: {type: "function_call", id: "fc_test", call_id: "call_test", name: "f", arguments: "{}"}
+      )
+      terminal(socket, nil)
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        lane = session.default
+        lane.send_event(type: "response.create")
+        assert_equal(:"response.created", lane.receive.type)
+        collector = lane.instance_variable_get(:@accumulator)
+        def collector.generate_json(_value)
+          raise SystemStackError, "synthetic private event contents"
+        end
+
+        assert_equal(:"response.output_item.done", lane.receive.type)
+        error = assert_raises(OpenAI::Responses::SessionError) { lane.get_final_response }
+        refute_includes(error.full_message, "synthetic private event contents")
+      end
+    end
+  end
+
+  def test_incremental_serializer_failure_is_a_sanitized_session_error
+    handler = lambda do |socket, _request|
+      assert_equal("response.create", read(socket).fetch("type"))
+      terminal(socket, nil)
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        preview = OpenAI::Responses::IncrementalResponse.new
+        def preview.generate_json(_value)
+          raise SystemStackError, "synthetic private event contents"
+        end
+
+        session.default.send_event(type: "response.create")
+        event = session.default.receive
+        error = assert_raises(OpenAI::Responses::SessionError) { preview.add(event) }
+        refute_includes(error.full_message, "synthetic private event contents")
+      end
+    end
+  end
+
   def test_nested_output_items_are_collected_without_mutable_event_aliases
     schema = 105.times.reduce({type: +"string"}) { |value, _| {nested: value} }
     item = {
