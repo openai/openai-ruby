@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.108.0](https://github.com/openai/openai-ruby/compare/v0.107.0...v0.108.0) (2026-10-21)
+
+
+### Features
+
+* add a bounded Chat Completions tool runner ([#943](https://github.com/openai/openai-ruby/issues/943)) ([db9f85f](https://github.com/openai/openai-ruby/commit/db9f85f42ac3f3d76678db18941c46e0468267a9))
+* **api:** add custom voice consent management ([#951](https://github.com/openai/openai-ruby/issues/951)) ([fc5256c](https://github.com/openai/openai-ruby/commit/fc5256c4332a1cf5b3d9567874c1d24085b574a1))
+
+
+### Bug Fixes
+
+* preserve accepted JSON through Responses session helpers ([#939](https://github.com/openai/openai-ruby/issues/939)) ([bdea98a](https://github.com/openai/openai-ruby/commit/bdea98a74c9ea093020c82375259baa6b23468d0))
+* preserve Realtime restore errors if abort fails ([#940](https://github.com/openai/openai-ruby/issues/940)) ([3f09468](https://github.com/openai/openai-ruby/commit/3f094684e1618878a6d4936acf1c970ef426afac))
+
+
+### Chores
+
+* **api:** clarify cache-write token totals ([#948](https://github.com/openai/openai-ruby/issues/948)) ([b0cb84d](https://github.com/openai/openai-ruby/commit/b0cb84db1759785b37a49b64b3f5398a63d81b1a))
+* **api:** preserve client configuration compatibility ([#944](https://github.com/openai/openai-ruby/issues/944)) ([4d9bb59](https://github.com/openai/openai-ruby/commit/4d9bb5986fcd13b36634d4396a5745eb9ad1de77))
+* **api:** preserve embedding helper loading ([#946](https://github.com/openai/openai-ruby/issues/946)) ([2965c7f](https://github.com/openai/openai-ruby/commit/2965c7fa3a66eeeb1ef77d37d67f6b73ca4d9701))
+* **api:** preserve SDK compatibility ([#949](https://github.com/openai/openai-ruby/issues/949)) ([38cd9bd](https://github.com/openai/openai-ruby/commit/38cd9bdbdd653470c85a534a0026dac2f2f448f1))
+* enforce zero customizations in generated files ([#950](https://github.com/openai/openai-ruby/issues/950)) ([b87c892](https://github.com/openai/openai-ruby/commit/b87c8928395a12c8e608c1b682e1ba9c1a984c75))
+
 ## [0.107.0](https://github.com/openai/openai-ruby/compare/v0.106.0...v0.107.0) (2026-10-20)
 
 
