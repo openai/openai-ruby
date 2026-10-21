@@ -41,10 +41,53 @@ module OpenAI
             # googleauth apply! refreshes expired tokens. Serialize just this
             # cache/refresh step across all clients using this provider.
             mutex = @credentials_mutex
+            rejected_token = nil
             token_provider = lambda do
               headers = {}
-              mutex.synchronize { credentials.apply!(headers) }
-              headers.fetch(:authorization) { headers.fetch("authorization") }.delete_prefix("Bearer ")
+              mutex.synchronize do
+                credentials.apply!(headers)
+                token = headers.fetch(:authorization) { headers.fetch("authorization") }.delete_prefix("Bearer ")
+                if token == rejected_token && credentials.respond_to?(:fetch_access_token!)
+                  credentials.fetch_access_token!
+                  credentials.apply!(headers)
+                  token = headers.fetch(:authorization) { headers.fetch("authorization") }.delete_prefix("Bearer ")
+                  rejected_token = nil
+                end
+
+                token
+              end
+            end
+          end
+
+          # Keep one replay allowance and deadline across transport retries.
+          # Refresh itself happens in prepare_request, under its timeout and mutex.
+          if credentials.respond_to?(:fetch_access_token!)
+            wrapper = lambda do |request, replayable, &send_request|
+              context = request[:vertex_auth_context] ||
+                {
+                  replayed: false,
+                  deadline: request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
+                }
+              request = request.merge(vertex_auth_context: context)
+              begin
+                send_request.call(request)
+              rescue OpenAI::Errors::AuthenticationError
+                remaining = context[:deadline] && (context[:deadline] - OpenAI::Internal::Util.monotonic_secs)
+                if remaining && remaining <= 0
+                  raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url))
+                end
+
+                begin
+                  Timeout.timeout(remaining) { mutex.synchronize { rejected_token = context[:token] } }
+                rescue Timeout::Error
+                  raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url)), cause: nil
+                end
+
+                raise if context[:replayed] || !replayable
+
+                context[:replayed] = true
+                retry
+              end
             end
           end
 
@@ -53,6 +96,7 @@ module OpenAI
             name: name,
             base_url: @base_url,
             authentication_headers: %w[authorization],
+            wrap_request: wrapper,
             prepare_request: lambda do |request|
               url = request.fetch(:url)
               unless OpenAI::Internal::Util.uri_origin(url) == OpenAI::Internal::Util.uri_origin(base)
@@ -85,6 +129,8 @@ module OpenAI
               headers.delete("openai-organization")
               headers.delete("openai-project")
               timeout = request[:timeout]
+              context = request[:vertex_auth_context]
+              timeout = context[:deadline] - OpenAI::Internal::Util.monotonic_secs if context&.dig(:deadline)
               if timeout && timeout <= 0
                 raise OpenAI::Errors::APITimeoutError.new(url: url, message: "Vertex credential lookup timed out")
               end
@@ -113,6 +159,8 @@ module OpenAI
               unless token.is_a?(String) && !token.strip.empty?
                 raise OpenAI::Errors::Error, "Vertex token_provider must return a non-empty access token string."
               end
+
+              context[:token] = token if context
 
               request.merge(
                 url: url,

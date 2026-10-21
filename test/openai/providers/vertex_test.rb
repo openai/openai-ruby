@@ -356,7 +356,7 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
     end
   end
 
-  def test_googleauth_native_refresh_if_optional_gem_is_installed
+  private def google_credentials
     begin
       require "googleauth"
 
@@ -364,7 +364,7 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
       skip("Run with BUNDLE_GEMFILE=gemfiles/vertex.gemfile for real googleauth ADC tests")
     end
 
-    credentials = Google::Auth::UserRefreshCredentials.new(
+    Google::Auth::UserRefreshCredentials.new(
       client_id: "fake-id",
       client_secret: "fake-secret",
       refresh_token: "fake-refresh",
@@ -373,6 +373,136 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
       scope: "https://www.googleapis.com/auth/cloud-platform",
       token_credential_uri: "https://oauth2.googleapis.com/token"
     )
+  end
+
+  def test_adc_refreshes_a_rejected_fresh_token
+    credentials = google_credentials
+    credentials.access_token = "fake-rejected"
+    credentials.expires_at = Time.now + 3600
+    stub_request(:post, "https://oauth2.googleapis.com/token").to_return_json(
+      body: {access_token: "fake-refreshed", token_type: "Bearer", expires_in: 3600}
+    )
+    stub_request(:post, "https://trusted.example/v1/responses")
+      .with(headers: {"Authorization" => "Bearer fake-rejected"})
+      .to_return(status: 401)
+    stub_request(:post, "https://trusted.example/v1/responses")
+      .with(headers: {"Authorization" => "Bearer fake-refreshed"})
+      .to_return_json(body: {id: "resp_test", output: []})
+    client = Google::Auth.stub(:get_application_default, credentials) do
+      OpenAI::Client.new(provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1"))
+    end
+
+    2.times { assert_equal("resp_test", client.responses.create(model: "caller-model").id) }
+    assert_requested(:post, "https://oauth2.googleapis.com/token", times: 1)
+    assert_requested(:post, "https://trusted.example/v1/responses", times: 3)
+  end
+
+  def test_rejected_google_credentials_are_replayed_only_once
+    credentials = google_credentials
+    credentials.access_token = "fake-rejected"
+    credentials.expires_at = Time.now + 3600
+    stub_request(:post, "https://oauth2.googleapis.com/token").to_return_json(
+      body: {access_token: "fake-refreshed", token_type: "Bearer", expires_in: 3600}
+    )
+    stub_request(:post, "https://trusted.example/v1/responses").to_return(status: 401)
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
+      max_retries: 4
+    )
+
+    assert_raises(OpenAI::Errors::AuthenticationError) { client.responses.create(model: "caller-model") }
+    assert_requested(:post, "https://oauth2.googleapis.com/token", times: 1)
+    assert_requested(:post, "https://trusted.example/v1/responses", times: 2)
+
+    stub_request(:post, "https://trusted.example/v1/responses")
+      .to_return_json(body: {id: "resp_test", output: []})
+    assert_equal("resp_test", client.responses.create(model: "caller-model").id)
+    assert_requested(:post, "https://oauth2.googleapis.com/token", times: 2)
+  end
+
+  def test_google_refresh_after_rejection_obeys_request_timeout
+    credentials = google_credentials
+    credentials.access_token = "fake-rejected"
+    credentials.expires_at = Time.now + 3600
+    stub_request(:post, "https://trusted.example/v1/responses").to_return(status: 401)
+    stub_request(:post, "https://oauth2.googleapis.com/token").to_return do
+      _sleep(10)
+      {body: JSON.generate(access_token: "fake-refreshed", token_type: "Bearer", expires_in: 3600)}
+    end
+
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
+      timeout: 0.05,
+      max_retries: 0
+    )
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    assert_raises(OpenAI::Errors::APITimeoutError) { client.responses.create(model: "caller-model") }
+    assert_operator(Process.clock_gettime(Process::CLOCK_MONOTONIC) - started, :<, 1)
+    assert_requested(:post, "https://trusted.example/v1/responses", times: 1)
+  end
+
+  def test_google_authentication_replay_is_bounded_across_status_retries
+    credentials = google_credentials
+    credentials.access_token = "fake-rejected"
+    credentials.expires_at = Time.now + 3600
+    stub_request(:post, "https://oauth2.googleapis.com/token").to_return_json(
+      body: {access_token: "fake-refreshed", token_type: "Bearer", expires_in: 3600}
+    )
+    stub_request(:post, "https://trusted.example/v1/responses")
+      .to_return(status: 401)
+      .then
+      .to_return(status: 503, headers: {"retry-after" => "0"})
+      .then
+      .to_return(status: 401)
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
+      max_retries: 1
+    )
+    assert_raises(OpenAI::Errors::AuthenticationError) { client.responses.create(model: "caller-model") }
+    assert_requested(:post, "https://oauth2.googleapis.com/token", times: 1)
+    assert_requested(:post, "https://trusted.example/v1/responses", times: 3)
+  end
+
+  def test_rejected_callback_token_is_not_replayed
+    calls = 0
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(
+        base_url: "https://trusted.example/v1",
+        token_provider: -> {
+          calls += 1
+          "fake-rejected"
+        }
+      )
+    )
+    stub_request(:post, "https://trusted.example/v1/responses").to_return(status: 401)
+    assert_raises(OpenAI::Errors::AuthenticationError) { client.responses.create(model: "caller-model") }
+    assert_equal(1, calls)
+    assert_requested(:post, "https://trusted.example/v1/responses", times: 1)
+  end
+
+  def test_rejected_google_token_does_not_replay_a_streaming_body
+    credentials = google_credentials
+    credentials.access_token = "fake-rejected"
+    credentials.expires_at = Time.now + 3600
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials)
+    )
+    stub_request(:post, "https://trusted.example/v1/responses").to_return(status: 401)
+    assert_raises(OpenAI::Errors::AuthenticationError) do
+      client.request(
+        method: :post,
+        path: "responses",
+        headers: {"content-type" => "application/jsonl"},
+        body: [{model: "caller-model"}].each
+      )
+    end
+
+    assert_requested(:post, "https://trusted.example/v1/responses", times: 1)
+    assert_not_requested(:post, "https://oauth2.googleapis.com/token")
+  end
+
+  def test_googleauth_native_refresh_if_optional_gem_is_installed
+    credentials = google_credentials
     token_url = "https://oauth2.googleapis.com/token"
     stub_request(:post, token_url).to_return_json(
       body: {access_token: "fake-access", token_type: "Bearer", expires_in: 3600}
