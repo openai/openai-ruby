@@ -241,6 +241,33 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
     assert_equal(2, transport.requests.length)
   end
 
+  def test_callback_failure_survives_replacement_abort_error_and_rejects_later_sends
+    replacement = Socket.new
+    def replacement.abort
+      super
+      raise IOError, "replacement abort failed"
+    end
+
+    transport = Transport.new(Socket.new(disconnected), replacement)
+    original = ArgumentError.new("restore failed")
+    received = nil
+    escaped = assert_raises(StandardError) do
+      connect(transport, max_queue_bytes: 4096, on_reconnected: -> (_) { raise original }) do |connection|
+        received = assert_raises(StandardError) { connection.receive }
+        assert_raises(OpenAI::Errors::RealtimeConnectionError) { connection.response.create }
+        assert_empty(connection.pending_messages)
+        assert_empty(replacement.writes)
+        assert_predicate(connection, :closed?)
+      end
+    end
+
+    assert_equal(2, transport.requests.length)
+    assert_equal(0, transport.active)
+    assert_predicate(replacement, :aborted?)
+    assert_same(original, received)
+    assert_same(original, escaped)
+  end
+
   def test_close_inside_callback_stops_pending_receive
     transport = Transport.new(Socket.new(disconnected), Socket.new)
     assert_nil(connect(transport, on_reconnected: -> (connection) { connection.close }, &:receive))
