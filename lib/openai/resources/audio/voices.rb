@@ -41,6 +41,35 @@ module OpenAI
           )
         end
 
+        # Deletes a voice created from a text prompt or an audio sample.
+        #
+        # Requires voice write permission and access to the voice's project. Access to
+        # voices created from recordings is limited to eligible customers. See the
+        # [custom voices guide](https://developers.openai.com/api/docs/guides/custom-voices).
+        #
+        # Deleting a voice does not delete its consent recording. Deleting an already
+        # deleted voice returns a 404 error.
+        #
+        # @overload delete(voice_id, request_options: {})
+        #
+        # @param voice_id [String]
+        #   The ID of the voice to delete.
+        #
+        # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
+        #
+        # @return [OpenAI::Models::Audio::VoiceDeleted]
+        #
+        # @see OpenAI::Models::Audio::VoiceDeleteParams
+        def delete(voice_id, params = {})
+          @client.request(
+            method: :delete,
+            path: ["audio/voices/%1$s", voice_id],
+            model: OpenAI::Audio::VoiceDeleted,
+            security: {bearer_auth: true},
+            options: params[:request_options]
+          )
+        end
+
         # @api private
         #
         # @param client [OpenAI::Client]
