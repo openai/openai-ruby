@@ -3,15 +3,15 @@
   "files": {
     ".github/workflows/castiron-custom-code-comment.yml": {
       "mode": "100644",
-      "sha256": "c51faae4a106b873852075c369847719f3f99e59fa3e1cf32ce02f8f9d697afc"
+      "sha256": "f0a54911a96ae55a6a9c71ed7e6b259b0da84642dd1716b68e75a7123519728c"
     },
     ".github/workflows/castiron-custom-code.yml": {
       "mode": "100644",
-      "sha256": "c5f26e48adc23a46547625ef707ef256d54367583097defc1466eae9896ce8aa"
+      "sha256": "640964f3ab0bf57c4844ebf0f3d4c2f8474c7153d6c5f5244825c04492918fb1"
     },
     "lib/openai.rb": {
       "mode": "100644",
-      "sha256": "6ccaed7db3ec8a05d13bd77ce896fa18978c1edbef0b0fffc0766dc8c2b0fa15"
+      "sha256": "63d478dc9e4cd4e06d7e75b134e7ba1f62d3d5da64638e09c00a3b8f31c52e01"
     },
     "lib/openai/.rubocop.generated.yml": {
       "mode": "100644",
@@ -972,6 +972,34 @@
     "lib/openai/models/audio/voice.rb": {
       "mode": "100644",
       "sha256": "5a95e4169a178c9beb7d161075ae676f60f1cce590cbc1ccd491f2911c56c46c"
+    },
+    "lib/openai/models/audio/voice_consent.rb": {
+      "mode": "100644",
+      "sha256": "dc0c2863a524454590d7de2554abf3a45e3c92eee698dff714c3cb118dfb5668"
+    },
+    "lib/openai/models/audio/voice_consent_create_params.rb": {
+      "mode": "100644",
+      "sha256": "bcab5904ac8b3637fa906847f5aed3258a10cfa60a090a16728ce341c7a6f197"
+    },
+    "lib/openai/models/audio/voice_consent_delete_params.rb": {
+      "mode": "100644",
+      "sha256": "48dc576090256adad5a67ed49aba81b0257a7ce4adf8bd49391824d477d09688"
+    },
+    "lib/openai/models/audio/voice_consent_deleted.rb": {
+      "mode": "100644",
+      "sha256": "350e83a76028b7f521602ae9bfa814c7a28e924aa28e8c9053770317350abaad"
+    },
+    "lib/openai/models/audio/voice_consent_list_params.rb": {
+      "mode": "100644",
+      "sha256": "6da58bc1ac95f6d21167bdf885c9354bd0b676825fa915abd15d599088a5a516"
+    },
+    "lib/openai/models/audio/voice_consent_retrieve_params.rb": {
+      "mode": "100644",
+      "sha256": "817847451bf5513136c196f5ee4f788790de32f9b9198a7655b891bcb2fc24a0"
+    },
+    "lib/openai/models/audio/voice_consent_update_params.rb": {
+      "mode": "100644",
+      "sha256": "5efaaa09a293be6b01b256996bad0891d49fc1afcb614e3baa30efcfd500585f"
     },
     "lib/openai/models/audio/voice_create_params.rb": {
       "mode": "100644",
@@ -5875,7 +5903,7 @@
     },
     "lib/openai/resources/audio.rb": {
       "mode": "100644",
-      "sha256": "ff06d80c047c33844ba6a660f2e3150ba760a26c4d9aaed9a03365146901afc7"
+      "sha256": "da6aefafcdb1adfe430b3ae91c510e652aabbc94dc734c20bee8cf43a952a4fa"
     },
     "lib/openai/resources/audio/speech.rb": {
       "mode": "100644",
@@ -5888,6 +5916,10 @@
     "lib/openai/resources/audio/translations.rb": {
       "mode": "100644",
       "sha256": "9b5a9034eca397e5510535d4ff6bf41832788726cf545e439f8795a79e0a013a"
+    },
+    "lib/openai/resources/audio/voice_consents.rb": {
+      "mode": "100644",
+      "sha256": "e3543819857ea41c5499e0e2f4142aaf17733a923abfc6ba3e1630ee96455af7"
     },
     "lib/openai/resources/audio/voices.rb": {
       "mode": "100644",
@@ -7196,6 +7228,34 @@
     "rbi/openai/models/audio/voice.rbi": {
       "mode": "100644",
       "sha256": "011403212847d582a1d07d906016289637ddb5e477acb0bccf0cf82493e47204"
+    },
+    "rbi/openai/models/audio/voice_consent.rbi": {
+      "mode": "100644",
+      "sha256": "8d92d1ef8730c450bfd2aaefc5a5efe06cc279c47e38e818bc38843bf71ee3a7"
+    },
+    "rbi/openai/models/audio/voice_consent_create_params.rbi": {
+      "mode": "100644",
+      "sha256": "d4b132eea8c614281034d862e73b28eaf218e1e645eed7123f4d4dcd84a60448"
+    },
+    "rbi/openai/models/audio/voice_consent_delete_params.rbi": {
+      "mode": "100644",
+      "sha256": "aec074e7618d48e7b052944d7a0891ee18af4d864a67287ae3492e24bbc00fd4"
+    },
+    "rbi/openai/models/audio/voice_consent_deleted.rbi": {
+      "mode": "100644",
+      "sha256": "ad8d3975bf566bb87125046803b3bea3b8c363a93d9e9d44bad1068eb4c2bf0e"
+    },
+    "rbi/openai/models/audio/voice_consent_list_params.rbi": {
+      "mode": "100644",
+      "sha256": "b7d88b19f47505efa363543d7f1988af18d8b2f7cc0271c0614fb13eba04d0aa"
+    },
+    "rbi/openai/models/audio/voice_consent_retrieve_params.rbi": {
+      "mode": "100644",
+      "sha256": "8cb8d155f69a321e0cd820975ed62415aac9787652c1d809d4a21afa37e814cb"
+    },
+    "rbi/openai/models/audio/voice_consent_update_params.rbi": {
+      "mode": "100644",
+      "sha256": "9c1e253fc156cce7868cbe2d021995d0269dd468cea20ccd67ccf50cee7c53cb"
     },
     "rbi/openai/models/audio/voice_create_params.rbi": {
       "mode": "100644",
@@ -12099,7 +12159,7 @@
     },
     "rbi/openai/resources/audio.rbi": {
       "mode": "100644",
-      "sha256": "19f273c0063f19b394b5bd7a4f2c59247fe3a65bb17623fbac9d89fb806d4592"
+      "sha256": "c36f4b31d635563073f7641acc4e802dde73fc4d6cbf9838d81803c638d8bd16"
     },
     "rbi/openai/resources/audio/speech.rbi": {
       "mode": "100644",
@@ -12112,6 +12172,10 @@
     "rbi/openai/resources/audio/translations.rbi": {
       "mode": "100644",
       "sha256": "8caa40e400109802bf32d3e9c1c70082c4c56bb6dc9ca296b92b7268aeca609d"
+    },
+    "rbi/openai/resources/audio/voice_consents.rbi": {
+      "mode": "100644",
+      "sha256": "9d976b83b542c455ce336c74a5be9681c68fcd9884e904c9cfd1ee82c31b2c8b"
     },
     "rbi/openai/resources/audio/voices.rbi": {
       "mode": "100644",
@@ -12475,11 +12539,11 @@
     },
     "scripts/castiron/custom_code_budget.py": {
       "mode": "100644",
-      "sha256": "31b47b2c85fc7ef483c18a94f0725e4f6bae50164c427330af6d081d5d3f31f2"
+      "sha256": "2beaac2eb0a963e717bf2bba93f52d6aea28fa7c4961591d4c2c4749945dbb7c"
     },
     "scripts/castiron/custom_code_report.py": {
       "mode": "100644",
-      "sha256": "4dc056b460d688cbe3035bd9649820f77e489424d0c9c48bd3f19ed4dfb7e9b4"
+      "sha256": "6b7cfda1f85426daaa2e4f6186e2d1b20ac638dadaa54be8142ecec89fefd880"
     },
     "scripts/castiron/custom_code_test_support.py": {
       "mode": "100644",
@@ -12487,7 +12551,7 @@
     },
     "scripts/castiron/fixtures/github_publisher.cjs": {
       "mode": "100644",
-      "sha256": "4f5475e905818875e37d686bf03553b55219ac05e30957628d4aaa834fced202"
+      "sha256": "114a35f8ed075f20d7fbcfab6dbbf16383866497a9d6e8290cf0928bba753468"
     },
     "scripts/castiron/ruff.toml": {
       "mode": "100644",
@@ -12495,11 +12559,11 @@
     },
     "scripts/castiron/test_custom_code_budget.py": {
       "mode": "100644",
-      "sha256": "cf4938bca739d01f1db2a421ec97e4fe8b41b8bc2d2c634a01247e36cb464649"
+      "sha256": "f355e1cb0ed88aa5a344cd6c68388802f5ed814d638b500e271b008cf07e0106"
     },
     "scripts/castiron/test_custom_code_github.py": {
       "mode": "100644",
-      "sha256": "338d54bf6b53a44b555dc7baa778c76af499b06959caf0339142f1b4293edd92"
+      "sha256": "f3df0d260edd990532b32f15ed9cb4071834634bbb08a87d0077481e09128f98"
     },
     "scripts/castiron/test_custom_code_publication.py": {
       "mode": "100644",
@@ -12507,7 +12571,7 @@
     },
     "scripts/castiron/test_custom_code_report.py": {
       "mode": "100644",
-      "sha256": "8cb4add28b7e6acb4f8b3844073d33e7a95d8a554c4caf47bd1e09da86a3bd04"
+      "sha256": "4429459798fd4cd57f6bbc6c0a9bbe88d76304cba07d2d2d4bfc22b5d403bdda"
     },
     "sig/openai/client.rbs": {
       "mode": "100644",
@@ -13464,6 +13528,34 @@
     "sig/openai/models/audio/voice.rbs": {
       "mode": "100644",
       "sha256": "154ec589adb352ad130481f8ea3676403f5a08e5d8761bebfe311595f5c27d4f"
+    },
+    "sig/openai/models/audio/voice_consent.rbs": {
+      "mode": "100644",
+      "sha256": "f300c1055ce466649dcd8d9937d6f7e4dfd83e76917dec6996484e3808e0e475"
+    },
+    "sig/openai/models/audio/voice_consent_create_params.rbs": {
+      "mode": "100644",
+      "sha256": "94d02ece3957c22e4afb21f3629fd340c0ddd4fe0465e1f81eef6578c3f0a43b"
+    },
+    "sig/openai/models/audio/voice_consent_delete_params.rbs": {
+      "mode": "100644",
+      "sha256": "9aaf5ac6dafb55638b23a2d2474e9dd67ea0b0e90495ccd3b1f911f289557766"
+    },
+    "sig/openai/models/audio/voice_consent_deleted.rbs": {
+      "mode": "100644",
+      "sha256": "6a24df9cc680ffb16c03dac3dc8c82de067ef4137b1baeda15dd67cf1bd4d1df"
+    },
+    "sig/openai/models/audio/voice_consent_list_params.rbs": {
+      "mode": "100644",
+      "sha256": "9db5f78ae4780ede7c91eab596fe632bdea47cf50b31580db6652327c4a245cd"
+    },
+    "sig/openai/models/audio/voice_consent_retrieve_params.rbs": {
+      "mode": "100644",
+      "sha256": "180515265478914867793b3081828b7b7e39287ebe0740585d3458d06071c5d9"
+    },
+    "sig/openai/models/audio/voice_consent_update_params.rbs": {
+      "mode": "100644",
+      "sha256": "244632a40873cc06e14bd79ade420fd2adcc7a2d38bebbffde1986989aa07cca"
     },
     "sig/openai/models/audio/voice_create_params.rbs": {
       "mode": "100644",
@@ -18367,7 +18459,7 @@
     },
     "sig/openai/resources/audio.rbs": {
       "mode": "100644",
-      "sha256": "a340eada2c2320bc39c9839edb12ef06a2223f47a87c89e8e5a97554a3d7373e"
+      "sha256": "044ecb3c012d40252b600f677653a36df98586b8232aa9d6303aa42417164cdc"
     },
     "sig/openai/resources/audio/speech.rbs": {
       "mode": "100644",
@@ -18380,6 +18472,10 @@
     "sig/openai/resources/audio/translations.rbs": {
       "mode": "100644",
       "sha256": "d2528c7ada95fc20f18dc1f64649d496e9d8aff52791326f77b9f57e8258201c"
+    },
+    "sig/openai/resources/audio/voice_consents.rbs": {
+      "mode": "100644",
+      "sha256": "f4548cf1a4ab2eebfd62eea38830a68fd4d413807ea00c45c5b62ae035d98f4c"
     },
     "sig/openai/resources/audio/voices.rbs": {
       "mode": "100644",
@@ -18884,6 +18980,10 @@
     "test/openai/resources/audio/translations_test.rb": {
       "mode": "100644",
       "sha256": "c84d297af2dfb96d8f26e66ec6568548e5e49dfb21966b1834eabf847f5253e8"
+    },
+    "test/openai/resources/audio/voice_consents_test.rb": {
+      "mode": "100644",
+      "sha256": "7ff1ec34687caafd2914713de090058a54d2a0ac27b1bde49c77150dc8221217"
     },
     "test/openai/resources/audio/voices_test.rb": {
       "mode": "100644",

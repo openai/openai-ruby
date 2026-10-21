@@ -9,6 +9,8 @@ module OpenAI
 
       attr_reader voices: OpenAI::Resources::Audio::Voices
 
+      attr_reader voice_consents: OpenAI::Resources::Audio::VoiceConsents
+
       def initialize: (client: OpenAI::Client) -> void
     end
   end
