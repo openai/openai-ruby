@@ -433,7 +433,7 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
     client = OpenAI::Client.new(
       provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
       timeout: 0.05,
-      max_retries: 0
+      max_retries: 1
     )
     started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     assert_raises(OpenAI::Errors::APITimeoutError) { client.responses.create(model: "caller-model") }
@@ -456,11 +456,90 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
       .to_return(status: 401)
     client = OpenAI::Client.new(
       provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
-      max_retries: 1
+      max_retries: 2
     )
     assert_raises(OpenAI::Errors::AuthenticationError) { client.responses.create(model: "caller-model") }
     assert_requested(:post, "https://oauth2.googleapis.com/token", times: 1)
     assert_requested(:post, "https://trusted.example/v1/responses", times: 3)
+  end
+
+  def test_google_authentication_replay_respects_zero_and_exhausted_budgets
+    [[], [503], [401]].each do |preceding_statuses|
+      WebMock.reset!
+      credentials = google_credentials
+      credentials.access_token = "fake-rejected"
+      credentials.expires_at = Time.now + 3600
+      stub_request(:post, "https://oauth2.googleapis.com/token").to_return_json(
+        body: {access_token: "fake-refreshed", token_type: "Bearer", expires_in: 3600}
+      )
+      responses = (preceding_statuses + [401]).map { {status: _1, headers: {"retry-after" => "0"}} }
+      stub_request(:post, "https://trusted.example/v1/responses").to_return(*responses)
+      client = OpenAI::Client.new(
+        provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
+        max_retries: preceding_statuses.length
+      )
+      assert_raises(OpenAI::Errors::AuthenticationError) { client.responses.create(model: "caller-model") }
+      assert_requested(:post, "https://trusted.example/v1/responses", times: preceding_statuses.length + 1)
+      refreshes = preceding_statuses == [401] ? 1 : 0
+      assert_requested(:post, "https://oauth2.googleapis.com/token", times: refreshes)
+
+      stub_request(:post, "https://trusted.example/v1/responses")
+        .with(headers: {"Authorization" => "Bearer fake-refreshed"})
+        .to_return_json(body: {id: "resp_test", output: []})
+      assert_equal("resp_test", client.responses.create(model: "caller-model").id)
+      assert_requested(:post, "https://oauth2.googleapis.com/token", times: refreshes + 1)
+    end
+  end
+
+  def test_google_authentication_replay_consumes_the_status_retry_budget
+    credentials = google_credentials
+    credentials.access_token = "fake-rejected"
+    credentials.expires_at = Time.now + 3600
+    stub_request(:post, "https://oauth2.googleapis.com/token").to_return_json(
+      body: {access_token: "fake-refreshed", token_type: "Bearer", expires_in: 3600}
+    )
+    stub_request(:post, "https://trusted.example/v1/responses")
+      .to_return(status: 401)
+      .then
+      .to_return(status: 503, headers: {"retry-after" => "0"})
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
+      max_retries: 1
+    )
+    assert_raises(OpenAI::Errors::InternalServerError) { client.responses.create(model: "caller-model") }
+    assert_requested(:post, "https://trusted.example/v1/responses", times: 2)
+  end
+
+  def test_google_status_retries_receive_a_fresh_timeout_after_backoff
+    credentials = google_credentials
+    credentials.access_token = "fake-fresh"
+    credentials.expires_at = Time.now + 3600
+    stub_request(:post, "https://trusted.example/v1/responses")
+      .to_return(status: 503, headers: {"retry-after" => "1"})
+      .then
+      .to_return_json(body: {id: "resp_test", output: []})
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
+      timeout: 0.05,
+      max_retries: 1
+    )
+    now = OpenAI::Internal::Util.monotonic_secs
+    delays = []
+    client.stub(
+      :sleep,
+      -> (delay) {
+        delays << delay
+        now += delay
+      }
+    ) do
+      OpenAI::Internal::Util.stub(:monotonic_secs, -> { now }) do
+        assert_equal("resp_test", client.responses.create(model: "caller-model").id)
+      end
+    end
+
+    assert_equal([1.0], delays)
+    assert_requested(:post, "https://trusted.example/v1/responses", times: 2)
+    assert_not_requested(:post, "https://oauth2.googleapis.com/token")
   end
 
   def test_rejected_callback_token_is_not_replayed

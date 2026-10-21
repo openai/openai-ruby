@@ -59,18 +59,17 @@ module OpenAI
             end
           end
 
-          # Keep one replay allowance and deadline across transport retries.
+          # Share the replay allowance and retry count, but reset the deadline
+          # for each ordinary transport retry. A 401 replay keeps its deadline.
           # Refresh itself happens in prepare_request, under its timeout and mutex.
           if credentials.respond_to?(:fetch_access_token!)
-            wrapper = lambda do |request, replayable, &send_request|
-              context = request[:vertex_auth_context] ||
-                {
-                  replayed: false,
-                  deadline: request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
-                }
+            wrapper = lambda do |request, replayable, retry_count, &send_request|
+              context = request[:vertex_auth_context] || {replayed: false}
+              context[:retry_count] = retry_count
+              context[:deadline] = request[:timeout]&.then { OpenAI::Internal::Util.monotonic_secs + _1 }
               request = request.merge(vertex_auth_context: context)
               begin
-                send_request.call(request)
+                send_request.call(request, context[:retry_count])
               rescue OpenAI::Errors::AuthenticationError
                 remaining = context[:deadline] && (context[:deadline] - OpenAI::Internal::Util.monotonic_secs)
                 if remaining && remaining <= 0
@@ -83,9 +82,10 @@ module OpenAI
                   raise OpenAI::Errors::APITimeoutError.new(url: request.fetch(:url)), cause: nil
                 end
 
-                raise if context[:replayed] || !replayable
+                raise if context[:replayed] || !replayable || context[:retry_count] >= request.fetch(:max_retries)
 
                 context[:replayed] = true
+                context[:retry_count] += 1
                 retry
               end
             end
