@@ -556,6 +556,12 @@ client = OpenAI::Client.new(
 
 See [bedrock.md](bedrock.md) for authentication precedence, static and refreshable credentials, endpoint configuration, and SigV4 request constraints.
 
+## Google Vertex AI
+
+Use `OpenAI::Providers.vertex` with the Responses API. See [vertex.md](vertex.md)
+for setup with Google Application Default Credentials, a credentials object, or
+an access-token callback.
+
 ## Workload Identity Authentication
 
 For secure, automated environments like cloud-managed Kubernetes, Azure, and GCP, you can use workload identity authentication with short-lived tokens from cloud identity providers instead of long-lived API keys.

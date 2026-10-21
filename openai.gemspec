@@ -50,6 +50,7 @@ Gem::Specification.new do |s|
     "VERSIONING.md",
     "azure.md",
     "bedrock.md",
+    "vertex.md",
     "realtime.md",
     "local-audio.md",
     "responses-websocket.md",
