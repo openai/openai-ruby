@@ -134,8 +134,8 @@ module OpenAI
               # retention period.
               attr_accessor input_cache_write_30m_tokens: Integer?
 
-              # The aggregated number of input tokens written to the cache with a 30-minute
-              # retention period.
+              # The aggregated number of input tokens written to the cache across 30-minute and
+              # 12-hour retention periods.
               attr_accessor input_cache_write_tokens: Integer?
 
               # The aggregated number of cached audio input tokens used.
@@ -217,8 +217,8 @@ module OpenAI
               #   The aggregated number of input tokens written to the cache with a 30-minute
               #   retention period.
               # @param input_cache_write_tokens
-              #   The aggregated number of input tokens written to the cache with a 30-minute
-              #   retention period.
+              #   The aggregated number of input tokens written to the cache across 30-minute and
+              #   12-hour retention periods.
               # @param input_cached_audio_tokens
               #   The aggregated number of cached audio input tokens used.
               # @param input_cached_image_tokens
