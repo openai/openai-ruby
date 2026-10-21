@@ -55,6 +55,8 @@ module OpenAI
 
     # @api private
     class SessionAccumulator
+      include OpenAI::WebSocket::Protocol
+
       attr_reader :final_response, :error
 
       def initialize(limit)
@@ -93,10 +95,10 @@ module OpenAI
         if type == "response.output_item.done"
           # Retain wire data independently of the mutable event returned by receive.
           completed_item = OpenAI::Internal::Type::BaseModel.recursively_to_h(event.item, convert: false)
-          @items[event.output_index] = JSON.parse(JSON.generate(completed_item), symbolize_names: true)
+          @items[event.output_index] = parse_json(generate_json(completed_item))
         elsif %w[response.completed response.failed response.incomplete].include?(type)
           data = OpenAI::Internal::Type::BaseModel.recursively_to_h(event, convert: false)
-          data = JSON.parse(JSON.generate(data), symbolize_names: true)
+          data = parse_json(generate_json(data))
           response = data.fetch(:response)
           if response[:output].nil?
             response = response.merge(output: @items.sort.map { |_index, item| item.to_h })
@@ -117,7 +119,7 @@ module OpenAI
           @state.handle_event(@decoder.decode(data))
         end
 
-      rescue StandardError => error
+      rescue StandardError, SystemStackError => error
         @error = error.is_a?(SessionError) ? error : SessionError.new("Could not collect the Responses final response.")
         clear
       end
@@ -313,6 +315,8 @@ module OpenAI
 
     # Owns one connection and one Async reader. Use only its lanes to receive.
     class Session
+      include OpenAI::WebSocket::Protocol
+
       attr_reader :limits, :default
 
       def self.open(
@@ -531,7 +535,7 @@ module OpenAI
         value = @lanes.fetch(data[:stream_id], @lanes[nil])
         return unless value
 
-        bytes = JSON.generate(data).bytesize
+        bytes = generate_json(data).bytesize
         if @events >= @limits.max_events || @bytes + bytes > @limits.max_bytes
           raise BufferError, "The Responses session exceeded its buffered event budget."
         end
@@ -544,6 +548,9 @@ module OpenAI
           consumed(bytes)
           raise
         end
+
+      rescue SystemStackError
+        raise SessionError, "Could not buffer the Responses WebSocket event.", cause: nil
       end
 
       private def stop_reader
