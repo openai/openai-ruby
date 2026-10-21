@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.109.0](https://github.com/openai/openai-ruby/compare/v0.108.0...v0.109.0) (2026-10-21)
+
+
+### Features
+
+* add Vertex AI support for the Responses API ([#952](https://github.com/openai/openai-ruby/issues/952)) ([98f5359](https://github.com/openai/openai-ruby/commit/98f5359e3ad2133abc5e914610fe7bbd2a058f8d))
+
 ## [0.108.0](https://github.com/openai/openai-ruby/compare/v0.107.0...v0.108.0) (2026-10-21)
 
 
