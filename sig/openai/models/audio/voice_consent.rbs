@@ -1,0 +1,57 @@
+module OpenAI
+  module Models
+    module Audio
+      type voice_consent =
+        {
+          id: String,
+          created_at: Integer,
+          language: String,
+          name: String,
+          ?object: :"audio.voice_consent"
+        }
+
+      class VoiceConsent < OpenAI::Internal::Type::BaseModel
+        # The consent recording identifier.
+        attr_accessor id: String
+
+        # The Unix timestamp (in seconds) for when the consent recording was created.
+        attr_accessor created_at: Integer
+
+        # The BCP 47 language tag for the consent phrase (for example, `en-US`).
+        attr_accessor language: String
+
+        # The label provided when the consent recording was uploaded.
+        attr_accessor name: String
+
+        # The object type, which is always `audio.voice_consent`.
+        attr_accessor object: :"audio.voice_consent"
+
+        # @param id
+        #   The consent recording identifier.
+        # @param created_at
+        #   The Unix timestamp (in seconds) for when the consent recording was created.
+        # @param language
+        #   The BCP 47 language tag for the consent phrase (for example, `en-US`).
+        # @param name
+        #   The label provided when the consent recording was uploaded.
+        # @param object
+        #   The object type, which is always `audio.voice_consent`.
+        def initialize: (
+          id: String,
+          created_at: Integer,
+          language: String,
+          name: String,
+          ?object: :"audio.voice_consent"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          created_at: Integer,
+          language: String,
+          name: String,
+          ?object: :"audio.voice_consent"
+        }
+      end
+    end
+  end
+end
