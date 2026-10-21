@@ -6,6 +6,14 @@ module OpenAI
       ?token_provider: (^-> String)?
     ) -> OpenAI::Provider
 
+    def self.vertex: (
+      ?project: String?,
+      ?location: String?,
+      ?base_url: String?,
+      ?token_provider: (^-> String)?,
+      ?credentials: untyped
+    ) -> OpenAI::Provider
+
     def self.bedrock: (
       ?endpoint: (:mantle | :runtime | "mantle" | "runtime")?,
       ?region: String?,

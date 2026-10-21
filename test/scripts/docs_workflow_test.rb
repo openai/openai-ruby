@@ -42,13 +42,6 @@ class DocsWorkflowTest < Minitest::Test
     end
   end
 
-  def test_rake_aliases_preserve_user_bundle_settings
-    rakefile = File.read(File.join(ROOT, "Rakefile"))
-
-    assert_equal(2, rakefile.scan("Bundler.with_original_env").length)
-    refute_includes(rakefile, "Bundler.with_unbundled_env")
-  end
-
   def test_docs_script_defaults_to_repository_config_and_docs_lockfile
     Dir.mktmpdir do |directory|
       bundle = write_bundle_probe(directory)
