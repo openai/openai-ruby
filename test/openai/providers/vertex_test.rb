@@ -276,6 +276,8 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
   end
 
   private def assert_shared_credentials_are_serialized
+    release = nil
+    first = nil
     entered = Queue.new
     release = Queue.new
     calls = 0
@@ -309,7 +311,7 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
     assert_equal("resp_test", other.responses.create(model: "caller-model").id)
     assert_equal(2, calls)
   ensure
-    release << true
+    release << true if release
     first&.kill
     first&.join
   end
