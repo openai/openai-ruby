@@ -145,8 +145,8 @@ module OpenAI
               optional :input_cache_write_30m_tokens, Integer, nil?: true
 
               # @!attribute input_cache_write_tokens
-              #   The aggregated number of input tokens written to the cache with a 30-minute
-              #   retention period.
+              #   The aggregated number of input tokens written to the cache across 30-minute and
+              #   12-hour retention periods.
               #
               #   @return [Integer, nil]
               optional :input_cache_write_tokens, Integer, nil?: true
@@ -284,8 +284,8 @@ module OpenAI
               #     retention period.
               #
               #   @param input_cache_write_tokens [Integer, nil]
-              #     The aggregated number of input tokens written to the cache with a 30-minute
-              #     retention period.
+              #     The aggregated number of input tokens written to the cache across 30-minute and
+              #     12-hour retention periods.
               #
               #   @param input_cached_audio_tokens [Integer, nil]
               #     The aggregated number of cached audio input tokens used.
