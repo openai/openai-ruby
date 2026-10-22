@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.110.0](https://github.com/openai/openai-ruby/compare/v0.109.0...v0.110.0) (2026-10-22)
+
+
+### Features
+
+* **api:** add voice deletion ([#954](https://github.com/openai/openai-ruby/issues/954)) ([a6257f2](https://github.com/openai/openai-ruby/commit/a6257f2737b1b98d6bda684a4fed8e2726052a3a))
+
+
+### Chores
+
+* **api:** clarify service-account API key deletion ([#956](https://github.com/openai/openai-ruby/issues/956)) ([fac910a](https://github.com/openai/openai-ruby/commit/fac910a671e53a7c5499e1cb323dffe23c9e247d))
+
 ## [0.109.0](https://github.com/openai/openai-ruby/compare/v0.108.0...v0.109.0) (2026-10-21)
 
 
