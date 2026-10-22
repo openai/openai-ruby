@@ -5,7 +5,7 @@
 
 ### Features
 
-* **api:** expand Decisions input and question types ([#959](https://github.com/openai/openai-ruby/issues/959)) ([ff91bf6](https://github.com/openai/openai-ruby/commit/ff91bf63d2c8a565b155d554c70f45a0fb6efc1f))
+* **api: Breaking change in a minor release.** A Live response question’s `instructions` can now be a string or an array of text, image, or JSON parts. Code like `question.instructions.strip` will fail if it receives an array. Check `question.instructions.is_a?(String)` and handle the array case. Decisions request inputs can also contain new message roles and tool-history items, so update code that assumes it knows every input type. Replace `OpenAI::DecisionInputMessage.new(content: ...)` with `OpenAI::DecisionInputMessage::User.new(content: ...)` for user-message inputs. Existing string instructions still work. ([#959](https://github.com/openai/openai-ruby/issues/959)) ([ff91bf6](https://github.com/openai/openai-ruby/commit/ff91bf63d2c8a565b155d554c70f45a0fb6efc1f))
 
 
 ### Chores
