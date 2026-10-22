@@ -5827,7 +5827,7 @@
     },
     "lib/openai/resources/admin/organization/projects/api_keys.rb": {
       "mode": "100644",
-      "sha256": "a39817401be92f00612f8381b6e9a5187e0ed5e02e5378eb469f2c2369d13890"
+      "sha256": "dbadd72759e6745a17ba95908adbced3f4bcdfaf01de964fe23f8ae0f3fa515e"
     },
     "lib/openai/resources/admin/organization/projects/certificates.rb": {
       "mode": "100644",
@@ -12091,7 +12091,7 @@
     },
     "rbi/openai/resources/admin/organization/projects/api_keys.rbi": {
       "mode": "100644",
-      "sha256": "d9ac722e92cb8afbb1e1d33a4aaae0b89c9e49eeb8566b66194e5e44ca733fb1"
+      "sha256": "b2fe0dc3b58163328517e0abc3558ece8c88c2e0badf01aa8f88a7b7144edafe"
     },
     "rbi/openai/resources/admin/organization/projects/certificates.rbi": {
       "mode": "100644",
