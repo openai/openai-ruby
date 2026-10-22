@@ -112,7 +112,7 @@ module OpenAI
               )
             end
 
-            sig { returns(String) }
+            sig { returns(OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Predicate::Instructions::Variants) }
             attr_accessor :instructions
 
             # The type of the object. Always `predicate`.
@@ -129,7 +129,7 @@ module OpenAI
             sig do
               params(
 
-                instructions: String,
+                instructions: OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Predicate::Instructions::Variants,
 
                 name: String,
 
@@ -151,12 +151,35 @@ module OpenAI
 
             sig do
               override.returns(
-                {instructions: String, type: Symbol, name: String}
+                {
+                  instructions: OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Predicate::Instructions::Variants,
+                  type: Symbol,
+                  name: String
+                }
               )
             end
             def to_hash
             end
 
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              Variants = T.type_alias { T.any(String, T::Array[OpenAI::DecisionQuestionInputPart::Variants]) }
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Predicate::Instructions::Variants]
+                )
+              }
+              def self.variants
+              end
+
+              DecisionQuestionInputPartArray = T.let(
+                OpenAI::Internal::Type::ArrayOf[union: OpenAI::DecisionQuestionInputPart],
+                OpenAI::Internal::Type::Converter
+              )
+
+            end
           end
 
           class Choice < OpenAI::Internal::Type::BaseModel
@@ -171,7 +194,7 @@ module OpenAI
             sig { returns(T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice]) }
             attr_accessor :choices
 
-            sig { returns(String) }
+            sig { returns(OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Instructions::Variants) }
             attr_accessor :instructions
 
             # The type of the object. Always `choice`.
@@ -190,7 +213,7 @@ module OpenAI
 
                 choices: T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice::OrHash],
 
-                instructions: String,
+                instructions: OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Instructions::Variants,
 
                 name: String,
 
@@ -217,7 +240,7 @@ module OpenAI
               override.returns(
                 {
                   choices: T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice],
-                  instructions: String,
+                  instructions: OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Instructions::Variants,
                   type: Symbol,
                   name: String
                 }
@@ -286,6 +309,26 @@ module OpenAI
 
               end
             end
+
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              Variants = T.type_alias { T.any(String, T::Array[OpenAI::DecisionQuestionInputPart::Variants]) }
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Instructions::Variants]
+                )
+              }
+              def self.variants
+              end
+
+              DecisionQuestionInputPartArray = T.let(
+                OpenAI::Internal::Type::ArrayOf[union: OpenAI::DecisionQuestionInputPart],
+                OpenAI::Internal::Type::Converter
+              )
+
+            end
           end
 
           class Score < OpenAI::Internal::Type::BaseModel
@@ -296,7 +339,7 @@ module OpenAI
               )
             end
 
-            sig { returns(String) }
+            sig { returns(OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Instructions::Variants) }
             attr_accessor :instructions
 
             sig { returns(T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Level]) }
@@ -316,7 +359,7 @@ module OpenAI
             sig do
               params(
 
-                instructions: String,
+                instructions: OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Instructions::Variants,
 
                 levels: T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Level::OrHash],
 
@@ -343,7 +386,7 @@ module OpenAI
             sig do
               override.returns(
                 {
-                  instructions: String,
+                  instructions: OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Instructions::Variants,
                   levels: T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Level],
                   type: Symbol,
                   name: String
@@ -351,6 +394,26 @@ module OpenAI
               )
             end
             def to_hash
+            end
+
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              Variants = T.type_alias { T.any(String, T::Array[OpenAI::DecisionQuestionInputPart::Variants]) }
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Instructions::Variants]
+                )
+              }
+              def self.variants
+              end
+
+              DecisionQuestionInputPartArray = T.let(
+                OpenAI::Internal::Type::ArrayOf[union: OpenAI::DecisionQuestionInputPart],
+                OpenAI::Internal::Type::Converter
+              )
+
             end
 
             class Level < OpenAI::Internal::Type::BaseModel
