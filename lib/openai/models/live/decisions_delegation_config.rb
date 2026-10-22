@@ -42,8 +42,11 @@ module OpenAI
           class Predicate < OpenAI::Internal::Type::BaseModel
             # @!attribute instructions
             #
-            #   @return [String]
-            required :instructions, String
+            #   @return [String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>]
+            required(
+              :instructions,
+              union: -> { OpenAI::Live::DecisionsDelegationConfig::Question::Predicate::Instructions }
+            )
 
             # @!attribute type
             #   The type of the object. Always `predicate`.
@@ -59,12 +62,33 @@ module OpenAI
             # @!method initialize(instructions:, name: nil, type: :predicate)
             #   Estimate how likely it is that a statement about the input is true.
             #
-            #   @param instructions [String]
+            #   @param instructions [String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>]
             #
             #   @param name [String]
             #
             #   @param type [Symbol, :predicate]
             #     The type of the object. Always `predicate`.
+
+            # @see OpenAI::Models::Live::DecisionsDelegationConfig::Question::Predicate#instructions
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              variant String
+
+              variant(
+                -> {
+                  OpenAI::Models::Live::DecisionsDelegationConfig::Question::Predicate::Instructions::DecisionQuestionInputPartArray
+                }
+              )
+
+              # @!method self.variants
+              #   @return [Array(String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>)]
+
+              # @type [OpenAI::Internal::Type::Converter]
+              DecisionQuestionInputPartArray = OpenAI::Internal::Type::ArrayOf[
+                union: -> { OpenAI::DecisionQuestionInputPart }
+              ]
+            end
           end
 
           class Choice < OpenAI::Internal::Type::BaseModel
@@ -79,8 +103,11 @@ module OpenAI
 
             # @!attribute instructions
             #
-            #   @return [String]
-            required :instructions, String
+            #   @return [String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>]
+            required(
+              :instructions,
+              union: -> { OpenAI::Live::DecisionsDelegationConfig::Question::Choice::Instructions }
+            )
 
             # @!attribute type
             #   The type of the object. Always `choice`.
@@ -99,7 +126,7 @@ module OpenAI
             #   @param choices [Array<OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::Choice>]
             #     Provide between 2 and 255 choices. Each choice must be unique.
             #
-            #   @param instructions [String]
+            #   @param instructions [String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>]
             #
             #   @param name [String]
             #
@@ -137,13 +164,37 @@ module OpenAI
                 #   @return [Array(String, Boolean)]
               end
             end
+
+            # @see OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice#instructions
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              variant String
+
+              variant(
+                -> {
+                  OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::Instructions::DecisionQuestionInputPartArray
+                }
+              )
+
+              # @!method self.variants
+              #   @return [Array(String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>)]
+
+              # @type [OpenAI::Internal::Type::Converter]
+              DecisionQuestionInputPartArray = OpenAI::Internal::Type::ArrayOf[
+                union: -> { OpenAI::DecisionQuestionInputPart }
+              ]
+            end
           end
 
           class Score < OpenAI::Internal::Type::BaseModel
             # @!attribute instructions
             #
-            #   @return [String]
-            required :instructions, String
+            #   @return [String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>]
+            required(
+              :instructions,
+              union: -> { OpenAI::Live::DecisionsDelegationConfig::Question::Score::Instructions }
+            )
 
             # @!attribute levels
             #
@@ -167,7 +218,7 @@ module OpenAI
             # @!method initialize(instructions:, levels:, name: nil, type: :score)
             #   Rate the input against the supplied ordered levels.
             #
-            #   @param instructions [String]
+            #   @param instructions [String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>]
             #
             #   @param levels [Array<OpenAI::Models::Live::DecisionsDelegationConfig::Question::Score::Level>]
             #
@@ -175,6 +226,28 @@ module OpenAI
             #
             #   @param type [Symbol, :score]
             #     The type of the object. Always `score`.
+
+            # @see OpenAI::Models::Live::DecisionsDelegationConfig::Question::Score#instructions
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              variant String
+
+              variant(
+                -> {
+                  OpenAI::Models::Live::DecisionsDelegationConfig::Question::Score::Instructions::DecisionQuestionInputPartArray
+                }
+              )
+
+              # @!method self.variants
+              #   @return [Array(String, Array<OpenAI::Models::DecisionQuestionInputText, OpenAI::Models::DecisionQuestionInputImage, OpenAI::Models::DecisionInputJSON>)]
+
+              # @type [OpenAI::Internal::Type::Converter]
+              DecisionQuestionInputPartArray = OpenAI::Internal::Type::ArrayOf[
+                union: -> { OpenAI::DecisionQuestionInputPart }
+              ]
+            end
+
             class Level < OpenAI::Internal::Type::BaseModel
               # @!attribute label
               #

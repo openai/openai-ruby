@@ -1,0 +1,14 @@
+module OpenAI
+  module Models
+    type decision_question_input_part =
+      OpenAI::DecisionQuestionInputText
+      | OpenAI::DecisionQuestionInputImage
+      | OpenAI::DecisionInputJSON
+
+    module DecisionQuestionInputPart
+      extend OpenAI::Internal::Type::Union
+
+      def self?.variants: -> ::Array[OpenAI::Models::decision_question_input_part]
+    end
+  end
+end

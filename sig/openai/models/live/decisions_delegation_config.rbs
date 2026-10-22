@@ -34,10 +34,14 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           type predicate =
-            { instructions: String, ?type: :predicate, ?name: String }
+            {
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Predicate::instructions,
+              ?type: :predicate,
+              ?name: String
+            }
 
           class Predicate < OpenAI::Internal::Type::BaseModel
-            attr_accessor instructions: String
+            attr_accessor instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Predicate::instructions
 
             # The type of the object. Always `predicate`.
             attr_accessor type: :predicate
@@ -49,22 +53,33 @@ module OpenAI
             # @param type
             #   The type of the object. Always `predicate`.
             def initialize: (
-              instructions: String,
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Predicate::instructions,
               ?name: String,
               ?type: :predicate
             ) -> void
 
             def to_hash: -> {
-              instructions: String,
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Predicate::instructions,
               ?type: :predicate,
               ?name: String
             }
+
+            type instructions =
+              String | ::Array[OpenAI::Models::decision_question_input_part]
+
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionsDelegationConfig::Question::Predicate::instructions]
+
+              DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+            end
           end
 
           type choice =
             {
               choices: ::Array[OpenAI::Live::DecisionsDelegationConfig::Question::Choice::Choice],
-              instructions: String,
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::instructions,
               ?type: :choice,
               ?name: String
             }
@@ -73,7 +88,7 @@ module OpenAI
             # Provide between 2 and 255 choices. Each choice must be unique.
             attr_accessor choices: ::Array[OpenAI::Live::DecisionsDelegationConfig::Question::Choice::Choice]
 
-            attr_accessor instructions: String
+            attr_accessor instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::instructions
 
             # The type of the object. Always `choice`.
             attr_accessor type: :choice
@@ -88,14 +103,14 @@ module OpenAI
             #   The type of the object. Always `choice`.
             def initialize: (
               choices: ::Array[OpenAI::Live::DecisionsDelegationConfig::Question::Choice::Choice],
-              instructions: String,
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::instructions,
               ?name: String,
               ?type: :choice
             ) -> void
 
             def to_hash: -> {
               choices: ::Array[OpenAI::Live::DecisionsDelegationConfig::Question::Choice::Choice],
-              instructions: String,
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::instructions,
               ?type: :choice,
               ?name: String
             }
@@ -134,18 +149,29 @@ module OpenAI
                 def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::Choice::value]
               end
             end
+
+            type instructions =
+              String | ::Array[OpenAI::Models::decision_question_input_part]
+
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::instructions]
+
+              DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+            end
           end
 
           type score =
             {
-              instructions: String,
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Score::instructions,
               levels: ::Array[OpenAI::Live::DecisionsDelegationConfig::Question::Score::Level],
               ?type: :score,
               ?name: String
             }
 
           class Score < OpenAI::Internal::Type::BaseModel
-            attr_accessor instructions: String
+            attr_accessor instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Score::instructions
 
             attr_accessor levels: ::Array[OpenAI::Live::DecisionsDelegationConfig::Question::Score::Level]
 
@@ -159,18 +185,29 @@ module OpenAI
             # @param type
             #   The type of the object. Always `score`.
             def initialize: (
-              instructions: String,
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Score::instructions,
               levels: ::Array[OpenAI::Live::DecisionsDelegationConfig::Question::Score::Level],
               ?name: String,
               ?type: :score
             ) -> void
 
             def to_hash: -> {
-              instructions: String,
+              instructions: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Score::instructions,
               levels: ::Array[OpenAI::Live::DecisionsDelegationConfig::Question::Score::Level],
               ?type: :score,
               ?name: String
             }
+
+            type instructions =
+              String | ::Array[OpenAI::Models::decision_question_input_part]
+
+            module Instructions
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionsDelegationConfig::Question::Score::instructions]
+
+              DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+            end
 
             type level = { label: String, ?description: String }
 
