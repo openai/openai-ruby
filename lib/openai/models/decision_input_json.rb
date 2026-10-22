@@ -30,15 +30,14 @@ module OpenAI
         variant -> { OpenAI::Models::DecisionInputJSON::Data::UnionMember1Array }
 
         # @!method self.variants
-        #   @return [Array(Hash{Symbol=>Object}, Array<Hash{Symbol=>Object, nil}, nil>)]
+        #   @return [Array(Hash{Symbol=>Object}, Array<Hash{Symbol=>Object, nil}>)]
 
         # @type [OpenAI::Internal::Type::Converter]
         UnionMember0Map = OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown]
 
         # @type [OpenAI::Internal::Type::Converter]
         UnionMember1Array = OpenAI::Internal::Type::ArrayOf[
-          OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown, nil?: true],
-          nil?: true
+          OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown, nil?: true]
         ]
       end
     end

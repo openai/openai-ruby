@@ -50,7 +50,7 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         Variants = T.type_alias {
-          T.any(T::Hash[Symbol, T.anything], T::Array[T.nilable(T::Hash[Symbol, T.nilable(T.anything)])])
+          T.any(T::Hash[Symbol, T.anything], T::Array[T::Hash[Symbol, T.nilable(T.anything)]])
         }
 
         sig { override.returns(T::Array[OpenAI::DecisionInputJSON::Data::Variants]) }
@@ -63,10 +63,7 @@ module OpenAI
         )
 
         UnionMember1Array = T.let(
-          OpenAI::Internal::Type::ArrayOf[
-            OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown, nil?: true],
-            nil?: true
-          ],
+          OpenAI::Internal::Type::ArrayOf[OpenAI::Internal::Type::HashOf[OpenAI::Internal::Type::Unknown, nil?: true]],
           OpenAI::Internal::Type::Converter
         )
 

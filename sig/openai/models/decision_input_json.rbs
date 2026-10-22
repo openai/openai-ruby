@@ -18,7 +18,7 @@ module OpenAI
         ?type: :input_json
       }
 
-      type data = ::Hash[Symbol, top] | ::Array[::Hash[Symbol, top?]?]
+      type data = ::Hash[Symbol, top] | ::Array[::Hash[Symbol, top?]]
 
       module Data
         extend OpenAI::Internal::Type::Union

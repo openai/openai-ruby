@@ -3291,7 +3291,7 @@
     },
     "lib/openai/models/decision_input_json.rb": {
       "mode": "100644",
-      "sha256": "092ce26ebb5626023e7558fdbb1adcb98b7e01c486b8482a66a58e2673d6a1df"
+      "sha256": "5fd858facd9e7d8560bb9b579b0683792c39376dc9f593cf945a825631077710"
     },
     "lib/openai/models/decision_input_message.rb": {
       "mode": "100644",
@@ -9571,7 +9571,7 @@
     },
     "rbi/openai/models/decision_input_json.rbi": {
       "mode": "100644",
-      "sha256": "133f0ef97b7afbdc65bd3700b44b90cb6808cb741474af742edf38e7bb82eb19"
+      "sha256": "431cebd49ee4efbc1b93084ae94cc6b9c3de039eb859aa629831fc01a8fe393d"
     },
     "rbi/openai/models/decision_input_message.rbi": {
       "mode": "100644",
@@ -15895,7 +15895,7 @@
     },
     "sig/openai/models/decision_input_json.rbs": {
       "mode": "100644",
-      "sha256": "830a8a4452fa8d3988edd6131a3b077066b7f735204780df70745123d4dbdd74"
+      "sha256": "12e3035388b51f93a1db06c86f00cd72f019ee22a20ca0bfea0a8bc98238a49b"
     },
     "sig/openai/models/decision_input_message.rbs": {
       "mode": "100644",
