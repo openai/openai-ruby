@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.111.0](https://github.com/openai/openai-ruby/compare/v0.110.0...v0.111.0) (2026-10-22)
+
+
+### Features
+
+* **api:** expand Decisions input and question types ([#959](https://github.com/openai/openai-ruby/issues/959)) ([ff91bf6](https://github.com/openai/openai-ruby/commit/ff91bf63d2c8a565b155d554c70f45a0fb6efc1f))
+
+
+### Chores
+
+* **deps:** bump ruby/setup-ruby from 1.331.0 to 1.332.0 ([#958](https://github.com/openai/openai-ruby/issues/958)) ([38170d0](https://github.com/openai/openai-ruby/commit/38170d06553453c0223e317dd4eb0579bc22223f))
+
 ## [0.110.0](https://github.com/openai/openai-ruby/compare/v0.109.0...v0.110.0) (2026-10-22)
 
 
