@@ -16,16 +16,15 @@ module OpenAI
       extend OpenAI::Internal::Type::RequestParameters::Converter
       include OpenAI::Internal::Type::RequestParameters
 
-      # The text or images to evaluate for every question. Provide a text string or user
-      # messages containing text and images. Images can be base64 data URLs or publicly
-      # accessible HTTP(S) URLs; at most 128 images are allowed across all messages in
-      # one request. Files, audio, tools, and item references are not supported.
+      # The input to evaluate for every question. Provide a text string or an ordered
+      # array of messages, function calls and outputs, or custom tool calls and outputs.
+      # Each tool output must identify a matching call by call ID.
       attr_accessor input: OpenAI::Models::DecisionCreateParams::input
 
       # The model to use. Only `gpt-6-luna` is supported.
       attr_accessor model: String
 
-      # Ask 1–200 questions about the input. Each question can be a predicate, choice,
+      # Ask 1–400 questions about the input. Each question can be a predicate, choice,
       # or score. Answers come back in the same order.
       attr_accessor questions: ::Array[OpenAI::Models::DecisionCreateParams::question]
 
@@ -49,14 +48,13 @@ module OpenAI
       attr_accessor safety_identifier: String?
 
       # @param input
-      #   The text or images to evaluate for every question. Provide a text string or user
-      #   messages containing text and images. Images can be base64 data URLs or publicly
-      #   accessible HTTP(S) URLs; at most 128 images are allowed across all messages in
-      #   one request. Files, audio, tools, and item references are not supported.
+      #   The input to evaluate for every question. Provide a text string or an ordered
+      #   array of messages, function calls and outputs, or custom tool calls and outputs.
+      #   Each tool output must identify a matching call by call ID.
       # @param model
       #   The model to use. Only `gpt-6-luna` is supported.
       # @param questions
-      #   Ask 1–200 questions about the input. Each question can be a predicate, choice,
+      #   Ask 1–400 questions about the input. Each question can be a predicate, choice,
       #   or score. Answers come back in the same order.
       # @param prompt_cache_key
       #   Partition prompt cache reuse by caller-provided key.
@@ -95,14 +93,565 @@ module OpenAI
         ?request_options: OpenAI::RequestOptions
       }
 
-      type input = String | ::Array[OpenAI::DecisionInputMessage]
+      type input =
+        String
+        | ::Array[OpenAI::Models::DecisionCreateParams::Input::union_member1]
 
       module Input
         extend OpenAI::Internal::Type::Union
 
+        type union_member1 =
+          OpenAI::Models::decision_input_message
+          | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage
+          | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage
+          | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage
+          | OpenAI::DecisionCreateParams::Input::UnionMember1::FunctionCall
+          | OpenAI::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput
+          | OpenAI::DecisionCreateParams::Input::UnionMember1::CustomToolCall
+          | OpenAI::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput
+
+        module UnionMember1
+          extend OpenAI::Internal::Type::Union
+
+          type decision_input_user_message =
+            {
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::content,
+              ?role: :user,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::type_
+            }
+
+          class DecisionInputUserMessage < OpenAI::Internal::Type::BaseModel
+            # A text string or an ordered list of text, image, and JSON parts.
+            attr_accessor content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::content
+
+            attr_accessor role: :user
+
+            attr_reader type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::type_?
+
+            def type=: (
+              OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::type_
+            ) -> OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::type_
+
+            # @param content
+            #   A text string or an ordered list of text, image, and JSON parts.
+            def initialize: (
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::content,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::type_,
+              ?role: :user
+            ) -> void
+
+            def to_hash: -> {
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::content,
+              ?role: :user,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::type_
+            }
+
+            type content = String | ::Array[OpenAI::Models::decision_input_part]
+
+            module Content
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::content]
+
+              DecisionInputPartArray: OpenAI::Internal::Type::Converter
+            end
+
+            type type_ = :message
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              MESSAGE: :message
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::type_]
+            end
+          end
+
+          type decision_input_developer_message =
+            {
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::content,
+              ?role: :developer,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::type_
+            }
+
+          class DecisionInputDeveloperMessage < OpenAI::Internal::Type::BaseModel
+            # A text string or an ordered list of input text parts.
+            attr_accessor content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::content
+
+            attr_accessor role: :developer
+
+            attr_reader type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::type_?
+
+            def type=: (
+              OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::type_
+            ) -> OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::type_
+
+            # @param content
+            #   A text string or an ordered list of input text parts.
+            def initialize: (
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::content,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::type_,
+              ?role: :developer
+            ) -> void
+
+            def to_hash: -> {
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::content,
+              ?role: :developer,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::type_
+            }
+
+            type content = String | ::Array[OpenAI::DecisionInputText]
+
+            module Content
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::content]
+
+              DecisionInputTextArray: OpenAI::Internal::Type::Converter
+            end
+
+            type type_ = :message
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              MESSAGE: :message
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage::type_]
+            end
+          end
+
+          type decision_input_system_message =
+            {
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::content,
+              ?role: :system,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::type_
+            }
+
+          class DecisionInputSystemMessage < OpenAI::Internal::Type::BaseModel
+            # A text string or an ordered list of input text parts.
+            attr_accessor content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::content
+
+            attr_accessor role: :system
+
+            attr_reader type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::type_?
+
+            def type=: (
+              OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::type_
+            ) -> OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::type_
+
+            # @param content
+            #   A text string or an ordered list of input text parts.
+            def initialize: (
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::content,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::type_,
+              ?role: :system
+            ) -> void
+
+            def to_hash: -> {
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::content,
+              ?role: :system,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::type_
+            }
+
+            type content = String | ::Array[OpenAI::DecisionInputText]
+
+            module Content
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::content]
+
+              DecisionInputTextArray: OpenAI::Internal::Type::Converter
+            end
+
+            type type_ = :message
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              MESSAGE: :message
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage::type_]
+            end
+          end
+
+          type decision_input_assistant_message =
+            {
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::content,
+              ?role: :assistant,
+              ?phase: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::phase?,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::type_
+            }
+
+          class DecisionInputAssistantMessage < OpenAI::Internal::Type::BaseModel
+            # A text string or an ordered list of output text and refusal parts.
+            attr_accessor content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::content
+
+            attr_accessor role: :assistant
+
+            # The phase of an assistant message.
+            attr_accessor phase: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::phase?
+
+            attr_reader type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::type_?
+
+            def type=: (
+              OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::type_
+            ) -> OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::type_
+
+            # @param content
+            #   A text string or an ordered list of output text and refusal parts.
+            # @param phase
+            #   The phase of an assistant message.
+            def initialize: (
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::content,
+              ?phase: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::phase?,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::type_,
+              ?role: :assistant
+            ) -> void
+
+            def to_hash: -> {
+              content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::content,
+              ?role: :assistant,
+              ?phase: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::phase?,
+              ?type: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::type_
+            }
+
+            type content =
+              String
+              | ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::Content::part]
+
+            module Content
+              extend OpenAI::Internal::Type::Union
+
+              type part =
+                OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::Content::Part::OutputText
+                | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::Content::Part::Refusal
+
+              module Part
+                extend OpenAI::Internal::Type::Union
+
+                type output_text = { text: String, ?type: :output_text }
+
+                class OutputText < OpenAI::Internal::Type::BaseModel
+                  attr_accessor text: String
+
+                  attr_accessor type: :output_text
+
+                  def initialize: (text: String, ?type: :output_text) -> void
+
+                  def to_hash: -> { text: String, ?type: :output_text }
+                end
+
+                type refusal = { refusal: String, ?type: :refusal }
+
+                class Refusal < OpenAI::Internal::Type::BaseModel
+                  attr_accessor refusal: String
+
+                  attr_accessor type: :refusal
+
+                  def initialize: (refusal: String, ?type: :refusal) -> void
+
+                  def to_hash: -> { refusal: String, ?type: :refusal }
+                end
+
+                def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::Content::part]
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::content]
+
+              PartsArray: OpenAI::Internal::Type::Converter
+            end
+
+            type phase = :commentary | :final_answer
+
+            module Phase
+              extend OpenAI::Internal::Type::Enum
+
+              COMMENTARY: :commentary
+              FINAL_ANSWER: :final_answer
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::phase]
+            end
+
+            type type_ = :message
+
+            module Type
+              extend OpenAI::Internal::Type::Enum
+
+              MESSAGE: :message
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage::type_]
+            end
+          end
+
+          type function_call =
+            {
+              arguments: String,
+              call_id: String,
+              name: String,
+              ?type: :function_call,
+              ?id: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall::status?
+            }
+
+          class FunctionCall < OpenAI::Internal::Type::BaseModel
+            attr_accessor arguments: String
+
+            attr_accessor call_id: String
+
+            attr_accessor name: String
+
+            attr_accessor type: :function_call
+
+            attr_accessor id: String?
+
+            attr_accessor namespace: String?
+
+            attr_accessor status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall::status?
+
+            def initialize: (
+              arguments: String,
+              call_id: String,
+              name: String,
+              ?id: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall::status?,
+              ?type: :function_call
+            ) -> void
+
+            def to_hash: -> {
+              arguments: String,
+              call_id: String,
+              name: String,
+              ?type: :function_call,
+              ?id: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall::status?
+            }
+
+            type status = :in_progress | :completed | :incomplete
+
+            module Status
+              extend OpenAI::Internal::Type::Enum
+
+              IN_PROGRESS: :in_progress
+              COMPLETED: :completed
+              INCOMPLETE: :incomplete
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall::status]
+            end
+          end
+
+          type function_call_output =
+            {
+              call_id: String,
+              output: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::output,
+              ?type: :function_call_output,
+              ?id: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::status?
+            }
+
+          class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
+            attr_accessor call_id: String
+
+            # Text evidence or an ordered list of text and image parts.
+            attr_accessor output: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::output
+
+            attr_accessor type: :function_call_output
+
+            attr_accessor id: String?
+
+            attr_accessor status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::status?
+
+            # @param output
+            #   Text evidence or an ordered list of text and image parts.
+            def initialize: (
+              call_id: String,
+              output: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::output,
+              ?id: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::status?,
+              ?type: :function_call_output
+            ) -> void
+
+            def to_hash: -> {
+              call_id: String,
+              output: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::output,
+              ?type: :function_call_output,
+              ?id: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::status?
+            }
+
+            type output =
+              String
+              | ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::Output::part]
+
+            module Output
+              extend OpenAI::Internal::Type::Union
+
+              type part = OpenAI::DecisionInputText | OpenAI::DecisionInputImage
+
+              module Part
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::Output::part]
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::output]
+
+              PartsArray: OpenAI::Internal::Type::Converter
+            end
+
+            type status = :in_progress | :completed | :incomplete
+
+            module Status
+              extend OpenAI::Internal::Type::Enum
+
+              IN_PROGRESS: :in_progress
+              COMPLETED: :completed
+              INCOMPLETE: :incomplete
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput::status]
+            end
+          end
+
+          type custom_tool_call =
+            {
+              call_id: String,
+              input: String,
+              name: String,
+              ?type: :custom_tool_call,
+              ?id: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall::status?
+            }
+
+          class CustomToolCall < OpenAI::Internal::Type::BaseModel
+            attr_accessor call_id: String
+
+            attr_accessor input: String
+
+            attr_accessor name: String
+
+            attr_accessor type: :custom_tool_call
+
+            attr_accessor id: String?
+
+            attr_accessor namespace: String?
+
+            attr_accessor status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall::status?
+
+            def initialize: (
+              call_id: String,
+              input: String,
+              name: String,
+              ?id: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall::status?,
+              ?type: :custom_tool_call
+            ) -> void
+
+            def to_hash: -> {
+              call_id: String,
+              input: String,
+              name: String,
+              ?type: :custom_tool_call,
+              ?id: String?,
+              ?namespace: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall::status?
+            }
+
+            type status = :in_progress | :completed | :incomplete
+
+            module Status
+              extend OpenAI::Internal::Type::Enum
+
+              IN_PROGRESS: :in_progress
+              COMPLETED: :completed
+              INCOMPLETE: :incomplete
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall::status]
+            end
+          end
+
+          type custom_tool_call_output =
+            {
+              call_id: String,
+              output: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::output,
+              ?type: :custom_tool_call_output,
+              ?id: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::status?
+            }
+
+          class CustomToolCallOutput < OpenAI::Internal::Type::BaseModel
+            attr_accessor call_id: String
+
+            # Text evidence or an ordered list of text and image parts.
+            attr_accessor output: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::output
+
+            attr_accessor type: :custom_tool_call_output
+
+            attr_accessor id: String?
+
+            attr_accessor status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::status?
+
+            # @param output
+            #   Text evidence or an ordered list of text and image parts.
+            def initialize: (
+              call_id: String,
+              output: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::output,
+              ?id: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::status?,
+              ?type: :custom_tool_call_output
+            ) -> void
+
+            def to_hash: -> {
+              call_id: String,
+              output: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::output,
+              ?type: :custom_tool_call_output,
+              ?id: String?,
+              ?status: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::status?
+            }
+
+            type output =
+              String
+              | ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::Output::part]
+
+            module Output
+              extend OpenAI::Internal::Type::Union
+
+              type part = OpenAI::DecisionInputText | OpenAI::DecisionInputImage
+
+              module Part
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::Output::part]
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::output]
+
+              PartsArray: OpenAI::Internal::Type::Converter
+            end
+
+            type status = :in_progress | :completed | :incomplete
+
+            module Status
+              extend OpenAI::Internal::Type::Enum
+
+              IN_PROGRESS: :in_progress
+              COMPLETED: :completed
+              INCOMPLETE: :incomplete
+
+              def self?.values: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput::status]
+            end
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Input::union_member1]
+        end
+
         def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::input]
 
-        DecisionInputMessageArray: OpenAI::Internal::Type::Converter
+        UnionMember1Array: OpenAI::Internal::Type::Converter
       end
 
       type question =
@@ -114,10 +663,14 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         type predicate =
-          { instructions: String, ?type: :predicate, ?name: String }
+          {
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Predicate::instructions,
+            ?type: :predicate,
+            ?name: String
+          }
 
         class Predicate < OpenAI::Internal::Type::BaseModel
-          attr_accessor instructions: String
+          attr_accessor instructions: OpenAI::Models::DecisionCreateParams::Question::Predicate::instructions
 
           # The type of the object. Always `predicate`.
           attr_accessor type: :predicate
@@ -129,22 +682,33 @@ module OpenAI
           # @param type
           #   The type of the object. Always `predicate`.
           def initialize: (
-            instructions: String,
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Predicate::instructions,
             ?name: String,
             ?type: :predicate
           ) -> void
 
           def to_hash: -> {
-            instructions: String,
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Predicate::instructions,
             ?type: :predicate,
             ?name: String
           }
+
+          type instructions =
+            String | ::Array[OpenAI::Models::decision_question_input_part]
+
+          module Instructions
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Question::Predicate::instructions]
+
+            DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+          end
         end
 
         type choice =
           {
             choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice],
-            instructions: String,
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Choice::instructions,
             ?type: :choice,
             ?name: String
           }
@@ -153,7 +717,7 @@ module OpenAI
           # Provide between 2 and 255 choices. Each choice must be unique.
           attr_accessor choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice]
 
-          attr_accessor instructions: String
+          attr_accessor instructions: OpenAI::Models::DecisionCreateParams::Question::Choice::instructions
 
           # The type of the object. Always `choice`.
           attr_accessor type: :choice
@@ -168,14 +732,14 @@ module OpenAI
           #   The type of the object. Always `choice`.
           def initialize: (
             choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice],
-            instructions: String,
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Choice::instructions,
             ?name: String,
             ?type: :choice
           ) -> void
 
           def to_hash: -> {
             choices: ::Array[OpenAI::DecisionCreateParams::Question::Choice::Choice],
-            instructions: String,
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Choice::instructions,
             ?type: :choice,
             ?name: String
           }
@@ -214,18 +778,29 @@ module OpenAI
               def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Question::Choice::Choice::value]
             end
           end
+
+          type instructions =
+            String | ::Array[OpenAI::Models::decision_question_input_part]
+
+          module Instructions
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Question::Choice::instructions]
+
+            DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+          end
         end
 
         type score =
           {
-            instructions: String,
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Score::instructions,
             levels: ::Array[OpenAI::DecisionCreateParams::Question::Score::Level],
             ?type: :score,
             ?name: String
           }
 
         class Score < OpenAI::Internal::Type::BaseModel
-          attr_accessor instructions: String
+          attr_accessor instructions: OpenAI::Models::DecisionCreateParams::Question::Score::instructions
 
           attr_accessor levels: ::Array[OpenAI::DecisionCreateParams::Question::Score::Level]
 
@@ -239,18 +814,29 @@ module OpenAI
           # @param type
           #   The type of the object. Always `score`.
           def initialize: (
-            instructions: String,
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Score::instructions,
             levels: ::Array[OpenAI::DecisionCreateParams::Question::Score::Level],
             ?name: String,
             ?type: :score
           ) -> void
 
           def to_hash: -> {
-            instructions: String,
+            instructions: OpenAI::Models::DecisionCreateParams::Question::Score::instructions,
             levels: ::Array[OpenAI::DecisionCreateParams::Question::Score::Level],
             ?type: :score,
             ?name: String
           }
+
+          type instructions =
+            String | ::Array[OpenAI::Models::decision_question_input_part]
+
+          module Instructions
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::DecisionCreateParams::Question::Score::instructions]
+
+            DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+          end
 
           type level = { label: String, ?description: String }
 
