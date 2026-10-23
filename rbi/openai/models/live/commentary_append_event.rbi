@@ -36,7 +36,7 @@ module OpenAI
         attr_accessor :event_id
 
         # Provide context the Live model can communicate to the user, optionally for an
-        # existing client delegation.
+        # existing client delegation. Rejected while an audio fixture is active.
         sig do
           params(
 

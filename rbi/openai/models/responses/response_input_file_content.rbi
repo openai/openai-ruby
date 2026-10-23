@@ -163,17 +163,29 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :mode
 
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint::Ttl::OrSymbol)) }
+          attr_reader :ttl
+
+          sig { params(ttl: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint::Ttl::OrSymbol).void }
+          attr_writer :ttl
+
           # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
           # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
           # token block.
           sig do
             params(
 
+              ttl: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint::Ttl::OrSymbol,
+
               mode: Symbol
             )
               .returns(T.attached_class)
           end
           def self.new(
+
+            # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+            ttl: nil,
 
             # The breakpoint mode. Always `explicit`.
 
@@ -183,12 +195,38 @@ module OpenAI
 
           sig do
             override.returns(
-              {mode: Symbol}
+              {mode: Symbol, ttl: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint::Ttl::OrSymbol}
             )
           end
           def to_hash
           end
 
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint::Ttl)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TTL_30M = T.let(
+              :"30m",
+              OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint::Ttl::TaggedSymbol
+            )
+            TTL_12H = T.let(
+              :"12h",
+              OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint::Ttl::TaggedSymbol
+            )
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint::Ttl::TaggedSymbol]
+              )
+            }
+            def self.values
+            end
+          end
         end
 
       end

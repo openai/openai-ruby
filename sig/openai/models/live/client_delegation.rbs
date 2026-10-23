@@ -1,17 +1,44 @@
 module OpenAI
   module Models
     module Live
-      type client_delegation = { ?type: :client }
+      type client_delegation =
+        { ?type: :client, ?acknowledgement_delay_ms: Integer }
 
       class ClientDelegation < OpenAI::Internal::Type::BaseModel
         # The delegation owner. Always `client` for tasks handled by your application.
         attr_accessor type: :client
 
+        # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+        # delegation. The model may still speak before this delay. Any commentary or
+        # thinking appended to the session cancels all pending acknowledgements, including
+        # those for other delegations. Defaults to 400 for Decisions sessions and 0
+        # (request immediately) for other sessions. Omission in a session update preserves
+        # the current value. Updates apply to subsequent delegations.
+        attr_reader acknowledgement_delay_ms: Integer?
+
+        # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+        # delegation. The model may still speak before this delay. Any commentary or
+        # thinking appended to the session cancels all pending acknowledgements, including
+        # those for other delegations. Defaults to 400 for Decisions sessions and 0
+        # (request immediately) for other sessions. Omission in a session update preserves
+        # the current value. Updates apply to subsequent delegations.
+        def acknowledgement_delay_ms=: (Integer) -> Integer
+
+        # @param acknowledgement_delay_ms
+        #   Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+        #   delegation. The model may still speak before this delay. Any commentary or
+        #   thinking appended to the session cancels all pending acknowledgements, including
+        #   those for other delegations. Defaults to 400 for Decisions sessions and 0
+        #   (request immediately) for other sessions. Omission in a session update preserves
+        #   the current value. Updates apply to subsequent delegations.
         # @param type
         #   The delegation owner. Always `client` for tasks handled by your application.
-        def initialize: (?type: :client) -> void
+        def initialize: (
+          ?acknowledgement_delay_ms: Integer,
+          ?type: :client
+        ) -> void
 
-        def to_hash: -> { ?type: :client }
+        def to_hash: -> { ?type: :client, ?acknowledgement_delay_ms: Integer }
       end
     end
   end
