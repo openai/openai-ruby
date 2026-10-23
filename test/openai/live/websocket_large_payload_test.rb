@@ -52,13 +52,15 @@ class OpenAI::Test::LiveWebSocketLargePayloadTest < Minitest::Test
       future = connection.receive
       assert_instance_of(OpenAI::Live::UnknownServerEvent, future)
       schema_future = future.data.fetch(:schema)
-      4000.times do
+      first_unfrozen_index = nil
+      4000.times do |index|
         schema_written = schema_written.fetch(:properties).fetch(:nested)
         schema_started = schema_started.fetch(:properties).fetch(:nested)
-        assert(schema_future.frozen?)
+        first_unfrozen_index ||= index unless schema_future.frozen?
         schema_future = schema_future.fetch(:properties).fetch(:nested)
       end
 
+      assert_nil(first_unfrozen_index, "first unfrozen node index")
       assert_equal("string", schema_written.fetch(:type))
       assert_equal("string", schema_started.fetch(:type))
       assert_equal("string", schema_future.fetch(:type))
