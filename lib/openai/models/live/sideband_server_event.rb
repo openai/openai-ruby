@@ -16,10 +16,10 @@ module OpenAI
         # Returned when a Live session update is accepted. Contains the resolved session configuration after the update.
         variant :"session.updated", -> { OpenAI::Live::SessionUpdatedEvent }
 
-        # Returned when a session.input_audio.mute command is accepted. Input audio is no longer sent to the model; sideband audio reflection continues.
+        # Acknowledges a session.input_audio.mute command. An independent input mute sends silence to the model and preserves sideband audio reflection. Fixture playback does not emit this event.
         variant :"session.input_audio.muted", -> { OpenAI::Live::InputAudioMutedEvent }
 
-        # Returned when a session.input_audio.unmute command is accepted. Input audio is sent to the model again.
+        # Acknowledges a session.input_audio.unmute command, removing the independent input mute. An active audio fixture still pauses inference until playback finishes. Fixture playback does not emit this event.
         variant :"session.input_audio.unmuted", -> { OpenAI::Live::InputAudioUnmutedEvent }
 
         # The existing playback path has accepted the validated audio fixture. This acknowledgment does not identify when the listener receives the first sample. The optional client_event_id echoes the play command.

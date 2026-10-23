@@ -8,7 +8,14 @@ module OpenAI
       # Create and manage model responses.
       class Responses
 
-        include OpenAI::WebSocket::Resource
+        include OpenAI::WebSocket::TypedResource
+
+        extend T::Generic
+
+        WebSocketClientEvent = type_member { {fixed: OpenAI::Beta::BetaResponsesClientEvent::Variants} }
+        WebSocketServerEvent = type_member {
+          {fixed: T.any(OpenAI::Beta::BetaResponsesServerEvent::Variants, T::Hash[Symbol, T.untyped])}
+        }
 
         # @api private
         sig { params(query: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }
