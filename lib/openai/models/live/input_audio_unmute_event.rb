@@ -19,7 +19,8 @@ module OpenAI
 
         # @!method initialize(event_id: nil, type: :"session.input_audio.unmute")
         #   Resume audio input to a Live model after muting it. The server acknowledges with
-        #   `session.input_audio.unmuted`.
+        #   `session.input_audio.unmuted`. An active audio fixture still pauses inference
+        #   until playback finishes.
         #
         #   @param event_id [String, nil]
         #     Optional client identifier for correlating this command with a server event's

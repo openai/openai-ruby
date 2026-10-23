@@ -606,10 +606,12 @@ module OpenAI
               module Part
                 extend OpenAI::Internal::Type::Union
 
-                variant -> { OpenAI::DecisionInputText }
+                discriminator :type
+
+                variant :input_text, -> { OpenAI::DecisionInputText }
 
                 # An image provided as a base64 data URL or a publicly accessible HTTP(S) URL. File IDs are not supported.
-                variant -> { OpenAI::DecisionInputImage }
+                variant :input_image, -> { OpenAI::DecisionInputImage }
 
                 # @!method self.variants
                 #   @return [Array(OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage)]
@@ -768,10 +770,12 @@ module OpenAI
               module Part
                 extend OpenAI::Internal::Type::Union
 
-                variant -> { OpenAI::DecisionInputText }
+                discriminator :type
+
+                variant :input_text, -> { OpenAI::DecisionInputText }
 
                 # An image provided as a base64 data URL or a publicly accessible HTTP(S) URL. File IDs are not supported.
-                variant -> { OpenAI::DecisionInputImage }
+                variant :input_image, -> { OpenAI::DecisionInputImage }
 
                 # @!method self.variants
                 #   @return [Array(OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage)]

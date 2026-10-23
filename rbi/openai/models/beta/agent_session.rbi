@@ -267,7 +267,8 @@ module OpenAI
                   OpenAI::Beta::AgentTool::ProgrammaticToolCalling::OrHash,
                   OpenAI::Beta::AgentTool::Mcp::OrHash,
                   OpenAI::Beta::AgentTool::WebSearch::OrHash,
-                  OpenAI::Beta::AgentTool::ComputerUse::OrHash
+                  OpenAI::Beta::AgentTool::ComputerUse::OrHash,
+                  OpenAI::Beta::AgentTool::Automations::OrHash
                 )
               ]
             )

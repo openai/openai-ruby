@@ -1,7 +1,8 @@
 module OpenAI
   module Resources
     class Realtime
-      include OpenAI::WebSocket::Resource
+      include OpenAI::WebSocket::TypedResource[OpenAI::Models::Realtime::realtime_client_event, OpenAI::Models::Realtime::realtime_server_event
+      | ::Hash[Symbol, untyped]]
       def __websocket_request: (
         ?query: Hash[untyped, untyped]
       ) -> Hash[Symbol, untyped]

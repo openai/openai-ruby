@@ -80,17 +80,48 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Conversations::ComputerScreenshotContent::detail]
         end
 
-        type prompt_cache_breakpoint = { ?mode: :explicit }
+        type prompt_cache_breakpoint =
+          {
+            ?mode: :explicit,
+            ?ttl: OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::ttl
+          }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
           # The breakpoint mode. Always `explicit`.
           attr_accessor mode: :explicit
 
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          attr_reader ttl: OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::ttl?
+
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          def ttl=: (
+            OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::ttl
+          ) -> OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::ttl
+
+          # @param ttl
+          #   The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
           # @param mode
           #   The breakpoint mode. Always `explicit`.
-          def initialize: (?mode: :explicit) -> void
+          def initialize: (
+            ?ttl: OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::ttl,
+            ?mode: :explicit
+          ) -> void
 
-          def to_hash: -> { ?mode: :explicit }
+          def to_hash: -> {
+            ?mode: :explicit,
+            ?ttl: OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::ttl
+          }
+
+          type ttl = :"30m" | :"12h"
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M: :"30m"
+            TTL_12H: :"12h"
+
+            def self?.values: -> ::Array[OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::ttl]
+          end
         end
       end
     end

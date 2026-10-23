@@ -59,12 +59,29 @@ module OpenAI
         type delegation =
           {
             ?type: :responses,
+            ?acknowledgement_delay_ms: Integer,
             ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
           }
 
         class Delegation < OpenAI::Internal::Type::BaseModel
           # The delegation owner. Always `responses` for tasks handled by the Responses API.
           attr_accessor type: :responses
+
+          # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+          # delegation. The model may still speak before this delay. Any commentary or
+          # thinking appended to the session cancels all pending acknowledgements, including
+          # those for other delegations. Defaults to 400 for Decisions sessions and 0
+          # (request immediately) for other sessions. Omission in a session update preserves
+          # the current value. Updates apply to subsequent delegations.
+          attr_reader acknowledgement_delay_ms: Integer?
+
+          # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+          # delegation. The model may still speak before this delay. Any commentary or
+          # thinking appended to the session cancels all pending acknowledgements, including
+          # those for other delegations. Defaults to 400 for Decisions sessions and 0
+          # (request immediately) for other sessions. Omission in a session update preserves
+          # the current value. Updates apply to subsequent delegations.
+          def acknowledgement_delay_ms=: (Integer) -> Integer
 
           # Responses backend settings to update. Omitted settings keep their existing
           # values.
@@ -76,18 +93,27 @@ module OpenAI
             OpenAI::Live::ResponsesDelegationUpdateConfig
           ) -> OpenAI::Live::ResponsesDelegationUpdateConfig
 
+          # @param acknowledgement_delay_ms
+          #   Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+          #   delegation. The model may still speak before this delay. Any commentary or
+          #   thinking appended to the session cancels all pending acknowledgements, including
+          #   those for other delegations. Defaults to 400 for Decisions sessions and 0
+          #   (request immediately) for other sessions. Omission in a session update preserves
+          #   the current value. Updates apply to subsequent delegations.
           # @param responses
           #   Responses backend settings to update. Omitted settings keep their existing
           #   values.
           # @param type
           #   The delegation owner. Always `responses` for tasks handled by the Responses API.
           def initialize: (
+            ?acknowledgement_delay_ms: Integer,
             ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig,
             ?type: :responses
           ) -> void
 
           def to_hash: -> {
             ?type: :responses,
+            ?acknowledgement_delay_ms: Integer,
             ?responses: OpenAI::Live::ResponsesDelegationUpdateConfig
           }
         end
