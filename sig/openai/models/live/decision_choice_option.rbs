@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_choice_option =
+        {
+          value: OpenAI::Models::Live::DecisionChoiceOption::value,
+          ?description: String
+        }
+
+      class DecisionChoiceOption < OpenAI::Internal::Type::BaseModel
+        attr_accessor value: OpenAI::Models::Live::DecisionChoiceOption::value
+
+        attr_reader description: String?
+
+        def description=: (String) -> String
+
+        def initialize: (
+          value: OpenAI::Models::Live::DecisionChoiceOption::value,
+          ?description: String
+        ) -> void
+
+        def to_hash: -> {
+          value: OpenAI::Models::Live::DecisionChoiceOption::value,
+          ?description: String
+        }
+
+        type value = String | bool
+
+        module Value
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionChoiceOption::value]
+        end
+      end
+    end
+  end
+end
