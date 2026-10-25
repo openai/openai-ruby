@@ -1,0 +1,131 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_stored_assistant_message =
+        {
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredAssistantMessage::content,
+          ?role: :assistant,
+          ?phase: OpenAI::Models::Live::DecisionStoredAssistantMessage::phase?,
+          ?type: OpenAI::Models::Live::DecisionStoredAssistantMessage::type_
+        }
+
+      class DecisionStoredAssistantMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        # The text input to the model.
+        attr_accessor content: OpenAI::Models::Live::DecisionStoredAssistantMessage::content
+
+        attr_accessor role: :assistant
+
+        # Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        # final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        # sending follow-up requests, preserve and resend phase on all assistant messages
+        # — dropping it can degrade performance. Not used for user messages.
+        attr_accessor phase: OpenAI::Models::Live::DecisionStoredAssistantMessage::phase?
+
+        attr_reader type: OpenAI::Models::Live::DecisionStoredAssistantMessage::type_?
+
+        def type=: (
+          OpenAI::Models::Live::DecisionStoredAssistantMessage::type_
+        ) -> OpenAI::Models::Live::DecisionStoredAssistantMessage::type_
+
+        # @param content
+        #   The text input to the model.
+        # @param phase
+        #   Labels an `assistant` message as intermediate commentary (`commentary`) or the
+        #   final answer (`final_answer`). For models like `gpt-5.3-codex` and beyond, when
+        #   sending follow-up requests, preserve and resend phase on all assistant messages
+        #   — dropping it can degrade performance. Not used for user messages.
+        def initialize: (
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredAssistantMessage::content,
+          ?phase: OpenAI::Models::Live::DecisionStoredAssistantMessage::phase?,
+          ?type: OpenAI::Models::Live::DecisionStoredAssistantMessage::type_,
+          ?role: :assistant
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredAssistantMessage::content,
+          ?role: :assistant,
+          ?phase: OpenAI::Models::Live::DecisionStoredAssistantMessage::phase?,
+          ?type: OpenAI::Models::Live::DecisionStoredAssistantMessage::type_
+        }
+
+        type content =
+          String
+          | ::Array[OpenAI::Models::Live::DecisionStoredAssistantMessage::Content::part]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          type part =
+            OpenAI::Live::DecisionStoredAssistantMessage::Content::Part::OutputText
+            | OpenAI::Live::DecisionStoredAssistantMessage::Content::Part::Refusal
+
+          module Part
+            extend OpenAI::Internal::Type::Union
+
+            type output_text = { text: String, ?type: :output_text }
+
+            class OutputText < OpenAI::Internal::Type::BaseModel
+              # The text content.
+              attr_accessor text: String
+
+              attr_accessor type: :output_text
+
+              # @param text
+              #   The text content.
+              def initialize: (text: String, ?type: :output_text) -> void
+
+              def to_hash: -> { text: String, ?type: :output_text }
+            end
+
+            type refusal = { refusal: String, ?type: :refusal }
+
+            class Refusal < OpenAI::Internal::Type::BaseModel
+              # The refusal text.
+              attr_accessor refusal: String
+
+              attr_accessor type: :refusal
+
+              # @param refusal
+              #   The refusal text.
+              def initialize: (refusal: String, ?type: :refusal) -> void
+
+              def to_hash: -> { refusal: String, ?type: :refusal }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionStoredAssistantMessage::Content::part]
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionStoredAssistantMessage::content]
+
+          PartsArray: OpenAI::Internal::Type::Converter
+        end
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY: :commentary
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::DecisionStoredAssistantMessage::phase]
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::DecisionStoredAssistantMessage::type_]
+        end
+      end
+    end
+  end
+end
