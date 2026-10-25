@@ -17,6 +17,8 @@ module OpenAI
         end
 
         class Choice < OpenAI::Internal::Type::BaseModel
+          Choice = ::OpenAI::Models::Live::DecisionChoiceOption
+
           OrHash = T.type_alias do
             T.any(
               OpenAI::Live::DecisionQuestion::Choice,

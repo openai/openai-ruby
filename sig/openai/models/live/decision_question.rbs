@@ -18,6 +18,10 @@ module OpenAI
           }
 
         class Choice < OpenAI::Internal::Type::BaseModel
+          type choice = ::OpenAI::Models::Live::decision_choice_option
+
+          class Choice = ::OpenAI::Models::Live::DecisionChoiceOption
+
           attr_accessor choices: ::Array[OpenAI::Live::DecisionChoiceOption]
 
           attr_accessor instructions: OpenAI::Models::Live::DecisionQuestion::Choice::instructions

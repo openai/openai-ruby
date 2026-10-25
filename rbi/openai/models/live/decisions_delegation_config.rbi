@@ -73,6 +73,7 @@ module OpenAI
         def to_hash
         end
 
+        Question = ::OpenAI::Models::Live::DecisionQuestion
       end
 
     end

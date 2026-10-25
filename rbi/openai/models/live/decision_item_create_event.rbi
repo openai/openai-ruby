@@ -21,10 +21,10 @@ module OpenAI
               OpenAI::Live::DecisionDeveloperMessage,
               OpenAI::Live::DecisionSystemMessage,
               OpenAI::Live::DecisionAssistantMessage,
-              OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall,
-              OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput,
-              OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall,
-              OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput
             )
           )
         }
@@ -48,10 +48,10 @@ module OpenAI
               OpenAI::Live::DecisionDeveloperMessage::OrHash,
               OpenAI::Live::DecisionSystemMessage::OrHash,
               OpenAI::Live::DecisionAssistantMessage::OrHash,
-              OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::OrHash,
-              OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::OrHash,
-              OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::OrHash,
-              OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::OrHash
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::OrHash,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::OrHash,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::OrHash,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::OrHash
             ),
 
             event_id: T.nilable(String),
@@ -80,10 +80,10 @@ module OpenAI
                 OpenAI::Live::DecisionDeveloperMessage,
                 OpenAI::Live::DecisionSystemMessage,
                 OpenAI::Live::DecisionAssistantMessage,
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall,
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput,
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall,
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall,
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput,
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall,
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput
               ),
               type: Symbol,
               event_id: T.nilable(String)
@@ -93,7 +93,7 @@ module OpenAI
         def to_hash
         end
 
-        module Item
+        module ItemUnion
           extend OpenAI::Internal::Type::Union
 
           Variants = T.type_alias {
@@ -102,17 +102,17 @@ module OpenAI
               OpenAI::Live::DecisionDeveloperMessage,
               OpenAI::Live::DecisionSystemMessage,
               OpenAI::Live::DecisionAssistantMessage,
-              OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall,
-              OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput,
-              OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall,
-              OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall,
+              OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput
             )
           }
 
           class FunctionCall < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
               T.any(
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall,
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall,
                 OpenAI::Internal::AnyHash
               )
             end
@@ -140,7 +140,9 @@ module OpenAI
             sig { returns(T.nilable(String)) }
             attr_accessor :namespace
 
-            sig { returns(T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::Status::OrSymbol)) }
+            sig {
+              returns(T.nilable(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::Status::OrSymbol))
+            }
             attr_accessor :status
 
             sig do
@@ -156,7 +158,7 @@ module OpenAI
 
                 namespace: T.nilable(String),
 
-                status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::Status::OrSymbol),
+                status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::Status::OrSymbol),
 
                 type: Symbol
               )
@@ -195,7 +197,7 @@ module OpenAI
                   type: Symbol,
                   id: T.nilable(String),
                   namespace: T.nilable(String),
-                  status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::Status::OrSymbol)
+                  status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::Status::OrSymbol)
                 }
               )
             end
@@ -206,26 +208,26 @@ module OpenAI
               extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol = T.type_alias {
-                T.all(Symbol, OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::Status)
+                T.all(Symbol, OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::Status)
               }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               IN_PROGRESS = T.let(
                 :in_progress,
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::Status::TaggedSymbol
               )
               COMPLETED = T.let(
                 :completed,
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::Status::TaggedSymbol
               )
               INCOMPLETE = T.let(
                 :incomplete,
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::Status::TaggedSymbol
               )
 
               sig {
                 override.returns(
-                  T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCall::Status::TaggedSymbol]
+                  T::Array[OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCall::Status::TaggedSymbol]
                 )
               }
               def self.values
@@ -236,7 +238,7 @@ module OpenAI
           class FunctionCallOutput < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
               T.any(
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput,
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput,
                 OpenAI::Internal::AnyHash
               )
             end
@@ -246,7 +248,7 @@ module OpenAI
             attr_accessor :call_id
 
             # The text input to the model.
-            sig { returns(OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Variants) }
+            sig { returns(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Variants) }
             attr_accessor :output
 
             # The type of the function tool call output. Always `function_call_output`.
@@ -258,7 +260,7 @@ module OpenAI
             attr_accessor :id
 
             sig {
-              returns(T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Status::OrSymbol))
+              returns(T.nilable(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Status::OrSymbol))
             }
             attr_accessor :status
 
@@ -267,11 +269,13 @@ module OpenAI
 
                 call_id: String,
 
-                output: OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Variants,
+                output: OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Variants,
 
                 id: T.nilable(String),
 
-                status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Status::OrSymbol),
+                status: T.nilable(
+                  OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Status::OrSymbol
+                ),
 
                 type: Symbol
               )
@@ -300,10 +304,12 @@ module OpenAI
               override.returns(
                 {
                   call_id: String,
-                  output: OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Variants,
+                  output: OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Variants,
                   type: Symbol,
                   id: T.nilable(String),
-                  status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Status::OrSymbol)
+                  status: T.nilable(
+                    OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Status::OrSymbol
+                  )
                 }
               )
             end
@@ -317,7 +323,7 @@ module OpenAI
               Variants = T.type_alias {
                 T.any(
                   String,
-                  T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::Variants]
+                  T::Array[OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::Variants]
                 )
               }
 
@@ -327,14 +333,14 @@ module OpenAI
                 Variants = T.type_alias {
                   T.any(
                     OpenAI::Live::DecisionInputText,
-                    OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage
+                    OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage
                   )
                 }
 
                 class InputImage < OpenAI::Internal::Type::BaseModel
                   OrHash = T.type_alias do
                     T.any(
-                      OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage,
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage,
                       OpenAI::Internal::AnyHash
                     )
                   end
@@ -351,7 +357,7 @@ module OpenAI
                   sig {
                     returns(
                       T.nilable(
-                        OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail::OrSymbol
+                        OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail::OrSymbol
                       )
                     )
                   }
@@ -363,7 +369,7 @@ module OpenAI
                       image_url: String,
 
                       detail: T.nilable(
-                        OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail::OrSymbol
+                        OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail::OrSymbol
                       ),
 
                       type: Symbol
@@ -389,7 +395,7 @@ module OpenAI
                         image_url: String,
                         type: Symbol,
                         detail: T.nilable(
-                          OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail::OrSymbol
+                          OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail::OrSymbol
                         )
                       }
                     )
@@ -405,32 +411,32 @@ module OpenAI
                     TaggedSymbol = T.type_alias {
                       T.all(
                         Symbol,
-                        OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail
+                        OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail
                       )
                     }
                     OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                     LOW = T.let(
                       :low,
-                      OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                     )
                     HIGH = T.let(
                       :high,
-                      OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                     )
                     AUTO = T.let(
                       :auto,
-                      OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                     )
                     ORIGINAL = T.let(
                       :original,
-                      OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                     )
 
                     sig {
                       override.returns(
                         T::Array[
-                          OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                          OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                         ]
                       )
                     }
@@ -441,7 +447,9 @@ module OpenAI
 
                 sig {
                   override.returns(
-                    T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part::Variants]
+                    T::Array[
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part::Variants
+                    ]
                   )
                 }
                 def self.variants
@@ -451,7 +459,7 @@ module OpenAI
 
               sig {
                 override.returns(
-                  T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Variants]
+                  T::Array[OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Variants]
                 )
               }
               def self.variants
@@ -459,7 +467,7 @@ module OpenAI
 
               PartsArray = T.let(
                 OpenAI::Internal::Type::ArrayOf[
-                  union: OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Output::Part
+                  union: OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Output::Part
                 ],
                 OpenAI::Internal::Type::Converter
               )
@@ -470,26 +478,26 @@ module OpenAI
               extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol = T.type_alias {
-                T.all(Symbol, OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Status)
+                T.all(Symbol, OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Status)
               }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               IN_PROGRESS = T.let(
                 :in_progress,
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Status::TaggedSymbol
               )
               COMPLETED = T.let(
                 :completed,
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Status::TaggedSymbol
               )
               INCOMPLETE = T.let(
                 :incomplete,
-                OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Status::TaggedSymbol
               )
 
               sig {
                 override.returns(
-                  T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::FunctionCallOutput::Status::TaggedSymbol]
+                  T::Array[OpenAI::Live::DecisionItemCreateEvent::ItemUnion::FunctionCallOutput::Status::TaggedSymbol]
                 )
               }
               def self.values
@@ -500,7 +508,7 @@ module OpenAI
           class CustomToolCall < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
               T.any(
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall,
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall,
                 OpenAI::Internal::AnyHash
               )
             end
@@ -529,7 +537,9 @@ module OpenAI
             sig { returns(T.nilable(String)) }
             attr_accessor :namespace
 
-            sig { returns(T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::Status::OrSymbol)) }
+            sig {
+              returns(T.nilable(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::Status::OrSymbol))
+            }
             attr_accessor :status
 
             sig do
@@ -545,7 +555,7 @@ module OpenAI
 
                 namespace: T.nilable(String),
 
-                status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::Status::OrSymbol),
+                status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::Status::OrSymbol),
 
                 type: Symbol
               )
@@ -585,7 +595,7 @@ module OpenAI
                   type: Symbol,
                   id: T.nilable(String),
                   namespace: T.nilable(String),
-                  status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::Status::OrSymbol)
+                  status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::Status::OrSymbol)
                 }
               )
             end
@@ -596,26 +606,26 @@ module OpenAI
               extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol = T.type_alias {
-                T.all(Symbol, OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::Status)
+                T.all(Symbol, OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::Status)
               }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               IN_PROGRESS = T.let(
                 :in_progress,
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::Status::TaggedSymbol
               )
               COMPLETED = T.let(
                 :completed,
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::Status::TaggedSymbol
               )
               INCOMPLETE = T.let(
                 :incomplete,
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::Status::TaggedSymbol
               )
 
               sig {
                 override.returns(
-                  T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCall::Status::TaggedSymbol]
+                  T::Array[OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCall::Status::TaggedSymbol]
                 )
               }
               def self.values
@@ -626,7 +636,7 @@ module OpenAI
           class CustomToolCallOutput < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
               T.any(
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput,
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput,
                 OpenAI::Internal::AnyHash
               )
             end
@@ -636,7 +646,7 @@ module OpenAI
             attr_accessor :call_id
 
             # The text input to the model.
-            sig { returns(OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Variants) }
+            sig { returns(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Variants) }
             attr_accessor :output
 
             sig { returns(Symbol) }
@@ -647,7 +657,9 @@ module OpenAI
             attr_accessor :id
 
             sig {
-              returns(T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Status::OrSymbol))
+              returns(
+                T.nilable(OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Status::OrSymbol)
+              )
             }
             attr_accessor :status
 
@@ -656,11 +668,13 @@ module OpenAI
 
                 call_id: String,
 
-                output: OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Variants,
+                output: OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Variants,
 
                 id: T.nilable(String),
 
-                status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Status::OrSymbol),
+                status: T.nilable(
+                  OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Status::OrSymbol
+                ),
 
                 type: Symbol
               )
@@ -687,10 +701,12 @@ module OpenAI
               override.returns(
                 {
                   call_id: String,
-                  output: OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Variants,
+                  output: OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Variants,
                   type: Symbol,
                   id: T.nilable(String),
-                  status: T.nilable(OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Status::OrSymbol)
+                  status: T.nilable(
+                    OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Status::OrSymbol
+                  )
                 }
               )
             end
@@ -704,7 +720,9 @@ module OpenAI
               Variants = T.type_alias {
                 T.any(
                   String,
-                  T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::Variants]
+                  T::Array[
+                    OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::Variants
+                  ]
                 )
               }
 
@@ -714,14 +732,14 @@ module OpenAI
                 Variants = T.type_alias {
                   T.any(
                     OpenAI::Live::DecisionInputText,
-                    OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage
+                    OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage
                   )
                 }
 
                 class InputImage < OpenAI::Internal::Type::BaseModel
                   OrHash = T.type_alias do
                     T.any(
-                      OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage,
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage,
                       OpenAI::Internal::AnyHash
                     )
                   end
@@ -738,7 +756,7 @@ module OpenAI
                   sig {
                     returns(
                       T.nilable(
-                        OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail::OrSymbol
+                        OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail::OrSymbol
                       )
                     )
                   }
@@ -750,7 +768,7 @@ module OpenAI
                       image_url: String,
 
                       detail: T.nilable(
-                        OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail::OrSymbol
+                        OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail::OrSymbol
                       ),
 
                       type: Symbol
@@ -776,7 +794,7 @@ module OpenAI
                         image_url: String,
                         type: Symbol,
                         detail: T.nilable(
-                          OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail::OrSymbol
+                          OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail::OrSymbol
                         )
                       }
                     )
@@ -792,32 +810,32 @@ module OpenAI
                     TaggedSymbol = T.type_alias {
                       T.all(
                         Symbol,
-                        OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail
+                        OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail
                       )
                     }
                     OrSymbol = T.type_alias { T.any(Symbol, String) }
 
                     LOW = T.let(
                       :low,
-                      OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                     )
                     HIGH = T.let(
                       :high,
-                      OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                     )
                     AUTO = T.let(
                       :auto,
-                      OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                     )
                     ORIGINAL = T.let(
                       :original,
-                      OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                     )
 
                     sig {
                       override.returns(
                         T::Array[
-                          OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
+                          OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail::TaggedSymbol
                         ]
                       )
                     }
@@ -828,7 +846,9 @@ module OpenAI
 
                 sig {
                   override.returns(
-                    T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part::Variants]
+                    T::Array[
+                      OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part::Variants
+                    ]
                   )
                 }
                 def self.variants
@@ -838,7 +858,7 @@ module OpenAI
 
               sig {
                 override.returns(
-                  T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Variants]
+                  T::Array[OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Variants]
                 )
               }
               def self.variants
@@ -846,7 +866,7 @@ module OpenAI
 
               PartsArray = T.let(
                 OpenAI::Internal::Type::ArrayOf[
-                  union: OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Output::Part
+                  union: OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Output::Part
                 ],
                 OpenAI::Internal::Type::Converter
               )
@@ -857,26 +877,26 @@ module OpenAI
               extend OpenAI::Internal::Type::Enum
 
               TaggedSymbol = T.type_alias {
-                T.all(Symbol, OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Status)
+                T.all(Symbol, OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Status)
               }
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               IN_PROGRESS = T.let(
                 :in_progress,
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Status::TaggedSymbol
               )
               COMPLETED = T.let(
                 :completed,
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Status::TaggedSymbol
               )
               INCOMPLETE = T.let(
                 :incomplete,
-                OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Status::TaggedSymbol
+                OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Status::TaggedSymbol
               )
 
               sig {
                 override.returns(
-                  T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::CustomToolCallOutput::Status::TaggedSymbol]
+                  T::Array[OpenAI::Live::DecisionItemCreateEvent::ItemUnion::CustomToolCallOutput::Status::TaggedSymbol]
                 )
               }
               def self.values
@@ -884,12 +904,13 @@ module OpenAI
             end
           end
 
-          sig { override.returns(T::Array[OpenAI::Live::DecisionItemCreateEvent::Item::Variants]) }
+          sig { override.returns(T::Array[OpenAI::Live::DecisionItemCreateEvent::ItemUnion::Variants]) }
           def self.variants
           end
 
         end
 
+        Item = ::OpenAI::Models::Live::DecisionUserMessage
       end
 
     end

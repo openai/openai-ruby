@@ -32,6 +32,9 @@ module OpenAI
 
         # @see OpenAI::Models::Live::DecisionTrigger#decisions
         class Decisions < OpenAI::Internal::Type::BaseModel
+          require_relative "decision_question"
+          Question = ::OpenAI::Models::Live::DecisionQuestion
+
           # @!attribute questions
           #   Native Decision API questions evaluated together, in order.
           #

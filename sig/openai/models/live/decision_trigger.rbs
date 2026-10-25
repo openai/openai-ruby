@@ -36,6 +36,10 @@ module OpenAI
           { questions: ::Array[OpenAI::Models::Live::decision_question] }
 
         class Decisions < OpenAI::Internal::Type::BaseModel
+          type question = ::OpenAI::Models::Live::decision_question
+
+          module Question = ::OpenAI::Models::Live::DecisionQuestion
+
           # Native Decision API questions evaluated together, in order.
           attr_accessor questions: ::Array[OpenAI::Models::Live::decision_question]
 

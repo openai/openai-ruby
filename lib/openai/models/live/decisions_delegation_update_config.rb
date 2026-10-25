@@ -20,6 +20,9 @@ module OpenAI
         #
         #   @param questions [Array<OpenAI::Models::Live::DecisionQuestion::Choice, OpenAI::Models::Live::DecisionQuestion::Predicate, OpenAI::Models::Live::DecisionQuestion::Score>]
         #     Native Decision API questions evaluated together, in order.
+
+        require_relative "decision_question"
+        Question = ::OpenAI::Models::Live::DecisionQuestion
       end
     end
   end

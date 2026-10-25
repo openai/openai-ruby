@@ -15,6 +15,9 @@ module OpenAI
         variant :score, -> { OpenAI::Live::DecisionQuestion::Score }
 
         class Choice < OpenAI::Internal::Type::BaseModel
+          require_relative "decision_choice_option"
+          Choice = ::OpenAI::Models::Live::DecisionChoiceOption
+
           # @!attribute choices
           #
           #   @return [Array<OpenAI::Models::Live::DecisionChoiceOption>]

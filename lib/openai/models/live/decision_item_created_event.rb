@@ -12,8 +12,8 @@ module OpenAI
 
         # @!attribute item
         #
-        #   @return [OpenAI::Models::Live::DecisionStoredUserMessage, OpenAI::Models::Live::DecisionStoredDeveloperMessage, OpenAI::Models::Live::DecisionStoredSystemMessage, OpenAI::Models::Live::DecisionStoredAssistantMessage, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCall, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCall, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput]
-        required :item, union: -> { OpenAI::Live::DecisionItemCreatedEvent::Item }
+        #   @return [OpenAI::Models::Live::DecisionStoredUserMessage, OpenAI::Models::Live::DecisionStoredDeveloperMessage, OpenAI::Models::Live::DecisionStoredSystemMessage, OpenAI::Models::Live::DecisionStoredAssistantMessage, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCall, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCall, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput]
+        required :item, union: -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion }
 
         # @!attribute type
         #
@@ -33,7 +33,7 @@ module OpenAI
         #   @param event_id [String]
         #     The unique ID of the Live server event.
         #
-        #   @param item [OpenAI::Models::Live::DecisionStoredUserMessage, OpenAI::Models::Live::DecisionStoredDeveloperMessage, OpenAI::Models::Live::DecisionStoredSystemMessage, OpenAI::Models::Live::DecisionStoredAssistantMessage, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCall, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCall, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput]
+        #   @param item [OpenAI::Models::Live::DecisionStoredUserMessage, OpenAI::Models::Live::DecisionStoredDeveloperMessage, OpenAI::Models::Live::DecisionStoredSystemMessage, OpenAI::Models::Live::DecisionStoredAssistantMessage, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCall, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCall, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput]
         #
         #   @param client_event_id [String]
         #     The event_id of the client command associated with this server event, when
@@ -42,29 +42,37 @@ module OpenAI
         #   @param type [Symbol, :"decision.item.created"]
 
         # @see OpenAI::Models::Live::DecisionItemCreatedEvent#item
-        module Item
+        module ItemUnion
           extend OpenAI::Internal::Type::Union
 
           discriminator :type
 
-          variant :message, -> { OpenAI::Live::DecisionStoredUserMessage }
+          variant :message, -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::Message }
 
-          variant :message, -> { OpenAI::Live::DecisionStoredDeveloperMessage }
+          variant :function_call, -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCall }
 
-          variant :message, -> { OpenAI::Live::DecisionStoredSystemMessage }
+          variant :function_call_output, -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput }
 
-          variant :message, -> { OpenAI::Live::DecisionStoredAssistantMessage }
-
-          variant :function_call, -> { OpenAI::Live::DecisionItemCreatedEvent::Item::FunctionCall }
-
-          variant :function_call_output, -> { OpenAI::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput }
-
-          variant :custom_tool_call, -> { OpenAI::Live::DecisionItemCreatedEvent::Item::CustomToolCall }
+          variant :custom_tool_call, -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCall }
 
           variant(
             :custom_tool_call_output,
-            -> { OpenAI::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput }
+            -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput }
           )
+
+          # @api private
+          module Message
+            extend OpenAI::Internal::Type::Union
+            discriminator :role
+
+            variant :user, -> { OpenAI::Live::DecisionStoredUserMessage }
+
+            variant :developer, -> { OpenAI::Live::DecisionStoredDeveloperMessage }
+
+            variant :system, -> { OpenAI::Live::DecisionStoredSystemMessage }
+
+            variant :assistant, -> { OpenAI::Live::DecisionStoredAssistantMessage }
+          end
 
           class FunctionCall < OpenAI::Internal::Type::BaseModel
             # @!attribute id
@@ -103,10 +111,10 @@ module OpenAI
 
             # @!attribute status
             #
-            #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCall::Status, nil]
+            #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCall::Status, nil]
             optional(
               :status,
-              enum: -> { OpenAI::Live::DecisionItemCreatedEvent::Item::FunctionCall::Status },
+              enum: -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCall::Status },
               nil?: true
             )
 
@@ -124,12 +132,12 @@ module OpenAI
             #   @param namespace [String, nil]
             #     The namespace of the function to call.
             #
-            #   @param status [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCall::Status, nil]
+            #   @param status [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCall::Status, nil]
             #
             #   @param type [Symbol, :function_call]
             #     The item type. Always `function_call`.
 
-            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCall#status
+            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCall#status
             module Status
               extend OpenAI::Internal::Type::Enum
 
@@ -157,8 +165,11 @@ module OpenAI
             # @!attribute output
             #   The text input to the model.
             #
-            #   @return [String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage>]
-            required :output, union: -> { OpenAI::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output }
+            #   @return [String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage>]
+            required(
+              :output,
+              union: -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output }
+            )
 
             # @!attribute type
             #   The type of the function tool call output. Always `function_call_output`.
@@ -168,10 +179,10 @@ module OpenAI
 
             # @!attribute status
             #
-            #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Status, nil]
+            #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Status, nil]
             optional(
               :status,
-              enum: -> { OpenAI::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Status },
+              enum: -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Status },
               nil?: true
             )
 
@@ -181,17 +192,17 @@ module OpenAI
             #   @param call_id [String]
             #     The unique ID of the function tool call generated by the model.
             #
-            #   @param output [String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage>]
+            #   @param output [String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage>]
             #     The text input to the model.
             #
-            #   @param status [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Status, nil]
+            #   @param status [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Status, nil]
             #
             #   @param type [Symbol, :function_call_output]
             #     The type of the function tool call output. Always `function_call_output`.
 
             # The text input to the model.
             #
-            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput#output
+            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput#output
             module Output
               extend OpenAI::Internal::Type::Union
 
@@ -199,7 +210,9 @@ module OpenAI
               variant String
 
               variant(
-                -> { OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::PartsArray }
+                -> {
+                  OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::PartsArray
+                }
               )
 
               module Part
@@ -211,7 +224,9 @@ module OpenAI
 
                 variant(
                   :input_image,
-                  -> { OpenAI::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage }
+                  -> {
+                    OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage
+                  }
                 )
 
                 class InputImage < OpenAI::Internal::Type::BaseModel
@@ -230,11 +245,11 @@ module OpenAI
                   #   The detail level of the image to be sent to the model. One of `high`, `low`,
                   #   `auto`, or `original`. Defaults to `auto`.
                   #
-                  #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail, nil]
+                  #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail, nil]
                   optional(
                     :detail,
                     enum: -> {
-                      OpenAI::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail
+                      OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail
                     },
                     nil?: true
                   )
@@ -243,7 +258,7 @@ module OpenAI
                   #   @param image_url [String]
                   #     A base64-encoded image data URL or a publicly accessible HTTP(S) image URL.
                   #
-                  #   @param detail [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage::Detail, nil]
+                  #   @param detail [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage::Detail, nil]
                   #     The detail level of the image to be sent to the model. One of `high`, `low`,
                   #     `auto`, or `original`. Defaults to `auto`.
                   #
@@ -252,7 +267,7 @@ module OpenAI
                   # The detail level of the image to be sent to the model. One of `high`, `low`,
                   # `auto`, or `original`. Defaults to `auto`.
                   #
-                  # @see OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage#detail
+                  # @see OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage#detail
                   module Detail
                     extend OpenAI::Internal::Type::Enum
 
@@ -267,21 +282,21 @@ module OpenAI
                 end
 
                 # @!method self.variants
-                #   @return [Array(OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage)]
+                #   @return [Array(OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage)]
               end
 
               # @!method self.variants
-              #   @return [Array(String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part::InputImage>)]
+              #   @return [Array(String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part::InputImage>)]
 
               # @type [OpenAI::Internal::Type::Converter]
               PartsArray = OpenAI::Internal::Type::ArrayOf[
                 union: -> {
-                  OpenAI::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput::Output::Part
+                  OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput::Output::Part
                 }
               ]
             end
 
-            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput#status
+            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput#status
             module Status
               extend OpenAI::Internal::Type::Enum
 
@@ -332,10 +347,10 @@ module OpenAI
 
             # @!attribute status
             #
-            #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCall::Status, nil]
+            #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCall::Status, nil]
             optional(
               :status,
-              enum: -> { OpenAI::Live::DecisionItemCreatedEvent::Item::CustomToolCall::Status },
+              enum: -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCall::Status },
               nil?: true
             )
 
@@ -354,12 +369,12 @@ module OpenAI
             #   @param namespace [String, nil]
             #     The namespace of the function to call.
             #
-            #   @param status [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCall::Status, nil]
+            #   @param status [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCall::Status, nil]
             #
             #   @param type [Symbol, :custom_tool_call]
             #     The item type. Always `custom_tool_call`.
 
-            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCall#status
+            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCall#status
             module Status
               extend OpenAI::Internal::Type::Enum
 
@@ -387,8 +402,11 @@ module OpenAI
             # @!attribute output
             #   The text input to the model.
             #
-            #   @return [String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage>]
-            required :output, union: -> { OpenAI::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output }
+            #   @return [String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage>]
+            required(
+              :output,
+              union: -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output }
+            )
 
             # @!attribute type
             #
@@ -397,10 +415,10 @@ module OpenAI
 
             # @!attribute status
             #
-            #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Status, nil]
+            #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Status, nil]
             optional(
               :status,
-              enum: -> { OpenAI::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Status },
+              enum: -> { OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Status },
               nil?: true
             )
 
@@ -410,16 +428,16 @@ module OpenAI
             #   @param call_id [String]
             #     The unique ID of the function tool call generated by the model.
             #
-            #   @param output [String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage>]
+            #   @param output [String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage>]
             #     The text input to the model.
             #
-            #   @param status [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Status, nil]
+            #   @param status [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Status, nil]
             #
             #   @param type [Symbol, :custom_tool_call_output]
 
             # The text input to the model.
             #
-            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput#output
+            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput#output
             module Output
               extend OpenAI::Internal::Type::Union
 
@@ -427,7 +445,9 @@ module OpenAI
               variant String
 
               variant(
-                -> { OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::PartsArray }
+                -> {
+                  OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::PartsArray
+                }
               )
 
               module Part
@@ -439,7 +459,9 @@ module OpenAI
 
                 variant(
                   :input_image,
-                  -> { OpenAI::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage }
+                  -> {
+                    OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage
+                  }
                 )
 
                 class InputImage < OpenAI::Internal::Type::BaseModel
@@ -458,11 +480,11 @@ module OpenAI
                   #   The detail level of the image to be sent to the model. One of `high`, `low`,
                   #   `auto`, or `original`. Defaults to `auto`.
                   #
-                  #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail, nil]
+                  #   @return [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail, nil]
                   optional(
                     :detail,
                     enum: -> {
-                      OpenAI::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail
+                      OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail
                     },
                     nil?: true
                   )
@@ -471,7 +493,7 @@ module OpenAI
                   #   @param image_url [String]
                   #     A base64-encoded image data URL or a publicly accessible HTTP(S) image URL.
                   #
-                  #   @param detail [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage::Detail, nil]
+                  #   @param detail [Symbol, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage::Detail, nil]
                   #     The detail level of the image to be sent to the model. One of `high`, `low`,
                   #     `auto`, or `original`. Defaults to `auto`.
                   #
@@ -480,7 +502,7 @@ module OpenAI
                   # The detail level of the image to be sent to the model. One of `high`, `low`,
                   # `auto`, or `original`. Defaults to `auto`.
                   #
-                  # @see OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage#detail
+                  # @see OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage#detail
                   module Detail
                     extend OpenAI::Internal::Type::Enum
 
@@ -495,21 +517,21 @@ module OpenAI
                 end
 
                 # @!method self.variants
-                #   @return [Array(OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage)]
+                #   @return [Array(OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage)]
               end
 
               # @!method self.variants
-              #   @return [Array(String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part::InputImage>)]
+              #   @return [Array(String, Array<OpenAI::Models::Live::DecisionInputText, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part::InputImage>)]
 
               # @type [OpenAI::Internal::Type::Converter]
               PartsArray = OpenAI::Internal::Type::ArrayOf[
                 union: -> {
-                  OpenAI::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput::Output::Part
+                  OpenAI::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput::Output::Part
                 }
               ]
             end
 
-            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput#status
+            # @see OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput#status
             module Status
               extend OpenAI::Internal::Type::Enum
 
@@ -523,8 +545,12 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Live::DecisionStoredUserMessage, OpenAI::Models::Live::DecisionStoredDeveloperMessage, OpenAI::Models::Live::DecisionStoredSystemMessage, OpenAI::Models::Live::DecisionStoredAssistantMessage, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCall, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::FunctionCallOutput, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCall, OpenAI::Models::Live::DecisionItemCreatedEvent::Item::CustomToolCallOutput)]
+          #   @return [Array(OpenAI::Models::Live::DecisionStoredUserMessage, OpenAI::Models::Live::DecisionStoredDeveloperMessage, OpenAI::Models::Live::DecisionStoredSystemMessage, OpenAI::Models::Live::DecisionStoredAssistantMessage, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCall, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::FunctionCallOutput, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCall, OpenAI::Models::Live::DecisionItemCreatedEvent::ItemUnion::CustomToolCallOutput)]
         end
+
+        require_relative "decision_stored_user_message"
+
+        Item = ::OpenAI::Models::Live::DecisionStoredUserMessage
       end
     end
   end

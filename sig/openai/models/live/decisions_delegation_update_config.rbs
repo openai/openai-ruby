@@ -31,6 +31,10 @@ module OpenAI
           ?model: String,
           ?questions: ::Array[OpenAI::Models::Live::decision_question]
         }
+
+        type question = ::OpenAI::Models::Live::decision_question
+
+        module Question = ::OpenAI::Models::Live::DecisionQuestion
       end
     end
   end

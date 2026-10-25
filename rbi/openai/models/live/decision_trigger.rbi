@@ -64,6 +64,8 @@ module OpenAI
         end
 
         class Decisions < OpenAI::Internal::Type::BaseModel
+          Question = ::OpenAI::Models::Live::DecisionQuestion
+
           OrHash = T.type_alias do
             T.any(
               OpenAI::Live::DecisionTrigger::Decisions,
