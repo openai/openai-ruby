@@ -1,0 +1,64 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_stored_developer_message =
+        {
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredDeveloperMessage::content,
+          ?role: :developer,
+          ?type: OpenAI::Models::Live::DecisionStoredDeveloperMessage::type_
+        }
+
+      class DecisionStoredDeveloperMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        # The text input to the model.
+        attr_accessor content: OpenAI::Models::Live::DecisionStoredDeveloperMessage::content
+
+        attr_accessor role: :developer
+
+        attr_reader type: OpenAI::Models::Live::DecisionStoredDeveloperMessage::type_?
+
+        def type=: (
+          OpenAI::Models::Live::DecisionStoredDeveloperMessage::type_
+        ) -> OpenAI::Models::Live::DecisionStoredDeveloperMessage::type_
+
+        # @param content
+        #   The text input to the model.
+        def initialize: (
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredDeveloperMessage::content,
+          ?type: OpenAI::Models::Live::DecisionStoredDeveloperMessage::type_,
+          ?role: :developer
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredDeveloperMessage::content,
+          ?role: :developer,
+          ?type: OpenAI::Models::Live::DecisionStoredDeveloperMessage::type_
+        }
+
+        type content = String | ::Array[OpenAI::Live::DecisionInputText]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionStoredDeveloperMessage::content]
+
+          DecisionInputTextArray: OpenAI::Internal::Type::Converter
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::DecisionStoredDeveloperMessage::type_]
+        end
+      end
+    end
+  end
+end
