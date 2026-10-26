@@ -1,4 +1,8 @@
 {
   "schema_version": 1,
-  "max_custom_patch_lines": 4000
+  "max_custom_patch_lines": 4000,
+  "next_policy": {
+    "repository": "openai/openai-ruby",
+    "main_sha": "6177325b2db85486392fdd32e4b566ad6f397f0b"
+  }
 }
