@@ -6,7 +6,7 @@
 ### Features
 
 * **api:** add delegation controls and prompt cache lifetimes ([#963](https://github.com/openai/openai-ruby/issues/963)) ([09f5d62](https://github.com/openai/openai-ruby/commit/09f5d62b7b5ef9b8c07ccb9a8197c6611280bb87))
-* **api:** expand Live Decision item and question types ([#967](https://github.com/openai/openai-ruby/issues/967)) ([58986a7](https://github.com/openai/openai-ruby/commit/58986a75919752ceaafc0fe2bc145f66e236f39e))
+* **api:** expand Live Decision item and question types. **Breaking change in a minor release.** Live Decision item events now include messages and function/custom-tool calls and outputs. The public `OpenAI::Models::Live::DecisionItemCreateEvent::Item` and `OpenAI::Models::Live::DecisionItemCreatedEvent::Item` constants have been removed; constructing them now raises `NameError`. For user messages, replace them with `OpenAI::Models::Live::DecisionUserMessage` and `OpenAI::Models::Live::DecisionStoredUserMessage`, respectively. For example, use `OpenAI::Models::Live::DecisionUserMessage.new(content: "Hello")` for a create-event user message. Handle tool-item variants separately instead of assuming every event item has message fields. ([#967](https://github.com/openai/openai-ruby/issues/967)) ([58986a7](https://github.com/openai/openai-ruby/commit/58986a75919752ceaafc0fe2bc145f66e236f39e))
 
 ## [0.111.0](https://github.com/openai/openai-ruby/compare/v0.110.0...v0.111.0) (2026-10-22)
 
