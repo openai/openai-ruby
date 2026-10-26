@@ -1,0 +1,23 @@
+# @type var config_question: OpenAI::Models::Live::DecisionsDelegationConfig::question
+config_question = OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice.new(
+  instructions: "pick",
+  choices: [OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::Choice.new(value: "yes")]
+)
+
+# @type var update_question: OpenAI::Models::Live::DecisionsDelegationUpdateConfig::question
+update_question = OpenAI::Models::Live::DecisionsDelegationUpdateConfig::Question::Choice.new(
+  instructions: "pick",
+  choices: [OpenAI::Models::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice.new(value: false)]
+)
+
+# @type var trigger_question: OpenAI::Models::Live::DecisionTrigger::Decisions::question
+trigger_question = OpenAI::Models::Live::DecisionTrigger::Decisions::Question::Choice.new(
+  instructions: "pick",
+  choices: [OpenAI::Models::Live::DecisionTrigger::Decisions::Question::Choice::Choice.new(value: "yes")]
+)
+
+# @type var value: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::Choice::value
+value = true
+
+# @type var raw_choice: OpenAI::Models::Live::DecisionsDelegationConfig::Question::Choice::choice
+raw_choice = {value: value, description: "example"}
