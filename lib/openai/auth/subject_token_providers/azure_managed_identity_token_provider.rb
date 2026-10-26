@@ -61,7 +61,8 @@ module OpenAI
               OpenAI::Errors::SubjectTokenProviderError.new(
                 message: "Azure IMDS returned #{response.code}",
                 provider: "azure-imds"
-              )
+              ),
+              cause: nil
             )
           end
 
@@ -75,7 +76,8 @@ module OpenAI
               OpenAI::Errors::SubjectTokenProviderError.new(
                 message: "Azure IMDS response missing access_token field",
                 provider: "azure-imds"
-              )
+              ),
+              cause: nil
             )
           end
 

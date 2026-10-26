@@ -241,6 +241,26 @@ class WorkloadIdentityTest < Minitest::Test
     assert_nil(error.cause)
   end
 
+  def test_metadata_errors_do_not_inherit_an_active_rescue_cause
+    cases = [
+      [OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new, 500, "failure"],
+      [OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new, 200, "{}"],
+      [OpenAI::Auth::SubjectTokenProviders::GCPIDTokenProvider.new, 404, "failure"]
+    ]
+    cases.each do |provider, status, body|
+      stub_request(:get, %r{http://(?:169\.254\.169\.254|metadata\.google\.internal)/})
+        .to_return(status: status, body: body)
+
+      begin
+        raise "synthetic-private-outer-exception"
+      rescue RuntimeError
+        error = assert_raises(OpenAI::Errors::SubjectTokenProviderError) { provider.get_token }
+        refute_includes(error.full_message, "synthetic-private-outer-exception")
+      end
+      WebMock.reset!
+    end
+  end
+
   def test_metadata_transport_errors_do_not_expose_remote_diagnostics
     providers = [
       [OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new, "azure-imds"],

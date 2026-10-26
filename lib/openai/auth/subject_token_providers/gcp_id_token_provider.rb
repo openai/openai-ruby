@@ -49,7 +49,8 @@ module OpenAI
               OpenAI::Errors::SubjectTokenProviderError.new(
                 message: "GCP Metadata Server returned #{response.code}",
                 provider: "gcp-metadata"
-              )
+              ),
+              cause: nil
             )
           end
 
