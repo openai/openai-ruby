@@ -704,42 +704,34 @@ jobs:
         with:
           script: |
             const marker = '<!-- castiron:custom-code-report:v1 -->';
-            const event = context.payload.workflow_run;
-            const {data: run} = await github.rest.actions.getWorkflowRun({...context.repo, run_id: event.id});
+            const run = context.payload.workflow_run;
             const {data: workflow} = await github.rest.actions.getWorkflow({
               ...context.repo, workflow_id: 'castiron-custom-code.yml',
             });
             if (!Number.isSafeInteger(run.workflow_id) || run.workflow_id !== workflow.id ||
                 workflow.path !== '.github/workflows/castiron-custom-code.yml') return;
-            const repository = `${context.repo.owner}/${context.repo.repo}`;
-            if (run.event !== 'pull_request' || run.event !== event.event || run.head_sha !== event.head_sha ||
-                run.run_attempt !== event.run_attempt || run.status !== 'completed' ||
-                run.path.split('@', 1)[0] !== '.github/workflows/castiron-custom-code.yml' ||
-                run.repository.full_name !== repository || !run.head_repository?.id || !run.head_branch) return;
-            const matches = pr => pr.state === 'open' && pr.head.sha === run.head_sha &&
-              pr.head.repo?.id === run.head_repository.id &&
-              pr.head.repo?.full_name === run.head_repository.full_name && pr.head.ref === run.head_branch &&
-              pr.base.repo?.full_name === repository && ['main', 'next'].includes(pr.base.ref);
+            if (run.event !== 'pull_request' || run.path.split('@', 1)[0] !== '.github/workflows/castiron-custom-code.yml') return;
             let pulls = run.pull_requests?.length ? run.pull_requests : await github.paginate(github.rest.repos.listPullRequestsAssociatedWithCommit, {...context.repo, commit_sha: run.head_sha});
             if (!pulls.length) pulls = await github.paginate(github.rest.pulls.list, {
               ...context.repo, state: 'open', head: `${run.head_repository.owner.login}:${run.head_branch}`,
             });
-            const candidates = [];
-            for (const number of new Set(pulls.map(pull => pull.number))) {
-              const {data: current} = await github.rest.pulls.get({...context.repo, pull_number: number});
-              if (matches(current)) candidates.push(current);
+            const current = [];
+            for (const pull of pulls) {
+              const {data: pr} = await github.rest.pulls.get({...context.repo, pull_number: pull.number});
+              if (pr.state === 'open' && pr.head.sha === run.head_sha &&
+                  ['main', 'next'].includes(pr.base.ref) && pr.base.repo.full_name === `${context.repo.owner}/${context.repo.repo}`) current.push(pr);
             }
-            const main = candidates.filter(pr => pr.base.ref === 'main');
-            const selected = main.length ? main : candidates;
+            // Match trusted compute's supported-target and main-preference selection.
+            const main = current.filter(pr => pr.base.ref === 'main');
+            const selected = main.length ? main : current;
             if (selected.length !== 1) return;
-            const pull = selected[0];
-            const comments = await github.paginate(github.rest.issues.listComments, {...context.repo, issue_number: pull.number});
-            const previous = comments.find(c => c.user?.type === 'Bot' && c.user?.login === 'github-actions[bot]' && c.body?.startsWith(marker));
-            const prior = previous?.body?.match(/<!-- castiron:run:v1:(\d+):(\d+) -->/);
-            if (prior && (Number(prior[1]) > run.id || (Number(prior[1]) === run.id && Number(prior[2]) > run.run_attempt))) return;
-            const {data: fresh} = await github.rest.pulls.get({...context.repo, pull_number: pull.number});
-            if (!matches(fresh) || fresh.base.ref !== pull.base.ref) return;
-            const url = `${context.serverUrl}/${repository}/actions/runs/${run.id}`;
-            const body = `${marker}\n\n## Castiron custom code\n\n⚠️ Report unavailable for \`${run.head_sha.slice(0, 12)}\`.\n\nThe report setup or validation failed. [Inspect the workflow run](${url}).\n\n<!-- castiron:run:v1:${run.id}:${run.run_attempt} -->`;
-            if (previous) await github.rest.issues.updateComment({...context.repo, comment_id: previous.id, body});
-            else await github.rest.issues.createComment({...context.repo, issue_number: pull.number, body});
+            for (const pull of selected) {
+              const comments = await github.paginate(github.rest.issues.listComments, {...context.repo, issue_number: pull.number});
+              const previous = comments.find(c => c.user?.type === 'Bot' && c.user?.login === 'github-actions[bot]' && c.body?.startsWith(marker));
+              const prior = previous?.body?.match(/<!-- castiron:run:v1:(\d+):(\d+) -->/);
+              if (prior && (Number(prior[1]) > run.id || (Number(prior[1]) === run.id && Number(prior[2]) > run.run_attempt))) continue;
+              const url = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${run.id}`;
+              const body = `${marker}\n\n## Castiron custom code\n\n⚠️ Report unavailable for \`${run.head_sha.slice(0, 12)}\`.\n\nThe report setup or validation failed. [Inspect the workflow run](${url}).\n\n<!-- castiron:run:v1:${run.id}:${run.run_attempt} -->`;
+              if (previous) await github.rest.issues.updateComment({...context.repo, comment_id: previous.id, body});
+              else await github.rest.issues.createComment({...context.repo, issue_number: pull.number, body});
+            }

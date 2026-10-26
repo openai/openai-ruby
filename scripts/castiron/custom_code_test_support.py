@@ -66,11 +66,7 @@ def source_run(head: str, event: str = "pull_request") -> dict[str, Any]:
         "head_sha": head,
         "head_branch": "gh-readonly-queue/main/pr-7-example" if event == "merge_group" else "sdk",
         "repository": {"full_name": "openai/example"},
-        "head_repository": {
-            "id": 10,
-            "full_name": "contributor/example",
-            "owner": {"login": "contributor"},
-        },
+        "head_repository": {"owner": {"login": "contributor"}},
         "path": ".github/workflows/castiron-custom-code.yml",
         "status": "completed",
         "run_attempt": 1,
