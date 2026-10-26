@@ -5,7 +5,14 @@ module OpenAI
 
     class Live
 
-      include OpenAI::WebSocket::Resource
+      include OpenAI::WebSocket::TypedResource
+
+      extend T::Generic
+
+      WebSocketClientEvent = type_member { {fixed: OpenAI::Live::ClientEvent::Variants} }
+      WebSocketServerEvent = type_member {
+        {fixed: T.any(OpenAI::Live::ServerEvent::Variants, T::Hash[Symbol, T.untyped])}
+      }
 
       # @api private
       sig { params(query: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }

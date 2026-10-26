@@ -781,11 +781,14 @@ module OpenAI
             )
 
             # @!attribute model
-            #   The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            #   `chatgpt-image-latest`. Default: `gpt-image-1`.
+            #   The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            #   `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            #   `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            #   `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+            #   `gpt-image-2`.
+            #
+            #   `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            #   `gpt-image-2.5-flare` instead.
             #
             #   @return [String, Symbol, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Model, nil]
             optional(
@@ -883,11 +886,14 @@ module OpenAI
             #     `file_id` (string, optional).
             #
             #   @param model [String, Symbol, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Model]
-            #     The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            #     `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            #     `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            #     `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            #     `chatgpt-image-latest`. Default: `gpt-image-1`.
+            #     The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            #     `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            #     `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            #     `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+            #     `gpt-image-2`.
+            #
+            #     `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            #     `gpt-image-2.5-flare` instead.
             #
             #   @param moderation [Symbol, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Moderation]
             #     Moderation level for the generated image. Default: `auto`.
@@ -1001,11 +1007,14 @@ module OpenAI
               #     Base64-encoded mask image.
             end
 
-            # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            # `chatgpt-image-latest`. Default: `gpt-image-1`.
+            # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+            # `gpt-image-2`.
+            #
+            # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            # `gpt-image-2.5-flare` instead.
             #
             # @see OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration#model
             module Model
@@ -1087,6 +1096,8 @@ module OpenAI
 
               # @!group
 
+              # @deprecated GPT Image 1 was shut down on October 23, 2026. Use gpt-image-2.5-sunburst or
+              # gpt-image-2.5-flare instead.
               GPT_IMAGE_1 = :"gpt-image-1"
               GPT_IMAGE_1_MINI = :"gpt-image-1-mini"
               GPT_IMAGE_2 = :"gpt-image-2"

@@ -35,7 +35,7 @@ module OpenAI
 
         # @!method initialize(content:, delegation_id:, event_id: nil, type: :"session.thinking.append")
         #   Provide silent reasoning or progress context to the Live model, optionally for
-        #   an existing client delegation.
+        #   an existing client delegation. Rejected while an audio fixture is active.
         #
         #   @param content [String]
         #     Silent reasoning or progress context, limited to 500 tokens. It does not

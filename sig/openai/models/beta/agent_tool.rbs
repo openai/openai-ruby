@@ -7,6 +7,7 @@ module OpenAI
         | OpenAI::Beta::AgentTool::Mcp
         | OpenAI::Beta::AgentTool::WebSearch
         | OpenAI::Beta::AgentTool::ComputerUse
+        | OpenAI::Beta::AgentTool::Automations
 
       module AgentTool
         extend OpenAI::Internal::Type::Union
@@ -313,6 +314,19 @@ module OpenAI
           ) -> void
 
           def to_hash: -> { include_screenshots: bool, ?type: :computer_use }
+        end
+
+        type automations = { ?type: :automations }
+
+        class Automations < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `automations`.
+          attr_accessor type: :automations
+
+          # @param type
+          #   The type of the object. Always `automations`.
+          def initialize: (?type: :automations) -> void
+
+          def to_hash: -> { ?type: :automations }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::agent_tool]

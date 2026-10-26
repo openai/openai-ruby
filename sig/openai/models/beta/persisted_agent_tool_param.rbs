@@ -8,6 +8,7 @@ module OpenAI
         | OpenAI::Beta::PersistedAgentToolParam::Mcp
         | OpenAI::Beta::PersistedAgentToolParam::WebSearch
         | OpenAI::Beta::PersistedAgentToolParam::ComputerUse
+        | OpenAI::Beta::PersistedAgentToolParam::Automations
 
       module PersistedAgentToolParam
         extend OpenAI::Internal::Type::Union
@@ -353,6 +354,19 @@ module OpenAI
           ) -> void
 
           def to_hash: -> { ?type: :computer_use, ?include_screenshots: bool }
+        end
+
+        type automations = { ?type: :automations }
+
+        class Automations < OpenAI::Internal::Type::BaseModel
+          # The type of the object. Always `automations`.
+          attr_accessor type: :automations
+
+          # @param type
+          #   The type of the object. Always `automations`.
+          def initialize: (?type: :automations) -> void
+
+          def to_hash: -> { ?type: :automations }
         end
 
         def self?.variants: -> ::Array[OpenAI::Models::Beta::persisted_agent_tool_param]

@@ -11,7 +11,8 @@ module OpenAI
       Variants = T.type_alias do
         T.any(
           OpenAI::DecisionInputText,
-          OpenAI::DecisionInputImage
+          OpenAI::DecisionInputImage,
+          OpenAI::DecisionInputJSON
         )
       end
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.112.0](https://github.com/openai/openai-ruby/compare/v0.111.0...v0.112.0) (2026-10-25)
+
+
+### Features
+
+* **api:** add delegation controls and prompt cache lifetimes ([#963](https://github.com/openai/openai-ruby/issues/963)) ([09f5d62](https://github.com/openai/openai-ruby/commit/09f5d62b7b5ef9b8c07ccb9a8197c6611280bb87))
+* **api:** expand Live Decision item and question types. **Breaking change in a minor release.** Live Decision item events now include messages and function/custom-tool calls and outputs. The public `OpenAI::Models::Live::DecisionItemCreateEvent::Item` and `OpenAI::Models::Live::DecisionItemCreatedEvent::Item` constants have been removed; constructing them now raises `NameError`. For user messages, replace them with `OpenAI::Models::Live::DecisionUserMessage` and `OpenAI::Models::Live::DecisionStoredUserMessage`, respectively. For example, use `OpenAI::Models::Live::DecisionUserMessage.new(content: "Hello")` for a create-event user message. Handle tool-item variants separately instead of assuming every event item has message fields. ([#967](https://github.com/openai/openai-ruby/issues/967)) ([58986a7](https://github.com/openai/openai-ruby/commit/58986a75919752ceaafc0fe2bc145f66e236f39e))
+
+## [0.111.0](https://github.com/openai/openai-ruby/compare/v0.110.0...v0.111.0) (2026-10-22)
+
+
+### Features
+
+* **api: Breaking change in a minor release.** A Live response question’s `instructions` can now be a string or an array of text, image, or JSON parts. Code like `question.instructions.strip` will fail if it receives an array. Check `question.instructions.is_a?(String)` and handle the array case. Decisions request inputs can also contain new message roles and tool-history items, so update code that assumes it knows every input type. Replace `OpenAI::DecisionInputMessage.new(content: ...)` with `OpenAI::DecisionInputMessage::User.new(content: ...)` for user-message inputs. Existing string instructions still work. ([#959](https://github.com/openai/openai-ruby/issues/959)) ([ff91bf6](https://github.com/openai/openai-ruby/commit/ff91bf63d2c8a565b155d554c70f45a0fb6efc1f))
+
+
+### Chores
+
+* **deps:** bump ruby/setup-ruby from 1.331.0 to 1.332.0 ([#958](https://github.com/openai/openai-ruby/issues/958)) ([38170d0](https://github.com/openai/openai-ruby/commit/38170d06553453c0223e317dd4eb0579bc22223f))
+
 ## [0.110.0](https://github.com/openai/openai-ruby/compare/v0.109.0...v0.110.0) (2026-10-22)
 
 
