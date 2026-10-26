@@ -257,6 +257,7 @@ class WorkloadIdentityTest < Minitest::Test
         error = assert_raises(OpenAI::Errors::SubjectTokenProviderError) { provider.get_token }
         refute_includes(error.full_message, "synthetic-private-outer-exception")
       end
+
       WebMock.reset!
     end
   end
