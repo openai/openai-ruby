@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.113.0](https://github.com/openai/openai-ruby/compare/v0.112.0...v0.113.0) (2026-10-26)
+
+
+### Features
+
+* **api:** add gpt-6.1-terra model identifier ([#972](https://github.com/openai/openai-ruby/issues/972)) ([6b91123](https://github.com/openai/openai-ruby/commit/6b911234dfacea4c9e4fcc183e8b8363d3060bd3))
+
 ## [0.112.0](https://github.com/openai/openai-ruby/compare/v0.111.0...v0.112.0) (2026-10-25)
 
 
