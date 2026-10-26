@@ -70,11 +70,14 @@ module OpenAI
       optional :mask, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
-      #   The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      #   The GPT image model to use for image editing (`gpt-image-1-mini`,
       #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
       #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
       #   `chatgpt-image-latest`).
+      #
+      #   `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+      #   `gpt-image-2.5-flare` instead.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageEditParams::Model }, nil?: true
@@ -215,11 +218,14 @@ module OpenAI
       #     content type.
       #
       #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
-      #     The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      #     The GPT image model to use for image editing (`gpt-image-1-mini`,
       #     `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       #     `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
       #     `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
       #     `chatgpt-image-latest`).
+      #
+      #     `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+      #     `gpt-image-2.5-flare` instead.
       #
       #   @param n [Integer, nil]
       #     The number of images to generate. Must be between 1 and 10.
@@ -337,17 +343,27 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      # The GPT image model to use for image editing (`gpt-image-1-mini`,
       # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
       # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
       # `chatgpt-image-latest`).
+      #
+      # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+      # `gpt-image-2.5-flare` instead.
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
-        # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`).
+        # The GPT image model to use for image editing
+        # (`gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+        # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+        # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+        # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`).
+        #
+        # `gpt-image-1` was shut down on October 23, 2026. Use
+        # `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` instead.
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants

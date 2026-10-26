@@ -724,18 +724,24 @@ module OpenAI
               OpenAI::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputImageMask
             ) -> OpenAI::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputImageMask
 
-            # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            # `chatgpt-image-latest`. Default: `gpt-image-1`.
+            # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+            # `gpt-image-2`.
+            #
+            # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            # `gpt-image-2.5-flare` instead.
             attr_reader model: OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration::model?
 
-            # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            # `chatgpt-image-latest`. Default: `gpt-image-1`.
+            # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+            # `gpt-image-2`.
+            #
+            # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            # `gpt-image-2.5-flare` instead.
             def model=: (
               OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration::model
             ) -> OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration::model
@@ -833,11 +839,14 @@ module OpenAI
             #   Optional mask for inpainting. Contains `image_url` (string, optional) and
             #   `file_id` (string, optional).
             # @param model
-            #   The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            #   `chatgpt-image-latest`. Default: `gpt-image-1`.
+            #   The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            #   `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            #   `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            #   `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+            #   `gpt-image-2`.
+            #
+            #   `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            #   `gpt-image-2.5-flare` instead.
             # @param moderation
             #   Moderation level for the generated image. Default: `auto`.
             # @param output_compression
