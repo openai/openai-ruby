@@ -59,7 +59,7 @@ module OpenAI
           unless response.is_a?(Net::HTTPSuccess)
             raise(
               OpenAI::Errors::SubjectTokenProviderError.new(
-                message: "Azure IMDS returned #{response.code}: #{response.body}",
+                message: "Azure IMDS returned #{response.code}",
                 provider: "azure-imds"
               )
             )
@@ -81,13 +81,13 @@ module OpenAI
 
         rescue OpenAI::Errors::SubjectTokenProviderError
           raise
-        rescue StandardError => e
+        rescue StandardError
           raise(
             OpenAI::Errors::SubjectTokenProviderError.new(
-              message: "Failed to fetch token from Azure IMDS: #{e.message}",
-              provider: "azure-imds",
-              cause: e
-            )
+              message: "Failed to fetch token from Azure IMDS",
+              provider: "azure-imds"
+            ),
+            cause: nil
           )
         end
       end

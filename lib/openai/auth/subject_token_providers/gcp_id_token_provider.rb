@@ -47,7 +47,7 @@ module OpenAI
           unless response.is_a?(Net::HTTPSuccess)
             raise(
               OpenAI::Errors::SubjectTokenProviderError.new(
-                message: "GCP Metadata Server returned #{response.code}: #{response.body}",
+                message: "GCP Metadata Server returned #{response.code}",
                 provider: "gcp-metadata"
               )
             )
@@ -56,13 +56,13 @@ module OpenAI
           response.body
         rescue OpenAI::Errors::SubjectTokenProviderError
           raise
-        rescue StandardError => e
+        rescue StandardError
           raise(
             OpenAI::Errors::SubjectTokenProviderError.new(
-              message: "Failed to fetch token from GCP Metadata Server: #{e.message}",
-              provider: "gcp-metadata",
-              cause: e
-            )
+              message: "Failed to fetch token from GCP Metadata Server",
+              provider: "gcp-metadata"
+            ),
+            cause: nil
           )
         end
       end

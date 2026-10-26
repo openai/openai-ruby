@@ -42,8 +42,21 @@ class WorkflowTests(unittest.TestCase):
     @unittest.skipUnless(shutil.which("node"), "GitHub Actions JavaScript runtime")
     def test_trusted_failure_publisher_updates_one_current_comment(self) -> None:
         head = "a" * 40
-        run = {**source_run(head), "id": 20}
-        current = {"state": "open", "head": {"sha": head}}
+        run = {
+            **source_run(head),
+            "id": 20,
+            "head_repository": {
+                "id": 10,
+                "full_name": "contributor/example",
+                "owner": {"login": "contributor"},
+            },
+        }
+        current = {
+            "number": 3,
+            "state": "open",
+            "head": {"sha": head, "ref": "sdk", "repo": run["head_repository"]},
+            "base": {"ref": "main", "repo": {"full_name": "openai/example"}},
+        }
         previous = {
             "id": 42,
             "user": {"type": "Bot", "login": "github-actions[bot]"},
@@ -72,6 +85,7 @@ class WorkflowTests(unittest.TestCase):
                                 "repo": {"owner": "openai", "repo": "example"},
                                 "serverUrl": "https://github.com",
                             },
+                            "run": event,
                             "current": pull,
                             "comments": comments,
                             "fallback_pulls": [{"number": 3}],
@@ -83,6 +97,91 @@ class WorkflowTests(unittest.TestCase):
                     if expected:
                         self.assertIn("Report unavailable", writes[0]["body"])
                         self.assertIn("castiron:run:v1:20:1", writes[0]["body"])
+
+    @unittest.skipUnless(shutil.which("node"), "GitHub Actions JavaScript runtime")
+    def test_failure_comments_are_bound_to_one_source_pr(self) -> None:
+        head = "a" * 40
+        run = {
+            **source_run(head),
+            "pull_requests": [],
+            "head_repository": {
+                "id": 10,
+                "full_name": "contributor/example",
+                "owner": {"login": "contributor"},
+            },
+        }
+        current = {
+            "number": 3,
+            "state": "open",
+            "head": {"sha": head, "ref": "sdk", "repo": run["head_repository"]},
+            "base": {"ref": "main", "repo": {"full_name": "openai/example"}},
+        }
+        for discovery in ("associated_pulls", "fallback_pulls"):
+            for changed in (
+                {"head": {**current["head"], "ref": "victim"}},
+                {"head": {**current["head"], "repo": {"id": 11, "full_name": "victim/example"}}},
+                {"head": {**current["head"], "repo": None}},
+                {"base": {**current["base"], "ref": "unsupported"}},
+                {"base": {**current["base"], "repo": {"full_name": "other/example"}}},
+            ):
+                victim = {**current, **changed, "number": 4}
+                with self.subTest(discovery=discovery, changed=changed):
+                    writes = run_publisher(
+                        "Publish a trusted failure status",
+                        {
+                            "context": {
+                                "payload": {"workflow_run": run},
+                                "repo": {"owner": "openai", "repo": "example"},
+                                "serverUrl": "https://github.com",
+                            },
+                            "run": run,
+                            "pulls_by_number": {3: current, 4: victim},
+                            discovery: [{"number": 4}, {"number": 3}, {"number": 3}],
+                        },
+                    )
+                    self.assertEqual([w["issue_number"] for w in writes], [3])
+        payload = {
+            "context": {
+                "payload": {"workflow_run": run},
+                "repo": {"owner": "openai", "repo": "example"},
+                "serverUrl": "https://github.com",
+            },
+            "run": run,
+            "current": current,
+            "associated_pulls": [{"number": 3}],
+        }
+        for override in ({"run_attempt": 2}, {"event": "push"}, {"status": "in_progress"}):
+            with self.subTest(override=override):
+                self.assertEqual(
+                    run_publisher(
+                        "Publish a trusted failure status", {**payload, "run": {**run, **override}}
+                    ),
+                    [],
+                )
+        self.assertEqual(
+            run_publisher(
+                "Publish a trusted failure status",
+                {
+                    **payload,
+                    "associated_pulls": [{"number": 3}, {"number": 4}],
+                    "pulls_by_number": {3: current, 4: {**current, "number": 4}},
+                },
+            ),
+            [],
+        )
+        self.assertEqual(
+            run_publisher(
+                "Publish a trusted failure status",
+                {
+                    **payload,
+                    "current_sequence": [
+                        current,
+                        {**current, "head": {**current["head"], "ref": "changed"}},
+                    ],
+                },
+            ),
+            [],
+        )
 
     def test_workflow_reports_all_branches_without_write_credentials(self) -> None:
         workflows = Path(__file__).resolve().parents[2] / ".github/workflows"
