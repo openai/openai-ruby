@@ -47,9 +47,9 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :filename
 
-        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        # token block.
+        # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        # not rounded to a token block.
         sig { returns(T.nilable(OpenAI::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint)) }
         attr_reader :prompt_cache_breakpoint
 
@@ -106,9 +106,9 @@ module OpenAI
           # The name of the file to be sent to the model.
           filename: nil,
 
-          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-          # token block.
+          # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+          # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+          # not rounded to a token block.
           prompt_cache_breakpoint: nil,
 
           # The type of the input item. Always `input_file`.
@@ -172,9 +172,9 @@ module OpenAI
           sig { params(ttl: OpenAI::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint::Ttl::OrSymbol).void }
           attr_writer :ttl
 
-          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-          # token block.
+          # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+          # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+          # not rounded to a token block.
           sig do
             params(
 

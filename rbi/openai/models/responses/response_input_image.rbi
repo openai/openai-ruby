@@ -32,9 +32,9 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :image_url
 
-        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        # token block.
+        # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        # not rounded to a token block.
         sig { returns(T.nilable(OpenAI::Responses::ResponseInputImage::PromptCacheBreakpoint)) }
         attr_reader :prompt_cache_breakpoint
 
@@ -73,9 +73,9 @@ module OpenAI
           # encoded image in a data URL.
           image_url: nil,
 
-          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-          # token block.
+          # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+          # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+          # not rounded to a token block.
           prompt_cache_breakpoint: nil,
 
           # The type of the input item. Always `input_image`.
@@ -135,9 +135,9 @@ module OpenAI
           sig { params(ttl: OpenAI::Responses::ResponseInputImage::PromptCacheBreakpoint::Ttl::OrSymbol).void }
           attr_writer :ttl
 
-          # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-          # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-          # token block.
+          # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+          # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+          # not rounded to a token block.
           sig do
             params(
 

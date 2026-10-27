@@ -16,22 +16,22 @@ module OpenAI
         # The type of the content part. Always `input_audio`.
         attr_accessor type: :input_audio
 
-        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        # token block.
+        # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        # not rounded to a token block.
         attr_reader prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint?
 
-        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        # token block.
+        # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        # not rounded to a token block.
         def prompt_cache_breakpoint=: (
           OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint
         ) -> OpenAI::Chat::ChatCompletionContentPartInputAudio::PromptCacheBreakpoint
 
         # @param prompt_cache_breakpoint
-        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #   token block.
+        #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #   not rounded to a token block.
         # @param type
         #   The type of the content part. Always `input_audio`.
         def initialize: (

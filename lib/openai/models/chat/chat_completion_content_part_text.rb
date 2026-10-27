@@ -17,9 +17,9 @@ module OpenAI
         required :type, const: :text
 
         # @!attribute prompt_cache_breakpoint
-        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #   token block.
+        #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #   not rounded to a token block.
         #
         #   @return [OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint, nil]
         optional(
@@ -34,9 +34,9 @@ module OpenAI
         #     The text content.
         #
         #   @param prompt_cache_breakpoint [OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint]
-        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #     token block.
+        #     Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #     breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #     not rounded to a token block.
         #
         #   @param type [Symbol, :text]
         #     The type of the content part.
@@ -56,9 +56,9 @@ module OpenAI
           optional :ttl, enum: -> { OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::Ttl }
 
           # @!method initialize(ttl: nil, mode: :explicit)
-          #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-          #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-          #   token block.
+          #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+          #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+          #   not rounded to a token block.
           #
           #   @param ttl [Symbol, OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::Ttl]
           #     The minimum lifetime of this cache breakpoint. Defaults to the request TTL.

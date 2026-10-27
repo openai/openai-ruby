@@ -44,9 +44,9 @@ module OpenAI
         # The name of the file to be sent to the model.
         attr_accessor filename: String?
 
-        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        # token block.
+        # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        # not rounded to a token block.
         attr_accessor prompt_cache_breakpoint: OpenAI::Responses::ResponseInputFileContent::PromptCacheBreakpoint?
 
         # @param detail
@@ -64,9 +64,9 @@ module OpenAI
         # @param filename
         #   The name of the file to be sent to the model.
         # @param prompt_cache_breakpoint
-        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #   token block.
+        #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #   not rounded to a token block.
         # @param type
         #   The type of the input item. Always `input_file`.
         def initialize: (
