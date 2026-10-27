@@ -34,7 +34,6 @@ jobs:
         language:
           - actions
           - javascript-typescript
-          - python
           - ruby
 
     steps:
