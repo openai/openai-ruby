@@ -1,14 +1,6 @@
 {
   "schema_version": 1,
   "files": {
-    ".github/workflows/castiron-custom-code-comment.yml": {
-      "mode": "100644",
-      "sha256": "ec43a2286a8f61efc2bfade540b4ccf572aac51fe0d2796121700f64f5bfce9b"
-    },
-    ".github/workflows/castiron-custom-code.yml": {
-      "mode": "100644",
-      "sha256": "b52dcb3feb424790aff1f6f7cff7f385bd921369257b8e59be2e3860ec1f4926"
-    },
     "lib/openai.rb": {
       "mode": "100644",
       "sha256": "83696dcea02af722025de9046f8016353b19cad239e5ca077aea8b1d5662722b"
@@ -4167,15 +4159,15 @@
     },
     "lib/openai/models/realtime/conversation_item_added.rb": {
       "mode": "100644",
-      "sha256": "b1629d037d8d0a9ceccda88322274be02e5cd1566543a77e194b65a5b6ff0b70"
+      "sha256": "5c618f85dadc94e8475e8147b4e2341b7b0ed6ce7b7b71ff62aed59d3e7eb37b"
     },
     "lib/openai/models/realtime/conversation_item_create_event.rb": {
       "mode": "100644",
-      "sha256": "5e56fb8f56493d4d0dd2393e3312d071db8cd6780e087c3e978c29ae29e10083"
+      "sha256": "ae62094ec6304a9e1b89c3bf179affe20f565f7303000bd4fb7ff5ffdf7422a9"
     },
     "lib/openai/models/realtime/conversation_item_created_event.rb": {
       "mode": "100644",
-      "sha256": "42a43d56e449abb097dabe43faa043c1ebbabd19ab71d87dc10964edea43086e"
+      "sha256": "b204a465ac66cb4ae9570816210d96fb10b98e30d5dfae080ec2be55fa0c3ab8"
     },
     "lib/openai/models/realtime/conversation_item_delete_event.rb": {
       "mode": "100644",
@@ -4187,7 +4179,7 @@
     },
     "lib/openai/models/realtime/conversation_item_done.rb": {
       "mode": "100644",
-      "sha256": "9b5cb07d3477e9f053c0303cf93b2642cf2c487a1a9a2ce8bcc74fdfd568a197"
+      "sha256": "6bdbf152404df0d6af1b904cdff614b19606808fdac1eaf8064e92a14a9c76c0"
     },
     "lib/openai/models/realtime/conversation_item_input_audio_transcription_completed_event.rb": {
       "mode": "100644",
@@ -4379,7 +4371,7 @@
     },
     "lib/openai/models/realtime/realtime_response.rb": {
       "mode": "100644",
-      "sha256": "3aa5f2888e3bf77f759d0e1fd06136e22c4140bf7d7291073846142439e04817"
+      "sha256": "33b2d48112944f5368b7b09b377003b6c3bc403f5153f1860c851e356f9bbd7c"
     },
     "lib/openai/models/realtime/realtime_response_create_audio_output.rb": {
       "mode": "100644",
@@ -4391,7 +4383,7 @@
     },
     "lib/openai/models/realtime/realtime_response_create_params.rb": {
       "mode": "100644",
-      "sha256": "03caf051ea2e26db790c54f63672606121e11c3db89d602a496613e5b00f0f1c"
+      "sha256": "751b069c87600fb3a76dc45de81499e41685a2093fd9c5e03ffd540731631ef9"
     },
     "lib/openai/models/realtime/realtime_response_status.rb": {
       "mode": "100644",
@@ -4411,7 +4403,7 @@
     },
     "lib/openai/models/realtime/realtime_server_event.rb": {
       "mode": "100644",
-      "sha256": "6924e5da9b88df2eef32134065ca98eb3e15e4e10a373bfed0045fc1f054c02e"
+      "sha256": "cc9842829d293d02587e146005401d43aaea3191be2c8848f115836d64b45f63"
     },
     "lib/openai/models/realtime/realtime_session.rb": {
       "mode": "100644",
@@ -4607,11 +4599,11 @@
     },
     "lib/openai/models/realtime/response_output_item_added_event.rb": {
       "mode": "100644",
-      "sha256": "704aeffdfe45472dcc9df486ccd980f0b1b736f7b8b2f32303b965d8bba2249a"
+      "sha256": "de7218dc092907a5403a9c7b9852beac2068777041c412ad45bda5790b280f0d"
     },
     "lib/openai/models/realtime/response_output_item_done_event.rb": {
       "mode": "100644",
-      "sha256": "17f7ae72e8cba0737646d4fcb66d79963280b6e749f346bd04a56df8f6afdf81"
+      "sha256": "ad87c98f97e36d4ccc2bc71c74e9d9ab8f0fa1ef58859b2a629667dbb8f05824"
     },
     "lib/openai/models/realtime/response_text_delta_event.rb": {
       "mode": "100644",
@@ -10495,15 +10487,15 @@
     },
     "rbi/openai/models/realtime/conversation_item_added.rbi": {
       "mode": "100644",
-      "sha256": "d54e8d12931bd672e90813c23f6a4464aa3d92ba053b1acf711003d6091e79f0"
+      "sha256": "fa33629ce168455a5058d554944d8fcddaeb9b2034ad62489cee02dbfc50ad02"
     },
     "rbi/openai/models/realtime/conversation_item_create_event.rbi": {
       "mode": "100644",
-      "sha256": "7bf6a556cdaab42ebf8cce28afc22f8d457edd2cbd305a66aa34c7bd549399fa"
+      "sha256": "397d567a8eb42eee50e4b655867ccd900b8c57ba8349403b9ecde253ba120dfb"
     },
     "rbi/openai/models/realtime/conversation_item_created_event.rbi": {
       "mode": "100644",
-      "sha256": "145d532dd2497bbf75cac6325eccde4e377e1b5147b8351eb558d54a8ed0a164"
+      "sha256": "756646b4194ecd921374c9446e1d2749192a09b44f6fdfea0c99535daf2870f3"
     },
     "rbi/openai/models/realtime/conversation_item_delete_event.rbi": {
       "mode": "100644",
@@ -10515,7 +10507,7 @@
     },
     "rbi/openai/models/realtime/conversation_item_done.rbi": {
       "mode": "100644",
-      "sha256": "baf3d5f28a9904e254c711f8255aee3d2531e9750bf735b25fdfce488afc4070"
+      "sha256": "944d2432b2e255bcba79322337588b5e265c5f7b7ce11b12d6a55fbe6894d22e"
     },
     "rbi/openai/models/realtime/conversation_item_input_audio_transcription_completed_event.rbi": {
       "mode": "100644",
@@ -10707,7 +10699,7 @@
     },
     "rbi/openai/models/realtime/realtime_response.rbi": {
       "mode": "100644",
-      "sha256": "47d22b2241faba887ba7d801b9783be74982399d958aac123aeb24378e7398e8"
+      "sha256": "faf8b2d7f00913eda1cc2f33bfbeedbf61c52e57f8b5a74722e39b83da1fc764"
     },
     "rbi/openai/models/realtime/realtime_response_create_audio_output.rbi": {
       "mode": "100644",
@@ -10719,7 +10711,7 @@
     },
     "rbi/openai/models/realtime/realtime_response_create_params.rbi": {
       "mode": "100644",
-      "sha256": "6dcd90e845820a5594f584fea05ad52f256eb971fca5117e2ff7aa359ece1db5"
+      "sha256": "ccb782418898466eaeda175bdb8b26b99bac0826a4380bb0ef845ad0f46a2310"
     },
     "rbi/openai/models/realtime/realtime_response_status.rbi": {
       "mode": "100644",
@@ -10739,7 +10731,7 @@
     },
     "rbi/openai/models/realtime/realtime_server_event.rbi": {
       "mode": "100644",
-      "sha256": "72f81eb2f7257fde711a01f4c637cb99fc0c99acc769840dd8dd9778855234f7"
+      "sha256": "a3d2dce1f209b852d9315aec4968165e00b705bd9e87ec3afea191d8c6e3b340"
     },
     "rbi/openai/models/realtime/realtime_session.rbi": {
       "mode": "100644",
@@ -10935,11 +10927,11 @@
     },
     "rbi/openai/models/realtime/response_output_item_added_event.rbi": {
       "mode": "100644",
-      "sha256": "d99bbb36d7347cc4780e68f1dd893b10202c5610e75f22ceb893796196eebb93"
+      "sha256": "8feefe8254a6a87472807939bd333c534a105936aa4a8f9bb021b83f7e4609d4"
     },
     "rbi/openai/models/realtime/response_output_item_done_event.rbi": {
       "mode": "100644",
-      "sha256": "a89b4e1b49d673babb3ed7a417a704f63522939c48e6ab23f949289327bda3cc"
+      "sha256": "f173c4bf531349bfbf9cb228498157807dfb76b9178a22f55890eac7e601201d"
     },
     "rbi/openai/models/realtime/response_text_delta_event.rbi": {
       "mode": "100644",
@@ -12672,74 +12664,6 @@
     "rbi/openai/response_carrier.rbi": {
       "mode": "100644",
       "sha256": "4cef10bdc28d7a33ae9bbdef5876dabbc9ab96319fb85c00b6e77f0fea0106fd"
-    },
-    "scripts/castiron/CUSTOM_CODE.md": {
-      "mode": "100644",
-      "sha256": "c2b12719937fa007d65bea7429962f2b674c531a8c284cc6e5e51c2a526ae351"
-    },
-    "scripts/castiron/README.md": {
-      "mode": "100644",
-      "sha256": "4aff82cb988d01babde79902ae20de842fdd4b2b447d5f4cb3c5ce0a36d6fab8"
-    },
-    "scripts/castiron/custom_code_budget.py": {
-      "mode": "100755",
-      "sha256": "b85ae4eab2a84dfbcd1f197f87077f686bc4f3347dbf74cca3abb1f99ab50b9a"
-    },
-    "scripts/castiron/custom_code_policy.py": {
-      "mode": "100755",
-      "sha256": "890ecfc963b8a2461e7e801c9071735a975ed9876de89c80323da10960965295"
-    },
-    "scripts/castiron/custom_code_report.py": {
-      "mode": "100755",
-      "sha256": "ddb15c9a162d26a6c9abf1b4fefcd80f2e685d9d255af729863258b7ecd08e2d"
-    },
-    "scripts/castiron/custom_code_test_support.py": {
-      "mode": "100644",
-      "sha256": "b90c31b6b7347a3bc254b9fec228d5ccad3025306c60465a027a239420276671"
-    },
-    "scripts/castiron/fixtures/github_publisher.cjs": {
-      "mode": "100644",
-      "sha256": "c84bd86518a70a5b7bbf877d8c13129debface0c220e5118510b0ef17d9ab707"
-    },
-    "scripts/castiron/ruff.toml": {
-      "mode": "100644",
-      "sha256": "933d12c5582988097578a13689e1f7c877c36baf2c8c0e7123393e272ca023bd"
-    },
-    "scripts/castiron/test_custom_code_budget.py": {
-      "mode": "100644",
-      "sha256": "7fdb3a9282978e6b1c0d84d73c43bb4adf96ff035663e77bc8e45f0fe082be7d"
-    },
-    "scripts/castiron/test_custom_code_github.py": {
-      "mode": "100644",
-      "sha256": "815e8db60dd81f69895696813f6b612856eb899803e3e9b85df22ec688073b87"
-    },
-    "scripts/castiron/test_custom_code_policy.py": {
-      "mode": "100644",
-      "sha256": "fd503013d604cf9659df95a3a47cecfc17da364397625d95ef6121aa790e6a05"
-    },
-    "scripts/castiron/test_custom_code_policy_source.py": {
-      "mode": "100644",
-      "sha256": "dcb0be5e8157791dc02d1ae1d6b82cc703d4bc7b3c4797bc00bd9d2672ad13a2"
-    },
-    "scripts/castiron/test_custom_code_publication.py": {
-      "mode": "100644",
-      "sha256": "4533c8c852d590446180715adbd00a63c12af29c53316d3e91d129890ccadbc6"
-    },
-    "scripts/castiron/test_custom_code_report.py": {
-      "mode": "100644",
-      "sha256": "e1fbafb5242cac6128757339d78902b12e7658c82e5f157cc2ca7bef80347838"
-    },
-    "scripts/castiron/test_custom_code_review_revocation.py": {
-      "mode": "100644",
-      "sha256": "d7f309e2324f48f62f9f7f90c2e82f31354e414a20e3ddb0da724b60adeff7a3"
-    },
-    "scripts/castiron/test_custom_code_status_publication.py": {
-      "mode": "100644",
-      "sha256": "7398877d4ec209d0cd40e0d83f8e4482b6de5bef95f1711c9905d6a97a3791d3"
-    },
-    "scripts/castiron/test_custom_code_strict.py": {
-      "mode": "100644",
-      "sha256": "20684147ec37f8233798a46aef8b618a2bbf2c8b507605a959d644fce163d73d"
     },
     "sig/openai/client.rbs": {
       "mode": "100644",
@@ -16887,7 +16811,7 @@
     },
     "sig/openai/models/realtime/conversation_item.rbs": {
       "mode": "100644",
-      "sha256": "9e024626b22e131a2ddada187367a71f2ff05c62ad032403949604094404b60a"
+      "sha256": "15e5a5f8457f2184e872d7e872c8551b3dea61c4087f0a451c95ffae0ee96c2b"
     },
     "sig/openai/models/realtime/conversation_item_added.rbs": {
       "mode": "100644",
