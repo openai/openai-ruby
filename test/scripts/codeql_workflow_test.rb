@@ -17,7 +17,7 @@ class CodeQLWorkflowTest < Minitest::Test
     check_names = languages.map { job.fetch("name").sub("${{ matrix.language }}", _1) }
 
     assert_equal(
-      ["CodeQL (actions)", "CodeQL (javascript-typescript)", "CodeQL (python)", "CodeQL (ruby)"],
+      ["CodeQL (actions)", "CodeQL (javascript-typescript)", "CodeQL (ruby)"],
       check_names
     )
   end
@@ -48,7 +48,7 @@ class CodeQLWorkflowTest < Minitest::Test
 
     assert_equal("CodeQL (${{ matrix.language }})", analyze.fetch("name"))
     assert_equal(
-      %w[actions javascript-typescript python ruby],
+      %w[actions javascript-typescript ruby],
       analyze.fetch("strategy").fetch("matrix").fetch("language")
     )
     assert_includes(workflow.fetch(true), "pull_request")
