@@ -16,9 +16,7 @@ client.live.connect do |connection|
       connection.send_event(type: "session.close")
     when OpenAI::Live::ErrorEvent
       # Do not log audio, session configuration, or unredacted server errors.
-      warn("Live reported a session error; check the event in your application.")
-      finished = true
-      break
+      raise "Live reported a session error; check the event in your application."
     when OpenAI::Live::SessionClosedEvent
       puts("Live session closed")
       finished = true
@@ -26,5 +24,5 @@ client.live.connect do |connection|
     end
   end
 
-  warn("Live disconnected before session.closed; finalization was not confirmed.") unless finished
+  raise "Live disconnected before session.closed; finalization was not confirmed." unless finished
 end
