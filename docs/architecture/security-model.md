@@ -12,6 +12,10 @@ surface, and severity calibration. Codex Security scans must load this file
 from the scanned revision instead of relying on a duplicated cloud-configured
 model.
 
+SDK lint verifies generated-file contents and Git file modes against the
+checked-in compiler inventory. The checker runs with the existing lint job
+permissions; inventory and checker changes receive ordinary SDK code review.
+
 ## 1. Overview
 
 The OpenAI Ruby gem is a caller-embedded Ruby 3.3+ library, not a hosted
