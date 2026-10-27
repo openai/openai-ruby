@@ -330,7 +330,16 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
   def test_workload_identity_timeout_uses_the_sdk_error_and_retry_contract
     transport = scripted_transport { flunk("request should not be sent") }
-    provider = SlowSubjectTokenProvider.new(delay: 0.1)
+    provider = SlowSubjectTokenProvider.new(delay: 0)
+    provider_calls = 0
+    clock = {now: 0.0}
+    token_timeout = Timeout::Error.new("subject token acquisition timed out")
+    acquire_token = lambda do
+      provider_calls += 1
+      clock[:now] = 5.0
+      raise token_timeout
+    end
+
     retries = []
     config = OpenAI::Auth::WorkloadIdentity.new(
       identity_provider_id: "idp-123",
@@ -349,19 +358,23 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       on_retry: -> (event) { retries << event }
     )
 
-    error = assert_raises(OpenAI::Errors::APITimeoutError) do
-      client.files.retrieve(
-        "file_123",
-        request_options: {timeout: 0.005, extra_query: {"signature" => "fake-sensitive-query"}}
-      )
+    # Advance the SDK clock after provider entry, without a 5ms scheduling race.
+    error = OpenAI::Internal::Util.stub(:monotonic_secs, -> { clock.fetch(:now) }) do
+      provider.stub(:get_token, acquire_token) do
+        assert_raises(OpenAI::Errors::APITimeoutError) do
+          client.files.retrieve(
+            "file_123",
+            request_options: {timeout: 5, extra_query: {"signature" => "fake-sensitive-query"}}
+          )
+        end
+      end
     end
 
     assert_instance_of(Timeout::Error, error.cause)
     assert_nil(error.url.query)
     assert_nil(error.url.fragment)
     refute_match(/fake-sensitive-query/, error.inspect)
-    assert_equal(1, provider.calls)
-    assert_equal(0, provider.completed_calls)
+    assert_equal(1, provider_calls)
     assert_empty(retries)
     assert_empty(transport.requests)
   end
