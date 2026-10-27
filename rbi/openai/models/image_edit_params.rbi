@@ -17,12 +17,12 @@ module OpenAI
 
       # The image(s) to edit. Must be a supported image file or an array of images.
       #
-      # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
-      # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`), each image should
-      # be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
-      # images.
+      # For the GPT image models (`gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+      # `gpt-image-2.5-flare-2026-09-08`), each image should be a `png`, `webp`, or
+      # `jpg` file less than 50MB. You can provide up to 16 images.
+      # `chatgpt-image-latest` follows the same input constraints as GPT image models.
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -49,8 +49,8 @@ module OpenAI
 
       # Control how much effort the model will exert to match the style and features,
       # especially facial features, of input images. Supports `high` and `low` on
-      # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-      # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+      # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+      # this parameter. Defaults to `low` on supported models.
       sig { returns(T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol)) }
       attr_accessor :input_fidelity
 
@@ -190,12 +190,12 @@ module OpenAI
 
         # The image(s) to edit. Must be a supported image file or an array of images.
         #
-        # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
-        # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-        # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-        # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`), each image should
-        # be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
-        # images.
+        # For the GPT image models (`gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+        # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+        # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+        # `gpt-image-2.5-flare-2026-09-08`), each image should be a `png`, `webp`, or
+        # `jpg` file less than 50MB. You can provide up to 16 images.
+        # `chatgpt-image-latest` follows the same input constraints as GPT image models.
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -219,8 +219,8 @@ module OpenAI
 
         # Control how much effort the model will exert to match the style and features,
         # especially facial features, of input images. Supports `high` and `low` on
-        # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-        # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+        # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+        # this parameter. Defaults to `low` on supported models.
         input_fidelity: nil,
 
         # An additional image whose fully transparent areas (e.g. where alpha is zero)
@@ -332,12 +332,12 @@ module OpenAI
 
       # The image(s) to edit. Must be a supported image file or an array of images.
       #
-      # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
-      # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`), each image should
-      # be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
-      # images.
+      # For the GPT image models (`gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+      # `gpt-image-2.5-flare-2026-09-08`), each image should be a `png`, `webp`, or
+      # `jpg` file less than 50MB. You can provide up to 16 images.
+      # `chatgpt-image-latest` follows the same input constraints as GPT image models.
       module Image
         extend OpenAI::Internal::Type::Union
 
@@ -380,8 +380,8 @@ module OpenAI
 
       # Control how much effort the model will exert to match the style and features,
       # especially facial features, of input images. Supports `high` and `low` on
-      # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-      # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+      # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+      # this parameter. Defaults to `low` on supported models.
       module InputFidelity
         extend OpenAI::Internal::Type::Enum
 
