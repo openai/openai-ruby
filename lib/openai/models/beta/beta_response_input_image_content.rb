@@ -31,9 +31,9 @@ module OpenAI
         optional :image_url, String, nil?: true
 
         # @!attribute prompt_cache_breakpoint
-        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #   token block.
+        #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #   not rounded to a token block.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseInputImageContent::PromptCacheBreakpoint, nil]
         optional(
@@ -58,9 +58,9 @@ module OpenAI
         #     encoded image in a data URL.
         #
         #   @param prompt_cache_breakpoint [OpenAI::Models::Beta::BetaResponseInputImageContent::PromptCacheBreakpoint, nil]
-        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #     token block.
+        #     Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #     breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #     not rounded to a token block.
         #
         #   @param type [Symbol, :input_image]
         #     The type of the input item. Always `input_image`.
@@ -96,9 +96,9 @@ module OpenAI
           optional :ttl, enum: -> { OpenAI::Beta::BetaResponseInputImageContent::PromptCacheBreakpoint::Ttl }
 
           # @!method initialize(ttl: nil, mode: :explicit)
-          #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-          #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-          #   token block.
+          #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+          #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+          #   not rounded to a token block.
           #
           #   @param ttl [Symbol, OpenAI::Models::Beta::BetaResponseInputImageContent::PromptCacheBreakpoint::Ttl]
           #     The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
