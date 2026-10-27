@@ -41,6 +41,10 @@ package workflows. Documentation tooling has a separate bundle; see
 
 ## Generated-file ownership
 
+This `next` revision adopts the replacement-generation policy before canonical
+regeneration removes the legacy Castiron workflow files. Those files are still
+present; their publisher trust boundaries remain documented in the security model.
+
 Do not edit generated SDK files by hand. Fix the API schema, generation
 configuration, or compiler and regenerate instead. Put SDK-specific behavior in
 separately owned handwritten helpers and extension points.
