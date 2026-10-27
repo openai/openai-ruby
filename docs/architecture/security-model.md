@@ -12,9 +12,10 @@ surface, and severity calibration. Codex Security scans must load this file
 from the scanned revision instead of relying on a duplicated cloud-configured
 model.
 
-SDK lint verifies generated-file contents and Git file modes against the
-checked-in compiler inventory. The checker runs with the existing lint job
-permissions; inventory and checker changes receive ordinary SDK code review.
+Generated-file ownership currently relies on `AGENTS.md`, contributor guidance,
+and ordinary SDK code review. There is no dedicated generated-file edit check or
+required gate. Review generated output and inventory changes together; fix
+violations in the inputs/compiler and regenerate.
 
 ## 1. Overview
 
