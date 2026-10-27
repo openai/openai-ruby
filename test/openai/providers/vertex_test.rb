@@ -33,7 +33,6 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
 
   def test_responses_routing_and_refresh_per_attempt
     base = "https://us-east5-aiplatform.googleapis.com/v1/projects/test/locations/us-east5/publishers/openai/v1"
-    beta = base.sub("/v1/projects/", "/v1beta1/projects/")
     calls = 0
     client = OpenAI::Client.new(
       provider: OpenAI::Providers.vertex(
@@ -49,10 +48,10 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
     stub_request(:post, "#{base}/responses")
       .with(headers: {"Authorization" => "Bearer fake-2"})
       .to_return_json(status: 200, body: {id: "resp_test", output: []})
-    stub_request(:get, "#{beta}/responses/resp_test")
+    stub_request(:get, "#{base}/responses/resp_test")
       .with(headers: {"Authorization" => "Bearer fake-3"})
       .to_return_json(status: 200, body: {id: "resp_test", output: []})
-    stub_request(:delete, "#{beta}/responses/resp_test")
+    stub_request(:delete, "#{base}/responses/resp_test")
       .with(headers: {"Authorization" => "Bearer fake-4"})
       .to_return_json(status: 200, body: {id: "resp_test", deleted: true})
     assert_equal("resp_test", client.responses.create(model: "caller-model", input: "hello").id)
