@@ -40,9 +40,6 @@ flowchart LR
   PR[Candidate checkout] --> CI[Ordinary read-only CI]
   PR --> CodeQL[CodeQL analysis]
   CodeQL --> SecurityEvents[Code-scanning results]
-  PR --> Castiron[Candidate Castiron workflow]
-  Castiron --> Trusted[Main-sourced workflow_run publisher]
-  Trusted --> GitHub[Statuses and PR comments]
   Main[Main revision] --> Live[Live / release workflows]
   Live --> Secrets[Referenced credentials and publishing authority]
 ```
