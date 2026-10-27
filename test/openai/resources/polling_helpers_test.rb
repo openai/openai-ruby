@@ -330,14 +330,24 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
   def test_workload_identity_timeout_uses_the_sdk_error_and_retry_contract
     transport = scripted_transport { flunk("request should not be sent") }
-    provider = SlowSubjectTokenProvider.new(delay: 0)
-    provider_calls = 0
+    provider = SlowSubjectTokenProvider.new(delay: 60)
     clock = {now: 0.0}
-    token_timeout = Timeout::Error.new("subject token acquisition timed out")
-    acquire_token = lambda do
-      provider_calls += 1
+    deadline = {active: false}
+    expire_provider = lambda do |_duration|
+      assert(deadline.fetch(:active), "the provider must run inside the SDK deadline")
       clock[:now] = 5.0
-      raise token_timeout
+      raise deadline.fetch(:error), deadline.fetch(:message)
+    end
+
+    enforce_deadline = lambda do |timeout, error_class, message, &block|
+      assert_in_delta(5.0, timeout)
+      refute_equal(Timeout::Error, error_class)
+      deadline.merge!(active: true, error: error_class, message: message)
+      begin
+        block.call
+      ensure
+        deadline[:active] = false
+      end
     end
 
     retries = []
@@ -358,14 +368,16 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       on_retry: -> (event) { retries << event }
     )
 
-    # Advance the SDK clock after provider entry, without a 5ms scheduling race.
+    # Expire the SDK's timeout at the blocking call, using its configured exception.
     error = OpenAI::Internal::Util.stub(:monotonic_secs, -> { clock.fetch(:now) }) do
-      provider.stub(:get_token, acquire_token) do
-        assert_raises(OpenAI::Errors::APITimeoutError) do
-          client.files.retrieve(
-            "file_123",
-            request_options: {timeout: 5, extra_query: {"signature" => "fake-sensitive-query"}}
-          )
+      provider.stub(:sleep, expire_provider) do
+        Timeout.stub(:timeout, enforce_deadline) do
+          assert_raises(OpenAI::Errors::APITimeoutError) do
+            client.files.retrieve(
+              "file_123",
+              request_options: {timeout: 5, extra_query: {"signature" => "fake-sensitive-query"}}
+            )
+          end
         end
       end
     end
@@ -374,7 +386,8 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
     assert_nil(error.url.query)
     assert_nil(error.url.fragment)
     refute_match(/fake-sensitive-query/, error.inspect)
-    assert_equal(1, provider_calls)
+    assert_equal(1, provider.calls)
+    assert_equal(0, provider.completed_calls)
     assert_empty(retries)
     assert_empty(transport.requests)
   end
