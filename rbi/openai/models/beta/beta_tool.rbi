@@ -978,8 +978,8 @@ module OpenAI
 
           # Control how much effort the model will exert to match the style and features,
           # especially facial features, of input images. Supports `high` and `low` on
-          # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-          # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+          # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+          # this parameter. Defaults to `low` on supported models.
           sig { returns(T.nilable(OpenAI::Beta::BetaTool::ImageGeneration::InputFidelity::OrSymbol)) }
           attr_accessor :input_fidelity
 
@@ -1109,8 +1109,8 @@ module OpenAI
 
             # Control how much effort the model will exert to match the style and features,
             # especially facial features, of input images. Supports `high` and `low` on
-            # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-            # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+            # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+            # this parameter. Defaults to `low` on supported models.
             input_fidelity: nil,
 
             # Optional mask for inpainting. Contains `image_url` (string, optional) and
@@ -1228,8 +1228,8 @@ module OpenAI
 
           # Control how much effort the model will exert to match the style and features,
           # especially facial features, of input images. Supports `high` and `low` on
-          # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-          # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+          # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+          # this parameter. Defaults to `low` on supported models.
           module InputFidelity
             extend OpenAI::Internal::Type::Enum
 
