@@ -37,6 +37,88 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
   end
 
+  def test_developer_response_messages_and_references_reach_the_local_peer
+    events = []
+    handler = lambda do |connection|
+      2.times { events << read_event(connection) }
+      write_event(connection, **JSON.parse(text_delta("ack"), symbolize_names: true))
+    end
+
+    developer = {
+      "type" => "message",
+      "role" => "developer",
+      "content" => [{"type" => "input_text", "text" => "Synthetic instruction"}],
+      "id" => nil,
+      "status" => nil
+    }
+    reference = {type: :item_reference, id: "item_fixture"}
+    with_websocket_server(handler) do |client|
+      client.realtime.connect(model: "fixture") do |connection|
+        connection.conversation.items.create(
+          type: :message,
+          role: :user,
+          content: [{type: :input_text, text: "Hello"}],
+          previous_item_id: "root"
+        )
+        connection.response.create(input: [developer, reference], conversation: :none, output_modalities: [:text])
+        assert_equal("ack", connection.receive.delta)
+      end
+    end
+
+    assert_equal("conversation.item.create", events.fetch(0).fetch("type"))
+    assert_equal("root", events.fetch(0).fetch("previous_item_id"))
+    assert_equal("user", events.fetch(0).fetch("item").fetch("role"))
+    response = events.fetch(1).fetch("response")
+    assert_equal(developer, response.fetch("input").fetch(0))
+    assert_equal({"type" => "item_reference", "id" => "item_fixture"}, response.fetch("input").fetch(1))
+  end
+
+  def test_response_only_items_cannot_create_an_item_but_connection_remains_usable
+    events = []
+    handler = lambda do |connection|
+      2.times { events << read_event(connection) }
+      write_event(connection, **JSON.parse(text_delta("ack"), symbolize_names: true))
+    end
+
+    with_websocket_server(handler) do |client|
+      client.realtime.connect(model: "fixture") do |connection|
+        [
+          {type: :item_reference, id: "item_fixture"},
+          {"type" => "item_reference", "id" => "item_fixture"},
+          {type: :message, role: :developer, content: [{type: :input_text, text: "Fixture"}]},
+          {"type" => "message", "role" => "developer", "content" => [{"type" => "input_text", "text" => "Fixture"}]},
+          {:type => :message, :role => :user, "role" => "developer", :content => [{type: :input_text, text: "Fixture"}]}
+        ].each do |item|
+          error = assert_raises(ArgumentError) { connection.conversation.items.create(**item) }
+          assert_includes(error.cause.message, "response input")
+          error = assert_raises(ArgumentError) { connection.send_event(type: :"conversation.item.create", item: item) }
+          assert_includes(error.cause.message, "response input")
+          error = assert_raises(ArgumentError) do
+            connection.send_event(OpenAI::Realtime::ConversationItemCreateEvent.new(item: item))
+          end
+
+          assert_includes(error.cause.message, "response input")
+        end
+
+        connection.send_raw(
+          JSON.generate(
+            type: "conversation.item.create",
+            item: {type: "item_reference", id: "item_raw_fixture"}
+          )
+        )
+        connection.response.create(input: [{type: :item_reference, id: "item_fixture"}])
+        assert_equal("ack", connection.receive.delta)
+      end
+    end
+
+    assert_equal(
+      {"type" => "conversation.item.create", "item" => {"type" => "item_reference", "id" => "item_raw_fixture"}},
+      events.fetch(0)
+    )
+    assert_equal("response.create", events.fetch(1).fetch("type"))
+    assert_equal([{"type" => "item_reference", "id" => "item_fixture"}], events.fetch(1).dig("response", "input"))
+  end
+
   def test_sideband_connections_work_without_loading_a_trace_provider
     handler = lambda do |connection|
       write_event(connection, **JSON.parse(text_delta("sideband connected"), symbolize_names: true))

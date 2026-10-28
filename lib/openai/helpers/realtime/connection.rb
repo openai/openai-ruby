@@ -114,6 +114,17 @@ module OpenAI
 
         payload = OpenAI::Internal::Type::Converter.dump(OpenAI::Realtime::RealtimeClientEvent, coerced)
         validate_discriminator!(payload, @client_event_names, kind: "client")
+        if payload[:type].to_s == "conversation.item.create"
+          item = payload[:item]
+          if item.is_a?(Hash)
+            item = item.transform_keys(&:to_s)
+            if item["type"].to_s == "item_reference" ||
+                (item["type"].to_s == "message" && item["role"].to_s == "developer")
+              raise ArgumentError, "Realtime item references and developer messages are only valid in response input"
+            end
+          end
+        end
+
         generate_json(payload)
       rescue SystemStackError
         raise ArgumentError, "Invalid Realtime client event.", cause: nil
