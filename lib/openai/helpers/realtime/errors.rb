@@ -10,12 +10,48 @@ module OpenAI
     # Terminal recovery failure. Payloads are available only through explicit
     # accessors, never included in the message or default exception rendering.
     class RealtimeReconnectError < OpenAI::Errors::Error
-      attr_reader :unsent_messages, :uncertain_message
+      # @api private
+      class RecoveryData
+        def initialize(unsent_messages, uncertain_message)
+          @values = [unsent_messages.dup.freeze, uncertain_message].freeze
+        end
+
+        def values
+          @values || raise(OpenAI::Errors::Error, "Realtime recovery data is unavailable on a deserialized diagnostic.")
+        end
+
+        # Exception collectors may render shallow instance variables.
+        def inspect = "#<RealtimeReconnectError::RecoveryData [REDACTED]>"
+
+        alias_method :to_s, :inspect
+
+        # Preserve native exception serialization, but never serialize recovery data.
+        def encode_with(coder)
+          coder.map = {}
+        end
+
+        def init_with(_coder)
+          @values = nil
+        end
+
+        def marshal_dump = []
+
+        def marshal_load(_values)
+          @values = nil
+        end
+      end
+
+      private_constant :RecoveryData
+
+      # @return [Array<String>]
+      def unsent_messages = @recovery_data.values.first
+
+      # @return [String, nil]
+      def uncertain_message = @recovery_data.values.last
 
       # @api private
       def initialize(message:, unsent_messages: [], uncertain_message: nil)
-        @unsent_messages = unsent_messages.dup.freeze
-        @uncertain_message = uncertain_message
+        @recovery_data = RecoveryData.new(unsent_messages, uncertain_message)
         super(message)
       end
     end

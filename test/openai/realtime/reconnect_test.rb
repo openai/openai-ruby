@@ -464,6 +464,7 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
     assert_empty(error.unsent_messages)
     refute_includes(error.full_message, "private prompt")
     refute_includes(error.full_message, "private peer detail")
+    refute_includes(Marshal.dump(error), "private prompt")
     assert_equal(1, transport.requests.length)
   end
 

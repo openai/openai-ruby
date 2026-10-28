@@ -177,6 +177,26 @@ transports must allow Async cancellation and preserve the cause/status of
 `connect_to_call` retain their existing behavior; their session recovery
 semantics are not enabled by this option.
 
+### Migrating serialized recovery errors
+
+This change requires a new 0.x minor release under [VERSIONING.md](VERSIONING.md).
+It must not ship in a patch release.
+
+`RealtimeReconnectError` now serializes as a diagnostic, without recovery data.
+The original live error and its in-memory `dup` or `clone` retain the same
+`unsent_messages` and `uncertain_message` values. For errors serialized by this
+version, an error loaded from YAML or Marshal raises `OpenAI::Errors::Error`
+when either recovery getter is called. That exception means the data is
+unavailable; it does not mean no messages were pending.
+
+If you previously saved an error and later read its recovery getters, read the
+getters from the live error instead. For saved errors from 0.114 or earlier,
+extract any recovery data with the original gem version before upgrading.
+Existing saved data is not retroactively redacted. Store only what your
+application needs, with the same protections as the original prompts or audio.
+Never automatically replay `uncertain_message`: its send may already have
+succeeded. Normal error messages and backtraces remain available.
+
 ## Standard text workflows
 
 The same generic helpers cover local function results, image content, and MCP
