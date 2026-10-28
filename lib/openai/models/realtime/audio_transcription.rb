@@ -146,12 +146,27 @@ module OpenAI
 
           # @!group
 
+          # @deprecated Announced shutdown date: 2027-02-26. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           WHISPER_1 = :"whisper-1"
           GPT_TRANSCRIBE = :"gpt-transcribe"
           GPT_LIVE_TRANSCRIBE = :"gpt-live-transcribe"
+          # @deprecated Announced shutdown date: 2027-02-26. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_MINI_TRANSCRIBE = :"gpt-4o-mini-transcribe"
+          # @deprecated Announced shutdown date: 2027-02-26. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_MINI_TRANSCRIBE_2025_12_15 = :"gpt-4o-mini-transcribe-2025-12-15"
+          # @deprecated Announced shutdown date: 2027-02-26. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_TRANSCRIBE = :"gpt-4o-transcribe"
+          # @deprecated Announced shutdown date: 2027-02-26. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_4O_TRANSCRIBE_DIARIZE = :"gpt-4o-transcribe-diarize"
           GPT_REALTIME_WHISPER = :"gpt-realtime-whisper"
 
