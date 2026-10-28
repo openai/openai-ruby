@@ -7,9 +7,150 @@ require "async/websocket/adapters/http"
 require "async/websocket/server"
 require "async/websocket/client"
 require "socket"
+require "tempfile"
 
 class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
   extend Minitest::Serial
+
+  {
+    rejected_start: {started: false, error: true, closed: false},
+    silent_start: {started: false, error: false, closed: false},
+    rejected_close: {started: true, error: true, closed: false},
+    error_then_closed: {started: true, error: true, closed: true},
+    requested_close: {started: true, error: false, closed: true, reason: "close_requested", success: true},
+    closed_before_start: {started: false, error: false, closed: true, reason: "close_requested"},
+    expired: {started: true, error: false, closed: true, reason: "expired", success: true},
+    content: {started: true, error: false, closed: true, reason: "content", success: true},
+    connection_lost: {started: true, error: false, closed: true, reason: "connection_lost", success: true},
+    remote_hangup: {started: true, error: false, closed: true, reason: "remote_hangup", success: true},
+    future_reason: {started: true, error: false, closed: true, reason: "private-synthetic-event", success: true},
+    error_then_expired: {started: true, error: true, closed: true, reason: "expired"}
+  }.each do |name, state|
+    define_method("test_example_handles_#{name}_on_a_real_websocket") do
+      wire = Queue.new
+      listener = TCPServer.new("127.0.0.1", 0)
+      port = listener.local_address.ip_port
+      listener.close
+      endpoint = Async::HTTP::Endpoint.parse("http://127.0.0.1:#{port}")
+      session = {id: "sess_local", model: "gpt-live-1", expires_at: 2_000_000_000, status: "active"}
+      fallback = -> (_) { Protocol::HTTP::Response[404, {}, []] }
+      server = Async::HTTP::Server.new(
+        Async::WebSocket::Server.new(fallback) do |socket|
+          wire << JSON.parse(socket.read.to_str).fetch("type")
+          if state.fetch(:started)
+            socket.write(JSON.generate(type: "session.started", event_id: "start_1", session: session))
+            socket.flush
+            wire << JSON.parse(socket.read.to_str).fetch("type")
+          end
+
+          if state.fetch(:error)
+            socket.write(
+              JSON.generate(
+                type: "error",
+                event_id: "error_1",
+                error: {type: "server_error", code: "session_storage_failed", message: "private-synthetic-event"}
+              )
+            )
+          end
+
+          if state.fetch(:closed)
+            socket.write(
+              JSON.generate(
+                type: "session.closed",
+                event_id: "close_1",
+                session: session,
+                reason: state.fetch(:reason, "close_requested"),
+                usage: {seconds: 0}
+              )
+            )
+          end
+
+          socket.flush
+          # Keep the connection open when start/close is rejected. This read
+          # completes only when the example releases its transport.
+          begin
+            socket.read
+            wire << :closed
+          rescue EOFError
+            wire << :aborted
+          end
+        end,
+        endpoint
+      )
+
+      Sync do |task|
+        server_task = task.async { server.run.wait }
+        Tempfile.create("live-example") do |output|
+          # Shorten only the example process's deadline. Reads still go over a
+          # real socket and use the same Ruby/Async timeout implementation.
+          script = <<~'RUBY'
+            require "timeout"
+            module ExampleTimeout
+              def timeout(seconds, ...)
+                super([seconds, 0.3].min, ...)
+              end
+            end
+            Timeout.singleton_class.prepend(ExampleTimeout)
+            load "examples/live/websocket.rb"
+          RUBY
+          pid = Process.spawn(
+            {"OPENAI_API_KEY" => "sk-test-local", "OPENAI_BASE_URL" => "http://127.0.0.1:#{port}/v1"},
+            RbConfig.ruby,
+            "-Ilib",
+            "-e",
+            script,
+            out: output,
+            err: output
+          )
+          result = task.with_timeout(15) do
+            loop do
+              exited = Process.waitpid2(pid, Process::WNOHANG)
+              break exited if exited
+              sleep(0.01)
+            end
+          end
+
+          pid = nil
+          output.rewind
+          text = output.read
+          if state[:success]
+            assert_predicate(result.fetch(1), :success?, text)
+          else
+            refute_predicate(result.fetch(1), :success?, text)
+          end
+
+          refute_includes(text, "private-synthetic-event")
+          assert_equal("session.start", wire.pop(timeout: 1))
+          assert_equal("session.close", wire.pop(timeout: 1)) if state.fetch(:started)
+          assert_equal(state.fetch(:closed) ? :closed : :aborted, wire.pop(timeout: 1), text)
+          if state.fetch(:closed)
+            assert_includes(text, "Live session closed")
+          else
+            refute_includes(text, "Live session closed")
+          end
+
+          if state[:success]
+            refute_includes(text, "finalization was not confirmed")
+          elsif name == :rejected_start || name == :error_then_closed || name == :error_then_expired
+            assert_includes(text, "Live reported a session error")
+          elsif state.fetch(:closed)
+            assert_includes(text, "Live closed before session.started.")
+          else
+            assert_includes(text, "Live did not confirm session.closed before the deadline.")
+          end
+
+        ensure
+          if pid
+            Process.kill("TERM", pid)
+            Process.wait(pid)
+          end
+        end
+
+      ensure
+        server_task&.stop
+      end
+    end
+  end
 
   def test_live_primary_handshake_start_ready_flow_on_local_socket
     accept = Queue.new

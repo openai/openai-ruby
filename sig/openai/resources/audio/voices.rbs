@@ -3,9 +3,27 @@ module OpenAI
     class Audio
       class Voices
         def create: (
-          body: OpenAI::Models::Audio::VoiceCreateParams::body,
+          body: OpenAI::Models::Audio::VoiceCreateParams::body
+          | {
+            audio_sample: StringIO,
+            consent: String,
+            name: String,
+            ?type: :audio_sample
+          }
+          | {
+            name: String,
+            prompt: String,
+            type: :prompt,
+            ?model: String | :auto | :"2026-10-08",
+            ?script_hint: String
+          },
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Audio::Voice
+
+        def delete: (
+          String voice_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Audio::VoiceDeleted
 
         def initialize: (client: OpenAI::Client) -> void
       end

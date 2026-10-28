@@ -26,6 +26,8 @@ module OpenAI
     # A future server event retains its raw data, but routine diagnostics do not
     # render potentially sensitive audio, transcript, or session fields.
     class UnknownServerEvent
+      include OpenAI::WebSocket::Protocol
+
       attr_reader :type, :data
 
       def initialize(data:)
@@ -38,161 +40,33 @@ module OpenAI
       def inspect = "#<#{self.class} type=#{@type.inspect}>"
       alias to_s inspect
 
-      private def freeze_json(value)
-        pending = [value]
-        visited = {}.compare_by_identity
-        until pending.empty?
-          item = pending.pop
-          next if visited.key?(item)
-          visited[item] = true
-          case item
-          when Hash
-            item.each { |key, val| pending.push(key, val) }
-          when Array
-            pending.concat(item)
-          end
-
-          item.freeze
-        end
-
-        value
-      end
     end
 
     # A transport-open primary connection. Startup is owned by the caller:
     # send session.start and observe session.started before further commands.
-    class Connection < OpenAI::WebSocket::Connection
-      include OpenAI::WebSocket::Protocol
-      include OpenAI::WebSocket::GuardedConnection
-
+    class Connection < OpenAI::WebSocket::TypedConnection
       # @api private
       def initialize(socket:, url:)
-        super
+        super(socket: socket, url: url, client_event: client_event_type, server_event: server_event_type)
         @poisoned = false
         @closed = false
-        @server_event_names = discriminator_values(server_event_type)
-        @client_event_names = discriminator_values(client_event_type)
       end
 
-      def send_event(event)
-        send_raw(encode_client_event(event))
-      end
+      private :parse_event
 
-      private def encode_client_event(event)
-        validate_event_tree!(event)
-        payload = OpenAI::Internal::Type::Converter.dump(client_event_type, event)
-        type = payload[:type] || payload["type"] if payload.is_a?(Hash)
-        raise ArgumentError unless (type.is_a?(String) || type.is_a?(Symbol)) && @client_event_names.key?(type.to_s)
+      private def coerce_client_event(payload) = coerce_event(@client_event, payload, outbound: true)
 
-        coerced = coerce_event(client_event_type, payload, outbound: true)
-        serialized = OpenAI::Internal::Type::Converter.dump(client_event_type, coerced)
-        validate_event_tree!(serialized, json_only: true)
-        JSON.generate(serialized, max_nesting: false)
-      rescue StandardError, SystemStackError
-        raise ArgumentError, "Invalid Live client event.", cause: nil
-      end
-
-      private def parse_event(data)
-        parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
-        type = event_type(parsed, message: "Live server event must be an object with a string type")
-        unless @server_event_names.key?(type.to_s)
-          return OpenAI::Live::UnknownServerEvent.new(data: parsed)
-        end
-
-        event = coerce_event(server_event_type, parsed)
-        validate_wire_field_names!(event, parsed)
+      private def coerce(type, payload)
+        event = coerce_event(type, payload)
         validate_event_tree!(event)
         event
-      rescue StandardError, SystemStackError
-        raise OpenAI::Errors::LiveProtocolError.new, cause: nil
       end
 
-      private def coerce_event(union, payload, outbound: false)
-        state = OpenAI::Internal::Type::Converter.new_coerce_state(request_only: outbound)
-        event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
-        raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
-        pending = [event]
-        until pending.empty?
-          value = pending.pop
-          case value
-          when OpenAI::Internal::Type::BaseModel
-            value.class.fields.each do |name, field|
-              if field.fetch(:required) &&
-                  field.fetch(:mode) != (outbound ? :coerce : :dump) &&
-                  (!outbound || field.fetch(:const) == OpenAI::Internal::OMIT) &&
-                  !value.to_h.key?(name)
-                raise ArgumentError
-              end
-            end
+      private def client_event_error_message = "Invalid Live client event."
 
-            pending.concat(value.to_h.values)
-          when Hash
-            pending.concat(value.values)
-          when Array
-            pending.concat(value)
-          end
-        end
+      private def unknown_server_event(payload) = OpenAI::Live::UnknownServerEvent.new(data: payload)
 
-        event
-      end
-
-      private def validate_event_tree!(event, json_only: false)
-        ancestors = {}.compare_by_identity
-        pending = [[event, false]]
-        until pending.empty?
-          value, exiting = pending.pop
-          if exiting
-            ancestors.delete(value)
-            next
-          end
-
-          children = case value
-          when OpenAI::Internal::Type::BaseModel
-            raise ArgumentError if json_only
-            data = value.to_h
-            keys = {}
-            data.each do |key, val|
-              name = key.is_a?(String) ? key.to_sym : key
-              field = value.class.known_fields[name]
-              serialized_name = field ? field.fetch(:api_name).to_s : name.to_s
-              raise ArgumentError if keys.key?(serialized_name)
-              keys[serialized_name] = true
-              next unless field
-              const = field.fetch(:const)
-              next if const == OpenAI::Internal::OMIT
-              if const.is_a?(Symbol)
-                raise ArgumentError unless (val.is_a?(String) || val.is_a?(Symbol)) && val.to_s == const.to_s
-              elsif val != const
-                raise ArgumentError
-              end
-            end
-
-            [data]
-          when Hash
-            keys = {}
-            value.each_key do |key|
-              raise ArgumentError unless key.is_a?(String) || key.is_a?(Symbol)
-              name = key.to_s
-              raise ArgumentError if keys.key?(name)
-              keys[name] = true
-            end
-
-            value.values
-          when Array
-            value
-          when NilClass, TrueClass, FalseClass, String, Integer, Float, Symbol
-            next
-          else
-            raise ArgumentError if json_only
-            next
-          end
-
-          raise ArgumentError if ancestors.key?(value)
-          ancestors[value] = true
-          pending << [value, true]
-          children.each { |child| pending << [child, false] }
-        end
-      end
+      private def protocol_error = OpenAI::Errors::LiveProtocolError.new
 
       private def transport_error = OpenAI::Errors::LiveConnectionError.new(url: @url)
       private def failed_read_message = "Cannot read from a failed Live WebSocket."
@@ -207,11 +81,7 @@ module OpenAI
 
     # Attached to an existing session; no new session.start handshake is sent.
     class SidebandConnection < Connection
-      # @api private
-      def initialize(socket:, url:)
-        super
-        @client_event_names = @client_event_names.except("session.start", "session.input_audio.append")
-      end
+      private def client_event_type = OpenAI::Live::SidebandClientEvent
     end
 
     # Caller-driven startup using overrides for an eligible stored session.

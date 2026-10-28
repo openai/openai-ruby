@@ -51,6 +51,17 @@ module OpenAI
           #   @return [Symbol, :responses]
           required :type, const: :responses
 
+          # @!attribute acknowledgement_delay_ms
+          #   Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+          #   delegation. The model may still speak before this delay. Any commentary or
+          #   thinking appended to the session cancels all pending acknowledgements, including
+          #   those for other delegations. Defaults to 400 for Decisions sessions and 0
+          #   (request immediately) for other sessions. Omission in a session update preserves
+          #   the current value. Updates apply to subsequent delegations.
+          #
+          #   @return [Integer, nil]
+          optional :acknowledgement_delay_ms, Integer
+
           # @!attribute responses
           #   Responses backend settings to update. Omitted settings keep their existing
           #   values.
@@ -58,9 +69,17 @@ module OpenAI
           #   @return [OpenAI::Models::Live::ResponsesDelegationUpdateConfig, nil]
           optional :responses, -> { OpenAI::Live::ResponsesDelegationUpdateConfig }
 
-          # @!method initialize(responses: nil, type: :responses)
+          # @!method initialize(acknowledgement_delay_ms: nil, responses: nil, type: :responses)
           #   Update the Responses backend for an existing Live session without changing
           #   delegation ownership.
+          #
+          #   @param acknowledgement_delay_ms [Integer]
+          #     Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+          #     delegation. The model may still speak before this delay. Any commentary or
+          #     thinking appended to the session cancels all pending acknowledgements, including
+          #     those for other delegations. Defaults to 400 for Decisions sessions and 0
+          #     (request immediately) for other sessions. Omission in a session update preserves
+          #     the current value. Updates apply to subsequent delegations.
           #
           #   @param responses [OpenAI::Models::Live::ResponsesDelegationUpdateConfig]
           #     Responses backend settings to update. Omitted settings keep their existing

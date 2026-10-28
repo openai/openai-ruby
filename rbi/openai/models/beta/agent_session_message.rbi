@@ -25,7 +25,10 @@ module OpenAI
 
         # The phase of an assistant message. Null for user messages.
         sig { returns(T.nilable(OpenAI::Beta::AgentSessionMessage::Phase::TaggedSymbol)) }
-        attr_accessor :phase
+        attr_reader :phase
+
+        sig { params(phase: T.nilable(OpenAI::Beta::AgentSessionMessage::Phase::OrSymbol)).void }
+        attr_writer :phase
 
         # The role of the message author.
         sig { returns(OpenAI::Beta::AgentSessionMessage::Role::TaggedSymbol) }

@@ -45,7 +45,29 @@ module OpenAI
         # parameters manually. If unset, the audio is transcribed as a single block.
         # Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30
         # seconds.
-        attr_accessor chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?
+        attr_reader chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?
+
+        # Controls how the audio is cut into chunks. When set to `"auto"`, the server
+        # first normalizes loudness and then uses voice activity detection (VAD) to choose
+        # boundaries. `server_vad` object can be provided to tweak VAD detection
+        # parameters manually. If unset, the audio is transcribed as a single block.
+        # Required when using `gpt-4o-transcribe-diarize` for inputs longer than 30
+        # seconds.
+        def chunking_strategy=: (
+          (OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy
+          | {
+            type: :server_vad,
+            ?prefix_padding_ms: Integer,
+            ?silence_duration_ms: Integer,
+            ?threshold: Float
+          })?
+        ) -> (OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy
+        | {
+          type: :server_vad,
+          ?prefix_padding_ms: Integer,
+          ?silence_duration_ms: Integer,
+          ?threshold: Float
+        })?
 
         # Additional information to include in the transcription response. `logprobs` will
         # return the log probabilities of the tokens in the response to understand the
@@ -256,7 +278,13 @@ module OpenAI
         def initialize: (
           file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
-          ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
+          ?chunking_strategy: (OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy
+          | {
+            type: :server_vad,
+            ?prefix_padding_ms: Integer,
+            ?silence_duration_ms: Integer,
+            ?threshold: Float
+          })?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],
           ?keywords: ::Array[String],
           ?known_speaker_names: ::Array[String],

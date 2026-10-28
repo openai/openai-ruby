@@ -20,7 +20,10 @@ module OpenAI
 
         # The status of the reasoning item.
         sig { returns(T.nilable(OpenAI::Beta::AgentOutputItemStatus::TaggedSymbol)) }
-        attr_accessor :status
+        attr_reader :status
+
+        sig { params(status: T.nilable(OpenAI::Beta::AgentOutputItemStatus::OrSymbol)).void }
+        attr_writer :status
 
         # The reasoning summaries produced by the agent.
         sig { returns(T::Array[OpenAI::Beta::SummaryText]) }

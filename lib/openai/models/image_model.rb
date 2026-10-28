@@ -12,6 +12,8 @@ module OpenAI
       GPT_IMAGE_2_5_SUNBURST_2026_09_08 = :"gpt-image-2.5-sunburst-2026-09-08"
       GPT_IMAGE_2_5_FLARE = :"gpt-image-2.5-flare"
       GPT_IMAGE_2_5_FLARE_2026_09_08 = :"gpt-image-2.5-flare-2026-09-08"
+      # @deprecated GPT Image 1 was shut down on October 23, 2026. Use gpt-image-2.5-sunburst or
+      # gpt-image-2.5-flare instead.
       GPT_IMAGE_1 = :"gpt-image-1"
       GPT_IMAGE_1_MINI = :"gpt-image-1-mini"
       CHATGPT_IMAGE_LATEST = :"chatgpt-image-latest"

@@ -167,7 +167,17 @@ module OpenAI
                   )
                 )
               }
-              attr_accessor :api_source
+              attr_reader :api_source
+
+              sig {
+                params(
+                  api_source: T.nilable(
+                    OpenAI::Models::Admin::Organization::UsageDecisionsResponse::Data::Result::APISource::OrSymbol
+                  )
+                )
+                  .void
+              }
+              attr_writer :api_source
 
               # When `group_by=batch`, this field tells whether the grouped usage result is
               # batch or not.
@@ -188,8 +198,8 @@ module OpenAI
               sig { returns(T.nilable(Integer)) }
               attr_accessor :input_cache_write_30m_tokens
 
-              # The aggregated number of input tokens written to the cache with a 30-minute
-              # retention period.
+              # The aggregated number of input tokens written to the cache across 30-minute and
+              # 12-hour retention periods.
               sig { returns(T.nilable(Integer)) }
               attr_accessor :input_cache_write_tokens
 
@@ -354,8 +364,8 @@ module OpenAI
                 # retention period.
                 input_cache_write_30m_tokens: nil,
 
-                # The aggregated number of input tokens written to the cache with a 30-minute
-                # retention period.
+                # The aggregated number of input tokens written to the cache across 30-minute and
+                # 12-hour retention periods.
                 input_cache_write_tokens: nil,
 
                 # The aggregated number of cached audio input tokens used.

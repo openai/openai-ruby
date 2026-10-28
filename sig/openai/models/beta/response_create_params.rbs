@@ -298,7 +298,9 @@ module OpenAI
         # can call.
         def tool_choice=: (
           OpenAI::Models::Beta::ResponseCreateParams::tool_choice
-        ) -> OpenAI::Models::Beta::ResponseCreateParams::tool_choice
+          | { type: :programmatic_tool_calling }
+        ) -> (OpenAI::Models::Beta::ResponseCreateParams::tool_choice
+        | { type: :programmatic_tool_calling })
 
         # An array of tools the model may call while generating a response. You can
         # specify which tool to use by setting the `tool_choice` parameter.
@@ -633,7 +635,8 @@ module OpenAI
           ?stream_options: OpenAI::Beta::ResponseCreateParams::StreamOptions?,
           ?temperature: Float?,
           ?text: OpenAI::Beta::BetaResponseTextConfig,
-          ?tool_choice: OpenAI::Models::Beta::ResponseCreateParams::tool_choice,
+          ?tool_choice: OpenAI::Models::Beta::ResponseCreateParams::tool_choice
+          | { type: :programmatic_tool_calling },
           ?tools: ::Array[OpenAI::Models::Beta::beta_tool],
           ?top_logprobs: Integer?,
           ?top_p: Float?,
@@ -781,6 +784,7 @@ module OpenAI
         type model =
           :"gpt-6-astra"
           | :"gpt-6.1-sol"
+          | :"gpt-6.1-terra"
           | :"gpt-6-sol"
           | :"gpt-6-luna"
           | :"gpt-5.6-sol"
@@ -897,6 +901,7 @@ module OpenAI
 
           GPT_6_ASTRA: :"gpt-6-astra"
           GPT_6_1_SOL: :"gpt-6.1-sol"
+          GPT_6_1_TERRA: :"gpt-6.1-terra"
           GPT_6_SOL: :"gpt-6-sol"
           GPT_6_LUNA: :"gpt-6-luna"
           GPT_5_6_SOL: :"gpt-5.6-sol"

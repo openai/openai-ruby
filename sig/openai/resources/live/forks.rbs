@@ -2,7 +2,8 @@ module OpenAI
   module Resources
     class Live
       class Forks
-        include OpenAI::WebSocket::Resource
+        include OpenAI::WebSocket::TypedResource[OpenAI::Models::Live::fork_client_event, OpenAI::Models::Live::fork_server_event
+        | ::Hash[Symbol, untyped]]
         def __websocket_request: (
           String session_id,
           ?query: Hash[untyped, untyped]

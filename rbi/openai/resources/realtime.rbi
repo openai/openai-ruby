@@ -5,7 +5,14 @@ module OpenAI
 
     class Realtime
 
-      include OpenAI::WebSocket::Resource
+      include OpenAI::WebSocket::TypedResource
+
+      extend T::Generic
+
+      WebSocketClientEvent = type_member { {fixed: OpenAI::Realtime::RealtimeClientEvent::Variants} }
+      WebSocketServerEvent = type_member {
+        {fixed: T.any(OpenAI::Realtime::RealtimeServerEvent::Variants, T::Hash[Symbol, T.untyped])}
+      }
 
       # @api private
       sig { params(query: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }

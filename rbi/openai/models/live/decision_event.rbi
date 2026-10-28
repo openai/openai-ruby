@@ -34,7 +34,10 @@ module OpenAI
         attr_accessor :source_event_id
 
         sig { returns(T.nilable(OpenAI::Live::DecisionEvent::SourceEventType::Variants)) }
-        attr_accessor :source_event_type
+        attr_reader :source_event_type
+
+        sig { params(source_event_type: T.nilable(OpenAI::Live::DecisionEvent::SourceEventType::OrSymbol)).void }
+        attr_writer :source_event_type
 
         # The Live-assigned ID of this trigger firing, or null for a delegation.
         sig { returns(T.nilable(String)) }

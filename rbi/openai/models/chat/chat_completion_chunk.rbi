@@ -79,7 +79,10 @@ module OpenAI
         # request. This response value may be different from the value set in the
         # parameter.
         sig { returns(T.nilable(OpenAI::Chat::ChatCompletionChunk::ServiceTier::TaggedSymbol)) }
-        attr_accessor :service_tier
+        attr_reader :service_tier
+
+        sig { params(service_tier: T.nilable(OpenAI::Chat::ChatCompletionChunk::ServiceTier::OrSymbol)).void }
+        attr_writer :service_tier
 
         # This fingerprint represents the backend configuration that the model runs with.
         # Can be used in conjunction with the `seed` request parameter to understand when
@@ -249,7 +252,12 @@ module OpenAI
           # function. Omitted from the final audio update containing only
           # `delta.audio.expires_at`.
           sig { returns(T.nilable(OpenAI::Chat::ChatCompletionChunk::Choice::FinishReason::TaggedSymbol)) }
-          attr_accessor :finish_reason
+          attr_reader :finish_reason
+
+          sig {
+            params(finish_reason: T.nilable(OpenAI::Chat::ChatCompletionChunk::Choice::FinishReason::OrSymbol)).void
+          }
+          attr_writer :finish_reason
 
           # Log probability information for the choice.
           sig { returns(T.nilable(OpenAI::Chat::ChatCompletionChunk::Choice::Logprobs)) }

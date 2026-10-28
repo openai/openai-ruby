@@ -13,13 +13,58 @@ module OpenAI
 
         # Creates a voice from a consent recording and an audio sample. Requires
         # multipart/form-data.
-        attr_accessor body: OpenAI::Models::Audio::VoiceCreateParams::body
+        attr_reader body: OpenAI::Models::Audio::VoiceCreateParams::body
+
+        # Creates a voice from a consent recording and an audio sample. Requires
+        # multipart/form-data.
+        def body=: (
+          OpenAI::Models::Audio::VoiceCreateParams::body
+          | {
+            audio_sample: StringIO,
+            consent: String,
+            name: String,
+            ?type: :audio_sample
+          }
+          | {
+            name: String,
+            prompt: String,
+            type: :prompt,
+            ?model: String | :auto | :"2026-10-08",
+            ?script_hint: String
+          }
+        ) -> (OpenAI::Models::Audio::VoiceCreateParams::body
+        | {
+          audio_sample: StringIO,
+          consent: String,
+          name: String,
+          ?type: :audio_sample
+        }
+        | {
+          name: String,
+          prompt: String,
+          type: :prompt,
+          ?model: (String | :auto | :"2026-10-08"),
+          ?script_hint: String
+        })
 
         # @param body
         #   Creates a voice from a consent recording and an audio sample. Requires
         #   multipart/form-data.
         def initialize: (
-          body: OpenAI::Models::Audio::VoiceCreateParams::body,
+          body: OpenAI::Models::Audio::VoiceCreateParams::body
+          | {
+            audio_sample: StringIO,
+            consent: String,
+            name: String,
+            ?type: :audio_sample
+          }
+          | {
+            name: String,
+            prompt: String,
+            type: :prompt,
+            ?model: String | :auto | :"2026-10-08",
+            ?script_hint: String
+          },
           ?request_options: OpenAI::request_opts
         ) -> void
 

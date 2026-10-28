@@ -41,7 +41,10 @@ module OpenAI
         # sending follow-up requests, preserve and resend phase on all assistant messages
         # — dropping it can degrade performance. Not used for user messages.
         sig { returns(T.nilable(OpenAI::Conversations::Message::Phase::TaggedSymbol)) }
-        attr_accessor :phase
+        attr_reader :phase
+
+        sig { params(phase: T.nilable(OpenAI::Conversations::Message::Phase::OrSymbol)).void }
+        attr_writer :phase
 
         # A message to or from the model.
         sig do

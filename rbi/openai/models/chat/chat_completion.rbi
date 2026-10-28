@@ -77,7 +77,10 @@ module OpenAI
         # request. This response value may be different from the value set in the
         # parameter.
         sig { returns(T.nilable(OpenAI::Chat::ChatCompletion::ServiceTier::TaggedSymbol)) }
-        attr_accessor :service_tier
+        attr_reader :service_tier
+
+        sig { params(service_tier: T.nilable(OpenAI::Chat::ChatCompletion::ServiceTier::OrSymbol)).void }
+        attr_writer :service_tier
 
         # This fingerprint represents the backend configuration that the model runs with.
         #

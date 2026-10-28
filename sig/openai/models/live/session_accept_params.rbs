@@ -67,7 +67,34 @@ module OpenAI
           # Who handles tasks delegated by the Live model. Omitted or null selects your
           # application; use `responses` or `decisions` to delegate to the corresponding
           # API.
-          attr_accessor delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?
+          attr_reader delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?
+
+          # Who handles tasks delegated by the Live model. Omitted or null selects your
+          # application; use `responses` or `decisions` to delegate to the corresponding
+          # API.
+          def delegation=: (
+            (OpenAI::Models::Live::SessionAcceptParams::Session::delegation
+            | {
+              responses: OpenAI::Live::ResponsesDelegationConfig,
+              type: :responses,
+              ?acknowledgement_delay_ms: Integer
+            }
+            | {
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              type: :decisions,
+              ?acknowledgement_delay_ms: Integer
+            })?
+          ) -> (OpenAI::Models::Live::SessionAcceptParams::Session::delegation
+          | {
+            responses: OpenAI::Live::ResponsesDelegationConfig,
+            type: :responses,
+            ?acknowledgement_delay_ms: Integer
+          }
+          | {
+            decisions: OpenAI::Live::DecisionsDelegationConfig,
+            type: :decisions,
+            ?acknowledgement_delay_ms: Integer
+          })?
 
           # Ordered text-only history supplied before startup. Supports developer, user, and
           # assistant messages with one text part each; at most 128 messages and a
@@ -147,7 +174,17 @@ module OpenAI
           def initialize: (
             model: OpenAI::Models::Live::SessionAcceptParams::Session::model,
             ?audio: OpenAI::Live::SessionAcceptParams::Session::Audio,
-            ?delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?,
+            ?delegation: (OpenAI::Models::Live::SessionAcceptParams::Session::delegation
+            | {
+              responses: OpenAI::Live::ResponsesDelegationConfig,
+              type: :responses,
+              ?acknowledgement_delay_ms: Integer
+            }
+            | {
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              type: :decisions,
+              ?acknowledgement_delay_ms: Integer
+            })?,
             ?input: ::Array[OpenAI::Models::Live::initial_item],
             ?instructions: String?,
             ?store: bool,
@@ -254,7 +291,8 @@ module OpenAI
             type responses =
               {
                 responses: OpenAI::Live::ResponsesDelegationConfig,
-                ?type: :responses
+                ?type: :responses,
+                ?acknowledgement_delay_ms: Integer
               }
 
             class Responses < OpenAI::Internal::Type::BaseModel
@@ -265,26 +303,52 @@ module OpenAI
               # The delegation owner. Always `responses` for tasks handled by the Responses API.
               attr_accessor type: :responses
 
+              # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              # delegation. The model may still speak before this delay. Any commentary or
+              # thinking appended to the session cancels all pending acknowledgements, including
+              # those for other delegations. Defaults to 400 for Decisions sessions and 0
+              # (request immediately) for other sessions. Omission in a session update preserves
+              # the current value. Updates apply to subsequent delegations.
+              attr_reader acknowledgement_delay_ms: Integer?
+
+              # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              # delegation. The model may still speak before this delay. Any commentary or
+              # thinking appended to the session cancels all pending acknowledgements, including
+              # those for other delegations. Defaults to 400 for Decisions sessions and 0
+              # (request immediately) for other sessions. Omission in a session update preserves
+              # the current value. Updates apply to subsequent delegations.
+              def acknowledgement_delay_ms=: (Integer) -> Integer
+
               # @param responses
               #   Backend model, prompt, and tools used when the Live session delegates a task to
               #   Responses.
+              # @param acknowledgement_delay_ms
+              #   Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              #   delegation. The model may still speak before this delay. Any commentary or
+              #   thinking appended to the session cancels all pending acknowledgements, including
+              #   those for other delegations. Defaults to 400 for Decisions sessions and 0
+              #   (request immediately) for other sessions. Omission in a session update preserves
+              #   the current value. Updates apply to subsequent delegations.
               # @param type
               #   The delegation owner. Always `responses` for tasks handled by the Responses API.
               def initialize: (
                 responses: OpenAI::Live::ResponsesDelegationConfig,
+                ?acknowledgement_delay_ms: Integer,
                 ?type: :responses
               ) -> void
 
               def to_hash: -> {
                 responses: OpenAI::Live::ResponsesDelegationConfig,
-                ?type: :responses
+                ?type: :responses,
+                ?acknowledgement_delay_ms: Integer
               }
             end
 
             type decisions =
               {
                 decisions: OpenAI::Live::DecisionsDelegationConfig,
-                ?type: :decisions
+                ?type: :decisions,
+                ?acknowledgement_delay_ms: Integer
               }
 
             class Decisions < OpenAI::Internal::Type::BaseModel
@@ -292,14 +356,36 @@ module OpenAI
 
               attr_accessor type: :decisions
 
+              # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              # delegation. The model may still speak before this delay. Any commentary or
+              # thinking appended to the session cancels all pending acknowledgements, including
+              # those for other delegations. Defaults to 400. Updates apply to subsequent
+              # delegations.
+              attr_reader acknowledgement_delay_ms: Integer?
+
+              # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              # delegation. The model may still speak before this delay. Any commentary or
+              # thinking appended to the session cancels all pending acknowledgements, including
+              # those for other delegations. Defaults to 400. Updates apply to subsequent
+              # delegations.
+              def acknowledgement_delay_ms=: (Integer) -> Integer
+
+              # @param acknowledgement_delay_ms
+              #   Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              #   delegation. The model may still speak before this delay. Any commentary or
+              #   thinking appended to the session cancels all pending acknowledgements, including
+              #   those for other delegations. Defaults to 400. Updates apply to subsequent
+              #   delegations.
               def initialize: (
                 decisions: OpenAI::Live::DecisionsDelegationConfig,
+                ?acknowledgement_delay_ms: Integer,
                 ?type: :decisions
               ) -> void
 
               def to_hash: -> {
                 decisions: OpenAI::Live::DecisionsDelegationConfig,
-                ?type: :decisions
+                ?type: :decisions,
+                ?acknowledgement_delay_ms: Integer
               }
             end
 

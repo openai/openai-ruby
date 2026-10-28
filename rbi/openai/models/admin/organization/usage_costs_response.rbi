@@ -201,7 +201,17 @@ module OpenAI
                     )
                   )
                 }
-                attr_accessor :api_source
+                attr_reader :api_source
+
+                sig {
+                  params(
+                    api_source: T.nilable(
+                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageCompletionsResult::APISource::OrSymbol
+                    )
+                  )
+                    .void
+                }
+                attr_writer :api_source
 
                 # When `group_by=batch`, this field tells whether the grouped usage result is
                 # batch or not.
@@ -228,8 +238,8 @@ module OpenAI
                 sig { returns(T.nilable(Integer)) }
                 attr_accessor :input_cache_write_30m_tokens
 
-                # The aggregated number of input tokens written to the cache with a 30-minute
-                # retention period.
+                # The aggregated number of input tokens written to the cache across 30-minute and
+                # 12-hour retention periods.
                 sig { returns(T.nilable(Integer)) }
                 attr_reader :input_cache_write_tokens
 
@@ -427,8 +437,8 @@ module OpenAI
                   # retention period. May be absent or null for older responses.
                   input_cache_write_30m_tokens: nil,
 
-                  # The aggregated number of input tokens written to the cache with a 30-minute
-                  # retention period.
+                  # The aggregated number of input tokens written to the cache across 30-minute and
+                  # 12-hour retention periods.
                   input_cache_write_tokens: nil,
 
                   # The aggregated number of cached audio input tokens used.
@@ -1346,7 +1356,17 @@ module OpenAI
                     )
                   )
                 }
-                attr_accessor :api_source
+                attr_reader :api_source
+
+                sig {
+                  params(
+                    api_source: T.nilable(
+                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationUsageWebSearchesResult::APISource::OrSymbol
+                    )
+                  )
+                    .void
+                }
+                attr_writer :api_source
 
                 # When `group_by=context_level`, this field provides the search context size of
                 # the grouped usage result.
@@ -1533,7 +1553,17 @@ module OpenAI
                     )
                   )
                 }
-                attr_accessor :api_source
+                attr_reader :api_source
+
+                sig {
+                  params(
+                    api_source: T.nilable(
+                      OpenAI::Models::Admin::Organization::UsageCostsResponse::Data::Result::OrganizationCostsResult::APISource::OrSymbol
+                    )
+                  )
+                    .void
+                }
+                attr_writer :api_source
 
                 # When `group_by=line_item`, this field provides the line item of the grouped
                 # costs result.

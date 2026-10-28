@@ -698,6 +698,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_1_SOL }
 
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_1_TERRA }
+
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_SOL }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_LUNA }
@@ -925,6 +927,7 @@ module OpenAI
 
           GPT_6_ASTRA = :"gpt-6-astra"
           GPT_6_1_SOL = :"gpt-6.1-sol"
+          GPT_6_1_TERRA = :"gpt-6.1-terra"
           GPT_6_SOL = :"gpt-6-sol"
           GPT_6_LUNA = :"gpt-6-luna"
           GPT_5_6_SOL = :"gpt-5.6-sol"

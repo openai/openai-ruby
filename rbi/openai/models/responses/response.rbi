@@ -232,7 +232,12 @@ module OpenAI
         # - Organizations with ZDR enabled default to `in_memory` when
         #   `prompt_cache_retention` is not specified.
         sig { returns(T.nilable(OpenAI::Responses::Response::PromptCacheRetention::TaggedSymbol)) }
-        attr_accessor :prompt_cache_retention
+        attr_reader :prompt_cache_retention
+
+        sig {
+          params(prompt_cache_retention: T.nilable(OpenAI::Responses::Response::PromptCacheRetention::OrSymbol)).void
+        }
+        attr_writer :prompt_cache_retention
 
         # Configuration options for
         # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
@@ -278,7 +283,10 @@ module OpenAI
         # request. This response value may be different from the value set in the
         # parameter.
         sig { returns(T.nilable(OpenAI::Responses::Response::ServiceTier::TaggedSymbol)) }
-        attr_accessor :service_tier
+        attr_reader :service_tier
+
+        sig { params(service_tier: T.nilable(OpenAI::Responses::Response::ServiceTier::OrSymbol)).void }
+        attr_writer :service_tier
 
         # The status of the response generation. One of `completed`, `failed`,
         # `in_progress`, `cancelled`, `queued`, or `incomplete`.
@@ -313,7 +321,10 @@ module OpenAI
         # - `disabled` (default): If the input size will exceed the context window size
         #   for a model, the request will fail with a 400 error.
         sig { returns(T.nilable(OpenAI::Responses::Response::Truncation::TaggedSymbol)) }
-        attr_accessor :truncation
+        attr_reader :truncation
+
+        sig { params(truncation: T.nilable(OpenAI::Responses::Response::Truncation::OrSymbol)).void }
+        attr_writer :truncation
 
         # Represents token usage details including input tokens, output tokens, a
         # breakdown of output tokens, and the total tokens used.

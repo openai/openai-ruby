@@ -335,9 +335,9 @@ module OpenAI
               sig { returns(Symbol) }
               attr_accessor :type
 
-              # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-              # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-              # token block.
+              # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+              # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+              # not rounded to a token block.
               sig {
                 returns(
                   T.nilable(
@@ -383,9 +383,9 @@ module OpenAI
                 # The URL of the screenshot image.
                 image_url:,
 
-                # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-                # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-                # token block.
+                # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+                # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+                # not rounded to a token block.
                 prompt_cache_breakpoint: nil,
 
                 # Specifies the event type. For a computer screenshot, this property is always set
@@ -459,17 +459,40 @@ module OpenAI
                 sig { returns(Symbol) }
                 attr_accessor :mode
 
-                # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-                # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-                # token block.
+                # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+                sig {
+                  returns(
+                    T.nilable(
+                      OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                    )
+                  )
+                }
+                attr_reader :ttl
+
+                sig {
+                  params(
+                    ttl: OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::OrSymbol
+                  )
+                    .void
+                }
+                attr_writer :ttl
+
+                # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+                # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+                # not rounded to a token block.
                 sig do
                   params(
+
+                    ttl: OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::OrSymbol,
 
                     mode: Symbol
                   )
                     .returns(T.attached_class)
                 end
                 def self.new(
+
+                  # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+                  ttl: nil,
 
                   # The breakpoint mode. Always `explicit`.
 
@@ -479,12 +502,46 @@ module OpenAI
 
                 sig do
                   override.returns(
-                    {mode: Symbol}
+                    {
+                      mode: Symbol,
+                      ttl: OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                    }
                   )
                 end
                 def to_hash
                 end
 
+                # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+                module Ttl
+                  extend OpenAI::Internal::Type::Enum
+
+                  TaggedSymbol = T.type_alias {
+                    T.all(
+                      Symbol,
+                      OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl
+                    )
+                  }
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                  TTL_30M = T.let(
+                    :"30m",
+                    OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                  )
+                  TTL_12H = T.let(
+                    :"12h",
+                    OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                  )
+
+                  sig {
+                    override.returns(
+                      T::Array[
+                        OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                      ]
+                    )
+                  }
+                  def self.values
+                  end
+                end
               end
             end
 
@@ -1355,7 +1412,10 @@ module OpenAI
 
           # The action used for image generation.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Action::TaggedSymbol)) }
-          attr_accessor :action
+          attr_reader :action
+
+          sig { params(action: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Action::OrSymbol)).void }
+          attr_writer :action
 
           # The agent that produced this item.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Agent)) }
@@ -1366,7 +1426,13 @@ module OpenAI
 
           # The background setting used for generation.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Background::TaggedSymbol)) }
-          attr_accessor :background
+          attr_reader :background
+
+          sig {
+            params(background: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Background::OrSymbol))
+              .void
+          }
+          attr_writer :background
 
           # Details of a moderation failure, when available.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Error)) }
@@ -1377,12 +1443,25 @@ module OpenAI
 
           # The output format used for generation.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)) }
-          attr_accessor :output_format
+          attr_reader :output_format
+
+          sig {
+            params(
+              output_format: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::OrSymbol)
+            )
+              .void
+          }
+          attr_writer :output_format
 
           # The quality of the image generated by the image generation tool call. One of
           # `low`, `medium`, `high`, `xhigh`, `max`, or `auto`.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Quality::TaggedSymbol)) }
-          attr_accessor :quality
+          attr_reader :quality
+
+          sig {
+            params(quality: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Quality::OrSymbol)).void
+          }
+          attr_writer :quality
 
           # The prompt that was used after any model prompt rewriting.
           sig { returns(T.nilable(String)) }
@@ -1390,7 +1469,13 @@ module OpenAI
 
           # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::Variants)) }
-          attr_accessor :size
+          attr_reader :size
+
+          sig {
+            params(size: T.nilable(T.any(String, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::OrSymbol)))
+              .void
+          }
+          attr_writer :size
 
           # An image generation request made by the model.
           sig do
@@ -2107,7 +2192,12 @@ module OpenAI
 
           # The status of the item. One of `in_progress`, `completed`, or `incomplete`.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::LocalShellCallOutput::Status::TaggedSymbol)) }
-          attr_accessor :status
+          attr_reader :status
+
+          sig {
+            params(status: T.nilable(OpenAI::Beta::BetaResponseItem::LocalShellCallOutput::Status::OrSymbol)).void
+          }
+          attr_writer :status
 
           # The output of a local shell tool call.
           sig do

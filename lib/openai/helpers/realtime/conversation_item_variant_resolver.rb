@@ -30,6 +30,11 @@ module OpenAI
             OpenAI::Realtime::RealtimeConversationItemUserMessage
           when "assistant"
             OpenAI::Realtime::RealtimeConversationItemAssistantMessage
+          when "developer"
+            # Use the registered model when available. Earlier generated schemas
+            # predate this supported role, so preserve just this message as JSON.
+            variants.find { _1.fields.dig(:role, :type) === :developer } ||
+              OpenAI::Internal::Type::Unknown
           else
             raise ArgumentError, "Realtime message item has an unknown role: #{role.inspect}"
           end

@@ -13,7 +13,8 @@ module OpenAI
             ?previous_response_id: String?,
             ?reasoning: OpenAI::Beta::Responses::InputTokenCountParams::Reasoning?,
             ?text: OpenAI::Beta::Responses::InputTokenCountParams::Text?,
-            ?tool_choice: OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice?,
+            ?tool_choice: (OpenAI::Models::Beta::Responses::InputTokenCountParams::tool_choice
+            | { type: :programmatic_tool_calling })?,
             ?tools: ::Array[OpenAI::Models::Beta::beta_tool]?,
             ?truncation: OpenAI::Models::Beta::Responses::InputTokenCountParams::truncation,
             ?betas: ::Array[OpenAI::Models::Beta::Responses::InputTokenCountParams::beta],

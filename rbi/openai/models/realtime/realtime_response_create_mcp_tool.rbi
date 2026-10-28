@@ -93,7 +93,20 @@ module OpenAI
             )
           )
         }
-        attr_accessor :require_approval
+        attr_reader :require_approval
+
+        sig {
+          params(
+            require_approval: T.nilable(
+              T.any(
+                OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalFilter::OrHash,
+                OpenAI::Realtime::RealtimeResponseCreateMcpTool::RequireApproval::McpToolApprovalSetting::OrSymbol
+              )
+            )
+          )
+            .void
+        }
+        attr_writer :require_approval
 
         # Optional description of the MCP server, used to provide more context.
         sig { returns(T.nilable(String)) }

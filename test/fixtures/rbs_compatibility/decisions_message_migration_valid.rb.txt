@@ -1,0 +1,12 @@
+# typed: strict
+# frozen_string_literal: true
+
+client = OpenAI::Client.new(api_key: "synthetic-key")
+user = OpenAI::DecisionInputMessage.new(content: "Hello")
+developer = OpenAI::DecisionInputMessageUnion::Developer.new(content: "Be concise")
+system = OpenAI::DecisionInputMessageUnion::System.new(content: "Synthetic instructions")
+assistant = OpenAI::DecisionInputMessageUnion::Assistant.new(content: "Hello back")
+messages = [developer, system, user, assistant]
+
+OpenAI::DecisionCreateParams.new(model: "synthetic-model", input: messages, questions: [])
+client.decisions.create(model: "synthetic-model", input: messages, questions: [])

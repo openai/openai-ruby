@@ -1,0 +1,9 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_json_object = ::Hash[Symbol, top]
+
+      DecisionJSONObject: OpenAI::Internal::Type::Converter
+    end
+  end
+end

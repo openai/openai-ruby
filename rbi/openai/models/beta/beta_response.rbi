@@ -234,7 +234,12 @@ module OpenAI
         # - Organizations with ZDR enabled default to `in_memory` when
         #   `prompt_cache_retention` is not specified.
         sig { returns(T.nilable(OpenAI::Beta::BetaResponse::PromptCacheRetention::TaggedSymbol)) }
-        attr_accessor :prompt_cache_retention
+        attr_reader :prompt_cache_retention
+
+        sig {
+          params(prompt_cache_retention: T.nilable(OpenAI::Beta::BetaResponse::PromptCacheRetention::OrSymbol)).void
+        }
+        attr_writer :prompt_cache_retention
 
         # Configuration options for
         # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).
@@ -280,7 +285,10 @@ module OpenAI
         # request. This response value may be different from the value set in the
         # parameter.
         sig { returns(T.nilable(OpenAI::Beta::BetaResponse::ServiceTier::TaggedSymbol)) }
-        attr_accessor :service_tier
+        attr_reader :service_tier
+
+        sig { params(service_tier: T.nilable(OpenAI::Beta::BetaResponse::ServiceTier::OrSymbol)).void }
+        attr_writer :service_tier
 
         # The status of the response generation. One of `completed`, `failed`,
         # `in_progress`, `cancelled`, `queued`, or `incomplete`.
@@ -315,7 +323,10 @@ module OpenAI
         # - `disabled` (default): If the input size will exceed the context window size
         #   for a model, the request will fail with a 400 error.
         sig { returns(T.nilable(OpenAI::Beta::BetaResponse::Truncation::TaggedSymbol)) }
-        attr_accessor :truncation
+        attr_reader :truncation
+
+        sig { params(truncation: T.nilable(OpenAI::Beta::BetaResponse::Truncation::OrSymbol)).void }
+        attr_writer :truncation
 
         # Represents token usage details including input tokens, output tokens, a
         # breakdown of output tokens, and the total tokens used.
@@ -927,6 +938,7 @@ module OpenAI
 
           GPT_6_ASTRA = T.let(:"gpt-6-astra", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_6_1_SOL = T.let(:"gpt-6.1-sol", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
+          GPT_6_1_TERRA = T.let(:"gpt-6.1-terra", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_6_SOL = T.let(:"gpt-6-sol", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_6_LUNA = T.let(:"gpt-6-luna", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_5_6_SOL = T.let(:"gpt-5.6-sol", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
@@ -2044,7 +2056,10 @@ module OpenAI
           # When returned on a response, this is the effective reasoning context mode used
           # for the response.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponse::Reasoning::Context::TaggedSymbol)) }
-          attr_accessor :context
+          attr_reader :context
+
+          sig { params(context: T.nilable(OpenAI::Beta::BetaResponse::Reasoning::Context::OrSymbol)).void }
+          attr_writer :context
 
           # Constrains effort on reasoning for reasoning models. Currently supported values
           # are `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`. Reducing
@@ -2053,7 +2068,10 @@ module OpenAI
           # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
           # model-specific support.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponse::Reasoning::Effort::TaggedSymbol)) }
-          attr_accessor :effort
+          attr_reader :effort
+
+          sig { params(effort: T.nilable(OpenAI::Beta::BetaResponse::Reasoning::Effort::OrSymbol)).void }
+          attr_writer :effort
 
           # **Deprecated:** use `summary` instead.
           #
@@ -2061,7 +2079,12 @@ module OpenAI
           # debugging and understanding the model's reasoning process. One of `auto`,
           # `concise`, or `detailed`.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponse::Reasoning::GenerateSummary::TaggedSymbol)) }
-          attr_accessor :generate_summary
+          attr_reader :generate_summary
+
+          sig {
+            params(generate_summary: T.nilable(OpenAI::Beta::BetaResponse::Reasoning::GenerateSummary::OrSymbol)).void
+          }
+          attr_writer :generate_summary
 
           # Controls the reasoning execution mode for the request.
           #
@@ -2079,7 +2102,10 @@ module OpenAI
           # `concise` is supported for `computer-use-preview` models and all reasoning
           # models after `gpt-5`.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponse::Reasoning::Summary::TaggedSymbol)) }
-          attr_accessor :summary
+          attr_reader :summary
+
+          sig { params(summary: T.nilable(OpenAI::Beta::BetaResponse::Reasoning::Summary::OrSymbol)).void }
+          attr_writer :summary
 
           # Configuration options for
           # [reasoning models](https://developers.openai.com/api/docs/guides/reasoning).

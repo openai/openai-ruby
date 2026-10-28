@@ -2,7 +2,8 @@ module OpenAI
   module Resources
     class Beta
       class Responses
-        include OpenAI::WebSocket::Resource
+        include OpenAI::WebSocket::TypedResource[OpenAI::Models::Beta::beta_responses_client_event, OpenAI::Models::Beta::beta_responses_server_event
+        | ::Hash[Symbol, untyped]]
         def __websocket_request: (
           ?query: Hash[untyped, untyped]
         ) -> Hash[Symbol, untyped]
@@ -40,7 +41,8 @@ module OpenAI
           ?stream_options: OpenAI::Beta::ResponseCreateParams::StreamOptions?,
           ?temperature: Float?,
           ?text: OpenAI::Beta::BetaResponseTextConfig,
-          ?tool_choice: OpenAI::Models::Beta::ResponseCreateParams::tool_choice,
+          ?tool_choice: OpenAI::Models::Beta::ResponseCreateParams::tool_choice
+          | { type: :programmatic_tool_calling },
           ?tools: ::Array[OpenAI::Models::Beta::beta_tool],
           ?top_logprobs: Integer?,
           ?top_p: Float?,
@@ -77,7 +79,8 @@ module OpenAI
           ?stream_options: OpenAI::Beta::ResponseCreateParams::StreamOptions?,
           ?temperature: Float?,
           ?text: OpenAI::Beta::BetaResponseTextConfig,
-          ?tool_choice: OpenAI::Models::Beta::ResponseCreateParams::tool_choice,
+          ?tool_choice: OpenAI::Models::Beta::ResponseCreateParams::tool_choice
+          | { type: :programmatic_tool_calling },
           ?tools: ::Array[OpenAI::Models::Beta::beta_tool],
           ?top_logprobs: Integer?,
           ?top_p: Float?,

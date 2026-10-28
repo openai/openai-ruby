@@ -17,9 +17,9 @@ module OpenAI
         required :type, const: :input_text
 
         # @!attribute prompt_cache_breakpoint
-        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #   token block.
+        #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #   not rounded to a token block.
         #
         #   @return [OpenAI::Models::Beta::BetaResponseInputText::PromptCacheBreakpoint, nil]
         optional :prompt_cache_breakpoint, -> { OpenAI::Beta::BetaResponseInputText::PromptCacheBreakpoint }
@@ -31,9 +31,9 @@ module OpenAI
         #     The text input to the model.
         #
         #   @param prompt_cache_breakpoint [OpenAI::Models::Beta::BetaResponseInputText::PromptCacheBreakpoint]
-        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #     token block.
+        #     Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #     breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #     not rounded to a token block.
         #
         #   @param type [Symbol, :input_text]
         #     The type of the input item. Always `input_text`.
@@ -46,13 +46,35 @@ module OpenAI
           #   @return [Symbol, :explicit]
           required :mode, const: :explicit
 
-          # @!method initialize(mode: :explicit)
-          #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-          #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-          #   token block.
+          # @!attribute ttl
+          #   The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::BetaResponseInputText::PromptCacheBreakpoint::Ttl, nil]
+          optional :ttl, enum: -> { OpenAI::Beta::BetaResponseInputText::PromptCacheBreakpoint::Ttl }
+
+          # @!method initialize(ttl: nil, mode: :explicit)
+          #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+          #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+          #   not rounded to a token block.
+          #
+          #   @param ttl [Symbol, OpenAI::Models::Beta::BetaResponseInputText::PromptCacheBreakpoint::Ttl]
+          #     The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
           #
           #   @param mode [Symbol, :explicit]
           #     The breakpoint mode. Always `explicit`.
+
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          #
+          # @see OpenAI::Models::Beta::BetaResponseInputText::PromptCacheBreakpoint#ttl
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M = :"30m"
+            TTL_12H = :"12h"
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
       end
     end

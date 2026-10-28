@@ -134,7 +134,13 @@ module OpenAI
           sig {
             returns(T.nilable(OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning::Effort::TaggedSymbol))
           }
-          attr_accessor :effort
+          attr_reader :effort
+
+          sig {
+            params(effort: T.nilable(OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning::Effort::OrSymbol))
+              .void
+          }
+          attr_writer :effort
 
           # The reasoning configuration applied by this update.
           sig do

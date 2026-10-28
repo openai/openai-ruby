@@ -285,7 +285,20 @@ module OpenAI
                 )
               )
             }
-            attr_accessor :require_approval
+            attr_reader :require_approval
+
+            sig {
+              params(
+                require_approval: T.nilable(
+                  T.any(
+                    OpenAI::Responses::ResponseToolSearchOutputItemParam::Tool::Mcp::RequireApproval::McpToolApprovalFilter::OrHash,
+                    OpenAI::Responses::ResponseToolSearchOutputItemParam::Tool::Mcp::RequireApproval::McpToolApprovalSetting::OrSymbol
+                  )
+                )
+              )
+                .void
+            }
+            attr_writer :require_approval
 
             # Optional description of the MCP server, used to provide more context.
             sig { returns(T.nilable(String)) }
@@ -1324,11 +1337,14 @@ module OpenAI
             }
             attr_writer :input_image_mask
 
-            # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            # `chatgpt-image-latest`. Default: `gpt-image-1`.
+            # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+            # `gpt-image-2`.
+            #
+            # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            # `gpt-image-2.5-flare` instead.
             sig {
               returns(
                 T.nilable(
@@ -1522,11 +1538,14 @@ module OpenAI
               # `file_id` (string, optional).
               input_image_mask: nil,
 
-              # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-              # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-              # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-              # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-              # `chatgpt-image-latest`. Default: `gpt-image-1`.
+              # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+              # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+              # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+              # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+              # `gpt-image-2`.
+              #
+              # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+              # `gpt-image-2.5-flare` instead.
               model: nil,
 
               # Moderation level for the generated image. Default: `auto`.
@@ -1759,11 +1778,14 @@ module OpenAI
 
             end
 
-            # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            # `chatgpt-image-latest`. Default: `gpt-image-1`.
+            # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
+            # `gpt-image-2`.
+            #
+            # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            # `gpt-image-2.5-flare` instead.
             module Model
               extend OpenAI::Internal::Type::Union
 

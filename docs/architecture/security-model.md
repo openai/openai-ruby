@@ -1,12 +1,9 @@
 # OpenAI Ruby SDK Security Model
 
 Generated files are updated through authoritative inputs or the compiler and
-regeneration; handwritten edits to them are forbidden. Generated-file ownership
-relies on contributor guidance and code review, with no dedicated edit-check gate.
-
-The legacy Castiron reporting workflows and their write-capable publisher are
-retired. Remaining generated reporting files are removed by canonical
-regeneration; they are not an active workflow trust boundary.
+regeneration; handwritten edits to them are forbidden. Code review enforces this
+ownership rule. The customization-budget reporter and publishers are retired
+and are not part of the active CI or security controls.
 
 This is the canonical detailed threat model for this repository. `SECURITY.md`
 remains the authority for disclosure and reportability; this document is the
@@ -14,6 +11,11 @@ authority for architecture, trust boundaries, security invariants, attack
 surface, and severity calibration. Codex Security scans must load this file
 from the scanned revision instead of relying on a duplicated cloud-configured
 model.
+
+Generated-file ownership currently relies on `AGENTS.md`, contributor guidance,
+and ordinary SDK code review. There is no dedicated generated-file edit check or
+required gate. Review generated output and inventory changes together; fix
+violations in the inputs/compiler and regenerate.
 
 ## 1. Overview
 
@@ -31,7 +33,6 @@ requests, then parses remote responses into typed Ruby values
 | Streaming and Realtime helpers | Construct authenticated WebSocket handshakes, enforce transport policy, and parse SSE/WebSocket JSON into typed events | `lib/openai/internal/stream.rb:19-60`, `lib/openai/helpers/realtime/client_extension.rb:167-280`, `lib/openai/helpers/realtime/transports/async_websocket.rb:185-308`, `lib/openai/helpers/realtime/connection.rb:47-100` |
 | Webhook helper | Verify timestamp and HMAC before parsing webhook events | `lib/openai/resources/webhooks.rb:15-119` |
 | Providers and workload identity | Azure, Bedrock, built-in subject-token acquisition, exchange, and X.509 credential paths | `lib/openai/providers/azure.rb:40-58`, `lib/openai/auth/subject_token_providers/gcp_id_token_provider.rb:9-67`, `lib/openai/auth/subject_token_providers/azure_managed_identity_token_provider.rb:9-92`, `lib/openai/auth/subject_token_providers/k8s_service_account_token_provider.rb:9-37`, `lib/openai/auth/workload_identity_auth.rb:280-330` |
-| CI and release workflows | Run repository code, upload CodeQL results, run live checks/examples, and publish releases | `.github/workflows/ci.yml:18-32`, `.github/workflows/codeql.yml:3-53`, `.github/workflows/examples-e2e.yml:1-43`, `.github/workflows/create-releases.yml:14-79` |
 
 ```mermaid
 flowchart LR
@@ -192,6 +193,7 @@ Important boundaries:
   (`.github/workflows/examples-e2e.yml:1-43`,
   `test/scripts/examples_e2e_test.rb:202-234`,
   `test/scripts/examples_e2e_test.rb:306-327`).
+
 - Dependency declarations and locks cross a supply-chain boundary when Bundler
   or RubyGems fetches and executes selected package code in CI or consumer
   applications. A changed source, Git revision, transitive gem, native
@@ -255,7 +257,7 @@ The following are hypotheses and review guidance, not confirmed findings.
 | High | Candidate PR code reaches live/release credentials or publishing authority | Privileged workflow executes candidate code or exposes secrets/write tokens | Credential theft or release compromise | Main-only conditions, named environments, least-privilege permissions, trusted publisher separation | Keep candidate and live/release workflows isolated | `.github/workflows/live-smoke.yml:17-92`, `.github/workflows/create-releases.yml:17-79` |
 | High | Release GitHub App private key reaches an unintended action, log, or artifact | Main/repository release gate or pinned token-action input boundary regresses | Attacker can mint GitHub App tokens beyond one workflow token lifetime | Main/repository condition, named release environment, empty job permissions, pinned token action, generated token passed separately to Release Please | Keep the private key confined to token minting and preserve generated-token handoff | `.github/workflows/create-releases.yml:17-46` |
 | Medium | Candidate source or generated SARIF influences the write-capable CodeQL upload outside its intended code-scanning result path | PR-adjacent CodeQL action or token scoping regresses | Forged or unintended code-scanning results | Top-level empty permissions; scoped `security-events: write`; read-only content/metadata; pinned actions; no persisted checkout credentials; SARIF existence/shape/finding checks | Preserve least privilege and keep upload input limited to CodeQL output | `.github/workflows/codeql.yml:3-28`, `.github/workflows/codeql.yml:37-53`, `.github/workflows/codeql.yml:55-96` |
-| High | A dependency declaration or lockfile selects malicious package code, native extension, or install/build script | Lower-trust change alters a source, Git revision, transitive dependency, or executable package hook that CI or a consumer installs; the contributor/CI bundle currently includes Git-sourced `syntax_tree-rbs` locked at `247832988a850b8df050cf207f652872fda49973`; Bedrock CI separately installs its `aws-sdk-core` bundle | Code execution in CI or consumer applications | Reviewed lockfiles and dependency policy; ordinary and Bedrock CI execute selected dependencies with runner authority | Review direct/transitive dependencies, sources, locked revisions, native extensions, and scripts before acceptance | `AGENTS.md:53-56`, `Gemfile:3-15`, `Gemfile.lock:1-20`, `gemfiles/bedrock.gemfile:1-5`, `gemfiles/bedrock.gemfile.lock:1-58`, `.github/workflows/ci-checks.yml:124-144`, `openai.gemspec:18-48`, `docs/Gemfile:1-8`, `docs/Gemfile.lock:1-21` |
+| High | A dependency declaration or lockfile selects malicious package code, native extension, or install/build script | Lower-trust change alters a source, Git revision, transitive dependency, or executable package hook that CI or a consumer installs; the contributor/CI bundle currently includes Git-sourced `syntax_tree-rbs` locked at `247832988a850b8df050cf207f652872fda49973`; Bedrock CI separately installs its `aws-sdk-core` bundle | Code execution in CI or consumer applications | Reviewed lockfiles and dependency policy; ordinary and Bedrock CI execute selected dependencies with runner authority | Review direct/transitive dependencies, sources, locked revisions, native extensions, and scripts before acceptance | `AGENTS.md:39-42`, `Gemfile:3-15`, `Gemfile.lock:1-20`, `gemfiles/bedrock.gemfile:1-5`, `gemfiles/bedrock.gemfile.lock:1-58`, `.github/workflows/ci-checks.yml:124-144`, `openai.gemspec:18-48`, `docs/Gemfile:1-8`, `docs/Gemfile.lock:1-21` |
 | High | Built-in subject-token acquisition or exchange sends a token to an unintended source, proxy, issuer, or origin | Lower-trust configuration, caller-owned environment proxy, local token path, metadata response, or endpoint handling is bypassed | Credential disclosure or forged authentication | Fixed GCP metadata host/path/header with configurable audience/timeout; fixed Azure IMDS endpoint/header with configurable resource/selectors/API version/timeout and JSON token extraction; inherited Net::HTTP environment-proxy routing remains caller-owned; configured/default Kubernetes path with mapped failures; fixed/default issuer paths, origin checks, X.509 destination restrictions | Preserve strict source, proxy, destination, timeout, redirect, and response-parsing handling | `lib/openai/auth/subject_token_providers/gcp_id_token_provider.rb:9-67`, `lib/openai/auth/subject_token_providers/azure_managed_identity_token_provider.rb:9-92`, `lib/openai/auth/subject_token_providers/k8s_service_account_token_provider.rb:9-37`, `lib/openai/auth/workload_identity_auth.rb:303-330`, `lib/openai/providers/bedrock.rb:398-427` |
 | High | Realtime bearer credentials, proxy credentials, or trace data reach an unintended destination or audience | Lower-trust destination, proxy, TLS, or tracing behavior bypasses handshake controls | Credential disclosure or authenticated connection to the wrong peer | Base-URL/provider restrictions, proxy-header stripping, WSS verification, proxy handling, trace redaction | Preserve destination/TLS/proxy/redaction controls independently from event parsing | `lib/openai/helpers/realtime/client_extension.rb:167-280`, `lib/openai/helpers/realtime/transports/async_websocket.rb:185-224`, `lib/openai/helpers/realtime/transports/async_websocket.rb:294-378` |
 | Medium | Malformed or adversarial API/SSE/WebSocket data causes sensitive leakage, type confusion, or availability failure | Victim consumes untrusted remote data | Data exposure, incorrect application behavior, or DoS | JSON parsing, typed coercion, protocol errors, safe unknown events | Keep parsers data-only, incremental where applicable, and redact errors/logs | `lib/openai/internal/stream.rb:21-60`, `lib/openai/helpers/realtime/connection.rb:61-84` |

@@ -1,0 +1,232 @@
+module OpenAI
+  module Models
+    type decision_input_message_union =
+      OpenAI::DecisionInputMessage
+      | OpenAI::DecisionInputMessageUnion::Developer
+      | OpenAI::DecisionInputMessageUnion::System
+      | OpenAI::DecisionInputMessageUnion::Assistant
+
+    module DecisionInputMessageUnion
+      extend OpenAI::Internal::Type::Union
+
+      type developer =
+        {
+          content: OpenAI::Models::DecisionInputMessageUnion::Developer::content,
+          ?role: :developer,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::Developer::type_
+        }
+
+      class Developer < OpenAI::Internal::Type::BaseModel
+        # A text string or an ordered list of input text parts.
+        attr_accessor content: OpenAI::Models::DecisionInputMessageUnion::Developer::content
+
+        attr_accessor role: :developer
+
+        attr_reader type: OpenAI::Models::DecisionInputMessageUnion::Developer::type_?
+
+        def type=: (
+          OpenAI::Models::DecisionInputMessageUnion::Developer::type_
+        ) -> OpenAI::Models::DecisionInputMessageUnion::Developer::type_
+
+        # @param content
+        #   A text string or an ordered list of input text parts.
+        def initialize: (
+          content: OpenAI::Models::DecisionInputMessageUnion::Developer::content,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::Developer::type_,
+          ?role: :developer
+        ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::DecisionInputMessageUnion::Developer::content,
+          ?role: :developer,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::Developer::type_
+        }
+
+        type content = String | ::Array[OpenAI::DecisionInputText]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::DecisionInputMessageUnion::Developer::content]
+
+          DecisionInputTextArray: OpenAI::Internal::Type::Converter
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::DecisionInputMessageUnion::Developer::type_]
+        end
+      end
+
+      type system_ =
+        {
+          content: OpenAI::Models::DecisionInputMessageUnion::System::content,
+          ?role: :system,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::System::type_
+        }
+
+      class System < OpenAI::Internal::Type::BaseModel
+        # A text string or an ordered list of input text parts.
+        attr_accessor content: OpenAI::Models::DecisionInputMessageUnion::System::content
+
+        attr_accessor role: :system
+
+        attr_reader type: OpenAI::Models::DecisionInputMessageUnion::System::type_?
+
+        def type=: (
+          OpenAI::Models::DecisionInputMessageUnion::System::type_
+        ) -> OpenAI::Models::DecisionInputMessageUnion::System::type_
+
+        # @param content
+        #   A text string or an ordered list of input text parts.
+        def initialize: (
+          content: OpenAI::Models::DecisionInputMessageUnion::System::content,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::System::type_,
+          ?role: :system
+        ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::DecisionInputMessageUnion::System::content,
+          ?role: :system,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::System::type_
+        }
+
+        type content = String | ::Array[OpenAI::DecisionInputText]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::DecisionInputMessageUnion::System::content]
+
+          DecisionInputTextArray: OpenAI::Internal::Type::Converter
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::DecisionInputMessageUnion::System::type_]
+        end
+      end
+
+      type assistant =
+        {
+          content: OpenAI::Models::DecisionInputMessageUnion::Assistant::content,
+          ?role: :assistant,
+          ?phase: OpenAI::Models::DecisionInputMessageUnion::Assistant::phase?,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::Assistant::type_
+        }
+
+      class Assistant < OpenAI::Internal::Type::BaseModel
+        # A text string or an ordered list of output text and refusal parts.
+        attr_accessor content: OpenAI::Models::DecisionInputMessageUnion::Assistant::content
+
+        attr_accessor role: :assistant
+
+        # The phase of an assistant message.
+        attr_accessor phase: OpenAI::Models::DecisionInputMessageUnion::Assistant::phase?
+
+        attr_reader type: OpenAI::Models::DecisionInputMessageUnion::Assistant::type_?
+
+        def type=: (
+          OpenAI::Models::DecisionInputMessageUnion::Assistant::type_
+        ) -> OpenAI::Models::DecisionInputMessageUnion::Assistant::type_
+
+        # @param content
+        #   A text string or an ordered list of output text and refusal parts.
+        # @param phase
+        #   The phase of an assistant message.
+        def initialize: (
+          content: OpenAI::Models::DecisionInputMessageUnion::Assistant::content,
+          ?phase: OpenAI::Models::DecisionInputMessageUnion::Assistant::phase?,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::Assistant::type_,
+          ?role: :assistant
+        ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::DecisionInputMessageUnion::Assistant::content,
+          ?role: :assistant,
+          ?phase: OpenAI::Models::DecisionInputMessageUnion::Assistant::phase?,
+          ?type: OpenAI::Models::DecisionInputMessageUnion::Assistant::type_
+        }
+
+        type content =
+          String
+          | ::Array[OpenAI::Models::DecisionInputMessageUnion::Assistant::Content::part]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          type part =
+            OpenAI::DecisionInputMessageUnion::Assistant::Content::Part::OutputText
+            | OpenAI::DecisionInputMessageUnion::Assistant::Content::Part::Refusal
+
+          module Part
+            extend OpenAI::Internal::Type::Union
+
+            type output_text = { text: String, ?type: :output_text }
+
+            class OutputText < OpenAI::Internal::Type::BaseModel
+              attr_accessor text: String
+
+              attr_accessor type: :output_text
+
+              def initialize: (text: String, ?type: :output_text) -> void
+
+              def to_hash: -> { text: String, ?type: :output_text }
+            end
+
+            type refusal = { refusal: String, ?type: :refusal }
+
+            class Refusal < OpenAI::Internal::Type::BaseModel
+              attr_accessor refusal: String
+
+              attr_accessor type: :refusal
+
+              def initialize: (refusal: String, ?type: :refusal) -> void
+
+              def to_hash: -> { refusal: String, ?type: :refusal }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::DecisionInputMessageUnion::Assistant::Content::part]
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::DecisionInputMessageUnion::Assistant::content]
+
+          PartsArray: OpenAI::Internal::Type::Converter
+        end
+
+        type phase = :commentary | :final_answer
+
+        module Phase
+          extend OpenAI::Internal::Type::Enum
+
+          COMMENTARY: :commentary
+          FINAL_ANSWER: :final_answer
+
+          def self?.values: -> ::Array[OpenAI::Models::DecisionInputMessageUnion::Assistant::phase]
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::DecisionInputMessageUnion::Assistant::type_]
+        end
+      end
+
+      def self?.variants: -> ::Array[OpenAI::Models::decision_input_message_union]
+    end
+  end
+end

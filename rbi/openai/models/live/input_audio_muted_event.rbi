@@ -30,8 +30,9 @@ module OpenAI
         sig { params(client_event_id: String).void }
         attr_writer :client_event_id
 
-        # Returned when a session.input_audio.mute command is accepted. Input audio is no
-        # longer sent to the model; sideband audio reflection continues.
+        # Acknowledges a session.input_audio.mute command. An independent input mute sends
+        # silence to the model and preserves sideband audio reflection. Fixture playback
+        # does not emit this event.
         sig do
           params(
 

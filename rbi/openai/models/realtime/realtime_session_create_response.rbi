@@ -1298,7 +1298,17 @@ module OpenAI
                 )
               )
             }
-            attr_accessor :allowed_callers
+            attr_reader :allowed_callers
+
+            sig {
+              params(
+                allowed_callers: T.nilable(
+                  T::Array[OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::AllowedCaller::OrSymbol]
+                )
+              )
+                .void
+            }
+            attr_writer :allowed_callers
 
             # List of allowed tool names or a filter object.
             sig {
@@ -1367,7 +1377,20 @@ module OpenAI
                 T.nilable(OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::Variants)
               )
             }
-            attr_accessor :require_approval
+            attr_reader :require_approval
+
+            sig {
+              params(
+                require_approval: T.nilable(
+                  T.any(
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalFilter::OrHash,
+                    OpenAI::Realtime::RealtimeSessionCreateResponse::Tool::McpTool::RequireApproval::McpToolApprovalSetting::OrSymbol
+                  )
+                )
+              )
+                .void
+            }
+            attr_writer :require_approval
 
             # Optional description of the MCP server, used to provide more context.
             sig { returns(T.nilable(String)) }

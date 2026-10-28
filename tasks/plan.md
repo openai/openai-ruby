@@ -59,7 +59,7 @@ lines. This replaces the earlier inventory taken from an older checkout.
 | 11c | Fix generated credential update test's required request body | Mock-backed generated test passes without a local metadata patch | 11b |
 | 12 | Generate the supported handwritten bootstrap/loading boundary; preserve Threads placeholder | Ordinary require, direct-load expectations, Tapioca, gem package, and type checks pass; root matches generated output | All earlier slices |
 | 13 | Regenerate with merged compiler; audit exact generated-file equality | Verified current snapshot; zero mixed files and patch lines; runtime/offline suite, types, package, and sequential large-payload tests pass | 12 |
-| 14 | Separate budget-only PR ratcheting the ceiling to zero | Only `.castiron-ratchet.json` changes; zero usage already established | 13 |
+| 14 | Historical: ratchet the budget to zero | Completed before budget retirement; current ownership guidance is in `AGENTS.md` and `CONTRIBUTING.md` | 13 |
 
 Compiler-backed slices may need a compiler PR followed by an SDK regeneration PR.
 Slice 7a can proceed while 6a is under compiler review: its additive file/artifact

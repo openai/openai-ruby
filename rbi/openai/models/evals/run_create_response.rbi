@@ -527,7 +527,10 @@ module OpenAI
                 # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
                 # model-specific support.
                 sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
-                attr_accessor :reasoning_effort
+                attr_reader :reasoning_effort
+
+                sig { params(reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol)).void }
+                attr_writer :reasoning_effort
 
                 # Sampling temperature. This is a query parameter used to select responses.
                 sig { returns(T.nilable(Float)) }
@@ -1190,7 +1193,10 @@ module OpenAI
               # [reasoning guide](https://developers.openai.com/api/docs/guides/reasoning) for
               # model-specific support.
               sig { returns(T.nilable(OpenAI::ReasoningEffort::TaggedSymbol)) }
-              attr_accessor :reasoning_effort
+              attr_reader :reasoning_effort
+
+              sig { params(reasoning_effort: T.nilable(OpenAI::ReasoningEffort::OrSymbol)).void }
+              attr_writer :reasoning_effort
 
               # A seed value to initialize the randomness, during sampling.
               sig { returns(T.nilable(Integer)) }

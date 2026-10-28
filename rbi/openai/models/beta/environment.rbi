@@ -105,7 +105,12 @@ module OpenAI
           # The effective CPU and memory tier, or null when unknown or outside the public
           # tiers.
           sig { returns(T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::TaggedSymbol)) }
-          attr_accessor :container_size
+          attr_reader :container_size
+
+          sig {
+            params(container_size: T.nilable(OpenAI::Beta::Environment::OpenAIHosted::ContainerSize::OrSymbol)).void
+          }
+          attr_writer :container_size
 
           # The effective desktop configuration.
           sig { returns(T.nilable(OpenAI::Beta::Environment::OpenAIHosted::Desktop)) }
