@@ -82,6 +82,44 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
     assert_equal("Sunny", transport.requests.last[:body]["messages"].last["content"])
   end
 
+  def test_final_completion_can_omit_nullable_assistant_text_fields
+    [[:content], [:refusal], [:content, :refusal]].each do |fields|
+      response = completion
+      fields.each { response[:choices].first[:message].delete(_1) }
+      transport, client = client_for(response)
+
+      result = run_tools(client, tool_handlers: {"lookup" => -> (_) { flunk("Unexpected callback") }})
+
+      assert_instance_of(OpenAI::Chat::ChatCompletion, result)
+      fields.each { assert_nil(result.choices.first.message[_1]) }
+      assert_equal(1, transport.requests.length)
+    end
+  end
+
+  def test_tool_calls_can_omit_nullable_assistant_text_fields
+    [[:content], [:refusal], [:content, :refusal]].each do |fields|
+      response = completion(calls: [call("a")])
+      fields.each { response[:choices].first[:message].delete(_1) }
+      transport, client = client_for(response, completion)
+      cities = []
+
+      result = run_tools(
+        client,
+        tool_handlers: {
+          "lookup" => -> (args) {
+            cities << args.fetch("city")
+            "Sunny"
+          }
+        }
+      )
+
+      assert_equal(["Seattle"], cities)
+      assert_equal("Done", result.choices.first.message.content)
+      assert_equal(2, transport.requests.length)
+      assert_equal("Sunny", transport.requests.last[:body]["messages"].last["content"])
+    end
+  end
+
   def test_typed_tool_schema_and_structured_final_output
     transport, client = client_for(
       completion(calls: [call("a", name: "Lookup")], content: nil),
@@ -365,17 +403,13 @@ class OpenAI::Test::ChatToolRunnerTest < Minitest::Test
     end
   end
 
-  def test_missing_or_mistyped_assistant_text_fields_never_dispatch_or_return
+  def test_mistyped_assistant_text_fields_never_dispatch_or_return
     [:content, :refusal].each do |field|
       [nil, [call("a")]].each do |calls|
-        [:missing, 123, false, {private: "synthetic-private"}, []].each do |value|
+        [123, false, {private: "synthetic-private"}, []].each do |value|
           response = completion(calls: calls)
           message = response[:choices].first[:message]
-          if value == :missing
-            message.delete(field)
-          else
-            message[field] = value
-          end
+          message[field] = value
 
           transport, client = client_for(response)
           error = assert_raises(OpenAI::Helpers::Chat::ToolRunner::Error) do

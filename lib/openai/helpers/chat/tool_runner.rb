@@ -101,7 +101,7 @@ module OpenAI
 
           [:content, :refusal].each do |field|
             value = message[field]
-            unless message.to_h.key?(field) && (value.nil? || value.is_a?(String))
+            unless value.nil? || value.is_a?(String)
               raise Error, "Expected assistant content and refusal to be strings or null"
             end
           end
