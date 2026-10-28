@@ -301,6 +301,24 @@ module OpenAI
         sig { params(text: OpenAI::Beta::BetaResponseTextConfig::OrHash).void }
         attr_writer :text
 
+        # Usage reported by hosted tools, separate from base model `usage`. The field can
+        # be omitted when tool usage is unavailable. When present, tool families with no
+        # recorded usage have zero counts.
+        #
+        # `image_gen` sums available token counts across image generation calls. Calls
+        # with missing or incomplete usage records may be skipped. Output token details
+        # and cached input counts can be omitted. An omitted cache count means cache usage
+        # is unknown.
+        #
+        # `web_search.num_requests` counts billable searches. Discounted searches and
+        # actions such as opening a page are excluded. Use billing records to reconcile
+        # final charges.
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponse::ToolUsage)) }
+        attr_reader :tool_usage
+
+        sig { params(tool_usage: OpenAI::Beta::BetaResponse::ToolUsage::OrHash).void }
+        attr_writer :tool_usage
+
         # An integer between 0 and 20 specifying the maximum number of most likely tokens
         # to return at each token position, each with an associated log probability. In
         # some cases, the number of returned tokens may be fewer than requested.
@@ -468,6 +486,8 @@ module OpenAI
             status: OpenAI::Beta::BetaResponseStatus::OrSymbol,
 
             text: OpenAI::Beta::BetaResponseTextConfig::OrHash,
+
+            tool_usage: OpenAI::Beta::BetaResponse::ToolUsage::OrHash,
 
             top_logprobs: T.nilable(Integer),
 
@@ -690,6 +710,20 @@ module OpenAI
           # - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
           text: nil,
 
+          # Usage reported by hosted tools, separate from base model `usage`. The field can
+          # be omitted when tool usage is unavailable. When present, tool families with no
+          # recorded usage have zero counts.
+          #
+          # `image_gen` sums available token counts across image generation calls. Calls
+          # with missing or incomplete usage records may be skipped. Output token details
+          # and cached input counts can be omitted. An omitted cache count means cache usage
+          # is unknown.
+          #
+          # `web_search.num_requests` counts billable searches. Discounted searches and
+          # actions such as opening a page are excluded. Use billing records to reconcile
+          # final charges.
+          tool_usage: nil,
+
           # An integer between 0 and 20 specifying the maximum number of most likely tokens
           # to return at each token position, each with an associated log probability. In
           # some cases, the number of returned tokens may be fewer than requested.
@@ -756,6 +790,7 @@ module OpenAI
               service_tier: T.nilable(OpenAI::Beta::BetaResponse::ServiceTier::TaggedSymbol),
               status: OpenAI::Beta::BetaResponseStatus::TaggedSymbol,
               text: OpenAI::Beta::BetaResponseTextConfig,
+              tool_usage: OpenAI::Beta::BetaResponse::ToolUsage,
               top_logprobs: T.nilable(Integer),
               truncation: T.nilable(OpenAI::Beta::BetaResponse::Truncation::TaggedSymbol),
               usage: OpenAI::Beta::BetaResponseUsage,
@@ -2307,6 +2342,365 @@ module OpenAI
 
           sig { override.returns(T::Array[OpenAI::Beta::BetaResponse::ServiceTier::TaggedSymbol]) }
           def self.values
+          end
+        end
+
+        class ToolUsage < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponse::ToolUsage,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Aggregated usage statistics for image generation tool calls.
+          sig { returns(OpenAI::Beta::BetaResponse::ToolUsage::ImageGen) }
+          attr_reader :image_gen
+
+          sig { params(image_gen: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OrHash).void }
+          attr_writer :image_gen
+
+          # Aggregated billable usage statistics for web search tool calls.
+          sig { returns(OpenAI::Beta::BetaResponse::ToolUsage::WebSearch) }
+          attr_reader :web_search
+
+          sig { params(web_search: OpenAI::Beta::BetaResponse::ToolUsage::WebSearch::OrHash).void }
+          attr_writer :web_search
+
+          # Usage reported by hosted tools, separate from base model `usage`. The field can
+          # be omitted when tool usage is unavailable. When present, tool families with no
+          # recorded usage have zero counts.
+          #
+          # `image_gen` sums available token counts across image generation calls. Calls
+          # with missing or incomplete usage records may be skipped. Output token details
+          # and cached input counts can be omitted. An omitted cache count means cache usage
+          # is unknown.
+          #
+          # `web_search.num_requests` counts billable searches. Discounted searches and
+          # actions such as opening a page are excluded. Use billing records to reconcile
+          # final charges.
+          sig do
+            params(
+
+              image_gen: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OrHash,
+
+              web_search: OpenAI::Beta::BetaResponse::ToolUsage::WebSearch::OrHash
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Aggregated usage statistics for image generation tool calls.
+            image_gen:,
+
+            # Aggregated billable usage statistics for web search tool calls.
+
+            web_search:
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                image_gen: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen,
+                web_search: OpenAI::Beta::BetaResponse::ToolUsage::WebSearch
+              }
+            )
+          end
+          def to_hash
+          end
+
+          class ImageGen < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponse::ToolUsage::ImageGen,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The number of tokens (images and text) in the input prompt.
+            sig { returns(Integer) }
+            attr_accessor :input_tokens
+
+            # The input tokens detailed information for the image generation.
+            sig { returns(OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails) }
+            attr_reader :input_tokens_details
+
+            sig {
+              params(input_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails::OrHash)
+                .void
+            }
+            attr_writer :input_tokens_details
+
+            # The number of output tokens generated by the model.
+            sig { returns(Integer) }
+            attr_accessor :output_tokens
+
+            # The total number of tokens (images and text) used for the image generation.
+            sig { returns(Integer) }
+            attr_accessor :total_tokens
+
+            sig { returns(T.nilable(Integer)) }
+            attr_reader :cached_tokens
+
+            sig { params(cached_tokens: Integer).void }
+            attr_writer :cached_tokens
+
+            sig { returns(T.nilable(OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails)) }
+            attr_reader :cached_tokens_details
+
+            sig {
+              params(
+                cached_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails::OrHash
+              )
+                .void
+            }
+            attr_writer :cached_tokens_details
+
+            # The output token details for the image generation.
+            sig { returns(T.nilable(OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails)) }
+            attr_reader :output_tokens_details
+
+            sig {
+              params(
+                output_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails::OrHash
+              )
+                .void
+            }
+            attr_writer :output_tokens_details
+
+            # Aggregated usage statistics for image generation tool calls.
+            sig do
+              params(
+
+                input_tokens: Integer,
+
+                input_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails::OrHash,
+
+                output_tokens: Integer,
+
+                total_tokens: Integer,
+
+                cached_tokens: Integer,
+
+                cached_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails::OrHash,
+
+                output_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails::OrHash
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The number of tokens (images and text) in the input prompt.
+              input_tokens:,
+
+              # The input tokens detailed information for the image generation.
+              input_tokens_details:,
+
+              # The number of output tokens generated by the model.
+              output_tokens:,
+
+              # The total number of tokens (images and text) used for the image generation.
+              total_tokens:,
+
+              cached_tokens: nil,
+
+              cached_tokens_details: nil,
+
+              # The output token details for the image generation.
+
+              output_tokens_details: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  input_tokens: Integer,
+                  input_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails,
+                  output_tokens: Integer,
+                  total_tokens: Integer,
+                  cached_tokens: Integer,
+                  cached_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails,
+                  output_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails
+                }
+              )
+            end
+            def to_hash
+            end
+
+            class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The number of image tokens in the input prompt.
+              sig { returns(Integer) }
+              attr_accessor :image_tokens
+
+              # The number of text tokens in the input prompt.
+              sig { returns(Integer) }
+              attr_accessor :text_tokens
+
+              # The input tokens detailed information for the image generation.
+              sig do
+                params(
+
+                  image_tokens: Integer,
+
+                  text_tokens: Integer
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The number of image tokens in the input prompt.
+                image_tokens:,
+
+                # The number of text tokens in the input prompt.
+
+                text_tokens:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {image_tokens: Integer, text_tokens: Integer}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class CachedTokensDetails < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              sig { returns(Integer) }
+              attr_accessor :cached_image_tokens
+
+              sig { returns(Integer) }
+              attr_accessor :cached_text_tokens
+
+              sig do
+                params(
+
+                  cached_image_tokens: Integer,
+
+                  cached_text_tokens: Integer
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                cached_image_tokens:,
+
+                cached_text_tokens:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {cached_image_tokens: Integer, cached_text_tokens: Integer}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The number of image output tokens generated by the model.
+              sig { returns(Integer) }
+              attr_accessor :image_tokens
+
+              # The number of text output tokens generated by the model.
+              sig { returns(Integer) }
+              attr_accessor :text_tokens
+
+              # The output token details for the image generation.
+              sig do
+                params(
+
+                  image_tokens: Integer,
+
+                  text_tokens: Integer
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The number of image output tokens generated by the model.
+                image_tokens:,
+
+                # The number of text output tokens generated by the model.
+
+                text_tokens:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {image_tokens: Integer, text_tokens: Integer}
+                )
+              end
+              def to_hash
+              end
+
+            end
+          end
+
+          class WebSearch < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponse::ToolUsage::WebSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The number of billable web search requests issued.
+            sig { returns(Integer) }
+            attr_accessor :num_requests
+
+            # Aggregated billable usage statistics for web search tool calls.
+            sig do
+              params(
+
+                num_requests: Integer
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The number of billable web search requests issued.
+
+              num_requests:
+            )
+            end
+
+            sig do
+              override.returns(
+                {num_requests: Integer}
+              )
+            end
+            def to_hash
+            end
+
           end
         end
 
