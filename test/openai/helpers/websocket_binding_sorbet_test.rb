@@ -6,6 +6,49 @@ require "tempfile"
 require_relative "../test_helper"
 
 class OpenAI::Test::WebSocketBindingSorbetTest < Minitest::Test
+  def test_production_resources_preserve_generic_events_and_specialized_connections
+    assert_typechecks(
+      <<~RUBY
+        # typed: strict
+        client = OpenAI::Client.new
+        client.realtime.translations.connect do |connection|
+          T.assert_type!(connection.receive, T.nilable(T.any(OpenAI::Realtime::RealtimeTranslationServerEvent::Variants, T::Hash[Symbol, T.untyped])))
+          connection.send_event(OpenAI::Realtime::RealtimeTranslationSessionCloseEvent.new)
+          connection.send_event(type: "session.close")
+          connection.each do |event|
+            T.assert_type!(event, T.any(OpenAI::Realtime::RealtimeTranslationServerEvent::Variants, T::Hash[Symbol, T.untyped]))
+          end
+        end
+        client.beta.responses.connect do |connection|
+          T.assert_type!(connection.receive, T.nilable(T.any(OpenAI::Beta::BetaResponsesServerEvent::Variants, T::Hash[Symbol, T.untyped])))
+          connection.send_event(type: "response.create")
+        end
+        client.realtime.connect(model: "synthetic") { |connection| T.assert_type!(connection, OpenAI::Realtime::Connection) }
+        client.responses.connect { |connection| T.assert_type!(connection, OpenAI::Responses::Connection) }
+        client.live.connect { |connection| T.assert_type!(connection, OpenAI::Live::Connection) }
+        client.live.sideband.connect("session") { |connection| T.assert_type!(connection, OpenAI::Live::SidebandConnection) }
+        client.live.forks.connect("session") { |connection| T.assert_type!(connection, OpenAI::Live::ForkConnection) }
+      RUBY
+    )
+  end
+
+  def test_production_generic_resource_rejects_wrong_event_models_and_receive_types
+    output, status = typecheck(
+      <<~RUBY
+        # typed: strict
+        OpenAI::Client.new.realtime.translations.connect do |connection|
+          connection.send_event(OpenAI::Live::InputAudioMuteEvent.new)
+          T.let(connection.receive, String)
+        end
+      RUBY
+    )
+    refute_predicate(status, :success?, output)
+    assert_includes(output, "InputAudioMuteEvent")
+    assert_includes(output, "send_event")
+    assert_includes(output, "String")
+    assert_includes(output, "Errors: 2")
+  end
+
   def test_generic_connection_supports_enumerator_and_enumerable_methods
     source = <<~RUBY
       # typed: strict
