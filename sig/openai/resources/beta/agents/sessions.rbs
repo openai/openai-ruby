@@ -56,6 +56,7 @@ module OpenAI
             ?after: String,
             ?agent_id: String,
             ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::AgentSession]
