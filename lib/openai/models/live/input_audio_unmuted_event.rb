@@ -24,8 +24,9 @@ module OpenAI
         optional :client_event_id, String
 
         # @!method initialize(event_id:, client_event_id: nil, type: :"session.input_audio.unmuted")
-        #   Returned when a session.input_audio.unmute command is accepted. Input audio is
-        #   sent to the model again.
+        #   Acknowledges a session.input_audio.unmute command, removing the independent
+        #   input mute. An active audio fixture still pauses inference until playback
+        #   finishes. Fixture playback does not emit this event.
         #
         #   @param event_id [String]
         #     The unique ID of the Live server event.

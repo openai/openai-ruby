@@ -11,6 +11,7 @@ module OpenAI
         :name,
         :base_url,
         :prepare_request,
+        :wrap_request,
         :authentication_headers,
         keyword_init: true
       )

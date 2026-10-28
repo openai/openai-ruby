@@ -2,7 +2,7 @@
 
 module OpenAI
   module WebSocket
-    # Generic event codec for APIs with generated bindings and no specialized helper.
+    # Shared event codec for generated bindings and specialized product facades.
     #
     # @api private
     class TypedConnection < Connection
@@ -30,33 +30,35 @@ module OpenAI
       end
 
       private def encode_client_event(event)
-        validate_client_tree!(event)
-        event_type(event, message: "Invalid WebSocket client event.") if event.is_a?(Hash)
+        validate_event_tree!(event)
+        event_type(event, message: client_event_error_message) if event.is_a?(Hash)
         payload = @client_event ? OpenAI::Internal::Type::Converter.dump(@client_event, event) : event
-        type = event_type(payload, message: "Invalid WebSocket client event.")
+        type = event_type(payload, message: client_event_error_message)
         if @client_event && !@client_event_types.any? { _1.nil? || _1 === type.to_sym || _1 === type.to_s }
-          raise ArgumentError, "Invalid WebSocket client event."
+          raise ArgumentError, client_event_error_message
         end
 
-        payload = coerce(@client_event, payload) if @client_event
+        payload = coerce_client_event(payload) if @client_event
         payload = OpenAI::Internal::Type::Converter.dump(@client_event, payload) if @client_event
-        validate_client_tree!(payload, json_only: true)
-        JSON.generate(payload, max_nesting: false)
+        validate_event_tree!(payload, json_only: true)
+        generate_json(payload)
       rescue StandardError, SystemStackError
-        raise ArgumentError, "Invalid WebSocket client event.", cause: nil
+        raise ArgumentError, client_event_error_message, cause: nil
       end
 
       def parse_event(data)
-        parsed = JSON.parse(data, symbolize_names: true, max_nesting: false)
+        parsed = parse_json(data)
         type = event_type(parsed, message: "WebSocket server event must be an object with a string type")
         _, model = @server_event_types.find { |event_type,| event_type === type.to_sym }
-        return parsed unless model
+        return unknown_server_event(parsed) unless model
 
         event = coerce(@server_event, parsed)
         validate_wire_field_names!(event, parsed)
       rescue StandardError, SystemStackError
-        raise OpenAI::Errors::WebSocketProtocolError, "Invalid WebSocket server event.", cause: nil
+        raise protocol_error, cause: nil
       end
+
+      private def coerce_client_event(payload) = coerce(@client_event, payload)
 
       private def coerce(type, value)
         state = OpenAI::Internal::Type::Converter.new_coerce_state
@@ -67,6 +69,12 @@ module OpenAI
 
         result
       end
+
+      private def client_event_error_message = "Invalid WebSocket client event."
+
+      private def unknown_server_event(payload) = payload
+
+      private def protocol_error = OpenAI::Errors::WebSocketProtocolError.new("Invalid WebSocket server event.")
 
       private def connection_error(message) = BindingConnectionError.new(url: @url, message: message)
 

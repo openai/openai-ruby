@@ -1,0 +1,64 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_stored_system_message =
+        {
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredSystemMessage::content,
+          ?role: :system,
+          ?type: OpenAI::Models::Live::DecisionStoredSystemMessage::type_
+        }
+
+      class DecisionStoredSystemMessage < OpenAI::Internal::Type::BaseModel
+        attr_accessor id: String
+
+        # The text input to the model.
+        attr_accessor content: OpenAI::Models::Live::DecisionStoredSystemMessage::content
+
+        attr_accessor role: :system
+
+        attr_reader type: OpenAI::Models::Live::DecisionStoredSystemMessage::type_?
+
+        def type=: (
+          OpenAI::Models::Live::DecisionStoredSystemMessage::type_
+        ) -> OpenAI::Models::Live::DecisionStoredSystemMessage::type_
+
+        # @param content
+        #   The text input to the model.
+        def initialize: (
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredSystemMessage::content,
+          ?type: OpenAI::Models::Live::DecisionStoredSystemMessage::type_,
+          ?role: :system
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          content: OpenAI::Models::Live::DecisionStoredSystemMessage::content,
+          ?role: :system,
+          ?type: OpenAI::Models::Live::DecisionStoredSystemMessage::type_
+        }
+
+        type content = String | ::Array[OpenAI::Live::DecisionInputText]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionStoredSystemMessage::content]
+
+          DecisionInputTextArray: OpenAI::Internal::Type::Converter
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::DecisionStoredSystemMessage::type_]
+        end
+      end
+    end
+  end
+end

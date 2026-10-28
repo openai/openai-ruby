@@ -46,9 +46,9 @@ module OpenAI
         # The name of the file to be sent to the model.
         attr_accessor filename: String?
 
-        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        # token block.
+        # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        # not rounded to a token block.
         attr_accessor prompt_cache_breakpoint: OpenAI::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint?
 
         # @param detail
@@ -66,9 +66,9 @@ module OpenAI
         # @param filename
         #   The name of the file to be sent to the model.
         # @param prompt_cache_breakpoint
-        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #   token block.
+        #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #   not rounded to a token block.
         # @param type
         #   The type of the input item. Always `input_file`.
         def initialize: (
@@ -103,17 +103,48 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputFileContent::detail]
         end
 
-        type prompt_cache_breakpoint = { ?mode: :explicit }
+        type prompt_cache_breakpoint =
+          {
+            ?mode: :explicit,
+            ?ttl: OpenAI::Models::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint::ttl
+          }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
           # The breakpoint mode. Always `explicit`.
           attr_accessor mode: :explicit
 
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          attr_reader ttl: OpenAI::Models::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint::ttl?
+
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          def ttl=: (
+            OpenAI::Models::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint::ttl
+          ) -> OpenAI::Models::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint::ttl
+
+          # @param ttl
+          #   The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
           # @param mode
           #   The breakpoint mode. Always `explicit`.
-          def initialize: (?mode: :explicit) -> void
+          def initialize: (
+            ?ttl: OpenAI::Models::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint::ttl,
+            ?mode: :explicit
+          ) -> void
 
-          def to_hash: -> { ?mode: :explicit }
+          def to_hash: -> {
+            ?mode: :explicit,
+            ?ttl: OpenAI::Models::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint::ttl
+          }
+
+          type ttl = :"30m" | :"12h"
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M: :"30m"
+            TTL_12H: :"12h"
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseInputFileContent::PromptCacheBreakpoint::ttl]
+          end
         end
       end
     end

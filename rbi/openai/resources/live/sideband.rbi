@@ -7,7 +7,14 @@ module OpenAI
 
       class Sideband
 
-        include OpenAI::WebSocket::Resource
+        include OpenAI::WebSocket::TypedResource
+
+        extend T::Generic
+
+        WebSocketClientEvent = type_member { {fixed: OpenAI::Live::SidebandClientEvent::Variants} }
+        WebSocketServerEvent = type_member {
+          {fixed: T.any(OpenAI::Live::SidebandServerEvent::Variants, T::Hash[Symbol, T.untyped])}
+        }
 
         # @api private
         sig { params(session_id: String, query: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }

@@ -157,9 +157,17 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
         headers << downstream.readpartial(1_024) until headers.include?("\r\n\r\n")
         upstream = TCPSocket.new("127.0.0.1", client.base_url.port)
         downstream.write("HTTP/1.1 200 Connection Established\r\n\r\n")
+        relay = -> (source, destination) do
+          IO.copy_stream(source, destination)
+        rescue Errno::ECONNRESET
+          # A TLS peer can reset its TCP tunnel during shutdown. The receive
+          # assertions below still require a successful authenticated exchange.
+          nil
+        end
+
         relays = [
-          Thread.new { IO.copy_stream(downstream, upstream) },
-          Thread.new { IO.copy_stream(upstream, downstream) }
+          Thread.new { relay.call(downstream, upstream) },
+          Thread.new { relay.call(upstream, downstream) }
         ]
         relays.each(&:join)
       ensure

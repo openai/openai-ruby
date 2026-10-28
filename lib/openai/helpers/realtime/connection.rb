@@ -33,7 +33,7 @@ module OpenAI
       # Parse raw JSON as a typed server event. Valid events that are newer than this
       # SDK remain observable as {UnknownServerEvent} values.
       def parse_event(data)
-        parsed = JSON.parse(data, symbolize_names: true)
+        parsed = parse_json(data)
         type = event_type(parsed)
         unless @server_event_names.key?(type.to_s)
           return OpenAI::Realtime::UnknownServerEvent.new(data: parsed)
@@ -52,6 +52,8 @@ module OpenAI
         validate_wire_field_names!(event, parsed)
       rescue OpenAI::Errors::RealtimeProtocolError
         raise
+      rescue SystemStackError
+        raise OpenAI::Errors::RealtimeProtocolError.new(data: data), cause: nil
       rescue StandardError => e
         raise OpenAI::Errors::RealtimeProtocolError.new(data: data, cause: e), cause: nil
       end
@@ -92,6 +94,10 @@ module OpenAI
           validate_discriminator!(event, @client_event_names, kind: "client")
         end
 
+        # Preserve permissive raw JSON keys while checking original typed models
+        # before union conversion can replace their identities or renamed fields.
+        validate_event_tree!(event, strict_keys: false)
+
         normalized = OpenAI::Internal::Type::Converter.dump(
           OpenAI::Realtime::RealtimeClientEvent,
           event
@@ -108,7 +114,9 @@ module OpenAI
 
         payload = OpenAI::Internal::Type::Converter.dump(OpenAI::Realtime::RealtimeClientEvent, coerced)
         validate_discriminator!(payload, @client_event_names, kind: "client")
-        JSON.generate(payload)
+        generate_json(payload)
+      rescue SystemStackError
+        raise ArgumentError, "Invalid Realtime client event.", cause: nil
       rescue StandardError => e
         raise ArgumentError.new("Invalid Realtime client event."), cause: e
       end

@@ -101,6 +101,17 @@ module OpenAI
 
     # @api private
     private def send_request(request, redirect_count:, retry_count:, send_retry_header:)
+      if (wrapper = @provider_runtime&.wrap_request)
+        return wrapper.call(request, request_replayable?(request), retry_count) do |attempt, attempt_retry_count|
+          super(
+            attempt,
+            redirect_count: redirect_count,
+            retry_count: attempt_retry_count,
+            send_retry_header: send_retry_header
+          )
+        end
+      end
+
       if @workload_identity_auth && x509_transport?(@requester)
         canonical_headers = @requester.validate_api_request!(
           url: request.fetch(:url),

@@ -1,0 +1,164 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_question =
+        OpenAI::Live::DecisionQuestion::Choice
+        | OpenAI::Live::DecisionQuestion::Predicate
+        | OpenAI::Live::DecisionQuestion::Score
+
+      module DecisionQuestion
+        extend OpenAI::Internal::Type::Union
+
+        type choice =
+          {
+            choices: ::Array[OpenAI::Live::DecisionChoiceOption],
+            instructions: OpenAI::Models::Live::DecisionQuestion::Choice::instructions,
+            ?type: :choice,
+            ?name: String
+          }
+
+        class Choice < OpenAI::Internal::Type::BaseModel
+          type choice = ::OpenAI::Models::Live::decision_choice_option
+
+          class Choice = ::OpenAI::Models::Live::DecisionChoiceOption
+
+          attr_accessor choices: ::Array[OpenAI::Live::DecisionChoiceOption]
+
+          attr_accessor instructions: OpenAI::Models::Live::DecisionQuestion::Choice::instructions
+
+          attr_accessor type: :choice
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          def initialize: (
+            choices: ::Array[OpenAI::Live::DecisionChoiceOption],
+            instructions: OpenAI::Models::Live::DecisionQuestion::Choice::instructions,
+            ?name: String,
+            ?type: :choice
+          ) -> void
+
+          def to_hash: -> {
+            choices: ::Array[OpenAI::Live::DecisionChoiceOption],
+            instructions: OpenAI::Models::Live::DecisionQuestion::Choice::instructions,
+            ?type: :choice,
+            ?name: String
+          }
+
+          type instructions =
+            String | ::Array[OpenAI::Models::decision_question_input_part]
+
+          module Instructions
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionQuestion::Choice::instructions]
+
+            DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+          end
+        end
+
+        type predicate =
+          {
+            instructions: OpenAI::Models::Live::DecisionQuestion::Predicate::instructions,
+            ?type: :predicate,
+            ?name: String
+          }
+
+        class Predicate < OpenAI::Internal::Type::BaseModel
+          attr_accessor instructions: OpenAI::Models::Live::DecisionQuestion::Predicate::instructions
+
+          attr_accessor type: :predicate
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          def initialize: (
+            instructions: OpenAI::Models::Live::DecisionQuestion::Predicate::instructions,
+            ?name: String,
+            ?type: :predicate
+          ) -> void
+
+          def to_hash: -> {
+            instructions: OpenAI::Models::Live::DecisionQuestion::Predicate::instructions,
+            ?type: :predicate,
+            ?name: String
+          }
+
+          type instructions =
+            String | ::Array[OpenAI::Models::decision_question_input_part]
+
+          module Instructions
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionQuestion::Predicate::instructions]
+
+            DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+          end
+        end
+
+        type score =
+          {
+            instructions: OpenAI::Models::Live::DecisionQuestion::Score::instructions,
+            levels: ::Array[OpenAI::Live::DecisionQuestion::Score::Level],
+            ?type: :score,
+            ?name: String
+          }
+
+        class Score < OpenAI::Internal::Type::BaseModel
+          attr_accessor instructions: OpenAI::Models::Live::DecisionQuestion::Score::instructions
+
+          attr_accessor levels: ::Array[OpenAI::Live::DecisionQuestion::Score::Level]
+
+          attr_accessor type: :score
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          def initialize: (
+            instructions: OpenAI::Models::Live::DecisionQuestion::Score::instructions,
+            levels: ::Array[OpenAI::Live::DecisionQuestion::Score::Level],
+            ?name: String,
+            ?type: :score
+          ) -> void
+
+          def to_hash: -> {
+            instructions: OpenAI::Models::Live::DecisionQuestion::Score::instructions,
+            levels: ::Array[OpenAI::Live::DecisionQuestion::Score::Level],
+            ?type: :score,
+            ?name: String
+          }
+
+          type instructions =
+            String | ::Array[OpenAI::Models::decision_question_input_part]
+
+          module Instructions
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionQuestion::Score::instructions]
+
+            DecisionQuestionInputPartArray: OpenAI::Internal::Type::Converter
+          end
+
+          type level = { label: String, ?description: String }
+
+          class Level < OpenAI::Internal::Type::BaseModel
+            attr_accessor label: String
+
+            attr_reader description: String?
+
+            def description=: (String) -> String
+
+            def initialize: (label: String, ?description: String) -> void
+
+            def to_hash: -> { label: String, ?description: String }
+          end
+        end
+
+        def self?.variants: -> ::Array[OpenAI::Models::Live::decision_question]
+      end
+    end
+  end
+end

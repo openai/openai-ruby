@@ -5130,6 +5130,10 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # The unique ID of this compaction trigger.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :id
+
           # The agent that produced this item.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent)) }
           attr_reader :agent
@@ -5141,6 +5145,8 @@ module OpenAI
           sig do
             params(
 
+              id: T.nilable(String),
+
               agent: T.nilable(OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent::OrHash),
 
               type: Symbol
@@ -5148,6 +5154,9 @@ module OpenAI
               .returns(T.attached_class)
           end
           def self.new(
+
+            # The unique ID of this compaction trigger.
+            id: nil,
 
             # The agent that produced this item.
             agent: nil,
@@ -5160,7 +5169,11 @@ module OpenAI
 
           sig do
             override.returns(
-              {type: Symbol, agent: T.nilable(OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent)}
+              {
+                type: Symbol,
+                id: T.nilable(String),
+                agent: T.nilable(OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent)
+              }
             )
           end
           def to_hash

@@ -2,24 +2,25 @@
 
 module OpenAI
   module Models
-    class ResponseFormatJSONSchema < OpenAI::Internal::Type::BaseModel
-      OrHash = T.type_alias do
-        T.any(OpenAI::ResponseFormatJSONSchema, OpenAI::Internal::AnyHash)
-      end
 
-      # Structured Outputs configuration options, including a JSON Schema.
-      sig do
-        returns(
-          T.any(
-            OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash,
-            OpenAI::StructuredOutput::JsonSchemaConverter
-          )
+    class ResponseFormatJSONSchema < OpenAI::Internal::Type::BaseModel
+
+      OrHash = T.type_alias do
+        T.any(
+          OpenAI::ResponseFormatJSONSchema,
+          OpenAI::Internal::AnyHash
         )
       end
 
+      # Structured Outputs configuration options, including a JSON Schema.
+      sig {
+        returns(
+          T.any(OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash, OpenAI::StructuredOutput::JsonSchemaConverter)
+        )
+      }
       attr_reader :json_schema
 
-      sig do
+      sig {
         params(
           json_schema: T.any(
             OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash,
@@ -27,8 +28,7 @@ module OpenAI
           )
         )
           .void
-      end
-
+      }
       attr_writer :json_schema
 
       # The type of response format being defined. Always `json_schema`.
@@ -40,10 +40,12 @@ module OpenAI
       # [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
       sig do
         params(
+
           json_schema: T.any(
             OpenAI::ResponseFormatJSONSchema::JSONSchema::OrHash,
             OpenAI::StructuredOutput::JsonSchemaConverter
           ),
+
           type: Symbol
         )
           .returns(T.attached_class)

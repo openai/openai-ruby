@@ -64,7 +64,7 @@ module OpenAI
         #   Tools available to the agent. Defaults to an empty list. The tool list must fit
         #   within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         #
-        #   @return [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
+        #   @return [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse, OpenAI::Models::Beta::PersistedAgentToolParam::Automations>, nil]
         optional(
           :tools,
           -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::PersistedAgentToolParam] },
@@ -100,7 +100,7 @@ module OpenAI
         #     Configuration for generated text. Defaults to the `text` format and medium
         #     verbosity.
         #
-        #   @param tools [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
+        #   @param tools [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse, OpenAI::Models::Beta::PersistedAgentToolParam::Automations>, nil]
         #     Tools available to the agent. Defaults to an empty list. The tool list must fit
         #     within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         #

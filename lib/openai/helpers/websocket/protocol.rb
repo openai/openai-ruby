@@ -6,6 +6,31 @@ module OpenAI
     #
     # @api private
     module Protocol
+      # JSON schemas and extension data do not have a transport-specific depth limit.
+      private def parse_json(data) = JSON.parse(data, symbolize_names: true, max_nesting: false)
+
+      private def generate_json(value) = JSON.generate(value, max_nesting: false)
+
+      private def freeze_json(value)
+        pending = [value]
+        visited = {}.compare_by_identity
+        until pending.empty?
+          item = pending.pop
+          next if visited.key?(item)
+          visited[item] = true
+          case item
+          when Hash
+            item.each { |key, val| pending.push(key, val) }
+          when Array
+            pending.concat(item)
+          end
+
+          item.freeze
+        end
+
+        value
+      end
+
       # Unknown wire keys must not replace a selected model's renamed Ruby fields.
       private def validate_wire_field_names!(event, payload)
         pending = [[event, payload]]
@@ -33,44 +58,103 @@ module OpenAI
         event
       end
 
-      # A merged string-keyed JSON event and symbol-keyed override must not
-      # silently change the command or the configuration that is sent.
-      private def validate_client_tree!(event, json_only: false)
-        visited = {}.compare_by_identity
-        pending = [event]
+      private def coerce_event(union, payload, outbound: false)
+        state = OpenAI::Internal::Type::Converter.new_coerce_state(request_only: outbound)
+        event = OpenAI::Internal::Type::Converter.coerce(union, payload, state: state)
+        raise ArgumentError if state[:error] || !state.fetch(:exactness).fetch(:no).zero?
+        ancestors = {}.compare_by_identity
+        pending = [[event, false]]
         until pending.empty?
-          item = pending.pop
-          next if visited.key?(item)
-          visited[item] = true
-          case item
+          value, exiting = pending.pop
+          if exiting
+            ancestors.delete(value)
+            next
+          end
+
+          children = case value
           when OpenAI::Internal::Type::BaseModel
-            raise ArgumentError if json_only
-            validate_model_constants!(item)
-            pending << item.to_h
-          when Hash
-            names = {}
-            item.each do |key, value|
-              raise ArgumentError unless key.is_a?(String) || key.is_a?(Symbol)
-              name = key.to_s
-              raise ArgumentError if names.key?(name)
-              names[name] = true
-              pending << value
+            data = value.to_h
+            validate_model_fields!(value)
+            value.class.fields.each do |name, field|
+              const = field.fetch(:const)
+              if field.fetch(:required) &&
+                  field.fetch(:mode) != (outbound ? :coerce : :dump) &&
+                  (!outbound || const == OpenAI::Internal::OMIT) &&
+                  !data.key?(name)
+                raise ArgumentError
+              end
             end
 
+            data.values
+          when Hash
+            value.values
           when Array
-            pending.concat(item)
+            value
+          else
+            next
+          end
+
+          raise ArgumentError if ancestors.key?(value)
+          ancestors[value] = true
+          pending << [value, true]
+          children.each { |child| pending << [child, false] }
+        end
+
+        event
+      end
+
+      private def validate_event_tree!(event, json_only: false, strict_keys: true)
+        ancestors = {}.compare_by_identity
+        pending = [[event, false]]
+        until pending.empty?
+          value, exiting = pending.pop
+          if exiting
+            ancestors.delete(value)
+            next
+          end
+
+          children = case value
+          when OpenAI::Internal::Type::BaseModel
+            raise ArgumentError if json_only
+            data = value.to_h
+            validate_model_fields!(value)
+            [data]
+          when Hash
+            if strict_keys
+              keys = {}
+              value.each_key do |key|
+                raise ArgumentError unless key.is_a?(String) || key.is_a?(Symbol)
+                name = key.to_s
+                raise ArgumentError if keys.key?(name)
+                keys[name] = true
+              end
+            end
+
+            value.values
+          when Array
+            value
           when NilClass, TrueClass, FalseClass, String, Integer, Float, Symbol
             next
           else
             raise ArgumentError if json_only
+            next
           end
+
+          raise ArgumentError if ancestors.key?(value)
+          ancestors[value] = true
+          pending << [value, true]
+          children.each { |child| pending << [child, false] }
         end
       end
 
-      private def validate_model_constants!(model)
+      private def validate_model_fields!(model)
+        names = {}
         model.to_h.each do |name, actual|
           key = name.is_a?(String) ? name.to_sym : name
           field = model.class.known_fields[key]
+          serialized_name = field ? field.fetch(:api_name).to_s : key.to_s
+          raise ArgumentError if names.key?(serialized_name)
+          names[serialized_name] = true
           next unless field
           const = field.fetch(:const)
           next if const == OpenAI::Internal::OMIT

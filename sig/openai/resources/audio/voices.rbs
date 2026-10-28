@@ -7,6 +7,11 @@ module OpenAI
           ?request_options: OpenAI::request_opts
         ) -> OpenAI::Audio::Voice
 
+        def delete: (
+          String voice_id,
+          ?request_options: OpenAI::request_opts
+        ) -> OpenAI::Audio::VoiceDeleted
+
         def initialize: (client: OpenAI::Client) -> void
       end
     end

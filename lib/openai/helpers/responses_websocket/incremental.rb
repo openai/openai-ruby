@@ -11,6 +11,8 @@ module OpenAI
     # are retained exactly as received, never filled from provisional output.
     # Call reset to discard all retained state.
     class IncrementalResponse
+      include OpenAI::WebSocket::Protocol
+
       attr_reader :phase
 
       def initialize
@@ -236,10 +238,12 @@ module OpenAI
       # references. Returned snapshots and incoming events must not share strings.
       def copy(value)
         data = OpenAI::Internal::Type::BaseModel.recursively_to_h(value, convert: false)
-        data = JSON.parse(JSON.generate(data), symbolize_names: true)
+        data = parse_json(generate_json(data))
         return data unless value.is_a?(OpenAI::Internal::Type::BaseModel)
 
         OpenAI::Internal::Type::Converter.coerce(value.class, data)
+      rescue SystemStackError
+        raise SessionError, "Could not copy the Responses WebSocket event.", cause: nil
       end
     end
   end

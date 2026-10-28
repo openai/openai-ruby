@@ -1,7 +1,8 @@
 module OpenAI
   module Resources
     class Responses
-      include OpenAI::WebSocket::Resource
+      include OpenAI::WebSocket::TypedResource[OpenAI::Models::Responses::responses_client_event, OpenAI::Models::Responses::responses_server_event
+      | ::Hash[Symbol, untyped]]
       def __websocket_request: (
         ?query: Hash[untyped, untyped]
       ) -> Hash[Symbol, untyped]

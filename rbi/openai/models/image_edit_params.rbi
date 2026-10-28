@@ -68,11 +68,14 @@ module OpenAI
       sig { params(mask: OpenAI::Internal::FileInput).void }
       attr_writer :mask
 
-      # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      # The GPT image model to use for image editing (`gpt-image-1-mini`,
       # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
       # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
       # `chatgpt-image-latest`).
+      #
+      # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+      # `gpt-image-2.5-flare` instead.
       sig { returns(T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol))) }
       attr_accessor :model
 
@@ -230,11 +233,14 @@ module OpenAI
         # content type.
         mask: nil,
 
-        # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+        # The GPT image model to use for image editing (`gpt-image-1-mini`,
         # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
         # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
         # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
         # `chatgpt-image-latest`).
+        #
+        # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+        # `gpt-image-2.5-flare` instead.
         model: nil,
 
         # The number of images to generate. Must be between 1 and 10.
@@ -390,11 +396,14 @@ module OpenAI
         end
       end
 
-      # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      # The GPT image model to use for image editing (`gpt-image-1-mini`,
       # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
       # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
       # `chatgpt-image-latest`).
+      #
+      # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+      # `gpt-image-2.5-flare` instead.
       module Model
         extend OpenAI::Internal::Type::Union
 

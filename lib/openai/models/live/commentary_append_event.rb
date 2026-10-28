@@ -35,7 +35,7 @@ module OpenAI
 
         # @!method initialize(content:, delegation_id:, event_id: nil, type: :"session.commentary.append")
         #   Provide context the Live model can communicate to the user, optionally for an
-        #   existing client delegation.
+        #   existing client delegation. Rejected while an audio fixture is active.
         #
         #   @param content [String]
         #     Speakable context for the Live model, limited to 500 tokens. Use this for a
