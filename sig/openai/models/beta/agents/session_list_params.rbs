@@ -7,6 +7,7 @@ module OpenAI
             ?after: String,
             ?agent_id: String,
             ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
             ?request_options: OpenAI::request_opts
           }
@@ -35,6 +36,18 @@ module OpenAI
           # The maximum number of resources to return, between 1 and 100. Defaults to 20.
           def limit=: (Integer) -> Integer
 
+          # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          # characters. New sessions and metadata updates may take time to appear in
+          # filtered results.
+          attr_reader metadata: ::Hash[Symbol, String]?
+
+          # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          # characters. New sessions and metadata updates may take time to appear in
+          # filtered results.
+          def metadata=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
+
           # The order in which resources are returned. Defaults to `desc`.
           attr_reader order: OpenAI::Models::Beta::Agents::SessionListParams::order?
 
@@ -50,12 +63,18 @@ module OpenAI
           #   all agents.
           # @param limit
           #   The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          # @param metadata
+          #   Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          #   match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          #   characters. New sessions and metadata updates may take time to appear in
+          #   filtered results.
           # @param order
           #   The order in which resources are returned. Defaults to `desc`.
           def initialize: (
             ?after: String,
             ?agent_id: String,
             ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
             ?request_options: OpenAI::request_opts
           ) -> void
@@ -64,6 +83,7 @@ module OpenAI
             ?after: String,
             ?agent_id: String,
             ?limit: Integer,
+            ?metadata: ::Hash[Symbol, String],
             ?order: OpenAI::Models::Beta::Agents::SessionListParams::order,
             ?request_options: OpenAI::RequestOptions
           }
