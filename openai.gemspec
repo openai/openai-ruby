@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
     "rbi/**/*.rbi",
     "sig/**/*.rbs",
     "manifest.yaml",
+    "examples/chat/tool_runner.rb",
     "SECURITY.md",
     "docs/architecture/security-model.md",
     "CHANGELOG.md",
@@ -53,7 +54,8 @@ Gem::Specification.new do |s|
     "local-audio.md",
     "responses-websocket.md",
     "examples/realtime/README.md"
-  ]
+  ] +
+    Dir["vertex.md"]
   s.add_dependency("connection_pool", ">= 2.2.3")
   s.add_dependency("logger")
 end
