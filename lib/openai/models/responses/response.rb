@@ -319,6 +319,23 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponseTextConfig, nil]
         optional :text, -> { OpenAI::Responses::ResponseTextConfig }
 
+        # @!attribute tool_usage
+        #   Usage reported by hosted tools, separate from base model `usage`. The field can
+        #   be omitted when tool usage is unavailable. When present, tool families with no
+        #   recorded usage have zero counts.
+        #
+        #   `image_gen` sums available token counts across image generation calls. Calls
+        #   with missing or incomplete usage records may be skipped. Output token details
+        #   and cached input counts can be omitted. An omitted cache count means cache usage
+        #   is unknown.
+        #
+        #   `web_search.num_requests` counts billable searches. Discounted searches and
+        #   actions such as opening a page are excluded. Use billing records to reconcile
+        #   final charges.
+        #
+        #   @return [OpenAI::Models::Responses::Response::ToolUsage, nil]
+        optional :tool_usage, -> { OpenAI::Responses::Response::ToolUsage }
+
         # @!attribute top_logprobs
         #   An integer between 0 and 20 specifying the maximum number of most likely tokens
         #   to return at each token position, each with an associated log probability. In
@@ -358,7 +375,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, tool_usage: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   @param id [String]
         #     Unique identifier for this Response.
         #
@@ -565,6 +582,20 @@ module OpenAI
         #
         #     - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
         #     - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+        #
+        #   @param tool_usage [OpenAI::Models::Responses::Response::ToolUsage]
+        #     Usage reported by hosted tools, separate from base model `usage`. The field can
+        #     be omitted when tool usage is unavailable. When present, tool families with no
+        #     recorded usage have zero counts.
+        #
+        #     `image_gen` sums available token counts across image generation calls. Calls
+        #     with missing or incomplete usage records may be skipped. Output token details
+        #     and cached input counts can be omitted. An omitted cache count means cache usage
+        #     is unknown.
+        #
+        #     `web_search.num_requests` counts billable searches. Discounted searches and
+        #     actions such as opening a page are excluded. Use billing records to reconcile
+        #     final charges.
         #
         #   @param top_logprobs [Integer, nil]
         #     An integer between 0 and 20 specifying the maximum number of most likely tokens
@@ -1286,6 +1317,195 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # @see OpenAI::Models::Responses::Response#tool_usage
+        class ToolUsage < OpenAI::Internal::Type::BaseModel
+          # @!attribute image_gen
+          #   Aggregated usage statistics for image generation tool calls.
+          #
+          #   @return [OpenAI::Models::Responses::Response::ToolUsage::ImageGen]
+          required :image_gen, -> { OpenAI::Responses::Response::ToolUsage::ImageGen }
+
+          # @!attribute web_search
+          #   Aggregated billable usage statistics for web search tool calls.
+          #
+          #   @return [OpenAI::Models::Responses::Response::ToolUsage::WebSearch]
+          required :web_search, -> { OpenAI::Responses::Response::ToolUsage::WebSearch }
+
+          # @!method initialize(image_gen:, web_search:)
+          #   Usage reported by hosted tools, separate from base model `usage`. The field can
+          #   be omitted when tool usage is unavailable. When present, tool families with no
+          #   recorded usage have zero counts.
+          #
+          #   `image_gen` sums available token counts across image generation calls. Calls
+          #   with missing or incomplete usage records may be skipped. Output token details
+          #   and cached input counts can be omitted. An omitted cache count means cache usage
+          #   is unknown.
+          #
+          #   `web_search.num_requests` counts billable searches. Discounted searches and
+          #   actions such as opening a page are excluded. Use billing records to reconcile
+          #   final charges.
+          #
+          #   @param image_gen [OpenAI::Models::Responses::Response::ToolUsage::ImageGen]
+          #     Aggregated usage statistics for image generation tool calls.
+          #
+          #   @param web_search [OpenAI::Models::Responses::Response::ToolUsage::WebSearch]
+          #     Aggregated billable usage statistics for web search tool calls.
+
+          # @see OpenAI::Models::Responses::Response::ToolUsage#image_gen
+          class ImageGen < OpenAI::Internal::Type::BaseModel
+            # @!attribute input_tokens
+            #   The number of tokens (images and text) in the input prompt.
+            #
+            #   @return [Integer]
+            required :input_tokens, Integer
+
+            # @!attribute input_tokens_details
+            #   The input tokens detailed information for the image generation.
+            #
+            #   @return [OpenAI::Models::Responses::Response::ToolUsage::ImageGen::InputTokensDetails]
+            required(
+              :input_tokens_details,
+              -> { OpenAI::Responses::Response::ToolUsage::ImageGen::InputTokensDetails }
+            )
+
+            # @!attribute output_tokens
+            #   The number of output tokens generated by the model.
+            #
+            #   @return [Integer]
+            required :output_tokens, Integer
+
+            # @!attribute total_tokens
+            #   The total number of tokens (images and text) used for the image generation.
+            #
+            #   @return [Integer]
+            required :total_tokens, Integer
+
+            # @!attribute cached_tokens
+            #
+            #   @return [Integer, nil]
+            optional :cached_tokens, Integer
+
+            # @!attribute cached_tokens_details
+            #
+            #   @return [OpenAI::Models::Responses::Response::ToolUsage::ImageGen::CachedTokensDetails, nil]
+            optional(
+              :cached_tokens_details,
+              -> { OpenAI::Responses::Response::ToolUsage::ImageGen::CachedTokensDetails }
+            )
+
+            # @!attribute output_tokens_details
+            #   The output token details for the image generation.
+            #
+            #   @return [OpenAI::Models::Responses::Response::ToolUsage::ImageGen::OutputTokensDetails, nil]
+            optional(
+              :output_tokens_details,
+              -> { OpenAI::Responses::Response::ToolUsage::ImageGen::OutputTokensDetails }
+            )
+
+            # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, total_tokens:, cached_tokens: nil, cached_tokens_details: nil, output_tokens_details: nil)
+            #   Aggregated usage statistics for image generation tool calls.
+            #
+            #   @param input_tokens [Integer]
+            #     The number of tokens (images and text) in the input prompt.
+            #
+            #   @param input_tokens_details [OpenAI::Models::Responses::Response::ToolUsage::ImageGen::InputTokensDetails]
+            #     The input tokens detailed information for the image generation.
+            #
+            #   @param output_tokens [Integer]
+            #     The number of output tokens generated by the model.
+            #
+            #   @param total_tokens [Integer]
+            #     The total number of tokens (images and text) used for the image generation.
+            #
+            #   @param cached_tokens [Integer]
+            #
+            #   @param cached_tokens_details [OpenAI::Models::Responses::Response::ToolUsage::ImageGen::CachedTokensDetails]
+            #
+            #   @param output_tokens_details [OpenAI::Models::Responses::Response::ToolUsage::ImageGen::OutputTokensDetails]
+            #     The output token details for the image generation.
+
+            # @see OpenAI::Models::Responses::Response::ToolUsage::ImageGen#input_tokens_details
+            class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+              # @!attribute image_tokens
+              #   The number of image tokens in the input prompt.
+              #
+              #   @return [Integer]
+              required :image_tokens, Integer
+
+              # @!attribute text_tokens
+              #   The number of text tokens in the input prompt.
+              #
+              #   @return [Integer]
+              required :text_tokens, Integer
+
+              # @!method initialize(image_tokens:, text_tokens:)
+              #   The input tokens detailed information for the image generation.
+              #
+              #   @param image_tokens [Integer]
+              #     The number of image tokens in the input prompt.
+              #
+              #   @param text_tokens [Integer]
+              #     The number of text tokens in the input prompt.
+            end
+
+            # @see OpenAI::Models::Responses::Response::ToolUsage::ImageGen#cached_tokens_details
+            class CachedTokensDetails < OpenAI::Internal::Type::BaseModel
+              # @!attribute cached_image_tokens
+              #
+              #   @return [Integer]
+              required :cached_image_tokens, Integer
+
+              # @!attribute cached_text_tokens
+              #
+              #   @return [Integer]
+              required :cached_text_tokens, Integer
+
+              # @!method initialize(cached_image_tokens:, cached_text_tokens:)
+              #   @param cached_image_tokens [Integer]
+              #   @param cached_text_tokens [Integer]
+            end
+
+            # @see OpenAI::Models::Responses::Response::ToolUsage::ImageGen#output_tokens_details
+            class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
+              # @!attribute image_tokens
+              #   The number of image output tokens generated by the model.
+              #
+              #   @return [Integer]
+              required :image_tokens, Integer
+
+              # @!attribute text_tokens
+              #   The number of text output tokens generated by the model.
+              #
+              #   @return [Integer]
+              required :text_tokens, Integer
+
+              # @!method initialize(image_tokens:, text_tokens:)
+              #   The output token details for the image generation.
+              #
+              #   @param image_tokens [Integer]
+              #     The number of image output tokens generated by the model.
+              #
+              #   @param text_tokens [Integer]
+              #     The number of text output tokens generated by the model.
+            end
+          end
+
+          # @see OpenAI::Models::Responses::Response::ToolUsage#web_search
+          class WebSearch < OpenAI::Internal::Type::BaseModel
+            # @!attribute num_requests
+            #   The number of billable web search requests issued.
+            #
+            #   @return [Integer]
+            required :num_requests, Integer
+
+            # @!method initialize(num_requests:)
+            #   Aggregated billable usage statistics for web search tool calls.
+            #
+            #   @param num_requests [Integer]
+            #     The number of billable web search requests issued.
+          end
         end
 
         # The truncation strategy to use for the model response.

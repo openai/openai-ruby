@@ -1751,7 +1751,7 @@
     },
     "lib/openai/models/beta/beta_response.rb": {
       "mode": "100644",
-      "sha256": "8389cd9eedf9bf234c22ebe16763f558b4ae9ca28b34b4db68201f8a0637317f"
+      "sha256": "e1451d015f96b4c77cbba48cdb222d3f095a5de525d5448e7714764fe5346ad2"
     },
     "lib/openai/models/beta/beta_response_apply_patch_tool_call.rb": {
       "mode": "100644",
@@ -4767,7 +4767,7 @@
     },
     "lib/openai/models/responses/response.rb": {
       "mode": "100644",
-      "sha256": "53b976d3b683533a926801e6907bda019f8a2adde22d52b59f83b3fe7ad88eb7"
+      "sha256": "6a1a73040f283db3678b7fcc54ead498aab5985eecb73fc34a870ca3dd672000"
     },
     "lib/openai/models/responses/response_apply_patch_tool_call.rb": {
       "mode": "100644",
@@ -8079,7 +8079,7 @@
     },
     "rbi/openai/models/beta/beta_response.rbi": {
       "mode": "100644",
-      "sha256": "2570673da6f15daff8c52dbd88a6f6a46d1548a6e554aea58292c21b578a085c"
+      "sha256": "43abe67aa8068adfc214fe4149ffef386346ec9456c66f1ae661dcec85e12add"
     },
     "rbi/openai/models/beta/beta_response_apply_patch_tool_call.rbi": {
       "mode": "100644",
@@ -11095,7 +11095,7 @@
     },
     "rbi/openai/models/responses/response.rbi": {
       "mode": "100644",
-      "sha256": "ab528164d68ed1ead689fb69dc3a3f6b40a96b62b0baa9b0f79ded8f4abc702e"
+      "sha256": "be9e22ca22bd7ef5b0fe2bc04bd31f59e0cad9c96d08b19c14afa0eee8464152"
     },
     "rbi/openai/models/responses/response_apply_patch_tool_call.rbi": {
       "mode": "100644",
@@ -14407,7 +14407,7 @@
     },
     "sig/openai/models/beta/beta_response.rbs": {
       "mode": "100644",
-      "sha256": "f812f521ad1770f426bb75c7db9139727bbb4419b37bf421cda5f1359cc666cc"
+      "sha256": "7eb2912336e8cbba58a24d8624014f23bf662fe88a850c516e12e7f839ca29b6"
     },
     "sig/openai/models/beta/beta_response_apply_patch_tool_call.rbs": {
       "mode": "100644",
@@ -17423,7 +17423,7 @@
     },
     "sig/openai/models/responses/response.rbs": {
       "mode": "100644",
-      "sha256": "d6137fe43cc7d44befeb6b2151fc737f316475781683368a0aa5458a84795bc5"
+      "sha256": "ac0e339fe85f6cf4e55c5b828f0b28de8d7234035093f9c2fbd36d4789726de8"
     },
     "sig/openai/models/responses/response_apply_patch_tool_call.rbs": {
       "mode": "100644",
@@ -19255,7 +19255,7 @@
     },
     "test/openai/resources/beta/responses_test.rb": {
       "mode": "100644",
-      "sha256": "01761e1a354a6c7be8cde0c3438162e514d3858d53c1c7147790ba76e712fb4c"
+      "sha256": "02e9c4e792f4db126555dbe3abb47c3c6f99a851cbdaa1a8c8ac8e6ebc3c5aed"
     },
     "test/openai/resources/beta/threads/messages_test.rb": {
       "mode": "100644",
@@ -19439,7 +19439,7 @@
     },
     "test/openai/resources/responses_test.rb": {
       "mode": "100644",
-      "sha256": "fd0d3e2a90b21ca96c8554f3440e57030e4b13ef97b4884d3343a23b33d67b08"
+      "sha256": "afe93f488cc9b00167d82e8ccbf95c705fbeca99d1e691ab1e108d8394516ac1"
     },
     "test/openai/resources/safety/alerts_test.rb": {
       "mode": "100644",
