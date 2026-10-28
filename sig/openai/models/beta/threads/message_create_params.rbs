@@ -117,8 +117,10 @@ module OpenAI
 
             # The tools to add this file to.
             def tools=: (
-              ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
-            ) -> ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+              ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool
+              | { type: :file_search }]
+            ) -> ::Array[(OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool
+            | { type: :file_search })]
 
             # @param file_id
             #   The ID of the file to attach to the message.
@@ -126,7 +128,8 @@ module OpenAI
             #   The tools to add this file to.
             def initialize: (
               ?file_id: String,
-              ?tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool]
+              ?tools: ::Array[OpenAI::Models::Beta::Threads::MessageCreateParams::Attachment::tool
+              | { type: :file_search }]
             ) -> void
 
             def to_hash: -> {

@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type external_key_delete_params =
+          { external_key_id: String, ?request_options: OpenAI::request_opts }
+
+        class ExternalKeyDeleteParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor external_key_id: String
+
+          def initialize: (
+            external_key_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            external_key_id: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

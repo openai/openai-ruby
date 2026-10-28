@@ -5,7 +5,13 @@ module OpenAI
         def create: (
           file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
-          ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
+          ?chunking_strategy: (OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy
+          | {
+            type: :server_vad,
+            ?prefix_padding_ms: Integer,
+            ?silence_duration_ms: Integer,
+            ?threshold: Float
+          })?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],
           ?keywords: ::Array[String],
           ?known_speaker_names: ::Array[String],
@@ -22,7 +28,13 @@ module OpenAI
         def create_streaming: (
           file: OpenAI::Internal::file_input,
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
-          ?chunking_strategy: OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy?,
+          ?chunking_strategy: (OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy
+          | {
+            type: :server_vad,
+            ?prefix_padding_ms: Integer,
+            ?silence_duration_ms: Integer,
+            ?threshold: Float
+          })?,
           ?include: ::Array[OpenAI::Models::Audio::transcription_include],
           ?keywords: ::Array[String],
           ?known_speaker_names: ::Array[String],

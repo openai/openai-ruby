@@ -67,7 +67,34 @@ module OpenAI
           # Who handles tasks delegated by the Live model. Omitted or null selects your
           # application; use `responses` or `decisions` to delegate to the corresponding
           # API.
-          attr_accessor delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?
+          attr_reader delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?
+
+          # Who handles tasks delegated by the Live model. Omitted or null selects your
+          # application; use `responses` or `decisions` to delegate to the corresponding
+          # API.
+          def delegation=: (
+            (OpenAI::Models::Live::SessionAcceptParams::Session::delegation
+            | {
+              responses: OpenAI::Live::ResponsesDelegationConfig,
+              type: :responses,
+              ?acknowledgement_delay_ms: Integer
+            }
+            | {
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              type: :decisions,
+              ?acknowledgement_delay_ms: Integer
+            })?
+          ) -> (OpenAI::Models::Live::SessionAcceptParams::Session::delegation
+          | {
+            responses: OpenAI::Live::ResponsesDelegationConfig,
+            type: :responses,
+            ?acknowledgement_delay_ms: Integer
+          }
+          | {
+            decisions: OpenAI::Live::DecisionsDelegationConfig,
+            type: :decisions,
+            ?acknowledgement_delay_ms: Integer
+          })?
 
           # Ordered text-only history supplied before startup. Supports developer, user, and
           # assistant messages with one text part each; at most 128 messages and a
@@ -147,7 +174,17 @@ module OpenAI
           def initialize: (
             model: OpenAI::Models::Live::SessionAcceptParams::Session::model,
             ?audio: OpenAI::Live::SessionAcceptParams::Session::Audio,
-            ?delegation: OpenAI::Models::Live::SessionAcceptParams::Session::delegation?,
+            ?delegation: (OpenAI::Models::Live::SessionAcceptParams::Session::delegation
+            | {
+              responses: OpenAI::Live::ResponsesDelegationConfig,
+              type: :responses,
+              ?acknowledgement_delay_ms: Integer
+            }
+            | {
+              decisions: OpenAI::Live::DecisionsDelegationConfig,
+              type: :decisions,
+              ?acknowledgement_delay_ms: Integer
+            })?,
             ?input: ::Array[OpenAI::Models::Live::initial_item],
             ?instructions: String?,
             ?store: bool,

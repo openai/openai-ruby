@@ -12,7 +12,8 @@ module OpenAI
           ?previous_response_id: String?,
           ?reasoning: OpenAI::Reasoning?,
           ?text: OpenAI::Responses::InputTokenCountParams::Text?,
-          ?tool_choice: OpenAI::Models::Responses::InputTokenCountParams::tool_choice?,
+          ?tool_choice: (OpenAI::Models::Responses::InputTokenCountParams::tool_choice
+          | { type: :programmatic_tool_calling })?,
           ?tools: ::Array[OpenAI::Models::Responses::tool]?,
           ?truncation: OpenAI::Models::Responses::InputTokenCountParams::truncation,
           ?request_options: OpenAI::request_opts

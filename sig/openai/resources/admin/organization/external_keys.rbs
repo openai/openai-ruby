@@ -1,0 +1,70 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class ExternalKeys
+          def create: (
+            body: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body
+            | {
+              external_id: String,
+              kms_arn: String,
+              name: String,
+              role_arn: String,
+              type: :aws,
+              ?purpose: :ekm | :psp_decryption
+            }
+            | {
+              audience: String,
+              kms_key_location: String,
+              kms_key_name: String,
+              kms_key_ring_name: String,
+              kms_project_id: String,
+              name: String,
+              type: :gcp,
+              workload_identity_pool_id: String,
+              workload_identity_project_number: String,
+              workload_identity_provider_id: String,
+              ?kms_key_version: String,
+              ?purpose: :ekm | :psp_decryption
+            }
+            | {
+              key_name: String,
+              name: String,
+              tenant_id: String,
+              type: :azure,
+              vault_uri: String,
+              ?key_version: String,
+              ?purpose: :ekm | :psp_decryption
+            },
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::ExternalKey
+
+          def retrieve: (
+            String external_key_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::ExternalKey
+
+          def list: (
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::ExternalKeyListParams::order,
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyListParams::purpose,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::ExternalKey]
+
+          def delete: (
+            String external_key_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::ExternalKey
+
+          def validate: (
+            String external_key_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Admin::Organization::ExternalKeyValidateResponse
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

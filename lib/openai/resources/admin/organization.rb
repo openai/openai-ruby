@@ -44,6 +44,9 @@ module OpenAI
         # @return [OpenAI::Resources::Admin::Organization::Projects]
         attr_reader :projects
 
+        # @return [OpenAI::Resources::Admin::Organization::ExternalKeys]
+        attr_reader :external_keys
+
         # @api private
         #
         # @param client [OpenAI::Client]
@@ -62,6 +65,7 @@ module OpenAI
           @spend_alerts = OpenAI::Resources::Admin::Organization::SpendAlerts.new(client: client)
           @certificates = OpenAI::Resources::Admin::Organization::Certificates.new(client: client)
           @projects = OpenAI::Resources::Admin::Organization::Projects.new(client: client)
+          @external_keys = OpenAI::Resources::Admin::Organization::ExternalKeys.new(client: client)
         end
       end
     end

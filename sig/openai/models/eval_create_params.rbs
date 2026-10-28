@@ -195,7 +195,15 @@ module OpenAI
         class LabelModel < OpenAI::Internal::Type::BaseModel
           # A list of chat messages forming the prompt or context. May include variable
           # references to the `item` namespace, ie {{item.name}}.
-          attr_accessor input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input]
+          attr_reader input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input]
+
+          # A list of chat messages forming the prompt or context. May include variable
+          # references to the `item` namespace, ie {{item.name}}.
+          def input=: (
+            ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input
+            | { content: String, role: String }]
+          ) -> ::Array[(OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input
+          | { content: String, role: String })]
 
           # The labels to classify to each item in the evaluation.
           attr_accessor labels: ::Array[String]
@@ -226,7 +234,8 @@ module OpenAI
           # @param type
           #   The object type, which is always `label_model`.
           def initialize: (
-            input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input],
+            input: ::Array[OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::input
+            | { content: String, role: String }],
             labels: ::Array[String],
             model: String,
             name: String,
@@ -278,7 +287,17 @@ module OpenAI
             class EvalItem < OpenAI::Internal::Type::BaseModel
               # Inputs to the model - can contain template strings. Supports text, output text,
               # input images, and input audio, either as a single item or an array of items.
-              attr_accessor content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content
+              attr_reader content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content
+
+              # Inputs to the model - can contain template strings. Supports text, output text,
+              # input images, and input audio, either as a single item or an array of items.
+              def content=: (
+                OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content
+                | { text: String, type: :output_text }
+                | { image_url: String, type: :input_image, ?detail: String }
+              ) -> (OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content
+              | { text: String, type: :output_text }
+              | { image_url: String, type: :input_image, ?detail: String })
 
               # The role of the message input. One of `user`, `assistant`, `system`, or
               # `developer`.
@@ -301,7 +320,9 @@ module OpenAI
               # @param type
               #   The type of the message input. Always `message`.
               def initialize: (
-                content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content,
+                content: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::content
+                | { text: String, type: :output_text }
+                | { image_url: String, type: :input_image, ?detail: String },
                 role: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::role,
                 ?type: OpenAI::Models::EvalCreateParams::TestingCriterion::LabelModel::Input::EvalItem::type_
               ) -> void

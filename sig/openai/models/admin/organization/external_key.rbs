@@ -1,0 +1,186 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type external_key =
+          {
+            id: String,
+            api_project_ids: ::Array[String],
+            created_at: Integer,
+            name: String,
+            object: String,
+            type: String,
+            workspace_id: String,
+            ?audience: String,
+            ?external_id: String,
+            ?key_name: String,
+            ?key_version: String,
+            ?kms_arn: String,
+            ?kms_key_location: String,
+            ?kms_key_name: String,
+            ?kms_key_ring_name: String,
+            ?kms_key_version: String,
+            ?kms_project_id: String,
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKey::purpose,
+            ?role_arn: String,
+            ?tenant_id: String,
+            ?vault_uri: String,
+            ?workload_identity_pool_id: String,
+            ?workload_identity_project_number: String,
+            ?workload_identity_provider_id: String
+          }
+
+        class ExternalKey < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor api_project_ids: ::Array[String]
+
+          attr_accessor created_at: Integer
+
+          attr_accessor name: String
+
+          attr_accessor object: String
+
+          attr_accessor type: String
+
+          attr_accessor workspace_id: String
+
+          attr_reader audience: String?
+
+          def audience=: (String) -> String
+
+          attr_reader external_id: String?
+
+          def external_id=: (String) -> String
+
+          attr_reader key_name: String?
+
+          def key_name=: (String) -> String
+
+          attr_reader key_version: String?
+
+          def key_version=: (String) -> String
+
+          attr_reader kms_arn: String?
+
+          def kms_arn=: (String) -> String
+
+          attr_reader kms_key_location: String?
+
+          def kms_key_location=: (String) -> String
+
+          attr_reader kms_key_name: String?
+
+          def kms_key_name=: (String) -> String
+
+          attr_reader kms_key_ring_name: String?
+
+          def kms_key_ring_name=: (String) -> String
+
+          attr_reader kms_key_version: String?
+
+          def kms_key_version=: (String) -> String
+
+          attr_reader kms_project_id: String?
+
+          def kms_project_id=: (String) -> String
+
+          attr_reader purpose: OpenAI::Models::Admin::Organization::ExternalKey::purpose?
+
+          def purpose=: (
+            OpenAI::Models::Admin::Organization::ExternalKey::purpose
+          ) -> OpenAI::Models::Admin::Organization::ExternalKey::purpose
+
+          attr_reader role_arn: String?
+
+          def role_arn=: (String) -> String
+
+          attr_reader tenant_id: String?
+
+          def tenant_id=: (String) -> String
+
+          attr_reader vault_uri: String?
+
+          def vault_uri=: (String) -> String
+
+          attr_reader workload_identity_pool_id: String?
+
+          def workload_identity_pool_id=: (String) -> String
+
+          attr_reader workload_identity_project_number: String?
+
+          def workload_identity_project_number=: (String) -> String
+
+          attr_reader workload_identity_provider_id: String?
+
+          def workload_identity_provider_id=: (String) -> String
+
+          def initialize: (
+            id: String,
+            api_project_ids: ::Array[String],
+            created_at: Integer,
+            name: String,
+            object: String,
+            type: String,
+            workspace_id: String,
+            ?audience: String,
+            ?external_id: String,
+            ?key_name: String,
+            ?key_version: String,
+            ?kms_arn: String,
+            ?kms_key_location: String,
+            ?kms_key_name: String,
+            ?kms_key_ring_name: String,
+            ?kms_key_version: String,
+            ?kms_project_id: String,
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKey::purpose,
+            ?role_arn: String,
+            ?tenant_id: String,
+            ?vault_uri: String,
+            ?workload_identity_pool_id: String,
+            ?workload_identity_project_number: String,
+            ?workload_identity_provider_id: String
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            api_project_ids: ::Array[String],
+            created_at: Integer,
+            name: String,
+            object: String,
+            type: String,
+            workspace_id: String,
+            ?audience: String,
+            ?external_id: String,
+            ?key_name: String,
+            ?key_version: String,
+            ?kms_arn: String,
+            ?kms_key_location: String,
+            ?kms_key_name: String,
+            ?kms_key_ring_name: String,
+            ?kms_key_version: String,
+            ?kms_project_id: String,
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKey::purpose,
+            ?role_arn: String,
+            ?tenant_id: String,
+            ?vault_uri: String,
+            ?workload_identity_pool_id: String,
+            ?workload_identity_project_number: String,
+            ?workload_identity_provider_id: String
+          }
+
+          type purpose = :ekm | :psp_decryption
+
+          module Purpose
+            extend OpenAI::Internal::Type::Enum
+
+            EKM: :ekm
+            PSP_DECRYPTION: :psp_decryption
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKey::purpose]
+          end
+        end
+      end
+    end
+  end
+end

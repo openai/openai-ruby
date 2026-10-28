@@ -39,7 +39,8 @@ module OpenAI
         ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
         ?temperature: Float?,
         ?text: OpenAI::Responses::ResponseTextConfig,
-        ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+        ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice
+        | { type: :programmatic_tool_calling },
         ?tools: ::Array[OpenAI::Models::Responses::tool],
         ?top_logprobs: Integer?,
         ?top_p: Float?,
@@ -74,7 +75,8 @@ module OpenAI
         ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
         ?temperature: Float?,
         ?text: OpenAI::Responses::ResponseTextConfig,
-        ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+        ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice
+        | { type: :programmatic_tool_calling },
         ?tools: ::Array[OpenAI::Models::Responses::tool],
         ?top_logprobs: Integer?,
         ?top_p: Float?,

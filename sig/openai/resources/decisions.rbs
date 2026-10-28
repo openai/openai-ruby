@@ -4,7 +4,13 @@ module OpenAI
       def create: (
         input: OpenAI::Models::DecisionCreateParams::input,
         model: String,
-        questions: ::Array[OpenAI::Models::DecisionCreateParams::question],
+        questions: ::Array[OpenAI::Models::DecisionCreateParams::question
+        | {
+          instructions: String
+          | ::Array[OpenAI::Models::decision_question_input_part],
+          type: :predicate,
+          ?name: String
+        }],
         ?prompt_cache_key: String?,
         ?prompt_cache_options: (OpenAI::DecisionCreateParams::PromptCacheOptions
         | OpenAI::Models::DecisionCreateParams::prompt_cache_options)?,

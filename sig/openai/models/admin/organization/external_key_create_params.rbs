@@ -1,0 +1,423 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type external_key_create_params =
+          {
+            body: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class ExternalKeyCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_reader body: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body
+
+          def body=: (
+            OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body
+            | {
+              external_id: String,
+              kms_arn: String,
+              name: String,
+              role_arn: String,
+              type: :aws,
+              ?purpose: :ekm | :psp_decryption
+            }
+            | {
+              audience: String,
+              kms_key_location: String,
+              kms_key_name: String,
+              kms_key_ring_name: String,
+              kms_project_id: String,
+              name: String,
+              type: :gcp,
+              workload_identity_pool_id: String,
+              workload_identity_project_number: String,
+              workload_identity_provider_id: String,
+              ?kms_key_version: String,
+              ?purpose: :ekm | :psp_decryption
+            }
+            | {
+              key_name: String,
+              name: String,
+              tenant_id: String,
+              type: :azure,
+              vault_uri: String,
+              ?key_version: String,
+              ?purpose: :ekm | :psp_decryption
+            }
+          ) -> (OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body
+          | {
+            external_id: String,
+            kms_arn: String,
+            name: String,
+            role_arn: String,
+            type: :aws,
+            ?purpose: (:ekm | :psp_decryption)
+          }
+          | {
+            audience: String,
+            kms_key_location: String,
+            kms_key_name: String,
+            kms_key_ring_name: String,
+            kms_project_id: String,
+            name: String,
+            type: :gcp,
+            workload_identity_pool_id: String,
+            workload_identity_project_number: String,
+            workload_identity_provider_id: String,
+            ?kms_key_version: String,
+            ?purpose: (:ekm | :psp_decryption)
+          }
+          | {
+            key_name: String,
+            name: String,
+            tenant_id: String,
+            type: :azure,
+            vault_uri: String,
+            ?key_version: String,
+            ?purpose: (:ekm | :psp_decryption)
+          })
+
+          def initialize: (
+            body: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body
+            | {
+              external_id: String,
+              kms_arn: String,
+              name: String,
+              role_arn: String,
+              type: :aws,
+              ?purpose: :ekm | :psp_decryption
+            }
+            | {
+              audience: String,
+              kms_key_location: String,
+              kms_key_name: String,
+              kms_key_ring_name: String,
+              kms_project_id: String,
+              name: String,
+              type: :gcp,
+              workload_identity_pool_id: String,
+              workload_identity_project_number: String,
+              workload_identity_provider_id: String,
+              ?kms_key_version: String,
+              ?purpose: :ekm | :psp_decryption
+            }
+            | {
+              key_name: String,
+              name: String,
+              tenant_id: String,
+              type: :azure,
+              vault_uri: String,
+              ?key_version: String,
+              ?purpose: :ekm | :psp_decryption
+            },
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            body: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type body =
+            OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Aws
+            | OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Gcp
+            | OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure
+
+          module Body
+            extend OpenAI::Internal::Type::Union
+
+            type aws =
+              {
+                external_id: String,
+                kms_arn: String,
+                name: String,
+                role_arn: String,
+                ?type: :aws,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose
+              }
+
+            class Aws < OpenAI::Internal::Type::BaseModel
+              # The ExternalID that OpenAI will pass in the AssumeRole call for the customer's
+              # AWS account. This must be the OpenAI organization ID or an API project ID that
+              # belongs to the organization.
+              attr_accessor external_id: String
+
+              # The Key Management System ARN for the master key you manage
+              attr_accessor kms_arn: String
+
+              # A friendly name to identify this config
+              attr_accessor name: String
+
+              # The Role ARN that OpenAI will assume to call your KMS
+              attr_accessor role_arn: String
+
+              attr_accessor type: :aws
+
+              attr_reader purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose?
+
+              def purpose=: (
+                OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose
+              ) -> OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose
+
+              # @param external_id
+              #   The ExternalID that OpenAI will pass in the AssumeRole call for the customer's
+              #   AWS account. This must be the OpenAI organization ID or an API project ID that
+              #   belongs to the organization.
+              # @param kms_arn
+              #   The Key Management System ARN for the master key you manage
+              # @param name
+              #   A friendly name to identify this config
+              # @param role_arn
+              #   The Role ARN that OpenAI will assume to call your KMS
+              def initialize: (
+                external_id: String,
+                kms_arn: String,
+                name: String,
+                role_arn: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose,
+                ?type: :aws
+              ) -> void
+
+              def to_hash: -> {
+                external_id: String,
+                kms_arn: String,
+                name: String,
+                role_arn: String,
+                ?type: :aws,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose
+              }
+
+              type purpose = :ekm | :psp_decryption
+
+              module Purpose
+                extend OpenAI::Internal::Type::Enum
+
+                EKM: :ekm
+                PSP_DECRYPTION: :psp_decryption
+
+                def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose]
+              end
+            end
+
+            type gcp =
+              {
+                audience: String,
+                kms_key_location: String,
+                kms_key_name: String,
+                kms_key_ring_name: String,
+                kms_project_id: String,
+                name: String,
+                ?type: :gcp,
+                workload_identity_pool_id: String,
+                workload_identity_project_number: String,
+                workload_identity_provider_id: String,
+                ?kms_key_version: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose
+              }
+
+            class Gcp < OpenAI::Internal::Type::BaseModel
+              # The aud field in the identity token OpenAI will pass in the call to the
+              # customer's GCP STS. This must be the OpenAI organization ID or an API project ID
+              # that belongs to the organization.
+              attr_accessor audience: String
+
+              # The region where your Key Management System master key is located
+              attr_accessor kms_key_location: String
+
+              # The name of the Key Management System master key you manage
+              attr_accessor kms_key_name: String
+
+              # The Key Management System key ring for the master key you manage
+              attr_accessor kms_key_ring_name: String
+
+              # The string GCP project name where your KMS resides
+              attr_accessor kms_project_id: String
+
+              # A friendly name to identify this config
+              attr_accessor name: String
+
+              attr_accessor type: :gcp
+
+              # The pool containing the Workload Identity provider that you registered for
+              # OpenAI
+              attr_accessor workload_identity_pool_id: String
+
+              # The numeric GCP project number where you registered OpenAI's workload identity
+              attr_accessor workload_identity_project_number: String
+
+              # The Workload Identity provider that you registered for OpenAI
+              attr_accessor workload_identity_provider_id: String
+
+              # An exact CryptoKeyVersion number. Required for PSP decryption; not accepted for
+              # EKM.
+              attr_reader kms_key_version: String?
+
+              # An exact CryptoKeyVersion number. Required for PSP decryption; not accepted for
+              # EKM.
+              def kms_key_version=: (String) -> String
+
+              attr_reader purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose?
+
+              def purpose=: (
+                OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose
+              ) -> OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose
+
+              # @param audience
+              #   The aud field in the identity token OpenAI will pass in the call to the
+              #   customer's GCP STS. This must be the OpenAI organization ID or an API project ID
+              #   that belongs to the organization.
+              # @param kms_key_location
+              #   The region where your Key Management System master key is located
+              # @param kms_key_name
+              #   The name of the Key Management System master key you manage
+              # @param kms_key_ring_name
+              #   The Key Management System key ring for the master key you manage
+              # @param kms_project_id
+              #   The string GCP project name where your KMS resides
+              # @param name
+              #   A friendly name to identify this config
+              # @param workload_identity_pool_id
+              #   The pool containing the Workload Identity provider that you registered for
+              #   OpenAI
+              # @param workload_identity_project_number
+              #   The numeric GCP project number where you registered OpenAI's workload identity
+              # @param workload_identity_provider_id
+              #   The Workload Identity provider that you registered for OpenAI
+              # @param kms_key_version
+              #   An exact CryptoKeyVersion number. Required for PSP decryption; not accepted for
+              #   EKM.
+              def initialize: (
+                audience: String,
+                kms_key_location: String,
+                kms_key_name: String,
+                kms_key_ring_name: String,
+                kms_project_id: String,
+                name: String,
+                workload_identity_pool_id: String,
+                workload_identity_project_number: String,
+                workload_identity_provider_id: String,
+                ?kms_key_version: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose,
+                ?type: :gcp
+              ) -> void
+
+              def to_hash: -> {
+                audience: String,
+                kms_key_location: String,
+                kms_key_name: String,
+                kms_key_ring_name: String,
+                kms_project_id: String,
+                name: String,
+                ?type: :gcp,
+                workload_identity_pool_id: String,
+                workload_identity_project_number: String,
+                workload_identity_provider_id: String,
+                ?kms_key_version: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose
+              }
+
+              type purpose = :ekm | :psp_decryption
+
+              module Purpose
+                extend OpenAI::Internal::Type::Enum
+
+                EKM: :ekm
+                PSP_DECRYPTION: :psp_decryption
+
+                def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose]
+              end
+            end
+
+            type azure =
+              {
+                key_name: String,
+                name: String,
+                tenant_id: String,
+                ?type: :azure,
+                vault_uri: String,
+                ?key_version: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
+              }
+
+            class Azure < OpenAI::Internal::Type::BaseModel
+              # The name of the Azure Key Vault master key that you manage
+              attr_accessor key_name: String
+
+              # A friendly name to identify this config
+              attr_accessor name: String
+
+              # Your Azure tenant UUID
+              attr_accessor tenant_id: String
+
+              attr_accessor type: :azure
+
+              # The URI of the Azure vault containing the master key you manage
+              attr_accessor vault_uri: String
+
+              # An exact Azure Key Vault key version. Required for PSP decryption; not accepted
+              # for EKM.
+              attr_reader key_version: String?
+
+              # An exact Azure Key Vault key version. Required for PSP decryption; not accepted
+              # for EKM.
+              def key_version=: (String) -> String
+
+              attr_reader purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose?
+
+              def purpose=: (
+                OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
+              ) -> OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
+
+              # @param key_name
+              #   The name of the Azure Key Vault master key that you manage
+              # @param name
+              #   A friendly name to identify this config
+              # @param tenant_id
+              #   Your Azure tenant UUID
+              # @param vault_uri
+              #   The URI of the Azure vault containing the master key you manage
+              # @param key_version
+              #   An exact Azure Key Vault key version. Required for PSP decryption; not accepted
+              #   for EKM.
+              def initialize: (
+                key_name: String,
+                name: String,
+                tenant_id: String,
+                vault_uri: String,
+                ?key_version: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose,
+                ?type: :azure
+              ) -> void
+
+              def to_hash: -> {
+                key_name: String,
+                name: String,
+                tenant_id: String,
+                ?type: :azure,
+                vault_uri: String,
+                ?key_version: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
+              }
+
+              type purpose = :ekm | :psp_decryption
+
+              module Purpose
+                extend OpenAI::Internal::Type::Enum
+
+                EKM: :ekm
+                PSP_DECRYPTION: :psp_decryption
+
+                def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose]
+              end
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body]
+          end
+        end
+      end
+    end
+  end
+end

@@ -24,7 +24,16 @@ module OpenAI
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
-      attr_accessor video: OpenAI::Models::VideoExtendParams::video
+      attr_reader video: OpenAI::Models::VideoExtendParams::video
+
+      # Reference to the completed video to extend.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      def video=: (
+        OpenAI::Models::VideoExtendParams::video | { id: String }
+      ) -> (OpenAI::Models::VideoExtendParams::video | { id: String })
 
       # @param prompt
       #   Updated text prompt that directs the extension generation.
@@ -40,7 +49,7 @@ module OpenAI
       def initialize: (
         prompt: String,
         seconds: OpenAI::Models::video_seconds,
-        video: OpenAI::Models::VideoExtendParams::video,
+        video: OpenAI::Models::VideoExtendParams::video | { id: String },
         ?request_options: OpenAI::request_opts
       ) -> void
 

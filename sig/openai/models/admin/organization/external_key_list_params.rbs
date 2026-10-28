@@ -1,0 +1,81 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type external_key_list_params =
+          {
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::ExternalKeyListParams::order,
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyListParams::purpose,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class ExternalKeyListParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor after: String?
+
+          attr_reader limit: Integer?
+
+          def limit=: (Integer) -> Integer
+
+          attr_reader order: OpenAI::Models::Admin::Organization::ExternalKeyListParams::order?
+
+          def order=: (
+            OpenAI::Models::Admin::Organization::ExternalKeyListParams::order
+          ) -> OpenAI::Models::Admin::Organization::ExternalKeyListParams::order
+
+          # Filter by key purpose. When omitted, returns keys of all purposes.
+          attr_reader purpose: OpenAI::Models::Admin::Organization::ExternalKeyListParams::purpose?
+
+          # Filter by key purpose. When omitted, returns keys of all purposes.
+          def purpose=: (
+            OpenAI::Models::Admin::Organization::ExternalKeyListParams::purpose
+          ) -> OpenAI::Models::Admin::Organization::ExternalKeyListParams::purpose
+
+          # @param purpose
+          #   Filter by key purpose. When omitted, returns keys of all purposes.
+          def initialize: (
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::ExternalKeyListParams::order,
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyListParams::purpose,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            ?after: String?,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::ExternalKeyListParams::order,
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyListParams::purpose,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type order = :asc | :desc
+
+          module Order
+            extend OpenAI::Internal::Type::Enum
+
+            ASC: :asc
+            DESC: :desc
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKeyListParams::order]
+          end
+
+          type purpose = :ekm | :psp_decryption
+
+          module Purpose
+            extend OpenAI::Internal::Type::Enum
+
+            EKM: :ekm
+            PSP_DECRYPTION: :psp_decryption
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKeyListParams::purpose]
+          end
+        end
+      end
+    end
+  end
+end
