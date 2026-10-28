@@ -126,6 +126,7 @@ module OpenAI
 
         type union_member1 =
           OpenAI::Models::decision_input_message
+          | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage
           | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage
           | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage
           | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage
