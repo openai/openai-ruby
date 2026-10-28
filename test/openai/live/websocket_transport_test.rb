@@ -44,12 +44,19 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
               )
             )
           end
+
           if state.fetch(:closed)
             socket.write(
-              JSON.generate(type: "session.closed", event_id: "close_1",
-                            session: session, reason: "close_requested", usage: {seconds: 0})
+              JSON.generate(
+                type: "session.closed",
+                event_id: "close_1",
+                session: session,
+                reason: "close_requested",
+                usage: {seconds: 0}
+              )
             )
           end
+
           socket.flush
           # Keep the connection open when start/close is rejected. This read
           # completes only when the example releases its transport.
@@ -80,8 +87,12 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
           RUBY
           pid = Process.spawn(
             {"OPENAI_API_KEY" => "sk-test-local", "OPENAI_BASE_URL" => "http://127.0.0.1:#{port}/v1"},
-            RbConfig.ruby, "-Ilib", "-e", script,
-            out: output, err: output
+            RbConfig.ruby,
+            "-Ilib",
+            "-e",
+            script,
+            out: output,
+            err: output
           )
           result = task.with_timeout(15) do
             loop do
@@ -90,6 +101,7 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
               sleep(0.01)
             end
           end
+
           pid = nil
           output.rewind
           text = output.read
@@ -103,17 +115,20 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
           else
             refute_includes(text, "Live session closed")
           end
+
           if name == :rejected_start || name == :error_then_closed
             assert_includes(text, "Live reported a session error")
           else
             assert_includes(text, "Live did not confirm session.closed before the deadline.")
           end
+
         ensure
           if pid
             Process.kill("TERM", pid)
             Process.wait(pid)
           end
         end
+
       ensure
         server_task&.stop
       end

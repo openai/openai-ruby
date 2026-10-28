@@ -12,7 +12,9 @@ started = false
 session_error = false
 # Use an example-local timeout exception so older Ruby schedulers cannot turn
 # a deadline into a transport failure while interrupting a socket read.
-deadline_error = Class.new(Exception) # rubocop:disable Lint/InheritException
+# rubocop:disable Lint/InheritException
+deadline_error = Class.new(Exception)
+# rubocop:enable Lint/InheritException
 client.live.connect do |connection|
   # Bound this short demonstration's start-and-close exchange. Choose a
   # deadline appropriate for your application when doing real session work.
@@ -35,6 +37,7 @@ client.live.connect do |connection|
       end
     end
   end
+
 rescue deadline_error
   raise "Live did not confirm session.closed before the deadline.", cause: nil
 end
