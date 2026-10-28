@@ -28,6 +28,8 @@ module OpenAI
 
         attr_reader projects: OpenAI::Resources::Admin::Organization::Projects
 
+        attr_reader external_keys: OpenAI::Resources::Admin::Organization::ExternalKeys
+
         def initialize: (client: OpenAI::Client) -> void
       end
     end

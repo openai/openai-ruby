@@ -441,8 +441,10 @@ module OpenAI
 
               # The tools to add this file to.
               def tools=: (
-                ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
-              ) -> ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+                ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool
+                | { type: :file_search }]
+              ) -> ::Array[(OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool
+              | { type: :file_search })]
 
               # @param file_id
               #   The ID of the file to attach to the message.
@@ -450,7 +452,8 @@ module OpenAI
               #   The tools to add this file to.
               def initialize: (
                 ?file_id: String,
-                ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool]
+                ?tools: ::Array[OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::Message::Attachment::tool
+                | { type: :file_search }]
               ) -> void
 
               def to_hash: -> {
@@ -603,7 +606,9 @@ module OpenAI
                 # strategy.
                 def chunking_strategy=: (
                   OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
-                ) -> OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
+                  | { type: :auto }
+                ) -> (OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
+                | { type: :auto })
 
                 # A list of [file](https://developers.openai.com/api/reference/resources/files)
                 # IDs to add to the vector store. For vector stores created before Nov 2025, there
@@ -641,7 +646,8 @@ module OpenAI
                 #   Keys are strings with a maximum length of 64 characters. Values are strings with
                 #   a maximum length of 512 characters.
                 def initialize: (
-                  ?chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy,
+                  ?chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
+                  | { type: :auto },
                   ?file_ids: ::Array[String],
                   ?metadata: OpenAI::Models::metadata?
                 ) -> void

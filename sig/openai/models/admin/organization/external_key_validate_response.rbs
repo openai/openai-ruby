@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type external_key_validate_response = { status: String }
+
+        class ExternalKeyValidateResponse < OpenAI::Internal::Type::BaseModel
+          attr_accessor status: String
+
+          def initialize: (status: String) -> void
+
+          def to_hash: -> { status: String }
+        end
+      end
+    end
+  end
+end

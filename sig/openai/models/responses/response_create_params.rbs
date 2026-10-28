@@ -293,7 +293,9 @@ module OpenAI
         # can call.
         def tool_choice=: (
           OpenAI::Models::Responses::ResponseCreateParams::tool_choice
-        ) -> OpenAI::Models::Responses::ResponseCreateParams::tool_choice
+          | { type: :programmatic_tool_calling }
+        ) -> (OpenAI::Models::Responses::ResponseCreateParams::tool_choice
+        | { type: :programmatic_tool_calling })
 
         # An array of tools the model may call while generating a response. You can
         # specify which tool to use by setting the `tool_choice` parameter.
@@ -619,7 +621,8 @@ module OpenAI
           ?stream_options: OpenAI::Responses::ResponseCreateParams::StreamOptions?,
           ?temperature: Float?,
           ?text: OpenAI::Responses::ResponseTextConfig,
-          ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice,
+          ?tool_choice: OpenAI::Models::Responses::ResponseCreateParams::tool_choice
+          | { type: :programmatic_tool_calling },
           ?tools: ::Array[OpenAI::Models::Responses::tool],
           ?top_logprobs: Integer?,
           ?top_p: Float?,
