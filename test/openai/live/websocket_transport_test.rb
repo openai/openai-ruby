@@ -16,7 +16,15 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
     rejected_start: {started: false, error: true, closed: false},
     silent_start: {started: false, error: false, closed: false},
     rejected_close: {started: true, error: true, closed: false},
-    error_then_closed: {started: true, error: true, closed: true}
+    error_then_closed: {started: true, error: true, closed: true},
+    requested_close: {started: true, error: false, closed: true, reason: "close_requested", success: true},
+    closed_before_start: {started: false, error: false, closed: true, reason: "close_requested"},
+    expired: {started: true, error: false, closed: true, reason: "expired", success: true},
+    content: {started: true, error: false, closed: true, reason: "content", success: true},
+    connection_lost: {started: true, error: false, closed: true, reason: "connection_lost", success: true},
+    remote_hangup: {started: true, error: false, closed: true, reason: "remote_hangup", success: true},
+    future_reason: {started: true, error: false, closed: true, reason: "private-synthetic-event", success: true},
+    error_then_expired: {started: true, error: true, closed: true, reason: "expired"}
   }.each do |name, state|
     define_method("test_example_handles_#{name}_on_a_real_websocket") do
       wire = Queue.new
@@ -51,7 +59,7 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
                 type: "session.closed",
                 event_id: "close_1",
                 session: session,
-                reason: "close_requested",
+                reason: state.fetch(:reason, "close_requested"),
                 usage: {seconds: 0}
               )
             )
@@ -105,7 +113,12 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
           pid = nil
           output.rewind
           text = output.read
-          refute_predicate(result.fetch(1), :success?, text)
+          if state[:success]
+            assert_predicate(result.fetch(1), :success?, text)
+          else
+            refute_predicate(result.fetch(1), :success?, text)
+          end
+
           refute_includes(text, "private-synthetic-event")
           assert_equal("session.start", wire.pop(timeout: 1))
           assert_equal("session.close", wire.pop(timeout: 1)) if state.fetch(:started)
@@ -116,8 +129,12 @@ class OpenAI::Test::LiveWebSocketTransportTest < Minitest::Test
             refute_includes(text, "Live session closed")
           end
 
-          if name == :rejected_start || name == :error_then_closed
+          if state[:success]
+            refute_includes(text, "finalization was not confirmed")
+          elsif name == :rejected_start || name == :error_then_closed || name == :error_then_expired
             assert_includes(text, "Live reported a session error")
+          elsif state.fetch(:closed)
+            assert_includes(text, "Live closed before session.started.")
           else
             assert_includes(text, "Live did not confirm session.closed before the deadline.")
           end

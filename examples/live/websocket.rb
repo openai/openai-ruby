@@ -44,3 +44,4 @@ end
 
 raise "Live disconnected before session.closed; finalization was not confirmed." unless finished
 raise "Live reported a session error; check the event in your application." if session_error
+raise "Live closed before session.started." unless started
