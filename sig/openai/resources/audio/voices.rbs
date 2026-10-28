@@ -5,7 +5,7 @@ module OpenAI
         def create: (
           body: OpenAI::Models::Audio::VoiceCreateParams::body
           | {
-            audio_sample: StringIO,
+            audio_sample: OpenAI::Internal::file_input,
             consent: String,
             name: String,
             ?type: :audio_sample

@@ -20,7 +20,7 @@ module OpenAI
         def body=: (
           OpenAI::Models::Audio::VoiceCreateParams::body
           | {
-            audio_sample: StringIO,
+            audio_sample: OpenAI::Internal::file_input,
             consent: String,
             name: String,
             ?type: :audio_sample
@@ -34,7 +34,7 @@ module OpenAI
           }
         ) -> (OpenAI::Models::Audio::VoiceCreateParams::body
         | {
-          audio_sample: StringIO,
+          audio_sample: OpenAI::Internal::file_input,
           consent: String,
           name: String,
           ?type: :audio_sample
@@ -53,7 +53,7 @@ module OpenAI
         def initialize: (
           body: OpenAI::Models::Audio::VoiceCreateParams::body
           | {
-            audio_sample: StringIO,
+            audio_sample: OpenAI::Internal::file_input,
             consent: String,
             name: String,
             ?type: :audio_sample

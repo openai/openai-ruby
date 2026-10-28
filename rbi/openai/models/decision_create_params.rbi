@@ -160,7 +160,10 @@ module OpenAI
 
           Variants = T.type_alias {
             T.any(
-              OpenAI::DecisionInputMessage::Variants,
+              T.any(
+                OpenAI::DecisionInputMessage::Variants,
+                OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage
+              ),
               OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage,
               OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage,
               OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage,
