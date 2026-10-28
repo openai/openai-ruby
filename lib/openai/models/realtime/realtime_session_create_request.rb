@@ -332,11 +332,17 @@ module OpenAI
 
           # @!group
 
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_REALTIME = :"gpt-realtime"
           GPT_REALTIME_1_5 = :"gpt-realtime-1.5"
           GPT_REALTIME_2 = :"gpt-realtime-2"
           GPT_REALTIME_2_1 = :"gpt-realtime-2.1"
           GPT_REALTIME_2_1_MINI = :"gpt-realtime-2.1-mini"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME_PREVIEW = :"gpt-4o-realtime-preview"
           GPT_4O_REALTIME_PREVIEW_2024_10_01 = :"gpt-4o-realtime-preview-2024-10-01"
@@ -344,12 +350,24 @@ module OpenAI
           GPT_4O_REALTIME_PREVIEW_2025_06_03 = :"gpt-4o-realtime-preview-2025-06-03"
           GPT_4O_MINI_REALTIME_PREVIEW = :"gpt-4o-mini-realtime-preview"
           GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-mini-realtime-preview-2024-12-17"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_REALTIME_MINI = :"gpt-realtime-mini"
           GPT_REALTIME_MINI_2025_10_06 = :"gpt-realtime-mini-2025-10-06"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_REALTIME_MINI_2025_12_15 = :"gpt-realtime-mini-2025-12-15"
           GPT_AUDIO_1_5 = :"gpt-audio-1.5"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_AUDIO_MINI = :"gpt-audio-mini"
           GPT_AUDIO_MINI_2025_10_06 = :"gpt-audio-mini-2025-10-06"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_AUDIO_MINI_2025_12_15 = :"gpt-audio-mini-2025-12-15"
 
           # @!endgroup
