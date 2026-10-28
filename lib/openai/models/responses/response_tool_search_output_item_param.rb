@@ -755,8 +755,8 @@ module OpenAI
             # @!attribute input_fidelity
             #   Control how much effort the model will exert to match the style and features,
             #   especially facial features, of input images. Supports `high` and `low` on
-            #   `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-            #   `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+            #   `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+            #   this parameter. Defaults to `low` on supported models.
             #
             #   @return [Symbol, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputFidelity, nil]
             optional(
@@ -875,8 +875,8 @@ module OpenAI
             #   @param input_fidelity [Symbol, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputFidelity, nil]
             #     Control how much effort the model will exert to match the style and features,
             #     especially facial features, of input images. Supports `high` and `low` on
-            #     `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-            #     `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+            #     `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+            #     this parameter. Defaults to `low` on supported models.
             #
             #   @param input_image_mask [OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputImageMask]
             #     Optional mask for inpainting. Contains `image_url` (string, optional) and
@@ -965,8 +965,8 @@ module OpenAI
 
             # Control how much effort the model will exert to match the style and features,
             # especially facial features, of input images. Supports `high` and `low` on
-            # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-            # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+            # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+            # this parameter. Defaults to `low` on supported models.
             #
             # @see OpenAI::Models::Responses::ResponseToolSearchOutputItemParam::Tool::ImageGeneration#input_fidelity
             module InputFidelity

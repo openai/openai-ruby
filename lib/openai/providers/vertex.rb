@@ -116,15 +116,6 @@ module OpenAI
               if headers.key?("api-key")
                 raise OpenAI::Errors::Error, "Vertex authentication cannot be combined with a custom api-key header."
               end
-              # The outer Google API version differs for stored Responses.
-              # Do not change other gateway layouts.
-              prefix = "#{base.path.delete_suffix("/")}/responses/"
-              if [:get, :delete].include?(request[:method]) &&
-                  url.path.start_with?(prefix) &&
-                  base.path.start_with?("/v1/projects/")
-                url = url.dup
-                url.path = url.path.sub(%r{\A/v1/}, "/v1beta1/")
-              end
 
               headers.delete("openai-organization")
               headers.delete("openai-project")
@@ -163,7 +154,6 @@ module OpenAI
               context[:token] = token if context
 
               request.merge(
-                url: url,
                 timeout: remaining,
                 headers: headers.merge("authorization" => "Bearer #{token}"),
                 provider_auth: AUTH_MARKER,

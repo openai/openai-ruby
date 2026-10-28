@@ -16,8 +16,8 @@ owns its proof, bounded implementation, verification, review, CI, and
 authorized handoff. Do not launch concurrent scheduled or manual scans.
 
 Read `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, and `VERSIONING.md` before
-investigating. Preserve their architecture, compatibility, generator, security,
-custom-code-budget, and review requirements throughout the workflow.
+investigating. Preserve their architecture, compatibility, generated-file ownership,
+security, and review requirements throughout the workflow.
 
 ## Keep skill maintenance Markdown-only
 
@@ -198,9 +198,8 @@ handwritten extension, or a handwritten repository artifact.
 Fix the earliest appropriate source and use `$castiron` when generator-owned
 work requires it. Regenerate and compare the affected output when feasible;
 preserve generation metadata, checked-in configuration, release markers, and
-custom-code accounting. Never patch generated output as a substitute for fixing
-its source, weaken ownership/counting rules, modify the budget alongside SDK
-code, or approve a custom-code-budget increase on a human's behalf.
+ownership boundaries. Never hand-edit generated output; fix its authoritative
+source and regenerate it.
 
 If regeneration is unavailable, would expose nonpublic material, or would
 produce unrelated broad changes, stop that candidate and report the concrete
@@ -262,7 +261,7 @@ Before pushing or any authorized handoff, the task must complete:
 2. Exhaustive affected-subsystem tests, the full relevant test suite, and
    repository lint/type checks; include supported Ruby/provider or optional
    dependency checks when affected.
-3. Generator, custom-code-budget, packaging, or dependency checks when
+3. Generator, packaging, or dependency checks when
    applicable.
 4. An extensive general code/compatibility review and
    `$thermo-nuclear-code-quality-review`; perform a security review whenever

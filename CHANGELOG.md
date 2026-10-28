@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.114.0](https://github.com/openai/openai-ruby/compare/v0.113.0...v0.114.0) (2026-10-27)
+
+
+### Features
+
+* **api:** add prompt cache breakpoint TTL options ([#977](https://github.com/openai/openai-ruby/issues/977)) ([cc896f4](https://github.com/openai/openai-ruby/commit/cc896f44aa0ae894c9ef26e28b7700a4c521e75f))
+
+
+### Bug Fixes
+
+* sanitize cloud metadata provider errors ([#971](https://github.com/openai/openai-ruby/issues/971)) ([806f5b6](https://github.com/openai/openai-ruby/commit/806f5b67f9dc17871300862eb1107e87a52a062b))
+
+
+### Chores
+
+* **deps-dev:** bump the development-dependencies group with 2 updates ([#968](https://github.com/openai/openai-ruby/issues/968)) ([a3c5ba1](https://github.com/openai/openai-ruby/commit/a3c5ba1f0d5b936f5a631a7acabc92151c70cb14))
+* **deps:** bump ruby/setup-ruby from 1.332.0 to 1.335.0 ([#970](https://github.com/openai/openai-ruby/issues/970)) ([3c7c446](https://github.com/openai/openai-ruby/commit/3c7c4469c802184715900db771341cd2272fd547))
+
 ## [0.113.0](https://github.com/openai/openai-ruby/compare/v0.112.0...v0.113.0) (2026-10-26)
 
 
