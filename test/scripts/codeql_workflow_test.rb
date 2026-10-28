@@ -22,6 +22,43 @@ class CodeQLWorkflowTest < Minitest::Test
     )
   end
 
+  def test_python_analysis_requires_tracked_python_sources
+    steps = YAML.safe_load_file(WORKFLOW).fetch("jobs").fetch("analyze").fetch("steps")
+    detect = steps.find { _1.fetch("name") == "Check for Python sources" }
+    assert_equal("matrix.language == 'python'", detect.fetch("if"))
+    %w[Initialize Perform Reject].each do |prefix|
+      step = steps.find { _1.fetch("name").start_with?(prefix) }
+      assert_equal(
+        "matrix.language != 'python' || steps.python-source.outputs.present == 'true'",
+        step.fetch("if")
+      )
+    end
+
+    Dir.mktmpdir do |dir|
+      _out, err, status = Open3.capture3("git", "init", "-q", dir)
+      assert(status.success?, err)
+      output = File.join(dir, "output")
+      [false, true].each do |has_python|
+        if has_python
+          File.write(File.join(dir, "check.py"), "print('synthetic fixture')\n")
+          _out, err, status = Open3.capture3("git", "-C", dir, "add", "check.py")
+          assert(status.success?, err)
+        end
+
+        File.write(output, "")
+        _out, err, status = Open3.capture3(
+          {"GITHUB_OUTPUT" => output},
+          "bash",
+          "-c",
+          detect.fetch("run"),
+          chdir: dir
+        )
+        assert(status.success?, err)
+        assert_equal("present=#{has_python}\n", File.read(output))
+      end
+    end
+  end
+
   def test_codeql_actions_use_the_same_pinned_release
     uses = File.read(WORKFLOW).scan(
       %r{^\s*uses:\s+(github/codeql-action/(?:init|analyze))@([0-9a-f]{40})\s+#\s+(v\d+\.\d+\.\d+)\s*$}
