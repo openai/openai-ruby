@@ -3879,7 +3879,7 @@
     },
     "lib/openai/models/live/fork_server_event.rb": {
       "mode": "100644",
-      "sha256": "f3c78d151b3e8fe39e7948eeb5e073d1e4e56292656018eba195179baf31549b"
+      "sha256": "46427f946bb996bd4faef22c03cdc24f63ad781494cdbc230f3a5e5d53948ff5"
     },
     "lib/openai/models/live/fork_session_config.rb": {
       "mode": "100644",
@@ -3991,7 +3991,7 @@
     },
     "lib/openai/models/live/server_event.rb": {
       "mode": "100644",
-      "sha256": "49c916c8876b0862f56a89f0f0c6cd5eb1a837511c082d96739e66c31234cbb7"
+      "sha256": "4e218dd9d0aa578759129731f2a92e5a1937ca5e4cf15a8dd013554a0f6c5c10"
     },
     "lib/openai/models/live/server_event_selector.rb": {
       "mode": "100644",
@@ -4071,11 +4071,11 @@
     },
     "lib/openai/models/live/sideband_client_event.rb": {
       "mode": "100644",
-      "sha256": "755caab450eb9ccc25729e1995bf496a29e50136d35cb6b973441afb0f7e6f76"
+      "sha256": "a7b615bb9a2606d2fab972943c5da4d41b211eb9719616c39b34b85cd3d685af"
     },
     "lib/openai/models/live/sideband_server_event.rb": {
       "mode": "100644",
-      "sha256": "d071e9fb3cbea7dc7b91f63120a241f7541b6ba03e717a4252ce0c3b7c88f36e"
+      "sha256": "7e69781c0bf309262a34218bf139a502e4e79ee9deaf31f072f13411e35c1d77"
     },
     "lib/openai/models/live/thinking_append_event.rb": {
       "mode": "100644",
@@ -10239,7 +10239,7 @@
     },
     "rbi/openai/models/live/fork_server_event.rbi": {
       "mode": "100644",
-      "sha256": "08656242f0ce064bc5dfeb6726e378e4b79ef9eb6d9160328bc998e7a98bcef3"
+      "sha256": "3fa0c6c927b10d51fd24fad8ed90f7be2205657b9e71353c4f801f984a2ffd08"
     },
     "rbi/openai/models/live/fork_session_config.rbi": {
       "mode": "100644",
@@ -10351,7 +10351,7 @@
     },
     "rbi/openai/models/live/server_event.rbi": {
       "mode": "100644",
-      "sha256": "1b9a48e22919eecf06eb87308ede12197e6202aa8b809b6237b22111b7197d55"
+      "sha256": "a52fcf336b530f8e7288511f4e0f3fa14e90923f37b19f66a45625eb40cc4a28"
     },
     "rbi/openai/models/live/server_event_selector.rbi": {
       "mode": "100644",
@@ -10431,11 +10431,11 @@
     },
     "rbi/openai/models/live/sideband_client_event.rbi": {
       "mode": "100644",
-      "sha256": "433a42d2f98af7b6fb5db671b5e0af5b4dc73dd541571571bd7d33d7827be2c1"
+      "sha256": "c66f3098ca43459e6dacd121b55c83534caadd64460395c4948462755b23bb55"
     },
     "rbi/openai/models/live/sideband_server_event.rbi": {
       "mode": "100644",
-      "sha256": "6f9e74b7ab2d9ab7b89e8bf45c7c313d9bee8e1773872b39b42dce98c5855de7"
+      "sha256": "899eae1d8fd6543f91679d0de817d50058e67829609508553943417faaf12c90"
     },
     "rbi/openai/models/live/thinking_append_event.rbi": {
       "mode": "100644",
@@ -16599,7 +16599,7 @@
     },
     "sig/openai/models/live/fork_server_event.rbs": {
       "mode": "100644",
-      "sha256": "a21d4688f2de1f1822c845321f70c494ee3b5a94f1d8053bc919dc8cae9de92e"
+      "sha256": "e876b537ddf9ef74420c071bacf502c781b0907128179f54aff504a731eee3fe"
     },
     "sig/openai/models/live/fork_session_config.rbs": {
       "mode": "100644",
@@ -16711,7 +16711,7 @@
     },
     "sig/openai/models/live/server_event.rbs": {
       "mode": "100644",
-      "sha256": "15f3fdaffd07c131c3f238685cb780881e23248ce2627b3db2a992b9b9c6e664"
+      "sha256": "f1a8134fdbfb1a5769783f1a604a1dd8063dcc8e654a417e4b89f6764794c555"
     },
     "sig/openai/models/live/server_event_selector.rbs": {
       "mode": "100644",
@@ -16791,11 +16791,11 @@
     },
     "sig/openai/models/live/sideband_client_event.rbs": {
       "mode": "100644",
-      "sha256": "4b80bdb02294987febd2e07c3c7f29d0bb2ca57814fac4ca316938bd9afc3cea"
+      "sha256": "ba9f8cdfa9b31a5f26c43884869789d2b4a9cc2b9913eae2ea80efbd73d3a359"
     },
     "sig/openai/models/live/sideband_server_event.rbs": {
       "mode": "100644",
-      "sha256": "6dcb334d7e3d698eb838919e183a558c85ded0993cfac5cbd9fbea02ba7dd219"
+      "sha256": "86ccbba228a3972dc86cbafe9445af1a9fbae0fe299d55a45db3e9a2c26739f6"
     },
     "sig/openai/models/live/thinking_append_event.rbs": {
       "mode": "100644",

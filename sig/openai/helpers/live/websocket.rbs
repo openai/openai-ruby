@@ -35,15 +35,7 @@ module OpenAI
         OpenAI::Models::Live::fork_client_event
         | ::Hash[Symbol | String, untyped]
       type sideband_connection_client_event =
-        OpenAI::Models::Live::SessionUpdateEvent
-        | OpenAI::Models::Live::InputAudioMuteEvent
-        | OpenAI::Models::Live::InputAudioUnmuteEvent
-        | OpenAI::Models::Live::InstructionsAppendEvent
-        | OpenAI::Models::Live::ThinkingAppendEvent
-        | OpenAI::Models::Live::CommentaryAppendEvent
-        | OpenAI::Models::Live::ResponseItemCreateEvent
-        | OpenAI::Models::Live::ResponseCreateEvent
-        | OpenAI::Models::Live::SessionCloseEvent
+        OpenAI::Models::Live::sideband_client_event
         | ::Hash[Symbol | String, untyped]
 
       class UnknownServerEvent
