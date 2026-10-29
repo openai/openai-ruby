@@ -39,6 +39,7 @@ module OpenAI
             OpenAI::Live::InfoEvent,
             OpenAI::Live::ForkServerEvent::TransportDtmfReceived,
             OpenAI::Live::ForkServerEvent::TransportDtmfSend,
+            OpenAI::Live::ForkServerEvent::TransportDtmfSent,
             OpenAI::Live::ForkServerEvent::TransportRinging,
             OpenAI::Live::ForkServerEvent::TransportAnswered,
             OpenAI::Live::ForkServerEvent::TransportFailed
@@ -171,6 +172,69 @@ module OpenAI
           sig { params(client_event_id: String).void }
           attr_writer :client_event_id
 
+          # Legacy SIP DTMF delivery notification retained for SDK compatibility and saved
+          # events. Current servers confirm delivery with transport.dtmf.sent;
+          # transport.dtmf.send is now the client command.
+          sig do
+            params(
+
+              event: String,
+
+              event_id: String,
+
+              client_event_id: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            event:,
+
+            event_id:,
+
+            # The event_id of the client command, when supplied.
+            client_event_id: nil,
+
+            type: :"transport.dtmf.send"
+          )
+          end
+
+          sig do
+            override.returns(
+              {event: String, event_id: String, type: Symbol, client_event_id: T.nilable(String)}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class TransportDtmfSent < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Live::ForkServerEvent::TransportDtmfSent,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          sig { returns(String) }
+          attr_accessor :event
+
+          sig { returns(String) }
+          attr_accessor :event_id
+
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The event_id of the client command, when supplied.
+          sig { returns(T.nilable(String)) }
+          attr_reader :client_event_id
+
+          sig { params(client_event_id: String).void }
+          attr_writer :client_event_id
+
           # A SIP DTMF keypress successfully sent to the SIP trunk. Delivered only to
           # sideband observers; this is not a client command.
           sig do
@@ -195,7 +259,7 @@ module OpenAI
             # The event_id of the client command, when supplied.
             client_event_id: nil,
 
-            type: :"transport.dtmf.send"
+            type: :"transport.dtmf.sent"
           )
           end
 

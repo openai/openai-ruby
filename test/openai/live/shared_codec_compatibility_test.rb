@@ -80,6 +80,62 @@ class OpenAI::Test::LiveSharedCodecCompatibilityTest < Minitest::Test
     end
   end
 
+  def test_sip_dtmf_commands_preserve_optional_correlation_on_sideband_only
+    commands = [
+      {type: "transport.dtmf.send", event: "5"},
+      {type: "transport.dtmf.send", event: "#", event_id: nil},
+      {type: "transport.dtmf.send", event: "A", event_id: "synthetic-command"}
+    ]
+    socket = FakeSocket.new
+    connect(:sideband, socket) do |connection|
+      commands.each { connection.send_event(_1) }
+      connection.send_event(OpenAI::Live::SidebandClientEvent::TransportDtmfSend.new(event: "*"))
+    end
+
+    assert_equal(
+      commands.map { JSON.parse(JSON.generate(_1)) } + [{"type" => "transport.dtmf.send", "event" => "*"}],
+      socket.writes.map { JSON.parse(_1) }
+    )
+    [:primary, :fork].each do |mode|
+      rejected = FakeSocket.new
+      connect(mode, rejected) do |connection|
+        assert_raises(ArgumentError) { connection.send_event(commands.first) }
+      end
+
+      assert_empty(rejected.writes)
+    end
+  end
+
+  def test_new_and_legacy_dtmf_acknowledgements_remain_typed
+    MODES.each do |mode|
+      socket = FakeSocket.new(
+        JSON.generate(
+          type: "transport.dtmf.sent",
+          event_id: "synthetic-new",
+          event: "5",
+          client_event_id: "synthetic-command"
+        ),
+        JSON.generate(type: "transport.dtmf.sent", event_id: "synthetic-uncorrelated", event: "*"),
+        JSON.generate(
+          type: "transport.dtmf.send",
+          event_id: "synthetic-legacy",
+          event: "#",
+          client_event_id: "legacy-command"
+        )
+      )
+      connect(mode, socket) do |connection|
+        event_class = mode == :fork ? OpenAI::Live::ForkServerEvent : OpenAI::Live::ServerEvent
+        acknowledgement = connection.receive
+        assert_instance_of(event_class::TransportDtmfSent, acknowledgement)
+        assert_equal("synthetic-command", acknowledgement.client_event_id)
+        assert_nil(connection.receive.client_event_id)
+        legacy = connection.receive
+        assert_instance_of(event_class::TransportDtmfSend, legacy)
+        assert_equal("legacy-command", legacy.client_event_id)
+      end
+    end
+  end
+
   private def connect(mode, socket, &block)
     transport = FakeTransport.new(socket)
     case mode

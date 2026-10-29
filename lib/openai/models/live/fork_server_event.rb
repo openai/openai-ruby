@@ -82,8 +82,11 @@ module OpenAI
         # A SIP DTMF keypress received from the caller. Delivered only to sideband observers.
         variant :"transport.dtmf.received", -> { OpenAI::Live::ForkServerEvent::TransportDtmfReceived }
 
-        # A SIP DTMF keypress successfully sent to the SIP trunk. Delivered only to sideband observers; this is not a client command.
+        # Legacy SIP DTMF delivery notification retained for SDK compatibility and saved events. Current servers confirm delivery with transport.dtmf.sent; transport.dtmf.send is now the client command.
         variant :"transport.dtmf.send", -> { OpenAI::Live::ForkServerEvent::TransportDtmfSend }
+
+        # A SIP DTMF keypress successfully sent to the SIP trunk. Delivered only to sideband observers; this is not a client command.
+        variant :"transport.dtmf.sent", -> { OpenAI::Live::ForkServerEvent::TransportDtmfSent }
 
         # The outbound SIP provider leg is ringing or providing early media. Delivered only to sideband observers.
         variant :"transport.ringing", -> { OpenAI::Live::ForkServerEvent::TransportRinging }
@@ -170,6 +173,43 @@ module OpenAI
           optional :client_event_id, String
 
           # @!method initialize(event:, event_id:, client_event_id: nil, type: :"transport.dtmf.send")
+          #   Legacy SIP DTMF delivery notification retained for SDK compatibility and saved
+          #   events. Current servers confirm delivery with transport.dtmf.sent;
+          #   transport.dtmf.send is now the client command.
+          #
+          #   @param event [String]
+          #
+          #   @param event_id [String]
+          #
+          #   @param client_event_id [String]
+          #     The event_id of the client command, when supplied.
+          #
+          #   @param type [Symbol, :"transport.dtmf.send"]
+        end
+
+        class TransportDtmfSent < OpenAI::Internal::Type::BaseModel
+          # @!attribute event
+          #
+          #   @return [String]
+          required :event, String
+
+          # @!attribute event_id
+          #
+          #   @return [String]
+          required :event_id, String
+
+          # @!attribute type
+          #
+          #   @return [Symbol, :"transport.dtmf.sent"]
+          required :type, const: :"transport.dtmf.sent"
+
+          # @!attribute client_event_id
+          #   The event_id of the client command, when supplied.
+          #
+          #   @return [String, nil]
+          optional :client_event_id, String
+
+          # @!method initialize(event:, event_id:, client_event_id: nil, type: :"transport.dtmf.sent")
           #   A SIP DTMF keypress successfully sent to the SIP trunk. Delivered only to
           #   sideband observers; this is not a client command.
           #
@@ -180,7 +220,7 @@ module OpenAI
           #   @param client_event_id [String]
           #     The event_id of the client command, when supplied.
           #
-          #   @param type [Symbol, :"transport.dtmf.send"]
+          #   @param type [Symbol, :"transport.dtmf.sent"]
         end
 
         class TransportRinging < OpenAI::Internal::Type::BaseModel
@@ -314,7 +354,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Live::SessionStartedEvent, OpenAI::Models::Live::SessionUpdatedEvent, OpenAI::Models::Live::InputAudioMutedEvent, OpenAI::Models::Live::InputAudioUnmutedEvent, OpenAI::Models::Live::OutputAudioFixturePlayingEvent, OpenAI::Models::Live::OutputAudioFixturePlayedEvent, OpenAI::Models::Live::InstructionsAppendedEvent, OpenAI::Models::Live::ThinkingAppendedEvent, OpenAI::Models::Live::CommentaryAppendedEvent, OpenAI::Models::Live::ForkServerEvent::SessionInputAudioAppend, OpenAI::Models::Live::OutputAudioDeltaEvent, OpenAI::Models::Live::InputTranscriptDeltaEvent, OpenAI::Models::Live::OutputTranscriptDeltaEvent, OpenAI::Models::Live::DelegationCreatedEvent, OpenAI::Models::Live::DecisionEvent, OpenAI::Models::Live::DecisionItemCreatedEvent, OpenAI::Models::Live::DecisionItemDeletedEvent, OpenAI::Models::Live::ResponseEvent, OpenAI::Models::Live::SessionUsageUpdatedEvent, OpenAI::Models::Live::SessionClosedEvent, OpenAI::Models::Live::ErrorEvent, OpenAI::Models::Live::InfoEvent, OpenAI::Models::Live::ForkServerEvent::TransportDtmfReceived, OpenAI::Models::Live::ForkServerEvent::TransportDtmfSend, OpenAI::Models::Live::ForkServerEvent::TransportRinging, OpenAI::Models::Live::ForkServerEvent::TransportAnswered, OpenAI::Models::Live::ForkServerEvent::TransportFailed)]
+        #   @return [Array(OpenAI::Models::Live::SessionStartedEvent, OpenAI::Models::Live::SessionUpdatedEvent, OpenAI::Models::Live::InputAudioMutedEvent, OpenAI::Models::Live::InputAudioUnmutedEvent, OpenAI::Models::Live::OutputAudioFixturePlayingEvent, OpenAI::Models::Live::OutputAudioFixturePlayedEvent, OpenAI::Models::Live::InstructionsAppendedEvent, OpenAI::Models::Live::ThinkingAppendedEvent, OpenAI::Models::Live::CommentaryAppendedEvent, OpenAI::Models::Live::ForkServerEvent::SessionInputAudioAppend, OpenAI::Models::Live::OutputAudioDeltaEvent, OpenAI::Models::Live::InputTranscriptDeltaEvent, OpenAI::Models::Live::OutputTranscriptDeltaEvent, OpenAI::Models::Live::DelegationCreatedEvent, OpenAI::Models::Live::DecisionEvent, OpenAI::Models::Live::DecisionItemCreatedEvent, OpenAI::Models::Live::DecisionItemDeletedEvent, OpenAI::Models::Live::ResponseEvent, OpenAI::Models::Live::SessionUsageUpdatedEvent, OpenAI::Models::Live::SessionClosedEvent, OpenAI::Models::Live::ErrorEvent, OpenAI::Models::Live::InfoEvent, OpenAI::Models::Live::ForkServerEvent::TransportDtmfReceived, OpenAI::Models::Live::ForkServerEvent::TransportDtmfSend, OpenAI::Models::Live::ForkServerEvent::TransportDtmfSent, OpenAI::Models::Live::ForkServerEvent::TransportRinging, OpenAI::Models::Live::ForkServerEvent::TransportAnswered, OpenAI::Models::Live::ForkServerEvent::TransportFailed)]
       end
     end
   end

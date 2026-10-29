@@ -116,18 +116,7 @@ module OpenAI
       class SidebandConnection
         include Enumerable
         ClientEvent = T.type_alias do
-          T.any(
-            OpenAI::Live::SessionUpdateEvent,
-            OpenAI::Live::InputAudioMuteEvent,
-            OpenAI::Live::InputAudioUnmuteEvent,
-            OpenAI::Live::InstructionsAppendEvent,
-            OpenAI::Live::ThinkingAppendEvent,
-            OpenAI::Live::CommentaryAppendEvent,
-            OpenAI::Live::ResponseItemCreateEvent,
-            OpenAI::Live::ResponseCreateEvent,
-            OpenAI::Live::SessionCloseEvent,
-            T::Hash[T.any(String, Symbol), T.anything]
-          )
+          T.any(OpenAI::Live::SidebandClientEvent::Variants, T::Hash[T.any(String, Symbol), T.anything])
         end
 
         Elem = type_member { {fixed: Connection::ServerEvent} }
