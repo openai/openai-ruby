@@ -10,6 +10,7 @@ module OpenAI
 
         def create: (
           model: String,
+          ?compaction: OpenAI::Beta::AgentCreateParams::Compaction?,
           ?instructions: String?,
           ?metadata: ::Hash[Symbol, String]?,
           ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
@@ -28,6 +29,7 @@ module OpenAI
 
         def update: (
           String agent_id,
+          ?compaction: OpenAI::Beta::AgentUpdateParams::Compaction?,
           ?instructions: String?,
           ?metadata: ::Hash[Symbol, String]?,
           ?model: String,

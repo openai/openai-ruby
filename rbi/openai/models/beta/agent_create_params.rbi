@@ -21,6 +21,13 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :model
 
+        # Context compaction settings. Omission or null enables background compaction.
+        sig { returns(T.nilable(OpenAI::Beta::AgentCreateParams::Compaction)) }
+        attr_reader :compaction
+
+        sig { params(compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction::OrHash)).void }
+        attr_writer :compaction
+
         # Additional instructions appended to the agent's default base instructions. Omit
         # or set to null to add no custom instructions.
         sig { returns(T.nilable(String)) }
@@ -88,6 +95,8 @@ module OpenAI
 
             model: String,
 
+            compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction::OrHash),
+
             instructions: T.nilable(String),
 
             metadata: T.nilable(T::Hash[Symbol, String]),
@@ -124,6 +133,9 @@ module OpenAI
 
           # The model to use for the agent. The requested model name is preserved.
           model:,
+
+          # Context compaction settings. Omission or null enables background compaction.
+          compaction: nil,
 
           # Additional instructions appended to the agent's default base instructions. Omit
           # or set to null to add no custom instructions.
@@ -162,6 +174,7 @@ module OpenAI
           override.returns(
             {
               model: String,
+              compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction),
               instructions: T.nilable(String),
               metadata: T.nilable(T::Hash[Symbol, String]),
               multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam),
@@ -187,6 +200,48 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        class Compaction < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentCreateParams::Compaction,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Whether to compact context in the background. Omission or null defaults to true.
+          # Set to false to use blocking compaction. Background compaction may increase
+          # token usage.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_accessor :async
+
+          # Context compaction settings. Omission or null enables background compaction.
+          sig do
+            params(
+
+              async: T.nilable(T::Boolean)
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether to compact context in the background. Omission or null defaults to true.
+            # Set to false to use blocking compaction. Background compaction may increase
+            # token usage.
+
+            async: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {async: T.nilable(T::Boolean)}
+            )
+          end
+          def to_hash
+          end
+
         end
 
         # The service tier used for model requests. Defaults to `auto`.

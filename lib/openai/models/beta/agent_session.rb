@@ -188,7 +188,13 @@ module OpenAI
           #   @return [Array<OpenAI::Models::Beta::AgentTool::Function, OpenAI::Models::Beta::AgentTool::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentTool::Mcp, OpenAI::Models::Beta::AgentTool::WebSearch, OpenAI::Models::Beta::AgentTool::ComputerUse, OpenAI::Models::Beta::AgentTool::Automations>]
           required :tools, -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentTool] }
 
-          # @!method initialize(id:, instructions:, model:, multi_agent:, name:, reasoning:, service_tier:, text:, tools:)
+          # @!attribute compaction
+          #   The effective context compaction settings.
+          #
+          #   @return [OpenAI::Models::Beta::AgentSession::Agent::Compaction, nil]
+          optional :compaction, -> { OpenAI::Beta::AgentSession::Agent::Compaction }
+
+          # @!method initialize(id:, instructions:, model:, multi_agent:, name:, reasoning:, service_tier:, text:, tools:, compaction: nil)
           #   The agent running in the session.
           #
           #   @param id [String]
@@ -218,6 +224,9 @@ module OpenAI
           #
           #   @param tools [Array<OpenAI::Models::Beta::AgentTool::Function, OpenAI::Models::Beta::AgentTool::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentTool::Mcp, OpenAI::Models::Beta::AgentTool::WebSearch, OpenAI::Models::Beta::AgentTool::ComputerUse, OpenAI::Models::Beta::AgentTool::Automations>]
           #     Tools available to the agent.
+          #
+          #   @param compaction [OpenAI::Models::Beta::AgentSession::Agent::Compaction]
+          #     The effective context compaction settings.
 
           # The effective service-tier policy for model requests. Defaults to `auto`.
           #
@@ -234,6 +243,21 @@ module OpenAI
 
             # @!method self.values
             #   @return [Array<Symbol>]
+          end
+
+          # @see OpenAI::Models::Beta::AgentSession::Agent#compaction
+          class Compaction < OpenAI::Internal::Type::BaseModel
+            # @!attribute async
+            #   Whether context is compacted in the background. Defaults to true.
+            #
+            #   @return [Boolean]
+            required :async, OpenAI::Internal::Type::Boolean
+
+            # @!method initialize(async:)
+            #   The effective context compaction settings.
+            #
+            #   @param async [Boolean]
+            #     Whether context is compacted in the background. Defaults to true.
           end
         end
 

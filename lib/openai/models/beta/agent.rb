@@ -84,7 +84,13 @@ module OpenAI
         #   @return [Integer]
         required :updated_at, Integer
 
-        # @!method initialize(id:, created_at:, instructions:, metadata:, model:, multi_agent:, name:, reasoning:, service_tier:, text:, tools:, updated_at:, object: :agent)
+        # @!attribute compaction
+        #   The effective context compaction settings.
+        #
+        #   @return [OpenAI::Models::Beta::Agent::Compaction, nil]
+        optional :compaction, -> { OpenAI::Beta::Agent::Compaction }
+
+        # @!method initialize(id:, created_at:, instructions:, metadata:, model:, multi_agent:, name:, reasoning:, service_tier:, text:, tools:, updated_at:, compaction: nil, object: :agent)
         #   A reusable agent scoped to the caller's project.
         #
         #   @param id [String]
@@ -124,6 +130,9 @@ module OpenAI
         #   @param updated_at [Integer]
         #     The Unix timestamp, in seconds, when the agent was last updated.
         #
+        #   @param compaction [OpenAI::Models::Beta::Agent::Compaction]
+        #     The effective context compaction settings.
+        #
         #   @param object [Symbol, :agent]
         #     The object type. Always `agent`.
 
@@ -142,6 +151,21 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # @see OpenAI::Models::Beta::Agent#compaction
+        class Compaction < OpenAI::Internal::Type::BaseModel
+          # @!attribute async
+          #   Whether context is compacted in the background. Defaults to true.
+          #
+          #   @return [Boolean]
+          required :async, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(async:)
+          #   The effective context compaction settings.
+          #
+          #   @param async [Boolean]
+          #     Whether context is compacted in the background. Defaults to true.
         end
       end
     end

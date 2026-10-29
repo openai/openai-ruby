@@ -98,6 +98,20 @@ module OpenAI
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           class Agent < OpenAI::Internal::Type::BaseModel
+            # @!attribute compaction
+            #   Context compaction settings. Omit to keep the current settings. A supplied
+            #   object replaces the settings; null or an empty object enables background
+            #   compaction.
+            #
+            #   @return [OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::Compaction, nil]
+            optional(
+              :compaction,
+              -> {
+                OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction
+              },
+              nil?: true
+            )
+
             # @!attribute instructions
             #   Additional instructions appended to the agent's default base instructions. Omit
             #   to leave unchanged.
@@ -154,9 +168,14 @@ module OpenAI
               nil?: true
             )
 
-            # @!method initialize(instructions: nil, model: nil, multi_agent: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil)
+            # @!method initialize(compaction: nil, instructions: nil, model: nil, multi_agent: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil)
             #   Agent configuration. With `agent_id`, supplied fields override the saved agent
             #   for this session. Without `agent_id`, `model` is required.
+            #
+            #   @param compaction [OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::Compaction, nil]
+            #     Context compaction settings. Omit to keep the current settings. A supplied
+            #     object replaces the settings; null or an empty object enables background
+            #     compaction.
             #
             #   @param instructions [String, nil]
             #     Additional instructions appended to the agent's default base instructions. Omit
@@ -182,6 +201,27 @@ module OpenAI
             #     Tools available to the agent. Omit to inherit, or pass null to clear them. The
             #     resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
             #     JSON.
+
+            # @see OpenAI::Models::Beta::Agents::SessionCreateParams::Agent#compaction
+            class Compaction < OpenAI::Internal::Type::BaseModel
+              # @!attribute async
+              #   Whether to compact context in the background. Omission or null defaults to true.
+              #   Set to false to use blocking compaction. Background compaction may increase
+              #   token usage.
+              #
+              #   @return [Boolean, nil]
+              optional :async, OpenAI::Internal::Type::Boolean, nil?: true
+
+              # @!method initialize(async: nil)
+              #   Context compaction settings. Omit to keep the current settings. A supplied
+              #   object replaces the settings; null or an empty object enables background
+              #   compaction.
+              #
+              #   @param async [Boolean, nil]
+              #     Whether to compact context in the background. Omission or null defaults to true.
+              #     Set to false to use blocking compaction. Background compaction may increase
+              #     token usage.
+            end
 
             # The service tier used for model requests.
             #
