@@ -241,6 +241,13 @@ module OpenAI
           sig { returns(T::Array[OpenAI::Beta::AgentTool::Variants]) }
           attr_accessor :tools
 
+          # The effective context compaction settings.
+          sig { returns(T.nilable(OpenAI::Beta::AgentSession::Agent::Compaction)) }
+          attr_reader :compaction
+
+          sig { params(compaction: OpenAI::Beta::AgentSession::Agent::Compaction::OrHash).void }
+          attr_writer :compaction
+
           # The agent running in the session.
           sig do
             params(
@@ -270,7 +277,9 @@ module OpenAI
                   OpenAI::Beta::AgentTool::ComputerUse::OrHash,
                   OpenAI::Beta::AgentTool::Automations::OrHash
                 )
-              ]
+              ],
+
+              compaction: OpenAI::Beta::AgentSession::Agent::Compaction::OrHash
             )
               .returns(T.attached_class)
           end
@@ -302,8 +311,11 @@ module OpenAI
             text:,
 
             # Tools available to the agent.
+            tools:,
 
-            tools:
+            # The effective context compaction settings.
+
+            compaction: nil
           )
           end
 
@@ -318,7 +330,8 @@ module OpenAI
                 reasoning: OpenAI::Beta::AgentReasoning,
                 service_tier: OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol,
                 text: OpenAI::Beta::AgentText,
-                tools: T::Array[OpenAI::Beta::AgentTool::Variants]
+                tools: T::Array[OpenAI::Beta::AgentTool::Variants],
+                compaction: OpenAI::Beta::AgentSession::Agent::Compaction
               }
             )
           end
@@ -342,6 +355,44 @@ module OpenAI
             sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol]) }
             def self.values
             end
+          end
+
+          class Compaction < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::AgentSession::Agent::Compaction,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Whether context is compacted in the background. Defaults to true.
+            sig { returns(T::Boolean) }
+            attr_accessor :async
+
+            # The effective context compaction settings.
+            sig do
+              params(
+
+                async: T::Boolean
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Whether context is compacted in the background. Defaults to true.
+
+              async:
+            )
+            end
+
+            sig do
+              override.returns(
+                {async: T::Boolean}
+              )
+            end
+            def to_hash
+            end
+
           end
         end
 

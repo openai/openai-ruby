@@ -101,6 +101,7 @@ module OpenAI
 
           type agent =
             {
+              ?compaction: OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction?,
               ?instructions: String?,
               ?model: String,
               ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
@@ -111,6 +112,11 @@ module OpenAI
             }
 
           class Agent < OpenAI::Internal::Type::BaseModel
+            # Context compaction settings. Omit to keep the current settings. A supplied
+            # object replaces the settings; null or an empty object enables background
+            # compaction.
+            attr_accessor compaction: OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction?
+
             # Additional instructions appended to the agent's default base instructions. Omit
             # to leave unchanged.
             attr_accessor instructions: String?
@@ -139,6 +145,10 @@ module OpenAI
             # JSON.
             attr_accessor tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
 
+            # @param compaction
+            #   Context compaction settings. Omit to keep the current settings. A supplied
+            #   object replaces the settings; null or an empty object enables background
+            #   compaction.
             # @param instructions
             #   Additional instructions appended to the agent's default base instructions. Omit
             #   to leave unchanged.
@@ -158,6 +168,7 @@ module OpenAI
             #   resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
             #   JSON.
             def initialize: (
+              ?compaction: OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction?,
               ?instructions: String?,
               ?model: String,
               ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
@@ -168,6 +179,7 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
+              ?compaction: OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction?,
               ?instructions: String?,
               ?model: String,
               ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
@@ -176,6 +188,23 @@ module OpenAI
               ?text: OpenAI::Beta::AgentTextParam?,
               ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
             }
+
+            type compaction = { ?async: bool? }
+
+            class Compaction < OpenAI::Internal::Type::BaseModel
+              # Whether to compact context in the background. Omission or null defaults to true.
+              # Set to false to use blocking compaction. Background compaction may increase
+              # token usage.
+              attr_accessor async: bool?
+
+              # @param async
+              #   Whether to compact context in the background. Omission or null defaults to true.
+              #   Set to false to use blocking compaction. Background compaction may increase
+              #   token usage.
+              def initialize: (?async: bool?) -> void
+
+              def to_hash: -> { ?async: bool? }
+            end
 
             type service_tier =
               :auto | :default | :flex | :priority | :fast | :ultrafast

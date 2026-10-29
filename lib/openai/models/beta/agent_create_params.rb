@@ -14,6 +14,12 @@ module OpenAI
         #   @return [String]
         required :model, String
 
+        # @!attribute compaction
+        #   Context compaction settings. Omission or null enables background compaction.
+        #
+        #   @return [OpenAI::Models::Beta::AgentCreateParams::Compaction, nil]
+        optional :compaction, -> { OpenAI::Beta::AgentCreateParams::Compaction }, nil?: true
+
         # @!attribute instructions
         #   Additional instructions appended to the agent's default base instructions. Omit
         #   or set to null to add no custom instructions.
@@ -71,9 +77,12 @@ module OpenAI
           nil?: true
         )
 
-        # @!method initialize(model:, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
+        # @!method initialize(model:, compaction: nil, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
         #   @param model [String]
         #     The model to use for the agent. The requested model name is preserved.
+        #
+        #   @param compaction [OpenAI::Models::Beta::AgentCreateParams::Compaction, nil]
+        #     Context compaction settings. Omission or null enables background compaction.
         #
         #   @param instructions [String, nil]
         #     Additional instructions appended to the agent's default base instructions. Omit
@@ -105,6 +114,24 @@ module OpenAI
         #     within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+
+        class Compaction < OpenAI::Internal::Type::BaseModel
+          # @!attribute async
+          #   Whether to compact context in the background. Omission or null defaults to true.
+          #   Set to false to use blocking compaction. Background compaction may increase
+          #   token usage.
+          #
+          #   @return [Boolean, nil]
+          optional :async, OpenAI::Internal::Type::Boolean, nil?: true
+
+          # @!method initialize(async: nil)
+          #   Context compaction settings. Omission or null enables background compaction.
+          #
+          #   @param async [Boolean, nil]
+          #     Whether to compact context in the background. Omission or null defaults to true.
+          #     Set to false to use blocking compaction. Background compaction may increase
+          #     token usage.
+        end
 
         # The service tier used for model requests. Defaults to `auto`.
         module ServiceTier

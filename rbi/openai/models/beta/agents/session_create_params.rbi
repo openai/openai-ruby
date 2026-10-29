@@ -161,6 +161,17 @@ module OpenAI
               )
             end
 
+            # Context compaction settings. Omit to keep the current settings. A supplied
+            # object replaces the settings; null or an empty object enables background
+            # compaction.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction)) }
+            attr_reader :compaction
+
+            sig {
+              params(compaction: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction::OrHash)).void
+            }
+            attr_writer :compaction
+
             # Additional instructions appended to the agent's default base instructions. Omit
             # to leave unchanged.
             sig { returns(T.nilable(String)) }
@@ -226,6 +237,8 @@ module OpenAI
             sig do
               params(
 
+                compaction: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction::OrHash),
+
                 instructions: T.nilable(String),
 
                 model: String,
@@ -255,6 +268,11 @@ module OpenAI
                 .returns(T.attached_class)
             end
             def self.new(
+
+              # Context compaction settings. Omit to keep the current settings. A supplied
+              # object replaces the settings; null or an empty object enables background
+              # compaction.
+              compaction: nil,
 
               # Additional instructions appended to the agent's default base instructions. Omit
               # to leave unchanged.
@@ -287,6 +305,7 @@ module OpenAI
             sig do
               override.returns(
                 {
+                  compaction: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction),
                   instructions: T.nilable(String),
                   model: String,
                   multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam),
@@ -310,6 +329,50 @@ module OpenAI
               )
             end
             def to_hash
+            end
+
+            class Compaction < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Whether to compact context in the background. Omission or null defaults to true.
+              # Set to false to use blocking compaction. Background compaction may increase
+              # token usage.
+              sig { returns(T.nilable(T::Boolean)) }
+              attr_accessor :async
+
+              # Context compaction settings. Omit to keep the current settings. A supplied
+              # object replaces the settings; null or an empty object enables background
+              # compaction.
+              sig do
+                params(
+
+                  async: T.nilable(T::Boolean)
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Whether to compact context in the background. Omission or null defaults to true.
+                # Set to false to use blocking compaction. Background compaction may increase
+                # token usage.
+
+                async: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {async: T.nilable(T::Boolean)}
+                )
+              end
+              def to_hash
+              end
+
             end
 
             # The service tier used for model requests.

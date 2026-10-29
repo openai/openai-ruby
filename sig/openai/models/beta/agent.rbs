@@ -15,7 +15,8 @@ module OpenAI
           service_tier: OpenAI::Models::Beta::Agent::service_tier,
           text: OpenAI::Beta::AgentText,
           tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
-          updated_at: Integer
+          updated_at: Integer,
+          ?compaction: OpenAI::Beta::Agent::Compaction
         }
 
       class Agent < OpenAI::Internal::Type::BaseModel
@@ -59,6 +60,14 @@ module OpenAI
         # The Unix timestamp, in seconds, when the agent was last updated.
         attr_accessor updated_at: Integer
 
+        # The effective context compaction settings.
+        attr_reader compaction: OpenAI::Beta::Agent::Compaction?
+
+        # The effective context compaction settings.
+        def compaction=: (
+          OpenAI::Beta::Agent::Compaction
+        ) -> OpenAI::Beta::Agent::Compaction
+
         # @param id
         #   The ID of the reusable agent.
         # @param created_at
@@ -84,6 +93,8 @@ module OpenAI
         #   Tools available to the agent.
         # @param updated_at
         #   The Unix timestamp, in seconds, when the agent was last updated.
+        # @param compaction
+        #   The effective context compaction settings.
         # @param object
         #   The object type. Always `agent`.
         def initialize: (
@@ -99,6 +110,7 @@ module OpenAI
           text: OpenAI::Beta::AgentText,
           tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
           updated_at: Integer,
+          ?compaction: OpenAI::Beta::Agent::Compaction,
           ?object: :agent
         ) -> void
 
@@ -115,7 +127,8 @@ module OpenAI
           service_tier: OpenAI::Models::Beta::Agent::service_tier,
           text: OpenAI::Beta::AgentText,
           tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
-          updated_at: Integer
+          updated_at: Integer,
+          ?compaction: OpenAI::Beta::Agent::Compaction
         }
 
         type service_tier =
@@ -132,6 +145,19 @@ module OpenAI
           ULTRAFAST: :ultrafast
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::Agent::service_tier]
+        end
+
+        type compaction = { async: bool }
+
+        class Compaction < OpenAI::Internal::Type::BaseModel
+          # Whether context is compacted in the background. Defaults to true.
+          attr_accessor async: bool
+
+          # @param async
+          #   Whether context is compacted in the background. Defaults to true.
+          def initialize: (async: bool) -> void
+
+          def to_hash: -> { async: bool }
         end
       end
     end
