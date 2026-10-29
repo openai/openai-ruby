@@ -3703,7 +3703,7 @@
     },
     "lib/openai/models/image_edit_params.rb": {
       "mode": "100644",
-      "sha256": "65ed4f4232c9abfa4eb8be1eabce09048a3565b113ef3ac26034da1bff2b598f"
+      "sha256": "1233c1063ba4359f2c9274aa283025d9f5a0fe7e457f87c2209e810d58af70f1"
     },
     "lib/openai/models/image_edit_partial_image_event.rb": {
       "mode": "100644",
@@ -6247,7 +6247,7 @@
     },
     "lib/openai/resources/images.rb": {
       "mode": "100644",
-      "sha256": "727f49fbb7ba1999206219d4fe46eb19af7c04984e05bc24bd2839575514fd29"
+      "sha256": "40fa97a2e3efdbe3d747de74dda0bd1703d1f3b3907d78add39eb61224830cbd"
     },
     "lib/openai/resources/live.rb": {
       "mode": "100644",
@@ -10063,7 +10063,7 @@
     },
     "rbi/openai/models/image_edit_params.rbi": {
       "mode": "100644",
-      "sha256": "a5d582edc7464658ba70d00a97a8b9e54e834aed4b839ee3a357c05dc5337798"
+      "sha256": "54fdd53a16f50fbf5b0473abc90fd215a9f08fe2ec8e8d93aa2bb66d50841298"
     },
     "rbi/openai/models/image_edit_partial_image_event.rbi": {
       "mode": "100644",
@@ -12607,7 +12607,7 @@
     },
     "rbi/openai/resources/images.rbi": {
       "mode": "100644",
-      "sha256": "2b446e23e1f8e10b9339a76173f352b746726788045b7e96f24a04953cc3c275"
+      "sha256": "382cd36184617526bfb2edbcbe1115f8158e98f4eaa3b44a2c42e259c86d3ee8"
     },
     "rbi/openai/resources/live.rbi": {
       "mode": "100644",
@@ -16423,7 +16423,7 @@
     },
     "sig/openai/models/image_edit_params.rbs": {
       "mode": "100644",
-      "sha256": "d24103f1cbe3e516993625d69d736f82ec54dfd058e4e6246460cfba982e9dd2"
+      "sha256": "eb47f62ba65184d7af534a6f48b818ab6b747fdbd28691079eea35140759b5a1"
     },
     "sig/openai/models/image_edit_partial_image_event.rbs": {
       "mode": "100644",
@@ -18967,7 +18967,7 @@
     },
     "sig/openai/resources/images.rbs": {
       "mode": "100644",
-      "sha256": "14fd0297586a69ff5a0995d59b92f0f19991301eec8840b1a98d3364a0f25351"
+      "sha256": "49df03ad3fe17ecb63ea5bd1522cd6c492d19acbe66e18c322645690ff9a433b"
     },
     "sig/openai/resources/live.rbs": {
       "mode": "100644",

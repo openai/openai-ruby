@@ -6,6 +6,7 @@ module OpenAI
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
         ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        ?markup: OpenAI::Internal::file_input,
         ?mask: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
@@ -58,6 +59,26 @@ module OpenAI
       # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
       # this parameter. Defaults to `low` on supported models.
       attr_accessor input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?
+
+      # A transparent PNG overlaid on the first image to guide the edit. Must match that
+      # image's dimensions after orientation and contain transparent pixels. Supports
+      # GPT Image 2.5 and 2.6. Cannot be combined with mask.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      attr_reader markup: OpenAI::Internal::file_input?
+
+      # A transparent PNG overlaid on the first image to guide the edit. Must match that
+      # image's dimensions after orientation and contain transparent pixels. Supports
+      # GPT Image 2.5 and 2.6. Cannot be combined with mask.
+      #
+      # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      # content type.
+      def markup=: (
+        OpenAI::Internal::file_input
+      ) -> OpenAI::Internal::file_input
 
       # An additional image whose fully transparent areas (e.g. where alpha is zero)
       # indicate where `image` should be edited. If there are multiple images provided,
@@ -184,6 +205,14 @@ module OpenAI
       #   especially facial features, of input images. Supports `high` and `low` on
       #   `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
       #   this parameter. Defaults to `low` on supported models.
+      # @param markup
+      #   A transparent PNG overlaid on the first image to guide the edit. Must match that
+      #   image's dimensions after orientation and contain transparent pixels. Supports
+      #   GPT Image 2.5 and 2.6. Cannot be combined with mask.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       # @param mask
       #   An additional image whose fully transparent areas (e.g. where alpha is zero)
       #   indicate where `image` should be edited. If there are multiple images provided,
@@ -256,6 +285,7 @@ module OpenAI
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
         ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        ?markup: OpenAI::Internal::file_input,
         ?mask: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
@@ -275,6 +305,7 @@ module OpenAI
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
         ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
+        ?markup: OpenAI::Internal::file_input,
         ?mask: OpenAI::Internal::file_input,
         ?model: OpenAI::Models::ImageEditParams::model?,
         ?n: Integer?,
