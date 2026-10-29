@@ -72,7 +72,7 @@ module OpenAI
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
       #
-      # @overload edit(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
+      # @overload edit(image:, prompt:, background: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #   The image(s) to edit. Must be a supported image file or an array of images.
@@ -108,6 +108,15 @@ module OpenAI
       #   especially facial features, of input images. Supports `high` and `low` on
       #   `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
       #   this parameter. Defaults to `low` on supported models.
+      #
+      # @param markup [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #   A transparent PNG overlaid on the first image to guide the edit. Must match that
+      #   image's dimensions after orientation and contain transparent pixels. Supports
+      #   GPT Image 2.5 and 2.6. Cannot be combined with mask.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
       # @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart]
       #   An additional image whose fully transparent areas (e.g. where alpha is zero)
@@ -220,7 +229,7 @@ module OpenAI
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
       #
-      # @overload edit_stream_raw(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
+      # @overload edit_stream_raw(image:, prompt:, background: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #   The image(s) to edit. Must be a supported image file or an array of images.
@@ -256,6 +265,15 @@ module OpenAI
       #   especially facial features, of input images. Supports `high` and `low` on
       #   `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
       #   this parameter. Defaults to `low` on supported models.
+      #
+      # @param markup [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #   A transparent PNG overlaid on the first image to guide the edit. Must match that
+      #   image's dimensions after orientation and contain transparent pixels. Supports
+      #   GPT Image 2.5 and 2.6. Cannot be combined with mask.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
       #
       # @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart]
       #   An additional image whose fully transparent areas (e.g. where alpha is zero)

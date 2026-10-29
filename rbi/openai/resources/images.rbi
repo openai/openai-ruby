@@ -59,6 +59,7 @@ module OpenAI
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
           input_fidelity: T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
+          markup: OpenAI::Internal::FileInput,
           mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
@@ -107,6 +108,14 @@ module OpenAI
         # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
         # this parameter. Defaults to `low` on supported models.
         input_fidelity: nil,
+        # A transparent PNG overlaid on the first image to guide the edit. Must match that
+        # image's dimensions after orientation and contain transparent pixels. Supports
+        # GPT Image 2.5 and 2.6. Cannot be combined with mask.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        markup: nil,
         # An additional image whose fully transparent areas (e.g. where alpha is zero)
         # indicate where `image` should be edited. If there are multiple images provided,
         # the mask will be applied on the first image. Must be a valid PNG file, less than
@@ -191,6 +200,7 @@ module OpenAI
           prompt: String,
           background: T.nilable(OpenAI::ImageEditParams::Background::OrSymbol),
           input_fidelity: T.nilable(OpenAI::ImageEditParams::InputFidelity::OrSymbol),
+          markup: OpenAI::Internal::FileInput,
           mask: OpenAI::Internal::FileInput,
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
           n: T.nilable(Integer),
@@ -239,6 +249,14 @@ module OpenAI
         # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
         # this parameter. Defaults to `low` on supported models.
         input_fidelity: nil,
+        # A transparent PNG overlaid on the first image to guide the edit. Must match that
+        # image's dimensions after orientation and contain transparent pixels. Supports
+        # GPT Image 2.5 and 2.6. Cannot be combined with mask.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        markup: nil,
         # An additional image whose fully transparent areas (e.g. where alpha is zero)
         # indicate where `image` should be edited. If there are multiple images provided,
         # the mask will be applied on the first image. Must be a valid PNG file, less than
