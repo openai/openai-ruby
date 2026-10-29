@@ -248,6 +248,13 @@ module OpenAI
           sig { params(compaction: OpenAI::Beta::AgentSession::Agent::Compaction::OrHash).void }
           attr_writer :compaction
 
+          # The effective experimental settings for the agent.
+          sig { returns(T.nilable(OpenAI::Beta::AgentSession::Agent::Experimental)) }
+          attr_reader :experimental
+
+          sig { params(experimental: OpenAI::Beta::AgentSession::Agent::Experimental::OrHash).void }
+          attr_writer :experimental
+
           # The agent running in the session.
           sig do
             params(
@@ -279,7 +286,9 @@ module OpenAI
                 )
               ],
 
-              compaction: OpenAI::Beta::AgentSession::Agent::Compaction::OrHash
+              compaction: OpenAI::Beta::AgentSession::Agent::Compaction::OrHash,
+
+              experimental: OpenAI::Beta::AgentSession::Agent::Experimental::OrHash
             )
               .returns(T.attached_class)
           end
@@ -314,8 +323,11 @@ module OpenAI
             tools:,
 
             # The effective context compaction settings.
+            compaction: nil,
 
-            compaction: nil
+            # The effective experimental settings for the agent.
+
+            experimental: nil
           )
           end
 
@@ -331,7 +343,8 @@ module OpenAI
                 service_tier: OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol,
                 text: OpenAI::Beta::AgentText,
                 tools: T::Array[OpenAI::Beta::AgentTool::Variants],
-                compaction: OpenAI::Beta::AgentSession::Agent::Compaction
+                compaction: OpenAI::Beta::AgentSession::Agent::Compaction,
+                experimental: OpenAI::Beta::AgentSession::Agent::Experimental
               }
             )
           end
@@ -388,6 +401,44 @@ module OpenAI
             sig do
               override.returns(
                 {async: T::Boolean}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Experimental < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::AgentSession::Agent::Experimental,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Whether the model receives periodic current-time reminders.
+            sig { returns(T::Boolean) }
+            attr_accessor :time_awareness
+
+            # The effective experimental settings for the agent.
+            sig do
+              params(
+
+                time_awareness: T::Boolean
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Whether the model receives periodic current-time reminders.
+
+              time_awareness:
+            )
+            end
+
+            sig do
+              override.returns(
+                {time_awareness: T::Boolean}
               )
             end
             def to_hash

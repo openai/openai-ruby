@@ -172,6 +172,14 @@ module OpenAI
             }
             attr_writer :compaction
 
+            # Experimental settings to merge by key. Omitted settings keep their current
+            # values.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental)) }
+            attr_reader :experimental
+
+            sig { params(experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental::OrHash).void }
+            attr_writer :experimental
+
             # Additional instructions appended to the agent's default base instructions. Omit
             # to leave unchanged.
             sig { returns(T.nilable(String)) }
@@ -239,6 +247,8 @@ module OpenAI
 
                 compaction: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction::OrHash),
 
+                experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental::OrHash,
+
                 instructions: T.nilable(String),
 
                 model: String,
@@ -274,6 +284,10 @@ module OpenAI
               # compaction.
               compaction: nil,
 
+              # Experimental settings to merge by key. Omitted settings keep their current
+              # values.
+              experimental: nil,
+
               # Additional instructions appended to the agent's default base instructions. Omit
               # to leave unchanged.
               instructions: nil,
@@ -306,6 +320,7 @@ module OpenAI
               override.returns(
                 {
                   compaction: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction),
+                  experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental,
                   instructions: T.nilable(String),
                   model: String,
                   multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam),
@@ -368,6 +383,50 @@ module OpenAI
               sig do
                 override.returns(
                   {async: T.nilable(T::Boolean)}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class Experimental < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Whether to give the model periodic current-time reminders. Omit to keep the
+              # current setting.
+              sig { returns(T.nilable(T::Boolean)) }
+              attr_reader :time_awareness
+
+              sig { params(time_awareness: T::Boolean).void }
+              attr_writer :time_awareness
+
+              # Experimental settings to merge by key. Omitted settings keep their current
+              # values.
+              sig do
+                params(
+
+                  time_awareness: T::Boolean
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Whether to give the model periodic current-time reminders. Omit to keep the
+                # current setting.
+
+                time_awareness: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {time_awareness: T::Boolean}
                 )
               end
               def to_hash

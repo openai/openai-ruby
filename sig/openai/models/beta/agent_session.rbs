@@ -137,7 +137,8 @@ module OpenAI
             service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
             text: OpenAI::Beta::AgentText,
             tools: ::Array[OpenAI::Models::Beta::agent_tool],
-            ?compaction: OpenAI::Beta::AgentSession::Agent::Compaction
+            ?compaction: OpenAI::Beta::AgentSession::Agent::Compaction,
+            ?experimental: OpenAI::Beta::AgentSession::Agent::Experimental
           }
 
         class Agent < OpenAI::Internal::Type::BaseModel
@@ -177,6 +178,14 @@ module OpenAI
             OpenAI::Beta::AgentSession::Agent::Compaction
           ) -> OpenAI::Beta::AgentSession::Agent::Compaction
 
+          # The effective experimental settings for the agent.
+          attr_reader experimental: OpenAI::Beta::AgentSession::Agent::Experimental?
+
+          # The effective experimental settings for the agent.
+          def experimental=: (
+            OpenAI::Beta::AgentSession::Agent::Experimental
+          ) -> OpenAI::Beta::AgentSession::Agent::Experimental
+
           # @param id
           #   The ID of the agent.
           # @param instructions
@@ -198,6 +207,8 @@ module OpenAI
           #   Tools available to the agent.
           # @param compaction
           #   The effective context compaction settings.
+          # @param experimental
+          #   The effective experimental settings for the agent.
           def initialize: (
             id: String,
             instructions: String?,
@@ -208,7 +219,8 @@ module OpenAI
             service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
             text: OpenAI::Beta::AgentText,
             tools: ::Array[OpenAI::Models::Beta::agent_tool],
-            ?compaction: OpenAI::Beta::AgentSession::Agent::Compaction
+            ?compaction: OpenAI::Beta::AgentSession::Agent::Compaction,
+            ?experimental: OpenAI::Beta::AgentSession::Agent::Experimental
           ) -> void
 
           def to_hash: -> {
@@ -221,7 +233,8 @@ module OpenAI
             service_tier: OpenAI::Models::Beta::AgentSession::Agent::service_tier,
             text: OpenAI::Beta::AgentText,
             tools: ::Array[OpenAI::Models::Beta::agent_tool],
-            ?compaction: OpenAI::Beta::AgentSession::Agent::Compaction
+            ?compaction: OpenAI::Beta::AgentSession::Agent::Compaction,
+            ?experimental: OpenAI::Beta::AgentSession::Agent::Experimental
           }
 
           type service_tier =
@@ -251,6 +264,19 @@ module OpenAI
             def initialize: (async: bool) -> void
 
             def to_hash: -> { async: bool }
+          end
+
+          type experimental = { time_awareness: bool }
+
+          class Experimental < OpenAI::Internal::Type::BaseModel
+            # Whether the model receives periodic current-time reminders.
+            attr_accessor time_awareness: bool
+
+            # @param time_awareness
+            #   Whether the model receives periodic current-time reminders.
+            def initialize: (time_awareness: bool) -> void
+
+            def to_hash: -> { time_awareness: bool }
           end
         end
 

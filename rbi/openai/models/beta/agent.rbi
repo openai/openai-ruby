@@ -83,6 +83,13 @@ module OpenAI
         sig { params(compaction: OpenAI::Beta::Agent::Compaction::OrHash).void }
         attr_writer :compaction
 
+        # The effective experimental settings for the agent.
+        sig { returns(T.nilable(OpenAI::Beta::Agent::Experimental)) }
+        attr_reader :experimental
+
+        sig { params(experimental: OpenAI::Beta::Agent::Experimental::OrHash).void }
+        attr_writer :experimental
+
         # A reusable agent scoped to the caller's project.
         sig do
           params(
@@ -122,6 +129,8 @@ module OpenAI
             updated_at: Integer,
 
             compaction: OpenAI::Beta::Agent::Compaction::OrHash,
+
+            experimental: OpenAI::Beta::Agent::Experimental::OrHash,
 
             object: Symbol
           )
@@ -169,6 +178,9 @@ module OpenAI
           # The effective context compaction settings.
           compaction: nil,
 
+          # The effective experimental settings for the agent.
+          experimental: nil,
+
           # The object type. Always `agent`.
 
           object: :agent
@@ -191,7 +203,8 @@ module OpenAI
               text: OpenAI::Beta::AgentText,
               tools: T::Array[OpenAI::Beta::PersistedAgentTool::Variants],
               updated_at: Integer,
-              compaction: OpenAI::Beta::Agent::Compaction
+              compaction: OpenAI::Beta::Agent::Compaction,
+              experimental: OpenAI::Beta::Agent::Experimental
             }
           )
         end
@@ -248,6 +261,44 @@ module OpenAI
           sig do
             override.returns(
               {async: T::Boolean}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::Agent::Experimental,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Whether the model receives periodic current-time reminders.
+          sig { returns(T::Boolean) }
+          attr_accessor :time_awareness
+
+          # The effective experimental settings for the agent.
+          sig do
+            params(
+
+              time_awareness: T::Boolean
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether the model receives periodic current-time reminders.
+
+            time_awareness:
+          )
+          end
+
+          sig do
+            override.returns(
+              {time_awareness: T::Boolean}
             )
           end
           def to_hash
