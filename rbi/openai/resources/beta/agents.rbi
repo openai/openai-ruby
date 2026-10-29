@@ -22,6 +22,7 @@ module OpenAI
           params(
             model: String,
             compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction::OrHash),
+            experimental: OpenAI::Beta::AgentCreateParams::Experimental::OrHash,
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam::OrHash),
@@ -51,6 +52,8 @@ module OpenAI
           model:,
           # Context compaction settings. Omission or null enables background compaction.
           compaction: nil,
+          # Experimental agent settings. All experimental features default to disabled.
+          experimental: nil,
           # Additional instructions appended to the agent's default base instructions. Omit
           # or set to null to add no custom instructions.
           instructions: nil,
@@ -92,6 +95,7 @@ module OpenAI
           params(
             agent_id: String,
             compaction: T.nilable(OpenAI::Beta::AgentUpdateParams::Compaction::OrHash),
+            experimental: OpenAI::Beta::AgentUpdateParams::Experimental::OrHash,
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
@@ -124,6 +128,9 @@ module OpenAI
           # object replaces the settings; null or an empty object enables background
           # compaction.
           compaction: nil,
+          # Experimental settings to merge by key. Omitted settings keep their current
+          # values.
+          experimental: nil,
           # Additional instructions appended to the agent's default base instructions. Omit
           # to leave unchanged.
           instructions: nil,

@@ -16,13 +16,16 @@ module OpenAI
         # Creates a reusable agent without storing credentials. See
         # [agent configuration](https://developers.openai.com/api/docs/guides/agents-api/configuration).
         #
-        # @overload create(model:, compaction: nil, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
+        # @overload create(model:, compaction: nil, experimental: nil, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
         #
         # @param model [String]
         #   The model to use for the agent. The requested model name is preserved.
         #
         # @param compaction [OpenAI::Models::Beta::AgentCreateParams::Compaction, nil]
         #   Context compaction settings. Omission or null enables background compaction.
+        #
+        # @param experimental [OpenAI::Models::Beta::AgentCreateParams::Experimental]
+        #   Experimental agent settings. All experimental features default to disabled.
         #
         # @param instructions [String, nil]
         #   Additional instructions appended to the agent's default base instructions. Omit
@@ -98,7 +101,7 @@ module OpenAI
         # Updates a reusable agent. See
         # [agent configuration](https://developers.openai.com/api/docs/guides/agents-api/configuration).
         #
-        # @overload update(agent_id, compaction: nil, instructions: nil, metadata: nil, model: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
+        # @overload update(agent_id, compaction: nil, experimental: nil, instructions: nil, metadata: nil, model: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
         #
         # @param agent_id [String]
         #   The ID of the reusable agent.
@@ -107,6 +110,10 @@ module OpenAI
         #   Context compaction settings. Omit to keep the current settings. A supplied
         #   object replaces the settings; null or an empty object enables background
         #   compaction.
+        #
+        # @param experimental [OpenAI::Models::Beta::AgentUpdateParams::Experimental]
+        #   Experimental settings to merge by key. Omitted settings keep their current
+        #   values.
         #
         # @param instructions [String, nil]
         #   Additional instructions appended to the agent's default base instructions. Omit

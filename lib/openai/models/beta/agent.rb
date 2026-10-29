@@ -90,7 +90,13 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::Agent::Compaction, nil]
         optional :compaction, -> { OpenAI::Beta::Agent::Compaction }
 
-        # @!method initialize(id:, created_at:, instructions:, metadata:, model:, multi_agent:, name:, reasoning:, service_tier:, text:, tools:, updated_at:, compaction: nil, object: :agent)
+        # @!attribute experimental
+        #   The effective experimental settings for the agent.
+        #
+        #   @return [OpenAI::Models::Beta::Agent::Experimental, nil]
+        optional :experimental, -> { OpenAI::Beta::Agent::Experimental }
+
+        # @!method initialize(id:, created_at:, instructions:, metadata:, model:, multi_agent:, name:, reasoning:, service_tier:, text:, tools:, updated_at:, compaction: nil, experimental: nil, object: :agent)
         #   A reusable agent scoped to the caller's project.
         #
         #   @param id [String]
@@ -133,6 +139,9 @@ module OpenAI
         #   @param compaction [OpenAI::Models::Beta::Agent::Compaction]
         #     The effective context compaction settings.
         #
+        #   @param experimental [OpenAI::Models::Beta::Agent::Experimental]
+        #     The effective experimental settings for the agent.
+        #
         #   @param object [Symbol, :agent]
         #     The object type. Always `agent`.
 
@@ -166,6 +175,21 @@ module OpenAI
           #
           #   @param async [Boolean]
           #     Whether context is compacted in the background. Defaults to true.
+        end
+
+        # @see OpenAI::Models::Beta::Agent#experimental
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          # @!attribute time_awareness
+          #   Whether the model receives periodic current-time reminders.
+          #
+          #   @return [Boolean]
+          required :time_awareness, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(time_awareness:)
+          #   The effective experimental settings for the agent.
+          #
+          #   @param time_awareness [Boolean]
+          #     Whether the model receives periodic current-time reminders.
         end
       end
     end

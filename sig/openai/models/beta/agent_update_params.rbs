@@ -5,6 +5,7 @@ module OpenAI
         {
           agent_id: String,
           ?compaction: OpenAI::Beta::AgentUpdateParams::Compaction?,
+          ?experimental: OpenAI::Beta::AgentUpdateParams::Experimental,
           ?instructions: String?,
           ?metadata: ::Hash[Symbol, String]?,
           ?model: String,
@@ -27,6 +28,16 @@ module OpenAI
         # object replaces the settings; null or an empty object enables background
         # compaction.
         attr_accessor compaction: OpenAI::Beta::AgentUpdateParams::Compaction?
+
+        # Experimental settings to merge by key. Omitted settings keep their current
+        # values.
+        attr_reader experimental: OpenAI::Beta::AgentUpdateParams::Experimental?
+
+        # Experimental settings to merge by key. Omitted settings keep their current
+        # values.
+        def experimental=: (
+          OpenAI::Beta::AgentUpdateParams::Experimental
+        ) -> OpenAI::Beta::AgentUpdateParams::Experimental
 
         # Additional instructions appended to the agent's default base instructions. Omit
         # to leave unchanged.
@@ -67,6 +78,9 @@ module OpenAI
         #   Context compaction settings. Omit to keep the current settings. A supplied
         #   object replaces the settings; null or an empty object enables background
         #   compaction.
+        # @param experimental
+        #   Experimental settings to merge by key. Omitted settings keep their current
+        #   values.
         # @param instructions
         #   Additional instructions appended to the agent's default base instructions. Omit
         #   to leave unchanged.
@@ -93,6 +107,7 @@ module OpenAI
         def initialize: (
           agent_id: String,
           ?compaction: OpenAI::Beta::AgentUpdateParams::Compaction?,
+          ?experimental: OpenAI::Beta::AgentUpdateParams::Experimental,
           ?instructions: String?,
           ?metadata: ::Hash[Symbol, String]?,
           ?model: String,
@@ -108,6 +123,7 @@ module OpenAI
         def to_hash: -> {
           agent_id: String,
           ?compaction: OpenAI::Beta::AgentUpdateParams::Compaction?,
+          ?experimental: OpenAI::Beta::AgentUpdateParams::Experimental,
           ?instructions: String?,
           ?metadata: ::Hash[Symbol, String]?,
           ?model: String,
@@ -135,6 +151,25 @@ module OpenAI
           def initialize: (?async: bool?) -> void
 
           def to_hash: -> { ?async: bool? }
+        end
+
+        type experimental = { ?time_awareness: bool }
+
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          # Whether to give the model periodic current-time reminders. Omit to keep the
+          # current setting.
+          attr_reader time_awareness: bool?
+
+          # Whether to give the model periodic current-time reminders. Omit to keep the
+          # current setting.
+          def time_awareness=: (bool) -> bool
+
+          # @param time_awareness
+          #   Whether to give the model periodic current-time reminders. Omit to keep the
+          #   current setting.
+          def initialize: (?time_awareness: bool) -> void
+
+          def to_hash: -> { ?time_awareness: bool }
         end
 
         type service_tier =

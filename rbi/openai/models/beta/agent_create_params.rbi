@@ -28,6 +28,13 @@ module OpenAI
         sig { params(compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction::OrHash)).void }
         attr_writer :compaction
 
+        # Experimental agent settings. All experimental features default to disabled.
+        sig { returns(T.nilable(OpenAI::Beta::AgentCreateParams::Experimental)) }
+        attr_reader :experimental
+
+        sig { params(experimental: OpenAI::Beta::AgentCreateParams::Experimental::OrHash).void }
+        attr_writer :experimental
+
         # Additional instructions appended to the agent's default base instructions. Omit
         # or set to null to add no custom instructions.
         sig { returns(T.nilable(String)) }
@@ -97,6 +104,8 @@ module OpenAI
 
             compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction::OrHash),
 
+            experimental: OpenAI::Beta::AgentCreateParams::Experimental::OrHash,
+
             instructions: T.nilable(String),
 
             metadata: T.nilable(T::Hash[Symbol, String]),
@@ -137,6 +146,9 @@ module OpenAI
           # Context compaction settings. Omission or null enables background compaction.
           compaction: nil,
 
+          # Experimental agent settings. All experimental features default to disabled.
+          experimental: nil,
+
           # Additional instructions appended to the agent's default base instructions. Omit
           # or set to null to add no custom instructions.
           instructions: nil,
@@ -175,6 +187,7 @@ module OpenAI
             {
               model: String,
               compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction),
+              experimental: OpenAI::Beta::AgentCreateParams::Experimental,
               instructions: T.nilable(String),
               metadata: T.nilable(T::Hash[Symbol, String]),
               multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam),
@@ -237,6 +250,47 @@ module OpenAI
           sig do
             override.returns(
               {async: T.nilable(T::Boolean)}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentCreateParams::Experimental,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Whether to give the model periodic current-time reminders. Defaults to false.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :time_awareness
+
+          sig { params(time_awareness: T::Boolean).void }
+          attr_writer :time_awareness
+
+          # Experimental agent settings. All experimental features default to disabled.
+          sig do
+            params(
+
+              time_awareness: T::Boolean
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether to give the model periodic current-time reminders. Defaults to false.
+
+            time_awareness: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {time_awareness: T::Boolean}
             )
           end
           def to_hash

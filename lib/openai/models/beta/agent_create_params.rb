@@ -20,6 +20,12 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::AgentCreateParams::Compaction, nil]
         optional :compaction, -> { OpenAI::Beta::AgentCreateParams::Compaction }, nil?: true
 
+        # @!attribute experimental
+        #   Experimental agent settings. All experimental features default to disabled.
+        #
+        #   @return [OpenAI::Models::Beta::AgentCreateParams::Experimental, nil]
+        optional :experimental, -> { OpenAI::Beta::AgentCreateParams::Experimental }
+
         # @!attribute instructions
         #   Additional instructions appended to the agent's default base instructions. Omit
         #   or set to null to add no custom instructions.
@@ -77,12 +83,15 @@ module OpenAI
           nil?: true
         )
 
-        # @!method initialize(model:, compaction: nil, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
+        # @!method initialize(model:, compaction: nil, experimental: nil, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
         #   @param model [String]
         #     The model to use for the agent. The requested model name is preserved.
         #
         #   @param compaction [OpenAI::Models::Beta::AgentCreateParams::Compaction, nil]
         #     Context compaction settings. Omission or null enables background compaction.
+        #
+        #   @param experimental [OpenAI::Models::Beta::AgentCreateParams::Experimental]
+        #     Experimental agent settings. All experimental features default to disabled.
         #
         #   @param instructions [String, nil]
         #     Additional instructions appended to the agent's default base instructions. Omit
@@ -131,6 +140,20 @@ module OpenAI
           #     Whether to compact context in the background. Omission or null defaults to true.
           #     Set to false to use blocking compaction. Background compaction may increase
           #     token usage.
+        end
+
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          # @!attribute time_awareness
+          #   Whether to give the model periodic current-time reminders. Defaults to false.
+          #
+          #   @return [Boolean, nil]
+          optional :time_awareness, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(time_awareness: nil)
+          #   Experimental agent settings. All experimental features default to disabled.
+          #
+          #   @param time_awareness [Boolean]
+          #     Whether to give the model periodic current-time reminders. Defaults to false.
         end
 
         # The service tier used for model requests. Defaults to `auto`.
