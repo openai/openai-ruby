@@ -864,6 +864,7 @@ module OpenAI
                 T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement::OrHash]
               ),
               conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
+              generate: T::Boolean,
               include: T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]),
               input: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input::Variants,
               instructions: T.nilable(String),
@@ -933,6 +934,7 @@ module OpenAI
             background: nil,
             context_management: nil,
             conversation: nil,
+            generate: nil,
             include: nil,
             input: nil,
             instructions: nil,

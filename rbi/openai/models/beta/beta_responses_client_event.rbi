@@ -58,6 +58,15 @@ module OpenAI
           sig { returns(T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam))) }
           attr_accessor :conversation
 
+          # Whether to generate output for this response. Defaults to true when omitted. Set
+          # to false to prepare request state without model output; the response ID can be
+          # used as previous_response_id on a later turn.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :generate
+
+          sig { params(generate: T::Boolean).void }
+          attr_writer :generate
+
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
@@ -503,6 +512,8 @@ module OpenAI
 
               conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
 
+              generate: T::Boolean,
+
               include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
 
               input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants,
@@ -615,6 +626,11 @@ module OpenAI
             # items from this response are automatically added to this conversation after this
             # response completes.
             conversation: nil,
+
+            # Whether to generate output for this response. Defaults to true when omitted. Set
+            # to false to prepare request state without model output; the response ID can be
+            # used as previous_response_id on a later turn.
+            generate: nil,
 
             # Specify additional output data to include in the model response. Currently
             # supported values are:
@@ -882,6 +898,7 @@ module OpenAI
                   T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]
                 ),
                 conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam)),
+                generate: T.nilable(T::Boolean),
                 include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
                 input: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants),
                 instructions: T.nilable(String),

@@ -142,6 +142,7 @@ module OpenAI
             ?background: bool?,
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
+            ?generate: bool,
             ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
             ?input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
             ?instructions: String?,

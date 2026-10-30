@@ -15,6 +15,7 @@ module OpenAI
             ?background: bool?,
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
+            ?generate: bool,
             ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
             ?input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
             ?instructions: String?,
@@ -70,6 +71,16 @@ module OpenAI
           # items from this response are automatically added to this conversation after this
           # response completes.
           attr_accessor conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?
+
+          # Whether to generate output for this response. Defaults to true when omitted. Set
+          # to false to prepare request state without model output; the response ID can be
+          # used as previous_response_id on a later turn.
+          attr_reader generate: bool?
+
+          # Whether to generate output for this response. Defaults to true when omitted. Set
+          # to false to prepare request state without model output; the response ID can be
+          # used as previous_response_id on a later turn.
+          def generate=: (bool) -> bool
 
           # Specify additional output data to include in the model response. Currently
           # supported values are:
@@ -419,6 +430,10 @@ module OpenAI
           #   prepended to `input_items` for this response request. Input items and output
           #   items from this response are automatically added to this conversation after this
           #   response completes.
+          # @param generate
+          #   Whether to generate output for this response. Defaults to true when omitted. Set
+          #   to false to prepare request state without model output; the response ID can be
+          #   used as previous_response_id on a later turn.
           # @param include
           #   Specify additional output data to include in the model response. Currently
           #   supported values are:
@@ -644,6 +659,7 @@ module OpenAI
             ?background: bool?,
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
+            ?generate: bool,
             ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
             ?input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
             ?instructions: String?,
@@ -682,6 +698,7 @@ module OpenAI
             ?background: bool?,
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
+            ?generate: bool,
             ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
             ?input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
             ?instructions: String?,
