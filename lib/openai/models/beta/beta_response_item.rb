@@ -46,8 +46,8 @@ module OpenAI
 
         variant :additional_tools, -> { OpenAI::Beta::BetaResponseItem::AdditionalTools }
 
-        # A configuration update that applies to subsequent responses until it is
-        # replaced by another configuration update.
+        # A configuration update for subsequent responses. Each setting stays in effect
+        # until a later update replaces that setting.
         variant :configuration_update, -> { OpenAI::Beta::BetaResponseConfigurationUpdateItem }
 
         # A description of the chain of thought used by a reasoning model while generating

@@ -140,7 +140,8 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
             type: :configuration_update,
             id: String,
             agent: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Agent | nil,
-            reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning | nil
+            reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning | nil,
+            text: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text | nil
           } | {
             type: :reasoning,
             id: String,

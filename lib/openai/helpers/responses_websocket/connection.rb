@@ -184,7 +184,7 @@ module OpenAI
 
         raise OpenAI::Errors::ResponsesClientEventError.new unless payload.is_a?(Hash)
 
-        normalize_event_keys(payload)
+        OpenAI::Helpers::StructuredOutput.prepare_configuration_updates!(normalize_event_keys(payload))
       rescue OpenAI::Errors::ResponsesClientEventError
         raise
       rescue StandardError

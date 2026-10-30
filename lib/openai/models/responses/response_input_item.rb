@@ -56,9 +56,8 @@ module OpenAI
 
         variant :additional_tools, -> { OpenAI::Responses::ResponseInputItem::AdditionalTools }
 
-        # An update to the conversation's response configuration. The configuration
-        # remains in effect for subsequent responses until it is replaced by another
-        # configuration update.
+        # An update to the conversation's response configuration. Supply reasoning,
+        # text, or both. Each setting stays in effect until a later update replaces it.
         variant :configuration_update, -> { OpenAI::Responses::ResponseConfigurationUpdateItemParam }
 
         # A description of the chain of thought used by a reasoning model while generating
