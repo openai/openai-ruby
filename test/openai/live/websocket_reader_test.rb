@@ -40,35 +40,85 @@ class OpenAI::Test::LiveWebSocketReaderTest < Minitest::Test
       end
     end
 
-    define_method("test_#{role}_iteration_owns_reads_through_yields_and_releases_on_break") do
+    define_method("test_#{role}_iteration_excludes_other_reads_until_it_yields_and_releases_after_break") do
       with_live_peer(role) do |task, connection, entered, release, received|
         yielded = Queue.new
         finish = Queue.new
         iterator = task.async do
           connection.each do |event|
             yielded << event
-            # Rescuing a nested unsupported read must leave this iteration active.
-            assert_reader_rejected(task) { connection.receive_raw }
             finish.pop(timeout: 2)
             break :early if event.data.fetch(:marker) == "first"
           end
         end
 
         assert_equal(true, entered.pop(timeout: 1))
-        assert_reader_rejected(task) { connection.each { flunk("The competing reader received an event") } }
+        assert_reader_rejected(task) { connection.receive }
+        assert_reader_rejected(task) { connection.receive_raw }
+        assert_reader_rejected(task) { connection.each { flunk("Competing read yielded") } }
         release << :first
         assert_equal(:first, yielded.pop(timeout: 1).data.fetch(:marker).to_sym)
         assert(iterator.alive?)
-        assert_reader_rejected(task) { connection.receive }
-        assert_reader_rejected(task) { connection.receive_raw }
-        # The failing nested call must not have released the iterator's lease.
-        assert_reader_rejected(task) { connection.each { flunk("The competing reader received an event") } }
-        refute(connection.closed?)
+
+        # The callback has its event and is not reading. A caller may hand
+        # ownership to a direct receive, but a second physical read must fail.
+        second = task.async { connection.receive }
+        assert_equal(true, entered.pop(timeout: 1))
+        assert_reader_rejected(task) { connection.each { flunk("Competing read yielded") } }
+        release << :second
+        assert_equal(:second, task.with_timeout(1) { second.wait }.data.fetch(:marker).to_sym)
         finish << :done
         assert_equal(:early, task.with_timeout(1) { iterator.wait })
+        refute(connection.closed?)
+        assert_equal(role == :sideband ? [] : ["session.start"], received)
+      end
+    end
+
+    define_method("test_#{role}_external_rewind_restarts_against_remaining_socket_events") do
+      with_live_peer(role) do |_task, connection, entered, release, _received|
+        events = connection.each
+        assert_instance_of(Enumerator, events)
+        assert_same(events, events.rewind)
+        release << :first
+        assert_equal(:first, events.next.data.fetch(:marker).to_sym)
+        assert_equal(true, entered.pop(timeout: 1))
+        assert_same(events, events.rewind)
+        release << :second
+        assert_equal(:second, events.next.data.fetch(:marker).to_sym)
+        assert_equal(true, entered.pop(timeout: 1))
+        assert_same(events, events.rewind)
+        refute_predicate(connection, :closed?)
+      end
+    end
+
+    define_method("test_#{role}_stale_rewind_does_not_release_a_later_physical_reader") do
+      with_live_peer(role) do |task, connection, entered, release, _received|
+        events = connection.each
+        release << :first
+        assert_equal(:first, events.next.data.fetch(:marker).to_sym)
+        assert_equal(true, entered.pop(timeout: 1))
+        assert_same(events, events.rewind)
+        next_read = task.async { connection.receive }
+        assert_equal(true, entered.pop(timeout: 1))
+        assert(next_read.alive?)
+        assert_same(events, events.rewind)
+        assert_reader_rejected(task) { connection.receive_raw }
+        assert_reader_rejected(task) { events.each { flunk("Competing read yielded") } }
+        release << :second
+        assert_equal(:second, task.with_timeout(1) { next_read.wait }.data.fetch(:marker).to_sym)
+        refute_predicate(connection, :closed?)
+      end
+    end
+
+    define_method("test_#{role}_abandoned_enumerator_does_not_retain_physical_read_ownership") do
+      with_live_peer(role) do |_task, connection, entered, release, _received|
+        release << :first
+        assert_equal(:first, connection.each.next.data.fetch(:marker).to_sym)
+        assert_equal(true, entered.pop(timeout: 1))
         release << :second
         assert_equal(:second, connection.receive.data.fetch(:marker).to_sym)
-        assert_equal(role == :sideband ? [] : ["session.start"], received)
+        assert_equal(true, entered.pop(timeout: 1))
+        refute_predicate(connection, :closed?)
       end
     end
   end

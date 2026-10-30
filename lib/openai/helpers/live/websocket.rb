@@ -44,7 +44,8 @@ module OpenAI
 
     # A transport-open primary connection. Startup is owned by the caller:
     # send session.start and observe session.started before further commands.
-    # Use one reader at a time: receive, receive_raw, and each are alternatives.
+    # Only one receive call may read or decode at a time. Iteration releases
+    # the read before yielding an event to the caller.
     class Connection < OpenAI::WebSocket::TypedConnection
       # @api private
       def initialize(socket:, url:)
@@ -55,18 +56,6 @@ module OpenAI
       end
 
       private :parse_event
-
-      def each
-        return enum_for(__method__) unless block_given?
-
-        with_read_lease do
-          while (event = read_one)
-            yield(event)
-          end
-        end
-
-        self
-      end
 
       def receive
         with_read_lease { read_one }
