@@ -64,6 +64,12 @@ module OpenAI
         send_raw(encode_client_event(event))
       end
 
+      # @api private
+      def enable_no_status_recovery
+        @socket.enable_no_status_recovery if @socket.respond_to?(:enable_no_status_recovery)
+        nil
+      end
+
       private def read_raw_message
         # Recovery already queues callers behind its one physical reader.
         return super if @recovery

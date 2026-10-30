@@ -29,6 +29,9 @@ module OpenAI
         # @return [OpenAI::Resources::Admin::Organization::DataRetention]
         attr_reader :data_retention
 
+        # @return [OpenAI::Resources::Admin::Organization::ExternalKeys]
+        attr_reader :external_keys
+
         # @return [OpenAI::Resources::Admin::Organization::ExternalStorage]
         attr_reader :external_storage
 
@@ -44,9 +47,6 @@ module OpenAI
         # @return [OpenAI::Resources::Admin::Organization::Projects]
         attr_reader :projects
 
-        # @return [OpenAI::Resources::Admin::Organization::ExternalKeys]
-        attr_reader :external_keys
-
         # @api private
         #
         # @param client [OpenAI::Client]
@@ -60,12 +60,12 @@ module OpenAI
           @groups = OpenAI::Resources::Admin::Organization::Groups.new(client: client)
           @roles = OpenAI::Resources::Admin::Organization::Roles.new(client: client)
           @data_retention = OpenAI::Resources::Admin::Organization::DataRetention.new(client: client)
+          @external_keys = OpenAI::Resources::Admin::Organization::ExternalKeys.new(client: client)
           @external_storage = OpenAI::Resources::Admin::Organization::ExternalStorage.new(client: client)
           @spend_limit = OpenAI::Resources::Admin::Organization::SpendLimit.new(client: client)
           @spend_alerts = OpenAI::Resources::Admin::Organization::SpendAlerts.new(client: client)
           @certificates = OpenAI::Resources::Admin::Organization::Certificates.new(client: client)
           @projects = OpenAI::Resources::Admin::Organization::Projects.new(client: client)
-          @external_keys = OpenAI::Resources::Admin::Organization::ExternalKeys.new(client: client)
         end
       end
     end

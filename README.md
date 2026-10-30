@@ -226,7 +226,12 @@ client.responses.connect do |connection|
 
   connection.each do |event|
     print(event.delta) if event.type == :"response.output_text.delta"
-    break if event.type == :"response.completed"
+    case event.type
+    when :"response.completed"
+      break
+    when :"response.failed", :"response.incomplete", :error
+      raise "Responses operation did not complete."
+    end
   end
 end
 ```

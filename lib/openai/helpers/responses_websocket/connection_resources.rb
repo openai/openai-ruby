@@ -14,7 +14,7 @@ module OpenAI
         # @return [nil]
         def create(**params)
           event_params = params.reject { |key, _value| key == :type || key == "type" }
-          @connection.send_event(**event_params, type: :"response.create")
+          @connection.send_response_create(**event_params, type: :"response.create")
         end
       end
     end

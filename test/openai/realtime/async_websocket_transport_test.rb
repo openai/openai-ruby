@@ -512,6 +512,132 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
   end
 
+  def test_recovery_classifies_received_close_frames_on_the_actual_transport
+    # A nil code sends a valid empty close payload. 1005 must never be sent on
+    # the wire: it represents the lack of a status in that frame.
+    [[nil, :retry], [1001, :retry], [1011, :retry], [1000, :end], [1008, :fail]].each do |code, expected|
+      upgrades = 0
+      callbacks = 0
+      handler = lambda do |peer|
+        upgrades += 1
+        if upgrades == 1
+          peer.close(code, code ? "Synthetic close" : nil)
+        else
+          write_event(peer, **JSON.parse(text_delta("replacement"), symbolize_names: true))
+          peer.read
+        end
+      end
+
+      with_websocket_server(handler) do |client|
+        run = lambda do
+          client
+            .realtime
+            .connect(
+              model: "fixture",
+              reconnect: true,
+              max_reconnect_attempts: 1,
+              on_reconnected: -> (_connection) { callbacks += 1 }
+            ) do |connection|
+              event = connection.receive
+              expected == :retry ? assert_equal("replacement", event&.delta, "close #{code.inspect}") : assert_nil(
+                event
+              )
+            end
+        end
+
+        expected == :fail ? assert_raises(OpenAI::Errors::RealtimeReconnectError, &run) : run.call
+      end
+
+      assert_equal(expected == :retry ? 2 : 1, upgrades, "close #{code.inspect}")
+      assert_equal(expected == :retry ? 1 : 0, callbacks, "close #{code.inspect}")
+    end
+  end
+
+  def test_empty_close_frame_with_reconnect_disabled_still_ends_the_stream
+    upgrades = 0
+    handler = lambda do |peer|
+      upgrades += 1
+      peer.close(nil)
+    end
+
+    with_websocket_server(handler) do |client|
+      client.realtime.connect(model: "fixture") { |connection| assert_nil(connection.receive) }
+    end
+
+    assert_equal(1, upgrades)
+  end
+
+  def test_a_second_empty_close_preserves_unsent_messages_at_the_retry_limit
+    upgrades = 0
+    restoring = Queue.new
+    release = Queue.new
+    handler = lambda do |peer|
+      upgrades += 1
+      peer.close(nil)
+    end
+
+    with_websocket_server(handler) do |client|
+      error = assert_raises(OpenAI::Errors::RealtimeReconnectError) do
+        client
+          .realtime
+          .connect(
+            model: "fixture",
+            reconnect: true,
+            max_reconnect_attempts: 1,
+            max_queue_bytes: 4096,
+            on_reconnected: -> (_connection) {
+              restoring << true
+              release.pop
+            }
+          ) do |connection|
+            receiver = Async::Task.current.async do
+              connection.receive
+            rescue OpenAI::Errors::RealtimeReconnectError => e
+              e
+            end
+
+            restoring.pop
+            connection.response.create(instructions: "Synthetic retained text")
+            release << true
+            failure = receiver.wait
+            assert_instance_of(OpenAI::Errors::RealtimeReconnectError, failure)
+            assert_nil(failure.uncertain_message)
+            assert_equal(1, failure.unsent_messages.length)
+            refute_includes(failure.full_message, "Synthetic retained text")
+          end
+      end
+
+      assert_includes(error.unsent_messages.first, "Synthetic retained text")
+    end
+
+    assert_equal(2, upgrades)
+  end
+
+  def test_explicit_close_does_not_trigger_recovery_on_the_actual_transport
+    upgrades = 0
+    callbacks = 0
+    handler = lambda do |peer|
+      upgrades += 1
+      peer.read
+    end
+
+    with_websocket_server(handler) do |client|
+      client
+        .realtime
+        .connect(
+          model: "fixture",
+          reconnect: true,
+          on_reconnected: -> (_connection) { callbacks += 1 }
+        ) do |connection|
+          connection.close
+          assert_nil(connection.receive)
+        end
+    end
+
+    assert_equal(1, upgrades)
+    assert_equal(0, callbacks)
+  end
+
   def test_request_timeout_bounds_negotiation_but_not_an_established_session
     server = TCPServer.new("127.0.0.1", 0)
     release_server = Queue.new

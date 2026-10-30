@@ -220,19 +220,31 @@ module OpenAI
         #
         # @param value [Object]
         #
+        # @return [OpenAI::Internal::Type::Converter, Class, nil]
+        def variant_for_dump(value)
+          target = resolve_variant(value)
+          return target if target
+
+          known_variants.each do
+            target = _2.call
+            return target if target === value
+          end
+
+          nil
+        end
+
+        # @api private
+        #
+        # @param value [Object]
+        #
         # @param state [Hash{Symbol=>Object}] .
         #
         #   @option state [Boolean] :can_retry
         #
         # @return [Object]
         def dump(value, state:)
-          if (target = resolve_variant(value))
+          if (target = variant_for_dump(value))
             return OpenAI::Internal::Type::Converter.dump(target, value, state: state)
-          end
-
-          known_variants.each do
-            target = _2.call
-            return OpenAI::Internal::Type::Converter.dump(target, value, state: state) if target === value
           end
 
           super

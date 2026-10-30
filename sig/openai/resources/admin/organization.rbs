@@ -18,6 +18,8 @@ module OpenAI
 
         attr_reader data_retention: OpenAI::Resources::Admin::Organization::DataRetention
 
+        attr_reader external_keys: OpenAI::Resources::Admin::Organization::ExternalKeys
+
         attr_reader external_storage: OpenAI::Resources::Admin::Organization::ExternalStorage
 
         attr_reader spend_limit: OpenAI::Resources::Admin::Organization::SpendLimit
@@ -27,8 +29,6 @@ module OpenAI
         attr_reader certificates: OpenAI::Resources::Admin::Organization::Certificates
 
         attr_reader projects: OpenAI::Resources::Admin::Organization::Projects
-
-        attr_reader external_keys: OpenAI::Resources::Admin::Organization::ExternalKeys
 
         def initialize: (client: OpenAI::Client) -> void
       end

@@ -5867,7 +5867,7 @@
     },
     "lib/openai/resources/admin/organization.rb": {
       "mode": "100644",
-      "sha256": "df9367497250f69a5fdfffa30acb5ea0a87dbf0331be852c2aa48a559a1ba179"
+      "sha256": "76f125c9a7f53da20c7fa5c0cd85f2f84cc433c3a1e124264da0e901db591b44"
     },
     "lib/openai/resources/admin/organization/admin_api_keys.rb": {
       "mode": "100644",
@@ -12227,7 +12227,7 @@
     },
     "rbi/openai/resources/admin/organization.rbi": {
       "mode": "100644",
-      "sha256": "41e39ac3b24770887c4ba8d03d7117b2606c402a218fe81ff38996553d7ebed0"
+      "sha256": "df6f22f2f15c26940df9459dabce4223bd5244e41f0ba99deedacb24dc96d99e"
     },
     "rbi/openai/resources/admin/organization/admin_api_keys.rbi": {
       "mode": "100644",
@@ -18587,7 +18587,7 @@
     },
     "sig/openai/resources/admin/organization.rbs": {
       "mode": "100644",
-      "sha256": "5e6b2e0432a0fb3b3e9a76c8fc0f2c07ad765de06538c45e3f6601bfdb6617fd"
+      "sha256": "9a2ade508f7e9bfe11f50d958095beafd236ec1a6e59c24743f057f54041937a"
     },
     "sig/openai/resources/admin/organization/admin_api_keys.rbs": {
       "mode": "100644",
@@ -19115,7 +19115,7 @@
     },
     "test/openai/resources/admin/organization/external_keys_test.rb": {
       "mode": "100644",
-      "sha256": "972cf729d817de22c9cc3974dd099adca897244341af8a0faf0d9b4ba6186a77"
+      "sha256": "ccfb797ac1520a5210641a8be9fb131fab4e0ff32fd4fcf8f9725a4a716c4d0a"
     },
     "test/openai/resources/admin/organization/external_storage_test.rb": {
       "mode": "100644",

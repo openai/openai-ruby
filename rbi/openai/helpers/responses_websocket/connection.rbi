@@ -55,8 +55,13 @@ module OpenAI
         end
 
         # @api private
-        sig { params(event: ClientEvent).returns(OpenAI::Internal::AnyHash) }
-        def encode_client_event(event)
+        sig { params(event: ClientEvent).void }
+        def send_response_create(event)
+        end
+
+        # @api private
+        sig { params(event: ClientEvent, response_create: T::Boolean).returns(OpenAI::Internal::AnyHash) }
+        def encode_client_event(event, response_create: false)
         end
 
         # @api private
