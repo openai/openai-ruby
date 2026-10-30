@@ -105,7 +105,7 @@ module OpenAI
 
             event = lane.receive
             data = event.is_a?(OpenAI::Responses::UnknownServerEvent) ? event.to_h : event.deep_to_h
-            encoded_bytes = JSON.generate(data).bytesize
+            encoded_bytes = JSON.generate(data, max_nesting: false).bytesize
             # Queued reads and JSON encoding can complete without yielding.
             if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
               return {outcome: :timeout, last_received_event: event}

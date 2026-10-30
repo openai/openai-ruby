@@ -152,6 +152,38 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_preview_counts_deep_unknown_events_without_adding_a_nesting_limit
+    schema = 105.times.reduce({type: "string"}) { |value, _| {nested: value} }
+    future = {type: "response.future", stream_id: "left", schema: schema}
+    wire = JSON.generate(future, max_nesting: false)
+
+    [4096, wire.bytesize - 1].each do |budget|
+      handler = lambda do |socket, _request|
+        assert_equal("left", read(socket)["stream_id"])
+        socket.write(::Protocol::WebSocket::TextMessage.new(wire))
+        socket.flush
+        terminal(socket, "left")
+      end
+
+      with_server(handler) do |client|
+        OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+          left = session.lane("left")
+          left.send_event(type: "response.create")
+          result = OpenAI::Examples::ResponsesWebSocketWorkflows.preview_lane(left, max_bytes: budget, seconds: 2)
+          if budget == 4096
+            assert_equal(:terminal, result.fetch(:outcome))
+            assert_equal("resp_left", result.fetch(:terminal_event).response.id)
+          else
+            assert_equal(:budget_exceeded, result.fetch(:outcome))
+            assert_equal(future, result.fetch(:last_received_event).to_h)
+          end
+
+          assert_equal("resp_left", left.get_final_response.id)
+        end
+      end
+    end
+  end
+
   def test_preview_example_does_not_reclassify_outer_cancellation
     handler = lambda do |socket, _request|
       assert_equal("left", read(socket)["stream_id"])
