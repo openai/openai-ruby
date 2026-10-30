@@ -7,6 +7,7 @@ module OpenAI
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts
           }
@@ -17,10 +18,10 @@ module OpenAI
 
           attr_accessor session_id: String
 
-          # Model settings for subsequent turns. Omitted fields stay unchanged.
+          # Agent settings to update on this session. Omitted fields stay unchanged.
           attr_reader agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent?
 
-          # Model settings for subsequent turns. Omitted fields stay unchanged.
+          # Agent settings to update on this session. Omitted fields stay unchanged.
           def agent=: (
             OpenAI::Beta::Agents::SessionUpdateParams::Agent
           ) -> OpenAI::Beta::Agents::SessionUpdateParams::Agent
@@ -30,16 +31,29 @@ module OpenAI
           # characters.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # Default action review for new root turns. Existing turns and their subagents
+          # keep their review mode.
+          attr_reader review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review?
+
+          # Default action review for new root turns. Existing turns and their subagents
+          # keep their review mode.
+          def review=: (
+            OpenAI::Models::Beta::Agents::SessionUpdateParams::review
+          ) -> OpenAI::Models::Beta::Agents::SessionUpdateParams::review
+
           # Omit to retain the limit; null or a null limit removes it without resetting
           # spend.
           attr_accessor spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?
 
           # @param agent
-          #   Model settings for subsequent turns. Omitted fields stay unchanged.
+          #   Agent settings to update on this session. Omitted fields stay unchanged.
           # @param metadata
           #   Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters.
+          # @param review
+          #   Default action review for new root turns. Existing turns and their subagents
+          #   keep their review mode.
           # @param spend_control
           #   Omit to retain the limit; null or a null limit removes it without resetting
           #   spend.
@@ -47,6 +61,7 @@ module OpenAI
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts
           ) -> void
@@ -55,6 +70,7 @@ module OpenAI
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::RequestOptions
           }
@@ -63,7 +79,8 @@ module OpenAI
             {
               ?model: String,
               ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
-              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?,
+              ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
             }
 
           class Agent < OpenAI::Internal::Type::BaseModel
@@ -84,22 +101,33 @@ module OpenAI
             # Omit to keep the current tier. Null resets it to auto.
             attr_accessor service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
 
+            # Replaces the session tools. Functions and MCP servers change on the next model
+            # call. Built-in tools change by the next turn. Omit to keep the current tools, or
+            # pass null or an empty array to clear them.
+            attr_accessor tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+
             # @param model
             #   The model for subsequent turns. Omit to keep the current model.
             # @param reasoning
             #   Reasoning settings to update. Omit to keep the current effort.
             # @param service_tier
             #   Omit to keep the current tier. Null resets it to auto.
+            # @param tools
+            #   Replaces the session tools. Functions and MCP servers change on the next model
+            #   call. Built-in tools change by the next turn. Omit to keep the current tools, or
+            #   pass null or an empty array to clear them.
             def initialize: (
               ?model: String,
               ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
-              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?,
+              ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
             ) -> void
 
             def to_hash: -> {
               ?model: String,
               ?reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
-              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?
+              ?service_tier: OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier?,
+              ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
             }
 
             type reasoning =
@@ -165,6 +193,20 @@ module OpenAI
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier]
             end
+          end
+
+          type review = :none | :auto_review
+
+          module Review
+            extend OpenAI::Internal::Type::Enum
+
+            # Keep the existing execution behavior without automatic action review.
+            NONE: :none
+
+            # Review eligible actions automatically. Deny manual approval fallbacks.
+            AUTO_REVIEW: :auto_review
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::review]
           end
 
           type spend_control = { limit: Integer? }

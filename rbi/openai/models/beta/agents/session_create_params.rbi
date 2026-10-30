@@ -59,6 +59,13 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
+          # Action review mode. Omit to use none.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol)) }
+          attr_reader :review
+
+          sig { params(review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol).void }
+          attr_writer :review
+
           # Optional spending limit in USD cents. Omission or null creates an unlimited
           # session.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl)) }
@@ -89,6 +96,8 @@ module OpenAI
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
 
               metadata: T.nilable(T::Hash[Symbol, String]),
+
+              review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
 
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
 
@@ -121,6 +130,9 @@ module OpenAI
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
 
+            # Action review mode. Omit to use none.
+            review: nil,
+
             # Optional spending limit in USD cents. Omission or null creates an unlimited
             # session.
             spend_control: nil,
@@ -144,6 +156,7 @@ module OpenAI
                 agent_id: String,
                 input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
                 metadata: T.nilable(T::Hash[Symbol, String]),
+                review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
                 spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl),
                 vault_ids: T.nilable(T::Array[String]),
                 request_options: OpenAI::RequestOptions
@@ -487,6 +500,24 @@ module OpenAI
               OpenAI::Internal::Type::Converter
             )
 
+          end
+
+          # Action review mode. Omit to use none.
+          module Review
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Agents::SessionCreateParams::Review) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            # Keep the existing execution behavior without automatic action review.
+            NONE = T.let(:none, OpenAI::Beta::Agents::SessionCreateParams::Review::TaggedSymbol)
+
+            # Review eligible actions automatically. Deny manual approval fallbacks.
+            AUTO_REVIEW = T.let(:auto_review, OpenAI::Beta::Agents::SessionCreateParams::Review::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::Agents::SessionCreateParams::Review::TaggedSymbol]) }
+            def self.values
+            end
           end
 
           class SpendControl < OpenAI::Internal::Type::BaseModel

@@ -15,6 +15,7 @@ module OpenAI
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
+          ?review: OpenAI::Models::Beta::AgentSession::review,
           ?spend_control: OpenAI::Beta::AgentSession::SpendControl
         }
 
@@ -56,6 +57,16 @@ module OpenAI
         # The IDs of vaults made available to the session.
         attr_accessor vault_ids: ::Array[String]
 
+        # Review applied to eligible actions in this session. Omitted when review is none
+        # and automatic review is not enabled. Omission means none.
+        attr_reader review: OpenAI::Models::Beta::AgentSession::review?
+
+        # Review applied to eligible actions in this session. Omitted when review is none
+        # and automatic review is not enabled. Omission means none.
+        def review=: (
+          OpenAI::Models::Beta::AgentSession::review
+        ) -> OpenAI::Models::Beta::AgentSession::review
+
         # Configured spending limit and best-effort consumption, in USD cents. Unlimited
         # sessions omit this object.
         attr_reader spend_control: OpenAI::Beta::AgentSession::SpendControl?
@@ -89,6 +100,9 @@ module OpenAI
         #   change.
         # @param vault_ids
         #   The IDs of vaults made available to the session.
+        # @param review
+        #   Review applied to eligible actions in this session. Omitted when review is none
+        #   and automatic review is not enabled. Omission means none.
         # @param spend_control
         #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
         #   sessions omit this object.
@@ -106,6 +120,7 @@ module OpenAI
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
+          ?review: OpenAI::Models::Beta::AgentSession::review,
           ?spend_control: OpenAI::Beta::AgentSession::SpendControl,
           ?object: :"agent.session"
         ) -> void
@@ -123,6 +138,7 @@ module OpenAI
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
+          ?review: OpenAI::Models::Beta::AgentSession::review,
           ?spend_control: OpenAI::Beta::AgentSession::SpendControl
         }
 
@@ -599,6 +615,17 @@ module OpenAI
           FAILED: :failed
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::status]
+        end
+
+        type review = :none | :auto_review
+
+        module Review
+          extend OpenAI::Internal::Type::Enum
+
+          NONE: :none
+          AUTO_REVIEW: :auto_review
+
+          def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::review]
         end
 
         type spend_control = { consumed: Integer?, limit: Integer }

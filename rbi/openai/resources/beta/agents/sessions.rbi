@@ -44,6 +44,7 @@ module OpenAI
               agent_id: String,
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
+              review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
@@ -68,6 +69,8 @@ module OpenAI
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
+            # Action review mode. Omit to use none.
+            review: nil,
             # Optional spending limit in USD cents. Omission or null creates an unlimited
             # session.
             spend_control: nil,
@@ -99,6 +102,7 @@ module OpenAI
               output_type: T.nilable(T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)),
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
+              review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
@@ -125,6 +129,8 @@ module OpenAI
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
+            # Action review mode. Omit to use none.
+            review: nil,
             # Optional spending limit in USD cents. Omission or null creates an unlimited
             # session.
             spend_control: nil,
@@ -151,7 +157,7 @@ module OpenAI
           )
           end
 
-          # Updates session metadata, model, reasoning effort, or service tier. Model
+          # Updates session tools, metadata, model, reasoning effort, or service tier. Model
           # settings apply to subsequent turns. Omitted fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           sig {
@@ -159,6 +165,7 @@ module OpenAI
               session_id: String,
               agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent::OrHash,
               metadata: T.nilable(T::Hash[Symbol, String]),
+              review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
               request_options: OpenAI::RequestOptions::OrHash
             )
@@ -167,12 +174,15 @@ module OpenAI
           def update(
             # The ID of the session.
             session_id,
-            # Model settings for subsequent turns. Omitted fields stay unchanged.
+            # Agent settings to update on this session. Omitted fields stay unchanged.
             agent: nil,
             # Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters.
             metadata: nil,
+            # Default action review for new root turns. Existing turns and their subagents
+            # keep their review mode.
+            review: nil,
             # Omit to retain the limit; null or a null limit removes it without resetting
             # spend.
             spend_control: nil,
