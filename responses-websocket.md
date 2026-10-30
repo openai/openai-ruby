@@ -155,6 +155,48 @@ compatible event bytes retained for collection. Choose budgets for legitimate
 large output, including images and tool results. Queue overflow closes the
 session's connection; collection overflow leaves raw events and other lanes usable.
 
+### Bound a caller-fed preview
+
+`OpenAI::Responses::IncrementalResponse` builds provisional output from events
+you feed it. Use a separate instance for each lane. It does not read, close, or
+write to the connection. Tools remain data. Its `output` may be unavailable
+if the events do not contain enough information; its admitted terminal event
+stays exact, including an absent output field. Call `reset` to discard only
+the preview's state.
+
+Session limits govern the session's queues and final-response collector.
+They do not bound a separate `IncrementalResponse`. Choose a finite budget
+for the encoded events that you feed to each preview and a finite lifetime.
+Check the complete event before every `add`, including unknowns, errors, and
+terminal events. Stop feeding when an event would exceed the budget. Never
+report a completed preview for a terminal event that you did not admit.
+
+The runnable [preview example](examples/responses/websocket_workflows.rb)
+sets a decoded per-message cap, uses the session's separate limits, and applies
+a 4 MiB cumulative preview budget with a 15-second lifetime:
+
+```sh
+bundle exec ruby examples/responses/websocket_workflows.rb preview
+```
+
+`preview_lane` uses the model's `deep_to_h` for known events and the raw
+`to_h` for unknown events. It counts the UTF-8 bytes in the encoded JSON,
+including nested and unknown fields. These are encoded event bytes, not the
+original wire bytes or a bound on total heap memory. It also checks a
+monotonic deadline while draining queued events; the
+Async timeout interrupts an idle wait. Choose budgets large enough for legitimate
+image, audio, tool, or other large output in your application.
+
+The result has `outcome: :terminal`, `:budget_exceeded`, or `:timeout`.
+Only `:terminal` includes `terminal_event`, the exact admitted completion,
+failure, incomplete, or error event. Inspect that event's type and status.
+A stop after a read includes `last_received_event`; that event was not fed to
+the preview. Raw events, lane finals and other lanes keep their normal SDK
+contracts. A preview timeout or budget stop only resets the preview; it does not
+close the lane, cancel the response, or choose a continuation for you. The outer
+session still closes when its owning block exits. EOF, transport failures and
+other cancellation propagate as usual.
+
 Register lanes before sending and consume each response before creating another
 on that lane. One Async task reads the physical connection; each lane has one
 consumer, and all session operations use the owning Ruby thread. `lane.receive`

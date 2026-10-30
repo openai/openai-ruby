@@ -6,8 +6,218 @@ require "async/queue"
 require "io/endpoint/bound_endpoint"
 
 require_relative "../test_helper"
+require_relative "../../../examples/responses/websocket_workflows"
 
 class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
+  def test_preview_example_admits_an_exact_terminal_and_rejects_one_utf8_byte_less
+    created = {type: "response.created", stream_id: "left", sequence_number: 0, response: {id: "resp_left"}}
+    final = {
+      type: "response.completed",
+      stream_id: "left",
+      sequence_number: 1,
+      response: {
+        id: "resp_left",
+        status: "completed",
+        output: [
+          {
+            type: "message",
+            id: "m1",
+            role: "assistant",
+            status: "completed",
+            content: [{type: "output_text", text: "早 🌍 é", annotations: []}]
+          }
+        ],
+        opaque: {key: "préservé 🌍"}
+      }
+    }
+    bytes = JSON.generate(created).bytesize + JSON.generate(final).bytesize
+    assert_operator(bytes, :>, JSON.generate(created).length + JSON.generate(final).length)
+
+    [bytes, bytes - 1].each do |budget|
+      handler = lambda do |socket, _request|
+        assert_equal(%w[left right], [read(socket)["stream_id"], read(socket)["stream_id"]])
+        write(socket, **created)
+        write(socket, type: "response.future", stream_id: "right", payload: "unrelated")
+        write(socket, **final)
+        terminal(socket, "right")
+        assert_equal("left", read(socket)["stream_id"])
+        terminal(socket, "left", id: "resp_next")
+      end
+
+      with_server(handler) do |client|
+        OpenAI::Responses::Session
+          .open(
+            client: client,
+            limits: limits,
+            transport_options: {max_message_bytes: 32 * 1024}
+          ) do |session|
+            left = session.lane("left")
+            right = session.lane("right")
+            left.send_event(type: "response.create")
+            right.send_event(type: "response.create")
+            result = OpenAI::Examples::ResponsesWebSocketWorkflows.preview_lane(left, max_bytes: budget, seconds: 2)
+            if budget == bytes
+              assert_equal(:terminal, result.fetch(:outcome))
+              refute(result.key?(:last_received_event))
+              assert_equal(
+                final,
+                JSON.parse(JSON.generate(result.fetch(:terminal_event).deep_to_h), symbolize_names: true)
+              )
+            else
+              assert_equal(:budget_exceeded, result.fetch(:outcome))
+              refute(result.key?(:terminal_event))
+              assert_equal(
+                final,
+                JSON.parse(JSON.generate(result.fetch(:last_received_event).deep_to_h), symbolize_names: true)
+              )
+            end
+
+            assert_equal("unrelated", right.receive.to_h.fetch(:payload))
+            assert_equal("resp_right", right.get_final_response.id)
+            assert_equal("resp_left", left.get_final_response.id)
+            left.send_event(type: "response.create")
+            assert_equal("resp_next", left.get_final_response.id)
+          end
+      end
+    end
+  end
+
+  def test_preview_example_charges_unknown_and_error_before_admission
+    created = {type: "response.created", stream_id: "left", sequence_number: 0, response: {id: "resp_left"}}
+    events = [
+      {type: "response.future", stream_id: "left", opaque: "privé 🌍"},
+      {
+        type: "error",
+        stream_id: "left",
+        sequence_number: 1,
+        error: {type: "invalid_request_error", code: "synthetic", message: "privé 🌍", param: nil}
+      }
+    ]
+    events.each do |stopped|
+      handler = lambda do |socket, _request|
+        assert_equal("left", read(socket)["stream_id"])
+        write(socket, **created)
+        write(socket, **stopped)
+        terminal(socket, "left") unless stopped[:type] == "error"
+        assert_equal("right", read(socket)["stream_id"])
+        terminal(socket, "right")
+      end
+
+      with_server(handler) do |client|
+        OpenAI::Responses::Session
+          .open(client: client, limits: limits, transport_options: {max_message_bytes: 32 * 1024}) do |session|
+            left = session.lane("left")
+            right = session.lane("right")
+            left.send_event(type: "response.create")
+            bytes = JSON.generate(created).bytesize + JSON.generate(stopped).bytesize - 1
+            result = OpenAI::Examples::ResponsesWebSocketWorkflows.preview_lane(left, max_bytes: bytes, seconds: 2)
+            assert_equal(:budget_exceeded, result.fetch(:outcome), stopped[:type])
+            refute(result.key?(:terminal_event))
+            last = result.fetch(:last_received_event)
+            data = last.is_a?(OpenAI::Responses::UnknownServerEvent) ? last.to_h : last.deep_to_h
+            assert_equal(stopped, JSON.parse(JSON.generate(data), symbolize_names: true))
+            if stopped[:type] == "error"
+              assert_raises(OpenAI::Responses::RequestError) { left.get_final_response }
+            else
+              assert_equal("resp_left", left.get_final_response.id)
+            end
+
+            right.send_event(type: "response.create")
+            assert_equal("resp_right", right.get_final_response.id)
+          end
+      end
+    end
+  end
+
+  def test_preview_example_timeout_releases_the_wait_but_does_not_close_the_source
+    handler = lambda do |socket, _request|
+      assert_equal("left", read(socket)["stream_id"])
+      # A create on the other lane proves preview returned while this one was idle.
+      assert_equal("right", read(socket)["stream_id"])
+      terminal(socket, "right")
+      terminal(socket, "left")
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        left = session.lane("left")
+        right = session.lane("right")
+        left.send_event(type: "response.create")
+        result = OpenAI::Examples::ResponsesWebSocketWorkflows.preview_lane(left, max_bytes: 4096, seconds: 0.03)
+        assert_equal({outcome: :timeout}, result)
+        right.send_event(type: "response.create")
+        assert_equal("resp_right", right.get_final_response.id)
+        assert_equal("resp_left", left.get_final_response.id)
+      end
+    end
+  end
+
+  def test_preview_example_does_not_reclassify_outer_cancellation
+    handler = lambda do |socket, _request|
+      assert_equal("left", read(socket)["stream_id"])
+      assert_equal("right", read(socket)["stream_id"])
+      terminal(socket, "right")
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        left = session.lane("left")
+        right = session.lane("right")
+        left.send_event(type: "response.create")
+        assert_raises(Async::TimeoutError) do
+          Async::Task.current.with_timeout(0.03) do
+            OpenAI::Examples::ResponsesWebSocketWorkflows.preview_lane(left, max_bytes: 4096, seconds: 2)
+          end
+        end
+
+        right.send_event(type: "response.create")
+        assert_equal("resp_right", right.get_final_response.id)
+      end
+    end
+  end
+
+  def test_preview_example_rejects_unbounded_or_invalid_configuration
+    [0, -1, 1.5, nil].each do |budget|
+      assert_raises(ArgumentError) {
+        OpenAI::Examples::ResponsesWebSocketWorkflows.preview_lane(nil, max_bytes: budget, seconds: 1)
+      }
+    end
+
+    [0, -1, 10 ** 1000, Float::INFINITY, Float::NAN, nil].each do |seconds|
+      assert_raises(ArgumentError) {
+        OpenAI::Examples::ResponsesWebSocketWorkflows.preview_lane(nil, max_bytes: 4096, seconds: seconds)
+      }
+    end
+  end
+
+  def test_preview_example_cli_reports_only_outcome_and_never_the_terminal_contents
+    handler = lambda do |socket, _request|
+      request = read(socket)
+      assert_equal("preview", request["stream_id"])
+      write(
+        socket,
+        type: "response.failed",
+        stream_id: "preview",
+        sequence_number: 0,
+        response: {id: "resp_failed", status: "failed", error: {code: "synthetic", message: "PRIVATE_EXAMPLE_🌍"}}
+      )
+    end
+
+    with_server(handler) do |client|
+      output = StringIO.new
+      OpenAI::Examples::ResponsesWebSocketWorkflows.run(
+        client: client,
+        model: "example-model",
+        workflow: "preview",
+        timeout: 2,
+        output: output
+      )
+      assert_equal("Responses WebSocket preview: terminal.\n", output.string)
+      refute_includes(output.string, "PRIVATE_EXAMPLE")
+      refute_includes(output.string, "completed")
+    end
+  end
+
   extend Minitest::Serial
 
   class UncertainWriteTransport
