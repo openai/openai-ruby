@@ -6,6 +6,8 @@ require "io/endpoint/bound_endpoint"
 require_relative "../test_helper"
 
 class OpenAI::Test::WebSocketHTTPPolicyTest < Minitest::Test
+  extend Minitest::Serial
+
   ENTRYPOINTS = {
     realtime: -> (client, options, &block) { client.realtime.connect(model: "gpt-realtime-2.1", **options, &block) },
     transcription: -> (client, options, &block) { client.realtime.connect_transcription(**options, &block) },
