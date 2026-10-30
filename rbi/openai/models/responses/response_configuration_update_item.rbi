@@ -29,14 +29,23 @@ module OpenAI
         sig { params(reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning::OrHash).void }
         attr_writer :reasoning
 
-        # A configuration update that applies to subsequent responses until it is replaced
-        # by another configuration update.
+        # The text output configuration for subsequent responses.
+        sig { returns(T.nilable(OpenAI::Responses::ResponseConfigurationUpdateItem::Text)) }
+        attr_reader :text
+
+        sig { params(text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text::OrHash).void }
+        attr_writer :text
+
+        # A configuration update for subsequent responses. Each setting stays in effect
+        # until a later update replaces that setting.
         sig do
           params(
 
             id: String,
 
             reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning::OrHash,
+
+            text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text::OrHash,
 
             type: Symbol
           )
@@ -50,6 +59,9 @@ module OpenAI
           # The reasoning configuration applied by this update.
           reasoning: nil,
 
+          # The text output configuration for subsequent responses.
+          text: nil,
+
           # The item type. Always `configuration_update`.
 
           type: :configuration_update
@@ -58,7 +70,12 @@ module OpenAI
 
         sig do
           override.returns(
-            {id: String, type: Symbol, reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning}
+            {
+              id: String,
+              type: Symbol,
+              reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning,
+              text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text
+            }
           )
         end
         def to_hash
@@ -102,6 +119,62 @@ module OpenAI
           def to_hash
           end
 
+        end
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseConfigurationUpdateItem::Text,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Use a JSON schema for structured output or text to return to plain text.
+          sig { returns(OpenAI::Responses::ResponseConfigurationUpdateItem::Text::Format::Variants) }
+          attr_accessor :format_
+
+          # The text output configuration for subsequent responses.
+          sig do
+            params(
+
+              format_: T.any(
+                OpenAI::ResponseFormatText::OrHash,
+                OpenAI::Responses::ResponseFormatTextJSONSchemaConfig::OrHash
+              )
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Use a JSON schema for structured output or text to return to plain text.
+
+            format_:
+          )
+          end
+
+          sig do
+            override.returns(
+              {format_: OpenAI::Responses::ResponseConfigurationUpdateItem::Text::Format::Variants}
+            )
+          end
+          def to_hash
+          end
+
+          # Use a JSON schema for structured output or text to return to plain text.
+          module Format
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(OpenAI::ResponseFormatText, OpenAI::Responses::ResponseFormatTextJSONSchemaConfig)
+            }
+
+            sig {
+              override.returns(T::Array[OpenAI::Responses::ResponseConfigurationUpdateItem::Text::Format::Variants])
+            }
+            def self.variants
+            end
+
+          end
         end
 
       end

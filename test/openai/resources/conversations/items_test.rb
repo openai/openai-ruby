@@ -127,7 +127,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
           } | {
             type: :configuration_update,
             id: String,
-            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil,
+            text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text | nil
           } | {
             type: :reasoning,
             id: String,
@@ -350,7 +351,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
           } | {
             type: :configuration_update,
             id: String,
-            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil,
+            text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text | nil
           } | {
             type: :reasoning,
             id: String,

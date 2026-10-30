@@ -108,7 +108,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
           } | {
             type: :configuration_update,
             id: String,
-            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil,
+            text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text | nil
           } | {
             type: :reasoning,
             id: String,

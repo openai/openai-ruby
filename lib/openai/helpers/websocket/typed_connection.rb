@@ -38,6 +38,7 @@ module OpenAI
           raise ArgumentError, client_event_error_message
         end
 
+        OpenAI::Helpers::StructuredOutput.prepare_configuration_updates!(payload) if @client_event
         payload = coerce_client_event(payload) if @client_event
         payload = OpenAI::Internal::Type::Converter.dump(@client_event, payload) if @client_event
         validate_event_tree!(payload, json_only: true)
