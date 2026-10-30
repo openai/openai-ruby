@@ -2,7 +2,7 @@
 
 require_relative "../test_helper"
 require_relative "../../../lib/openai/helpers/live/transcript_grouper"
-require "open3"
+require "timeout"
 
 class OpenAI::Test::LiveTranscriptGrouperTest < Minitest::Test
   # Control only this instance's clock/worker; other tests run in parallel.
@@ -230,63 +230,49 @@ class OpenAI::Test::LiveTranscriptGrouperTest < Minitest::Test
   end
 
   def test_fractional_deadlines_finalize_without_hanging
-    source = <<~'RUBY'
-      require "openai/helpers/live/transcript_grouper"
-      class SourceTimeGrouper < OpenAI::Live::TranscriptGrouper
-        private
-        def start_timer = nil
-        def now_ms = 0
-      end
-      scenarios = [
-        [{assistant_silence_ms: 0.1}, [[:assistant, "First", 0, 200], [:assistant, "Second", 201, 300]]],
-        [{min_turn_separation_ms: 0.1}, [[:user, "Question", 0, 200], [:assistant, "Answer", 200, 400], [:user, "More", 800, 1000]]],
-        [{min_turn_separation_ms: 0, backchannel_isolation_ms: 0.1}, [[:user, "Question", 0, 150], [:assistant, "okay", 100, 200], [:user, " More", 800, 1000]]]
+    scenarios = [
+      [{assistant_silence_ms: 0.1}, [[:assistant, "First", 0, 200], [:assistant, "Second", 201, 300]]],
+      [
+        {min_turn_separation_ms: 0.1},
+        [[:user, "Question", 0, 200], [:assistant, "Answer", 200, 400], [:user, "More", 800, 1000]]
+      ],
+      [
+        {min_turn_separation_ms: 0, backchannel_isolation_ms: 0.1},
+        [[:user, "Question", 0, 150], [:assistant, "okay", 100, 200], [:user, " More", 800, 1000]]
       ]
-      results = scenarios.map do |options, events|
+    ]
+    # Bound the fractional grouping work, after the SDK has loaded.
+    results = Timeout.timeout(5) do
+      scenarios.map do |options, events|
         closed = []
-        grouper = SourceTimeGrouper.new(**options, on_segment_closed: ->(event) {
-          closed << [event.segment.speaker, event.segment.text, event.reason]
-        })
+        grouper = ClockedGrouper.new(
+          **options,
+          on_segment_closed: -> (event) {
+            closed << [event.segment.speaker, event.segment.text, event.reason]
+          }
+        )
         events.each_with_index do |(speaker, text, start_ms, end_ms), index|
           type = speaker == :user ? OpenAI::Live::InputTranscriptDeltaEvent : OpenAI::Live::OutputTranscriptDeltaEvent
           grouper.push(type.new(event_id: index.to_s, delta: text, start_ms: start_ms, end_ms: end_ms))
         end
+
         grouper.close
         closed
       end
-      puts JSON.generate(results)
-    RUBY
-    Open3
-      .popen2e(RbConfig.ruby, "-I", File.expand_path("../../../lib", __dir__), "-e", source) do |input, output, waiter|
-        input.close
-        begin
-          assert(waiter.join(5), "Fractional deadlines must complete without hanging")
-          result = output.read
-          assert(waiter.value.success?, result)
-          assert_equal(
-            [
-              [["assistant", "First", "inactivity"], ["assistant", "Second", "manual"]],
-              [
-                ["user", "Question", "speaker_change"],
-                ["assistant", "Answer", "speaker_change"],
-                ["user", "More", "manual"]
-              ],
-              [["user", "Question More", "manual"]]
-            ],
-            JSON.parse(result)
-          )
-        ensure
-          unless waiter.join(0)
-            begin
-              Process.kill("KILL", waiter.pid)
-            rescue Errno::ESRCH
-              # The child exited between the join and kill.
-            end
+    end
 
-            waiter.join
-          end
-        end
-      end
+    assert_equal(
+      [
+        [[:assistant, "First", :inactivity], [:assistant, "Second", :manual]],
+        [
+          [:user, "Question", :speaker_change],
+          [:assistant, "Answer", :speaker_change],
+          [:user, "More", :manual]
+        ],
+        [[:user, "Question More", :manual]]
+      ],
+      results
+    )
   end
 
   def test_user_has_no_inactivity_timeout
