@@ -2044,6 +2044,77 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_http_only_transport_is_rejected_before_responses_credentials_or_upgrade
+    arrivals = []
+    with_server(-> (_socket, request) { arrivals << request.path }) do |client|
+      native_http = OpenAI::NetHTTPClient.new { |_| flunk("HTTP transport policy must not be bypassed") }
+      identity = OpenAI::Auth::WorkloadIdentity.new(
+        identity_provider_id: "idp_synthetic",
+        service_account_id: "sa_synthetic",
+        provider: OpenAI::Auth::SubjectTokenProviders::K8sServiceAccountTokenProvider.new(
+          token_path: "/synthetic-never-read"
+        )
+      )
+      configured = client.with_options(api_key: nil, workload_identity: identity, http_client: native_http)
+      inherited = configured.with_options(timeout: 2)
+      inherited.workload_identity_auth.stub(:get_token, -> (**_options) { flunk("must reject before WIF read") }) do
+        error = assert_raises(ArgumentError) { inherited.responses.connect { flunk("unexpected connection") } }
+        assert_match(/HTTP.*transport.*WebSocket.*transport/i, error.message)
+        invalid = assert_raises(ArgumentError) do
+          inherited.responses.connect(transport: Object.new) { flunk("must not open a connection") }
+        end
+
+        assert_match(/transport must respond to open/, invalid.message)
+      end
+
+      assert_empty(arrivals)
+    end
+  end
+
+  def test_explicit_responses_transport_can_be_used_with_separate_http_policy
+    received = []
+    handler = lambda do |socket, _request|
+      received << read(socket)
+      terminal(socket, nil, id: "resp_explicit")
+    end
+
+    with_server(handler) do |client|
+      custom_http = OpenAI::NetHTTPClient.new { |_| flunk("WS must use the explicit WS transport") }
+      configured = client.with_options(http_client: custom_http)
+      transport = OpenAI::Responses::Transports::AsyncWebSocket.new
+      OpenAI::Responses::Session.open(client: configured, limits: limits, transport: transport) do |session|
+        session.default.send_event(type: "response.create", input: "explicit")
+        assert_equal("resp_explicit", session.default.get_final_response.id)
+      end
+    end
+
+    assert_equal(["explicit"], received.map { |request| request.fetch("input") })
+  end
+
+  def test_default_copies_and_explicit_http_reset_keep_the_default_responses_transport
+    received = []
+    handler = lambda do |socket, _request|
+      received << read(socket)
+      terminal(socket, nil)
+    end
+
+    with_server(handler) do |client|
+      custom_http = OpenAI::NetHTTPClient.new { |_| flunk("reset client must no longer use this HTTP policy") }
+      clients = [
+        client.with_options(timeout: 2).with_options(default_headers: {"X-Test" => "copy"}),
+        client.with_options(http_client: custom_http).with_options(http_client: nil)
+      ]
+      clients.each do |allowed|
+        allowed.responses.connect do |connection|
+          connection.response.create(input: "default")
+          assert_equal("response.completed", connection.receive.type.to_s)
+        end
+      end
+    end
+
+    assert_equal(%w[default default], received.map { |request| request.fetch("input") })
+  end
+
   private def limits(**overrides)
     OpenAI::Responses::SessionLimits.new(
       **{

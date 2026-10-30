@@ -249,6 +249,7 @@ module OpenAI
 
           OpenAI::WebSocket::ConnectionManager
             .new(
+              client: @client,
               transport: transport,
               transport_options: transport_options,
               default_transport: default_transport,

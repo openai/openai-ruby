@@ -20,6 +20,7 @@ module OpenAI
 
       # @api private
       def initialize(
+        client:,
         transport:,
         transport_options:,
         default_transport:,
@@ -32,6 +33,7 @@ module OpenAI
         reserved_options_error_message: nil,
         connection_options: {}
       )
+        @client = client
         @transport = transport
         @default_transport = default_transport
         @connection_class = connection_class
@@ -51,6 +53,15 @@ module OpenAI
 
         transport = @transport || @default_transport.call
         raise ArgumentError, @transport_error_message unless transport.respond_to?(:open)
+
+        requester = @client.requester
+        unless @transport || (requester.instance_of?(OpenAI::NetHTTPClient) && requester.default_configuration?)
+          raise(
+            ArgumentError,
+            "This HTTP transport's connection policy cannot be used by the default WebSocket " \
+              "transport. Pass a compatible WebSocket transport with its own connection settings."
+          )
+        end
 
         @request.call do |request, mark_handshake_completed|
           block_error = nil

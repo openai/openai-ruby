@@ -377,6 +377,11 @@ acknowledgment, and it does not guarantee that a response stopped executing.
   entry point. A nonempty `request_options.extra_query` or nonzero
   `request_options.max_retries` is rejected. Supported workload identity has a
   narrow pre-handshake 401 refresh; that is not live-session recovery.
+- If your client uses a configured HTTP transport, pass a compatible WebSocket
+  `transport:` with its own connection settings. The default WebSocket transport
+  cannot carry over HTTP connection policies. It rejects that configuration
+  before requesting credentials or opening a socket. Default HTTP clients and
+  their copies keep using the default WebSocket transport.
 - Large events are valid. Plan memory and application backpressure for your
   workload without treating a fixed payload size as a protocol maximum.
 

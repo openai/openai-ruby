@@ -2,6 +2,11 @@
 
 module OpenAI
   class NetHTTPClient < OpenAI::HTTPClient
+    # @api private
+    sig { returns(T::Boolean) }
+    def default_configuration?
+    end
+
     KEEP_ALIVE_TIMEOUT = 30
 
     DEFAULT_MAX_CONNECTIONS = T.let(T.unsafe(nil), Integer)
