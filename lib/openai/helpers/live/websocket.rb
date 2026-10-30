@@ -44,15 +44,56 @@ module OpenAI
 
     # A transport-open primary connection. Startup is owned by the caller:
     # send session.start and observe session.started before further commands.
+    # Use one reader at a time: receive, receive_raw, and each are alternatives.
     class Connection < OpenAI::WebSocket::TypedConnection
       # @api private
       def initialize(socket:, url:)
         super(socket: socket, url: url, client_event: client_event_type, server_event: server_event_type)
         @poisoned = false
         @closed = false
+        @read_mutex = Mutex.new
       end
 
       private :parse_event
+
+      def each
+        return enum_for(__method__) unless block_given?
+
+        with_read_lease do
+          while (event = read_one)
+            yield(event)
+          end
+        end
+
+        self
+      end
+
+      def receive
+        with_read_lease { read_one }
+      end
+
+      # @api private
+      def receive_raw
+        with_read_lease { read_raw_message }
+      end
+
+      private def read_one
+        data = read_raw_message
+        return nil if data.nil?
+
+        parse_event(data)
+      end
+
+      private def with_read_lease
+        acquired = @read_mutex.try_lock
+        unless acquired
+          raise connection_error("Live WebSocket already has an active reader."), cause: nil
+        end
+
+        yield
+      ensure
+        @read_mutex.unlock if acquired
+      end
 
       private def coerce_client_event(payload) = coerce_event(@client_event, payload, outbound: true)
 
