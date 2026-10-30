@@ -208,6 +208,38 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_preview_timeout_includes_synchronous_terminal_materialization
+    preview = OpenAI::Responses::IncrementalResponse.new
+    def preview.terminal_event
+      result = super
+      # Model terminal copying that crosses the lifetime without yielding to Async.
+      finish_at = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 2.1
+      nil while Process.clock_gettime(Process::CLOCK_MONOTONIC) < finish_at
+      result
+    end
+
+    handler = lambda do |socket, _request|
+      assert_equal("left", read(socket)["stream_id"])
+      terminal(socket, "left")
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
+        left = session.lane("left")
+        left.send_event(type: "response.create")
+        result = OpenAI::Responses::IncrementalResponse.stub(:new, preview) do
+          OpenAI::Examples::ResponsesWebSocketWorkflows.preview_lane(left, max_bytes: 4096, seconds: 2)
+        end
+
+        assert_equal(:timeout, result.fetch(:outcome))
+        refute(result.key?(:terminal_event))
+        assert_equal("resp_left", result.fetch(:last_received_event).response.id)
+        assert_nil(preview.phase)
+        assert_equal("resp_left", left.get_final_response.id)
+      end
+    end
+  end
+
   def test_preview_example_rejects_unbounded_or_invalid_configuration
     [0, -1, 1.5, nil].each do |budget|
       assert_raises(ArgumentError) {

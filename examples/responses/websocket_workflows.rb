@@ -118,7 +118,12 @@ module OpenAI
             admitted_bytes += encoded_bytes
             preview.add(event)
             if preview.phase == :terminal
-              return {outcome: :terminal, terminal_event: preview.terminal_event}
+              terminal = preview.terminal_event
+              if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+                return {outcome: :timeout, last_received_event: event}
+              end
+
+              return {outcome: :terminal, terminal_event: terminal}
             end
           end
         end
