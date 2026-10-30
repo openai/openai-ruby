@@ -453,6 +453,16 @@ origin, as above, so they cannot be presented elsewhere. Use the
 Server trust remains separate from the client identity and can be customized
 with `Net::HTTP` properties such as `cert_store` or `ca_file`.
 
+An HTTP client's connection settings do not carry over to the default
+WebSocket transport. If you configure `http_client:` with a custom requester
+or customized `OpenAI::NetHTTPClient`, pass a compatible `transport:` when
+opening Responses, Realtime, Translation, or Live WebSockets. The SDK checks
+this before fetching credentials or opening a connection. The supplied
+WebSocket transport must enforce the connection settings your application
+requires; the SDK still validates its supported authentication and provider
+scope. See the [Realtime custom transport contract](realtime.md#custom-transport)
+and [Responses transport options](responses-websocket.md).
+
 Each `OpenAI::NetHTTPClient` owns its connection pool, so separate HTTP client
 instances do not share connections or credentials.
 

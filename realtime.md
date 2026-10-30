@@ -596,6 +596,12 @@ settings. `transport_options` therefore cannot override those fields and are
 snapshotted before authentication so later caller mutation cannot alter the
 handshake.
 
+If your client has a custom `http_client:` or a configured
+`OpenAI::NetHTTPClient`, supply a compatible `transport:` with the required
+WebSocket connection settings. Otherwise, the SDK rejects the connection
+before reading credentials. This also applies to transcription, call sideband
+and Translation connections.
+
 ## Current scope
 
 The examples in this guide cover local function calling, image input, and MCP
