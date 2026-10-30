@@ -18,6 +18,9 @@ module OpenAI
             def abort: -> void
 
             # @api private
+            def enable_no_status_recovery: -> nil
+
+            # @api private
             def aborted?: -> bool
             def closed?: -> bool
           end

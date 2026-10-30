@@ -9,7 +9,7 @@ class OpenAI::Test::Resources::Admin::Organization::ExternalKeysTest < OpenAI::T
         external_id: "external_id",
         kms_arn: "kms_arn",
         name: "name",
-        role_arn: "arn:aws:iam::732166991022:role/0*bWz\"J5bo7",
+        role_arn: "arn:aws:iam::123456789012:role/example-role",
         type: :aws
       }
     )

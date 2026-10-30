@@ -48,11 +48,20 @@ module OpenAI
       #
       # @return [nil]
       def send_event(event)
+        send_client_event(event)
+      end
+
+      # @api private
+      def send_response_create(event)
+        send_client_event(event, response_create: true)
+      end
+
+      private def send_client_event(event, response_create: false)
         assert_owner!
         raise connection_error("Cannot send on a closed Responses WebSocket.") if poisoned? || closed?
 
         encoded = begin
-          generate_json(encode_client_event(event))
+          generate_json(encode_client_event(event, response_create: response_create))
         rescue SystemStackError
           raise OpenAI::Errors::ResponsesClientEventError.new, cause: nil
         end
@@ -162,9 +171,12 @@ module OpenAI
       end
 
       # @api private
-      def encode_client_event(event)
-        validate_event_tree!(event)
-        payload = if event.is_a?(Hash)
+      def encode_client_event(event, response_create: false)
+        create_type = OpenAI::Responses::ResponsesClientEvent::ResponseCreate if response_create
+        validate_event_tree!(event, target: create_type)
+        payload = if response_create
+          OpenAI::Internal::Type::Converter.dump(create_type, event)
+        elsif event.is_a?(Hash)
           OpenAI::Internal::Type::Unknown.dump(event, state: {can_retry: true})
         else
           OpenAI::Internal::Type::Converter.dump(OpenAI::Responses::ResponsesClientEvent, event)
@@ -216,42 +228,68 @@ module OpenAI
         raise connection_error("Responses WebSocket connections are single-owner.")
       end
 
-      private def validate_event_tree!(value)
+      private def validate_event_tree!(value, target: nil)
         active = {}.compare_by_identity
-        pending = [[value, false]]
+        pending = [[value, false, target]]
         until pending.empty?
-          value, exiting = pending.pop
+          value, exiting, target = pending.pop
           if exiting
             active.delete(value)
             next
+          end
+
+          # Use the serializer's selected type, so unknown extension hashes keep their
+          # wire keys even when they resemble Ruby aliases in another model.
+          while target.is_a?(OpenAI::Internal::Type::Union)
+            target = target.variant_for_dump(value)
           end
 
           children = case value
           when OpenAI::Internal::Type::BaseModel
             data = value.to_h
             reject_duplicate_serialized_model_keys!(value.class, data)
-            [data]
+            unless target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
+              target = value.class
+            end
+
+            [[data, target]]
           when Hash
             reject_duplicate_semantic_keys!(value)
-            value.values
+            if target.is_a?(Class) && target <= OpenAI::Internal::Type::BaseModel
+              reject_duplicate_serialized_model_keys!(target, value, skip_coerce: true)
+              value.map do |key, child|
+                name = key.is_a?(String) ? key.to_sym : key
+                field = target.known_fields[name]
+                field = nil if field && field.fetch(:mode) == :coerce
+                [child, field && field.fetch(:type_fn).call]
+              end
+            elsif target.is_a?(OpenAI::Internal::Type::HashOf)
+              item_type = target.item_type
+              value.values.map { [_1, item_type] }
+            else
+              value.values.map { [_1, nil] }
+            end
+
           when Array
-            value
+            item_type = target.is_a?(OpenAI::Internal::Type::ArrayOf) ? target.item_type : nil
+            value.map { [_1, item_type] }
           else
             next
           end
 
           guard_cycle!(value, active)
-          pending << [value, true]
-          children.reverse_each { |child| pending << [child, false] }
+          pending << [value, true, nil]
+          children.reverse_each { |child, child_type| pending << [child, false, child_type] }
         end
 
         nil
       end
 
-      private def reject_duplicate_serialized_model_keys!(model, data)
-        serialized_keys = data.keys.map do |key|
+      private def reject_duplicate_serialized_model_keys!(model, data, skip_coerce: false)
+        serialized_keys = data.keys.filter_map do |key|
           name = key.is_a?(String) ? key.to_sym : key
           field = model.known_fields[name]
+          next if skip_coerce && field && field.fetch(:mode) == :coerce
           field ? field.fetch(:api_name) : name
         end
 

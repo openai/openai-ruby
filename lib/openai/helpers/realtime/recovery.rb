@@ -99,7 +99,8 @@ module OpenAI
       end
 
       def write(text)
-        return write_once(text) if Fiber.current.equal?(@owner_fiber)
+        # Restore writes bypass the mailbox, but reentrant writes join an active flush.
+        return write_once(text) if Fiber.current.equal?(@owner_fiber) && !@mutex.synchronize { @flushing }
 
         reply = @mutex.synchronize do
           raise write_error(text), cause: nil if @error || [:closed, :ending].include?(@state)
@@ -124,6 +125,8 @@ module OpenAI
 
       def flush_pending
         if Fiber.current.equal?(@owner_fiber)
+          return nil if @mutex.synchronize { @flushing }
+
           raise state_error("Queue flush interrupted; remaining events were not sent."), cause: nil unless flush
           return nil
         end
@@ -246,6 +249,7 @@ module OpenAI
       private def serve(physical)
         @owner_fiber = Fiber.current
         @physical = physical
+        @physical.enable_no_status_recovery
         @mutex.synchronize do
           return if @state == :closed
 

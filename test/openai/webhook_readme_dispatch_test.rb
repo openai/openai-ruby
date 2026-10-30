@@ -65,7 +65,10 @@ class OpenAI::Test::WebhookReadmeDispatchTest < Minitest::Test
   end
 
   def readme_dispatch
-    File.read(README_PATH).match(/^    case event\.type\n(?:.*\n)*?^    end$/).to_s
+    readme = File.read(README_PATH)
+    section = readme.split("### Parsing webhook payloads\n", 2).fetch(1).split(/^###? /, 2).first
+    example = section.match(/```ruby\n(.*?)\n```/m)[1]
+    example.match(/^    case event\.type\n(?:.*\n)*?^    end$/)[0]
   end
 
   def signed_headers(payload, timestamp)

@@ -9,7 +9,7 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
   # Concrete socket/transport protocol objects allow deterministic I/O failures
   # and blocked handshakes without relying on timing or a real network.
   class Socket < FakeSocket
-    attr_accessor :write_action
+    attr_accessor :write_action, :after_write_action
 
     def read
       value = super
@@ -21,7 +21,7 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
 
     def write(message)
       @write_action&.call(message)
-      super
+      super.tap { @after_write_action&.call(message) }
     end
   end
 
@@ -369,6 +369,160 @@ class OpenAI::Test::RealtimeReconnectTest < Minitest::Test
         second.writes.map { JSON.parse(_1).fetch("type") }
       )
     end
+  end
+
+  def test_reentrant_raw_and_typed_sends_wait_behind_older_queued_messages
+    started = Queue.new
+    gate = Queue.new
+    second = Socket.new(text_delta("ready"))
+    transport = Transport.new(
+      Socket.new(disconnected),
+      -> {
+        started << true
+        gate.pop
+        second
+      }
+    )
+    logical = nil
+    second.after_write_action = -> (message) {
+      next unless JSON.parse(message).fetch("event_id") == "old-first"
+
+      third = JSON.generate(type: "response.cancel", event_id: "new-third")
+      logical.send_raw(third)
+      third.replace("changed after send")
+      logical.send_event(type: "response.cancel", event_id: "new-fourth")
+    }
+    connect(transport, max_queue_bytes: 4096) do |connection|
+      logical = connection
+      receiver = Async::Task.current.async { connection.receive }
+      started.pop
+      connection.send_raw(JSON.generate(type: "response.cancel", event_id: "old-first"))
+      connection.send_event(type: "response.cancel", event_id: "old-second")
+      gate << true
+      receiver.wait
+      assert_empty(second.writes)
+      connection.flush_pending
+      assert_equal(
+        %w[old-first old-second new-third new-fourth],
+        second.writes.map { JSON.parse(_1).fetch("event_id") }
+      )
+      assert_empty(connection.pending_messages)
+    end
+  end
+
+  def test_reentrant_sends_obey_inflight_budget_and_cannot_take_the_active_queue
+    started = Queue.new
+    gate = Queue.new
+    first = JSON.generate(type: "response.cancel", event_id: "old-first")
+    last = JSON.generate(type: "response.cancel", event_id: "old-second")
+    second = Socket.new(text_delta("ready"))
+    transport = Transport.new(
+      Socket.new(disconnected),
+      -> {
+        started << true
+        gate.pop
+        second
+      }
+    )
+    logical = nil
+    second.after_write_action = -> (message) {
+      next unless JSON.parse(message).fetch("event_id") == "old-first"
+
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeQueueFullError) do
+        logical.send_event(type: "response.cancel", event_id: "cannot-fit")
+      end
+
+      assert_no_ambient_cause(OpenAI::Errors::RealtimeReconnectError) { logical.take_pending_messages }
+      assert_equal([first, last], logical.pending_messages)
+    }
+    connect(transport, max_queue_bytes: first.bytesize + last.bytesize) do |connection|
+      logical = connection
+      receiver = Async::Task.current.async { connection.receive }
+      started.pop
+      connection.send_raw(first)
+      connection.send_raw(last)
+      gate << true
+      receiver.wait
+      connection.flush_pending
+      assert_equal([first, last], second.writes)
+      assert_empty(connection.pending_messages)
+    end
+  end
+
+  def test_nested_owner_flush_does_not_retry_the_current_write
+    started = Queue.new
+    gate = Queue.new
+    second = Socket.new(text_delta("ready"))
+    transport = Transport.new(
+      Socket.new(disconnected),
+      -> {
+        started << true
+        gate.pop
+        second
+      }
+    )
+    logical = nil
+    submitted_first = false
+    second.after_write_action = -> (message) {
+      next if submitted_first || JSON.parse(message).fetch("event_id") != "old-first"
+
+      submitted_first = true
+      logical.send_event(type: "response.cancel", event_id: "new-third")
+      logical.flush_pending
+    }
+    connect(transport, max_queue_bytes: 4096) do |connection|
+      logical = connection
+      receiver = Async::Task.current.async { connection.receive }
+      started.pop
+      connection.send_raw(JSON.generate(type: "response.cancel", event_id: "old-first"))
+      connection.send_raw(JSON.generate(type: "response.cancel", event_id: "old-second"))
+      gate << true
+      receiver.wait
+      connection.flush_pending
+      assert_equal(
+        %w[old-first old-second new-third],
+        second.writes.map { JSON.parse(_1).fetch("event_id") }
+      )
+      assert_empty(connection.pending_messages)
+    end
+  end
+
+  def test_reentrant_successors_are_reported_when_the_attempted_send_fails
+    started = Queue.new
+    gate = Queue.new
+    second = Socket.new(text_delta("ready"))
+    transport = Transport.new(
+      Socket.new(disconnected),
+      -> {
+        started << true
+        gate.pop
+        second
+      }
+    )
+    logical = nil
+    second.after_write_action = -> (message) {
+      next unless JSON.parse(message).fetch("event_id") == "old-first"
+
+      logical.send_raw(JSON.generate(type: "response.cancel", event_id: "new-third"))
+      raise connection_error(Errno::EPIPE.new)
+    }
+    error = assert_raises(OpenAI::Errors::RealtimeReconnectError) do
+      connect(transport, max_queue_bytes: 4096) do |connection|
+        logical = connection
+        receiver = Async::Task.current.async { connection.receive }
+        started.pop
+        connection.send_raw(JSON.generate(type: "response.cancel", event_id: "old-first"))
+        connection.send_raw(JSON.generate(type: "response.cancel", event_id: "old-second"))
+        gate << true
+        receiver.wait
+        connection.flush_pending
+      end
+    end
+
+    assert_equal("old-first", JSON.parse(error.uncertain_message).fetch("event_id"))
+    assert_equal(%w[old-second new-third], error.unsent_messages.map { JSON.parse(_1).fetch("event_id") })
+    assert_equal(%w[old-first], second.writes.map { JSON.parse(_1).fetch("event_id") })
+    assert_equal(2, transport.requests.length)
   end
 
   def test_overflow_preserves_accepted_events_and_encoded_bytes

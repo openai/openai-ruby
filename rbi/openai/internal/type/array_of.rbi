@@ -71,7 +71,7 @@ module OpenAI
 
         # @api private
         sig { returns(Elem) }
-        protected def item_type
+        def item_type
         end
 
         # @api private

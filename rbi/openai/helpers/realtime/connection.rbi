@@ -100,6 +100,11 @@ module OpenAI
         def abort
         end
 
+        # @api private
+        sig { void }
+        def enable_no_status_recovery
+        end
+
         sig { returns(T::Boolean) }
         def closed?
         end

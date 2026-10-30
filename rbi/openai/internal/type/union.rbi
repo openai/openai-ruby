@@ -103,6 +103,11 @@ module OpenAI
         end
 
         # @api private
+        sig { params(value: T.anything).returns(T.nilable(T.anything)) }
+        def variant_for_dump(value)
+        end
+
+        # @api private
         sig do
           override
             .params(
