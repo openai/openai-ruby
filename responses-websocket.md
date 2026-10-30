@@ -190,12 +190,18 @@ image, audio, tool, or other large output in your application.
 The result has `outcome: :terminal`, `:budget_exceeded`, or `:timeout`.
 Only `:terminal` includes `terminal_event`, the exact admitted completion,
 failure, incomplete, or error event. Inspect that event's type and status.
-A stop after a read includes `last_received_event`; that event was not fed to
-the preview. Raw events, lane finals and other lanes keep their normal SDK
-contracts. A preview timeout or budget stop only resets the preview; it does not
-close the lane, cancel the response, or choose a continuation for you. The outer
-session still closes when its owning block exits. EOF, transport failures and
-other cancellation propagate as usual.
+A stop after a read can include `last_received_event`. With `:budget_exceeded`,
+the event was not admitted to the preview. With `:timeout`, it may already
+have been admitted; a terminal event can cross the deadline during preview
+assembly. This field reports what was read and does not guarantee that the
+event is safe to process again. Only `outcome: :terminal` reports a completed
+preview.
+
+Raw events, lane finals and other lanes keep their normal SDK contracts.
+A preview timeout or budget stop resets the preview; it does not close the
+lane, cancel the response, or choose a continuation for you. The outer session
+still closes when its owning block exits. EOF, transport failures and other
+cancellation propagate as usual.
 
 Register lanes before sending and consume each response before creating another
 on that lane. One Async task reads the physical connection; each lane has one
