@@ -22,6 +22,7 @@ module OpenAI
       def initialize(socket:, url:, recovery: nil)
         super(socket: socket, url: url)
         @recovery = recovery
+        @read_mutex = Mutex.new
         @server_event_names = discriminator_values(OpenAI::Realtime::RealtimeServerEvent)
         @client_event_names = discriminator_values(OpenAI::Realtime::RealtimeClientEvent)
         @session = OpenAI::Realtime::ConnectionResources::Session.new(self)
@@ -61,6 +62,21 @@ module OpenAI
       # Validate, encode, and send a typed client event.
       def send_event(event)
         send_raw(encode_client_event(event))
+      end
+
+      private def read_raw_message
+        # Recovery already queues callers behind its one physical reader.
+        return super if @recovery
+
+        unless @read_mutex.try_lock
+          raise connection_error("A Realtime WebSocket read is already in progress."), cause: nil
+        end
+
+        begin
+          super
+        ensure
+          @read_mutex.unlock
+        end
       end
 
       private def write_text(text)

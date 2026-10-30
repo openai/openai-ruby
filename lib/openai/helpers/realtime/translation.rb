@@ -138,6 +138,10 @@ module OpenAI
             )
           end
 
+          if @active_reads.positive?
+            raise connection_error("A Realtime Translation WebSocket read is already in progress."), cause: nil
+          end
+
           @active_reads += 1
         end
 
