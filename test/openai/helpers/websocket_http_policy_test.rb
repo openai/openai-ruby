@@ -15,6 +15,9 @@ class OpenAI::Test::WebSocketHTTPPolicyTest < Minitest::Test
     translation: -> (client, options, &block) {
       client.realtime.connect_translation(model: "gpt-realtime-translate", **options, &block)
     },
+    generated_translation: -> (client, options, &block) {
+      client.realtime.translations.connect(query: {model: "gpt-realtime-translate"}, **options, &block)
+    },
     live: -> (client, options, &block) { client.live.connect(**options, &block) },
     live_sideband: -> (client, options, &block) { client.live.sideband.connect("sess_test", **options, &block) },
     live_fork: -> (client, options, &block) { client.live.forks.connect("sess_test", **options, &block) }
