@@ -20,7 +20,7 @@ group :development, :test do
   gem "async-websocket"
   gem "cgi"
   # JSON 3 rejects options passed by protocol-websocket and legacy JSON test fixtures.
-  gem "json", "< 3"
+  gem "json", "< 4"
   gem "minitest", "~> 6.0"
   gem "minitest-hooks", ">= 1.5.4"
   gem "minitest-mock", "~> 5.27"
