@@ -56,6 +56,6 @@ Gem::Specification.new do |s|
     "responses-websocket.md",
     "examples/realtime/README.md"
   ]
-  s.add_dependency("connection_pool", ">= 2.2.3")
+  s.add_dependency("connection_pool", ">= 2.2.3", "!= 3.0.0", "!= 3.0.1", "!= 3.0.2")
   s.add_dependency("logger")
 end
