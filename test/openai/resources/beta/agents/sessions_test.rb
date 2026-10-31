@@ -24,6 +24,7 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           status: OpenAI::Beta::AgentSession::Status,
           usage: OpenAI::Beta::TokenUsage | nil,
           vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          review: OpenAI::Beta::AgentSession::Review | nil,
           spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
         }
     end
@@ -50,6 +51,7 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           status: OpenAI::Beta::AgentSession::Status,
           usage: OpenAI::Beta::TokenUsage | nil,
           vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          review: OpenAI::Beta::AgentSession::Review | nil,
           spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
         }
     end
@@ -76,6 +78,7 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           status: OpenAI::Beta::AgentSession::Status,
           usage: OpenAI::Beta::TokenUsage | nil,
           vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          review: OpenAI::Beta::AgentSession::Review | nil,
           spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
         }
     end
@@ -110,6 +113,7 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           status: OpenAI::Beta::AgentSession::Status,
           usage: OpenAI::Beta::TokenUsage | nil,
           vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
+          review: OpenAI::Beta::AgentSession::Review | nil,
           spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
         }
     end

@@ -69,6 +69,14 @@ module OpenAI
         sig { returns(T::Array[String]) }
         attr_accessor :vault_ids
 
+        # Review applied to eligible actions in this session. Omitted when review is none
+        # and automatic review is not enabled. Omission means none.
+        sig { returns(T.nilable(OpenAI::Beta::AgentSession::Review::TaggedSymbol)) }
+        attr_reader :review
+
+        sig { params(review: OpenAI::Beta::AgentSession::Review::OrSymbol).void }
+        attr_writer :review
+
         # Configured spending limit and best-effort consumption, in USD cents. Unlimited
         # sessions omit this object.
         sig { returns(T.nilable(OpenAI::Beta::AgentSession::SpendControl)) }
@@ -113,6 +121,8 @@ module OpenAI
 
             vault_ids: T::Array[String],
 
+            review: OpenAI::Beta::AgentSession::Review::OrSymbol,
+
             spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash,
 
             object: Symbol
@@ -155,6 +165,10 @@ module OpenAI
           # The IDs of vaults made available to the session.
           vault_ids:,
 
+          # Review applied to eligible actions in this session. Omitted when review is none
+          # and automatic review is not enabled. Omission means none.
+          review: nil,
+
           # Configured spending limit and best-effort consumption, in USD cents. Unlimited
           # sessions omit this object.
           spend_control: nil,
@@ -180,6 +194,7 @@ module OpenAI
               status: OpenAI::Beta::AgentSession::Status::TaggedSymbol,
               usage: T.nilable(OpenAI::Beta::TokenUsage),
               vault_ids: T::Array[String],
+              review: OpenAI::Beta::AgentSession::Review::TaggedSymbol,
               spend_control: OpenAI::Beta::AgentSession::SpendControl
             }
           )
@@ -975,6 +990,22 @@ module OpenAI
           FAILED = T.let(:failed, OpenAI::Beta::AgentSession::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Status::TaggedSymbol]) }
+          def self.values
+          end
+        end
+
+        # Review applied to eligible actions in this session. Omitted when review is none
+        # and automatic review is not enabled. Omission means none.
+        module Review
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::AgentSession::Review) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          NONE = T.let(:none, OpenAI::Beta::AgentSession::Review::TaggedSymbol)
+          AUTO_REVIEW = T.let(:auto_review, OpenAI::Beta::AgentSession::Review::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Review::TaggedSymbol]) }
           def self.values
           end
         end

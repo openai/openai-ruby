@@ -9,6 +9,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
@@ -49,6 +50,14 @@ module OpenAI
           # characters. Omission or null defaults to an empty map.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # Action review mode. Omit to use none.
+          attr_reader review: OpenAI::Models::Beta::Agents::SessionCreateParams::review?
+
+          # Action review mode. Omit to use none.
+          def review=: (
+            OpenAI::Models::Beta::Agents::SessionCreateParams::review
+          ) -> OpenAI::Models::Beta::Agents::SessionCreateParams::review
+
           # Optional spending limit in USD cents. Omission or null creates an unlimited
           # session.
           attr_accessor spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?
@@ -72,6 +81,8 @@ module OpenAI
           # @param metadata
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters. Omission or null defaults to an empty map.
+          # @param review
+          #   Action review mode. Omit to use none.
           # @param spend_control
           #   Optional spending limit in USD cents. Omission or null creates an unlimited
           #   session.
@@ -83,6 +94,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
@@ -94,6 +106,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::RequestOptions
@@ -278,6 +291,20 @@ module OpenAI
             def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::input]
 
             AgentSessionInputMessageParamArray: OpenAI::Internal::Type::Converter
+          end
+
+          type review = :none | :auto_review
+
+          module Review
+            extend OpenAI::Internal::Type::Enum
+
+            # Keep the existing execution behavior without automatic action review.
+            NONE: :none
+
+            # Review eligible actions automatically. Deny manual approval fallbacks.
+            AUTO_REVIEW: :auto_review
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::review]
           end
 
           type spend_control = { limit: Integer? }

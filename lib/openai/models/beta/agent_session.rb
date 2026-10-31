@@ -80,6 +80,13 @@ module OpenAI
         #   @return [Array<String>]
         required :vault_ids, OpenAI::Internal::Type::ArrayOf[String]
 
+        # @!attribute review
+        #   Review applied to eligible actions in this session. Omitted when review is none
+        #   and automatic review is not enabled. Omission means none.
+        #
+        #   @return [Symbol, OpenAI::Models::Beta::AgentSession::Review, nil]
+        optional :review, enum: -> { OpenAI::Beta::AgentSession::Review }
+
         # @!attribute spend_control
         #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
         #   sessions omit this object.
@@ -87,7 +94,7 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::AgentSession::SpendControl, nil]
         optional :spend_control, -> { OpenAI::Beta::AgentSession::SpendControl }
 
-        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, spend_control: nil, object: :"agent.session")
+        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, review: nil, spend_control: nil, object: :"agent.session")
         #   A Managed Agents session.
         #
         #   @param id [String]
@@ -123,6 +130,10 @@ module OpenAI
         #
         #   @param vault_ids [Array<String>]
         #     The IDs of vaults made available to the session.
+        #
+        #   @param review [Symbol, OpenAI::Models::Beta::AgentSession::Review]
+        #     Review applied to eligible actions in this session. Omitted when review is none
+        #     and automatic review is not enabled. Omission means none.
         #
         #   @param spend_control [OpenAI::Models::Beta::AgentSession::SpendControl]
         #     Configured spending limit and best-effort consumption, in USD cents. Unlimited
@@ -637,6 +648,20 @@ module OpenAI
 
           # The session failed.
           FAILED = :failed
+
+          # @!method self.values
+          #   @return [Array<Symbol>]
+        end
+
+        # Review applied to eligible actions in this session. Omitted when review is none
+        # and automatic review is not enabled. Omission means none.
+        #
+        # @see OpenAI::Models::Beta::AgentSession#review
+        module Review
+          extend OpenAI::Internal::Type::Enum
+
+          NONE = :none
+          AUTO_REVIEW = :auto_review
 
           # @!method self.values
           #   @return [Array<Symbol>]
