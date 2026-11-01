@@ -12,7 +12,7 @@ PATH
   remote: .
   specs:
     openai (0.115.0)
-      connection_pool (>= 2.2.3)
+      connection_pool (>= 2.2.3, != 3.0.2, != 3.0.1, != 3.0.0)
       logger
 
 GEM
@@ -46,7 +46,7 @@ GEM
     bigdecimal (4.1.3)
     cgi (0.5.2)
     concurrent-ruby (1.3.8)
-    connection_pool (3.0.2)
+    connection_pool (2.5.5)
     console (1.38.0)
       fiber-annotation
       fiber-local (~> 1.1)
