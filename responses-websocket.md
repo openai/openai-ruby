@@ -164,6 +164,10 @@ if the events do not contain enough information; its admitted terminal event
 stays exact, including an absent output field. Call `reset` to discard only
 the preview's state.
 
+MCP call argument deltas update an observed MCP call item. The arguments-done
+event replaces its provisional arguments. These updates preserve the item's
+other fields and do not execute the tool.
+
 Session limits govern the session's queues and final-response collector.
 They do not bound a separate `IncrementalResponse`. Choose a finite budget
 for the encoded events that you feed to each preview and a finite lifetime.
