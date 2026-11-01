@@ -207,6 +207,119 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     assert_nil(preview.terminal_event)
   end
 
+  def test_mcp_argument_delta_and_done_preserve_detached_provisional_output
+    preview = OpenAI::Responses::IncrementalResponse.new
+    preview.add(ws(type: "response.created", response: mcp_response))
+    added = ws(
+      type: "response.output_item.added",
+      output_index: 0,
+      item: {
+        type: "mcp_call",
+        id: "mcp_test",
+        name: "never_run",
+        server_label: "synthetic",
+        arguments: +"{\"seed\":",
+        status: "in_progress"
+      }
+    )
+    preview.add(added)
+    before = preview.output
+    update = ws(type: "response.mcp_call_arguments.delta", output_index: 0, item_id: "mcp_test", delta: +"true}")
+    assert_kind_of(OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent, update)
+    preview.add(update)
+    assert_equal(:provisional, preview.phase)
+    assert_equal("{\"seed\":true}", preview.output.first.arguments)
+    assert_equal("{\"seed\":", before.first.arguments)
+    assert_equal("{\"seed\":", added.item.arguments)
+    assert_equal("true}", update.delta)
+
+    before_done = preview.output
+    done = ws(
+      type: "response.mcp_call_arguments.done",
+      output_index: 0,
+      item_id: "mcp_test",
+      arguments: +"{\"corrected\":true}"
+    )
+    assert_kind_of(OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent, done)
+    preview.add(done)
+    assert_equal(:provisional, preview.phase)
+    assert_equal("{\"corrected\":true}", preview.output.first.arguments)
+    assert_equal(added.item.to_h.merge(arguments: "{\"corrected\":true}"), preview.output.first.to_h)
+    assert_equal("{\"seed\":true}", before_done.first.arguments)
+    done.arguments.replace("changed event")
+    detached = preview.output
+    detached.first.arguments.replace("changed snapshot")
+    assert_equal("{\"corrected\":true}", preview.output.first.arguments)
+    assert_nil(preview.terminal_event)
+  end
+
+  def test_mcp_argument_done_replaces_seed_without_a_delta
+    preview = OpenAI::Responses::IncrementalResponse.new
+    preview.add(
+      ws(
+        type: "response.created",
+        response: mcp_response(output: [mcp_item(arguments: "{\"seed\":true}")])
+      )
+    )
+    preview.add(ws(type: "response.mcp_call_arguments.done", output_index: 0, item_id: "mcp_test", arguments: ""))
+    assert_equal(:provisional, preview.phase)
+    assert_equal("", preview.output.first.arguments)
+  end
+
+  def test_mcp_full_item_and_terminal_replace_provisional_arguments
+    preview = OpenAI::Responses::IncrementalResponse.new
+    preview.add(ws(type: "response.created", response: mcp_response(output: [mcp_item(arguments: "{\"seed\":")])))
+    preview.add(ws(type: "response.mcp_call_arguments.delta", output_index: 0, item_id: "mcp_test", delta: "true}"))
+    preview.add(
+      ws(type: "response.mcp_call_arguments.done", output_index: 0, item_id: "mcp_test", arguments: "{\"done\":true}")
+    )
+    preview.add(
+      ws(
+        type: "response.output_item.done",
+        output_index: 0,
+        item: mcp_item(arguments: "{\"item\":true}", status: "completed")
+      )
+    )
+    assert_equal(:provisional, preview.phase)
+    assert_equal("{\"item\":true}", preview.output.first.arguments)
+    terminal = ws(
+      type: "response.completed",
+      response: mcp_response(
+        output: [mcp_item(arguments: "{\"terminal\":true}", status: "completed")],
+        status: "completed"
+      )
+    )
+    preview.add(terminal)
+    assert_equal(:terminal, preview.phase)
+    assert_nil(preview.output)
+    assert_equal(terminal.to_h, preview.terminal_event.to_h)
+    preview.add(ws(type: "response.mcp_call_arguments.delta", output_index: 0, item_id: "mcp_test", delta: "late"))
+    preview.add(ws(type: "response.mcp_call_arguments.done", output_index: 0, item_id: "mcp_test", arguments: "late"))
+    assert_equal(:terminal, preview.phase)
+    assert_nil(preview.output)
+    assert_equal(terminal.to_h, preview.terminal_event.to_h)
+  end
+
+  def test_mcp_arguments_require_current_matching_item_scaffolding
+    %w[delta done].each do |suffix|
+      [
+        [nil, 0, "mcp_test"],
+        [[], 0, "mcp_test"],
+        [[message_item], 0, "msg_test"],
+        [[mcp_item], 0, "stale_id"],
+        [[mcp_item], 1, "mcp_test"],
+        [[mcp_item], -1, "mcp_test"]
+      ].each do |output, index, item_id|
+        preview = OpenAI::Responses::IncrementalResponse.new
+        preview.add(ws(type: "response.created", response: mcp_response(output: output))) unless output.nil?
+        payload = suffix == "delta" ? {delta: "true}"} : {arguments: "{\"done\":true}"}
+        preview.add(ws(type: "response.mcp_call_arguments.#{suffix}", output_index: index, item_id: item_id, **payload))
+        assert_equal(:unavailable, preview.phase)
+        assert_nil(preview.output)
+      end
+    end
+  end
+
   def test_custom_tool_input_is_visible_before_item_done_and_remains_data
     preview = OpenAI::Responses::IncrementalResponse.new
     created = ws(
@@ -429,6 +542,33 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     error.error.message.replace("changed input")
     terminal.error.message.replace("changed output")
     assert_equal("synthetic", left.terminal_event.error.message)
+  end
+
+  private def mcp_response(output: [], status: "in_progress")
+    fixture = JSON.parse(File.read(File.join(__dir__, "fixtures/websocket_scenarios.json")), symbolize_names: true)
+    fixture.fetch(:scenarios).first.fetch(:turns).first.fetch(:frames).first.fetch(:response).merge(
+      access_programs: nil,
+      error: nil,
+      incomplete_details: nil,
+      instructions: nil,
+      metadata: {"synthetic" => "metadata"},
+      temperature: nil,
+      top_p: nil,
+      model: "synthetic-fixture-model",
+      output: output,
+      status: status
+    )
+  end
+
+  private def mcp_item(arguments: "", status: "in_progress")
+    {
+      type: "mcp_call",
+      id: "mcp_test",
+      name: "never_run",
+      server_label: "synthetic",
+      arguments: arguments,
+      status: status
+    }
   end
 
   private def ws(**data)

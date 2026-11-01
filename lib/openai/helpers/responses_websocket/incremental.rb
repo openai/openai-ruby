@@ -75,6 +75,8 @@ module OpenAI
             OpenAI::Responses::ResponseTextDoneEvent,
             OpenAI::Responses::ResponseFunctionCallArgumentsDeltaEvent,
             OpenAI::Responses::ResponseFunctionCallArgumentsDoneEvent,
+            OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent,
+            OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent,
             OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent,
             OpenAI::Responses::ResponseCustomToolCallInputDoneEvent,
             OpenAI::Responses::ResponseRefusalDeltaEvent,
@@ -122,6 +124,24 @@ module OpenAI
           end
 
           item.arguments = event[:arguments]
+        when
+            OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent,
+            OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent
+          item = @output[index]
+          unless item.is_a?(OpenAI::Responses::ResponseOutputItem::McpCall) && item.id == event.item_id
+            return unavailable
+          end
+
+          if event.is_a?(OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent)
+            return unavailable unless item[:arguments].is_a?(String) && event[:delta].is_a?(String)
+
+            item.arguments << event[:delta]
+          else
+            return unavailable unless event[:arguments].is_a?(String)
+
+            item.arguments = event[:arguments]
+          end
+
         when
             OpenAI::Responses::ResponseCustomToolCallInputDeltaEvent,
             OpenAI::Responses::ResponseCustomToolCallInputDoneEvent

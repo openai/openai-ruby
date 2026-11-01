@@ -659,12 +659,78 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
+  def test_preview_applies_typed_mcp_argument_progress_from_the_connection
+    fixture = JSON.parse(File.read(File.join(__dir__, "fixtures/websocket_scenarios.json")), symbolize_names: true)
+    item = {type: "mcp_call", id: "item", name: "data_only", arguments: "{\"seed\":", server_label: "test"}
+    response = fixture.fetch(:scenarios).first.fetch(:turns).first.fetch(:frames).first.fetch(:response).merge(
+      access_programs: nil,
+      error: nil,
+      incomplete_details: nil,
+      instructions: nil,
+      metadata: nil,
+      temperature: nil,
+      top_p: nil,
+      model: "synthetic-fixture-model",
+      output: [item]
+    )
+    handler = lambda do |socket, _request|
+      write(socket, type: "response.created", sequence_number: 0, response: response)
+      write(
+        socket,
+        type: "response.mcp_call_arguments.delta",
+        sequence_number: 1,
+        output_index: 0,
+        item_id: "item",
+        delta: "true}"
+      )
+      write(
+        socket,
+        type: "response.mcp_call_arguments.done",
+        sequence_number: 2,
+        output_index: 0,
+        item_id: "item",
+        arguments: "{\"corrected\":true}"
+      )
+      write(
+        socket,
+        type: "response.completed",
+        sequence_number: 3,
+        response: response.merge(status: "completed", output: [])
+      )
+    end
+
+    with_server(handler) do |client|
+      client.responses.connect do |connection|
+        preview = OpenAI::Responses::IncrementalResponse.new
+        preview.add(connection.receive)
+        update = connection.receive
+        assert_kind_of(OpenAI::Responses::ResponseMcpCallArgumentsDeltaEvent, update)
+        preview.add(update)
+        assert_equal(:provisional, preview.phase)
+        assert_equal("{\"seed\":true}", preview.output.first.arguments)
+        before_done = preview.output
+        done = connection.receive
+        assert_kind_of(OpenAI::Responses::ResponseMcpCallArgumentsDoneEvent, done)
+        raw_done = done.to_h
+        preview.add(done)
+        assert_equal(:provisional, preview.phase)
+        assert_equal("{\"corrected\":true}", preview.output.first.arguments)
+        assert_equal("{\"seed\":true}", before_done.first.arguments)
+        assert_equal(raw_done, done.to_h)
+        assert_equal("data_only", preview.output.first.name)
+        assert_equal("test", preview.output.first.server_label)
+        final = connection.receive
+        preview.add(final)
+        assert_equal(:terminal, preview.phase)
+        assert_equal(response.fetch(:id), preview.terminal_event.response.id)
+        assert_equal(final.to_h, preview.terminal_event.to_h)
+        assert_nil(preview.output)
+      end
+    end
+  end
+
   def test_unrepresented_output_updates_never_leave_a_stale_provisional_snapshot
     frames = [
-      [
-        {type: "mcp_call", id: "item", name: "data_only", arguments: "", server_label: "test"},
-        {type: "response.mcp_call_arguments.done", arguments: "corrected"}
-      ],
       [
         {type: "reasoning", id: "item", summary: []},
         {
