@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.115.1](https://github.com/openai/openai-ruby/compare/v0.115.0...v0.115.1) (2026-11-01)
+
+
+### Bug Fixes
+
+* avoid connection_pool versions incompatible with Ruby 3.3.0 ([#1014](https://github.com/openai/openai-ruby/issues/1014)) ([f1d97c2](https://github.com/openai/openai-ruby/commit/f1d97c265f9ed2bc26fe4e4188d30b6e04d804bf))
+
 ## [0.115.0](https://github.com/openai/openai-ruby/compare/v0.114.0...v0.115.0) (2026-10-31)
 
 
