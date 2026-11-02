@@ -303,8 +303,6 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
   def test_mcp_arguments_require_current_matching_item_scaffolding
     %w[delta done].each do |suffix|
       [
-        [nil, 0, "mcp_test"],
-        [[], 0, "mcp_test"],
         [[message_item], 0, "msg_test"],
         [[mcp_item], 0, "stale_id"],
         [[mcp_item], 1, "mcp_test"],
@@ -435,19 +433,9 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
   def test_missing_and_invalid_scaffolds_cannot_produce_custom_refusal_or_annotation_output
     cases = [
       {type: "response.custom_tool_call_input.delta", output_index: 0, item_id: "msg_test", delta: "wrong kind"},
-      {type: "response.custom_tool_call_input.done", output_index: 1, item_id: "ct_missing", input: "missing"},
       {type: "response.custom_tool_call_input.done", output_index: "bad", item_id: "ct_missing", input: "invalid"},
       {type: "response.refusal.delta", output_index: 0, content_index: 0, item_id: "msg_test", delta: "wrong part"},
-      {type: "response.refusal.done", output_index: 0, content_index: 1, item_id: "msg_test", refusal: "missing"},
       {type: "response.refusal.done", output_index: 0, content_index: "bad", item_id: "msg_test", refusal: "invalid"},
-      {
-        type: "response.output_text.annotation.added",
-        output_index: 0,
-        content_index: 0,
-        item_id: "msg_test",
-        annotation_index: 2,
-        annotation: {type: "file_path", index: 0, file_id: "file_missing"}
-      },
       {
         type: "response.output_text.annotation.added",
         output_index: 0,
@@ -474,31 +462,22 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     end
   end
 
-  def test_missing_scaffolding_is_explicit_and_resets_at_the_next_created_event
+  def test_sparse_observations_reset_at_the_next_created_event
     preview = OpenAI::Responses::IncrementalResponse.new
     preview.add(delta)
-    assert_equal(:unavailable, preview.phase)
-    assert_nil(preview.output)
-
-    preview.add(ws(type: "response.created", response: {id: "resp_next"}))
     assert_equal(:provisional, preview.phase)
     assert_empty(preview.output)
-    preview.add(ws(type: "response.output_item.added", output_index: 0, item: message_item))
+    assert_equal("Hi", preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:part).fetch(:text))
+
+    preview.add(ws(type: "response.created", response: {id: "resp_next", output: [message_item(content: [text_part])]}))
+    assert_equal(:provisional, preview.phase)
+    assert_empty(preview.output.first.content.first.text)
     preview.add(delta)
-    assert_equal(:unavailable, preview.phase)
-    preview.add(
-      ws(
-        type: "response.content_part.added",
-        output_index: 0,
-        content_index: 0,
-        item_id: "msg_test",
-        part: text_part
-      )
-    )
-    assert_nil(preview.output)
+    assert_equal("Hi", preview.output.first.content.first.text)
     preview.reset
     assert_nil(preview.phase)
     assert_nil(preview.output)
+    assert_nil(preview.detailed_snapshot)
   end
 
   def test_terminals_keep_exact_output_presence_and_never_promote_unfinished_deltas
@@ -542,6 +521,514 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     error.error.message.replace("changed input")
     terminal.error.message.replace("changed output")
     assert_equal("synthetic", left.terminal_event.error.message)
+  end
+
+  {
+    "code_interpreter_call" => %w[in_progress interpreting completed],
+    "file_search_call" => %w[in_progress searching completed],
+    "web_search_call" => %w[in_progress searching completed],
+    "image_generation_call" => %w[in_progress generating completed],
+    "mcp_call" => %w[in_progress completed failed]
+  }.each do |kind, statuses|
+    statuses.each do |status|
+      define_method("test_rich_#{kind}_#{status}") do
+        preview = OpenAI::Responses::IncrementalResponse.new
+        item = rich_item(kind)
+        preview.add(ws(type: "response.created", response: rich_response(output: [item])))
+        before = preview.output
+        event = ws(type: "response.#{kind}.#{status}", output_index: 0, item_id: "item")
+        original = event.to_h
+        preview.add(event)
+        assert_equal(:provisional, preview.phase)
+        assert_equal(status.to_sym, preview.output.first.status)
+        if item.key?(:status)
+          assert_equal(item[:status].to_sym, before.first.status)
+        else
+          assert_nil(before.first.status)
+        end
+
+        assert_equal(original, event.to_h)
+      end
+    end
+  end
+
+  [
+    ["code_interpreter_call_code.delta", "code_interpreter_call", {delta: " suffix"}, [:code], "seed suffix"],
+    ["code_interpreter_call_code.done", "code_interpreter_call", {code: "corrected"}, [:code], "corrected"],
+    [
+      "reasoning_summary_part.added",
+      "reasoning",
+      {summary_index: 1, part: {type: "summary_text", text: "new"}},
+      [:summary, 1, :text],
+      "new"
+    ],
+    [
+      "reasoning_summary_part.done",
+      "reasoning",
+      {summary_index: 0, part: {type: "summary_text", text: "corrected"}},
+      [:summary, 0, :text],
+      "corrected"
+    ],
+    [
+      "reasoning_summary_text.delta",
+      "reasoning",
+      {summary_index: 0, delta: " suffix"},
+      [:summary, 0, :text],
+      "seed suffix"
+    ],
+    [
+      "reasoning_summary_text.done",
+      "reasoning",
+      {summary_index: 0, text: "corrected"},
+      [:summary, 0, :text],
+      "corrected"
+    ],
+    ["reasoning_text.delta", "reasoning", {content_index: 0, delta: " suffix"}, [:content, 0, :text], "seed suffix"],
+    ["reasoning_text.done", "reasoning", {content_index: 0, text: "corrected"}, [:content, 0, :text], "corrected"],
+    ["shell_call_command.added", "shell_call", {command_index: 1, command: "new"}, [:action, :commands, 1], "new"],
+    [
+      "shell_call_command.delta",
+      "shell_call",
+      {command_index: 0, delta: " suffix"},
+      [:action, :commands, 0],
+      "seed suffix"
+    ],
+    [
+      "shell_call_command.done",
+      "shell_call",
+      {command_index: 0, command: "corrected"},
+      [:action, :commands, 0],
+      "corrected"
+    ]
+  ].each do |type, kind, payload, path, expected|
+    define_method("test_rich_#{type.tr(".", "_")}") do
+      preview = OpenAI::Responses::IncrementalResponse.new
+      preview.add(ws(type: "response.created", response: rich_response(output: [rich_item(kind)])))
+      before = preview.output
+      identity = type.start_with?("shell_call_command") ? {} : {item_id: "item"}
+      event = ws(type: "response.#{type}", output_index: 0, **identity, **payload)
+      original = event.to_h
+      preview.add(event)
+      assert_equal(:provisional, preview.phase)
+      value = path.reduce(preview.output.first) { |part, key| part[key] }
+      assert_equal(expected, value)
+      refute_equal(expected, path.reduce(before.first) { |part, key| part&.[](key) })
+      assert_equal(original, event.to_h)
+    end
+  end
+
+  %w[delta done].each do |suffix|
+    define_method("test_rich_shell_output_#{suffix}_preserves_command_facts") do
+      preview = OpenAI::Responses::IncrementalResponse.new
+      preview.add(ws(type: "response.created", response: rich_response(output: [rich_item("shell_call_output")])))
+      chunks = [
+        {
+          stdout: "first",
+          stderr: "",
+          outcome: {type: "exit", exit_code: 7},
+          created_by: "actor-a",
+          opaque: {value: "a"}
+        },
+        {stdout: "second", stderr: "warn", outcome: {type: "timeout"}, created_by: "actor-b"}
+      ]
+      payload = suffix == "delta" ? {delta: {stdout: "partial", stderr: "warning"}} : {output: chunks}
+      event = ws(
+        type: "response.shell_call_output_content.#{suffix}",
+        output_index: 0,
+        item_id: "item",
+        command_index: 9,
+        **payload
+      )
+      original = event.to_h
+      preview.add(event)
+      assert_equal(:provisional, preview.phase)
+      part = preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:part)
+      assert_equal(suffix == "delta" ? payload.fetch(:delta) : {output: chunks}, part)
+      assert_empty(preview.output.first.output)
+      assert_equal(original, event.to_h)
+    end
+  end
+
+  def test_sparse_facts_keep_real_indices_without_inventing_typed_items
+    preview = OpenAI::Responses::IncrementalResponse.new
+    event = ws(
+      type: "response.output_text.delta",
+      output_index: 1_000_000_000_000,
+      content_index: 7,
+      item_id: "sparse",
+      delta: +"first",
+      logprobs: []
+    )
+    preview.add(event)
+    saved = preview.detailed_snapshot
+    assert_equal("first", saved.fetch(:output_text))
+    event.delta.replace("raw changed")
+    preview.add(
+      ws(
+        type: "response.output_text.done",
+        output_index: 1_000_000_000_000,
+        content_index: 7,
+        item_id: "sparse",
+        text: "corrected",
+        logprobs: []
+      )
+    )
+    assert_equal(:provisional, preview.phase)
+    assert_empty(preview.output)
+    row = preview.detailed_snapshot.fetch(:output).first
+    assert_equal(1_000_000_000_000, row.fetch(:output_index))
+    refute(row.fetch(:item).key?(:type))
+    assert_equal(7, row.fetch(:content).first.fetch(:content_index))
+    assert_equal("corrected", row.fetch(:content).first.fetch(:part).fetch(:text))
+    assert_equal("corrected", preview.detailed_snapshot.fetch(:output_text))
+    assert_equal("first", saved.fetch(:output).first.fetch(:content).first.fetch(:part).fetch(:text))
+    preview.add(ws(type: "response.created", response: rich_response(output: [])))
+    assert_empty(preview.detailed_snapshot.fetch(:output))
+  end
+
+  def test_optional_tool_ids_bind_privately_through_field_done_and_reject_conflicts
+    {
+      "function_call" => ["function_call_arguments", :arguments],
+      "custom_tool_call" => ["custom_tool_call_input", :input]
+    }.each do |kind, (family, field)|
+      preview = OpenAI::Responses::IncrementalResponse.new
+      item = rich_item(kind)
+      item.delete(:id)
+      preview.add(ws(type: "response.created", response: rich_response(output: [item])))
+      fragment = kind == "function_call" ? "true}" : " suffix"
+      expected = kind == "function_call" ? "{\"seed\":true}" : "seed suffix"
+      done = kind == "function_call" ? "{\"done\":true}" : "done"
+      preview.add(ws(type: "response.#{family}.delta", output_index: 0, item_id: "bound", delta: fragment))
+      assert_equal(expected, preview.output.first[field])
+      refute(preview.output.first.to_h.key?(:id))
+      preview.add(ws(type: "response.#{family}.done", output_index: 0, item_id: "bound", **{field => done}))
+      assert_equal(done, preview.output.first[field])
+      refute(preview.output.first.to_h.key?(:id))
+      preview.add(ws(type: "response.#{family}.delta", output_index: 0, item_id: "conflict", delta: "bad"))
+      assert_equal(:unavailable, preview.phase)
+    end
+  end
+
+  def test_queued_in_progress_metadata_and_exact_terminal_have_independent_copies
+    preview = OpenAI::Responses::IncrementalResponse.new
+    queued = ws(type: "response.queued", sequence_number: 0, response: rich_response(output: [], status: "queued"))
+    preview.add(queued)
+    saved = preview.detailed_snapshot
+    assert_equal("queued", saved.fetch(:response).fetch(:status))
+    assert_equal(queued.response.id, saved.fetch(:response_id))
+    assert_equal("test", saved.fetch(:stream_id))
+    progressing = ws(
+      type: "response.in_progress",
+      sequence_number: 1,
+      response: rich_response(output: [rich_item("reasoning")])
+    )
+    preview.add(progressing)
+    assert_equal("in_progress", preview.detailed_snapshot.fetch(:response).fetch(:status))
+    assert_empty(saved.fetch(:output))
+    response = rich_response(output: [], status: "completed").merge(opaque: {text: +"terminal"})
+    final = ws(type: "response.completed", sequence_number: 2, response: response)
+    preview.add(final)
+    snapshot = preview.detailed_snapshot
+    assert_equal(:terminal, preview.phase)
+    assert_nil(preview.output)
+    assert_equal("response.completed", snapshot.fetch(:terminal_type))
+    assert_empty(snapshot.fetch(:output))
+    snapshot.fetch(:response).fetch(:opaque).fetch(:text).replace("changed")
+    assert_equal(final.to_h, preview.terminal_event.to_h)
+    assert_equal("terminal", preview.detailed_snapshot.fetch(:response).fetch(:opaque).fetch(:text))
+  end
+
+  def test_sparse_tool_refusal_and_annotation_facts_do_not_fabricate_scaffolds
+    [
+      ["function_call_arguments", :arguments],
+      ["custom_tool_call_input", :input],
+      ["mcp_call_arguments", :arguments]
+    ].each do |family, field|
+      preview = OpenAI::Responses::IncrementalResponse.new
+      fragment = family == "function_call_arguments" ? "{\"seed\":true}" : "suffix"
+      done = family == "custom_tool_call_input" ? "done" : "{\"done\":true}"
+      preview.add(ws(type: "response.#{family}.delta", output_index: 9, item_id: "observed", delta: fragment))
+      assert_empty(preview.output)
+      item = preview.detailed_snapshot.fetch(:output).first.fetch(:item)
+      assert_equal(fragment, item.fetch(field))
+      refute(item.key?(:type))
+      refute(item.key?(:name))
+      refute(item.key?(:call_id))
+      preview.add(ws(type: "response.#{family}.done", output_index: 9, item_id: "observed", **{field => done}))
+      assert_equal(done, preview.detailed_snapshot.fetch(:output).first.fetch(:item).fetch(field))
+    end
+
+    preview = OpenAI::Responses::IncrementalResponse.new
+    preview.add(
+      ws(type: "response.refusal.done", output_index: 5, item_id: "observed", content_index: 7, refusal: "data only")
+    )
+    part = preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:part)
+    assert_equal({refusal: "data only"}, part)
+    preview.add(
+      ws(
+        type: "response.output_item.done",
+        output_index: 5,
+        item: message_item(id: "observed", content: [text_part(text: "full")])
+      )
+    )
+    assert_equal("full", preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:part).fetch(:text))
+    assert_empty(preview.output)
+
+    preview.reset
+    preview.add(ws(type: "response.created", response: rich_response(output: [message_item(content: [text_part])])))
+    annotation = {type: "file_path", index: 0, file_id: "file_observed", opaque: {text: +"metadata"}}
+    event = ws(
+      type: "response.output_text.annotation.added",
+      output_index: 0,
+      item_id: "msg_test",
+      content_index: 0,
+      annotation_index: 9,
+      annotation: annotation
+    )
+    preview.add(event)
+    row = preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:part).fetch(:annotations).first
+    assert_equal(9, row.fetch(:annotation_index))
+    assert_equal("metadata", row.fetch(:annotation).fetch(:opaque).fetch(:text))
+    assert_empty(preview.output.first.content.first.annotations)
+  end
+
+  def test_whole_shell_arrays_replace_one_command_without_changing_flat_item_output
+    preview = OpenAI::Responses::IncrementalResponse.new
+    call = rich_item("shell_call").merge(id: "call_item", action: {commands: ["one", "two"]})
+    item = rich_item("shell_call_output")
+    preview.add(ws(type: "response.created", response: rich_response(output: [call, item])))
+    frame = {output_index: 1, item_id: "item", command_index: 1}
+    preview.add(ws(type: "response.shell_call_output_content.delta", **frame, delta: {stdout: "first", stderr: "warn"}))
+    saved = preview.detailed_snapshot
+    preview.add(
+      ws(type: "response.shell_call_output_content.delta", **frame.merge(command_index: 0), delta: {stdout: "neighbor"})
+    )
+    chunks = [
+      {
+        stdout: "corrected-a",
+        stderr: "",
+        outcome: {type: "exit", exit_code: 7},
+        created_by: "actor-a",
+        opaque: {text: +"metadata"}
+      },
+      {stdout: "corrected-b", stderr: "warning", outcome: {type: "timeout"}, created_by: "actor-b"}
+    ]
+    done = ws(type: "response.shell_call_output_content.done", **frame, output: chunks)
+    original = done.to_h
+    preview.add(done)
+    facts = preview.detailed_snapshot.fetch(:output).last.fetch(:content)
+    assert_equal([0, 1], facts.map { |row| row.fetch(:command_index) })
+    assert_equal({stdout: "neighbor"}, facts.first.fetch(:part))
+    assert_equal({output: chunks}, facts.last.fetch(:part))
+    assert_equal({stdout: "first", stderr: "warn"}, saved.fetch(:output).last.fetch(:content).first.fetch(:part))
+    assert_empty(preview.output.last.output)
+    assert_equal(original, done.to_h)
+    facts.last.fetch(:part).fetch(:output).first.fetch(:opaque).fetch(:text).replace("changed copy")
+    assert_equal(
+      "metadata",
+      preview
+        .detailed_snapshot
+        .fetch(:output)
+        .last
+        .fetch(:content)
+        .last
+        .fetch(:part)
+        .fetch(:output)
+        .first
+        .fetch(:opaque)
+        .fetch(:text)
+    )
+    preview.add(ws(type: "response.shell_call_output_content.done", **frame, output: []))
+    assert_equal({output: []}, preview.detailed_snapshot.fetch(:output).last.fetch(:content).last.fetch(:part))
+    full = item.merge(output: [chunks.first], status: "completed")
+    preview.add(ws(type: "response.output_item.done", output_index: 1, item: full))
+    assert_equal(1, preview.output.last.output.length)
+    refute(preview.detailed_snapshot.fetch(:output).last.key?(:content))
+    preview.add(
+      ws(
+        type: "response.output_item.done",
+        output_index: 0,
+        item: call.merge(action: {commands: ["one"]}, status: "completed")
+      )
+    )
+    preview.add(ws(type: "response.shell_call_output_content.delta", **frame, delta: {stdout: "outside reduced bound"}))
+    assert_equal(:unavailable, preview.phase)
+
+    preview.reset
+    preview.add(ws(type: "response.created", response: rich_response(output: [item])))
+    preview.add(
+      ws(
+        type: "response.shell_call_output_content.delta",
+        output_index: 0,
+        item_id: "item",
+        command_index: 1_000_000_000_000,
+        delta: {stderr: "observed"}
+      )
+    )
+    assert_equal(
+      1_000_000_000_000,
+      preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:command_index)
+    )
+    assert_empty(preview.output.first.output)
+    preview.reset
+    preview.add(
+      ws(
+        type: "response.shell_call_output_content.delta",
+        output_index: 99,
+        item_id: "unscaffolded",
+        command_index: 1_000_000_000_000,
+        delta: {stderr: "observed"}
+      )
+    )
+    assert_equal(
+      1_000_000_000_000,
+      preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:command_index)
+    )
+    assert_empty(preview.output)
+  end
+
+  def test_reasoning_parts_metadata_and_identity_indexes_follow_full_replacement
+    preview = OpenAI::Responses::IncrementalResponse.new
+    item = rich_item("reasoning").merge(action: "opaque action", opaque: {nullable: nil, empty: [], text: +"owned"})
+    preview.add(ws(type: "response.created", response: rich_response(output: [item])))
+    preview.add(
+      ws(
+        type: "response.content_part.done",
+        output_index: 0,
+        item_id: "item",
+        content_index: 0,
+        part: {type: "reasoning_text", text: "corrected", opaque: {text: +"part"}}
+      )
+    )
+    saved = preview.detailed_snapshot
+    assert_equal("corrected", preview.output.first.content.first.text)
+    assert_empty(saved.fetch(:output_text))
+    assert_equal("opaque action", saved.fetch(:output).first.fetch(:item).fetch(:action))
+    assert_nil(saved.fetch(:output).first.fetch(:item).fetch(:opaque).fetch(:nullable))
+    assert_empty(saved.fetch(:output).first.fetch(:item).fetch(:opaque).fetch(:empty))
+    refute(saved.fetch(:output).first.fetch(:item).fetch(:opaque).key?(:absent))
+    preview.add(
+      ws(
+        type: "response.content_part.done",
+        output_index: 0,
+        item_id: "item",
+        content_index: 0,
+        part: {type: "reasoning_text", text: "full"}
+      )
+    )
+    refute(preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:part).key?(:opaque))
+    assert_equal("part", saved.fetch(:output).first.fetch(:content).first.fetch(:part).fetch(:opaque).fetch(:text))
+    outputs = Array.new(64) { |index| rich_item("mcp_call").merge(id: "mcp_#{index}") }
+    preview.add(ws(type: "response.created", response: rich_response(output: outputs)))
+    preview.add(
+      ws(type: "response.output_item.done", output_index: 63, item: rich_item("mcp_call").merge(id: "replacement"))
+    )
+    preview.add(ws(type: "response.mcp_call_arguments.delta", output_index: 64, item_id: "mcp_63", delta: "suffix"))
+    assert_equal(:provisional, preview.phase)
+    assert_equal(64, preview.detailed_snapshot.fetch(:output).last.fetch(:output_index))
+    preview.add(
+      ws(
+        type: "response.mcp_call_arguments.delta",
+        output_index: 65,
+        item_id: "replacement",
+        delta: "wrong duplicate index"
+      )
+    )
+    assert_equal(:unavailable, preview.phase)
+  end
+
+  def test_optional_id_exception_does_not_admit_missing_required_ids_or_invalid_values
+    preview = OpenAI::Responses::IncrementalResponse.new
+    item = rich_item("mcp_call")
+    item.delete(:id)
+    preview.add(ws(type: "response.created", response: rich_response(output: [item])))
+    preview.add(ws(type: "response.mcp_call_arguments.delta", output_index: 0, item_id: "required", delta: "bad"))
+    assert_equal(:unavailable, preview.phase)
+    assert_nil(preview.output)
+    assert_nil(preview.detailed_snapshot)
+
+    part = text_part
+    part.delete(:text)
+    preview.add(ws(type: "response.created", response: rich_response(output: [message_item(content: [part])])))
+    preview.add(delta)
+    assert_equal(:unavailable, preview.phase)
+
+    call = rich_item("shell_call").merge(action: {commands: [nil]})
+    preview.add(ws(type: "response.created", response: rich_response(output: [call])))
+    preview.add(ws(type: "response.shell_call_command.delta", output_index: 0, command_index: 0, delta: "bad"))
+    assert_equal(:unavailable, preview.phase)
+  end
+
+  def test_unknown_fields_do_not_become_unrelated_item_collections
+    preview = OpenAI::Responses::IncrementalResponse.new
+    item = rich_item("mcp_call").merge(
+      content: ["opaque content"],
+      summary: ["opaque summary"],
+      action: {commands: ["opaque command"]}
+    )
+    preview.add(ws(type: "response.created", response: rich_response(output: [item])))
+    preview.add(ws(type: "response.mcp_call_arguments.delta", output_index: 0, item_id: "item", delta: " suffix"))
+    row = preview.detailed_snapshot.fetch(:output).first
+    refute(row.key?(:content))
+    refute(row.key?(:summary))
+    refute(row.key?(:commands))
+    assert_equal(["opaque content"], row.fetch(:item).fetch(:content))
+    assert_equal(["opaque summary"], row.fetch(:item).fetch(:summary))
+    assert_equal({commands: ["opaque command"]}, row.fetch(:item).fetch(:action))
+    assert_equal(["opaque content"], preview.output.first.to_h.fetch(:content))
+    assert_equal("seed suffix", preview.output.first.arguments)
+  end
+
+  private def rich_item(kind)
+    {type: kind, id: "item"}.merge(
+      case kind
+      when "reasoning"
+        {summary: [{type: "summary_text", text: "seed"}], content: [{type: "reasoning_text", text: "seed"}]}
+      when "code_interpreter_call"
+        {code: "seed", container_id: "cntr_fixture", outputs: [], status: "in_progress"}
+      when "file_search_call"
+        {queries: ["synthetic"], status: "in_progress"}
+      when "web_search_call"
+        {action: {type: "search", queries: ["synthetic"], sources: []}, status: "in_progress"}
+      when "image_generation_call"
+        {result: nil, status: "in_progress"}
+      when "mcp_call"
+        {arguments: "seed", name: "never_run", server_label: "synthetic"}
+      when "shell_call"
+        {call_id: "call_shell", environment: {type: "local"}, action: {commands: ["seed"]}, status: "in_progress"}
+      when "shell_call_output"
+        {call_id: "call_shell", output: [], max_output_length: nil, status: "in_progress"}
+      when "function_call"
+        {call_id: "call_function", name: "never_run", arguments: "{\"seed\":"}
+      when "custom_tool_call"
+        {call_id: "call_custom", name: "never_run", input: "seed"}
+      end
+    )
+  end
+
+  private def rich_response(output:, status: "in_progress")
+    tools = output.filter_map do |item|
+      case item[:type]
+      when "code_interpreter_call"
+        {type: "code_interpreter", container: {type: "auto"}}
+      when "file_search_call"
+        {type: "file_search", vector_store_ids: ["vs_fixture"]}
+      when "web_search_call"
+        {type: "web_search"}
+      when "image_generation_call"
+        {type: "image_generation"}
+      when "mcp_call"
+        {type: "mcp", server_label: "synthetic", server_url: "https://example.invalid/mcp", require_approval: "never"}
+      when "shell_call", "shell_call_output"
+        {type: "shell", environment: {type: "local"}}
+      when "function_call"
+        {type: "function", name: "never_run", parameters: {type: "object", properties: {}}, strict: false}
+      when "custom_tool_call"
+        {type: "custom", name: "never_run", format: {type: "text"}}
+      end
+    end
+
+    mcp_response(output: output, status: status).merge(tools: tools.uniq)
   end
 
   private def mcp_response(output: [], status: "in_progress")
