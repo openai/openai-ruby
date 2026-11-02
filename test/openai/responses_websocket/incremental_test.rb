@@ -441,8 +441,7 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
         output_index: 0,
         content_index: 0,
         item_id: "msg_test",
-        annotation_index: 0,
-        annotation: nil
+        annotation_index: 0
       }
     ]
     cases.each do |data|
@@ -977,6 +976,104 @@ class OpenAI::Test::ResponsesWebSocketIncrementalTest < Minitest::Test
     assert_equal({commands: ["opaque command"]}, row.fetch(:item).fetch(:action))
     assert_equal(["opaque content"], preview.output.first.to_h.fetch(:content))
     assert_equal("seed suffix", preview.output.first.arguments)
+  end
+
+  def test_nullable_annotation_facts_preserve_unrelated_progress_and_typed_prefix
+    preview = OpenAI::Responses::IncrementalResponse.new
+    initial = {type: "file_path", index: 0, file_id: "file_before"}
+    part = text_part(text: "observed").merge(annotations: [initial])
+    message = message_item(content: [part])
+    tool = rich_item("mcp_call").merge(arguments: "{}")
+    preview.add(ws(type: "response.created", response: rich_response(output: [message, tool])))
+    before = preview.output
+    null = ws(
+      type: "response.output_text.annotation.added",
+      output_index: 0,
+      item_id: "msg_test",
+      content_index: 0,
+      annotation_index: 0,
+      annotation: nil
+    )
+    original = null.to_h
+    preview.add(null)
+    assert_equal(:provisional, preview.phase)
+    saved = preview.detailed_snapshot
+    annotations = saved.fetch(:output).first.fetch(:content).first.fetch(:part).fetch(:annotations)
+    assert_equal(0, annotations.first.fetch(:annotation_index))
+    assert(annotations.first.key?(:annotation))
+    assert_nil(annotations.first.fetch(:annotation))
+    assert_empty(preview.output.first.content.first.annotations)
+    assert_equal("{}", preview.output.last.arguments)
+    assert_equal("file_before", before.first.content.first.annotations.first.file_id)
+    assert_equal(original, null.to_h)
+    later = {type: "file_path", index: 1, file_id: "file_later"}
+    preview.add(
+      ws(
+        type: "response.output_text.annotation.added",
+        output_index: 0,
+        item_id: "msg_test",
+        content_index: 0,
+        annotation_index: 1,
+        annotation: later
+      )
+    )
+    assert_equal(
+      [0, 1],
+      preview
+        .detailed_snapshot
+        .fetch(:output)
+        .first
+        .fetch(:content)
+        .first
+        .fetch(:part)
+        .fetch(:annotations)
+        .map { |row| row.fetch(:annotation_index) }
+    )
+    assert_empty(preview.output.first.content.first.annotations)
+    preview.add(delta(text: " suffix"))
+    assert_equal("observed suffix", preview.output.first.content.first.text)
+    assert_equal("observed suffix", preview.detailed_snapshot.fetch(:output_text))
+    preview.add(
+      ws(
+        type: "response.content_part.done",
+        output_index: 0,
+        item_id: "msg_test",
+        content_index: 0,
+        part: text_part(text: "corrected").merge(annotations: [later])
+      )
+    )
+    assert_equal(["file_later"], preview.output.first.content.first.annotations.map(&:file_id))
+    assert_nil(
+      saved.fetch(:output).first.fetch(:content).first.fetch(:part).fetch(:annotations).first.fetch(:annotation)
+    )
+
+    preview.reset
+    preview.add(
+      ws(
+        type: "response.output_text.annotation.added",
+        output_index: 9,
+        item_id: "sparse",
+        content_index: 7,
+        annotation_index: 99,
+        annotation: nil
+      )
+    )
+    assert_empty(preview.output)
+    row = preview.detailed_snapshot.fetch(:output).first.fetch(:content).first.fetch(:part).fetch(:annotations).first
+    assert_equal(99, row.fetch(:annotation_index))
+    assert(row.key?(:annotation))
+    assert_nil(row.fetch(:annotation))
+    preview.reset
+    preview.add(
+      ws(
+        type: "response.output_text.annotation.added",
+        output_index: 9,
+        item_id: "sparse",
+        content_index: 7,
+        annotation_index: 99
+      )
+    )
+    assert_equal(:unavailable, preview.phase)
   end
 
   private def rich_item(kind)

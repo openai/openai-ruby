@@ -250,7 +250,10 @@ module OpenAI
         when "response.output_text.annotation.added"
           index = data[:content_index]
           annotation_index = data[:annotation_index]
-          unless valid_index?(index) && valid_index?(annotation_index) && data[:annotation].is_a?(Hash)
+          unless valid_index?(index) &&
+              valid_index?(annotation_index) &&
+              data.key?(:annotation) &&
+              (data[:annotation].nil? || data[:annotation].is_a?(Hash))
             return unavailable
           end
 
@@ -504,7 +507,13 @@ module OpenAI
 
       def prefix(values)
         result = []
-        result << values[result.length] while values.key?(result.length)
+        while values.key?(result.length)
+          value = values[result.length]
+          break if value.nil?
+
+          result << value
+        end
+
         result
       end
 

@@ -193,7 +193,8 @@ values. Nested `content`, `summary`, `commands` and annotation rows retain their
 actual indices. `output_text` joins only observed message text in wire-index
 order; it excludes reasoning and refusals. Missing item or part types stay missing; this view is not a
 complete `Response`. Unknown fields and absent, null and empty metadata remain
-distinct. The view is `nil` before observations and when the preview is
+distinct. A null annotation stays at its detailed index and stops the typed
+annotation prefix. The view is `nil` before observations and when the preview is
 unavailable. Terminal views use only the supplied terminal event, and typed
 `output` remains `nil` after a terminal.
 
