@@ -81,13 +81,19 @@ module OpenAI
 
       private def transport_error = connection_error("WebSocket transport failed.")
 
+      private def recovery_transport_error(error)
+        return error if error.is_a?(OpenAI::Errors::WebSocketConnectionError)
+
+        BindingConnectionError.new(url: @url, cause: error, preserve_cause: true)
+      end
+
       private def failed_read_message = "Cannot read from a failed WebSocket."
     end
 
     # @api private
     class BindingConnectionError < OpenAI::Errors::WebSocketConnectionError
-      def initialize(url:, message: nil, http_status: nil, **_options)
-        super(url: url, message: message, http_status: http_status)
+      def initialize(url:, message: nil, http_status: nil, cause: nil, preserve_cause: false, **_options)
+        super(url: url, message: message, http_status: http_status, cause: preserve_cause ? cause : nil)
       end
 
       private def sanitized_error_url(url)

@@ -7,13 +7,20 @@ module OpenAI
     # @api private
     module ClientRequest
       # @api private
-      def with_websocket_connection_request(request:, websocket_base_url: nil, options: nil, &block)
+      def with_websocket_connection_request(
+        request:,
+        websocket_base_url: nil,
+        options: nil,
+        recovery_request: nil,
+        &block
+      )
         build = lambda do |deadline|
           build_shared_websocket_connection_request(
             request: request,
             websocket_base_url: websocket_base_url,
             options: options,
             deadline: deadline,
+            recovery_request: recovery_request,
             validate: lambda do |_value|
               if @provider_runtime || x509_identity?(@copy_options.fetch(:workload_identity))
                 raise(
@@ -27,7 +34,9 @@ module OpenAI
             preserve_base_url_cause: false,
             extra_query_message: "Use query for WebSocket connection query parameters",
             max_retries_message: "request_options max_retries is not supported for WebSocket connections",
-            timeout_error: -> (url, _cause) { BindingConnectionError.new(url: url) }
+            timeout_error: -> (url, cause) {
+              BindingConnectionError.new(url: url, cause: cause, preserve_cause: !recovery_request.nil?)
+            }
           )
         end
 
@@ -98,7 +107,8 @@ module OpenAI
         preserve_base_url_cause:,
         extra_query_message:,
         max_retries_message:,
-        timeout_error:
+        timeout_error:,
+        recovery_request: nil
       )
         path = request.fetch(:path)
         validate.call(websocket_base_url)
@@ -117,6 +127,7 @@ module OpenAI
         request = build_request(request, opts)
         error_request = websocket_uri ? with_shared_websocket_base_url(request, path:, base_url: websocket_uri) : request
         error_url = shared_websocket_url(error_request.fetch(:url))
+        recovery_request&.capture(error_request.merge(headers: shared_websocket_headers(error_request.fetch(:headers))))
 
         if @workload_identity_auth
           deadline ||= request[:timeout]&.then do |timeout|
@@ -137,6 +148,7 @@ module OpenAI
           headers: shared_websocket_headers(request.fetch(:headers))
         )
         request = request_with_remaining_timeout(request, deadline) unless deadline.nil?
+        request = recovery_request.prepare(request) if recovery_request
         [request, deadline]
       rescue Timeout::Error => e
         error = timeout_error.call(error_url, e)

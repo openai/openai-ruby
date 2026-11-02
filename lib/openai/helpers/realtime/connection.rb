@@ -5,6 +5,7 @@ module OpenAI
     # A live, typed Realtime WebSocket connection.
     class Connection < OpenAI::WebSocket::Connection
       include OpenAI::WebSocket::Protocol
+      include OpenAI::WebSocket::RecoveryConnection
 
       # @return [OpenAI::Realtime::ConnectionResources::Session]
       attr_reader :session
@@ -64,12 +65,6 @@ module OpenAI
         send_raw(encode_client_event(event))
       end
 
-      # @api private
-      def enable_no_status_recovery
-        @socket.enable_no_status_recovery if @socket.respond_to?(:enable_no_status_recovery)
-        nil
-      end
-
       private def read_raw_message
         # Recovery already queues callers behind its one physical reader.
         return super if @recovery
@@ -83,32 +78,6 @@ module OpenAI
         ensure
           @read_mutex.unlock
         end
-      end
-
-      private def write_text(text)
-        return super unless @recovery
-
-        # Recovery owns admission and uncertain sends; rejecting a full queue
-        # has not attempted a physical write and must leave this connection usable.
-        @recovery.write(text)
-        nil
-      end
-
-      # Whether automatic recovery is opening or preparing a replacement socket.
-      def reconnecting? = @recovery ? @recovery.reconnecting? : false
-
-      # Snapshot of retained events, including the current event during a flush.
-      # These may contain sensitive application data. Normal connections return [].
-      def pending_messages = @recovery ? @recovery.pending_messages : []
-
-      # Remove and return retained events without sending them.
-      def take_pending_messages = @recovery ? @recovery.take_pending_messages : []
-
-      # Explicitly send retained events in order on the current session. Restore
-      # any required session state first. Does not retry uncertain failed writes.
-      def flush_pending
-        @recovery&.flush_pending
-        nil
       end
 
       private def encode_client_event(event)

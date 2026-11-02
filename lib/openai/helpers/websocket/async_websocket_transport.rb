@@ -158,6 +158,19 @@ module OpenAI
         @tls_configurator = tls_configurator
       end
 
+      # The optional transport discards an empty close frame's status. Restore
+      # it only on sockets owned by automatic recovery, after native validation.
+      module RecoverNoStatusClose
+        def receive_close(frame)
+          super
+          if frame.payload.empty?
+            raise ::Protocol::WebSocket::ClosedError.new("Peer closed without a status", 1005)
+          end
+        end
+      end
+
+      private_constant :RecoverNoStatusClose
+
       class Socket
         # @api private
         def initialize(connection, url:, error_factory:)
@@ -165,6 +178,12 @@ module OpenAI
           @url = url
           @error_factory = error_factory
           @aborted = false
+        end
+
+        # @api private
+        def enable_no_status_recovery
+          @connection.extend(RecoverNoStatusClose) if @connection.respond_to?(:receive_close)
+          nil
         end
 
         def read

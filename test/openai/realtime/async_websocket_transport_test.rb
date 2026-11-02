@@ -553,6 +553,42 @@ class OpenAI::Test::AsyncWebSocketTransportTest < Minitest::Test
     end
   end
 
+  def test_generic_role_recovery_preserves_real_close_causes_and_normal_close_policy
+    [[nil, :retry], [1000, :end], [1008, :fail]].each do |code, expected|
+      upgrades = 0
+      handler = lambda do |peer|
+        upgrades += 1
+        if upgrades == 1
+          peer.close(code, code ? "Synthetic close" : nil)
+        else
+          write_event(
+            peer,
+            type: "session.output_transcript.delta",
+            event_id: "evt",
+            delta: "replacement",
+            start_ms: 0,
+            end_ms: 20
+          )
+          peer.read
+        end
+      end
+
+      with_websocket_server(handler) do |client|
+        operation = lambda do
+          client.live.sideband.connect("live_fixture", reconnect: true, max_reconnect_attempts: 1) do |connection|
+            assert_instance_of(OpenAI::Live::SidebandConnection, connection)
+            event = connection.receive
+            expected == :retry ? assert_equal("replacement", event&.delta) : assert_nil(event)
+          end
+        end
+
+        expected == :fail ? assert_raises(OpenAI::Errors::WebSocketReconnectError, &operation) : operation.call
+      end
+
+      assert_equal(expected == :retry ? 2 : 1, upgrades)
+    end
+  end
+
   def test_empty_close_frame_with_reconnect_disabled_still_ends_the_stream
     upgrades = 0
     handler = lambda do |peer|

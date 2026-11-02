@@ -47,9 +47,11 @@ module OpenAI
     # Only one receive call may read or decode at a time. Iteration releases
     # the read before yielding an event to the caller.
     class Connection < OpenAI::WebSocket::TypedConnection
+      include OpenAI::WebSocket::RecoveryConnection
       # @api private
-      def initialize(socket:, url:)
+      def initialize(socket:, url:, recovery: nil)
         super(socket: socket, url: url, client_event: client_event_type, server_event: server_event_type)
+        @recovery = recovery
         @poisoned = false
         @closed = false
         @read_mutex = Mutex.new
@@ -67,6 +69,8 @@ module OpenAI
       end
 
       private def read_one
+        return receive_recovered_event if @recovery
+
         data = read_raw_message
         return nil if data.nil?
 
@@ -74,6 +78,8 @@ module OpenAI
       end
 
       private def with_read_lease
+        return yield if @recovery&.restoring_owner?
+
         acquired = @read_mutex.try_lock
         unless acquired
           raise connection_error("Live WebSocket already has an active reader."), cause: nil
@@ -100,6 +106,24 @@ module OpenAI
 
       private def transport_error = OpenAI::Errors::LiveConnectionError.new(url: @url)
       private def failed_read_message = "Cannot read from a failed Live WebSocket."
+
+      private def recovery_transport_error(error)
+        return error if error.is_a?(OpenAI::Errors::LiveConnectionError)
+
+        OpenAI::Errors::LiveConnectionError.new(url: @url, cause: error)
+      end
+
+      private def recovery_application_progress?(event)
+        return false unless super
+        return true unless event.type == :"response.event"
+
+        nested = event.event
+        type = (nested[:type] || nested["type"]).to_s
+        @recovery_response_event_names ||= discriminator_values(OpenAI::Responses::ResponseStreamEvent)
+        @recovery_response_event_names.key?(type) &&
+          positive_recovery_event_type?(type) &&
+          !failed_recovery_response?(nested[:response] || nested["response"])
+      end
 
       private def connection_error(message)
         OpenAI::Errors::LiveConnectionError.new(url: @url, message: message)
@@ -151,6 +175,7 @@ module OpenAI
           query: {},
           websocket_base_url: nil,
           options: nil,
+          recovery_request: nil,
           &block
         )
           path = OpenAI::Internal::Util.interpolate_path(path).freeze
@@ -162,6 +187,7 @@ module OpenAI
               websocket_base_url: websocket_base_url,
               options: options,
               deadline: deadline,
+              recovery_request: recovery_request,
               validate: -> (_) { validate_live_websocket_request! },
               invalid_base_url_message: "websocket_base_url must be an absolute HTTP or WebSocket URL " \
                 "without credentials, query, or fragment",
@@ -169,7 +195,9 @@ module OpenAI
               preserve_base_url_cause: false,
               extra_query_message: "request_options extra_query is not supported for Live WebSocket connections",
               max_retries_message: "request_options max_retries is not supported for Live WebSocket connections",
-              timeout_error: -> (url, _) { OpenAI::Errors::LiveConnectionError.new(url: url) }
+              timeout_error: -> (url, cause) {
+                OpenAI::Errors::LiveConnectionError.new(url: url, cause: recovery_request ? cause : nil)
+              }
             )
           end
 
@@ -194,14 +222,31 @@ module OpenAI
       module Connections
         # Open a primary Live WebSocket; the model is supplied in session.start,
         # not in the URL. This opens only the transport, never starts a session.
-        def connect(websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
+        def connect(
+          websocket_base_url: nil,
+          request_options: nil,
+          transport: nil,
+          transport_options: {},
+          reconnect: false,
+          max_reconnect_attempts: 5,
+          max_queue_bytes: 0,
+          on_reconnected: nil,
+          on_reconnecting: nil,
+          &block
+        )
           open_live_websocket(
             path: __websocket_request.fetch(:path),
             connection_class: OpenAI::Live::Connection,
+            role: :live,
             websocket_base_url: websocket_base_url,
             request_options: request_options,
             transport: transport,
             transport_options: transport_options,
+            reconnect: reconnect,
+            max_reconnect_attempts: max_reconnect_attempts,
+            max_queue_bytes: max_queue_bytes,
+            on_reconnected: on_reconnected,
+            on_reconnecting: on_reconnecting,
             &block
           )
         end
@@ -214,16 +259,46 @@ module OpenAI
           transport:,
           transport_options:,
           query: {},
+          role: :live,
+          reconnect: false,
+          max_reconnect_attempts: 5,
+          max_queue_bytes: 0,
+          on_reconnected: nil,
+          on_reconnecting: nil,
           &block
         )
           raise ArgumentError, "A block is required to open a Live WebSocket." unless block
 
+          OpenAI::Realtime::Recovery.validate_options!(
+            reconnect: reconnect,
+            role: role,
+            max_reconnect_attempts: max_reconnect_attempts,
+            max_queue_bytes: max_queue_bytes,
+            on_reconnected: on_reconnected,
+            on_reconnecting: on_reconnecting
+          )
+          if reconnect
+            path = OpenAI::Internal::Util.interpolate_path(path).dup.freeze
+            websocket_base_url = websocket_base_url&.to_s&.dup&.freeze
+          end
+
+          selected = OpenAI::WebSocket::RecoveryRequest.new(query: query, options: request_options) if reconnect
+          error_factory = lambda do |url:, message: nil, http_status: nil, cause: nil|
+            OpenAI::Errors::LiveConnectionError.new(
+              url: url,
+              message: message,
+              http_status: http_status,
+              cause: reconnect ? cause : nil
+            )
+          end
+
           request = lambda do |&request_block|
             @client.with_live_websocket_connection_request(
               path: path,
-              query: query,
+              query: selected ? selected.query : query,
               websocket_base_url: websocket_base_url,
-              options: request_options,
+              options: selected ? selected.options : request_options,
+              recovery_request: selected,
               &request_block
             )
           end
@@ -232,13 +307,11 @@ module OpenAI
             OpenAI::WebSocket::AsyncWebSocketTransport.new(
               product_name: "Live",
               error_class: OpenAI::Errors::LiveConnectionError,
-              error_factory: -> (url:, message: nil, http_status: nil, **) {
-                OpenAI::Errors::LiveConnectionError.new(url: url, message: message, http_status: http_status)
-              }
+              error_factory: error_factory
             )
           end
 
-          OpenAI::WebSocket::ConnectionManager
+          manager = OpenAI::WebSocket::ConnectionManager
             .new(
               client: @client,
               transport: transport,
@@ -249,9 +322,27 @@ module OpenAI
               block_error_message: "A block is required to open a Live WebSocket.",
               abort_after_block: -> (_connection, pending_error) { !pending_error.nil? },
               transport_error_factory: -> (url:, error:) {
+                next error if reconnect && error.is_a?(OpenAI::Errors::LiveConnectionError)
+
                 status = error.http_status if error.is_a?(OpenAI::Errors::WebSocketConnectionError)
-                OpenAI::Errors::LiveConnectionError.new(url: url, http_status: status)
+                error_factory.call(url: url, http_status: status, cause: error)
               }
+            )
+          return manager.open(&block) unless reconnect
+
+          OpenAI::Realtime::Recovery
+            .new(
+              manager: manager,
+              max_reconnect_attempts: max_reconnect_attempts,
+              max_queue_bytes: max_queue_bytes,
+              on_reconnected: on_reconnected,
+              on_reconnecting: on_reconnecting,
+              role: role,
+              request_options: selected,
+              connection_factory: -> (socket, url) { connection_class.new(socket: socket, url: url, recovery: socket) },
+              connection_error_class: OpenAI::Errors::LiveConnectionError,
+              reconnect_error_class: OpenAI::Errors::WebSocketReconnectError,
+              queue_error_class: OpenAI::Errors::WebSocketQueueFullError
             )
             .open(&block)
         end
@@ -275,6 +366,11 @@ class OpenAI::Resources::Live::Sideband
     request_options: nil,
     transport: nil,
     transport_options: {},
+    reconnect: false,
+    max_reconnect_attempts: 5,
+    max_queue_bytes: 0,
+    on_reconnected: nil,
+    on_reconnecting: nil,
     &block
   )
     unless graceful_close.nil? || graceful_close == true || graceful_close == false
@@ -285,10 +381,16 @@ class OpenAI::Resources::Live::Sideband
       path: __websocket_request(session_id).fetch(:path),
       query: graceful_close.nil? ? {} : {"graceful_close" => graceful_close.to_s},
       connection_class: OpenAI::Live::SidebandConnection,
+      role: :live_sideband,
       websocket_base_url: websocket_base_url,
       request_options: request_options,
       transport: transport,
       transport_options: transport_options,
+      reconnect: reconnect,
+      max_reconnect_attempts: max_reconnect_attempts,
+      max_queue_bytes: max_queue_bytes,
+      on_reconnected: on_reconnected,
+      on_reconnecting: on_reconnecting,
       &block
     )
   end
@@ -299,14 +401,32 @@ class OpenAI::Resources::Live::Forks
 
   # Open a fork of an eligible stored recording. Send session.start with
   # session: {} to inherit the recording, then wait for session.started.
-  def connect(session_id, websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
+  def connect(
+    session_id,
+    websocket_base_url: nil,
+    request_options: nil,
+    transport: nil,
+    transport_options: {},
+    reconnect: false,
+    max_reconnect_attempts: 5,
+    max_queue_bytes: 0,
+    on_reconnected: nil,
+    on_reconnecting: nil,
+    &block
+  )
     open_live_websocket(
       path: __websocket_request(session_id).fetch(:path),
       connection_class: OpenAI::Live::ForkConnection,
+      role: :live_fork,
       websocket_base_url: websocket_base_url,
       request_options: request_options,
       transport: transport,
       transport_options: transport_options,
+      reconnect: reconnect,
+      max_reconnect_attempts: max_reconnect_attempts,
+      max_queue_bytes: max_queue_bytes,
+      on_reconnected: on_reconnected,
+      on_reconnecting: on_reconnecting,
       &block
     )
   end

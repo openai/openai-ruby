@@ -4,7 +4,8 @@ module OpenAI
     def with_websocket_connection_request: (
       request: OpenAI::Internal::Transport::BaseClient::request_components,
       ?websocket_base_url: String?,
-      ?options: OpenAI::request_opts?
+      ?options: OpenAI::request_opts?,
+      ?recovery_request: untyped
     ) {
       (
         OpenAI::Internal::Transport::BaseClient::request_input request,
@@ -14,6 +15,15 @@ module OpenAI
   end
 
   module WebSocket
+    module RecoveryConnection
+      # @api private
+      def update_recovery_url: (URI::Generic url) -> nil
+      def reconnecting?: -> bool
+      def pending_messages: -> Array[String]
+      def take_pending_messages: -> Array[String]
+      def flush_pending: -> nil
+    end
+
     module Resource
       def connect: (
         *untyped path_arguments,
@@ -57,6 +67,20 @@ module OpenAI
   end
 
   module Errors
+    class WebSocketQueueFullError < OpenAI::Errors::Error
+      def initialize: (?String message) -> void
+    end
+    class WebSocketReconnectError < OpenAI::Errors::Error
+      attr_reader unsent_messages: Array[String]
+      attr_reader uncertain_message: String?
+
+      # @api private
+      def initialize: (
+        message: String,
+        ?unsent_messages: Array[String],
+        ?uncertain_message: String?
+      ) -> void
+    end
     class WebSocketConnectionError < OpenAI::Errors::Error
       attr_reader url: URI::Generic
       attr_reader http_status: Integer?

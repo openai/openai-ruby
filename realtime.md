@@ -78,8 +78,8 @@ inspection. `send_raw` and `receive_raw` are text-frame escape hatches.
 
 ## Reconnect and retained sends
 
-Automatic reconnect is disabled by default. Enable it on the existing `connect`
-method for ordinary model sessions:
+Automatic reconnect is disabled by default. The same recovery options apply to
+`connect`, `connect_transcription`, and `connect_to_call`. For a model session:
 
 ```ruby
 client.realtime.connect(model: "gpt-realtime-2.1", reconnect: true) do |connection|
@@ -88,15 +88,22 @@ end
 ```
 
 Both `receive` and `each` drive recovery. The application block runs once, with
-the same connection object. Recovery opens a **new session**; it does not restore
-conversation history, buffered audio, outstanding tool calls, or an interrupted
-response. The normal server session events remain observable. Sends alone do
+the same role-specific connection object. Recovery opens a new transport for
+the original model, transcription intent, or existing call ID. Model and
+transcription sessions start fresh; an existing-call attachment still depends on
+the service accepting that call. Recovery does not restore conversation history,
+buffered audio, outstanding tool calls, or an interrupted response. The normal server session events remain observable. Sends alone do
 not drive recovery: keep a receiver running to observe disconnects.
 
 `max_reconnect_attempts` defaults to 5 and bounds the total additional connection
 attempts over the block's lifetime, including retryable initial handshake
-failures. Backoff starts at 0.5 seconds, doubles to an 8-second cap, and applies
-jitter. Normal close, explicit close, permanent authentication/TLS/protocol
+failures. The existing, separately bounded pre-upgrade workload-identity 401
+refresh remains part of authentication preparation; it does not refill this
+budget. Backoff starts at 0.5 seconds, doubles to an 8-second cap, and applies
+jitter. Recognized, decoded application progress resets only that pacing.
+Unknown, informational, closed and failed events do not. Raw-only reads and
+separate `parse_event` calls do not reset pacing. The lifetime attempt count
+never resets. Normal close, explicit close, permanent authentication/TLS/protocol
 failures, and exhausted retries stop recovery. Each attempt uses the client's
 existing endpoint and authentication preparation, including workload-identity
 token refresh. `request_options[:max_retries]` remains an HTTP option and must
@@ -106,6 +113,17 @@ An optional `on_reconnected:` callback receives the same connection before the
 replacement is made available to waiting readers. It can restore application
 state using the usual typed helpers; its exceptions stop recovery. A callback
 may receive events itself, consuming them before the application receiver.
+
+`on_reconnecting:` runs before each replacement attempt, after old transport
+cleanup. It receives a frozen Hash with `role`, one-based `attempt`,
+`max_attempts`, `remaining_attempts` after that proposed attempt, planned `delay`
+in seconds, and a sanitized `reason`, `http_status` and `close_code`. Return
+`false` to stop, `nil` to keep the original options, or a Hash containing ordinary
+`headers:` and `query:` overrides. Overrides apply only to that attempt; omitted
+options return to their initial values. Target selectors, endpoint/path,
+credentials and handshake policy remain protected. Callback errors stop recovery.
+A callback cannot receive before the replacement opens; sends at that point
+follow the normal bounded unsent-queue rules.
 
 ### Optional outbound queue
 
@@ -173,9 +191,9 @@ logical connection so an abandoned receive cannot consume a later event.
 
 Reconnect uses the optional Async runtime even with a custom transport. Custom
 transports must allow Async cancellation and preserve the cause/status of
-`RealtimeConnectionError` for retry classification. `connect_transcription` and
-`connect_to_call` retain their existing behavior; their session recovery
-semantics are not enabled by this option.
+`RealtimeConnectionError` for retry classification. Recovery preserves the
+transcription intent and the existing-call facade, including its
+`output_audio_buffer` methods. It never switches between those roles.
 
 ## Standard text workflows
 
@@ -623,3 +641,12 @@ After sending input, call `connection.finish(timeout: ...)` with a block to
 consume the remaining events through `session.closed`. Finish calls must be
 sequential, with no competing reader. Keep the connection inside its opening
 block so the SDK can clean it up when the block exits.
+
+For low-level Translation recovery, use
+`client.realtime.translations.connect(query: {model: model}, reconnect: true)`.
+It yields a `TranslationSocketConnection` with the generated Translation codec
+and the same recovery/queue options. Restore any application state explicitly;
+no audio is replayed. Its queue errors and terminal failures use
+`WebSocketQueueFullError` and `WebSocketReconnectError`. This low-level connection
+has no `finish`; managed `connect_translation` and its finish/drain workflow
+remain nonrecovering.

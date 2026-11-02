@@ -1,0 +1,48 @@
+module OpenAI
+  module Models
+    module Realtime
+      class TranslationSocketConnection < OpenAI::WebSocket::TypedConnection[OpenAI::Models::Realtime::realtime_translation_client_event, OpenAI::Models::Realtime::realtime_translation_server_event
+      | ::Hash[Symbol, untyped]]
+        include OpenAI::WebSocket::RecoveryConnection
+
+        # @api private
+        def initialize: (
+          socket: untyped,
+          url: URI::Generic,
+          ?recovery: untyped
+        ) -> void
+        def receive_raw: -> String?
+        def parse_event: (
+          String data
+        ) -> (OpenAI::Models::Realtime::realtime_translation_server_event
+        | ::Hash[Symbol, untyped])
+        def send_raw: (String data) -> nil
+        def abort: -> nil
+      end
+    end
+  end
+  module Resources
+    class Realtime
+      class Translations
+        def connect: [T] (
+          ?query: ::Hash[untyped, untyped],
+          ?websocket_base_url: String?,
+          ?request_options: OpenAI::request_opts?,
+          ?transport: untyped,
+          ?transport_options: ::Hash[Symbol, untyped],
+          ?reconnect: bool,
+          ?max_reconnect_attempts: Integer,
+          ?max_queue_bytes: Integer,
+          ?on_reconnected: (^(
+            OpenAI::Realtime::TranslationSocketConnection
+          ) -> void)?,
+          ?on_reconnecting: (^(
+            ::Hash[Symbol, untyped]
+          ) -> (false | nil | ::Hash[Symbol, untyped]))?
+        ) {
+          (OpenAI::Realtime::TranslationSocketConnection connection) -> T
+        } -> T
+      end
+    end
+  end
+end

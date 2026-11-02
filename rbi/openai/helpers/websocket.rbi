@@ -8,6 +8,7 @@ module OpenAI
         request: OpenAI::Internal::Transport::BaseClient::RequestComponents,
         websocket_base_url: T.nilable(String),
         options: T.nilable(OpenAI::RequestOptions::OrHash),
+        recovery_request: T.untyped,
         block: T
           .proc
           .params(
@@ -18,11 +19,41 @@ module OpenAI
       )
         .returns(T.anything)
     end
-    def with_websocket_connection_request(request:, websocket_base_url: nil, options: nil, &block)
+    def with_websocket_connection_request(
+      request:,
+      websocket_base_url: nil,
+      options: nil,
+      recovery_request: nil,
+      &block
+    )
     end
   end
 
   module WebSocket
+    # @api private
+    module RecoveryConnection
+      # @api private
+      sig { params(url: URI::Generic).void }
+      def update_recovery_url(url)
+      end
+
+      sig { returns(T::Boolean) }
+      def reconnecting?
+      end
+
+      sig { returns(T::Array[String]) }
+      def pending_messages
+      end
+
+      sig { returns(T::Array[String]) }
+      def take_pending_messages
+      end
+
+      sig { void }
+      def flush_pending
+      end
+    end
+
     # @api private
     module Resource
       sig do
@@ -122,6 +153,27 @@ module OpenAI
   end
 
   module Errors
+    class WebSocketQueueFullError < OpenAI::Errors::Error
+      sig { params(message: String).returns(T.attached_class) }
+      def self.new(message = "WebSocket send queue is full; event was not accepted.")
+      end
+    end
+
+    class WebSocketReconnectError < OpenAI::Errors::Error
+      sig { returns(T::Array[String]) }
+      attr_reader :unsent_messages
+      sig { returns(T.nilable(String)) }
+      attr_reader :uncertain_message
+      # @api private
+      sig {
+        params(message: String, unsent_messages: T::Array[String], uncertain_message: T.nilable(String)).returns(
+          T.attached_class
+        )
+      }
+      def self.new(message:, unsent_messages: [], uncertain_message: nil)
+      end
+    end
+
     class WebSocketConnectionError < OpenAI::Errors::Error
       sig { returns(URI::Generic) }
       attr_reader :url

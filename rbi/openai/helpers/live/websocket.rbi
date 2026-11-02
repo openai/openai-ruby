@@ -9,6 +9,7 @@ module OpenAI
         query: T::Hash[String, String],
         websocket_base_url: T.nilable(String),
         options: T.nilable(OpenAI::RequestOptions::OrHash),
+        recovery_request: T.untyped,
         block: T
           .proc
           .params(
@@ -24,6 +25,7 @@ module OpenAI
       query: {},
       websocket_base_url: nil,
       options: nil,
+      recovery_request: nil,
       &block
     )
     end
@@ -63,6 +65,7 @@ module OpenAI
       end
 
       class Connection
+        include OpenAI::WebSocket::RecoveryConnection
         include Enumerable
         ServerEvent = T.type_alias { T.any(OpenAI::Live::ServerEvent::Variants, OpenAI::Live::UnknownServerEvent) }
         ClientEvent = T.type_alias do
@@ -72,8 +75,8 @@ module OpenAI
         Elem = type_member { {fixed: ServerEvent} }
         sig { returns(URI::Generic) }
         attr_reader :url
-        sig { params(socket: T.anything, url: URI::Generic).returns(T.attached_class) }
-        def self.new(socket:, url:)
+        sig { params(socket: T.anything, url: URI::Generic, recovery: T.untyped).returns(T.attached_class) }
+        def self.new(socket:, url:, recovery: nil)
         end
 
         sig do
@@ -114,6 +117,7 @@ module OpenAI
       end
 
       class SidebandConnection
+        include OpenAI::WebSocket::RecoveryConnection
         include Enumerable
         ClientEvent = T.type_alias do
           T.any(OpenAI::Live::SidebandClientEvent::Variants, T::Hash[T.any(String, Symbol), T.anything])
@@ -122,8 +126,8 @@ module OpenAI
         Elem = type_member { {fixed: Connection::ServerEvent} }
         sig { returns(URI::Generic) }
         attr_reader :url
-        sig { params(socket: T.anything, url: URI::Generic).returns(T.attached_class) }
-        def self.new(socket:, url:)
+        sig { params(socket: T.anything, url: URI::Generic, recovery: T.untyped).returns(T.attached_class) }
+        def self.new(socket:, url:, recovery: nil)
         end
 
         sig do
@@ -166,6 +170,7 @@ module OpenAI
       # Fork sessions use distinct input/output variants; expose that protocol
       # directly so the primary Connection's shipped signatures stay precise.
       class ForkConnection
+        include OpenAI::WebSocket::RecoveryConnection
         include Enumerable
         ServerEvent = T.type_alias { T.any(OpenAI::Live::ForkServerEvent::Variants, OpenAI::Live::UnknownServerEvent) }
         ClientEvent = T.type_alias do
@@ -175,8 +180,8 @@ module OpenAI
         Elem = type_member { {fixed: ServerEvent} }
         sig { returns(URI::Generic) }
         attr_reader :url
-        sig { params(socket: T.anything, url: URI::Generic).returns(T.attached_class) }
-        def self.new(socket:, url:)
+        sig { params(socket: T.anything, url: URI::Generic, recovery: T.untyped).returns(T.attached_class) }
+        def self.new(socket:, url:, recovery: nil)
         end
 
         sig do
@@ -227,11 +232,32 @@ module OpenAI
             request_options: T.nilable(OpenAI::RequestOptions::OrHash),
             transport: T.untyped,
             transport_options: T::Hash[Symbol, T.anything],
+            reconnect: T::Boolean,
+            max_reconnect_attempts: Integer,
+            max_queue_bytes: Integer,
+            on_reconnected: T.nilable(T.proc.params(connection: OpenAI::Live::Connection).void),
+            on_reconnecting: T.nilable(
+              T
+                .proc
+                .params(context: T::Hash[Symbol, T.untyped])
+                .returns(T.nilable(T.any(FalseClass, T::Hash[Symbol, T.untyped])))
+            ),
             block: T.proc.params(connection: OpenAI::Live::Connection).returns(T.type_parameter(:T))
           )
           .returns(T.type_parameter(:T))
       end
-      def connect(websocket_base_url: nil, request_options: nil, transport: nil, transport_options: {}, &block)
+      def connect(
+        websocket_base_url: nil,
+        request_options: nil,
+        transport: nil,
+        transport_options: {},
+        reconnect: false,
+        max_reconnect_attempts: 5,
+        max_queue_bytes: 0,
+        on_reconnected: nil,
+        on_reconnecting: nil,
+        &block
+      )
       end
 
       class Sideband
@@ -244,6 +270,16 @@ module OpenAI
               request_options: T.nilable(OpenAI::RequestOptions::OrHash),
               transport: T.untyped,
               transport_options: T::Hash[Symbol, T.anything],
+              reconnect: T::Boolean,
+              max_reconnect_attempts: Integer,
+              max_queue_bytes: Integer,
+              on_reconnected: T.nilable(T.proc.params(connection: OpenAI::Live::SidebandConnection).void),
+              on_reconnecting: T.nilable(
+                T
+                  .proc
+                  .params(context: T::Hash[Symbol, T.untyped])
+                  .returns(T.nilable(T.any(FalseClass, T::Hash[Symbol, T.untyped])))
+              ),
               block: T.proc.params(connection: OpenAI::Live::SidebandConnection).returns(T.type_parameter(:T))
             )
             .returns(T.type_parameter(:T))
@@ -255,6 +291,11 @@ module OpenAI
           request_options: nil,
           transport: nil,
           transport_options: {},
+          reconnect: false,
+          max_reconnect_attempts: 5,
+          max_queue_bytes: 0,
+          on_reconnected: nil,
+          on_reconnecting: nil,
           &block
         )
         end
@@ -269,6 +310,16 @@ module OpenAI
               request_options: T.nilable(OpenAI::RequestOptions::OrHash),
               transport: T.untyped,
               transport_options: T::Hash[Symbol, T.anything],
+              reconnect: T::Boolean,
+              max_reconnect_attempts: Integer,
+              max_queue_bytes: Integer,
+              on_reconnected: T.nilable(T.proc.params(connection: OpenAI::Live::ForkConnection).void),
+              on_reconnecting: T.nilable(
+                T
+                  .proc
+                  .params(context: T::Hash[Symbol, T.untyped])
+                  .returns(T.nilable(T.any(FalseClass, T::Hash[Symbol, T.untyped])))
+              ),
               block: T.proc.params(connection: OpenAI::Live::ForkConnection).returns(T.type_parameter(:T))
             )
             .returns(T.type_parameter(:T))
@@ -279,6 +330,11 @@ module OpenAI
           request_options: nil,
           transport: nil,
           transport_options: {},
+          reconnect: false,
+          max_reconnect_attempts: 5,
+          max_queue_bytes: 0,
+          on_reconnected: nil,
+          on_reconnecting: nil,
           &block
         )
         end

@@ -5,7 +5,8 @@ module OpenAI
       ?path: String | ::Array[String],
       ?query: ::Hash[String, String],
       ?websocket_base_url: String?,
-      ?options: OpenAI::request_opts?
+      ?options: OpenAI::request_opts?,
+      ?recovery_request: untyped
     ) {
       (
         OpenAI::Internal::Transport::BaseClient::request_input request,
@@ -47,9 +48,14 @@ module OpenAI
         alias to_s inspect
       end
       class Connection
+        include OpenAI::WebSocket::RecoveryConnection
         include Enumerable[OpenAI::Models::Live::connection_server_event]
         attr_reader url: URI::Generic
-        def initialize: (socket: top, url: URI::Generic) -> void
+        def initialize: (
+          socket: top,
+          url: URI::Generic,
+          ?recovery: untyped
+        ) -> void
         def each:
           -> Enumerator[OpenAI::Models::Live::connection_server_event, self]
           | {
@@ -66,9 +72,14 @@ module OpenAI
         def closed?: -> bool
       end
       class SidebandConnection
+        include OpenAI::WebSocket::RecoveryConnection
         include Enumerable[OpenAI::Models::Live::connection_server_event]
         attr_reader url: URI::Generic
-        def initialize: (socket: top, url: URI::Generic) -> void
+        def initialize: (
+          socket: top,
+          url: URI::Generic,
+          ?recovery: untyped
+        ) -> void
         def each:
           -> Enumerator[OpenAI::Models::Live::connection_server_event, self]
           | {
@@ -85,9 +96,14 @@ module OpenAI
         def closed?: -> bool
       end
       class ForkConnection
+        include OpenAI::WebSocket::RecoveryConnection
         include Enumerable[OpenAI::Models::Live::fork_connection_server_event]
         attr_reader url: URI::Generic
-        def initialize: (socket: top, url: URI::Generic) -> void
+        def initialize: (
+          socket: top,
+          url: URI::Generic,
+          ?recovery: untyped
+        ) -> void
         def each:
           -> Enumerator[OpenAI::Models::Live::fork_connection_server_event, self]
           | {
@@ -109,6 +125,13 @@ module OpenAI
   module Resources
     class Live
       def connect: [T] (
+        ?reconnect: bool,
+        ?max_reconnect_attempts: Integer,
+        ?max_queue_bytes: Integer,
+        ?on_reconnected: (^(OpenAI::Live::Connection) -> void)?,
+        ?on_reconnecting: (^(
+          ::Hash[Symbol, untyped]
+        ) -> (false | nil | ::Hash[Symbol, untyped]))?,
         ?websocket_base_url: String?,
         ?request_options: OpenAI::request_opts?,
         ?transport: top,
@@ -120,6 +143,13 @@ module OpenAI
         def connect: [T] (
           String session_id,
           ?graceful_close: bool?,
+          ?reconnect: bool,
+          ?max_reconnect_attempts: Integer,
+          ?max_queue_bytes: Integer,
+          ?on_reconnected: (^(OpenAI::Live::SidebandConnection) -> void)?,
+          ?on_reconnecting: (^(
+            ::Hash[Symbol, untyped]
+          ) -> (false | nil | ::Hash[Symbol, untyped]))?,
           ?websocket_base_url: String?,
           ?request_options: OpenAI::request_opts?,
           ?transport: top,
@@ -131,6 +161,13 @@ module OpenAI
       class Forks
         def connect: [T] (
           String session_id,
+          ?reconnect: bool,
+          ?max_reconnect_attempts: Integer,
+          ?max_queue_bytes: Integer,
+          ?on_reconnected: (^(OpenAI::Live::ForkConnection) -> void)?,
+          ?on_reconnecting: (^(
+            ::Hash[Symbol, untyped]
+          ) -> (false | nil | ::Hash[Symbol, untyped]))?,
           ?websocket_base_url: String?,
           ?request_options: OpenAI::request_opts?,
           ?transport: top,

@@ -14,9 +14,9 @@ module OpenAI
 
         # @api private
         sig do
-          params(socket: T.untyped, url: URI::Generic).returns(T.attached_class)
+          params(socket: T.untyped, url: URI::Generic, recovery: T.untyped).returns(T.attached_class)
         end
-        def self.new(socket:, url:)
+        def self.new(socket:, url:, recovery: nil)
         end
       end
     end

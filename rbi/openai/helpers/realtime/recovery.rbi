@@ -2,13 +2,13 @@
 
 module OpenAI
   module Errors
-    class RealtimeQueueFullError < OpenAI::Errors::Error
+    class RealtimeQueueFullError < OpenAI::Errors::WebSocketQueueFullError
       sig { returns(T.attached_class) }
       def self.new
       end
     end
 
-    class RealtimeReconnectError < OpenAI::Errors::Error
+    class RealtimeReconnectError < OpenAI::Errors::WebSocketReconnectError
       sig { returns(T::Array[String]) }
       attr_reader :unsent_messages
 

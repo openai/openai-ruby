@@ -27,6 +27,7 @@ module OpenAI
         query: T::Hash[String, String],
         websocket_base_url: T.nilable(String),
         options: T.nilable(OpenAI::RequestOptions::OrHash),
+        recovery_request: T.untyped,
         block: T
           .proc
           .params(
@@ -42,6 +43,7 @@ module OpenAI
       query:,
       websocket_base_url: nil,
       options: nil,
+      recovery_request: nil,
       &block
     )
     end
@@ -102,6 +104,12 @@ module OpenAI
           max_reconnect_attempts: Integer,
           max_queue_bytes: Integer,
           on_reconnected: T.nilable(T.proc.params(connection: OpenAI::Realtime::Connection).void),
+          on_reconnecting: T.nilable(
+            T
+              .proc
+              .params(context: T::Hash[Symbol, T.untyped])
+              .returns(T.nilable(T.any(FalseClass, T::Hash[Symbol, T.untyped])))
+          ),
           websocket_base_url: T.nilable(String),
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           transport: T.untyped,
@@ -119,6 +127,7 @@ module OpenAI
         max_reconnect_attempts: 5,
         max_queue_bytes: 0,
         on_reconnected: nil,
+        on_reconnecting: nil,
         websocket_base_url: nil,
         request_options: nil,
         transport: nil,
@@ -130,6 +139,16 @@ module OpenAI
       sig do
         params(
           call_id: String,
+          reconnect: T::Boolean,
+          max_reconnect_attempts: Integer,
+          max_queue_bytes: Integer,
+          on_reconnected: T.nilable(T.proc.params(connection: OpenAI::Realtime::SidebandConnection).void),
+          on_reconnecting: T.nilable(
+            T
+              .proc
+              .params(context: T::Hash[Symbol, T.untyped])
+              .returns(T.nilable(T.any(FalseClass, T::Hash[Symbol, T.untyped])))
+          ),
           websocket_base_url: T.nilable(String),
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           transport: T.untyped,
@@ -143,6 +162,11 @@ module OpenAI
       end
       def connect_to_call(
         call_id:,
+        reconnect: false,
+        max_reconnect_attempts: 5,
+        max_queue_bytes: 0,
+        on_reconnected: nil,
+        on_reconnecting: nil,
         websocket_base_url: nil,
         request_options: nil,
         transport: nil,
@@ -153,6 +177,16 @@ module OpenAI
 
       sig do
         params(
+          reconnect: T::Boolean,
+          max_reconnect_attempts: Integer,
+          max_queue_bytes: Integer,
+          on_reconnected: T.nilable(T.proc.params(connection: OpenAI::Realtime::Connection).void),
+          on_reconnecting: T.nilable(
+            T
+              .proc
+              .params(context: T::Hash[Symbol, T.untyped])
+              .returns(T.nilable(T.any(FalseClass, T::Hash[Symbol, T.untyped])))
+          ),
           websocket_base_url: T.nilable(String),
           request_options: T.nilable(OpenAI::RequestOptions::OrHash),
           transport: T.untyped,
@@ -165,6 +199,11 @@ module OpenAI
           .returns(T.untyped)
       end
       def connect_transcription(
+        reconnect: false,
+        max_reconnect_attempts: 5,
+        max_queue_bytes: 0,
+        on_reconnected: nil,
+        on_reconnecting: nil,
         websocket_base_url: nil,
         request_options: nil,
         transport: nil,

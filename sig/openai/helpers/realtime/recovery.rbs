@@ -1,10 +1,10 @@
 module OpenAI
   module Errors
-    class RealtimeQueueFullError < OpenAI::Errors::Error
+    class RealtimeQueueFullError < OpenAI::Errors::WebSocketQueueFullError
       def initialize: -> void
     end
 
-    class RealtimeReconnectError < OpenAI::Errors::Error
+    class RealtimeReconnectError < OpenAI::Errors::WebSocketReconnectError
       attr_reader unsent_messages: Array[String]
       attr_reader uncertain_message: String?
 

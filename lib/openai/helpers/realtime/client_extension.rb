@@ -141,14 +141,21 @@ module OpenAI
         # a socket, before running application code; only pre-yield failures may retry.
         #
         # @api private
-        def with_realtime_connection_request(path:, query:, websocket_base_url: nil, options: nil)
+        def with_realtime_connection_request(
+          path:,
+          query:,
+          websocket_base_url: nil,
+          options: nil,
+          recovery_request: nil
+        )
           build = lambda do |deadline|
             build_realtime_connection_request(
               path: path,
               query: query,
               websocket_base_url: websocket_base_url,
               options: options,
-              deadline: deadline
+              deadline: deadline,
+              recovery_request: recovery_request
             )
           end
 
@@ -163,13 +170,15 @@ module OpenAI
           query:,
           websocket_base_url:,
           options:,
-          deadline: nil
+          deadline: nil,
+          recovery_request: nil
         )
           build_shared_websocket_connection_request(
             request: realtime.__websocket_request(query: query).merge(path: path),
             websocket_base_url: websocket_base_url,
             options: options,
             deadline: deadline,
+            recovery_request: recovery_request,
             validate: -> (value) { validate_realtime_websocket_request!(value) },
             invalid_base_url_message: "`websocket_base_url` must be an absolute HTTP or WebSocket URL " \
               "without credentials, query, or fragment",

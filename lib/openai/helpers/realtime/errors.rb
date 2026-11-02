@@ -3,21 +3,13 @@
 module OpenAI
   module Errors
     # A disconnected send could not be retained within the caller's byte budget.
-    class RealtimeQueueFullError < OpenAI::Errors::Error
+    class RealtimeQueueFullError < OpenAI::Errors::WebSocketQueueFullError
       def initialize = super("Realtime send queue is full; event was not accepted.")
     end
 
     # Terminal recovery failure. Payloads are available only through explicit
     # accessors, never included in the message or default exception rendering.
-    class RealtimeReconnectError < OpenAI::Errors::Error
-      attr_reader :unsent_messages, :uncertain_message
-
-      # @api private
-      def initialize(message:, unsent_messages: [], uncertain_message: nil)
-        @unsent_messages = unsent_messages.dup.freeze
-        @uncertain_message = uncertain_message
-        super(message)
-      end
+    class RealtimeReconnectError < OpenAI::Errors::WebSocketReconnectError
     end
 
     # Raised when a Realtime WebSocket cannot be opened or used.

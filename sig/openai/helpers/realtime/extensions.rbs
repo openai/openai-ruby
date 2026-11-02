@@ -13,7 +13,8 @@ module OpenAI
       path: String,
       query: ::Hash[String, String],
       ?websocket_base_url: String?,
-      ?options: OpenAI::request_opts?
+      ?options: OpenAI::request_opts?,
+      ?recovery_request: untyped
     ) {
       (
         OpenAI::Internal::Transport::BaseClient::request_input request,
@@ -56,6 +57,9 @@ module OpenAI
         ?max_reconnect_attempts: Integer,
         ?max_queue_bytes: Integer,
         ?on_reconnected: (^(OpenAI::Realtime::Connection) -> void)?,
+        ?on_reconnecting: (^(
+          ::Hash[Symbol, untyped]
+        ) -> (false | nil | ::Hash[Symbol, untyped]))?,
         ?websocket_base_url: String?,
         ?request_options: OpenAI::request_opts?,
         ?transport: untyped?,
@@ -66,6 +70,13 @@ module OpenAI
 
       def connect_to_call: (
         call_id: String,
+        ?reconnect: bool,
+        ?max_reconnect_attempts: Integer,
+        ?max_queue_bytes: Integer,
+        ?on_reconnected: (^(OpenAI::Realtime::SidebandConnection) -> void)?,
+        ?on_reconnecting: (^(
+          ::Hash[Symbol, untyped]
+        ) -> (false | nil | ::Hash[Symbol, untyped]))?,
         ?websocket_base_url: String?,
         ?request_options: OpenAI::request_opts?,
         ?transport: untyped?,
@@ -75,6 +86,13 @@ module OpenAI
       } -> top
 
       def connect_transcription: (
+        ?reconnect: bool,
+        ?max_reconnect_attempts: Integer,
+        ?max_queue_bytes: Integer,
+        ?on_reconnected: (^(OpenAI::Realtime::Connection) -> void)?,
+        ?on_reconnecting: (^(
+          ::Hash[Symbol, untyped]
+        ) -> (false | nil | ::Hash[Symbol, untyped]))?,
         ?websocket_base_url: String?,
         ?request_options: OpenAI::request_opts?,
         ?transport: untyped?,

@@ -39,8 +39,12 @@ module OpenAI
         text = super
         @closed = text.nil?
         text
-      rescue StandardError
+      rescue StandardError => error
         @poisoned = true
+        if @recovery_reads
+          raise recovery_transport_error(error), cause: nil
+        end
+
         raise transport_error, cause: nil
       end
 
@@ -67,6 +71,13 @@ module OpenAI
         @socket = socket
         @url = url
         @poisoned = false
+      end
+
+      # @api private
+      def enable_no_status_recovery
+        @recovery_reads = true
+        @socket.enable_no_status_recovery if @socket.respond_to?(:enable_no_status_recovery)
+        nil
       end
 
       # Yield server events until the remote peer closes the connection.

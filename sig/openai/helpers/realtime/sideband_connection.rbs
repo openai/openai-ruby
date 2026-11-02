@@ -5,7 +5,11 @@ module OpenAI
         attr_reader output_audio_buffer: OpenAI::Realtime::ConnectionResources::OutputAudioBuffer
 
         # @api private
-        def initialize: (socket: untyped, url: URI::Generic) -> void
+        def initialize: (
+          socket: untyped,
+          url: URI::Generic,
+          ?recovery: untyped
+        ) -> void
       end
     end
   end

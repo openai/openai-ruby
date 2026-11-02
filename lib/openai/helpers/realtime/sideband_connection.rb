@@ -8,7 +8,7 @@ module OpenAI
       attr_reader :output_audio_buffer
 
       # @api private
-      def initialize(socket:, url:)
+      def initialize(socket:, url:, recovery: nil)
         super
         @output_audio_buffer = OpenAI::Realtime::ConnectionResources::OutputAudioBuffer.new(self)
       end

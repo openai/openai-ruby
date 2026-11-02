@@ -8,23 +8,67 @@ module OpenAI
     #
     # @api private
     class Recovery
-      def self.validate_options!(max_reconnect_attempts:, max_queue_bytes:, on_reconnected:)
+      def self.validate_options!(
+        max_reconnect_attempts:,
+        max_queue_bytes:,
+        on_reconnected:,
+        on_reconnecting: nil,
+        reconnect: true,
+        role: :realtime
+      )
         {max_reconnect_attempts: max_reconnect_attempts, max_queue_bytes: max_queue_bytes}.each do |name, value|
           unless value.is_a?(Integer) && value >= 0
             raise ArgumentError, "`#{name}` must be a nonnegative Integer."
           end
         end
 
-        unless on_reconnected.nil? || on_reconnected.respond_to?(:call)
-          raise ArgumentError, "`on_reconnected` must respond to `call`."
+        {on_reconnected: on_reconnected, on_reconnecting: on_reconnecting}.each do |name, callback|
+          unless callback.nil? || callback.respond_to?(:call)
+            raise ArgumentError, "`#{name}` must respond to `call`."
+          end
+        end
+
+        unless reconnect == true || reconnect == false
+          raise ArgumentError, "`reconnect` must be true or false."
+        end
+
+        if !reconnect && (max_queue_bytes.positive? || on_reconnected || on_reconnecting)
+          raise ArgumentError, "Queueing and recovery callbacks require `reconnect: true`."
+        end
+
+        if reconnect && role == :live_fork && on_reconnecting.nil?
+          raise ArgumentError, "Fork recovery requires an explicit `on_reconnecting` decision."
         end
       end
 
-      def initialize(manager:, max_reconnect_attempts:, max_queue_bytes:, on_reconnected:)
+      def initialize(
+        manager:,
+        max_reconnect_attempts:,
+        max_queue_bytes:,
+        on_reconnected:,
+        on_reconnecting: nil,
+        role: :realtime,
+        request_options: nil,
+        connection_factory: nil,
+        connection_error_class: OpenAI::Errors::RealtimeConnectionError,
+        reconnect_error_class: OpenAI::Errors::RealtimeReconnectError,
+        queue_error_class: OpenAI::Errors::RealtimeQueueFullError
+      )
         @manager = manager
         @max_attempts = max_reconnect_attempts
         @max_queue_bytes = max_queue_bytes
         @on_reconnected = on_reconnected
+        @on_reconnecting = on_reconnecting
+        @role = role
+        @request_options = request_options
+        @connection_factory = connection_factory ||
+          -> (socket, url) {
+            OpenAI::Realtime::Connection.new(socket: socket, url: url, recovery: self)
+          }
+        @connection_error_class = connection_error_class
+        @reconnect_error_class = reconnect_error_class
+        @queue_error_class = queue_error_class
+        @product = reconnect_error_class == OpenAI::Errors::RealtimeReconnectError ? "Realtime" : "WebSocket"
         @mutex = Mutex.new
         @commands = Queue.new
         @reads = Queue.new
@@ -36,6 +80,7 @@ module OpenAI
         @state = :connecting
         @generation = 0
         @attempts = 0
+        @pacing_stage = 0
         @flushing = false
       end
 
@@ -85,29 +130,52 @@ module OpenAI
         end
       end
 
+      # Only the restoration owner can read directly before the physical reader starts.
+      def restoring_owner?
+        Fiber.current.equal?(@owner_fiber) && @mutex.synchronize { @state == :restoring && !@physical.nil? }
+      end
+
       def read
-        return @physical.receive_raw if Fiber.current.equal?(@owner_fiber)
+        if Fiber.current.equal?(@owner_fiber)
+          unless @physical && @mutex.synchronize { [:open, :restoring].include?(@state) }
+            raise state_error("Cannot read before the replacement transport opens."), cause: nil
+          end
 
-        reply = @mutex.synchronize do
-          raise @error, cause: nil if @error
-          return nil if @state == :closed
+          data, generation = @physical.receive_raw, @generation
+        else
+          reply = @mutex.synchronize do
+            raise @error, cause: nil if @error
+            return nil if @state == :closed
 
-          register(:read).tap { @reads << _1 }
+            register(:read).tap { @reads << _1 }
+          end
+
+          data, generation = await_reply(reply)
         end
 
-        await_reply(reply)
+        return data if data.nil? || !block_given?
+
+        event, progress = yield(data)
+        @mutex.synchronize do
+          @pacing_stage = 0 if progress && generation == @generation && [:open, :restoring].include?(@state)
+        end
+
+        event
       end
 
       def write(text)
         # Restore writes bypass the mailbox, but reentrant writes join an active flush.
-        return write_once(text) if Fiber.current.equal?(@owner_fiber) && !@mutex.synchronize { @flushing }
+        if Fiber.current.equal?(@owner_fiber) &&
+            @mutex.synchronize { @physical && [:open, :restoring].include?(@state) && !@flushing }
+          return write_once(text)
+        end
 
         reply = @mutex.synchronize do
           raise write_error(text), cause: nil if @error || [:closed, :ending].include?(@state)
 
           if @state != :open || @flushing
             if @max_queue_bytes.zero? || @pending_bytes + [text.bytesize, 1].max > @max_queue_bytes
-              raise OpenAI::Errors::RealtimeQueueFullError, cause: nil
+              raise @queue_error_class, cause: nil
             end
 
             @pending << text.dup.freeze
@@ -156,7 +224,7 @@ module OpenAI
           next false if @state == :closed
           if @inflight
             fail_locked(
-              "Realtime connection closed during a send; delivery is uncertain.",
+              "#{@product} connection closed during a send; delivery is uncertain.",
               uncertain_message: @inflight
             )
           else
@@ -181,7 +249,7 @@ module OpenAI
       rescue LoadError => e
         raise(
           LoadError.new(
-            "Realtime reconnect requires Async. Add `gem \"async\"` (or `gem \"async-websocket\"`) to your Gemfile."
+            "#{@product} reconnect requires Async. Add `gem \"async\"` (or `gem \"async-websocket\"`) to your Gemfile."
           ),
           cause: e
         )
@@ -225,25 +293,52 @@ module OpenAI
             break
           rescue StandardError, LoadError => e
             break if closed?
-            if @callback_failed || e.is_a?(OpenAI::Errors::RealtimeReconnectError) || e.is_a?(LoadError)
+            if @callback_failed || e.is_a?(OpenAI::Errors::WebSocketReconnectError) || e.is_a?(LoadError)
               finish(e)
               break
             end
 
             unless recoverable?(e) && @attempts < @max_attempts
-              @mutex.synchronize { fail_locked("Realtime reconnect stopped; the connection could not be recovered.") }
+              @mutex.synchronize {
+                fail_locked("#{@product} reconnect stopped; the connection could not be recovered.")
+              }
               break
             end
 
             @mutex.synchronize { @state = :recovering unless @state == :closed }
+            @owner_fiber = Fiber.current
+            delay = retry_delay
+            begin
+              decision = @on_reconnecting&.call(retry_context(e, delay))
+              if decision == false ||
+                  (@role == :live_fork && !(decision.is_a?(Hash) && decision[:open_new_fork_transport] == true))
+                @mutex.synchronize { fail_locked("#{@product} reconnect aborted before opening a replacement.") }
+                break
+              end
+
+              if @role != :live_fork && decision.is_a?(Hash) && decision.key?(:open_new_fork_transport)
+                raise ArgumentError, "Fresh-fork decisions are only valid for fork recovery."
+              end
+
+              @request_options&.update(decision)
+            rescue StandardError, LoadError => callback_error
+              finish(callback_error)
+              break
+            end
+
+            break if closed?
+
+            sleep(delay)
+            break if closed?
+
             @attempts += 1
-            sleep(retry_delay)
+            @mutex.synchronize { @pacing_stage = [@pacing_stage + 1, 4].min }
           end
         end
 
       ensure
         finish
-        @ready << [:error, @error || state_error("Realtime connection closed before opening.")] unless @connection
+        @ready << [:error, @error || state_error("#{@product} connection closed before opening.")] unless @connection
       end
 
       private def serve(physical)
@@ -258,6 +353,7 @@ module OpenAI
         end
 
         if @connection
+          @connection.update_recovery_url(physical.url)
           begin
             @on_reconnected&.call(@connection)
           rescue StandardError, LoadError
@@ -265,7 +361,7 @@ module OpenAI
             raise
           end
         else
-          @connection = OpenAI::Realtime::Connection.new(socket: self, url: physical.url, recovery: self)
+          @connection = @connection_factory.call(self, physical.url)
           @ready << [:ok, @connection]
         end
 
@@ -330,7 +426,7 @@ module OpenAI
             @mutex.synchronize do
               if @inflight || !@pending.empty?
                 fail_locked(
-                  "Realtime connection closed with pending sends; in-flight delivery is uncertain.",
+                  "#{@product} connection closed with pending sends; in-flight delivery is uncertain.",
                   uncertain_message: @inflight
                 )
               elsif @state != :closed
@@ -344,7 +440,7 @@ module OpenAI
             end
           end
 
-          respond(@read_reply, value)
+          respond(@read_reply, [value, @generation])
           @read_reply = nil
           if value.nil?
             @commands << [:end]
@@ -356,14 +452,14 @@ module OpenAI
         @mutex.synchronize do
           if @inflight
             fail_locked(
-              "Realtime connection interrupted during a send; delivery is uncertain.",
+              "#{@product} connection interrupted during a send; delivery is uncertain.",
               uncertain_message: @inflight
             )
           elsif @state != :closed
             if recoverable?(e) && @attempts < @max_attempts
               @state = :recovering
             else
-              fail_locked("Realtime reconnect stopped; the connection could not be recovered.")
+              fail_locked("#{@product} reconnect stopped; the connection could not be recovered.")
             end
           end
         end
@@ -388,7 +484,7 @@ module OpenAI
         rescue StandardError
           error = @mutex.synchronize do
             global_error = fail_locked(
-              "Realtime send failed; delivery is uncertain and the event was not retried.",
+              "#{@product} send failed; delivery is uncertain and the event was not retried.",
               uncertain_message: text
             )
             queued ? global_error : write_error(text, attempted: true)
@@ -439,7 +535,8 @@ module OpenAI
           failure = if kind == :write
             write_error(text, attempted: reply.equal?(@write_reply))
           else
-            error || (kind == :read ? nil : state_error("Realtime connection closed before completing the operation."))
+            error ||
+              (kind == :read ? nil : state_error("#{@product} connection closed before completing the operation."))
           end
 
           reply << [failure ? :error : :ok, failure]
@@ -453,8 +550,8 @@ module OpenAI
 
       private def write_error(text, attempted: false)
         encoded = text.dup.freeze
-        OpenAI::Errors::RealtimeReconnectError.new(
-          message: attempted ? "Realtime send interrupted; delivery is uncertain." : "Realtime send interrupted; event was not sent.",
+        @reconnect_error_class.new(
+          message: attempted ? "#{@product} send interrupted; delivery is uncertain." : "#{@product} send interrupted; event was not sent.",
           unsent_messages: attempted ? [] : [encoded],
           uncertain_message: attempted ? encoded : nil
         )
@@ -468,7 +565,7 @@ module OpenAI
           @pending_bytes -= [uncertain_message.bytesize, 1].max
         end
 
-        error = OpenAI::Errors::RealtimeReconnectError.new(
+        error = @reconnect_error_class.new(
           message: message,
           unsent_messages: @pending,
           uncertain_message: uncertain_message&.dup&.freeze
@@ -478,13 +575,32 @@ module OpenAI
       end
 
       private def state_error(message)
-        OpenAI::Errors::RealtimeReconnectError.new(message: message)
+        @reconnect_error_class.new(message: message)
       end
 
-      private def retry_delay = [0.5 * (2 ** [@attempts - 1, 4].min), 8.0].min * (0.75 + (rand * 0.25))
+      private def retry_delay = (0.5 * (2 ** @pacing_stage)) * (0.75 + (rand * 0.25))
+
+      private def retry_context(error, delay)
+        status = error.http_status
+        cause = error.cause
+        if defined?(::Protocol::WebSocket::ClosedError) && cause.is_a?(::Protocol::WebSocket::ClosedError)
+          close_code = cause.code
+        end
+
+        {
+          role: @role,
+          attempt: @attempts + 1,
+          max_attempts: @max_attempts,
+          remaining_attempts: @max_attempts - @attempts - 1,
+          delay: delay,
+          reason: status ? :http_error : (close_code ? :peer_close : :network_error),
+          http_status: status,
+          close_code: close_code
+        }.freeze
+      end
 
       private def recoverable?(error)
-        return false unless error.is_a?(OpenAI::Errors::RealtimeConnectionError)
+        return false unless error.is_a?(@connection_error_class)
         return [408, 429, 500, 502, 503, 504].include?(error.http_status) if error.http_status
 
         cause = error.cause

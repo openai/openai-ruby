@@ -14,7 +14,8 @@ module OpenAI
         transport:,
         request_options:,
         transport_options:,
-        connection_class: OpenAI::Realtime::Connection
+        connection_class: OpenAI::Realtime::Connection,
+        recovery_request: nil
       )
         query = query
           .to_h
@@ -26,9 +27,10 @@ module OpenAI
         request = lambda do |&request_block|
           client.with_realtime_connection_request(
             path: client.realtime.__websocket_request.fetch(:path),
-            query: query,
+            query: recovery_request ? recovery_request.query : query,
             websocket_base_url: base_url,
-            options: request_options,
+            options: recovery_request ? recovery_request.options : request_options,
+            recovery_request: recovery_request,
             &request_block
           )
         end

@@ -18,40 +18,23 @@ module OpenAI
           max_reconnect_attempts: 5,
           max_queue_bytes: 0,
           on_reconnected: nil,
+          on_reconnecting: nil,
           &block
         )
-          raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block
-          unless reconnect == true || reconnect == false
-            raise ArgumentError, "`reconnect` must be true or false."
-          end
-
-          OpenAI::Realtime::Recovery.validate_options!(
+          open_realtime_connection(
+            query: {"model" => model},
+            role: :realtime,
+            websocket_base_url: websocket_base_url,
+            request_options: request_options,
+            transport: transport,
+            transport_options: transport_options,
+            reconnect: reconnect,
             max_reconnect_attempts: max_reconnect_attempts,
             max_queue_bytes: max_queue_bytes,
-            on_reconnected: on_reconnected
+            on_reconnected: on_reconnected,
+            on_reconnecting: on_reconnecting,
+            &block
           )
-          if !reconnect && (max_queue_bytes.positive? || on_reconnected)
-            raise ArgumentError, "Queueing and recovery callbacks require `reconnect: true`."
-          end
-
-          manager = OpenAI::Realtime::ConnectionManager.new(
-            client: @client,
-            query: {"model" => model},
-            websocket_base_url: websocket_base_url,
-            transport: transport,
-            request_options: request_options,
-            transport_options: transport_options
-          )
-          return manager.open(&block) unless reconnect
-
-          OpenAI::Realtime::Recovery
-            .new(
-              manager: manager,
-              max_reconnect_attempts: max_reconnect_attempts,
-              max_queue_bytes: max_queue_bytes,
-              on_reconnected: on_reconnected
-            )
-            .open(&block)
         end
 
         # Attach a server-side control WebSocket to an existing WebRTC or SIP call.
@@ -61,6 +44,11 @@ module OpenAI
           request_options: nil,
           transport: nil,
           transport_options: {},
+          reconnect: false,
+          max_reconnect_attempts: 5,
+          max_queue_bytes: 0,
+          on_reconnected: nil,
+          on_reconnecting: nil,
           &block
         )
           raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block
@@ -68,16 +56,21 @@ module OpenAI
             raise ArgumentError, "`call_id` must be a non-empty String."
           end
 
-          manager = OpenAI::Realtime::ConnectionManager.new(
-            client: @client,
+          open_realtime_connection(
             query: {"call_id" => call_id},
+            role: :realtime_call,
+            connection_class: OpenAI::Realtime::SidebandConnection,
             websocket_base_url: websocket_base_url,
-            transport: transport,
             request_options: request_options,
+            transport: transport,
             transport_options: transport_options,
-            connection_class: OpenAI::Realtime::SidebandConnection
+            reconnect: reconnect,
+            max_reconnect_attempts: max_reconnect_attempts,
+            max_queue_bytes: max_queue_bytes,
+            on_reconnected: on_reconnected,
+            on_reconnecting: on_reconnecting,
+            &block
           )
-          manager.open(&block)
         end
 
         # Open a dedicated server-side Realtime transcription WebSocket. The
@@ -87,19 +80,81 @@ module OpenAI
           request_options: nil,
           transport: nil,
           transport_options: {},
+          reconnect: false,
+          max_reconnect_attempts: 5,
+          max_queue_bytes: 0,
+          on_reconnected: nil,
+          on_reconnecting: nil,
           &block
         )
           raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block
 
+          open_realtime_connection(
+            query: {"intent" => "transcription"},
+            role: :realtime_transcription,
+            connection_class: OpenAI::Realtime::Connection,
+            websocket_base_url: websocket_base_url,
+            request_options: request_options,
+            transport: transport,
+            transport_options: transport_options,
+            reconnect: reconnect,
+            max_reconnect_attempts: max_reconnect_attempts,
+            max_queue_bytes: max_queue_bytes,
+            on_reconnected: on_reconnected,
+            on_reconnecting: on_reconnecting,
+            &block
+          )
+        end
+
+        private def open_realtime_connection(
+          query:,
+          role:,
+          websocket_base_url:,
+          request_options:,
+          transport:,
+          transport_options:,
+          reconnect:,
+          max_reconnect_attempts:,
+          max_queue_bytes:,
+          on_reconnected:,
+          on_reconnecting:,
+          connection_class: OpenAI::Realtime::Connection,
+          &block
+        )
+          raise ArgumentError, "A block is required to open a Realtime WebSocket." unless block
+          OpenAI::Realtime::Recovery.validate_options!(
+            reconnect: reconnect,
+            role: role,
+            max_reconnect_attempts: max_reconnect_attempts,
+            max_queue_bytes: max_queue_bytes,
+            on_reconnected: on_reconnected,
+            on_reconnecting: on_reconnecting
+          )
+          request = OpenAI::WebSocket::RecoveryRequest.new(query: query, options: request_options) if reconnect
           manager = OpenAI::Realtime::ConnectionManager.new(
             client: @client,
-            query: {"intent" => "transcription"},
+            query: query,
             websocket_base_url: websocket_base_url,
             transport: transport,
             request_options: request_options,
-            transport_options: transport_options
+            transport_options: transport_options,
+            connection_class: connection_class,
+            recovery_request: request
           )
-          manager.open(&block)
+          return manager.open(&block) unless reconnect
+
+          OpenAI::Realtime::Recovery
+            .new(
+              manager: manager,
+              max_reconnect_attempts: max_reconnect_attempts,
+              max_queue_bytes: max_queue_bytes,
+              on_reconnected: on_reconnected,
+              on_reconnecting: on_reconnecting,
+              role: role,
+              request_options: request,
+              connection_factory: -> (socket, url) { connection_class.new(socket: socket, url: url, recovery: socket) }
+            )
+            .open(&block)
         end
       end
     end

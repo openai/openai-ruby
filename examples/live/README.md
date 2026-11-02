@@ -135,3 +135,40 @@ including an explicitly selected observer credential in `extra_headers`. The
 service owns authorization and session eligibility; project access alone does
 not guarantee attachment or a stored fork. Reopening a transport does not
 restore a session or replay commands.
+
+## Optional WebSocket recovery
+
+Primary, sideband and fork WebSockets accept the [recovery options](../../realtime.md#reconnect-and-retained-sends).
+They keep their original path, session selection, credential policy and typed
+facade. Recovery remains disabled by default. A new transport does not prove
+that an old session resumed or that the service still permits attachment.
+Live primary startup remains caller-owned: send the chosen `session.start` and
+observe the real `session.started`, including from `on_reconnected` if needed.
+Sideband attachment does not send startup. Audio and commands are never replayed.
+
+Fork recovery additionally requires an explicit decision before every reopening:
+
+```ruby
+choose_transport = lambda do |context|
+  # Apply your application's policy before creating another fork transport.
+  allow_fresh_fork?(context) ? {open_new_fork_transport: true} : false
+end
+
+client.live.forks.connect(
+  stored_session_id,
+  reconnect: true,
+  on_reconnecting: choose_transport,
+  on_reconnected: ->(fork) { start_chosen_fork_and_wait_for_started(fork) }
+) do |fork|
+  start_chosen_fork_and_wait_for_started(fork)
+  fork.each { |event| handle_event(event) }
+end
+```
+
+The application functions above must send explicit startup overrides and wait
+for the new `session.started`. Opening `/fork` alone is not fork-creation or
+resume proof. Missing consent, callback failure, cancellation or exhaustion
+stops recovery. Retained unsent events stay available for explicit inspection,
+removal or flush; consent never flushes them. Decide whether each event belongs
+in the new session before sending it. Live uses `WebSocketQueueFullError` and
+`WebSocketReconnectError` for queue admission and terminal recovery failures.
