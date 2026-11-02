@@ -159,8 +159,7 @@ session's connection; collection overflow leaves raw events and other lanes usab
 
 `OpenAI::Responses::IncrementalResponse` builds provisional output from events
 you feed it. Use a separate instance for each lane. It does not read, close, or
-write to the connection. Tools remain data. Its `output` may be unavailable
-if the events do not contain enough information; its admitted terminal event
+write to the connection. Tools remain data. Its typed `output` is a truthful provisional prefix; its admitted terminal event
 stays exact, including an absent output field. Call `reset` to discard only
 the preview's state.
 
@@ -174,6 +173,41 @@ for the encoded events that you feed to each preview and a finite lifetime.
 Check the complete event before every `add`, including unknowns, errors, and
 terminal events. Stop feeding when an event would exceed the budget. Never
 report a completed preview for a terminal event that you did not admit.
+
+`output` returns a detached typed prefix during provisional progress. Sparse or
+incomplete records stop that prefix; higher wire indices never shift into lower
+positions. Use `detailed_snapshot` for sparse facts and response metadata:
+
+```ruby
+preview.add(event)
+facts = preview.detailed_snapshot
+facts&.fetch(:output)&.each do |row|
+  puts [row.fetch(:output_index), row.fetch(:item)].inspect
+end
+```
+
+The detailed Hash uses symbol keys and JSON values. Its `response` excludes the
+separately indexed output, while `stream_id`, `response_id`, `terminal_type` and
+`phase` describe the observations. Output rows retain actual `output_index`
+values. Nested `content`, `summary`, `commands` and annotation rows retain their
+actual indices. `output_text` joins only observed message text in wire-index
+order; it excludes reasoning and refusals. Missing item or part types stay missing; this view is not a
+complete `Response`. Unknown fields and absent, null and empty metadata remain
+distinct. A null annotation stays at its detailed index and stops the typed
+annotation prefix. The view is `nil` before observations and when the preview is
+unavailable. Terminal views use only the supplied terminal event, and typed
+`output` remains `nil` after a terminal.
+
+Shell output needs separate views. The item's `output` stays the last supplied
+full-item flat array. Detailed `content` rows use `command_index`: they contain
+observed stdout/stderr, or `{output: [...]}` after done. That array preserves all
+chunks for that one command, including an empty array. It does not imply a flat
+position, a missing exit code or an outcome. A later full item or terminal
+replaces provisional command facts. A missing companion call leaves command
+bounds unknown.
+
+Both views copy their results; the detailed view also sorts observed indices.
+Use raw deltas for per-event progress and take snapshots at useful boundaries.
 
 The runnable [preview example](examples/responses/websocket_workflows.rb)
 sets a decoded per-message cap, uses the session's separate limits, and applies

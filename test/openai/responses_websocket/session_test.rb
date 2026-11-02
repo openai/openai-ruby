@@ -645,11 +645,11 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
         preview.add(connection.receive)
         before = preview.output.map(&:to_h)
         malformed.each do |_data|
-          # In-progress is unselected by this output-only helper. Raw lifecycle
-          # metadata stays available to the caller and does not replace output.
+          # Malformed selected lifecycle snapshots reject before replacing the
+          # last valid observations, just like a malformed created snapshot.
           in_progress = connection.receive
           assert_kind_of(OpenAI::Responses::ResponseInProgressEvent, in_progress)
-          preview.add(in_progress)
+          assert_raises(OpenAI::Responses::SessionError) { preview.add(in_progress) }
           assert_equal(before, preview.output.map(&:to_h))
           created = connection.receive
           assert_kind_of(OpenAI::Responses::ResponseCreatedEvent, created)
@@ -738,7 +738,7 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     end
   end
 
-  def test_unrepresented_output_updates_never_leave_a_stale_provisional_snapshot
+  def test_rich_output_updates_from_the_connection_preserve_raw_and_corrected_views
     frames = [
       [
         {type: "reasoning", id: "item", summary: []},
@@ -764,11 +764,18 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
         {type: "response.reasoning_text.done", content_index: 0, text: "corrected"}
       ],
       [
-        {type: "shell_call", id: "item", call_id: "call_synthetic", action: {commands: []}, status: "in_progress"},
+        {
+          type: "shell_call",
+          id: "item",
+          call_id: "call_synthetic",
+          action: {commands: []},
+          environment: {type: "local"},
+          status: "in_progress"
+        },
         {type: "response.shell_call_command.added", command_index: 0, command: "data only"}
       ],
       [
-        {type: "image_generation_call", id: "item", status: "in_progress", result: nil},
+        {type: "image_generation_call", id: "item", status: "generating", result: nil},
         {
           type: "response.image_generation_call.partial_image",
           partial_image_index: 0,
@@ -776,17 +783,49 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
         }
       ]
     ]
+    fixture = JSON.parse(File.read(File.join(__dir__, "fixtures/websocket_scenarios.json")), symbolize_names: true)
+    base = fixture.fetch(:scenarios).first.fetch(:turns).first.fetch(:frames).first.fetch(:response).merge(
+      model: "synthetic-fixture-model",
+      access_programs: nil,
+      error: nil,
+      incomplete_details: nil,
+      instructions: nil,
+      metadata: nil,
+      temperature: nil,
+      top_p: nil
+    )
     handler = lambda do |socket, _request|
-      frames.each do |item, update|
-        write(socket, type: "response.created", sequence_number: 0, response: {id: "resp_test", output: [item]})
-        write(socket, type: "response.in_progress", sequence_number: 1, response: {id: "resp_test"})
+      frames.each_with_index do |(item, update), index|
+        tool = case item[:type]
+        when "code_interpreter_call"
+          {type: "code_interpreter", container: {type: "auto"}}
+        when "shell_call"
+          {type: "shell", environment: {type: "local"}}
+        when "image_generation_call"
+          {type: "image_generation"}
+        end
+
+        response = base.merge(id: "resp_rich_#{index}", output: [item], tools: tool ? [tool] : [])
+        write(socket, type: "response.created", sequence_number: 0, response: response)
+        write(socket, type: "response.in_progress", sequence_number: 1, response: response)
         write(socket, type: "response.future.delta", output_index: 0, sequence_number: 2, opaque: "available")
-        write(socket, output_index: 0, item_id: "item", sequence_number: 3, **update)
+        identity = update[:type].start_with?("response.shell_call_command") ? {} : {item_id: item[:id]}
+        write(socket, output_index: 0, sequence_number: 3, **identity, **update)
+        if item[:type] == "image_generation_call"
+          write(
+            socket,
+            type: "response.image_generation_call.completed",
+            sequence_number: 4,
+            output_index: 0,
+            item_id: item[:id]
+          )
+        end
+
         write(
           socket,
           type: "response.incomplete",
-          sequence_number: 4,
-          response: {id: "resp_test", status: "incomplete", incomplete_details: {reason: "max_output_tokens"}}
+          sequence_number: item[:type] == "image_generation_call" ? 5 : 4,
+          response: response.merge(status: "incomplete", incomplete_details: {reason: "max_output_tokens"}, output: [])
         )
       end
     end
@@ -808,9 +847,28 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
           refute_kind_of(OpenAI::Responses::UnknownServerEvent, event)
           before = event.to_h
           preview.add(event)
-          assert_equal(:unavailable, preview.phase, update[:type])
-          assert_nil(preview.output)
+          assert_equal(:provisional, preview.phase, update[:type])
+          item = preview.output.first
+          case update[:type]
+          when "response.reasoning_summary_part.added"
+            assert_equal("new", item.summary.first.text)
+          when "response.code_interpreter_call_code.delta"
+            assert_equal("print('data only')", item.code)
+          when "response.reasoning_text.done"
+            assert_equal("corrected", item.content.first.text)
+          when "response.shell_call_command.added"
+            assert_equal(["data only"], item.action.commands)
+          when "response.image_generation_call.partial_image"
+            assert_equal(:generating, item.status)
+          end
+
           assert_equal(before, event.to_h)
+          if update[:type] == "response.image_generation_call.partial_image"
+            preview.add(connection.receive)
+            assert_equal(:completed, preview.output.first.status)
+            assert_equal(:generating, initial.first.status)
+          end
+
           terminal = connection.receive
           preview.add(terminal)
           assert_equal(:terminal, preview.phase)
