@@ -153,7 +153,17 @@ budgets apply per lane and across the session; byte counts measure serialized
 event data, not total process memory. `max_response_bytes` bounds cumulative
 compatible event bytes retained for collection. Choose budgets for legitimate
 large output, including images and tool results. Queue overflow closes the
-session's connection; collection overflow leaves raw events and other lanes usable.
+session's connection by default; collection overflow leaves raw events and other lanes usable.
+
+Pass `isolate_lane_overflow: true` to `Session.open` to keep the connection open
+on queue overflow. A per-lane overflow fails that lane. Under total queue
+pressure, the helper fails the largest older backlog, using registration order
+for ties; with no older backlog, it fails the incoming lane. An event larger
+than the total byte budget fails only its destination lane. The failed lane
+releases its queue, keeps its first error and reserved ID until reconnect, and
+discards later frames for that ID. The default lane can also be selected; other
+lanes keep working. Incoming message-size, decode and transport failures still end the
+session's connection.
 
 ### Bound a caller-fed preview
 

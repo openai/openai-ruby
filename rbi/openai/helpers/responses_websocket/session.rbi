@@ -98,6 +98,21 @@ module OpenAI
         sig { void }
         def wake
         end
+
+        # @api private
+        sig { returns(Integer) }
+        def buffered_events
+        end
+
+        # @api private
+        sig { returns(Integer) }
+        def buffered_bytes
+        end
+
+        # @api private
+        sig { returns(T::Boolean) }
+        def overflowed?
+        end
       end
 
       class Session
@@ -112,6 +127,7 @@ module OpenAI
             .params(
               client: OpenAI::Client,
               limits: SessionLimits,
+              isolate_lane_overflow: T::Boolean,
               request_options: T.nilable(OpenAI::RequestOptions::OrHash),
               websocket_base_url: T.nilable(String),
               transport: T.anything,
@@ -123,6 +139,7 @@ module OpenAI
         def self.open(
           client:,
           limits:,
+          isolate_lane_overflow: false,
           request_options: nil,
           websocket_base_url: nil,
           transport: nil,
@@ -159,11 +176,21 @@ module OpenAI
             request_options: T.nilable(OpenAI::RequestOptions::OrHash),
             websocket_base_url: T.nilable(String),
             transport: T.anything,
-            transport_options: T::Hash[Symbol, T.anything]
+            transport_options: T::Hash[Symbol, T.anything],
+            isolate_lane_overflow: T::Boolean
           )
             .returns(T.attached_class)
         }
-        def self.new(task:, client:, limits:, request_options:, websocket_base_url:, transport:, transport_options:)
+        def self.new(
+          task:,
+          client:,
+          limits:,
+          request_options:,
+          websocket_base_url:,
+          transport:,
+          transport_options:,
+          isolate_lane_overflow: false
+        )
         end
 
         # @api private

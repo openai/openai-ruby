@@ -311,6 +311,15 @@ module OpenAI
 
       # @api private
       def wake = @changed.signal
+
+      # @api private
+      def buffered_events = @queue.length
+
+      # @api private
+      def buffered_bytes = @bytes
+
+      # @api private
+      def overflowed? = @detached_error.is_a?(BufferError)
     end
 
     # Owns one connection and one Async reader. Use only its lanes to receive.
@@ -322,6 +331,7 @@ module OpenAI
       def self.open(
         client:,
         limits:,
+        isolate_lane_overflow: false,
         request_options: nil,
         websocket_base_url: nil,
         transport: nil,
@@ -343,6 +353,7 @@ module OpenAI
             task: task,
             client: client,
             limits: limits,
+            isolate_lane_overflow: isolate_lane_overflow,
             request_options: request_options,
             websocket_base_url: websocket_base_url,
             transport: transport,
@@ -363,10 +374,20 @@ module OpenAI
       end
 
       # @api private
-      def initialize(task:, client:, limits:, request_options:, websocket_base_url:, transport:, transport_options:)
+      def initialize(
+        task:,
+        client:,
+        limits:,
+        request_options:,
+        websocket_base_url:,
+        transport:,
+        transport_options:,
+        isolate_lane_overflow: false
+      )
         @task = task
         @client = client
         @limits = limits
+        @isolate_lane_overflow = isolate_lane_overflow
         @request_options = request_options
         @websocket_base_url = websocket_base_url
         @transport = transport
@@ -526,7 +547,7 @@ module OpenAI
 
       # @api private
       def detach(value)
-        @lanes.delete(value.stream_id) if @lanes[value.stream_id].equal?(value)
+        @lanes.delete(value.stream_id) if @lanes[value.stream_id].equal?(value) && !value.overflowed?
         value.discard
       end
 
@@ -534,9 +555,15 @@ module OpenAI
         data = event.to_h
         value = @lanes.fetch(data[:stream_id], @lanes[nil])
         return unless value
+        return if @isolate_lane_overflow && value.overflowed?
 
         bytes = generate_json(data).bytesize
-        if @events >= @limits.max_events || @bytes + bytes > @limits.max_bytes
+        if @isolate_lane_overflow && bytes > @limits.max_bytes
+          value.discard(BufferError.new("The Responses lane exceeded its buffered event budget."))
+          return
+        end
+
+        if !@isolate_lane_overflow && (@events >= @limits.max_events || @bytes + bytes > @limits.max_bytes)
           raise BufferError, "The Responses session exceeded its buffered event budget."
         end
 
@@ -544,9 +571,31 @@ module OpenAI
         @bytes += bytes
         begin
           consumed(bytes) unless value.enqueue(event, bytes, @raw_command_sent)
+        rescue BufferError => error
+          consumed(bytes)
+          raise unless @isolate_lane_overflow
+
+          value.discard(error)
+          return
         rescue StandardError
           consumed(bytes)
           raise
+        end
+
+        if @isolate_lane_overflow
+          while @events > @limits.max_events || @bytes > @limits.max_bytes
+            byte_pressure = @bytes > @limits.max_bytes
+            largest, largest_size = value, 0
+            @lanes.each_value do |candidate|
+              size = byte_pressure ? candidate.buffered_bytes : candidate.buffered_events
+              size -= byte_pressure ? bytes : 1 if candidate.equal?(value)
+              if size > largest_size
+                largest, largest_size = candidate, size
+              end
+            end
+
+            largest.discard(BufferError.new("The Responses lane exceeded its buffered event budget."))
+          end
         end
 
       rescue SystemStackError

@@ -61,6 +61,15 @@ module OpenAI
 
         # @api private
         def wake: -> void
+
+        # @api private
+        def buffered_events: -> Integer
+
+        # @api private
+        def buffered_bytes: -> Integer
+
+        # @api private
+        def overflowed?: -> bool
       end
 
       class Session
@@ -69,6 +78,7 @@ module OpenAI
         def self.open: [Result] (
           client: OpenAI::Client,
           limits: SessionLimits,
+          ?isolate_lane_overflow: bool,
           ?request_options: OpenAI::request_opts?,
           ?websocket_base_url: String?,
           ?transport: top,
@@ -92,7 +102,8 @@ module OpenAI
           request_options: OpenAI::request_opts?,
           websocket_base_url: String?,
           transport: top,
-          transport_options: ::Hash[Symbol, top]
+          transport_options: ::Hash[Symbol, top],
+          ?isolate_lane_overflow: bool
         ) -> void
 
         # @api private

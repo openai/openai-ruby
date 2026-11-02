@@ -2181,6 +2181,147 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
     assert_equal(%w[default default], received.map { |request| request.fetch("input") })
   end
 
+  def test_opt_in_lane_overflow_reclaims_each_budget_and_retains_the_failed_id
+    first_frame = overflow_frame("slow", "界" * 80)
+    second_frame = overflow_frame("slow", "界" * 80, sequence: 1)
+    healthy_frame = overflow_frame("fast", "metadata survives", sequence: 2)
+    budgets = [
+      {max_events_per_lane: 1},
+      {max_events: 2},
+      {max_bytes_per_lane: JSON.generate(first_frame).bytesize},
+      {max_bytes: [first_frame, second_frame, healthy_frame].sum { |event| JSON.generate(event).bytesize } - 1}
+    ]
+    budgets.each do |budget|
+      handler = lambda do |socket, _request|
+        assert_equal("fast", read(socket)["stream_id"])
+        [first_frame, second_frame, healthy_frame].each { |event| write(socket, **event) }
+        assert_equal("next", read(socket)["stream_id"])
+        write(socket, **overflow_frame("slow", "late failed-lane frame", sequence: 3))
+        write(socket, **overflow_frame(nil, "default survives", sequence: 4))
+      end
+
+      with_server(handler) do |client|
+        OpenAI::Responses::Session
+          .open(client: client, limits: limits(**budget), isolate_lane_overflow: true) do |session|
+            slow = session.lane("slow")
+            fast = session.lane("fast")
+            fast.send_event(type: "response.create")
+            assert_equal(healthy_frame, JSON.parse(JSON.generate(fast.receive.to_h), symbolize_names: true))
+            first = assert_raises(OpenAI::Responses::BufferError) { slow.receive }
+            slow.close
+            assert_same(first, assert_raises(OpenAI::Responses::BufferError) { slow.receive })
+            assert_same(
+              first,
+              assert_raises(OpenAI::Responses::BufferError) { slow.send_event(type: "response.create") }
+            )
+            assert_raises(ArgumentError) { session.lane("slow") }
+            session.lane("next").send_event(type: "response.create")
+            assert_equal("default survives", session.default.receive.to_h[:delta])
+          end
+      end
+    end
+  end
+
+  def test_opt_in_overflow_ties_follow_registration_order
+    handler = lambda do |socket, _request|
+      read(socket)
+      %w[z-first a-second incoming].each_with_index do |id, index|
+        write(socket, **overflow_frame(id, id, sequence: index))
+      end
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session
+        .open(client: client, limits: limits(max_events: 2), isolate_lane_overflow: true) do |session|
+          first, second, incoming = %w[z-first a-second incoming].map { |id| session.lane(id) }
+          incoming.send_event(type: "response.create")
+          assert_equal("incoming", incoming.receive.to_h[:delta])
+          assert_raises(OpenAI::Responses::BufferError) { first.receive }
+          assert_equal("a-second", second.receive.to_h[:delta])
+        end
+    end
+  end
+
+  def test_opt_in_default_lane_overflow_leaves_named_delivery_and_writes_available
+    handler = lambda do |socket, _request|
+      read(socket)
+      write(socket, **overflow_frame(nil, "older default"))
+      write(socket, **overflow_frame("named", "survives", sequence: 1))
+      assert_equal("next", read(socket)["stream_id"])
+      write(socket, **overflow_frame("next", "still open", sequence: 2))
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session
+        .open(client: client, limits: limits(max_events: 1), isolate_lane_overflow: true) do |session|
+          lane = session.lane("named")
+          lane.send_event(type: "response.create")
+          assert_equal("survives", lane.receive.to_h[:delta])
+          assert_raises(OpenAI::Responses::BufferError) { session.default.receive }
+          next_lane = session.lane("next")
+          next_lane.send_event(type: "response.create")
+          assert_equal("still open", next_lane.receive.to_h[:delta])
+        end
+    end
+  end
+
+  def test_opt_in_oversized_frame_wakes_only_its_waiting_lane
+    handler = lambda do |socket, _request|
+      read(socket)
+      write(socket, **overflow_frame("oversized", "x" * 1024))
+      write(socket, **overflow_frame(nil, "healthy", sequence: 1))
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session
+        .open(client: client, limits: limits(max_bytes: 512), isolate_lane_overflow: true) do |session|
+          lane = session.lane("oversized")
+          waiter = Async::Task.current.async do
+            lane.receive
+          rescue OpenAI::Responses::BufferError => error
+            error
+          end
+
+          refute_predicate(waiter, :finished?)
+          lane.send_event(type: "response.create")
+          assert_kind_of(OpenAI::Responses::BufferError, waiter.wait)
+          assert_equal("healthy", session.default.receive.to_h[:delta])
+        end
+    end
+  end
+
+  def test_opt_in_lane_isolation_keeps_decoder_failures_global
+    handler = lambda do |socket, _request|
+      read(socket)
+      socket.write("{")
+      socket.flush
+    end
+
+    with_server(handler) do |client|
+      OpenAI::Responses::Session.open(client: client, limits: limits, isolate_lane_overflow: true) do |session|
+        lane = session.lane("named")
+        lane.send_event(type: "response.create")
+        first = assert_raises(StandardError) { lane.receive }
+        refute_kind_of(OpenAI::Responses::BufferError, first)
+        assert_same(first, assert_raises(StandardError) { session.default.receive })
+      end
+    end
+  end
+
+  private def overflow_frame(stream_id, text, sequence: 0)
+    event = {
+      type: "response.output_text.delta",
+      sequence_number: sequence,
+      item_id: "item_fixture",
+      output_index: 0,
+      content_index: 0,
+      delta: text,
+      future_metadata: {retained: true}
+    }
+    event[:stream_id] = stream_id unless stream_id.nil?
+    event
+  end
+
   private def limits(**overrides)
     OpenAI::Responses::SessionLimits.new(
       **{
