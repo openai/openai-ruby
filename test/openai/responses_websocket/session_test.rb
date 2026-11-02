@@ -286,8 +286,10 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
 
   class UncertainWriteTransport
     class Socket
-      def initialize(socket)
+      def initialize(socket, fail_on_write)
         @socket = socket
+        @fail_on_write = fail_on_write
+        @writes = 0
       end
 
       def read = @socket.read
@@ -296,14 +298,21 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
       def abort = @socket.abort
 
       def write(data)
-        @socket.write(data)
-        raise IOError, "Synthetic failure after an accepted write."
+        result = @socket.write(data)
+        @writes += 1
+        raise IOError, "Synthetic failure after an accepted write." if @writes == @fail_on_write
+
+        result
       end
+    end
+
+    def initialize(fail_on_write: 1)
+      @fail_on_write = fail_on_write
     end
 
     def open(**options)
       OpenAI::Responses::Transports::AsyncWebSocket.new.open(**options) do |socket|
-        yield(Socket.new(socket))
+        yield(Socket.new(socket, @fail_on_write))
       end
     end
   end
@@ -1073,6 +1082,292 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
         end
       end
     end
+  end
+
+  def test_early_steering_function_result_on_default_lane
+    assert_early_steering_required_input(nil, false)
+  end
+
+  def test_early_steering_function_result_on_named_lane
+    assert_early_steering_required_input("steering", false)
+  end
+
+  def test_early_steering_approval_on_default_lane
+    assert_early_steering_required_input(nil, true)
+  end
+
+  def test_early_steering_approval_on_named_lane
+    assert_early_steering_required_input("steering", true)
+  end
+
+  def test_early_steering_uncertain_result_is_not_replayed
+    assert_early_steering_required_input(nil, false, uncertain: true)
+  end
+
+  def test_early_steering_client_search_and_local_shell_results
+    assert_early_steering_required_input(nil, false, owned_tools: true)
+  end
+
+  private def assert_early_steering_required_input(stream_id, approval, uncertain: false, owned_tools: false)
+    fixture = JSON.parse(File.read(File.join(__dir__, "fixtures/websocket_scenarios.json")), symbolize_names: true)
+    tools = [
+      {
+        type: "function",
+        name: "lookup",
+        description: "Synthetic local tool",
+        parameters: {type: "object", properties: {}, additionalProperties: false},
+        strict: true
+      }
+    ]
+    if approval
+      tools <<
+        {type: "mcp", server_label: "fake", server_url: "https://example.invalid/mcp", require_approval: "always"}
+    end
+
+    if owned_tools
+      tools << {type: "shell", environment: {type: "local"}}
+      tools <<
+        {
+          type: "tool_search",
+          execution: "client",
+          description: "Synthetic search",
+          parameters: {type: "object", properties: {}, additionalProperties: false}
+        }
+    else
+      tools << {type: "tool_search", execution: "server"}
+      tools << {type: "shell", environment: {type: "container_reference", container_id: "cntr_fixture"}}
+    end
+
+    response = fixture.fetch(:scenarios).first.fetch(:turns).first.fetch(:frames).first.fetch(:response).merge(
+      id: "resp_parent",
+      status: "in_progress",
+      output: [],
+      access_programs: nil,
+      error: nil,
+      incomplete_details: nil,
+      instructions: "Original settings",
+      metadata: {},
+      temperature: nil,
+      top_p: nil,
+      model: "synthetic-fixture-model",
+      tools: tools
+    )
+    item = if approval
+      {type: "mcp_approval_request", id: "approval_1", arguments: "{}", name: "lookup", server_label: "fake"}
+    else
+      {type: "function_call", id: "fc_1", call_id: "call_1", name: "lookup", arguments: "{}", status: "completed"}
+    end
+
+    item.delete(:status) if stream_id.nil? && !approval
+    result = if approval
+      {type: "mcp_approval_response", approval_request_id: "approval_1", approve: stream_id.nil?}
+    else
+      {type: "function_call_output", call_id: "call_1", output: "{\"found\":true}"}
+    end
+
+    resume = {
+      type: "response.create",
+      previous_response_id: "resp_parent",
+      input: [result],
+      model: "synthetic-fixture-model",
+      instructions: "Explicit settings",
+      temperature: 0.25,
+      tools: [],
+      store: false
+    }
+    fulfilled_call = {
+      type: "function_call",
+      id: "fc_done",
+      call_id: "call_done",
+      name: "lookup",
+      arguments: "{}",
+      status: "completed"
+    }
+    fulfilled_result = {
+      type: "function_call_output",
+      id: "out_done",
+      call_id: "call_done",
+      output: "done",
+      status: "completed"
+    }
+    hosted_search = {
+      type: "tool_search_call",
+      id: "search_hosted",
+      arguments: {},
+      call_id: "call_search_hosted",
+      execution: "server",
+      status: "completed"
+    }
+    hosted_shell = {
+      type: "shell_call",
+      id: "shell_hosted",
+      call_id: "call_shell_hosted",
+      action: {commands: ["echo fixture"]},
+      environment: {type: "container_reference", container_id: "cntr_fixture"},
+      status: "completed"
+    }
+    parent_output = [item, fulfilled_call, fulfilled_result]
+    if owned_tools
+      parent_output << hosted_search.merge(id: "search_client", call_id: "call_search_client", execution: "client")
+      parent_output << hosted_shell.merge(id: "shell_local", call_id: "call_shell_local", environment: {type: "local"})
+      resume[:input] += [
+        {type: "tool_search_output", call_id: "call_search_client", execution: "client", tools: []},
+        {type: "shell_call_output", call_id: "call_shell_local", output: []}
+      ]
+    else
+      parent_output += [hosted_search, hosted_shell]
+    end
+
+    terminal_ready = Async::Queue.new
+    commands = []
+    handler = lambda do |socket, _request|
+      commands << read(socket)
+      write(socket, type: "response.created", stream_id: stream_id, sequence_number: 0, response: response)
+      commands << read(socket)
+      assert_equal(
+        {"type" => "response.steer", "previous_response_id" => "resp_parent", "input" => "Change course"},
+        commands.last
+      )
+      write(
+        socket,
+        type: "response.steer.accepted",
+        stream_id: stream_id,
+        sequence_number: 1,
+        steer: {id: "steer_0123456789abcdef0123456789abcdef", previous_response_id: "resp_parent"}
+      )
+      terminal_ready.dequeue
+      write(
+        socket,
+        type: "response.completed",
+        stream_id: stream_id,
+        sequence_number: 2,
+        response: response.merge(
+          status: "completed",
+          output: parent_output
+        )
+      )
+      commands << read(socket)
+      expected = resume.merge(stream_id: stream_id) unless stream_id.nil?
+      assert_equal(JSON.parse(JSON.generate(expected || resume)), commands.last)
+      if uncertain
+        assert_nil(socket.read, "An uncertain accepted continuation must not be replayed")
+        next
+      end
+
+      successor = response.merge(
+        id: "resp_successor",
+        previous_response_id: "resp_parent",
+        instructions: "Explicit settings",
+        tools: [],
+        temperature: 0.25,
+        store: false
+      )
+      write(socket, type: "response.created", stream_id: stream_id, sequence_number: 3, response: successor)
+      write(
+        socket,
+        type: "response.completed",
+        stream_id: stream_id,
+        sequence_number: 4,
+        response: successor.merge(status: "completed")
+      )
+      assert_nil(socket.read, "Completion must not replay the steer or create another successor")
+    end
+
+    with_server(handler, wait_for_close: false) do |client|
+      transport = UncertainWriteTransport.new(fail_on_write: 3) if uncertain
+      OpenAI::Responses::Session.open(client: client, limits: limits, transport: transport) do |session|
+        lane = stream_id.nil? ? session.default : session.lane(stream_id)
+        lane.send_event(
+          type: "response.create",
+          model: "synthetic-fixture-model",
+          input: "Original request",
+          instructions: "Original settings",
+          tools: tools
+        )
+        assert_equal("resp_parent", lane.receive.response.id)
+        lane.send_event(type: "response.steer", previous_response_id: "resp_parent", input: "Change course")
+        accepted = lane.receive
+        assert_equal("response.steer.accepted", accepted.type.to_s)
+        assert_equal("resp_parent", accepted.steer.previous_response_id)
+        assert_raises(OpenAI::Responses::SessionError) { lane.send_event(resume) }
+        terminal_ready.enqueue(true)
+        parent = lane.get_final_response
+        assert_equal("resp_parent", parent.id)
+        assert_equal(item.fetch(:type).to_s, parent.output.first.type.to_s)
+        # Caller mutation must not change which required input belongs to the parent.
+        if approval
+          parent.output.first.id.replace("changed")
+        else
+          parent.output.first.call_id.replace("changed")
+        end
+
+        wrong_id = approval ? result.merge(approval_request_id: "unrelated") : result.merge(call_id: "unrelated")
+        invalid_inputs = [
+          [],
+          "unrelated text",
+          [wrong_id],
+          [fulfilled_result],
+          [result, result],
+          [result, {role: "user", content: "unrelated"}]
+        ]
+        unless owned_tools
+          invalid_inputs += [
+            [{type: "tool_search_output", call_id: "call_search_hosted", execution: "client", tools: []}],
+            [{type: "shell_call_output", call_id: "call_shell_hosted", output: []}]
+          ]
+        end
+
+        invalid_inputs.each do |input|
+          assert_raises(OpenAI::Responses::SessionError) { lane.send_event(resume.merge(input: input)) }
+        end
+
+        assert_raises(OpenAI::Responses::SessionError) do
+          lane.send_event(resume.merge(previous_response_id: "resp_other"))
+        end
+
+        assert_raises(ArgumentError) { lane.send_event(resume.merge(stream_id: "other")) }
+        if owned_tools
+          assert_raises(OpenAI::Responses::SessionError) do
+            lane.send_event(
+              resume.merge(
+                input: [
+                  {
+                    type: "tool_search_output",
+                    call_id: "call_search_client",
+                    execution: "server",
+                    tools: []
+                  }
+                ]
+              )
+            )
+          end
+        end
+
+        cycle = []
+        cycle << cycle
+        assert_raises(OpenAI::Errors::ResponsesClientEventError) do
+          lane.send_event(resume.merge(input: [result.merge(output: cycle)]))
+        end
+
+        if uncertain
+          assert_raises(OpenAI::Errors::ResponsesSendError) { lane.send_event(resume) }
+          assert_raises(OpenAI::Responses::SessionError) { lane.send_event(resume) }
+          assert_raises(OpenAI::Errors::ResponsesSendError) { lane.receive }
+          next
+        end
+
+        lane.send_event(resume)
+        assert_raises(OpenAI::Responses::SessionError) { lane.send_event(resume) }
+        final = lane.get_final_response
+        assert_equal("resp_successor", final.id)
+        assert_equal("resp_parent", final.previous_response_id)
+        assert_equal("Explicit settings", final.instructions)
+        assert_equal([], final.tools)
+        assert_equal(0.25, final.temperature)
+      end
+    end
+
+    assert_equal(%w[response.create response.steer response.create], commands.map { |command| command.fetch("type") })
   end
 
   def test_steering_outcomes_release_admission_after_all_submissions_are_resolved
