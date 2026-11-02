@@ -1649,35 +1649,52 @@ class OpenAI::Test::ResponsesWebSocketSessionTest < Minitest::Test
   end
 
   def test_reconnect_releases_detached_lane_ids_without_replaying_pending_work
-    requests = []
-    handler = lambda do |socket, _request|
-      request = read(socket)
-      requests << request["input"]
-      if request["input"] == "restored"
-        terminal(socket, "same", id: "resp_replacement")
-      else
-        write(socket, type: "response.future", marker: "accepted")
-      end
-    end
+    [false, true].each do |isolate|
+      requests = []
+      handler = lambda do |socket, _request|
+        request = read(socket)
+        requests << request["input"]
+        if request["input"] == "restored"
+          terminal(socket, "same", id: "resp_replacement")
+        else
+          if isolate
+            2.times { |index| write(socket, **overflow_frame("same", "overflow", sequence: index)) }
+          end
 
-    with_server(handler) do |client|
-      OpenAI::Responses::Session.open(client: client, limits: limits) do |session|
-        prior = session.lane("same")
-        prior.send_event(type: "response.create", input: "pending")
-        assert_equal("accepted", session.default.receive.to_h[:marker])
-        prior.close
-        replacement = nil
-        session.reconnect(
-          restore: -> (current) {
-            replacement = current.lane("same")
-            replacement.send_event(type: "response.create", input: "restored")
-          }
-        )
-        assert_equal("resp_replacement", replacement.get_final_response.id)
+          write(socket, type: "response.future", marker: "accepted")
+        end
       end
-    end
 
-    assert_equal(%w[pending restored], requests)
+      with_server(handler) do |client|
+        OpenAI::Responses::Session
+          .open(client: client, limits: limits(max_events_per_lane: 1), isolate_lane_overflow: isolate) do |session|
+            prior = session.lane("same")
+            prior.send_event(type: "response.create", input: "pending")
+            assert_equal("accepted", session.default.receive.to_h[:marker])
+            first = assert_raises(OpenAI::Responses::BufferError) { prior.receive } if isolate
+            prior.close
+            replacement = nil
+            session.reconnect(
+              restore: -> (current) {
+                replacement = current.lane("same")
+                replacement.send_event(type: "response.create", input: "restored")
+              }
+            )
+            if isolate
+              assert_same(first, assert_raises(OpenAI::Responses::BufferError) { prior.receive })
+              assert_same(
+                first,
+                assert_raises(OpenAI::Responses::BufferError) { prior.send_event(type: "response.create") }
+              )
+            end
+
+            refute_same(prior, replacement)
+            assert_equal("resp_replacement", replacement.get_final_response.id)
+          end
+      end
+
+      assert_equal(%w[pending restored], requests)
+    end
   end
 
   def test_terminal_states_and_nested_errors_leave_connection_usable

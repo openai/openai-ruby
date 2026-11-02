@@ -158,11 +158,12 @@ session's connection by default; collection overflow leaves raw events and other
 Pass `isolate_lane_overflow: true` to `Session.open` to keep the connection open
 on queue overflow. A per-lane overflow fails that lane. Under total queue
 pressure, the helper fails the largest older backlog, using registration order
-for ties; with no older backlog, it fails the incoming lane. An event larger
+for ties; with no older backlog, it fails the incoming lane. It repeats as needed
+until the queue fits within its budgets. An event larger
 than the total byte budget fails only its destination lane. The failed lane
-releases its queue, keeps its first error and reserved ID until reconnect, and
-discards later frames for that ID. The default lane can also be selected; other
-lanes keep working. Incoming message-size, decode and transport failures still end the
+releases its queue, keeps its first error, reserves its ID until reconnect, and
+discards later frames for that ID. The default lane can also be selected. Lanes
+not selected keep working. Incoming message-size, decode and transport failures still end the
 session's connection.
 
 ### Bound a caller-fed preview
@@ -239,8 +240,9 @@ lane opts out of unclaimed events; it cannot be replaced before reconnect.
 
 Recovery is explicit: `session.reconnect(client: fresh_client,
 request_options: fresh_options, restore: callback)` re-evaluates authentication
-and custom headers. Old lane handles raise `StateLostError`; the callback
-registers fresh lanes and sends application-selected restoration state. No
+and custom headers. Previously open lane handles raise `StateLostError`; already
+failed handles retain their first error. The callback registers fresh lanes and
+sends application-selected restoration state. No
 previous create is replayed. Choose stored IDs or full history as described in
 [reconnect guidance](#reconnect-without-replaying-uncertain-work).
 
