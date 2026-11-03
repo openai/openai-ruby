@@ -27,6 +27,8 @@ module OpenAI
 
           attr_reader certificates: OpenAI::Resources::Admin::Organization::Projects::Certificates
 
+          attr_reader service_tier_settings: OpenAI::Resources::Admin::Organization::Projects::ServiceTierSettings
+
           def create: (
             name: String,
             ?external_key_id: String?,

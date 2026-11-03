@@ -3,7 +3,7 @@
   "files": {
     "lib/openai.rb": {
       "mode": "100644",
-      "sha256": "673d6e46b413e3115ee7f1d3cb3b8a59518022677c9943cc2d0c0947ed87b069"
+      "sha256": "7cb7ac57ac18a56483333d3f3b3a4f5a2102c8080956480a2ee0e163c9780a89"
     },
     "lib/openai/.rubocop.generated.yml": {
       "mode": "100644",
@@ -513,6 +513,10 @@
       "mode": "100644",
       "sha256": "ed2f5e841c2e37c29e8f498465a3eef290082d52cdfd408dc6a9a161a9da1640"
     },
+    "lib/openai/models/admin/organization/projects/project_optional_service_tier.rb": {
+      "mode": "100644",
+      "sha256": "2b847da9b52449d786549e6fdfac7bf4a0ff34c278f5e9a5f2b07404f6b09fe3"
+    },
     "lib/openai/models/admin/organization/projects/project_rate_limit.rb": {
       "mode": "100644",
       "sha256": "b3ac9bb8766bc9fb07ed414cd325a8ca1556498bd46be8c59783d30c4fe9d0df"
@@ -520,6 +524,10 @@
     "lib/openai/models/admin/organization/projects/project_service_account.rb": {
       "mode": "100644",
       "sha256": "6d3e045189edaede7d6641cb62a4ff7839a13e8e8e7d00e400768415bf02c808"
+    },
+    "lib/openai/models/admin/organization/projects/project_service_tier_settings.rb": {
+      "mode": "100644",
+      "sha256": "8c67a70e03b8d205ebbfd07e46279faa69cb28cbdc0bd6a64d024ea9bd935f05"
     },
     "lib/openai/models/admin/organization/projects/project_spend_alert.rb": {
       "mode": "100644",
@@ -608,6 +616,14 @@
     "lib/openai/models/admin/organization/projects/service_accounts/api_key_create_response.rb": {
       "mode": "100644",
       "sha256": "1ffe497df8d34e473b77f6b13aa74744a6c7c1b10080749ee6be0f5a0b70fefa"
+    },
+    "lib/openai/models/admin/organization/projects/service_tier_setting_retrieve_params.rb": {
+      "mode": "100644",
+      "sha256": "c75b21c49f21b3c38586b7294f39a10f3dd43981d0615c54746dfacdb441b880"
+    },
+    "lib/openai/models/admin/organization/projects/service_tier_setting_update_params.rb": {
+      "mode": "100644",
+      "sha256": "a60876dcbedd6c954e04f7a300320400745b6e87dc261c1b49924d71804d9fd2"
     },
     "lib/openai/models/admin/organization/projects/spend_alert_create_params.rb": {
       "mode": "100644",
@@ -5967,7 +5983,7 @@
     },
     "lib/openai/resources/admin/organization/projects.rb": {
       "mode": "100644",
-      "sha256": "e151c68d838319ecf62ff7c06f9cc18453ab0cda7a2739fe25319268c306477d"
+      "sha256": "935eccf99d3097b5ba70dc119e73f617efd598713c992a70239a9335be18de67"
     },
     "lib/openai/resources/admin/organization/projects/api_keys.rb": {
       "mode": "100644",
@@ -6012,6 +6028,10 @@
     "lib/openai/resources/admin/organization/projects/service_accounts/api_keys.rb": {
       "mode": "100644",
       "sha256": "3cff1028e2ca06a7042eab00eedef71b4ce456d675eba1c3ce939584c3c6b3e2"
+    },
+    "lib/openai/resources/admin/organization/projects/service_tier_settings.rb": {
+      "mode": "100644",
+      "sha256": "aa0bab9ba16d762d83d24b0fb747a6672523926e71299990544aba2eb0ba648c"
     },
     "lib/openai/resources/admin/organization/projects/spend_alerts.rb": {
       "mode": "100644",
@@ -6937,6 +6957,10 @@
       "mode": "100644",
       "sha256": "6d55b27451573d10f920f17a99559dad4440e5c95143631c526d9e4a086e9d7b"
     },
+    "rbi/openai/models/admin/organization/projects/project_optional_service_tier.rbi": {
+      "mode": "100644",
+      "sha256": "52e436ac45aad9f3bac39601141949dfc1b02c638de71bf923d56295a0d162d5"
+    },
     "rbi/openai/models/admin/organization/projects/project_rate_limit.rbi": {
       "mode": "100644",
       "sha256": "e85f718aa6a650ce636aaab3cc5306d3e3f67f8fd566a5b5e64d28aeb39308a1"
@@ -6944,6 +6968,10 @@
     "rbi/openai/models/admin/organization/projects/project_service_account.rbi": {
       "mode": "100644",
       "sha256": "e7f0e09868eba74252cb35c0e360e40bdeca05d881834373873b06d43e2616ab"
+    },
+    "rbi/openai/models/admin/organization/projects/project_service_tier_settings.rbi": {
+      "mode": "100644",
+      "sha256": "3186a5899c4823aab6ab5a8f334eda04317d480590158e438a5c8d26dfa66070"
     },
     "rbi/openai/models/admin/organization/projects/project_spend_alert.rbi": {
       "mode": "100644",
@@ -7032,6 +7060,14 @@
     "rbi/openai/models/admin/organization/projects/service_accounts/api_key_create_response.rbi": {
       "mode": "100644",
       "sha256": "57278dda47ca12c9a533317fe20f7ba07583e18048da5306597723251202d6f0"
+    },
+    "rbi/openai/models/admin/organization/projects/service_tier_setting_retrieve_params.rbi": {
+      "mode": "100644",
+      "sha256": "d6fb252211e959a2574da65b041427951ac63ece66dc40ece156dcee3de9cf50"
+    },
+    "rbi/openai/models/admin/organization/projects/service_tier_setting_update_params.rbi": {
+      "mode": "100644",
+      "sha256": "ad23d173a232b0c7b33d763b4475dc6f67c3a2200748885b7d27337dded4b6b2"
     },
     "rbi/openai/models/admin/organization/projects/spend_alert_create_params.rbi": {
       "mode": "100644",
@@ -12391,7 +12427,7 @@
     },
     "rbi/openai/resources/admin/organization/projects.rbi": {
       "mode": "100644",
-      "sha256": "de851cc6556fab8455672f3da01a67f558e6602c4f808d4722377af57e905016"
+      "sha256": "26d6b0d0c2f9b2a932e28e60dba62e674a9c043813002a6e00347991e437a649"
     },
     "rbi/openai/resources/admin/organization/projects/api_keys.rbi": {
       "mode": "100644",
@@ -12436,6 +12472,10 @@
     "rbi/openai/resources/admin/organization/projects/service_accounts/api_keys.rbi": {
       "mode": "100644",
       "sha256": "51f3b9c99effb80a656ce8069660a3a99cd36b8b239bcd125d42f55dc2f90119"
+    },
+    "rbi/openai/resources/admin/organization/projects/service_tier_settings.rbi": {
+      "mode": "100644",
+      "sha256": "e85a34482fc469f169c99aa707da11a5deb0dd5e3b91f0ed0b62d7eac5546f5a"
     },
     "rbi/openai/resources/admin/organization/projects/spend_alerts.rbi": {
       "mode": "100644",
@@ -13361,6 +13401,10 @@
       "mode": "100644",
       "sha256": "328c4a3c1b26ec19a3b82cce1298a4d10b5877749fdc6a688dcd4d7f4f35a0ab"
     },
+    "sig/openai/models/admin/organization/projects/project_optional_service_tier.rbs": {
+      "mode": "100644",
+      "sha256": "903f570d7ce3aebce0bebb34aa412459f4a6ba33ca22ced1661ad02343fb3bbc"
+    },
     "sig/openai/models/admin/organization/projects/project_rate_limit.rbs": {
       "mode": "100644",
       "sha256": "b79dd19bae31d3a2bac07ee1355e831d54d898a74a2dbc7565444a3ec2ec34cc"
@@ -13368,6 +13412,10 @@
     "sig/openai/models/admin/organization/projects/project_service_account.rbs": {
       "mode": "100644",
       "sha256": "1fd0d4aa66ddb98f4f25edc220174a6d6f0efc3a39f7a27cd436b9605593848f"
+    },
+    "sig/openai/models/admin/organization/projects/project_service_tier_settings.rbs": {
+      "mode": "100644",
+      "sha256": "22ce7cda0696a84de01a777549f01df3f6a4351096ba9855ebc85ef763300829"
     },
     "sig/openai/models/admin/organization/projects/project_spend_alert.rbs": {
       "mode": "100644",
@@ -13456,6 +13504,14 @@
     "sig/openai/models/admin/organization/projects/service_accounts/api_key_create_response.rbs": {
       "mode": "100644",
       "sha256": "277b23230edbbda0268e90ae2ad5263aeccc465796f86f89d5c1660bdedcae14"
+    },
+    "sig/openai/models/admin/organization/projects/service_tier_setting_retrieve_params.rbs": {
+      "mode": "100644",
+      "sha256": "8bd044e5b48d64ca983a8ecaf9cb5e7b64d7a233611104d7aa893a23cc2b1c6a"
+    },
+    "sig/openai/models/admin/organization/projects/service_tier_setting_update_params.rbs": {
+      "mode": "100644",
+      "sha256": "24d0d8c9635de4069e0964db642fbf3f36f800596730324336bc02255615596c"
     },
     "sig/openai/models/admin/organization/projects/spend_alert_create_params.rbs": {
       "mode": "100644",
@@ -18815,7 +18871,7 @@
     },
     "sig/openai/resources/admin/organization/projects.rbs": {
       "mode": "100644",
-      "sha256": "6697eb8f9083dc84767233590413cea664324f9c0d402b4962e422e166a83e6c"
+      "sha256": "8ee9caca38f7826298db4d4aa81126a4f822f4cd1b93ef46d0620aef4acdf083"
     },
     "sig/openai/resources/admin/organization/projects/api_keys.rbs": {
       "mode": "100644",
@@ -18860,6 +18916,10 @@
     "sig/openai/resources/admin/organization/projects/service_accounts/api_keys.rbs": {
       "mode": "100644",
       "sha256": "07f75a32b1e31f36eda3fee7654bdc521ef33c943f2ccfd88e9fc14af289789f"
+    },
+    "sig/openai/resources/admin/organization/projects/service_tier_settings.rbs": {
+      "mode": "100644",
+      "sha256": "728ef7856e21ecce3449d9c4faf0d9e3248935e67fe78f91a9552c4906d80839"
     },
     "sig/openai/resources/admin/organization/projects/spend_alerts.rbs": {
       "mode": "100644",
@@ -19372,6 +19432,10 @@
     "test/openai/resources/admin/organization/projects/service_accounts_test.rb": {
       "mode": "100644",
       "sha256": "fd2dc9b098e2efac5e28935d7321a04c9757f281f36bfbaec9003e37e99e585f"
+    },
+    "test/openai/resources/admin/organization/projects/service_tier_settings_test.rb": {
+      "mode": "100644",
+      "sha256": "db07023c3803384071d422b7d6567a2fb6bd7d2ab429cbc62c2d1850d4b25019"
     },
     "test/openai/resources/admin/organization/projects/spend_alerts_test.rb": {
       "mode": "100644",
