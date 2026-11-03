@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.116.0](https://github.com/openai/openai-ruby/compare/v0.115.1...v0.116.0) (2026-11-03)
+
+
+### Features
+
+* **api:** expand Live Responses delegation tool choices ([#1025](https://github.com/openai/openai-ruby/issues/1025)) ([385fef8](https://github.com/openai/openai-ruby/commit/385fef85fc3b56aa695b041b7574b912b5e200ea))
+* **responses:** accumulate rich and sparse WebSocket progress ([#1019](https://github.com/openai/openai-ruby/issues/1019)) ([b99f742](https://github.com/openai/openai-ruby/commit/b99f7420213a13888a180c33c78177fc06c738c6))
+* **responses:** collect MCP argument progress ([#1016](https://github.com/openai/openai-ruby/issues/1016)) ([e67a3ff](https://github.com/openai/openai-ruby/commit/e67a3ffe9cd9856c1dfb52f7ded2a19381b30152))
+
+
+### Bug Fixes
+
+* **responses:** allow early required-input continuations ([#1018](https://github.com/openai/openai-ruby/issues/1018)) ([d1baaa8](https://github.com/openai/openai-ruby/commit/d1baaa8ff6630dca8dc89f15a46b29b0ec42fa1a))
+
+
+### Chores
+
+* **deps:** bump ruby/setup-ruby from 1.335.0 to 1.336.0 ([#1024](https://github.com/openai/openai-ruby/issues/1024)) ([022e621](https://github.com/openai/openai-ruby/commit/022e62158a263211a6b4f93b4c9d339630a5c6a3))
+
 ## [0.115.1](https://github.com/openai/openai-ruby/compare/v0.115.0...v0.115.1) (2026-11-01)
 
 
