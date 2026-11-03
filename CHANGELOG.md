@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.118.0](https://github.com/openai/openai-ruby/compare/v0.117.0...v0.118.0) (2026-11-03)
+
+
+### Features
+
+* **api:** add 12-hour Responses caching and cache-write usage ([#1029](https://github.com/openai/openai-ruby/issues/1029)) ([32b30ff](https://github.com/openai/openai-ruby/commit/32b30ffb3ce07fad285fd2df3afef76df7e9f901))
+* **api:** add project service tier settings ([#1028](https://github.com/openai/openai-ruby/issues/1028)) ([8c8e4e8](https://github.com/openai/openai-ruby/commit/8c8e4e8e28e9f412eb32ab839b447224e6f1cd87))
+
+
+### Documentation
+
+* clarify generated-file ownership ([#1030](https://github.com/openai/openai-ruby/issues/1030)) ([51508aa](https://github.com/openai/openai-ruby/commit/51508aa5047698ed1e792003a65f84934e51b77f))
+
 ## [0.117.0](https://github.com/openai/openai-ruby/compare/v0.116.0...v0.117.0) (2026-11-03)
 
 
