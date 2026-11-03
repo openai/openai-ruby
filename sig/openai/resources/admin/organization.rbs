@@ -30,6 +30,8 @@ module OpenAI
 
         attr_reader projects: OpenAI::Resources::Admin::Organization::Projects
 
+        attr_reader workload_identity_providers: OpenAI::Resources::Admin::Organization::WorkloadIdentityProviders
+
         def initialize: (client: OpenAI::Client) -> void
       end
     end

@@ -47,6 +47,9 @@ module OpenAI
         # @return [OpenAI::Resources::Admin::Organization::Projects]
         attr_reader :projects
 
+        # @return [OpenAI::Resources::Admin::Organization::WorkloadIdentityProviders]
+        attr_reader :workload_identity_providers
+
         # @api private
         #
         # @param client [OpenAI::Client]
@@ -66,6 +69,9 @@ module OpenAI
           @spend_alerts = OpenAI::Resources::Admin::Organization::SpendAlerts.new(client: client)
           @certificates = OpenAI::Resources::Admin::Organization::Certificates.new(client: client)
           @projects = OpenAI::Resources::Admin::Organization::Projects.new(client: client)
+          @workload_identity_providers = OpenAI::Resources::Admin::Organization::WorkloadIdentityProviders.new(
+            client: client
+          )
         end
       end
     end

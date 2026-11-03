@@ -37,12 +37,40 @@ module OpenAI
           | ::Array[OpenAI::Models::decision_question_input_part],
           type: :predicate,
           ?name: String
+        }
+        | {
+          choices: ::Array[OpenAI::Models::DecisionCreateParams::Question::Choice::Choice],
+          instructions: String
+          | ::Array[OpenAI::Models::decision_question_input_part],
+          type: :choice,
+          ?name: String
+        }
+        | {
+          instructions: String
+          | ::Array[OpenAI::Models::decision_question_input_part],
+          levels: ::Array[OpenAI::Models::DecisionCreateParams::Question::Score::Level],
+          type: :score,
+          ?name: String
         }]
       ) -> ::Array[(OpenAI::Models::DecisionCreateParams::question
       | {
         instructions: (String
         | ::Array[OpenAI::Models::decision_question_input_part]),
         type: :predicate,
+        ?name: String
+      }
+      | {
+        choices: ::Array[OpenAI::Models::DecisionCreateParams::Question::Choice::Choice],
+        instructions: (String
+        | ::Array[OpenAI::Models::decision_question_input_part]),
+        type: :choice,
+        ?name: String
+      }
+      | {
+        instructions: (String
+        | ::Array[OpenAI::Models::decision_question_input_part]),
+        levels: ::Array[OpenAI::Models::DecisionCreateParams::Question::Score::Level],
+        type: :score,
         ?name: String
       })]
 
@@ -97,6 +125,20 @@ module OpenAI
           instructions: String
           | ::Array[OpenAI::Models::decision_question_input_part],
           type: :predicate,
+          ?name: String
+        }
+        | {
+          choices: ::Array[OpenAI::Models::DecisionCreateParams::Question::Choice::Choice],
+          instructions: String
+          | ::Array[OpenAI::Models::decision_question_input_part],
+          type: :choice,
+          ?name: String
+        }
+        | {
+          instructions: String
+          | ::Array[OpenAI::Models::decision_question_input_part],
+          levels: ::Array[OpenAI::Models::DecisionCreateParams::Question::Score::Level],
+          type: :score,
           ?name: String
         }],
         ?prompt_cache_key: String?,

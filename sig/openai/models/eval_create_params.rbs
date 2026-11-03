@@ -15,7 +15,27 @@ module OpenAI
 
       # The configuration for the data source used for the evaluation runs. Dictates the
       # schema of the data used in the evaluation.
-      attr_accessor data_source_config: OpenAI::Models::EvalCreateParams::data_source_config
+      attr_reader data_source_config: OpenAI::Models::EvalCreateParams::data_source_config
+
+      # The configuration for the data source used for the evaluation runs. Dictates the
+      # schema of the data used in the evaluation.
+      def data_source_config=: (
+        OpenAI::Models::EvalCreateParams::data_source_config
+        | {
+          item_schema: ::Hash[Symbol, top],
+          type: :custom,
+          ?include_sample_schema: bool
+        }
+        | { type: :logs, ?metadata: ::Hash[Symbol, top] }
+        | { type: :stored_completions, ?metadata: ::Hash[Symbol, top] }
+      ) -> (OpenAI::Models::EvalCreateParams::data_source_config
+      | {
+        item_schema: ::Hash[Symbol, top],
+        type: :custom,
+        ?include_sample_schema: bool
+      }
+      | { type: :logs, ?metadata: ::Hash[Symbol, top] }
+      | { type: :stored_completions, ?metadata: ::Hash[Symbol, top] })
 
       # A list of graders for all eval runs in this group. Graders can reference
       # variables in the data source using double curly braces notation, like
@@ -55,7 +75,14 @@ module OpenAI
       # @param name
       #   The name of the evaluation.
       def initialize: (
-        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
+        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config
+        | {
+          item_schema: ::Hash[Symbol, top],
+          type: :custom,
+          ?include_sample_schema: bool
+        }
+        | { type: :logs, ?metadata: ::Hash[Symbol, top] }
+        | { type: :stored_completions, ?metadata: ::Hash[Symbol, top] },
         testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
         ?metadata: OpenAI::Models::metadata?,
         ?name: String,

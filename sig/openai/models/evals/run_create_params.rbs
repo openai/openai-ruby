@@ -84,9 +84,43 @@ module OpenAI
             # Determines what populates the `item` namespace in this run's data source.
             def source=: (
               OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source
+              | {
+                content: ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content],
+                type: :file_content
+              }
               | { id: String, type: :file_id }
+              | {
+                type: :responses,
+                ?created_after: Integer?,
+                ?created_before: Integer?,
+                ?instructions_search: String?,
+                ?metadata: top?,
+                ?model: String?,
+                ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+                ?temperature: Float?,
+                ?tools: ::Array[String]?,
+                ?top_p: Float?,
+                ?users: ::Array[String]?
+              }
             ) -> (OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source
-            | { id: String, type: :file_id })
+            | {
+              content: ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content],
+              type: :file_content
+            }
+            | { id: String, type: :file_id }
+            | {
+              type: :responses,
+              ?created_after: Integer?,
+              ?created_before: Integer?,
+              ?instructions_search: String?,
+              ?metadata: top?,
+              ?model: String?,
+              ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+              ?temperature: Float?,
+              ?tools: ::Array[String]?,
+              ?top_p: Float?,
+              ?users: ::Array[String]?
+            })
 
             # The type of run data source. Always `responses`.
             attr_accessor type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::type_
@@ -132,7 +166,24 @@ module OpenAI
             #   The name of the model to use for generating completions (e.g. "o3-mini").
             def initialize: (
               source: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::source
-              | { id: String, type: :file_id },
+              | {
+                content: ::Array[OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::Source::FileContent::Content],
+                type: :file_content
+              }
+              | { id: String, type: :file_id }
+              | {
+                type: :responses,
+                ?created_after: Integer?,
+                ?created_before: Integer?,
+                ?instructions_search: String?,
+                ?metadata: top?,
+                ?model: String?,
+                ?reasoning_effort: OpenAI::Models::reasoning_effort?,
+                ?temperature: Float?,
+                ?tools: ::Array[String]?,
+                ?top_p: Float?,
+                ?users: ::Array[String]?
+              },
               type: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::type_,
               ?input_messages: OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::input_messages
               | { item_reference: String, type: :item_reference },

@@ -21,6 +21,9 @@ module OpenAI
 
           module Users
           end
+
+          module WorkloadIdentityProviders
+          end
         end
       end
 
@@ -152,6 +155,9 @@ module OpenAI
 
         module Users
         end
+
+        module WorkloadIdentityProviders
+        end
       end
 
       module Projects
@@ -229,6 +235,9 @@ module OpenAI
       end
 
       module Webhooks
+      end
+
+      module WorkloadIdentityProviders
       end
     end
   end
