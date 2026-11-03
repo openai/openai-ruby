@@ -1414,12 +1414,13 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode]
           end
 
-          type ttl = :"30m"
+          type ttl = :"30m" | :"12h"
 
           module Ttl
             extend OpenAI::Internal::Type::Enum
 
             TTL_30M: :"30m"
+            TTL_12H: :"12h"
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl]
           end

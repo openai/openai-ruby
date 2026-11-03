@@ -1239,6 +1239,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TTL_30M = :"30m"
+            TTL_12H = :"12h"
 
             # @!method self.values
             #   @return [Array<Symbol>]

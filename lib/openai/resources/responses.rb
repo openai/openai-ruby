@@ -157,7 +157,7 @@ module OpenAI
       #   request can write up to four breakpoints. For cache matching, OpenAI considers
       #   up to the latest 80 breakpoints in the conversation, without a content-block
       #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-      #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+      #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
       #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
       #   for current details.
       #
@@ -450,7 +450,7 @@ module OpenAI
       #   request can write up to four breakpoints. For cache matching, OpenAI considers
       #   up to the latest 80 breakpoints in the conversation, without a content-block
       #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-      #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+      #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
       #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
       #   for current details.
       #
@@ -819,7 +819,7 @@ module OpenAI
       #   request can write up to four breakpoints. For cache matching, OpenAI considers
       #   up to the latest 80 breakpoints in the conversation, without a content-block
       #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-      #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+      #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
       #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
       #   for current details.
       #
