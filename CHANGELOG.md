@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.117.0](https://github.com/openai/openai-ruby/compare/v0.116.0...v0.117.0) (2026-11-03)
+
+
+### Features
+
+* **api:** add workload identity providers and federation rules ([#1026](https://github.com/openai/openai-ruby/issues/1026)) ([29af0a8](https://github.com/openai/openai-ruby/commit/29af0a87b94a08fb2e0fd0c51f976c42405e17bf))
+
 ## [0.116.0](https://github.com/openai/openai-ruby/compare/v0.115.1...v0.116.0) (2026-11-03)
 
 
