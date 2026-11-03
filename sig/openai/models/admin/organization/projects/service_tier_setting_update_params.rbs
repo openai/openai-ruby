@@ -1,0 +1,91 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module Projects
+          type service_tier_setting_update_params =
+            {
+              project_id: String,
+              ?default: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::default,
+              ?enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::enabled_tiers,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class ServiceTierSettingUpdateParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            # The ID of the project
+            attr_accessor project_id: String
+
+            # Default tier for requests that omit service_tier or use auto.
+            attr_reader default: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::default?
+
+            # Default tier for requests that omit service_tier or use auto.
+            def default=: (
+              OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::default
+            ) -> OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::default
+
+            # Additional service tiers enabled for this project. "all" includes future tiers.
+            # An empty array allows only Standard. Organization policy and eligibility still
+            # apply.
+            attr_reader enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::enabled_tiers?
+
+            # Additional service tiers enabled for this project. "all" includes future tiers.
+            # An empty array allows only Standard. Organization policy and eligibility still
+            # apply.
+            def enabled_tiers=: (
+              OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::enabled_tiers
+            ) -> OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::enabled_tiers
+
+            # @param project_id
+            #   The ID of the project
+            # @param default
+            #   Default tier for requests that omit service_tier or use auto.
+            # @param enabled_tiers
+            #   Additional service tiers enabled for this project. "all" includes future tiers.
+            #   An empty array allows only Standard. Organization policy and eligibility still
+            #   apply.
+            def initialize: (
+              project_id: String,
+              ?default: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::default,
+              ?enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::enabled_tiers,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              project_id: String,
+              ?default: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::default,
+              ?enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::enabled_tiers,
+              ?request_options: OpenAI::RequestOptions
+            }
+
+            type default = :standard | :fast | :scale
+
+            module Default
+              extend OpenAI::Internal::Type::Enum
+
+              STANDARD: :standard
+              FAST: :fast
+              SCALE: :scale
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::default]
+            end
+
+            type enabled_tiers =
+              :all
+              | ::Array[OpenAI::Models::Admin::Organization::Projects::project_optional_service_tier]
+
+            module EnabledTiers
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::enabled_tiers]
+
+              ProjectOptionalServiceTierArray: OpenAI::Internal::Type::Converter
+            end
+          end
+        end
+      end
+    end
+  end
+end

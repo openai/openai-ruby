@@ -41,6 +41,9 @@ module OpenAI
           # @return [OpenAI::Resources::Admin::Organization::Projects::Certificates]
           attr_reader :certificates
 
+          # @return [OpenAI::Resources::Admin::Organization::Projects::ServiceTierSettings]
+          attr_reader :service_tier_settings
+
           # Create a new project in the organization. Projects can be created and archived,
           # but cannot be deleted.
           #
@@ -218,6 +221,9 @@ module OpenAI
             @spend_limit = OpenAI::Resources::Admin::Organization::Projects::SpendLimit.new(client: client)
             @spend_alerts = OpenAI::Resources::Admin::Organization::Projects::SpendAlerts.new(client: client)
             @certificates = OpenAI::Resources::Admin::Organization::Projects::Certificates.new(client: client)
+            @service_tier_settings = OpenAI::Resources::Admin::Organization::Projects::ServiceTierSettings.new(
+              client: client
+            )
           end
         end
       end
