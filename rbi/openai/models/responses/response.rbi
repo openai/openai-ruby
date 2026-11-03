@@ -1856,6 +1856,7 @@ module OpenAI
             OrSymbol = T.type_alias { T.any(Symbol, String) }
 
             TTL_30M = T.let(:"30m", OpenAI::Responses::Response::PromptCacheOptions::Ttl::TaggedSymbol)
+            TTL_12H = T.let(:"12h", OpenAI::Responses::Response::PromptCacheOptions::Ttl::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Responses::Response::PromptCacheOptions::Ttl::TaggedSymbol]) }
             def self.values
