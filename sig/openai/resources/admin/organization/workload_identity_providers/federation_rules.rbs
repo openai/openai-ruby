@@ -1,0 +1,61 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class WorkloadIdentityProviders
+          class FederationRules
+            def create: (
+              String workload_identity_provider_id,
+              attribute_matchers: ::Hash[Symbol, OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleCreateParams::attribute_matcher],
+              project_id: String,
+              service_account_id: String,
+              ?description: String,
+              ?enabled: bool,
+              ?name: String,
+              ?permissions: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleCreateParams::permissions
+              | { type: :service_account_default }
+              | { scopes: ::Array[String], type: :restricted },
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::WorkloadIdentityProviders::FederationRule
+
+            def retrieve: (
+              String workload_identity_federation_rule_id,
+              workload_identity_provider_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::WorkloadIdentityProviders::FederationRule
+
+            def update: (
+              String workload_identity_federation_rule_id,
+              workload_identity_provider_id: String,
+              ?attribute_matchers: ::Hash[Symbol, OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleUpdateParams::attribute_matcher],
+              ?description: String?,
+              ?enabled: bool,
+              ?name: String?,
+              ?permissions: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleUpdateParams::permissions
+              | { type: :service_account_default }
+              | { scopes: ::Array[String], type: :restricted },
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::WorkloadIdentityProviders::FederationRule
+
+            def list: (
+              String workload_identity_provider_id,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleListParams::order,
+              ?service_account_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::WorkloadIdentityProviders::FederationRule]
+
+            def delete: (
+              String workload_identity_federation_rule_id,
+              workload_identity_provider_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::WorkloadIdentityProviders::FederationRuleDeleted
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

@@ -8,12 +8,12 @@ module OpenAI
             audio_sample: OpenAI::Internal::file_input,
             consent: String,
             name: String,
-            ?type: :audio_sample
+            ?type: OpenAI::Models::Audio::VoiceCreateParams::Body::AudioSample::type_
           }
           | {
             name: String,
             prompt: String,
-            type: :prompt,
+            type: OpenAI::Models::Audio::VoiceCreateParams::Body::Prompt::type_,
             ?model: String | :auto | :"2026-10-08",
             ?script_hint: String
           },

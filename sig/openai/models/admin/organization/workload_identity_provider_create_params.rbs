@@ -1,0 +1,140 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type workload_identity_provider_create_params =
+          {
+            audience: String,
+            issuer: String,
+            name: String,
+            ?type: :oidc,
+            ?attribute_transformations: ::Array[OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::AttributeTransformation],
+            ?description: String,
+            ?enabled: bool,
+            ?verification: OpenAI::Models::Admin::Organization::WorkloadIdentityProviderCreateParams::verification,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class WorkloadIdentityProviderCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor audience: String
+
+          attr_accessor issuer: String
+
+          attr_accessor name: String
+
+          attr_accessor type: :oidc
+
+          attr_reader attribute_transformations: ::Array[OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::AttributeTransformation]?
+
+          def attribute_transformations=: (
+            ::Array[OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::AttributeTransformation]
+          ) -> ::Array[OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::AttributeTransformation]
+
+          attr_reader description: String?
+
+          def description=: (String) -> String
+
+          attr_reader enabled: bool?
+
+          def enabled=: (bool) -> bool
+
+          attr_reader verification: OpenAI::Models::Admin::Organization::WorkloadIdentityProviderCreateParams::verification?
+
+          def verification=: (
+            OpenAI::Models::Admin::Organization::WorkloadIdentityProviderCreateParams::verification
+            | { discovery_url: String?, type: :discovery }
+            | { jwks: ::Hash[Symbol, top], type: :uploaded_jwks }
+          ) -> (OpenAI::Models::Admin::Organization::WorkloadIdentityProviderCreateParams::verification
+          | { discovery_url: String?, type: :discovery }
+          | { jwks: ::Hash[Symbol, top], type: :uploaded_jwks })
+
+          def initialize: (
+            audience: String,
+            issuer: String,
+            name: String,
+            ?attribute_transformations: ::Array[OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::AttributeTransformation],
+            ?description: String,
+            ?enabled: bool,
+            ?verification: OpenAI::Models::Admin::Organization::WorkloadIdentityProviderCreateParams::verification
+            | { discovery_url: String?, type: :discovery }
+            | { jwks: ::Hash[Symbol, top], type: :uploaded_jwks },
+            ?type: :oidc,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            audience: String,
+            issuer: String,
+            name: String,
+            ?type: :oidc,
+            ?attribute_transformations: ::Array[OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::AttributeTransformation],
+            ?description: String,
+            ?enabled: bool,
+            ?verification: OpenAI::Models::Admin::Organization::WorkloadIdentityProviderCreateParams::verification,
+            ?request_options: OpenAI::RequestOptions
+          }
+
+          type attribute_transformation =
+            { attribute: String, expression: String }
+
+          class AttributeTransformation < OpenAI::Internal::Type::BaseModel
+            attr_accessor attribute: String
+
+            attr_accessor expression: String
+
+            def initialize: (attribute: String, expression: String) -> void
+
+            def to_hash: -> { attribute: String, expression: String }
+          end
+
+          type verification =
+            OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::Verification::Discovery
+            | OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::Verification::UploadedJwks
+
+          module Verification
+            extend OpenAI::Internal::Type::Union
+
+            type discovery = { discovery_url: String?, ?type: :discovery }
+
+            class Discovery < OpenAI::Internal::Type::BaseModel
+              attr_accessor discovery_url: String?
+
+              attr_accessor type: :discovery
+
+              def initialize: (
+                discovery_url: String?,
+                ?type: :discovery
+              ) -> void
+
+              def to_hash: -> { discovery_url: String?, ?type: :discovery }
+            end
+
+            type uploaded_jwks =
+              { jwks: ::Hash[Symbol, top], ?type: :uploaded_jwks }
+
+            class UploadedJwks < OpenAI::Internal::Type::BaseModel
+              attr_accessor jwks: ::Hash[Symbol, top]
+
+              attr_accessor type: :uploaded_jwks
+
+              def initialize: (
+                jwks: ::Hash[Symbol, top],
+                ?type: :uploaded_jwks
+              ) -> void
+
+              def to_hash: -> {
+                jwks: ::Hash[Symbol, top],
+                ?type: :uploaded_jwks
+              }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::WorkloadIdentityProviderCreateParams::verification]
+          end
+        end
+      end
+    end
+  end
+end

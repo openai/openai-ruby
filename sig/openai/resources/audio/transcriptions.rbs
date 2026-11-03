@@ -7,7 +7,7 @@ module OpenAI
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           ?chunking_strategy: (OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy
           | {
-            type: :server_vad,
+            type: OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_,
             ?prefix_padding_ms: Integer,
             ?silence_duration_ms: Integer,
             ?threshold: Float
@@ -30,7 +30,7 @@ module OpenAI
           model: OpenAI::Models::Audio::TranscriptionCreateParams::model,
           ?chunking_strategy: (OpenAI::Models::Audio::TranscriptionCreateParams::chunking_strategy
           | {
-            type: :server_vad,
+            type: OpenAI::Models::Audio::TranscriptionCreateParams::ChunkingStrategy::VadConfig::type_,
             ?prefix_padding_ms: Integer,
             ?silence_duration_ms: Integer,
             ?threshold: Float

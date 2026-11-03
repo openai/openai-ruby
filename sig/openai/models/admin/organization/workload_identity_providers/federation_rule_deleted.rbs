@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module WorkloadIdentityProviders
+          type federation_rule_deleted =
+            {
+              id: String,
+              deleted: bool,
+              ?object: :"organization.workload_identity_federation_rule.deleted"
+            }
+
+          class FederationRuleDeleted < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor deleted: bool
+
+            attr_accessor object: :"organization.workload_identity_federation_rule.deleted"
+
+            def initialize: (
+              id: String,
+              deleted: bool,
+              ?object: :"organization.workload_identity_federation_rule.deleted"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              deleted: bool,
+              ?object: :"organization.workload_identity_federation_rule.deleted"
+            }
+          end
+        end
+      end
+    end
+  end
+end

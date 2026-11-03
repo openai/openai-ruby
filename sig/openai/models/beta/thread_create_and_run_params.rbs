@@ -607,8 +607,16 @@ module OpenAI
                 def chunking_strategy=: (
                   OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
                   | { type: :auto }
+                  | {
+                    static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                    type: :static
+                  }
                 ) -> (OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
-                | { type: :auto })
+                | { type: :auto }
+                | {
+                  static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                  type: :static
+                })
 
                 # A list of [file](https://developers.openai.com/api/reference/resources/files)
                 # IDs to add to the vector store. For vector stores created before Nov 2025, there
@@ -647,7 +655,11 @@ module OpenAI
                 #   a maximum length of 512 characters.
                 def initialize: (
                   ?chunking_strategy: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::chunking_strategy
-                  | { type: :auto },
+                  | { type: :auto }
+                  | {
+                    static: OpenAI::Models::Beta::ThreadCreateAndRunParams::Thread::ToolResources::FileSearch::VectorStore::ChunkingStrategy::Static::Static,
+                    type: :static
+                  },
                   ?file_ids: ::Array[String],
                   ?metadata: OpenAI::Models::metadata?
                 ) -> void

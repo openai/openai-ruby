@@ -22,7 +22,7 @@ module OpenAI
               name: String,
               role_arn: String,
               type: :aws,
-              ?purpose: :ekm | :psp_decryption
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose
             }
             | {
               audience: String,
@@ -36,7 +36,7 @@ module OpenAI
               workload_identity_project_number: String,
               workload_identity_provider_id: String,
               ?kms_key_version: String,
-              ?purpose: :ekm | :psp_decryption
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose
             }
             | {
               key_name: String,
@@ -45,7 +45,7 @@ module OpenAI
               type: :azure,
               vault_uri: String,
               ?key_version: String,
-              ?purpose: :ekm | :psp_decryption
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
             }
           ) -> (OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body
           | {
@@ -54,7 +54,7 @@ module OpenAI
             name: String,
             role_arn: String,
             type: :aws,
-            ?purpose: (:ekm | :psp_decryption)
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose
           }
           | {
             audience: String,
@@ -68,7 +68,7 @@ module OpenAI
             workload_identity_project_number: String,
             workload_identity_provider_id: String,
             ?kms_key_version: String,
-            ?purpose: (:ekm | :psp_decryption)
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose
           }
           | {
             key_name: String,
@@ -77,7 +77,7 @@ module OpenAI
             type: :azure,
             vault_uri: String,
             ?key_version: String,
-            ?purpose: (:ekm | :psp_decryption)
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
           })
 
           def initialize: (
@@ -88,7 +88,7 @@ module OpenAI
               name: String,
               role_arn: String,
               type: :aws,
-              ?purpose: :ekm | :psp_decryption
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws::purpose
             }
             | {
               audience: String,
@@ -102,7 +102,7 @@ module OpenAI
               workload_identity_project_number: String,
               workload_identity_provider_id: String,
               ?kms_key_version: String,
-              ?purpose: :ekm | :psp_decryption
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::purpose
             }
             | {
               key_name: String,
@@ -111,7 +111,7 @@ module OpenAI
               type: :azure,
               vault_uri: String,
               ?key_version: String,
-              ?purpose: :ekm | :psp_decryption
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
             },
             ?request_options: OpenAI::request_opts
           ) -> void

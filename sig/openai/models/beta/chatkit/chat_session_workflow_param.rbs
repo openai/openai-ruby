@@ -64,7 +64,7 @@ module OpenAI
             ?version: String
           }
 
-          type state_variable = String | bool | Float
+          type state_variable = String | Integer | bool | Float
 
           module StateVariable
             extend OpenAI::Internal::Type::Union

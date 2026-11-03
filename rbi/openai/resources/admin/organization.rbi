@@ -50,6 +50,9 @@ module OpenAI
         sig { returns(OpenAI::Resources::Admin::Organization::Projects) }
         attr_reader :projects
 
+        sig { returns(OpenAI::Resources::Admin::Organization::WorkloadIdentityProviders) }
+        attr_reader :workload_identity_providers
+
         # @api private
         sig { params(client: OpenAI::Client).returns(T.attached_class) }
         def self.new(client:)

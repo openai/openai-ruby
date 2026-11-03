@@ -10,6 +10,20 @@ module OpenAI
           | ::Array[OpenAI::Models::decision_question_input_part],
           type: :predicate,
           ?name: String
+        }
+        | {
+          choices: ::Array[OpenAI::Models::DecisionCreateParams::Question::Choice::Choice],
+          instructions: String
+          | ::Array[OpenAI::Models::decision_question_input_part],
+          type: :choice,
+          ?name: String
+        }
+        | {
+          instructions: String
+          | ::Array[OpenAI::Models::decision_question_input_part],
+          levels: ::Array[OpenAI::Models::DecisionCreateParams::Question::Score::Level],
+          type: :score,
+          ?name: String
         }],
         ?prompt_cache_key: String?,
         ?prompt_cache_options: (OpenAI::DecisionCreateParams::PromptCacheOptions
