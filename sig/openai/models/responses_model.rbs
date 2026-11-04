@@ -29,6 +29,7 @@ module OpenAI
         | :"gpt-daybreak-red-latest"
         | :"gpt-5.6-cyber"
         | :"gpt-rosalind-research"
+        | :"gpt-6-rosalind"
 
       module ResponsesOnlyModel
         extend OpenAI::Internal::Type::Enum
@@ -53,6 +54,7 @@ module OpenAI
         GPT_DAYBREAK_RED_LATEST: :"gpt-daybreak-red-latest"
         GPT_5_6_CYBER: :"gpt-5.6-cyber"
         GPT_ROSALIND_RESEARCH: :"gpt-rosalind-research"
+        GPT_6_ROSALIND: :"gpt-6-rosalind"
 
         def self?.values: -> ::Array[OpenAI::Models::ResponsesModel::responses_only_model]
       end
