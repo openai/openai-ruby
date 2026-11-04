@@ -64,6 +64,7 @@ module OpenAI
           :"gpt-rosalind-research",
           OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol
         )
+        GPT_6_ROSALIND = T.let(:"gpt-6-rosalind", OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ResponsesModel::ResponsesOnlyModel::TaggedSymbol]) }
         def self.values

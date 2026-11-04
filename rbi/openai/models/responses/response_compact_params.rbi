@@ -487,6 +487,7 @@ module OpenAI
             :"gpt-rosalind-research",
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
           )
+          GPT_6_ROSALIND = T.let(:"gpt-6-rosalind", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
 
         end
 
