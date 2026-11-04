@@ -18,6 +18,7 @@ module OpenAI
         ?background: bool?,
         ?context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
         ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
+        ?image: OpenAI::Responses::ResponseCreateParams::Image,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
         ?instructions: String?,
@@ -54,6 +55,7 @@ module OpenAI
         ?background: bool?,
         ?context_management: ::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement]?,
         ?conversation: OpenAI::Models::Responses::ResponseCreateParams::conversation?,
+        ?image: OpenAI::Responses::ResponseCreateParams::Image,
         ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
         ?input: OpenAI::Models::Responses::ResponseCreateParams::input,
         ?instructions: String?,
@@ -117,6 +119,7 @@ module OpenAI
 
       def compact: (
         model: OpenAI::Models::Responses::ResponseCompactParams::model?,
+        ?image: OpenAI::Responses::ResponseCompactParams::Image,
         ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
         ?instructions: String?,
         ?previous_response_id: String?,
@@ -143,6 +146,7 @@ module OpenAI
             ?context_management: ::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::conversation?,
             ?generate: bool,
+            ?image: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image,
             ?include: ::Array[OpenAI::Models::Responses::response_includable]?,
             ?input: OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::input,
             ?instructions: String?,

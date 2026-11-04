@@ -19,6 +19,7 @@ module OpenAI
           ?background: bool?,
           ?context_management: ::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]?,
           ?conversation: OpenAI::Models::Beta::ResponseCreateParams::conversation?,
+          ?image: OpenAI::Beta::ResponseCreateParams::Image,
           ?include: ::Array[OpenAI::Models::Beta::beta_response_includable]?,
           ?input: OpenAI::Models::Beta::ResponseCreateParams::input,
           ?instructions: String?,
@@ -57,6 +58,7 @@ module OpenAI
           ?background: bool?,
           ?context_management: ::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]?,
           ?conversation: OpenAI::Models::Beta::ResponseCreateParams::conversation?,
+          ?image: OpenAI::Beta::ResponseCreateParams::Image,
           ?include: ::Array[OpenAI::Models::Beta::beta_response_includable]?,
           ?input: OpenAI::Models::Beta::ResponseCreateParams::input,
           ?instructions: String?,
@@ -124,6 +126,7 @@ module OpenAI
 
         def compact: (
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
+          ?image: OpenAI::Beta::ResponseCompactParams::Image,
           ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
           ?instructions: String?,
           ?previous_response_id: String?,

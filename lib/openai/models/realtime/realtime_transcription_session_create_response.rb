@@ -138,6 +138,14 @@ module OpenAI
 
             # @see OpenAI::Models::Realtime::RealtimeTranscriptionSessionCreateResponse::Audio::Input#noise_reduction
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
+              # @!attribute strength
+              #   Input noise suppression strength. Higher values apply more suppression. Defaults
+              #   to 1 when noise reduction is first enabled. Omitting strength from a session
+              #   update preserves the current strength.
+              #
+              #   @return [Float, nil]
+              optional :strength, Float
+
               # @!attribute type
               #   Type of noise reduction. `near_field` is for close-talking microphones such as
               #   headphones, `far_field` is for far-field microphones such as laptop or
@@ -146,8 +154,13 @@ module OpenAI
               #   @return [Symbol, OpenAI::Models::Realtime::NoiseReductionType, nil]
               optional :type, enum: -> { OpenAI::Realtime::NoiseReductionType }
 
-              # @!method initialize(type: nil)
+              # @!method initialize(strength: nil, type: nil)
               #   Configuration for input audio noise reduction.
+              #
+              #   @param strength [Float]
+              #     Input noise suppression strength. Higher values apply more suppression. Defaults
+              #     to 1 when noise reduction is first enabled. Omitting strength from a session
+              #     update preserves the current strength.
               #
               #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType]
               #     Type of noise reduction. `near_field` is for close-talking microphones such as

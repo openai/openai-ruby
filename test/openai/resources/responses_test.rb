@@ -30,6 +30,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Responses::Response::Conversation | nil,
+          image: OpenAI::Responses::Response::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Responses::Response::Moderation | nil,
@@ -80,6 +81,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Responses::Response::Conversation | nil,
+          image: OpenAI::Responses::Response::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Responses::Response::Moderation | nil,
@@ -138,6 +140,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Responses::Response::Conversation | nil,
+          image: OpenAI::Responses::Response::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Responses::Response::Moderation | nil,
@@ -174,7 +177,8 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           created_at: Integer,
           object: Symbol,
           output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseOutputItem]),
-          usage: OpenAI::Responses::ResponseUsage
+          usage: OpenAI::Responses::ResponseUsage,
+          image: OpenAI::Responses::CompactedResponse::Image | nil
         }
     end
   end

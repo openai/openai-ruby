@@ -147,6 +147,12 @@ module OpenAI
         sig { params(conversation: T.nilable(OpenAI::Responses::Response::Conversation::OrHash)).void }
         attr_writer :conversation
 
+        sig { returns(T.nilable(OpenAI::Responses::Response::Image)) }
+        attr_reader :image
+
+        sig { params(image: OpenAI::Responses::Response::Image::OrHash).void }
+        attr_writer :image
+
         # An upper bound for the number of tokens that can be generated for a response,
         # including visible output tokens and
         # [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
@@ -449,6 +455,8 @@ module OpenAI
 
             conversation: T.nilable(OpenAI::Responses::Response::Conversation::OrHash),
 
+            image: OpenAI::Responses::Response::Image::OrHash,
+
             max_output_tokens: T.nilable(Integer),
 
             max_tool_calls: T.nilable(Integer),
@@ -597,6 +605,8 @@ module OpenAI
           # The conversation that this response belonged to. Input items and output items
           # from this response were automatically added to this conversation.
           conversation: nil,
+
+          image: nil,
 
           # An upper bound for the number of tokens that can be generated for a response,
           # including visible output tokens and
@@ -771,6 +781,7 @@ module OpenAI
               background: T.nilable(T::Boolean),
               completed_at: T.nilable(Float),
               conversation: T.nilable(OpenAI::Responses::Response::Conversation),
+              image: OpenAI::Responses::Response::Image,
               max_output_tokens: T.nilable(Integer),
               max_tool_calls: T.nilable(Integer),
               moderation: T.nilable(OpenAI::Responses::Response::Moderation),
@@ -1038,6 +1049,57 @@ module OpenAI
           def to_hash
           end
 
+        end
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::Response::Image,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Effective image context optimization policy.
+          sig { returns(OpenAI::Responses::Response::Image::ContextCompression::TaggedSymbol) }
+          attr_accessor :context_compression
+
+          sig do
+            params(
+
+              context_compression: OpenAI::Responses::Response::Image::ContextCompression::OrSymbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Effective image context optimization policy.
+
+            context_compression:
+          )
+          end
+
+          sig do
+            override.returns(
+              {context_compression: OpenAI::Responses::Response::Image::ContextCompression::TaggedSymbol}
+            )
+          end
+          def to_hash
+          end
+
+          # Effective image context optimization policy.
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Responses::Response::Image::ContextCompression) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            ENABLED = T.let(:enabled, OpenAI::Responses::Response::Image::ContextCompression::TaggedSymbol)
+            DISABLED = T.let(:disabled, OpenAI::Responses::Response::Image::ContextCompression::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Responses::Response::Image::ContextCompression::TaggedSymbol]) }
+            def self.values
+            end
+          end
         end
 
         class Moderation < OpenAI::Internal::Type::BaseModel

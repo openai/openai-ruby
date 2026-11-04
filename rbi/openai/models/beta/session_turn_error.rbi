@@ -61,6 +61,9 @@ module OpenAI
           # The request exceeds the model's context window.
           CONTEXT_LENGTH_EXCEEDED = T.let(:context_length_exceeded, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 
+          # The model reached its output token limit before finishing the response.
+          MAX_OUTPUT_TOKENS = T.let(:max_output_tokens, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
+
           # The session has reached its usage budget.
           SESSION_BUDGET_EXCEEDED = T.let(:session_budget_exceeded, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 

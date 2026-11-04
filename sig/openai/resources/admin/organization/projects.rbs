@@ -13,6 +13,8 @@ module OpenAI
 
           attr_reader model_permissions: OpenAI::Resources::Admin::Organization::Projects::ModelPermissions
 
+          attr_reader service_tier_settings: OpenAI::Resources::Admin::Organization::Projects::ServiceTierSettings
+
           attr_reader hosted_tool_permissions: OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions
 
           attr_reader groups: OpenAI::Resources::Admin::Organization::Projects::Groups
@@ -26,8 +28,6 @@ module OpenAI
           attr_reader spend_alerts: OpenAI::Resources::Admin::Organization::Projects::SpendAlerts
 
           attr_reader certificates: OpenAI::Resources::Admin::Organization::Projects::Certificates
-
-          attr_reader service_tier_settings: OpenAI::Resources::Admin::Organization::Projects::ServiceTierSettings
 
           def create: (
             name: String,
