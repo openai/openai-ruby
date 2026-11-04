@@ -11,11 +11,11 @@
     },
     "lib/openai/client.rb": {
       "mode": "100644",
-      "sha256": "69631f5e6b9778a91d1a7aa3108bd054c83c5245154ea00b63678c6c9eaaaaa8"
+      "sha256": "e5dc199aa677088dd515963fbb659184562702e6de731e1ce72e40d60e112e85"
     },
     "lib/openai/helpers/data_residency.rb": {
       "mode": "100644",
-      "sha256": "1c0b811ded2b37db3483cca930cb7d163c9296ba10f6c8de64545ef10259b6ad"
+      "sha256": "944d7011bc15701e28cee1307b136cb5916e8e65a84b61d7af99c9412810c0f4"
     },
     "lib/openai/internal.rb": {
       "mode": "100644",
@@ -19343,7 +19343,7 @@
     },
     "test/openai/data_residency_test.rb": {
       "mode": "100644",
-      "sha256": "86b5f6e2c507f2ca891a1d88e32e197dc0f505da2acb9194cd54ffc0573c7fd0"
+      "sha256": "cd47c9c1922a2bc29d85372a24e2f3d6c299e4d49c1d6ef251007af5ce3efadc"
     },
     "test/openai/resource_namespaces.rb": {
       "mode": "100644",
