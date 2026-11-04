@@ -46,7 +46,7 @@ module OpenAI
         # [file search](https://developers.openai.com/api/docs/guides/tools-file-search)
         # to use your own data as input for the model's response.
         #
-        # @overload create(access_programs: nil, background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, betas: nil, request_options: {})
+        # @overload create(access_programs: nil, background: nil, context_management: nil, conversation: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, betas: nil, request_options: {})
         #
         # @param access_programs [OpenAI::Models::Beta::ResponseCreateParams::AccessPrograms]
         #   Body param: Domain-specific access programs to use for this request.
@@ -63,6 +63,9 @@ module OpenAI
         #   conversation are prepended to `input_items` for this response request. Input
         #   items and output items from this response are automatically added to this
         #   conversation after this response completes.
+        #
+        # @param image [OpenAI::Models::Beta::ResponseCreateParams::Image]
+        #   Body param: Request level image options.
         #
         # @param include [Array<Symbol, OpenAI::Models::Beta::BetaResponseIncludable>, nil]
         #   Body param: Specify additional output data to include in the model response.
@@ -347,7 +350,7 @@ module OpenAI
         # [file search](https://developers.openai.com/api/docs/guides/tools-file-search)
         # to use your own data as input for the model's response.
         #
-        # @overload stream_raw(access_programs: nil, background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, betas: nil, request_options: {})
+        # @overload stream_raw(access_programs: nil, background: nil, context_management: nil, conversation: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, betas: nil, request_options: {})
         #
         # @param access_programs [OpenAI::Models::Beta::ResponseCreateParams::AccessPrograms]
         #   Body param: Domain-specific access programs to use for this request.
@@ -364,6 +367,9 @@ module OpenAI
         #   conversation are prepended to `input_items` for this response request. Input
         #   items and output items from this response are automatically added to this
         #   conversation after this response completes.
+        #
+        # @param image [OpenAI::Models::Beta::ResponseCreateParams::Image]
+        #   Body param: Request level image options.
         #
         # @param include [Array<Symbol, OpenAI::Models::Beta::BetaResponseIncludable>, nil]
         #   Body param: Specify additional output data to include in the model response.
@@ -820,7 +826,7 @@ module OpenAI
         # For ZDR-compatible compaction details, see
         # [Compaction (advanced)](https://developers.openai.com/api/docs/guides/conversation-state#compaction-advanced).
         #
-        # @overload compact(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, betas: nil, request_options: {})
+        # @overload compact(model:, image: nil, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, betas: nil, request_options: {})
         #
         # @param model [Symbol, String, OpenAI::Models::Beta::ResponseCompactParams::Model, nil]
         #   Body param: Model ID used to generate the response, like `gpt-6-astra`. OpenAI
@@ -828,6 +834,9 @@ module OpenAI
         #   characteristics, and price points. Refer to the
         #   [model guide](https://developers.openai.com/api/docs/models) to browse and
         #   compare available models.
+        #
+        # @param image [OpenAI::Models::Beta::ResponseCompactParams::Image]
+        #   Body param: Request level image options.
         #
         # @param input [String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>, nil]
         #   Body param: Text, image, or file inputs to the model, used to generate a

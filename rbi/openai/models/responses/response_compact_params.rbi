@@ -25,6 +25,13 @@ module OpenAI
         sig { returns(T.nilable(T.any(OpenAI::Responses::ResponseCompactParams::Model::OrSymbol, String))) }
         attr_accessor :model
 
+        # Request level image options.
+        sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::Image)) }
+        attr_reader :image
+
+        sig { params(image: OpenAI::Responses::ResponseCompactParams::Image::OrHash).void }
+        attr_writer :image
+
         # Text, image, or file inputs to the model, used to generate a response
         sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants)) }
         attr_accessor :input
@@ -93,6 +100,8 @@ module OpenAI
 
             model: T.nilable(T.any(OpenAI::Responses::ResponseCompactParams::Model::OrSymbol, String)),
 
+            image: OpenAI::Responses::ResponseCompactParams::Image::OrHash,
+
             input: T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants),
 
             instructions: T.nilable(String),
@@ -119,6 +128,9 @@ module OpenAI
           # [model guide](https://developers.openai.com/api/docs/models) to browse and
           # compare available models.
           model:,
+
+          # Request level image options.
+          image: nil,
 
           # Text, image, or file inputs to the model, used to generate a response
           input: nil,
@@ -178,6 +190,7 @@ module OpenAI
           override.returns(
             {
               model: T.nilable(T.any(OpenAI::Responses::ResponseCompactParams::Model::OrSymbol, String)),
+              image: OpenAI::Responses::ResponseCompactParams::Image,
               input: T.nilable(OpenAI::Responses::ResponseCompactParams::Input::Variants),
               instructions: T.nilable(String),
               previous_response_id: T.nilable(String),
@@ -475,6 +488,80 @@ module OpenAI
             OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
           )
 
+        end
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::ResponseCompactParams::Image,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          sig { returns(T.nilable(OpenAI::Responses::ResponseCompactParams::Image::ContextCompression::OrSymbol)) }
+          attr_reader :context_compression
+
+          sig {
+            params(context_compression: OpenAI::Responses::ResponseCompactParams::Image::ContextCompression::OrSymbol)
+              .void
+          }
+          attr_writer :context_compression
+
+          # Request level image options.
+          sig do
+            params(
+
+              context_compression: OpenAI::Responses::ResponseCompactParams::Image::ContextCompression::OrSymbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Controls image context optimization. Defaults to `auto`, which uses the model,
+            # transport, and input to select a policy. Use `enabled` to require compression
+            # support or `disabled` to turn it off.
+
+            context_compression: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {context_compression: OpenAI::Responses::ResponseCompactParams::Image::ContextCompression::OrSymbol}
+            )
+          end
+          def to_hash
+          end
+
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::ResponseCompactParams::Image::ContextCompression)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            AUTO = T.let(:auto, OpenAI::Responses::ResponseCompactParams::Image::ContextCompression::TaggedSymbol)
+            ENABLED = T.let(:enabled, OpenAI::Responses::ResponseCompactParams::Image::ContextCompression::TaggedSymbol)
+            DISABLED = T.let(
+              :disabled,
+              OpenAI::Responses::ResponseCompactParams::Image::ContextCompression::TaggedSymbol
+            )
+
+            sig {
+              override.returns(
+                T::Array[OpenAI::Responses::ResponseCompactParams::Image::ContextCompression::TaggedSymbol]
+              )
+            }
+            def self.values
+            end
+          end
         end
 
         # Text, image, or file inputs to the model, used to generate a response

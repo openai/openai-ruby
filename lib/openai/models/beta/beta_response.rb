@@ -164,6 +164,11 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaResponse::Conversation, nil]
         optional :conversation, -> { OpenAI::Beta::BetaResponse::Conversation }, nil?: true
 
+        # @!attribute image
+        #
+        #   @return [OpenAI::Models::Beta::BetaResponse::Image, nil]
+        optional :image, -> { OpenAI::Beta::BetaResponse::Image }
+
         # @!attribute max_output_tokens
         #   An upper bound for the number of tokens that can be generated for a response,
         #   including visible output tokens and
@@ -375,7 +380,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, tool_usage: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, image: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, tool_usage: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   @param id [String]
         #     Unique identifier for this Response.
         #
@@ -475,6 +480,8 @@ module OpenAI
         #   @param conversation [OpenAI::Models::Beta::BetaResponse::Conversation, nil]
         #     The conversation that this response belonged to. Input items and output items
         #     from this response were automatically added to this conversation.
+        #
+        #   @param image [OpenAI::Models::Beta::BetaResponse::Image]
         #
         #   @param max_output_tokens [Integer, nil]
         #     An upper bound for the number of tokens that can be generated for a response,
@@ -1401,6 +1408,32 @@ module OpenAI
           #
           #   @param id [String]
           #     The unique ID of the conversation that this response was associated with.
+        end
+
+        # @see OpenAI::Models::Beta::BetaResponse#image
+        class Image < OpenAI::Internal::Type::BaseModel
+          # @!attribute context_compression
+          #   Effective image context optimization policy.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::Image::ContextCompression]
+          required :context_compression, enum: -> { OpenAI::Beta::BetaResponse::Image::ContextCompression }
+
+          # @!method initialize(context_compression:)
+          #   @param context_compression [Symbol, OpenAI::Models::Beta::BetaResponse::Image::ContextCompression]
+          #     Effective image context optimization policy.
+
+          # Effective image context optimization policy.
+          #
+          # @see OpenAI::Models::Beta::BetaResponse::Image#context_compression
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            ENABLED = :enabled
+            DISABLED = :disabled
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # @see OpenAI::Models::Beta::BetaResponse#moderation

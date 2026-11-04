@@ -18,6 +18,12 @@ module OpenAI
         #   @return [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil]
         required :model, union: -> { OpenAI::Responses::ResponseCompactParams::Model }, nil?: true
 
+        # @!attribute image
+        #   Request level image options.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseCompactParams::Image, nil]
+        optional :image, -> { OpenAI::Responses::ResponseCompactParams::Image }
+
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response
         #
@@ -99,13 +105,16 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil]
         optional :service_tier, enum: -> { OpenAI::Responses::ResponseCompactParams::ServiceTier }, nil?: true
 
-        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
+        # @!method initialize(model:, image: nil, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
         #   @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil]
         #     Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         #     range of models with different capabilities, performance characteristics, and
         #     price points. Refer to the
         #     [model guide](https://developers.openai.com/api/docs/models) to browse and
         #     compare available models.
+        #
+        #   @param image [OpenAI::Models::Responses::ResponseCompactParams::Image]
+        #     Request level image options.
         #
         #   @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil]
         #     Text, image, or file inputs to the model, used to generate a response
@@ -787,6 +796,43 @@ module OpenAI
           GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
 
           # @!endgroup
+        end
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # @!attribute context_compression
+          #   Controls image context optimization. Defaults to `auto`, which uses the model,
+          #   transport, and input to select a policy. Use `enabled` to require compression
+          #   support or `disabled` to turn it off.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseCompactParams::Image::ContextCompression, nil]
+          optional(
+            :context_compression,
+            enum: -> { OpenAI::Responses::ResponseCompactParams::Image::ContextCompression }
+          )
+
+          # @!method initialize(context_compression: nil)
+          #   Request level image options.
+          #
+          #   @param context_compression [Symbol, OpenAI::Models::Responses::ResponseCompactParams::Image::ContextCompression]
+          #     Controls image context optimization. Defaults to `auto`, which uses the model,
+          #     transport, and input to select a policy. Use `enabled` to require compression
+          #     support or `disabled` to turn it off.
+
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          #
+          # @see OpenAI::Models::Responses::ResponseCompactParams::Image#context_compression
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO = :auto
+            ENABLED = :enabled
+            DISABLED = :disabled
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # Text, image, or file inputs to the model, used to generate a response

@@ -190,6 +190,15 @@ module OpenAI
             )
           end
 
+          # Input noise suppression strength. Higher values apply more suppression. Defaults
+          # to 1 when noise reduction is first enabled. Omitting strength from a session
+          # update preserves the current strength.
+          sig { returns(T.nilable(Float)) }
+          attr_reader :strength
+
+          sig { params(strength: Float).void }
+          attr_writer :strength
+
           # Type of noise reduction. `near_field` is for close-talking microphones such as
           # headphones, `far_field` is for far-field microphones such as laptop or
           # conference room microphones.
@@ -207,11 +216,18 @@ module OpenAI
           sig do
             params(
 
+              strength: Float,
+
               type: OpenAI::Realtime::NoiseReductionType::OrSymbol
             )
               .returns(T.attached_class)
           end
           def self.new(
+
+            # Input noise suppression strength. Higher values apply more suppression. Defaults
+            # to 1 when noise reduction is first enabled. Omitting strength from a session
+            # update preserves the current strength.
+            strength: nil,
 
             # Type of noise reduction. `near_field` is for close-talking microphones such as
             # headphones, `far_field` is for far-field microphones such as laptop or
@@ -223,7 +239,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {type: OpenAI::Realtime::NoiseReductionType::OrSymbol}
+              {strength: Float, type: OpenAI::Realtime::NoiseReductionType::OrSymbol}
             )
           end
           def to_hash

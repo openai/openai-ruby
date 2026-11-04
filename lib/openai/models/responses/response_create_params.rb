@@ -50,6 +50,12 @@ module OpenAI
           nil?: true
         )
 
+        # @!attribute image
+        #   Request level image options.
+        #
+        #   @return [OpenAI::Models::Responses::ResponseCreateParams::Image, nil]
+        optional :image, -> { OpenAI::Responses::ResponseCreateParams::Image }
+
         # @!attribute include
         #   Specify additional output data to include in the model response. Currently
         #   supported values are:
@@ -382,7 +388,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(access_programs: nil, background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+        # @!method initialize(access_programs: nil, background: nil, context_management: nil, conversation: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
         #   @param access_programs [OpenAI::Models::Responses::ResponseCreateParams::AccessPrograms]
         #     Domain-specific access programs to use for this request.
         #
@@ -398,6 +404,9 @@ module OpenAI
         #     prepended to `input_items` for this response request. Input items and output
         #     items from this response are automatically added to this conversation after this
         #     response completes.
+        #
+        #   @param image [OpenAI::Models::Responses::ResponseCreateParams::Image]
+        #     Request level image options.
         #
         #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
         #     Specify additional output data to include in the model response. Currently
@@ -724,6 +733,43 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(String, OpenAI::Models::Responses::ResponseConversationParam)]
+        end
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # @!attribute context_compression
+          #   Controls image context optimization. Defaults to `auto`, which uses the model,
+          #   transport, and input to select a policy. Use `enabled` to require compression
+          #   support or `disabled` to turn it off.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Image::ContextCompression, nil]
+          optional(
+            :context_compression,
+            enum: -> { OpenAI::Responses::ResponseCreateParams::Image::ContextCompression }
+          )
+
+          # @!method initialize(context_compression: nil)
+          #   Request level image options.
+          #
+          #   @param context_compression [Symbol, OpenAI::Models::Responses::ResponseCreateParams::Image::ContextCompression]
+          #     Controls image context optimization. Defaults to `auto`, which uses the model,
+          #     transport, and input to select a policy. Use `enabled` to require compression
+          #     support or `disabled` to turn it off.
+
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          #
+          # @see OpenAI::Models::Responses::ResponseCreateParams::Image#context_compression
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO = :auto
+            ENABLED = :enabled
+            DISABLED = :disabled
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # Text, image, or file inputs to the model, used to generate a response.

@@ -4,6 +4,7 @@ module OpenAI
       type response_compact_params =
         {
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
+          ?image: OpenAI::Beta::ResponseCompactParams::Image,
           ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
           ?instructions: String?,
           ?previous_response_id: String?,
@@ -25,6 +26,14 @@ module OpenAI
         # [model guide](https://developers.openai.com/api/docs/models) to browse and
         # compare available models.
         attr_accessor model: OpenAI::Models::Beta::ResponseCompactParams::model?
+
+        # Request level image options.
+        attr_reader image: OpenAI::Beta::ResponseCompactParams::Image?
+
+        # Request level image options.
+        def image=: (
+          OpenAI::Beta::ResponseCompactParams::Image
+        ) -> OpenAI::Beta::ResponseCompactParams::Image
 
         # Text, image, or file inputs to the model, used to generate a response
         attr_accessor input: OpenAI::Models::Beta::ResponseCompactParams::input?
@@ -88,6 +97,8 @@ module OpenAI
         #   price points. Refer to the
         #   [model guide](https://developers.openai.com/api/docs/models) to browse and
         #   compare available models.
+        # @param image
+        #   Request level image options.
         # @param input
         #   Text, image, or file inputs to the model, used to generate a response
         # @param instructions
@@ -133,6 +144,7 @@ module OpenAI
         #   the parameter.
         def initialize: (
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
+          ?image: OpenAI::Beta::ResponseCompactParams::Image,
           ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
           ?instructions: String?,
           ?previous_response_id: String?,
@@ -146,6 +158,7 @@ module OpenAI
 
         def to_hash: -> {
           model: OpenAI::Models::Beta::ResponseCompactParams::model?,
+          ?image: OpenAI::Beta::ResponseCompactParams::Image,
           ?input: OpenAI::Models::Beta::ResponseCompactParams::input?,
           ?instructions: String?,
           ?previous_response_id: String?,
@@ -385,6 +398,49 @@ module OpenAI
           GPT_DAYBREAK_RED_LATEST: :"gpt-daybreak-red-latest"
           GPT_5_6_CYBER: :"gpt-5.6-cyber"
           GPT_ROSALIND_RESEARCH: :"gpt-rosalind-research"
+        end
+
+        type image =
+          {
+            ?context_compression: OpenAI::Models::Beta::ResponseCompactParams::Image::context_compression
+          }
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          attr_reader context_compression: OpenAI::Models::Beta::ResponseCompactParams::Image::context_compression?
+
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          def context_compression=: (
+            OpenAI::Models::Beta::ResponseCompactParams::Image::context_compression
+          ) -> OpenAI::Models::Beta::ResponseCompactParams::Image::context_compression
+
+          # @param context_compression
+          #   Controls image context optimization. Defaults to `auto`, which uses the model,
+          #   transport, and input to select a policy. Use `enabled` to require compression
+          #   support or `disabled` to turn it off.
+          def initialize: (
+            ?context_compression: OpenAI::Models::Beta::ResponseCompactParams::Image::context_compression
+          ) -> void
+
+          def to_hash: -> {
+            ?context_compression: OpenAI::Models::Beta::ResponseCompactParams::Image::context_compression
+          }
+
+          type context_compression = :auto | :enabled | :disabled
+
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            ENABLED: :enabled
+            DISABLED: :disabled
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::ResponseCompactParams::Image::context_compression]
+          end
         end
 
         type input =

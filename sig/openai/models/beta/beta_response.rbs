@@ -23,6 +23,7 @@ module OpenAI
           ?background: bool?,
           ?completed_at: Float?,
           ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?image: OpenAI::Beta::BetaResponse::Image,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
@@ -147,6 +148,12 @@ module OpenAI
         # The conversation that this response belonged to. Input items and output items
         # from this response were automatically added to this conversation.
         attr_accessor conversation: OpenAI::Beta::BetaResponse::Conversation?
+
+        attr_reader image: OpenAI::Beta::BetaResponse::Image?
+
+        def image=: (
+          OpenAI::Beta::BetaResponse::Image
+        ) -> OpenAI::Beta::BetaResponse::Image
 
         # An upper bound for the number of tokens that can be generated for a response,
         # including visible output tokens and
@@ -578,6 +585,7 @@ module OpenAI
           ?background: bool?,
           ?completed_at: Float?,
           ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?image: OpenAI::Beta::BetaResponse::Image,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
@@ -619,6 +627,7 @@ module OpenAI
           ?background: bool?,
           ?completed_at: Float?,
           ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?image: OpenAI::Beta::BetaResponse::Image,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
@@ -998,6 +1007,37 @@ module OpenAI
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }
+        end
+
+        type image =
+          {
+            context_compression: OpenAI::Models::Beta::BetaResponse::Image::context_compression
+          }
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # Effective image context optimization policy.
+          attr_accessor context_compression: OpenAI::Models::Beta::BetaResponse::Image::context_compression
+
+          # @param context_compression
+          #   Effective image context optimization policy.
+          def initialize: (
+            context_compression: OpenAI::Models::Beta::BetaResponse::Image::context_compression
+          ) -> void
+
+          def to_hash: -> {
+            context_compression: OpenAI::Models::Beta::BetaResponse::Image::context_compression
+          }
+
+          type context_compression = :enabled | :disabled
+
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            ENABLED: :enabled
+            DISABLED: :disabled
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::Image::context_compression]
+          end
         end
 
         type moderation =

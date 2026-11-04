@@ -65,6 +65,13 @@ module OpenAI
           sig { params(generate: T::Boolean).void }
           attr_writer :generate
 
+          # Request level image options.
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image)) }
+          attr_reader :image
+
+          sig { params(image: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::OrHash).void }
+          attr_writer :image
+
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
@@ -507,6 +514,8 @@ module OpenAI
 
               generate: T::Boolean,
 
+              image: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::OrHash,
+
               include: T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]),
 
               input: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input::Variants,
@@ -622,6 +631,9 @@ module OpenAI
             # to false to prepare request state without model output; the response ID can be
             # used as previous_response_id on a later turn.
             generate: nil,
+
+            # Request level image options.
+            image: nil,
 
             # Specify additional output data to include in the model response. Currently
             # supported values are:
@@ -887,6 +899,7 @@ module OpenAI
                 ),
                 conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam)),
                 generate: T.nilable(T::Boolean),
+                image: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image),
                 include: T.nilable(T::Array[OpenAI::Responses::ResponseIncludable::OrSymbol]),
                 input: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Input::Variants),
                 instructions: T.nilable(String),
@@ -1133,6 +1146,98 @@ module OpenAI
             def self.variants
             end
 
+          end
+
+          class Image < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Controls image context optimization. Defaults to `auto`, which uses the model,
+            # transport, and input to select a policy. Use `enabled` to require compression
+            # support or `disabled` to turn it off.
+            sig {
+              returns(
+                T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression::OrSymbol)
+              )
+            }
+            attr_reader :context_compression
+
+            sig {
+              params(
+                context_compression: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression::OrSymbol
+              )
+                .void
+            }
+            attr_writer :context_compression
+
+            # Request level image options.
+            sig do
+              params(
+
+                context_compression: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression::OrSymbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Controls image context optimization. Defaults to `auto`, which uses the model,
+              # transport, and input to select a policy. Use `enabled` to require compression
+              # support or `disabled` to turn it off.
+
+              context_compression: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  context_compression: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression::OrSymbol
+                  )
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # Controls image context optimization. Defaults to `auto`, which uses the model,
+            # transport, and input to select a policy. Use `enabled` to require compression
+            # support or `disabled` to turn it off.
+            module ContextCompression
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              AUTO = T.let(
+                :auto,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression::TaggedSymbol
+              )
+              ENABLED = T.let(
+                :enabled,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression::TaggedSymbol
+              )
+              DISABLED = T.let(
+                :disabled,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression::TaggedSymbol
+                  ]
+                )
+              }
+              def self.values
+              end
+            end
           end
 
           # Text, image, or file inputs to the model, used to generate a response.
