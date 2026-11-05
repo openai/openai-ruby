@@ -1306,6 +1306,43 @@ module OpenAI
             }
             attr_writer :background
 
+            # Computation spent planning the image, independently of rendering quality.
+            # Overrides the outer response's `reasoning.effort` for image generation. When
+            # omitted, inherits a supported outer reasoning effort or uses the image model's
+            # configured default. For SVG output, controls the reference image, not the SVG
+            # author's reasoning.
+            sig {
+              returns(
+                T.nilable(
+                  OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity::OrSymbol
+                )
+              )
+            }
+            attr_reader :complexity
+
+            sig {
+              params(
+                complexity: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity::OrSymbol
+              )
+                .void
+            }
+            attr_writer :complexity
+
+            # Number of GIF frames. Requires `output_format` to be `gif`. Default: 9.
+            sig { returns(T.nilable(Integer)) }
+            attr_reader :frame_count
+
+            sig { params(frame_count: Integer).void }
+            attr_writer :frame_count
+
+            # Duration of each GIF frame in milliseconds, rounded to 10 ms. Requires
+            # `output_format` to be `gif`. Default: 200.
+            sig { returns(T.nilable(Integer)) }
+            attr_reader :frame_duration_ms
+
+            sig { params(frame_duration_ms: Integer).void }
+            attr_writer :frame_duration_ms
+
             # Control how much effort the model will exert to match the style and features,
             # especially facial features, of input images. Supports `high` and `low` on
             # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
@@ -1339,8 +1376,8 @@ module OpenAI
             # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
             # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
             # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-            # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
-            # `gpt-image-2`.
+            # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+            # `gpt-image-2.6-flare`, or `chatgpt-image-latest`. Default: `gpt-image-2`.
             #
             # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
             # `gpt-image-2.5-flare` instead.
@@ -1392,8 +1429,12 @@ module OpenAI
             sig { params(output_compression: Integer).void }
             attr_writer :output_compression
 
-            # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
-            # Default: `png`.
+            # The output format of the generated image. One of `png`, `webp`, `jpeg`, `gif`,
+            # or `svg`. Default: `png`. GIF and SVG output require a model that supports the
+            # selected format. GIF output does not support partial image streaming
+            # (`partial_images` greater than `0`), `input_image_mask`, or custom
+            # `output_compression`. Responses lifecycle events can still be streamed for GIF
+            # output.
             sig {
               returns(
                 T.nilable(
@@ -1471,6 +1512,18 @@ module OpenAI
             }
             attr_writer :size
 
+            # SVG author model settings. Requires `output_format` to be `svg`. When SVG model
+            # selection is enabled, omitting this object uses the outer response model.
+            # Otherwise, the default SVG author is used and explicit model overrides are
+            # unavailable.
+            sig { returns(T.nilable(OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg)) }
+            attr_reader :svg
+
+            sig {
+              params(svg: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::OrHash).void
+            }
+            attr_writer :svg
+
             # A tool that generates images using the GPT image models.
             sig do
               params(
@@ -1478,6 +1531,12 @@ module OpenAI
                 action: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Action::OrSymbol,
 
                 background: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Background::OrSymbol,
+
+                complexity: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity::OrSymbol,
+
+                frame_count: Integer,
+
+                frame_duration_ms: Integer,
 
                 input_fidelity: T.nilable(
                   OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputFidelity::OrSymbol
@@ -1505,6 +1564,8 @@ module OpenAI
                   OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Size::OrSymbol
                 ),
 
+                svg: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::OrHash,
+
                 type: Symbol
               )
                 .returns(T.attached_class)
@@ -1525,6 +1586,20 @@ module OpenAI
               # set the output format to `png` or `webp`.
               background: nil,
 
+              # Computation spent planning the image, independently of rendering quality.
+              # Overrides the outer response's `reasoning.effort` for image generation. When
+              # omitted, inherits a supported outer reasoning effort or uses the image model's
+              # configured default. For SVG output, controls the reference image, not the SVG
+              # author's reasoning.
+              complexity: nil,
+
+              # Number of GIF frames. Requires `output_format` to be `gif`. Default: 9.
+              frame_count: nil,
+
+              # Duration of each GIF frame in milliseconds, rounded to 10 ms. Requires
+              # `output_format` to be `gif`. Default: 200.
+              frame_duration_ms: nil,
+
               # Control how much effort the model will exert to match the style and features,
               # especially facial features, of input images. Supports `high` and `low` on
               # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
@@ -1538,8 +1613,8 @@ module OpenAI
               # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
               # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
               # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-              # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
-              # `gpt-image-2`.
+              # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+              # `gpt-image-2.6-flare`, or `chatgpt-image-latest`. Default: `gpt-image-2`.
               #
               # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
               # `gpt-image-2.5-flare` instead.
@@ -1551,8 +1626,12 @@ module OpenAI
               # Compression level for the output image. Default: 100.
               output_compression: nil,
 
-              # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
-              # Default: `png`.
+              # The output format of the generated image. One of `png`, `webp`, `jpeg`, `gif`,
+              # or `svg`. Default: `png`. GIF and SVG output require a model that supports the
+              # selected format. GIF output does not support partial image streaming
+              # (`partial_images` greater than `0`), `input_image_mask`, or custom
+              # `output_compression`. Responses lifecycle events can still be streamed for GIF
+              # output.
               output_format: nil,
 
               # Number of partial images to generate in streaming mode, from 0 (default value)
@@ -1577,6 +1656,12 @@ module OpenAI
               # `auto` is supported for models that allow automatic sizing.
               size: nil,
 
+              # SVG author model settings. Requires `output_format` to be `svg`. When SVG model
+              # selection is enabled, omitting this object uses the outer response model.
+              # Otherwise, the default SVG author is used and explicit model overrides are
+              # unavailable.
+              svg: nil,
+
               # The type of the image generation tool. Always `image_generation`.
 
               type: :image_generation
@@ -1589,6 +1674,9 @@ module OpenAI
                   type: Symbol,
                   action: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Action::OrSymbol,
                   background: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Background::OrSymbol,
+                  complexity: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity::OrSymbol,
+                  frame_count: Integer,
+                  frame_duration_ms: Integer,
                   input_fidelity: T.nilable(
                     OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputFidelity::OrSymbol
                   ),
@@ -1605,7 +1693,8 @@ module OpenAI
                   size: T.any(
                     String,
                     OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Size::OrSymbol
-                  )
+                  ),
+                  svg: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg
                 }
               )
             end
@@ -1679,6 +1768,43 @@ module OpenAI
                 override.returns(
                   T::Array[
                     OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Background::TaggedSymbol
+                  ]
+                )
+              }
+              def self.values
+              end
+            end
+
+            # Computation spent planning the image, independently of rendering quality.
+            # Overrides the outer response's `reasoning.effort` for image generation. When
+            # omitted, inherits a supported outer reasoning effort or uses the image model's
+            # configured default. For SVG output, controls the reference image, not the SVG
+            # author's reasoning.
+            module Complexity
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              LOW = T.let(
+                :low,
+                OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity::TaggedSymbol
+              )
+              MEDIUM = T.let(
+                :medium,
+                OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity::TaggedSymbol
+              )
+              HIGH = T.let(
+                :high,
+                OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Complexity::TaggedSymbol
                   ]
                 )
               }
@@ -1775,8 +1901,8 @@ module OpenAI
             # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
             # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
             # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-            # `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`. Default:
-            # `gpt-image-2`.
+            # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+            # `gpt-image-2.6-flare`, or `chatgpt-image-latest`. Default: `gpt-image-2`.
             #
             # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
             # `gpt-image-2.5-flare` instead.
@@ -1836,6 +1962,14 @@ module OpenAI
                 :"gpt-image-2.5-flare-2026-09-08",
                 OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Model::TaggedSymbol
               )
+              GPT_IMAGE_2_6_SUNBURST = T.let(
+                :"gpt-image-2.6-sunburst",
+                OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Model::TaggedSymbol
+              )
+              GPT_IMAGE_2_6_FLARE = T.let(
+                :"gpt-image-2.6-flare",
+                OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Model::TaggedSymbol
+              )
               GPT_IMAGE_1_5 = T.let(
                 :"gpt-image-1.5",
                 OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Model::TaggedSymbol
@@ -1876,8 +2010,12 @@ module OpenAI
               end
             end
 
-            # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
-            # Default: `png`.
+            # The output format of the generated image. One of `png`, `webp`, `jpeg`, `gif`,
+            # or `svg`. Default: `png`. GIF and SVG output require a model that supports the
+            # selected format. GIF output does not support partial image streaming
+            # (`partial_images` greater than `0`), `input_image_mask`, or custom
+            # `output_compression`. Responses lifecycle events can still be streamed for GIF
+            # output.
             module OutputFormat
               extend OpenAI::Internal::Type::Enum
 
@@ -1896,6 +2034,14 @@ module OpenAI
               )
               JPEG = T.let(
                 :jpeg,
+                OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::OutputFormat::TaggedSymbol
+              )
+              GIF = T.let(
+                :gif,
+                OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::OutputFormat::TaggedSymbol
+              )
+              SVG = T.let(
+                :svg,
                 OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::OutputFormat::TaggedSymbol
               )
 
@@ -2009,6 +2155,185 @@ module OpenAI
                 OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Size::TaggedSymbol
               )
 
+            end
+
+            class Svg < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              sig { returns(T.nilable(String)) }
+              attr_reader :model
+
+              sig { params(model: String).void }
+              attr_writer :model
+
+              # Reasoning effort for SVG authoring. When omitted, uses the author model's
+              # default in both Images and Responses.
+              sig {
+                returns(
+                  T.nilable(OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning)
+                )
+              }
+              attr_reader :reasoning
+
+              sig {
+                params(
+                  reasoning: T.nilable(
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::OrHash
+                  )
+                )
+                  .void
+              }
+              attr_writer :reasoning
+
+              # SVG author model settings. Requires `output_format` to be `svg`. When SVG model
+              # selection is enabled, omitting this object uses the outer response model.
+              # Otherwise, the default SVG author is used and explicit model overrides are
+              # unavailable.
+              sig do
+                params(
+
+                  model: String,
+
+                  reasoning: T.nilable(
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::OrHash
+                  )
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                model: nil,
+
+                # Reasoning effort for SVG authoring. When omitted, uses the author model's
+                # default in both Images and Responses.
+
+                reasoning: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    model: String,
+                    reasoning: T.nilable(
+                      OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning
+                    )
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              class Reasoning < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # Controls how much effort the model should spend on reasoning for this request.
+                sig {
+                  returns(
+                    T.nilable(
+                      OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::OrSymbol
+                    )
+                  )
+                }
+                attr_reader :effort
+
+                sig {
+                  params(
+                    effort: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::OrSymbol
+                  )
+                    .void
+                }
+                attr_writer :effort
+
+                # Reasoning effort for SVG authoring. When omitted, uses the author model's
+                # default in both Images and Responses.
+                sig do
+                  params(
+
+                    effort: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::OrSymbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # Controls how much effort the model should spend on reasoning for this request.
+
+                  effort: nil
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      effort: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::OrSymbol
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                # Controls how much effort the model should spend on reasoning for this request.
+                module Effort
+                  extend OpenAI::Internal::Type::Enum
+
+                  TaggedSymbol = T.type_alias {
+                    T.all(
+                      Symbol,
+                      OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort
+                    )
+                  }
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                  NONE = T.let(
+                    :none,
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::TaggedSymbol
+                  )
+                  MINIMAL = T.let(
+                    :minimal,
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::TaggedSymbol
+                  )
+                  LOW = T.let(
+                    :low,
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::TaggedSymbol
+                  )
+                  MEDIUM = T.let(
+                    :medium,
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::TaggedSymbol
+                  )
+                  HIGH = T.let(
+                    :high,
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::TaggedSymbol
+                  )
+                  XHIGH = T.let(
+                    :xhigh,
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::TaggedSymbol
+                  )
+                  MAX = T.let(
+                    :max,
+                    OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::TaggedSymbol
+                  )
+
+                  sig {
+                    override.returns(
+                      T::Array[
+                        OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::Effort::TaggedSymbol
+                      ]
+                    )
+                  }
+                  def self.values
+                  end
+                end
+              end
             end
           end
 

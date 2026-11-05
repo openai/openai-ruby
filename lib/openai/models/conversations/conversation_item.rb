@@ -189,7 +189,12 @@ module OpenAI
             nil?: true
           )
 
-          # @!method initialize(id:, result:, status:, action: nil, background: nil, error: nil, output_format: nil, quality: nil, revised_prompt: nil, size: nil, type: :image_generation_call)
+          # @!attribute svg_usage
+          #
+          #   @return [OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::SvgUsage, nil]
+          optional :svg_usage, -> { OpenAI::Conversations::ConversationItem::ImageGenerationCall::SvgUsage }
+
+          # @!method initialize(id:, result:, status:, action: nil, background: nil, error: nil, output_format: nil, quality: nil, revised_prompt: nil, size: nil, svg_usage: nil, type: :image_generation_call)
           #   An image generation request made by the model.
           #
           #   @param id [String]
@@ -222,6 +227,8 @@ module OpenAI
           #
           #   @param size [String, Symbol, OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::Size, nil]
           #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          #
+          #   @param svg_usage [OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall::SvgUsage]
           #
           #   @param type [Symbol, :image_generation_call]
           #     The type of the image generation call. Always `image_generation_call`.
@@ -375,6 +382,8 @@ module OpenAI
             PNG = :png
             WEBP = :webp
             JPEG = :jpeg
+            GIF = :gif
+            SVG = :svg
 
             # @!method self.values
             #   @return [Array<Symbol>]
@@ -434,6 +443,41 @@ module OpenAI
             SIZE_1536X1024 = :"1536x1024"
 
             # @!endgroup
+          end
+
+          # @see OpenAI::Models::Conversations::ConversationItem::ImageGenerationCall#svg_usage
+          class SvgUsage < OpenAI::Internal::Type::BaseModel
+            # @!attribute input_tokens
+            #
+            #   @return [Integer]
+            required :input_tokens, Integer
+
+            # @!attribute model
+            #
+            #   @return [String]
+            required :model, String
+
+            # @!attribute output_tokens
+            #
+            #   @return [Integer]
+            required :output_tokens, Integer
+
+            # @!attribute reasoning_tokens
+            #
+            #   @return [Integer]
+            required :reasoning_tokens, Integer
+
+            # @!attribute total_tokens
+            #
+            #   @return [Integer]
+            required :total_tokens, Integer
+
+            # @!method initialize(input_tokens:, model:, output_tokens:, reasoning_tokens:, total_tokens:)
+            #   @param input_tokens [Integer]
+            #   @param model [String]
+            #   @param output_tokens [Integer]
+            #   @param reasoning_tokens [Integer]
+            #   @param total_tokens [Integer]
           end
         end
 

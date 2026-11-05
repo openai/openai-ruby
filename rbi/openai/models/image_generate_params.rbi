@@ -32,11 +32,32 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol)) }
       attr_accessor :background
 
+      # Computation spent planning the image, independently of rendering quality. Uses
+      # the image model's configured default when omitted. For SVG output, controls the
+      # reference image, independently of the SVG author's reasoning.
+      sig { returns(T.nilable(OpenAI::ImageGenerateParams::Complexity::OrSymbol)) }
+      attr_accessor :complexity
+
+      # Number of frames for GIF output. Accepts integers from 2 through 16. Defaults to
+      # 9 when omitted. Only supported with output_format=gif. The requested size must
+      # satisfy the selected model's GIF size limits. GIF output does not support
+      # streaming, partial images, masks, or custom output compression. Requires access
+      # to the GIF preview for the selected model.
+      sig { returns(T.nilable(Integer)) }
+      attr_accessor :frame_count
+
+      # Requested delay per GIF frame, in milliseconds. Defaults to 200 when omitted.
+      # GIF output rounds to the nearest 10 ms and caps the encoded delay at 655,350 ms
+      # per frame. Only supported with output_format=gif.
+      sig { returns(T.nilable(Integer)) }
+      attr_accessor :frame_duration_ms
+
       # The GPT image model to use for image generation. Specify a model explicitly.
       # Supported models include `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
       # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
       # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
+      # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+      # `gpt-image-2.6-flare`, and `chatgpt-image-latest`.
       #
       # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
       # `gpt-image-2.5-flare` instead.
@@ -60,7 +81,7 @@ module OpenAI
       attr_accessor :output_compression
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+      # supported for the GPT image models.
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::OutputFormat::OrSymbol)) }
       attr_accessor :output_format
 
@@ -115,6 +136,18 @@ module OpenAI
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol)) }
       attr_accessor :style
 
+      # Selects the model and reasoning effort used to author SVG output. Requires
+      # output_format=svg and access to SVG model selection. When model selection is
+      # enabled, supply svg.model. When model selection is disabled, omit this object.
+      # The top-level model selects the image model that creates the reference image.
+      # SVG generation requires n=1 and does not support streaming, partial images,
+      # prompt_rewriter, or output_compression. SVG edits are not supported.
+      sig { returns(T.nilable(OpenAI::ImageGenerateParams::Svg)) }
+      attr_reader :svg
+
+      sig { params(svg: T.nilable(OpenAI::ImageGenerateParams::Svg::OrHash)).void }
+      attr_writer :svg
+
       # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
       # backward compatibility and is used when `safety_identifier` is omitted, null, or
       # empty.
@@ -131,6 +164,12 @@ module OpenAI
           prompt: String,
 
           background: T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
+
+          complexity: T.nilable(OpenAI::ImageGenerateParams::Complexity::OrSymbol),
+
+          frame_count: T.nilable(Integer),
+
+          frame_duration_ms: T.nilable(Integer),
 
           model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
 
@@ -153,6 +192,8 @@ module OpenAI
           size: T.nilable(T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)),
 
           style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
+
+          svg: T.nilable(OpenAI::ImageGenerateParams::Svg::OrHash),
 
           user: String,
 
@@ -177,11 +218,29 @@ module OpenAI
         # set the output format to `png` or `webp`.
         background: nil,
 
+        # Computation spent planning the image, independently of rendering quality. Uses
+        # the image model's configured default when omitted. For SVG output, controls the
+        # reference image, independently of the SVG author's reasoning.
+        complexity: nil,
+
+        # Number of frames for GIF output. Accepts integers from 2 through 16. Defaults to
+        # 9 when omitted. Only supported with output_format=gif. The requested size must
+        # satisfy the selected model's GIF size limits. GIF output does not support
+        # streaming, partial images, masks, or custom output compression. Requires access
+        # to the GIF preview for the selected model.
+        frame_count: nil,
+
+        # Requested delay per GIF frame, in milliseconds. Defaults to 200 when omitted.
+        # GIF output rounds to the nearest 10 ms and caps the encoded delay at 655,350 ms
+        # per frame. Only supported with output_format=gif.
+        frame_duration_ms: nil,
+
         # The GPT image model to use for image generation. Specify a model explicitly.
         # Supported models include `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
         # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
         # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-        # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
+        # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+        # `gpt-image-2.6-flare`, and `chatgpt-image-latest`.
         #
         # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
         # `gpt-image-2.5-flare` instead.
@@ -201,7 +260,7 @@ module OpenAI
         output_compression: nil,
 
         # The format in which the generated images are returned. This parameter is only
-        # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+        # supported for the GPT image models.
         output_format: nil,
 
         # The number of partial images to generate. This parameter is used for streaming
@@ -249,6 +308,14 @@ module OpenAI
         # models; describe the desired style in the prompt instead.
         style: nil,
 
+        # Selects the model and reasoning effort used to author SVG output. Requires
+        # output_format=svg and access to SVG model selection. When model selection is
+        # enabled, supply svg.model. When model selection is disabled, omit this object.
+        # The top-level model selects the image model that creates the reference image.
+        # SVG generation requires n=1 and does not support streaming, partial images,
+        # prompt_rewriter, or output_compression. SVG edits are not supported.
+        svg: nil,
+
         # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
         # backward compatibility and is used when `safety_identifier` is omitted, null, or
         # empty.
@@ -264,6 +331,9 @@ module OpenAI
           {
             prompt: String,
             background: T.nilable(OpenAI::ImageGenerateParams::Background::OrSymbol),
+            complexity: T.nilable(OpenAI::ImageGenerateParams::Complexity::OrSymbol),
+            frame_count: T.nilable(Integer),
+            frame_duration_ms: T.nilable(Integer),
             model: T.nilable(T.any(String, OpenAI::ImageModel::OrSymbol)),
             moderation: T.nilable(OpenAI::ImageGenerateParams::Moderation::OrSymbol),
             n: T.nilable(Integer),
@@ -275,6 +345,7 @@ module OpenAI
             safety_identifier: T.nilable(String),
             size: T.nilable(T.any(String, OpenAI::ImageGenerateParams::Size::OrSymbol)),
             style: T.nilable(OpenAI::ImageGenerateParams::Style::OrSymbol),
+            svg: T.nilable(OpenAI::ImageGenerateParams::Svg),
             user: String,
             request_options: OpenAI::RequestOptions
           }
@@ -307,11 +378,30 @@ module OpenAI
         end
       end
 
+      # Computation spent planning the image, independently of rendering quality. Uses
+      # the image model's configured default when omitted. For SVG output, controls the
+      # reference image, independently of the SVG author's reasoning.
+      module Complexity
+        extend OpenAI::Internal::Type::Enum
+
+        TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageGenerateParams::Complexity) }
+        OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+        LOW = T.let(:low, OpenAI::ImageGenerateParams::Complexity::TaggedSymbol)
+        MEDIUM = T.let(:medium, OpenAI::ImageGenerateParams::Complexity::TaggedSymbol)
+        HIGH = T.let(:high, OpenAI::ImageGenerateParams::Complexity::TaggedSymbol)
+
+        sig { override.returns(T::Array[OpenAI::ImageGenerateParams::Complexity::TaggedSymbol]) }
+        def self.values
+        end
+      end
+
       # The GPT image model to use for image generation. Specify a model explicitly.
       # Supported models include `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
       # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
       # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
+      # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+      # `gpt-image-2.6-flare`, and `chatgpt-image-latest`.
       #
       # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
       # `gpt-image-2.5-flare` instead.
@@ -344,7 +434,7 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+      # supported for the GPT image models.
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -354,6 +444,8 @@ module OpenAI
         PNG = T.let(:png, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
         JPEG = T.let(:jpeg, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
         WEBP = T.let(:webp, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
+        GIF = T.let(:gif, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
+        SVG = T.let(:svg, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol]) }
         def self.values
@@ -452,6 +544,126 @@ module OpenAI
 
         sig { override.returns(T::Array[OpenAI::ImageGenerateParams::Style::TaggedSymbol]) }
         def self.values
+        end
+      end
+
+      class Svg < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::ImageGenerateParams::Svg,
+            OpenAI::Internal::AnyHash
+          )
+        end
+
+        # Model used to author the SVG. Required when SVG model selection is enabled.
+        sig { returns(String) }
+        attr_accessor :model
+
+        # Reasoning settings for the SVG author, independent of image complexity. Omitted
+        # or null effort uses the author model's default. Supported efforts depend on the
+        # selected author model.
+        sig { returns(T.nilable(OpenAI::ImageGenerateParams::Svg::Reasoning)) }
+        attr_reader :reasoning
+
+        sig { params(reasoning: T.nilable(OpenAI::ImageGenerateParams::Svg::Reasoning::OrHash)).void }
+        attr_writer :reasoning
+
+        # Selects the model and reasoning effort used to author SVG output. Requires
+        # output_format=svg and access to SVG model selection. When model selection is
+        # enabled, supply svg.model. When model selection is disabled, omit this object.
+        # The top-level model selects the image model that creates the reference image.
+        # SVG generation requires n=1 and does not support streaming, partial images,
+        # prompt_rewriter, or output_compression. SVG edits are not supported.
+        sig do
+          params(
+
+            model: String,
+
+            reasoning: T.nilable(OpenAI::ImageGenerateParams::Svg::Reasoning::OrHash)
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(
+
+          # Model used to author the SVG. Required when SVG model selection is enabled.
+          model:,
+
+          # Reasoning settings for the SVG author, independent of image complexity. Omitted
+          # or null effort uses the author model's default. Supported efforts depend on the
+          # selected author model.
+
+          reasoning: nil
+        )
+        end
+
+        sig do
+          override.returns(
+            {model: String, reasoning: T.nilable(OpenAI::ImageGenerateParams::Svg::Reasoning)}
+          )
+        end
+        def to_hash
+        end
+
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::ImageGenerateParams::Svg::Reasoning,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Controls how much effort the SVG author spends on reasoning. Uses the author
+          # model's default when omitted or null.
+          sig { returns(T.nilable(OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::OrSymbol)) }
+          attr_accessor :effort
+
+          # Reasoning settings for the SVG author, independent of image complexity. Omitted
+          # or null effort uses the author model's default. Supported efforts depend on the
+          # selected author model.
+          sig do
+            params(
+
+              effort: T.nilable(OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::OrSymbol)
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Controls how much effort the SVG author spends on reasoning. Uses the author
+            # model's default when omitted or null.
+
+            effort: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {effort: T.nilable(OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::OrSymbol)}
+            )
+          end
+          def to_hash
+          end
+
+          # Controls how much effort the SVG author spends on reasoning. Uses the author
+          # model's default when omitted or null.
+          module Effort
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageGenerateParams::Svg::Reasoning::Effort) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            NONE = T.let(:none, OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::TaggedSymbol)
+            MINIMAL = T.let(:minimal, OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::TaggedSymbol)
+            LOW = T.let(:low, OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::TaggedSymbol)
+            HIGH = T.let(:high, OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::TaggedSymbol)
+            XHIGH = T.let(:xhigh, OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::TaggedSymbol)
+            MAX = T.let(:max, OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::ImageGenerateParams::Svg::Reasoning::Effort::TaggedSymbol]) }
+            def self.values
+            end
+          end
         end
       end
 

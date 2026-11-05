@@ -31,7 +31,7 @@ module OpenAI
       sig { params(data: T::Array[OpenAI::Image::OrHash]).void }
       attr_writer :data
 
-      # The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+      # The output format of the generated image.
       sig { returns(T.nilable(OpenAI::ImagesResponse::OutputFormat::TaggedSymbol)) }
       attr_reader :output_format
 
@@ -59,6 +59,14 @@ module OpenAI
       sig { params(size: T.any(String, OpenAI::ImagesResponse::Size::OrSymbol)).void }
       attr_writer :size
 
+      # Token usage for the model that authored the SVG, separate from image rendering
+      # usage.
+      sig { returns(T.nilable(OpenAI::ImagesResponse::SvgUsage)) }
+      attr_reader :svg_usage
+
+      sig { params(svg_usage: OpenAI::ImagesResponse::SvgUsage::OrHash).void }
+      attr_writer :svg_usage
+
       # For `gpt-image-1` only, the token usage information for the image generation.
       sig { returns(T.nilable(OpenAI::ImagesResponse::Usage)) }
       attr_reader :usage
@@ -84,6 +92,8 @@ module OpenAI
 
           size: T.any(String, OpenAI::ImagesResponse::Size::OrSymbol),
 
+          svg_usage: OpenAI::ImagesResponse::SvgUsage::OrHash,
+
           usage: OpenAI::ImagesResponse::Usage::OrHash
         )
           .returns(T.attached_class)
@@ -100,7 +110,7 @@ module OpenAI
         # The list of generated images.
         data: nil,
 
-        # The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+        # The output format of the generated image.
         output_format: nil,
 
         # The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
@@ -114,6 +124,10 @@ module OpenAI
 
         # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
         size: nil,
+
+        # Token usage for the model that authored the SVG, separate from image rendering
+        # usage.
+        svg_usage: nil,
 
         # For `gpt-image-1` only, the token usage information for the image generation.
 
@@ -131,6 +145,7 @@ module OpenAI
             quality: OpenAI::ImagesResponse::Quality::TaggedSymbol,
             safety_identifier: T.nilable(String),
             size: OpenAI::ImagesResponse::Size::Variants,
+            svg_usage: OpenAI::ImagesResponse::SvgUsage,
             usage: OpenAI::ImagesResponse::Usage
           }
         )
@@ -154,7 +169,7 @@ module OpenAI
         end
       end
 
-      # The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+      # The output format of the generated image.
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -164,6 +179,8 @@ module OpenAI
         PNG = T.let(:png, OpenAI::ImagesResponse::OutputFormat::TaggedSymbol)
         WEBP = T.let(:webp, OpenAI::ImagesResponse::OutputFormat::TaggedSymbol)
         JPEG = T.let(:jpeg, OpenAI::ImagesResponse::OutputFormat::TaggedSymbol)
+        GIF = T.let(:gif, OpenAI::ImagesResponse::OutputFormat::TaggedSymbol)
+        SVG = T.let(:svg, OpenAI::ImagesResponse::OutputFormat::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImagesResponse::OutputFormat::TaggedSymbol]) }
         def self.values
@@ -211,6 +228,76 @@ module OpenAI
 
         sig { returns(T::Array[OpenAI::ImagesResponse::Size::TaggedSymbol]) }
         def self.values
+        end
+
+      end
+
+      class SvgUsage < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::ImagesResponse::SvgUsage,
+            OpenAI::Internal::AnyHash
+          )
+        end
+
+        sig { returns(Integer) }
+        attr_accessor :input_tokens
+
+        sig { returns(String) }
+        attr_accessor :model
+
+        sig { returns(Integer) }
+        attr_accessor :output_tokens
+
+        sig { returns(Integer) }
+        attr_accessor :reasoning_tokens
+
+        sig { returns(Integer) }
+        attr_accessor :total_tokens
+
+        # Token usage for the model that authored the SVG, separate from image rendering
+        # usage.
+        sig do
+          params(
+
+            input_tokens: Integer,
+
+            model: String,
+
+            output_tokens: Integer,
+
+            reasoning_tokens: Integer,
+
+            total_tokens: Integer
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(
+
+          input_tokens:,
+
+          model:,
+
+          output_tokens:,
+
+          reasoning_tokens:,
+
+          total_tokens:
+        )
+        end
+
+        sig do
+          override.returns(
+            {
+              input_tokens: Integer,
+              model: String,
+              output_tokens: Integer,
+              reasoning_tokens: Integer,
+              total_tokens: Integer
+            }
+          )
+        end
+        def to_hash
         end
 
       end

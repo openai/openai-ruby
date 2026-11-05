@@ -1449,6 +1449,12 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::Variants)) }
           attr_accessor :size
 
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage)) }
+          attr_reader :svg_usage
+
+          sig { params(svg_usage: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage::OrHash).void }
+          attr_writer :svg_usage
+
           # An image generation request made by the model.
           sig do
             params(
@@ -1474,6 +1480,8 @@ module OpenAI
               revised_prompt: T.nilable(String),
 
               size: T.nilable(T.any(String, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::OrSymbol)),
+
+              svg_usage: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage::OrHash,
 
               type: Symbol
             )
@@ -1515,6 +1523,8 @@ module OpenAI
             # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
             size: nil,
 
+            svg_usage: nil,
+
             # The type of the image generation call. Always `image_generation_call`.
 
             type: :image_generation_call
@@ -1537,7 +1547,8 @@ module OpenAI
                 ),
                 quality: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Quality::TaggedSymbol),
                 revised_prompt: T.nilable(String),
-                size: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::Variants)
+                size: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::Variants),
+                svg_usage: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage
               }
             )
           end
@@ -1830,6 +1841,8 @@ module OpenAI
             PNG = T.let(:png, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
             WEBP = T.let(:webp, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
             JPEG = T.let(:jpeg, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+            GIF = T.let(:gif, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+            SVG = T.let(:svg, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
 
             sig {
               override.returns(
@@ -1892,6 +1905,74 @@ module OpenAI
               :"1536x1024",
               OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::TaggedSymbol
             )
+
+          end
+
+          class SvgUsage < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Integer) }
+            attr_accessor :input_tokens
+
+            sig { returns(String) }
+            attr_accessor :model
+
+            sig { returns(Integer) }
+            attr_accessor :output_tokens
+
+            sig { returns(Integer) }
+            attr_accessor :reasoning_tokens
+
+            sig { returns(Integer) }
+            attr_accessor :total_tokens
+
+            sig do
+              params(
+
+                input_tokens: Integer,
+
+                model: String,
+
+                output_tokens: Integer,
+
+                reasoning_tokens: Integer,
+
+                total_tokens: Integer
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              input_tokens:,
+
+              model:,
+
+              output_tokens:,
+
+              reasoning_tokens:,
+
+              total_tokens:
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  input_tokens: Integer,
+                  model: String,
+                  output_tokens: Integer,
+                  reasoning_tokens: Integer,
+                  total_tokens: Integer
+                }
+              )
+            end
+            def to_hash
+            end
 
           end
         end

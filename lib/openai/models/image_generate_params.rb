@@ -30,12 +30,39 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageGenerateParams::Background, nil]
       optional :background, enum: -> { OpenAI::ImageGenerateParams::Background }, nil?: true
 
+      # @!attribute complexity
+      #   Computation spent planning the image, independently of rendering quality. Uses
+      #   the image model's configured default when omitted. For SVG output, controls the
+      #   reference image, independently of the SVG author's reasoning.
+      #
+      #   @return [Symbol, OpenAI::Models::ImageGenerateParams::Complexity, nil]
+      optional :complexity, enum: -> { OpenAI::ImageGenerateParams::Complexity }, nil?: true
+
+      # @!attribute frame_count
+      #   Number of frames for GIF output. Accepts integers from 2 through 16. Defaults to
+      #   9 when omitted. Only supported with output_format=gif. The requested size must
+      #   satisfy the selected model's GIF size limits. GIF output does not support
+      #   streaming, partial images, masks, or custom output compression. Requires access
+      #   to the GIF preview for the selected model.
+      #
+      #   @return [Integer, nil]
+      optional :frame_count, Integer, nil?: true
+
+      # @!attribute frame_duration_ms
+      #   Requested delay per GIF frame, in milliseconds. Defaults to 200 when omitted.
+      #   GIF output rounds to the nearest 10 ms and caps the encoded delay at 655,350 ms
+      #   per frame. Only supported with output_format=gif.
+      #
+      #   @return [Integer, nil]
+      optional :frame_duration_ms, Integer, nil?: true
+
       # @!attribute model
       #   The GPT image model to use for image generation. Specify a model explicitly.
       #   Supported models include `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
       #   `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
       #   `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      #   `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
+      #   `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+      #   `gpt-image-2.6-flare`, and `chatgpt-image-latest`.
       #
       #   `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
       #   `gpt-image-2.5-flare` instead.
@@ -67,7 +94,7 @@ module OpenAI
 
       # @!attribute output_format
       #   The format in which the generated images are returned. This parameter is only
-      #   supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+      #   supported for the GPT image models.
       #
       #   @return [Symbol, OpenAI::Models::ImageGenerateParams::OutputFormat, nil]
       optional :output_format, enum: -> { OpenAI::ImageGenerateParams::OutputFormat }, nil?: true
@@ -139,6 +166,17 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageGenerateParams::Style, nil]
       optional :style, enum: -> { OpenAI::ImageGenerateParams::Style }, nil?: true
 
+      # @!attribute svg
+      #   Selects the model and reasoning effort used to author SVG output. Requires
+      #   output_format=svg and access to SVG model selection. When model selection is
+      #   enabled, supply svg.model. When model selection is disabled, omit this object.
+      #   The top-level model selects the image model that creates the reference image.
+      #   SVG generation requires n=1 and does not support streaming, partial images,
+      #   prompt_rewriter, or output_compression. SVG edits are not supported.
+      #
+      #   @return [OpenAI::Models::ImageGenerateParams::Svg, nil]
+      optional :svg, -> { OpenAI::ImageGenerateParams::Svg }, nil?: true
+
       # @!attribute user
       #   @deprecated
       #
@@ -150,7 +188,7 @@ module OpenAI
       #   @return [String, nil]
       optional :user, String
 
-      # @!method initialize(prompt:, background: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, style: nil, user: nil, request_options: {})
+      # @!method initialize(prompt:, background: nil, complexity: nil, frame_count: nil, frame_duration_ms: nil, model: nil, moderation: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, style: nil, svg: nil, user: nil, request_options: {})
       #   @param prompt [String]
       #     A text description of the desired image(s). The maximum length is 32000
       #     characters.
@@ -166,12 +204,30 @@ module OpenAI
       #     `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
       #     set the output format to `png` or `webp`.
       #
+      #   @param complexity [Symbol, OpenAI::Models::ImageGenerateParams::Complexity, nil]
+      #     Computation spent planning the image, independently of rendering quality. Uses
+      #     the image model's configured default when omitted. For SVG output, controls the
+      #     reference image, independently of the SVG author's reasoning.
+      #
+      #   @param frame_count [Integer, nil]
+      #     Number of frames for GIF output. Accepts integers from 2 through 16. Defaults to
+      #     9 when omitted. Only supported with output_format=gif. The requested size must
+      #     satisfy the selected model's GIF size limits. GIF output does not support
+      #     streaming, partial images, masks, or custom output compression. Requires access
+      #     to the GIF preview for the selected model.
+      #
+      #   @param frame_duration_ms [Integer, nil]
+      #     Requested delay per GIF frame, in milliseconds. Defaults to 200 when omitted.
+      #     GIF output rounds to the nearest 10 ms and caps the encoded delay at 655,350 ms
+      #     per frame. Only supported with output_format=gif.
+      #
       #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
       #     The GPT image model to use for image generation. Specify a model explicitly.
       #     Supported models include `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
       #     `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
       #     `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      #     `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
+      #     `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+      #     `gpt-image-2.6-flare`, and `chatgpt-image-latest`.
       #
       #     `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
       #     `gpt-image-2.5-flare` instead.
@@ -191,7 +247,7 @@ module OpenAI
       #
       #   @param output_format [Symbol, OpenAI::Models::ImageGenerateParams::OutputFormat, nil]
       #     The format in which the generated images are returned. This parameter is only
-      #     supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+      #     supported for the GPT image models.
       #
       #   @param partial_images [Integer, nil]
       #     The number of partial images to generate. This parameter is used for streaming
@@ -238,6 +294,14 @@ module OpenAI
       #     Legacy style parameter for retired image models. Unsupported for GPT image
       #     models; describe the desired style in the prompt instead.
       #
+      #   @param svg [OpenAI::Models::ImageGenerateParams::Svg, nil]
+      #     Selects the model and reasoning effort used to author SVG output. Requires
+      #     output_format=svg and access to SVG model selection. When model selection is
+      #     enabled, supply svg.model. When model selection is disabled, omit this object.
+      #     The top-level model selects the image model that creates the reference image.
+      #     SVG generation requires n=1 and does not support streaming, partial images,
+      #     prompt_rewriter, or output_compression. SVG edits are not supported.
+      #
       #   @param user [String]
       #     Deprecated: use `safety_identifier` instead. This parameter remains accepted for
       #     backward compatibility and is used when `safety_identifier` is omitted, null, or
@@ -266,11 +330,26 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
+      # Computation spent planning the image, independently of rendering quality. Uses
+      # the image model's configured default when omitted. For SVG output, controls the
+      # reference image, independently of the SVG author's reasoning.
+      module Complexity
+        extend OpenAI::Internal::Type::Enum
+
+        LOW = :low
+        MEDIUM = :medium
+        HIGH = :high
+
+        # @!method self.values
+        #   @return [Array<Symbol>]
+      end
+
       # The GPT image model to use for image generation. Specify a model explicitly.
       # Supported models include `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
       # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
       # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
+      # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+      # `gpt-image-2.6-flare`, and `chatgpt-image-latest`.
       #
       # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
       # `gpt-image-2.5-flare` instead.
@@ -283,7 +362,8 @@ module OpenAI
         # Supported models include `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
         # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
         # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-        # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`.
+        # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`, `gpt-image-2.6-flare`,
+        # and `chatgpt-image-latest`.
         #
         # `gpt-image-1` was shut down on October 23, 2026. Use
         # `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` instead.
@@ -307,13 +387,15 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`.
+      # supported for the GPT image models.
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
 
         PNG = :png
         JPEG = :jpeg
         WEBP = :webp
+        GIF = :gif
+        SVG = :svg
 
         # @!method self.values
         #   @return [Array<Symbol>]
@@ -432,6 +514,76 @@ module OpenAI
 
         # @!method self.values
         #   @return [Array<Symbol>]
+      end
+
+      class Svg < OpenAI::Internal::Type::BaseModel
+        # @!attribute model
+        #   Model used to author the SVG. Required when SVG model selection is enabled.
+        #
+        #   @return [String]
+        required :model, String
+
+        # @!attribute reasoning
+        #   Reasoning settings for the SVG author, independent of image complexity. Omitted
+        #   or null effort uses the author model's default. Supported efforts depend on the
+        #   selected author model.
+        #
+        #   @return [OpenAI::Models::ImageGenerateParams::Svg::Reasoning, nil]
+        optional :reasoning, -> { OpenAI::ImageGenerateParams::Svg::Reasoning }, nil?: true
+
+        # @!method initialize(model:, reasoning: nil)
+        #   Selects the model and reasoning effort used to author SVG output. Requires
+        #   output_format=svg and access to SVG model selection. When model selection is
+        #   enabled, supply svg.model. When model selection is disabled, omit this object.
+        #   The top-level model selects the image model that creates the reference image.
+        #   SVG generation requires n=1 and does not support streaming, partial images,
+        #   prompt_rewriter, or output_compression. SVG edits are not supported.
+        #
+        #   @param model [String]
+        #     Model used to author the SVG. Required when SVG model selection is enabled.
+        #
+        #   @param reasoning [OpenAI::Models::ImageGenerateParams::Svg::Reasoning, nil]
+        #     Reasoning settings for the SVG author, independent of image complexity. Omitted
+        #     or null effort uses the author model's default. Supported efforts depend on the
+        #     selected author model.
+
+        # @see OpenAI::Models::ImageGenerateParams::Svg#reasoning
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          # @!attribute effort
+          #   Controls how much effort the SVG author spends on reasoning. Uses the author
+          #   model's default when omitted or null.
+          #
+          #   @return [Symbol, OpenAI::Models::ImageGenerateParams::Svg::Reasoning::Effort, nil]
+          optional :effort, enum: -> { OpenAI::ImageGenerateParams::Svg::Reasoning::Effort }, nil?: true
+
+          # @!method initialize(effort: nil)
+          #   Reasoning settings for the SVG author, independent of image complexity. Omitted
+          #   or null effort uses the author model's default. Supported efforts depend on the
+          #   selected author model.
+          #
+          #   @param effort [Symbol, OpenAI::Models::ImageGenerateParams::Svg::Reasoning::Effort, nil]
+          #     Controls how much effort the SVG author spends on reasoning. Uses the author
+          #     model's default when omitted or null.
+
+          # Controls how much effort the SVG author spends on reasoning. Uses the author
+          # model's default when omitted or null.
+          #
+          # @see OpenAI::Models::ImageGenerateParams::Svg::Reasoning#effort
+          module Effort
+            extend OpenAI::Internal::Type::Enum
+
+            NONE = :none
+            MINIMAL = :minimal
+            LOW = :low
+            MEDIUM = :medium
+            HIGH = :high
+            XHIGH = :xhigh
+            MAX = :max
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
       end
     end
   end
