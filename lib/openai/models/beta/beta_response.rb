@@ -950,6 +950,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_6_CYBER }
 
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_CYBER }
+
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_ROSALIND_RESEARCH }
 
           variant String
@@ -1331,6 +1333,7 @@ module OpenAI
           GPT_DAYBREAK_BLUE_LATEST = :"gpt-daybreak-blue-latest"
           GPT_DAYBREAK_RED_LATEST = :"gpt-daybreak-red-latest"
           GPT_5_6_CYBER = :"gpt-5.6-cyber"
+          GPT_6_CYBER = :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
 
           # @!endgroup
