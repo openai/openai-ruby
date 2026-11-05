@@ -5,6 +5,9 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
+        ?complexity: OpenAI::Models::ImageEditParams::complexity?,
+        ?frame_count: Integer?,
+        ?frame_duration_ms: Integer?,
         ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
         ?markup: OpenAI::Internal::file_input,
         ?mask: OpenAI::Internal::file_input,
@@ -53,6 +56,23 @@ module OpenAI
       # `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
       # set the output format to `png` or `webp`.
       attr_accessor background: OpenAI::Models::ImageEditParams::background?
+
+      # Computation spent planning the image, independently of rendering quality. Uses
+      # the image model's configured default when omitted. For SVG output, controls the
+      # reference image, independently of the SVG author's reasoning.
+      attr_accessor complexity: OpenAI::Models::ImageEditParams::complexity?
+
+      # Number of frames for GIF output. Accepts integers from 2 through 16. Defaults to
+      # 9 when omitted. Only supported with output_format=gif. The requested size must
+      # satisfy the selected model's GIF size limits. GIF output does not support
+      # streaming, partial images, masks, or custom output compression. Requires access
+      # to the GIF preview for the selected model.
+      attr_accessor frame_count: Integer?
+
+      # Requested delay per GIF frame, in milliseconds. Defaults to 200 when omitted.
+      # GIF output rounds to the nearest 10 ms and caps the encoded delay at 655,350 ms
+      # per frame. Only supported with output_format=gif.
+      attr_accessor frame_duration_ms: Integer?
 
       # Control how much effort the model will exert to match the style and features,
       # especially facial features, of input images. Supports `high` and `low` on
@@ -103,8 +123,8 @@ module OpenAI
       # The GPT image model to use for image editing (`gpt-image-1-mini`,
       # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-      # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-      # `chatgpt-image-latest`).
+      # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`,
+      # `gpt-image-2.6-sunburst`, `gpt-image-2.6-flare`, or `chatgpt-image-latest`).
       #
       # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
       # `gpt-image-2.5-flare` instead.
@@ -119,8 +139,7 @@ module OpenAI
       attr_accessor output_compression: Integer?
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
-      # default value is `png`.
+      # supported for the GPT image models. The default value is `png`.
       attr_accessor output_format: OpenAI::Models::ImageEditParams::output_format?
 
       # The number of partial images to generate. This parameter is used for streaming
@@ -200,6 +219,20 @@ module OpenAI
       #   backgrounds are available for supported GPT Image models. For `gpt-image-2` and
       #   `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
       #   set the output format to `png` or `webp`.
+      # @param complexity
+      #   Computation spent planning the image, independently of rendering quality. Uses
+      #   the image model's configured default when omitted. For SVG output, controls the
+      #   reference image, independently of the SVG author's reasoning.
+      # @param frame_count
+      #   Number of frames for GIF output. Accepts integers from 2 through 16. Defaults to
+      #   9 when omitted. Only supported with output_format=gif. The requested size must
+      #   satisfy the selected model's GIF size limits. GIF output does not support
+      #   streaming, partial images, masks, or custom output compression. Requires access
+      #   to the GIF preview for the selected model.
+      # @param frame_duration_ms
+      #   Requested delay per GIF frame, in milliseconds. Defaults to 200 when omitted.
+      #   GIF output rounds to the nearest 10 ms and caps the encoded delay at 655,350 ms
+      #   per frame. Only supported with output_format=gif.
       # @param input_fidelity
       #   Control how much effort the model will exert to match the style and features,
       #   especially facial features, of input images. Supports `high` and `low` on
@@ -226,8 +259,8 @@ module OpenAI
       #   The GPT image model to use for image editing (`gpt-image-1-mini`,
       #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-      #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-      #   `chatgpt-image-latest`).
+      #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`,
+      #   `gpt-image-2.6-sunburst`, `gpt-image-2.6-flare`, or `chatgpt-image-latest`).
       #
       #   `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
       #   `gpt-image-2.5-flare` instead.
@@ -239,8 +272,7 @@ module OpenAI
       #   defaults to 100.
       # @param output_format
       #   The format in which the generated images are returned. This parameter is only
-      #   supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
-      #   default value is `png`.
+      #   supported for the GPT image models. The default value is `png`.
       # @param partial_images
       #   The number of partial images to generate. This parameter is used for streaming
       #   responses that return partial images. Value must be between 0 and 3. When set to
@@ -284,6 +316,9 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
+        ?complexity: OpenAI::Models::ImageEditParams::complexity?,
+        ?frame_count: Integer?,
+        ?frame_duration_ms: Integer?,
         ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
         ?markup: OpenAI::Internal::file_input,
         ?mask: OpenAI::Internal::file_input,
@@ -304,6 +339,9 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
+        ?complexity: OpenAI::Models::ImageEditParams::complexity?,
+        ?frame_count: Integer?,
+        ?frame_duration_ms: Integer?,
         ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
         ?markup: OpenAI::Internal::file_input,
         ?mask: OpenAI::Internal::file_input,
@@ -343,6 +381,18 @@ module OpenAI
         def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::background]
       end
 
+      type complexity = :low | :medium | :high
+
+      module Complexity
+        extend OpenAI::Internal::Type::Enum
+
+        LOW: :low
+        MEDIUM: :medium
+        HIGH: :high
+
+        def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::complexity]
+      end
+
       type input_fidelity = :high | :low
 
       module InputFidelity
@@ -362,7 +412,7 @@ module OpenAI
         def self?.variants: -> ::Array[OpenAI::Models::ImageEditParams::model]
       end
 
-      type output_format = :png | :jpeg | :webp
+      type output_format = :png | :jpeg | :webp | :gif
 
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
@@ -370,6 +420,7 @@ module OpenAI
         PNG: :png
         JPEG: :jpeg
         WEBP: :webp
+        GIF: :gif
 
         def self?.values: -> ::Array[OpenAI::Models::ImageEditParams::output_format]
       end

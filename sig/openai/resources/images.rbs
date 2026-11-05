@@ -15,6 +15,9 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
+        ?complexity: OpenAI::Models::ImageEditParams::complexity?,
+        ?frame_count: Integer?,
+        ?frame_duration_ms: Integer?,
         ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
         ?markup: OpenAI::Internal::file_input,
         ?mask: OpenAI::Internal::file_input,
@@ -35,6 +38,9 @@ module OpenAI
         image: OpenAI::Models::ImageEditParams::image,
         prompt: String,
         ?background: OpenAI::Models::ImageEditParams::background?,
+        ?complexity: OpenAI::Models::ImageEditParams::complexity?,
+        ?frame_count: Integer?,
+        ?frame_duration_ms: Integer?,
         ?input_fidelity: OpenAI::Models::ImageEditParams::input_fidelity?,
         ?markup: OpenAI::Internal::file_input,
         ?mask: OpenAI::Internal::file_input,
@@ -54,6 +60,9 @@ module OpenAI
       def generate: (
         prompt: String,
         ?background: OpenAI::Models::ImageGenerateParams::background?,
+        ?complexity: OpenAI::Models::ImageGenerateParams::complexity?,
+        ?frame_count: Integer?,
+        ?frame_duration_ms: Integer?,
         ?model: OpenAI::Models::ImageGenerateParams::model?,
         ?moderation: OpenAI::Models::ImageGenerateParams::moderation?,
         ?n: Integer?,
@@ -65,6 +74,7 @@ module OpenAI
         ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
+        ?svg: OpenAI::ImageGenerateParams::Svg?,
         ?user: String,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::ImagesResponse
@@ -72,6 +82,9 @@ module OpenAI
       def generate_stream_raw: (
         prompt: String,
         ?background: OpenAI::Models::ImageGenerateParams::background?,
+        ?complexity: OpenAI::Models::ImageGenerateParams::complexity?,
+        ?frame_count: Integer?,
+        ?frame_duration_ms: Integer?,
         ?model: OpenAI::Models::ImageGenerateParams::model?,
         ?moderation: OpenAI::Models::ImageGenerateParams::moderation?,
         ?n: Integer?,
@@ -83,6 +96,7 @@ module OpenAI
         ?safety_identifier: String?,
         ?size: OpenAI::Models::ImageGenerateParams::size?,
         ?style: OpenAI::Models::ImageGenerateParams::style?,
+        ?svg: OpenAI::ImageGenerateParams::Svg?,
         ?user: String,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Internal::Stream[OpenAI::Models::image_gen_stream_event]

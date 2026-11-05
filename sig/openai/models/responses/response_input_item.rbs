@@ -523,7 +523,8 @@ module OpenAI
             ?output_format: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::quality?,
             ?revised_prompt: String?,
-            ?size: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::size?
+            ?size: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::size?,
+            ?svg_usage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage
           }
 
         class ImageGenerationCall < OpenAI::Internal::Type::BaseModel
@@ -566,6 +567,12 @@ module OpenAI
           # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
           attr_accessor size: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::size?
 
+          attr_reader svg_usage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage?
+
+          def svg_usage=: (
+            OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage
+          ) -> OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage
+
           # @param id
           #   The unique ID of the image generation call.
           # @param result
@@ -600,6 +607,7 @@ module OpenAI
             ?quality: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::quality?,
             ?revised_prompt: String?,
             ?size: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::size?,
+            ?svg_usage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage,
             ?type: :image_generation_call
           ) -> void
 
@@ -614,7 +622,8 @@ module OpenAI
             ?output_format: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::output_format?,
             ?quality: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::quality?,
             ?revised_prompt: String?,
-            ?size: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::size?
+            ?size: OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::size?,
+            ?svg_usage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage
           }
 
           type status = :in_progress | :completed | :generating | :failed
@@ -751,7 +760,7 @@ module OpenAI
             end
           end
 
-          type output_format = :png | :webp | :jpeg
+          type output_format = :png | :webp | :jpeg | :gif | :svg
 
           module OutputFormat
             extend OpenAI::Internal::Type::Enum
@@ -759,6 +768,8 @@ module OpenAI
             PNG: :png
             WEBP: :webp
             JPEG: :jpeg
+            GIF: :gif
+            SVG: :svg
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall::output_format]
           end
@@ -788,6 +799,43 @@ module OpenAI
             SIZE_1024X1024: :"1024x1024"
             SIZE_1024X1536: :"1024x1536"
             SIZE_1536X1024: :"1536x1024"
+          end
+
+          type svg_usage =
+            {
+              input_tokens: Integer,
+              model: String,
+              output_tokens: Integer,
+              reasoning_tokens: Integer,
+              total_tokens: Integer
+            }
+
+          class SvgUsage < OpenAI::Internal::Type::BaseModel
+            attr_accessor input_tokens: Integer
+
+            attr_accessor model: String
+
+            attr_accessor output_tokens: Integer
+
+            attr_accessor reasoning_tokens: Integer
+
+            attr_accessor total_tokens: Integer
+
+            def initialize: (
+              input_tokens: Integer,
+              model: String,
+              output_tokens: Integer,
+              reasoning_tokens: Integer,
+              total_tokens: Integer
+            ) -> void
+
+            def to_hash: -> {
+              input_tokens: Integer,
+              model: String,
+              output_tokens: Integer,
+              reasoning_tokens: Integer,
+              total_tokens: Integer
+            }
           end
         end
 

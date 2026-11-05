@@ -182,7 +182,8 @@ class OpenAI::Test::Resources::Beta::Responses::InputItemsTest < OpenAI::Test::R
             output_format: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Quality | nil,
             revised_prompt: String | nil,
-            size: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size | nil
+            size: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size | nil,
+            svg_usage: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage | nil
           } | {
             type: :code_interpreter_call,
             id: String,
