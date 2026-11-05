@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.119.0](https://github.com/openai/openai-ruby/compare/v0.118.0...v0.119.0) (2026-11-05)
+
+
+### Features
+
+* **api:** add Australia, India, and Japan residency options ([#1036](https://github.com/openai/openai-ruby/issues/1036)) ([643e5ca](https://github.com/openai/openai-ruby/commit/643e5ca4b4f80b1f6fde36e558216577df6ebfa1))
+* **api:** add GPT-6 Rosalind to the model catalog ([#1032](https://github.com/openai/openai-ruby/issues/1032)) ([8656953](https://github.com/openai/openai-ruby/commit/86569535a607f6492b990bdb3ac5fcda9202afd9))
+* **api:** add image complexity and GIF and SVG output controls ([#1037](https://github.com/openai/openai-ruby/issues/1037)) ([228e36a](https://github.com/openai/openai-ruby/commit/228e36acebfba78d722282dc1dc3afd514283c5c))
+* **api:** expand agent turn errors and image and audio options ([#1033](https://github.com/openai/openai-ruby/issues/1033)) ([2f3c069](https://github.com/openai/openai-ruby/commit/2f3c06928494d2b2ec8c5e58c7e3d7966439ab3f))
+
 ## [0.118.0](https://github.com/openai/openai-ruby/compare/v0.117.0...v0.118.0) (2026-11-03)
 
 
