@@ -206,7 +206,7 @@ module OpenAI
     # @param base_url [String, nil] Override the default base URL for the API, e.g.,
     # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
     #
-    # @param data_residency [Symbol, String, nil] Select `global`, `us`, `eu`, `ae`.
+    # @param data_residency [Symbol, String, nil] Select `global`, `us`, `eu`, `ae`, `au`, `in`, `jp`.
     #   Mutually exclusive with an explicit `base_url` or `provider`.
     #   This selects an endpoint; project and model eligibility still apply.
     #
