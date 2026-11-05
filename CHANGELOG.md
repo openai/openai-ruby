@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.120.0](https://github.com/openai/openai-ruby/compare/v0.119.0...v0.120.0) (2026-11-05)
+
+
+### Features
+
+* **api:** add a model option for Responses ([#1040](https://github.com/openai/openai-ruby/issues/1040)) ([54b9096](https://github.com/openai/openai-ruby/commit/54b9096aa813460ad5f6cd81b807386b2da7b50a))
+
+
+### Chores
+
+* **deps:** bump the codeql group with 2 updates ([#1035](https://github.com/openai/openai-ruby/issues/1035)) ([b39ac63](https://github.com/openai/openai-ruby/commit/b39ac637da1d0bf30cf119e799b523e990ecada1))
+* **deps:** bump the codeql group with 2 updates ([#1039](https://github.com/openai/openai-ruby/issues/1039)) ([402375e](https://github.com/openai/openai-ruby/commit/402375ee11d8c47a5ab5dac356d1e7017249f26c))
+
 ## [0.119.0](https://github.com/openai/openai-ruby/compare/v0.118.0...v0.119.0) (2026-11-05)
 
 
