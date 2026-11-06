@@ -14,7 +14,7 @@ module OpenAI
         #   State variable key-value pairs applied when invoking the workflow. Defaults to
         #   null when no overrides were provided.
         #
-        #   @return [Hash{Symbol=>String, Boolean, Float}, nil]
+        #   @return [Hash{Symbol=>String, Integer, Boolean, Float}, nil]
         required(
           :state_variables,
           -> { OpenAI::Internal::Type::HashOf[union: OpenAI::Beta::ChatKitWorkflow::StateVariable] },
@@ -40,7 +40,7 @@ module OpenAI
         #   @param id [String]
         #     Identifier of the workflow backing the session.
         #
-        #   @param state_variables [Hash{Symbol=>String, Boolean, Float}, nil]
+        #   @param state_variables [Hash{Symbol=>String, Integer, Boolean, Float}, nil]
         #     State variable key-value pairs applied when invoking the workflow. Defaults to
         #     null when no overrides were provided.
         #
@@ -55,12 +55,14 @@ module OpenAI
 
           variant String
 
+          variant Integer
+
           variant OpenAI::Internal::Type::Boolean
 
           variant Float
 
           # @!method self.variants
-          #   @return [Array(String, Boolean, Float)]
+          #   @return [Array(String, Integer, Boolean, Float)]
         end
 
         # @see OpenAI::Models::Beta::ChatKitWorkflow#tracing

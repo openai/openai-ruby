@@ -47,6 +47,12 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
+          # @!attribute review
+          #   Action review mode. Omit to use none.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review, nil]
+          optional :review, enum: -> { OpenAI::Beta::Agents::SessionCreateParams::Review }
+
           # @!attribute spend_control
           #   Optional spending limit in USD cents. Omission or null creates an unlimited
           #   session.
@@ -66,7 +72,7 @@ module OpenAI
           #   @return [Array<String>, nil]
           optional :vault_ids, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
-          # @!method initialize(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, spend_control: nil, vault_ids: nil, request_options: {})
+          # @!method initialize(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, review: nil, spend_control: nil, vault_ids: nil, request_options: {})
           #   @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #     An inline execution environment or a reference to an environment template.
           #
@@ -88,6 +94,9 @@ module OpenAI
           #     Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #     characters. Omission or null defaults to an empty map.
           #
+          #   @param review [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review]
+          #     Action review mode. Omit to use none.
+          #
           #   @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
           #     Optional spending limit in USD cents. Omission or null creates an unlimited
           #     session.
@@ -98,6 +107,27 @@ module OpenAI
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           class Agent < OpenAI::Internal::Type::BaseModel
+            # @!attribute compaction
+            #   Context compaction settings. Omit to keep the current settings. A supplied
+            #   object replaces the settings; null or an empty object enables background
+            #   compaction.
+            #
+            #   @return [OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::Compaction, nil]
+            optional(
+              :compaction,
+              -> {
+                OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction
+              },
+              nil?: true
+            )
+
+            # @!attribute experimental
+            #   Experimental settings to merge by key. Omitted settings keep their current
+            #   values.
+            #
+            #   @return [OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::Experimental, nil]
+            optional :experimental, -> { OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental }
+
             # @!attribute instructions
             #   Additional instructions appended to the agent's default base instructions. Omit
             #   to leave unchanged.
@@ -145,7 +175,7 @@ module OpenAI
             #   resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
             #   JSON.
             #
-            #   @return [Array<OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse>, nil]
+            #   @return [Array<OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse, OpenAI::Models::Beta::AgentToolParam::Automations>, nil]
             optional(
               :tools,
               -> {
@@ -154,9 +184,18 @@ module OpenAI
               nil?: true
             )
 
-            # @!method initialize(instructions: nil, model: nil, multi_agent: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil)
+            # @!method initialize(compaction: nil, experimental: nil, instructions: nil, model: nil, multi_agent: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil)
             #   Agent configuration. With `agent_id`, supplied fields override the saved agent
             #   for this session. Without `agent_id`, `model` is required.
+            #
+            #   @param compaction [OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::Compaction, nil]
+            #     Context compaction settings. Omit to keep the current settings. A supplied
+            #     object replaces the settings; null or an empty object enables background
+            #     compaction.
+            #
+            #   @param experimental [OpenAI::Models::Beta::Agents::SessionCreateParams::Agent::Experimental]
+            #     Experimental settings to merge by key. Omitted settings keep their current
+            #     values.
             #
             #   @param instructions [String, nil]
             #     Additional instructions appended to the agent's default base instructions. Omit
@@ -178,10 +217,49 @@ module OpenAI
             #   @param text [OpenAI::Models::Beta::AgentTextParam, nil]
             #     Configuration for text generated by the agent.
             #
-            #   @param tools [Array<OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse>, nil]
+            #   @param tools [Array<OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse, OpenAI::Models::Beta::AgentToolParam::Automations>, nil]
             #     Tools available to the agent. Omit to inherit, or pass null to clear them. The
             #     resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
             #     JSON.
+
+            # @see OpenAI::Models::Beta::Agents::SessionCreateParams::Agent#compaction
+            class Compaction < OpenAI::Internal::Type::BaseModel
+              # @!attribute async
+              #   Whether to compact context in the background. Omission or null defaults to true.
+              #   Set to false to use blocking compaction. Background compaction may increase
+              #   token usage.
+              #
+              #   @return [Boolean, nil]
+              optional :async, OpenAI::Internal::Type::Boolean, nil?: true
+
+              # @!method initialize(async: nil)
+              #   Context compaction settings. Omit to keep the current settings. A supplied
+              #   object replaces the settings; null or an empty object enables background
+              #   compaction.
+              #
+              #   @param async [Boolean, nil]
+              #     Whether to compact context in the background. Omission or null defaults to true.
+              #     Set to false to use blocking compaction. Background compaction may increase
+              #     token usage.
+            end
+
+            # @see OpenAI::Models::Beta::Agents::SessionCreateParams::Agent#experimental
+            class Experimental < OpenAI::Internal::Type::BaseModel
+              # @!attribute time_awareness
+              #   Whether to give the model periodic current-time reminders. Omit to keep the
+              #   current setting.
+              #
+              #   @return [Boolean, nil]
+              optional :time_awareness, OpenAI::Internal::Type::Boolean
+
+              # @!method initialize(time_awareness: nil)
+              #   Experimental settings to merge by key. Omitted settings keep their current
+              #   values.
+              #
+              #   @param time_awareness [Boolean]
+              #     Whether to give the model periodic current-time reminders. Omit to keep the
+              #     current setting.
+            end
 
             # The service tier used for model requests.
             #
@@ -230,6 +308,20 @@ module OpenAI
             AgentSessionInputMessageParamArray = OpenAI::Internal::Type::ArrayOf[
               -> { OpenAI::Beta::AgentSessionInputMessageParam }
             ]
+          end
+
+          # Action review mode. Omit to use none.
+          module Review
+            extend OpenAI::Internal::Type::Enum
+
+            # Keep the existing execution behavior without automatic action review.
+            NONE = :none
+
+            # Review eligible actions automatically. Deny manual approval fallbacks.
+            AUTO_REVIEW = :auto_review
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
           end
 
           class SpendControl < OpenAI::Internal::Type::BaseModel

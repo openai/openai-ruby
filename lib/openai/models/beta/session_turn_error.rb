@@ -34,6 +34,9 @@ module OpenAI
           # The request exceeds the model's context window.
           CONTEXT_LENGTH_EXCEEDED = :context_length_exceeded
 
+          # The model reached its output token limit before finishing the response.
+          MAX_OUTPUT_TOKENS = :max_output_tokens
+
           # The session has reached its usage budget.
           SESSION_BUDGET_EXCEEDED = :session_budget_exceeded
 

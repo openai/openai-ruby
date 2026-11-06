@@ -990,6 +990,12 @@ module OpenAI
           }
           attr_accessor :size
 
+          sig { returns(T.nilable(OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage)) }
+          attr_reader :svg_usage
+
+          sig { params(svg_usage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage::OrHash).void }
+          attr_writer :svg_usage
+
           # An image generation request made by the model.
           sig do
             params(
@@ -1015,6 +1021,8 @@ module OpenAI
               revised_prompt: T.nilable(String),
 
               size: T.nilable(T.any(String, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::OrSymbol)),
+
+              svg_usage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage::OrHash,
 
               type: Symbol
             )
@@ -1053,6 +1061,8 @@ module OpenAI
             # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
             size: nil,
 
+            svg_usage: nil,
+
             # The type of the image generation call. Always `image_generation_call`.
 
             type: :image_generation_call
@@ -1076,7 +1086,8 @@ module OpenAI
                 revised_prompt: T.nilable(String),
                 size: T.nilable(
                   T.any(String, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::OrSymbol)
-                )
+                ),
+                svg_usage: OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage
               }
             )
           end
@@ -1352,6 +1363,8 @@ module OpenAI
             PNG = T.let(:png, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
             WEBP = T.let(:webp, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
             JPEG = T.let(:jpeg, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+            GIF = T.let(:gif, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+            SVG = T.let(:svg, OpenAI::Responses::ResponseInputItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
 
             sig {
               override.returns(
@@ -1420,6 +1433,74 @@ module OpenAI
               :"1536x1024",
               OpenAI::Responses::ResponseInputItem::ImageGenerationCall::Size::TaggedSymbol
             )
+
+          end
+
+          class SvgUsage < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseInputItem::ImageGenerationCall::SvgUsage,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Integer) }
+            attr_accessor :input_tokens
+
+            sig { returns(String) }
+            attr_accessor :model
+
+            sig { returns(Integer) }
+            attr_accessor :output_tokens
+
+            sig { returns(Integer) }
+            attr_accessor :reasoning_tokens
+
+            sig { returns(Integer) }
+            attr_accessor :total_tokens
+
+            sig do
+              params(
+
+                input_tokens: Integer,
+
+                model: String,
+
+                output_tokens: Integer,
+
+                reasoning_tokens: Integer,
+
+                total_tokens: Integer
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              input_tokens:,
+
+              model:,
+
+              output_tokens:,
+
+              reasoning_tokens:,
+
+              total_tokens:
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  input_tokens: Integer,
+                  model: String,
+                  output_tokens: Integer,
+                  reasoning_tokens: Integer,
+                  total_tokens: Integer
+                }
+              )
+            end
+            def to_hash
+            end
 
           end
         end
@@ -3433,15 +3514,24 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # The unique ID of this compaction trigger.
+          sig { returns(T.nilable(String)) }
+          attr_accessor :id
+
           # Compacts the current context. Must be the final input item.
           sig do
             params(
+
+              id: T.nilable(String),
 
               type: Symbol
             )
               .returns(T.attached_class)
           end
           def self.new(
+
+            # The unique ID of this compaction trigger.
+            id: nil,
 
             # The type of the item. Always `compaction_trigger`.
 
@@ -3451,7 +3541,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {type: Symbol}
+              {type: Symbol, id: T.nilable(String)}
             )
           end
           def to_hash

@@ -4,7 +4,7 @@ module OpenAI
       type decisions_delegation_update_config =
         {
           ?model: String,
-          ?questions: ::Array[OpenAI::Models::Live::DecisionsDelegationUpdateConfig::question]
+          ?questions: ::Array[OpenAI::Models::Live::decision_question]
         }
 
       class DecisionsDelegationUpdateConfig < OpenAI::Internal::Type::BaseModel
@@ -13,189 +13,28 @@ module OpenAI
         def model=: (String) -> String
 
         # Native Decision API questions evaluated together, in order.
-        attr_reader questions: ::Array[OpenAI::Models::Live::DecisionsDelegationUpdateConfig::question]?
+        attr_reader questions: ::Array[OpenAI::Models::Live::decision_question]?
 
         # Native Decision API questions evaluated together, in order.
         def questions=: (
-          ::Array[OpenAI::Models::Live::DecisionsDelegationUpdateConfig::question]
-        ) -> ::Array[OpenAI::Models::Live::DecisionsDelegationUpdateConfig::question]
+          ::Array[OpenAI::Models::Live::decision_question]
+        ) -> ::Array[OpenAI::Models::Live::decision_question]
 
         # @param questions
         #   Native Decision API questions evaluated together, in order.
         def initialize: (
           ?model: String,
-          ?questions: ::Array[OpenAI::Models::Live::DecisionsDelegationUpdateConfig::question]
+          ?questions: ::Array[OpenAI::Models::Live::decision_question]
         ) -> void
 
         def to_hash: -> {
           ?model: String,
-          ?questions: ::Array[OpenAI::Models::Live::DecisionsDelegationUpdateConfig::question]
+          ?questions: ::Array[OpenAI::Models::Live::decision_question]
         }
 
-        type question =
-          OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Predicate
-          | OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice
-          | OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score
+        type question = ::OpenAI::Models::Live::decision_question
 
-        module Question
-          extend OpenAI::Internal::Type::Union
-
-          type predicate =
-            { instructions: String, ?type: :predicate, ?name: String }
-
-          class Predicate < OpenAI::Internal::Type::BaseModel
-            attr_accessor instructions: String
-
-            # The type of the object. Always `predicate`.
-            attr_accessor type: :predicate
-
-            attr_reader name: String?
-
-            def name=: (String) -> String
-
-            # @param type
-            #   The type of the object. Always `predicate`.
-            def initialize: (
-              instructions: String,
-              ?name: String,
-              ?type: :predicate
-            ) -> void
-
-            def to_hash: -> {
-              instructions: String,
-              ?type: :predicate,
-              ?name: String
-            }
-          end
-
-          type choice =
-            {
-              choices: ::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice],
-              instructions: String,
-              ?type: :choice,
-              ?name: String
-            }
-
-          class Choice < OpenAI::Internal::Type::BaseModel
-            # Provide between 2 and 255 choices. Each choice must be unique.
-            attr_accessor choices: ::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice]
-
-            attr_accessor instructions: String
-
-            # The type of the object. Always `choice`.
-            attr_accessor type: :choice
-
-            attr_reader name: String?
-
-            def name=: (String) -> String
-
-            # @param choices
-            #   Provide between 2 and 255 choices. Each choice must be unique.
-            # @param type
-            #   The type of the object. Always `choice`.
-            def initialize: (
-              choices: ::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice],
-              instructions: String,
-              ?name: String,
-              ?type: :choice
-            ) -> void
-
-            def to_hash: -> {
-              choices: ::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice],
-              instructions: String,
-              ?type: :choice,
-              ?name: String
-            }
-
-            type choice =
-              {
-                value: OpenAI::Models::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice::value,
-                ?description: String
-              }
-
-            class Choice < OpenAI::Internal::Type::BaseModel
-              # Choice values are typed: a string and a boolean with the same text are distinct.
-              attr_accessor value: OpenAI::Models::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice::value
-
-              attr_reader description: String?
-
-              def description=: (String) -> String
-
-              # @param value
-              #   Choice values are typed: a string and a boolean with the same text are distinct.
-              def initialize: (
-                value: OpenAI::Models::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice::value,
-                ?description: String
-              ) -> void
-
-              def to_hash: -> {
-                value: OpenAI::Models::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice::value,
-                ?description: String
-              }
-
-              type value = String | bool
-
-              module Value
-                extend OpenAI::Internal::Type::Union
-
-                def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionsDelegationUpdateConfig::Question::Choice::Choice::value]
-              end
-            end
-          end
-
-          type score =
-            {
-              instructions: String,
-              levels: ::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Level],
-              ?type: :score,
-              ?name: String
-            }
-
-          class Score < OpenAI::Internal::Type::BaseModel
-            attr_accessor instructions: String
-
-            attr_accessor levels: ::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Level]
-
-            # The type of the object. Always `score`.
-            attr_accessor type: :score
-
-            attr_reader name: String?
-
-            def name=: (String) -> String
-
-            # @param type
-            #   The type of the object. Always `score`.
-            def initialize: (
-              instructions: String,
-              levels: ::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Level],
-              ?name: String,
-              ?type: :score
-            ) -> void
-
-            def to_hash: -> {
-              instructions: String,
-              levels: ::Array[OpenAI::Live::DecisionsDelegationUpdateConfig::Question::Score::Level],
-              ?type: :score,
-              ?name: String
-            }
-
-            type level = { label: String, ?description: String }
-
-            class Level < OpenAI::Internal::Type::BaseModel
-              attr_accessor label: String
-
-              attr_reader description: String?
-
-              def description=: (String) -> String
-
-              def initialize: (label: String, ?description: String) -> void
-
-              def to_hash: -> { label: String, ?description: String }
-            end
-          end
-
-          def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionsDelegationUpdateConfig::question]
-        end
+        module Question = ::OpenAI::Models::Live::DecisionQuestion
       end
     end
   end

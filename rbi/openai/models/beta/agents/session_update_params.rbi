@@ -22,7 +22,7 @@ module OpenAI
           sig { returns(String) }
           attr_accessor :session_id
 
-          # Model settings for subsequent turns. Omitted fields stay unchanged.
+          # Agent settings to update on this session. Omitted fields stay unchanged.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Agent)) }
           attr_reader :agent
 
@@ -34,6 +34,14 @@ module OpenAI
           # characters.
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
+
+          # Default action review for new root turns. Existing turns and their subagents
+          # keep their review mode.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol)) }
+          attr_reader :review
+
+          sig { params(review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol).void }
+          attr_writer :review
 
           # Omit to retain the limit; null or a null limit removes it without resetting
           # spend.
@@ -54,6 +62,8 @@ module OpenAI
 
               metadata: T.nilable(T::Hash[Symbol, String]),
 
+              review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
+
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
 
               request_options: OpenAI::RequestOptions::OrHash
@@ -64,13 +74,17 @@ module OpenAI
 
             session_id:,
 
-            # Model settings for subsequent turns. Omitted fields stay unchanged.
+            # Agent settings to update on this session. Omitted fields stay unchanged.
             agent: nil,
 
             # Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters.
             metadata: nil,
+
+            # Default action review for new root turns. Existing turns and their subagents
+            # keep their review mode.
+            review: nil,
 
             # Omit to retain the limit; null or a null limit removes it without resetting
             # spend.
@@ -86,6 +100,7 @@ module OpenAI
                 session_id: String,
                 agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
                 metadata: T.nilable(T::Hash[Symbol, String]),
+                review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
                 spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl),
                 request_options: OpenAI::RequestOptions
               }
@@ -120,7 +135,29 @@ module OpenAI
             sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Agent::ServiceTier::OrSymbol)) }
             attr_accessor :service_tier
 
-            # Model settings for subsequent turns. Omitted fields stay unchanged.
+            # Replaces the session tools. Functions and MCP servers change on the next model
+            # call. Built-in tools change by the next turn. Omit to keep the current tools, or
+            # pass null or an empty array to clear them.
+            sig {
+              returns(
+                T.nilable(
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::AgentToolParam::Function,
+                      OpenAI::Beta::AgentToolParam::ToolSearch,
+                      OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling,
+                      OpenAI::Beta::AgentToolParam::Mcp,
+                      OpenAI::Beta::AgentToolParam::WebSearch,
+                      OpenAI::Beta::AgentToolParam::ComputerUse,
+                      OpenAI::Beta::AgentToolParam::Automations
+                    )
+                  ]
+                )
+              )
+            }
+            attr_accessor :tools
+
+            # Agent settings to update on this session. Omitted fields stay unchanged.
             sig do
               params(
 
@@ -128,7 +165,21 @@ module OpenAI
 
                 reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning::OrHash,
 
-                service_tier: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Agent::ServiceTier::OrSymbol)
+                service_tier: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Agent::ServiceTier::OrSymbol),
+
+                tools: T.nilable(
+                  T::Array[
+                    T.any(
+                      OpenAI::Beta::AgentToolParam::Function::OrHash,
+                      OpenAI::Beta::AgentToolParam::ToolSearch::OrHash,
+                      OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling::OrHash,
+                      OpenAI::Beta::AgentToolParam::Mcp::OrHash,
+                      OpenAI::Beta::AgentToolParam::WebSearch::OrHash,
+                      OpenAI::Beta::AgentToolParam::ComputerUse::OrHash,
+                      OpenAI::Beta::AgentToolParam::Automations::OrHash
+                    )
+                  ]
+                )
               )
                 .returns(T.attached_class)
             end
@@ -141,8 +192,13 @@ module OpenAI
               reasoning: nil,
 
               # Omit to keep the current tier. Null resets it to auto.
+              service_tier: nil,
 
-              service_tier: nil
+              # Replaces the session tools. Functions and MCP servers change on the next model
+              # call. Built-in tools change by the next turn. Omit to keep the current tools, or
+              # pass null or an empty array to clear them.
+
+              tools: nil
             )
             end
 
@@ -151,7 +207,20 @@ module OpenAI
                 {
                   model: String,
                   reasoning: OpenAI::Beta::Agents::SessionUpdateParams::Agent::Reasoning,
-                  service_tier: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Agent::ServiceTier::OrSymbol)
+                  service_tier: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Agent::ServiceTier::OrSymbol),
+                  tools: T.nilable(
+                    T::Array[
+                      T.any(
+                        OpenAI::Beta::AgentToolParam::Function,
+                        OpenAI::Beta::AgentToolParam::ToolSearch,
+                        OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling,
+                        OpenAI::Beta::AgentToolParam::Mcp,
+                        OpenAI::Beta::AgentToolParam::WebSearch,
+                        OpenAI::Beta::AgentToolParam::ComputerUse,
+                        OpenAI::Beta::AgentToolParam::Automations
+                      )
+                    ]
+                  )
                 }
               )
             end
@@ -259,6 +328,25 @@ module OpenAI
               }
               def self.values
               end
+            end
+          end
+
+          # Default action review for new root turns. Existing turns and their subagents
+          # keep their review mode.
+          module Review
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Agents::SessionUpdateParams::Review) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            # Keep the existing execution behavior without automatic action review.
+            NONE = T.let(:none, OpenAI::Beta::Agents::SessionUpdateParams::Review::TaggedSymbol)
+
+            # Review eligible actions automatically. Deny manual approval fallbacks.
+            AUTO_REVIEW = T.let(:auto_review, OpenAI::Beta::Agents::SessionUpdateParams::Review::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::Agents::SessionUpdateParams::Review::TaggedSymbol]) }
+            def self.values
             end
           end
 

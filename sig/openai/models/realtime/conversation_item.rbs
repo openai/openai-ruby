@@ -11,6 +11,7 @@ module OpenAI
         | OpenAI::Realtime::RealtimeMcpListTools
         | OpenAI::Realtime::RealtimeMcpToolCall
         | OpenAI::Realtime::RealtimeMcpApprovalRequest
+        | OpenAI::Realtime::ConversationItemWithReference
 
       module ConversationItem
         extend OpenAI::Internal::Type::Union

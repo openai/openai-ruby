@@ -1,0 +1,7 @@
+# @type var connection: OpenAI::Live::SidebandConnection
+connection = _ = nil
+connection.send_event(OpenAI::Live::SidebandClientEvent::TransportDtmfSend.new(event: "*"))
+connection.send_event(OpenAI::Live::SidebandClientEvent::TransportDtmfSend.new(event: "#", event_id: nil))
+connection.send_event(OpenAI::Live::SidebandClientEvent::TransportDtmfSend.new(event: "5", event_id: "synthetic"))
+connection.send_event(OpenAI::Live::SessionCloseEvent.new)
+connection.send_event({type: "transport.dtmf.send", event: "*"})

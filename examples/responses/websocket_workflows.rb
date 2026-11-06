@@ -8,6 +8,11 @@ require_relative "../../lib/openai"
 module OpenAI
   module Examples
     module ResponsesWebSocketWorkflows
+      # Identify only this example's idle timeout. Other cancellation and
+      # transport errors keep their original contracts.
+      class PreviewTimeout < StandardError
+      end
+
       module_function
 
       # One reader drains all requested lanes. This example fails the entire
@@ -78,6 +83,70 @@ module OpenAI
           max_bytes: 32 * 1024 * 1024,
           max_response_bytes: 64 * 1024 * 1024
         )
+      end
+
+      # max_bytes counts cumulative encoded typed events, not wire bytes or
+      # total process memory. Call separately for each response on each lane.
+      def preview_lane(lane, max_bytes:, seconds:)
+        unless max_bytes.is_a?(Integer) &&
+            max_bytes.positive? &&
+            (seconds.is_a?(Integer) || seconds.is_a?(Float)) &&
+            Float(seconds).finite? &&
+            seconds.positive?
+          raise ArgumentError, "Choose a positive integer byte budget and finite positive lifetime."
+        end
+
+        preview = OpenAI::Responses::IncrementalResponse.new
+        admitted_bytes = 0
+        deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + seconds
+        Async::Task.current.with_timeout(seconds, PreviewTimeout) do
+          loop do
+            return {outcome: :timeout} if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+
+            event = lane.receive
+            data = event.is_a?(OpenAI::Responses::UnknownServerEvent) ? event.to_h : event.deep_to_h
+            encoded_bytes = JSON.generate(data, max_nesting: false).bytesize
+            # Queued reads and JSON encoding can complete without yielding.
+            if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+              return {outcome: :timeout, last_received_event: event}
+            end
+
+            if encoded_bytes > max_bytes - admitted_bytes
+              return {outcome: :budget_exceeded, last_received_event: event}
+            end
+
+            admitted_bytes += encoded_bytes
+            preview.add(event)
+            if preview.phase == :terminal
+              terminal = preview.terminal_event
+              if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+                return {outcome: :timeout, last_received_event: event}
+              end
+
+              return {outcome: :terminal, terminal_event: terminal}
+            end
+          end
+        end
+
+      rescue PreviewTimeout
+        {outcome: :timeout}
+      ensure
+        preview&.reset
+      end
+
+      def preview(client:, model:)
+        # Limits for this short text example only. Choose larger budgets for
+        # legitimate image, audio, tool, or other large outputs.
+        OpenAI::Responses::Session
+          .open(
+            client: client,
+            limits: session_limits,
+            transport_options: {max_message_bytes: 16 * 1024 * 1024}
+          ) do |session|
+            lane = session.lane("preview")
+            lane.send_event(type: "response.create", model: model, input: "Write one brief sentence.")
+            preview_lane(lane, max_bytes: 4 * 1024 * 1024, seconds: 15)
+          end
       end
 
       def multiplex(client:, model:)
@@ -181,7 +250,7 @@ module OpenAI
       end
 
       def run(client:, model:, workflow:, timeout: 60, output: $stdout)
-        Sync do |task|
+        result = Sync do |task|
           task.with_timeout(timeout) do
             case workflow
             when "tools"
@@ -192,13 +261,19 @@ module OpenAI
               reconnect(client: client, model: model, store: true)
             when "stateless"
               reconnect(client: client, model: model, store: false)
+            when "preview"
+              preview(client: client, model: model)
             else
-              raise ArgumentError, "Choose tools, multiplex, stored, or stateless."
+              raise ArgumentError, "Choose tools, multiplex, stored, stateless, or preview."
             end
           end
         end
 
-        output.puts("Responses WebSocket workflow completed.")
+        if workflow == "preview"
+          output.puts("Responses WebSocket preview: #{result.fetch(:outcome)}.")
+        else
+          output.puts("Responses WebSocket workflow completed.")
+        end
       end
     end
   end

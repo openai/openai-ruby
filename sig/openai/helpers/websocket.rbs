@@ -23,17 +23,34 @@ module OpenAI
         ?transport: untyped,
         ?transport_options: Hash[untyped, untyped]
       ) {
-        (TypedConnection) -> untyped
+        (TypedConnection[untyped, untyped]) -> untyped
       } -> untyped
     end
 
-    class TypedConnection
-      include Enumerable[untyped]
+    module TypedResource[WebSocketClientEvent, WebSocketServerEvent]
+      include Resource
+
+      def connect: (
+        *untyped path_arguments,
+        ?query: Hash[untyped, untyped],
+        ?websocket_base_url: String?,
+        ?request_options: untyped,
+        ?transport: untyped,
+        ?transport_options: Hash[untyped, untyped]
+      ) {
+        (TypedConnection[WebSocketClientEvent, WebSocketServerEvent]) -> untyped
+      } -> untyped
+    end
+
+    class TypedConnection[in ClientEvent, out Elem]
+      include Enumerable[Elem]
 
       attr_reader url: URI::Generic
-      def receive: -> untyped
-      def send_event: (untyped event) -> void
-      def each: -> Enumerator[untyped, self] | { (untyped) -> void } -> self
+      def receive: -> Elem?
+      def send_event: (
+        ClientEvent | Hash[String | Symbol, untyped] event
+      ) -> void
+      def each: -> Enumerator[Elem, self] | { (Elem) -> void } -> self
       def close: (?code: Integer, ?reason: String) -> void
       def closed?: -> bool
     end

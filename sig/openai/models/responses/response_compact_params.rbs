@@ -4,6 +4,7 @@ module OpenAI
       type response_compact_params =
         {
           model: OpenAI::Models::Responses::ResponseCompactParams::model?,
+          ?image: OpenAI::Responses::ResponseCompactParams::Image,
           ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           ?instructions: String?,
           ?previous_response_id: String?,
@@ -24,6 +25,14 @@ module OpenAI
         # [model guide](https://developers.openai.com/api/docs/models) to browse and
         # compare available models.
         attr_accessor model: OpenAI::Models::Responses::ResponseCompactParams::model?
+
+        # Request level image options.
+        attr_reader image: OpenAI::Responses::ResponseCompactParams::Image?
+
+        # Request level image options.
+        def image=: (
+          OpenAI::Responses::ResponseCompactParams::Image
+        ) -> OpenAI::Responses::ResponseCompactParams::Image
 
         # Text, image, or file inputs to the model, used to generate a response
         attr_accessor input: OpenAI::Models::Responses::ResponseCompactParams::input?
@@ -49,7 +58,7 @@ module OpenAI
         # request can write up to four breakpoints. For cache matching, OpenAI considers
         # up to the latest 80 breakpoints in the conversation, without a content-block
         # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-        # `ttl` defaults to `30m`, which is currently the only supported value. See the
+        # `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
         # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
         # for current details.
         attr_accessor prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?
@@ -81,6 +90,8 @@ module OpenAI
         #   price points. Refer to the
         #   [model guide](https://developers.openai.com/api/docs/models) to browse and
         #   compare available models.
+        # @param image
+        #   Request level image options.
         # @param input
         #   Text, image, or file inputs to the model, used to generate a response
         # @param instructions
@@ -102,7 +113,7 @@ module OpenAI
         #   request can write up to four breakpoints. For cache matching, OpenAI considers
         #   up to the latest 80 breakpoints in the conversation, without a content-block
         #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-        #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
         #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
         #   for current details.
         # @param prompt_cache_retention
@@ -126,6 +137,7 @@ module OpenAI
         #   the parameter.
         def initialize: (
           model: OpenAI::Models::Responses::ResponseCompactParams::model?,
+          ?image: OpenAI::Responses::ResponseCompactParams::Image,
           ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           ?instructions: String?,
           ?previous_response_id: String?,
@@ -138,6 +150,7 @@ module OpenAI
 
         def to_hash: -> {
           model: OpenAI::Models::Responses::ResponseCompactParams::model?,
+          ?image: OpenAI::Responses::ResponseCompactParams::Image,
           ?input: OpenAI::Models::Responses::ResponseCompactParams::input?,
           ?instructions: String?,
           ?previous_response_id: String?,
@@ -151,6 +164,7 @@ module OpenAI
         type model =
           :"gpt-6-astra"
           | :"gpt-6.1-sol"
+          | :"gpt-6.1-terra"
           | :"gpt-6-sol"
           | :"gpt-6-luna"
           | :"gpt-5.6-sol"
@@ -257,7 +271,9 @@ module OpenAI
           | :"gpt-daybreak-blue-latest"
           | :"gpt-daybreak-red-latest"
           | :"gpt-5.6-cyber"
+          | :"gpt-6-cyber"
           | :"gpt-rosalind-research"
+          | :"gpt-6-rosalind"
           | String
 
         module Model
@@ -267,6 +283,7 @@ module OpenAI
 
           GPT_6_ASTRA: :"gpt-6-astra"
           GPT_6_1_SOL: :"gpt-6.1-sol"
+          GPT_6_1_TERRA: :"gpt-6.1-terra"
           GPT_6_SOL: :"gpt-6-sol"
           GPT_6_LUNA: :"gpt-6-luna"
           GPT_5_6_SOL: :"gpt-5.6-sol"
@@ -373,7 +390,52 @@ module OpenAI
           GPT_DAYBREAK_BLUE_LATEST: :"gpt-daybreak-blue-latest"
           GPT_DAYBREAK_RED_LATEST: :"gpt-daybreak-red-latest"
           GPT_5_6_CYBER: :"gpt-5.6-cyber"
+          GPT_6_CYBER: :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH: :"gpt-rosalind-research"
+          GPT_6_ROSALIND: :"gpt-6-rosalind"
+        end
+
+        type image =
+          {
+            ?context_compression: OpenAI::Models::Responses::ResponseCompactParams::Image::context_compression
+          }
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          attr_reader context_compression: OpenAI::Models::Responses::ResponseCompactParams::Image::context_compression?
+
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          def context_compression=: (
+            OpenAI::Models::Responses::ResponseCompactParams::Image::context_compression
+          ) -> OpenAI::Models::Responses::ResponseCompactParams::Image::context_compression
+
+          # @param context_compression
+          #   Controls image context optimization. Defaults to `auto`, which uses the model,
+          #   transport, and input to select a policy. Use `enabled` to require compression
+          #   support or `disabled` to turn it off.
+          def initialize: (
+            ?context_compression: OpenAI::Models::Responses::ResponseCompactParams::Image::context_compression
+          ) -> void
+
+          def to_hash: -> {
+            ?context_compression: OpenAI::Models::Responses::ResponseCompactParams::Image::context_compression
+          }
+
+          type context_compression = :auto | :enabled | :disabled
+
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            ENABLED: :enabled
+            DISABLED: :disabled
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::ResponseCompactParams::Image::context_compression]
+          end
         end
 
         type input =

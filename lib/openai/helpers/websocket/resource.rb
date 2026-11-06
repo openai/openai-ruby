@@ -21,6 +21,7 @@ module OpenAI
         error_factory = -> (url:, **options) { BindingConnectionError.new(url: url, **options) }
         ConnectionManager
           .new(
+            client: @client,
             transport: transport,
             transport_options: transport_options,
             default_transport: lambda do

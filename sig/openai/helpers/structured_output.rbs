@@ -1,6 +1,15 @@
 module OpenAI
   module Helpers
     module StructuredOutput
+      module RequestWithFormatUpdate
+        attr_accessor text_model: top
+      end
+
+      # @api private
+      def self.prepare_configuration_updates!: [K, V] (
+        ::Hash[K, V] request
+      ) -> ::Hash[K, V]
+
       class BaseModel < OpenAI::Internal::Type::BaseModel
         def self.optional: -> bot
         def self.to_json_schema: -> Hash[Symbol, untyped]

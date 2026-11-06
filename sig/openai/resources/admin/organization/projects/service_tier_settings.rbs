@@ -1,0 +1,25 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class Projects
+          class ServiceTierSettings
+            def retrieve: (
+              String project_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectServiceTierSettings
+
+            def update: (
+              String project_id,
+              ?default: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::default,
+              ?enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ServiceTierSettingUpdateParams::enabled_tiers,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Admin::Organization::Projects::ProjectServiceTierSettings
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

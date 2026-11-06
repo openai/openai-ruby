@@ -17,14 +17,14 @@ module OpenAI
         # The type of the content part.
         attr_accessor type: :text
 
-        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        # token block.
+        # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        # not rounded to a token block.
         attr_reader prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint?
 
-        # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        # token block.
+        # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        # not rounded to a token block.
         def prompt_cache_breakpoint=: (
           OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint
         ) -> OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint
@@ -32,9 +32,9 @@ module OpenAI
         # @param text
         #   The text content.
         # @param prompt_cache_breakpoint
-        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #   token block.
+        #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #   not rounded to a token block.
         # @param type
         #   The type of the content part.
         def initialize: (
@@ -49,17 +49,48 @@ module OpenAI
           ?prompt_cache_breakpoint: OpenAI::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint
         }
 
-        type prompt_cache_breakpoint = { ?mode: :explicit }
+        type prompt_cache_breakpoint =
+          {
+            ?mode: :explicit,
+            ?ttl: OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::ttl
+          }
 
         class PromptCacheBreakpoint < OpenAI::Internal::Type::BaseModel
           # The breakpoint mode. Always `explicit`.
           attr_accessor mode: :explicit
 
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          attr_reader ttl: OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::ttl?
+
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          def ttl=: (
+            OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::ttl
+          ) -> OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::ttl
+
+          # @param ttl
+          #   The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
           # @param mode
           #   The breakpoint mode. Always `explicit`.
-          def initialize: (?mode: :explicit) -> void
+          def initialize: (
+            ?ttl: OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::ttl,
+            ?mode: :explicit
+          ) -> void
 
-          def to_hash: -> { ?mode: :explicit }
+          def to_hash: -> {
+            ?mode: :explicit,
+            ?ttl: OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::ttl
+          }
+
+          type ttl = :"30m" | :"12h"
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M: :"30m"
+            TTL_12H: :"12h"
+
+            def self?.values: -> ::Array[OpenAI::Models::Chat::ChatCompletionContentPartText::PromptCacheBreakpoint::ttl]
+          end
         end
       end
     end

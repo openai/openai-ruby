@@ -18,6 +18,12 @@ module OpenAI
         #   @return [Symbol, String, OpenAI::Models::Beta::ResponseCompactParams::Model, nil]
         required :model, union: -> { OpenAI::Beta::ResponseCompactParams::Model }, nil?: true
 
+        # @!attribute image
+        #   Request level image options.
+        #
+        #   @return [OpenAI::Models::Beta::ResponseCompactParams::Image, nil]
+        optional :image, -> { OpenAI::Beta::ResponseCompactParams::Image }
+
         # @!attribute input
         #   Text, image, or file inputs to the model, used to generate a response
         #
@@ -55,7 +61,7 @@ module OpenAI
         #   request can write up to four breakpoints. For cache matching, OpenAI considers
         #   up to the latest 80 breakpoints in the conversation, without a content-block
         #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-        #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
         #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
         #   for current details.
         #
@@ -106,13 +112,16 @@ module OpenAI
         #   @return [Array<Symbol, OpenAI::Models::Beta::ResponseCompactParams::Beta>, nil]
         optional :betas, -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::ResponseCompactParams::Beta] }
 
-        # @!method initialize(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, betas: nil, request_options: {})
+        # @!method initialize(model:, image: nil, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, betas: nil, request_options: {})
         #   @param model [Symbol, String, OpenAI::Models::Beta::ResponseCompactParams::Model, nil]
         #     Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
         #     range of models with different capabilities, performance characteristics, and
         #     price points. Refer to the
         #     [model guide](https://developers.openai.com/api/docs/models) to browse and
         #     compare available models.
+        #
+        #   @param image [OpenAI::Models::Beta::ResponseCompactParams::Image]
+        #     Request level image options.
         #
         #   @param input [String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>, nil]
         #     Text, image, or file inputs to the model, used to generate a response
@@ -139,7 +148,7 @@ module OpenAI
         #     request can write up to four breakpoints. For cache matching, OpenAI considers
         #     up to the latest 80 breakpoints in the conversation, without a content-block
         #     lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-        #     `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #     `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
         #     [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
         #     for current details.
         #
@@ -179,6 +188,8 @@ module OpenAI
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_6_ASTRA }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_6_1_SOL }
+
+          variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_6_1_TERRA }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_6_SOL }
 
@@ -396,6 +407,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_5_6_CYBER }
 
+          variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_6_CYBER }
+
           variant const: -> { OpenAI::Models::Beta::ResponseCompactParams::Model::GPT_ROSALIND_RESEARCH }
 
           variant String
@@ -411,6 +424,7 @@ module OpenAI
 
           GPT_6_ASTRA = :"gpt-6-astra"
           GPT_6_1_SOL = :"gpt-6.1-sol"
+          GPT_6_1_TERRA = :"gpt-6.1-terra"
           GPT_6_SOL = :"gpt-6-sol"
           GPT_6_LUNA = :"gpt-6-luna"
           GPT_5_6_SOL = :"gpt-5.6-sol"
@@ -425,6 +439,9 @@ module OpenAI
           # replacements.
           GPT_5_4_NANO = :"gpt-5.4-nano"
           GPT_5_4_MINI_2026_03_17 = :"gpt-5.4-mini-2026-03-17"
+          # @deprecated Announced shutdown date: 2027-04-01. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_4_NANO_2026_03_17 = :"gpt-5.4-nano-2026-03-17"
           # @deprecated Announced shutdown date: 2026-08-10. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
@@ -442,6 +459,9 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           GPT_5_1 = :"gpt-5.1"
+          # @deprecated Announced shutdown date: 2027-04-01. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_1_2025_11_13 = :"gpt-5.1-2025-11-13"
           # @deprecated Announced shutdown date: 2026-07-23. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
@@ -770,9 +790,44 @@ module OpenAI
           GPT_DAYBREAK_BLUE_LATEST = :"gpt-daybreak-blue-latest"
           GPT_DAYBREAK_RED_LATEST = :"gpt-daybreak-red-latest"
           GPT_5_6_CYBER = :"gpt-5.6-cyber"
+          GPT_6_CYBER = :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
 
           # @!endgroup
+        end
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # @!attribute context_compression
+          #   Controls image context optimization. Defaults to `auto`, which uses the model,
+          #   transport, and input to select a policy. Use `enabled` to require compression
+          #   support or `disabled` to turn it off.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::ResponseCompactParams::Image::ContextCompression, nil]
+          optional :context_compression, enum: -> { OpenAI::Beta::ResponseCompactParams::Image::ContextCompression }
+
+          # @!method initialize(context_compression: nil)
+          #   Request level image options.
+          #
+          #   @param context_compression [Symbol, OpenAI::Models::Beta::ResponseCompactParams::Image::ContextCompression]
+          #     Controls image context optimization. Defaults to `auto`, which uses the model,
+          #     transport, and input to select a policy. Use `enabled` to require compression
+          #     support or `disabled` to turn it off.
+
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          #
+          # @see OpenAI::Models::Beta::ResponseCompactParams::Image#context_compression
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO = :auto
+            ENABLED = :enabled
+            DISABLED = :disabled
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # Text, image, or file inputs to the model, used to generate a response
@@ -821,7 +876,7 @@ module OpenAI
           #   request can write up to four breakpoints. For cache matching, OpenAI considers
           #   up to the latest 80 breakpoints in the conversation, without a content-block
           #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-          #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+          #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
           #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           #   for current details.
           #

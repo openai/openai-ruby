@@ -27,6 +27,9 @@ module OpenAI
         # Browser use in an OpenAI-hosted session.
         variant :computer_use, -> { OpenAI::Beta::PersistedAgentToolParam::ComputerUse }
 
+        # Lets the agent manage its own scheduled wakeups.
+        variant :automations, -> { OpenAI::Beta::PersistedAgentToolParam::Automations }
+
         class Function < OpenAI::Internal::Type::BaseModel
           # @!attribute description
           #   A description of what the function does.
@@ -373,8 +376,22 @@ module OpenAI
           #     The type of the object. Always `computer_use`.
         end
 
+        class Automations < OpenAI::Internal::Type::BaseModel
+          # @!attribute type
+          #   The type of the object. Always `automations`.
+          #
+          #   @return [Symbol, :automations]
+          required :type, const: :automations
+
+          # @!method initialize(type: :automations)
+          #   Lets the agent manage its own scheduled wakeups.
+          #
+          #   @param type [Symbol, :automations]
+          #     The type of the object. Always `automations`.
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse)]
+        #   @return [Array(OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse, OpenAI::Models::Beta::PersistedAgentToolParam::Automations)]
       end
     end
   end

@@ -42,6 +42,9 @@ module OpenAI
 
         # @api private
         def abort: -> nil
+
+        # @api private
+        def enable_no_status_recovery: -> nil
         def closed?: -> bool
         def reconnecting?: -> bool
         def pending_messages: -> Array[String]

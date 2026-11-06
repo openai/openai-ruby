@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Audio
+      type voice_deleted =
+        { id: String, deleted: bool, ?object: :"audio.voice.deleted" }
+
+      class VoiceDeleted < OpenAI::Internal::Type::BaseModel
+        # The voice identifier.
+        attr_accessor id: String
+
+        # Whether the voice was deleted.
+        attr_accessor deleted: bool
+
+        # The object type, which is always `audio.voice.deleted`.
+        attr_accessor object: :"audio.voice.deleted"
+
+        # @param id
+        #   The voice identifier.
+        # @param deleted
+        #   Whether the voice was deleted.
+        # @param object
+        #   The object type, which is always `audio.voice.deleted`.
+        def initialize: (
+          id: String,
+          deleted: bool,
+          ?object: :"audio.voice.deleted"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          deleted: bool,
+          ?object: :"audio.voice.deleted"
+        }
+      end
+    end
+  end
+end

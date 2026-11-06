@@ -30,7 +30,8 @@ module OpenAI
             in Hash
               options = OpenAI::Internal::Util.coerce_hash!(dumped[:request_options]).to_h
               request_options = state.fetch(:can_retry) ? options : {**options, max_retries: 0}
-              [dumped.except(:request_options), request_options]
+              body = OpenAI::Helpers::StructuredOutput.prepare_configuration_updates!(dumped.except(:request_options))
+              [body, request_options]
             else
               [dumped, nil]
             end

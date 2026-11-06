@@ -27,6 +27,9 @@ module OpenAI
         # Browser use in an OpenAI-hosted session.
         variant :computer_use, -> { OpenAI::Beta::AgentToolParam::ComputerUse }
 
+        # Lets the agent manage its own scheduled wakeups.
+        variant :automations, -> { OpenAI::Beta::AgentToolParam::Automations }
+
         class Function < OpenAI::Internal::Type::BaseModel
           # @!attribute description
           #   A description of what the function does.
@@ -383,8 +386,22 @@ module OpenAI
           #     The type of the object. Always `computer_use`.
         end
 
+        class Automations < OpenAI::Internal::Type::BaseModel
+          # @!attribute type
+          #   The type of the object. Always `automations`.
+          #
+          #   @return [Symbol, :automations]
+          required :type, const: :automations
+
+          # @!method initialize(type: :automations)
+          #   Lets the agent manage its own scheduled wakeups.
+          #
+          #   @param type [Symbol, :automations]
+          #     The type of the object. Always `automations`.
+        end
+
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse)]
+        #   @return [Array(OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse, OpenAI::Models::Beta::AgentToolParam::Automations)]
       end
     end
   end

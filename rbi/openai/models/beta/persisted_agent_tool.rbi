@@ -16,7 +16,8 @@ module OpenAI
             OpenAI::Beta::PersistedAgentTool::ProgrammaticToolCalling,
             OpenAI::Beta::PersistedAgentTool::Mcp,
             OpenAI::Beta::PersistedAgentTool::WebSearch,
-            OpenAI::Beta::PersistedAgentTool::ComputerUse
+            OpenAI::Beta::PersistedAgentTool::ComputerUse,
+            OpenAI::Beta::PersistedAgentTool::Automations
           )
         end
 
@@ -536,6 +537,44 @@ module OpenAI
           sig do
             override.returns(
               {include_screenshots: T::Boolean, type: Symbol}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class Automations < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::PersistedAgentTool::Automations,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The type of the object. Always `automations`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Lets the agent manage its own scheduled wakeups.
+          sig do
+            params(
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The type of the object. Always `automations`.
+
+            type: :automations
+          )
+          end
+
+          sig do
+            override.returns(
+              {type: Symbol}
             )
           end
           def to_hash

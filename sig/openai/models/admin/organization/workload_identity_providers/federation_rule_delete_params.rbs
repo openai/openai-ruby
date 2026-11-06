@@ -1,0 +1,37 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module WorkloadIdentityProviders
+          type federation_rule_delete_params =
+            {
+              workload_identity_provider_id: String,
+              workload_identity_federation_rule_id: String,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class FederationRuleDeleteParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor workload_identity_provider_id: String
+
+            attr_accessor workload_identity_federation_rule_id: String
+
+            def initialize: (
+              workload_identity_provider_id: String,
+              workload_identity_federation_rule_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              workload_identity_provider_id: String,
+              workload_identity_federation_rule_id: String,
+              ?request_options: OpenAI::RequestOptions
+            }
+          end
+        end
+      end
+    end
+  end
+end

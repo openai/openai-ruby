@@ -44,6 +44,12 @@ module OpenAI
         #   @return [String, OpenAI::Models::Beta::BetaResponseConversationParam, nil]
         optional :conversation, union: -> { OpenAI::Beta::ResponseCreateParams::Conversation }, nil?: true
 
+        # @!attribute image
+        #   Request level image options.
+        #
+        #   @return [OpenAI::Models::Beta::ResponseCreateParams::Image, nil]
+        optional :image, -> { OpenAI::Beta::ResponseCreateParams::Image }
+
         # @!attribute include
         #   Specify additional output data to include in the model response. Currently
         #   supported values are:
@@ -182,7 +188,7 @@ module OpenAI
         #   request can write up to four breakpoints. For cache matching, OpenAI considers
         #   up to the latest 80 breakpoints in the conversation, without a content-block
         #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-        #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
         #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
         #   for current details.
         #
@@ -382,7 +388,7 @@ module OpenAI
         #   @return [Array<Symbol, OpenAI::Models::Beta::ResponseCreateParams::Beta>, nil]
         optional :betas, -> { OpenAI::Internal::Type::ArrayOf[enum: OpenAI::Beta::ResponseCreateParams::Beta] }
 
-        # @!method initialize(access_programs: nil, background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, betas: nil, request_options: {})
+        # @!method initialize(access_programs: nil, background: nil, context_management: nil, conversation: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, betas: nil, request_options: {})
         #   @param access_programs [OpenAI::Models::Beta::ResponseCreateParams::AccessPrograms]
         #     Domain-specific access programs to use for this request.
         #
@@ -398,6 +404,9 @@ module OpenAI
         #     prepended to `input_items` for this response request. Input items and output
         #     items from this response are automatically added to this conversation after this
         #     response completes.
+        #
+        #   @param image [OpenAI::Models::Beta::ResponseCreateParams::Image]
+        #     Request level image options.
         #
         #   @param include [Array<Symbol, OpenAI::Models::Beta::BetaResponseIncludable>, nil]
         #     Specify additional output data to include in the model response. Currently
@@ -494,7 +503,7 @@ module OpenAI
         #     request can write up to four breakpoints. For cache matching, OpenAI considers
         #     up to the latest 80 breakpoints in the conversation, without a content-block
         #     lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-        #     `ttl` defaults to `30m`, which is currently the only supported value. See the
+        #     `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
         #     [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
         #     for current details.
         #
@@ -731,6 +740,40 @@ module OpenAI
           #   @return [Array(String, OpenAI::Models::Beta::BetaResponseConversationParam)]
         end
 
+        class Image < OpenAI::Internal::Type::BaseModel
+          # @!attribute context_compression
+          #   Controls image context optimization. Defaults to `auto`, which uses the model,
+          #   transport, and input to select a policy. Use `enabled` to require compression
+          #   support or `disabled` to turn it off.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::ResponseCreateParams::Image::ContextCompression, nil]
+          optional :context_compression, enum: -> { OpenAI::Beta::ResponseCreateParams::Image::ContextCompression }
+
+          # @!method initialize(context_compression: nil)
+          #   Request level image options.
+          #
+          #   @param context_compression [Symbol, OpenAI::Models::Beta::ResponseCreateParams::Image::ContextCompression]
+          #     Controls image context optimization. Defaults to `auto`, which uses the model,
+          #     transport, and input to select a policy. Use `enabled` to require compression
+          #     support or `disabled` to turn it off.
+
+          # Controls image context optimization. Defaults to `auto`, which uses the model,
+          # transport, and input to select a policy. Use `enabled` to require compression
+          # support or `disabled` to turn it off.
+          #
+          # @see OpenAI::Models::Beta::ResponseCreateParams::Image#context_compression
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO = :auto
+            ENABLED = :enabled
+            DISABLED = :disabled
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
+
         # Text, image, or file inputs to the model, used to generate a response.
         #
         # Learn more:
@@ -766,6 +809,8 @@ module OpenAI
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_6_ASTRA }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_6_1_SOL }
+
+          variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_6_1_TERRA }
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_6_SOL }
 
@@ -981,6 +1026,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_5_6_CYBER }
 
+          variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_6_CYBER }
+
           variant const: -> { OpenAI::Models::Beta::ResponseCreateParams::Model::GPT_ROSALIND_RESEARCH }
 
           variant String
@@ -996,6 +1043,7 @@ module OpenAI
 
           GPT_6_ASTRA = :"gpt-6-astra"
           GPT_6_1_SOL = :"gpt-6.1-sol"
+          GPT_6_1_TERRA = :"gpt-6.1-terra"
           GPT_6_SOL = :"gpt-6-sol"
           GPT_6_LUNA = :"gpt-6-luna"
           GPT_5_6_SOL = :"gpt-5.6-sol"
@@ -1010,6 +1058,9 @@ module OpenAI
           # replacements.
           GPT_5_4_NANO = :"gpt-5.4-nano"
           GPT_5_4_MINI_2026_03_17 = :"gpt-5.4-mini-2026-03-17"
+          # @deprecated Announced shutdown date: 2027-04-01. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_4_NANO_2026_03_17 = :"gpt-5.4-nano-2026-03-17"
           # @deprecated Announced shutdown date: 2026-08-10. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
@@ -1027,6 +1078,9 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           GPT_5_1 = :"gpt-5.1"
+          # @deprecated Announced shutdown date: 2027-04-01. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_1_2025_11_13 = :"gpt-5.1-2025-11-13"
           # @deprecated Announced shutdown date: 2026-07-23. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
@@ -1355,6 +1409,7 @@ module OpenAI
           GPT_DAYBREAK_BLUE_LATEST = :"gpt-daybreak-blue-latest"
           GPT_DAYBREAK_RED_LATEST = :"gpt-daybreak-red-latest"
           GPT_5_6_CYBER = :"gpt-5.6-cyber"
+          GPT_6_CYBER = :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
 
           # @!endgroup
@@ -1524,8 +1579,8 @@ module OpenAI
 
           # @!attribute ttl
           #   The minimum lifetime applied to every implicit and explicit cache breakpoint
-          #   written by the request. Defaults to `30m`, which is currently the only supported
-          #   value. The backend may retain cache entries for longer.
+          #   written by the request. Supported values are `30m` (the default) and `12h`. The
+          #   backend may retain cache entries for longer.
           #
           #   @return [Symbol, OpenAI::Models::Beta::ResponseCreateParams::PromptCacheOptions::Ttl, nil]
           optional :ttl, enum: -> { OpenAI::Beta::ResponseCreateParams::PromptCacheOptions::Ttl }
@@ -1537,7 +1592,7 @@ module OpenAI
           #   request can write up to four breakpoints. For cache matching, OpenAI considers
           #   up to the latest 80 breakpoints in the conversation, without a content-block
           #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-          #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+          #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
           #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           #   for current details.
           #
@@ -1559,8 +1614,8 @@ module OpenAI
           #
           #   @param ttl [Symbol, OpenAI::Models::Beta::ResponseCreateParams::PromptCacheOptions::Ttl]
           #     The minimum lifetime applied to every implicit and explicit cache breakpoint
-          #     written by the request. Defaults to `30m`, which is currently the only supported
-          #     value. The backend may retain cache entries for longer.
+          #     written by the request. Supported values are `30m` (the default) and `12h`. The
+          #     backend may retain cache entries for longer.
 
           # Controls whether OpenAI automatically creates an implicit cache breakpoint.
           # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
@@ -1581,14 +1636,15 @@ module OpenAI
           end
 
           # The minimum lifetime applied to every implicit and explicit cache breakpoint
-          # written by the request. Defaults to `30m`, which is currently the only supported
-          # value. The backend may retain cache entries for longer.
+          # written by the request. Supported values are `30m` (the default) and `12h`. The
+          # backend may retain cache entries for longer.
           #
           # @see OpenAI::Models::Beta::ResponseCreateParams::PromptCacheOptions#ttl
           module Ttl
             extend OpenAI::Internal::Type::Enum
 
             TTL_30M = :"30m"
+            TTL_12H = :"12h"
 
             # @!method self.values
             #   @return [Array<Symbol>]

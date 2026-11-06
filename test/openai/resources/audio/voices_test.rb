@@ -23,4 +23,20 @@ class OpenAI::Test::Resources::Audio::VoicesTest < OpenAI::Test::ResourceTest
         }
     end
   end
+
+  def test_delete
+    response = @openai.audio.voices.delete("voice_id")
+
+    assert_pattern do
+      response => OpenAI::Audio::VoiceDeleted
+    end
+
+    assert_pattern do
+      response => {
+          id: String,
+          deleted: OpenAI::Internal::Type::Boolean,
+          object: Symbol
+        }
+    end
+  end
 end

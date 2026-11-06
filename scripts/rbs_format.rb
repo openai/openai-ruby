@@ -67,7 +67,7 @@ module RBSFormat
       restorations.fetch(Integer(Regexp.last_match(1), 10))
     end
 
-    ensure_comments_preserved!(source, formatted)
+    ensure_comments_preserved!(source, formatted) unless source == formatted
     formatted
   end
 

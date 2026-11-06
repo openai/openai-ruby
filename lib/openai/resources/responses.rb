@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require_relative "../helpers/streaming/response_stream_resource"
-require_relative "../helpers/websocket/resource"
+require_relative "../helpers/websocket/typed_resource"
 require_relative "../helpers/structured_output/response_parser"
 
 module OpenAI
   module Resources
     # Create and manage model responses.
     class Responses
-      include OpenAI::WebSocket::Resource
+      include OpenAI::WebSocket::TypedResource
 
       # @api private
       def __websocket_request(query: {})
@@ -47,7 +47,7 @@ module OpenAI
       # [file search](https://developers.openai.com/api/docs/guides/tools-file-search)
       # to use your own data as input for the model's response.
       #
-      # @overload create(access_programs: nil, background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+      # @overload create(access_programs: nil, background: nil, context_management: nil, conversation: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
       #
       # @param access_programs [OpenAI::Models::Responses::ResponseCreateParams::AccessPrograms]
       #   Domain-specific access programs to use for this request.
@@ -64,6 +64,9 @@ module OpenAI
       #   prepended to `input_items` for this response request. Input items and output
       #   items from this response are automatically added to this conversation after this
       #   response completes.
+      #
+      # @param image [OpenAI::Models::Responses::ResponseCreateParams::Image]
+      #   Request level image options.
       #
       # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
       #   Specify additional output data to include in the model response. Currently
@@ -157,7 +160,7 @@ module OpenAI
       #   request can write up to four breakpoints. For cache matching, OpenAI considers
       #   up to the latest 80 breakpoints in the conversation, without a content-block
       #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-      #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+      #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
       #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
       #   for current details.
       #
@@ -340,7 +343,7 @@ module OpenAI
       # [file search](https://developers.openai.com/api/docs/guides/tools-file-search)
       # to use your own data as input for the model's response.
       #
-      # @overload stream_raw(access_programs: nil, background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
+      # @overload stream_raw(access_programs: nil, background: nil, context_management: nil, conversation: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, request_options: {})
       #
       # @param access_programs [OpenAI::Models::Responses::ResponseCreateParams::AccessPrograms]
       #   Domain-specific access programs to use for this request.
@@ -357,6 +360,9 @@ module OpenAI
       #   prepended to `input_items` for this response request. Input items and output
       #   items from this response are automatically added to this conversation after this
       #   response completes.
+      #
+      # @param image [OpenAI::Models::Responses::ResponseCreateParams::Image]
+      #   Request level image options.
       #
       # @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
       #   Specify additional output data to include in the model response. Currently
@@ -450,7 +456,7 @@ module OpenAI
       #   request can write up to four breakpoints. For cache matching, OpenAI considers
       #   up to the latest 80 breakpoints in the conversation, without a content-block
       #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-      #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+      #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
       #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
       #   for current details.
       #
@@ -785,7 +791,7 @@ module OpenAI
       # For ZDR-compatible compaction details, see
       # [Compaction (advanced)](https://developers.openai.com/api/docs/guides/conversation-state#compaction-advanced).
       #
-      # @overload compact(model:, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
+      # @overload compact(model:, image: nil, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
       #
       # @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil]
       #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
@@ -793,6 +799,9 @@ module OpenAI
       #   price points. Refer to the
       #   [model guide](https://developers.openai.com/api/docs/models) to browse and
       #   compare available models.
+      #
+      # @param image [OpenAI::Models::Responses::ResponseCompactParams::Image]
+      #   Request level image options.
       #
       # @param input [String, Array<OpenAI::Models::Responses::EasyInputMessage, OpenAI::Models::Responses::ResponseInputItem::Message, OpenAI::Models::Responses::ResponseOutputMessage, OpenAI::Models::Responses::ResponseFileSearchToolCall, OpenAI::Models::Responses::ResponseComputerToolCall, OpenAI::Models::Responses::ResponseInputItem::ComputerCallOutput, OpenAI::Models::Responses::ResponseFunctionWebSearch, OpenAI::Models::Responses::ResponseFunctionToolCall, OpenAI::Models::Responses::ResponseInputItem::FunctionCallOutput, OpenAI::Models::Responses::ResponseInputItem::ToolSearchCall, OpenAI::Models::Responses::ResponseToolSearchOutputItemParam, OpenAI::Models::Responses::ResponseInputItem::AdditionalTools, OpenAI::Models::Responses::ResponseConfigurationUpdateItemParam, OpenAI::Models::Responses::ResponseReasoningItem, OpenAI::Models::Responses::ResponseCompactionItemParam, OpenAI::Models::Responses::ResponseInputItem::ImageGenerationCall, OpenAI::Models::Responses::ResponseCodeInterpreterToolCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCall, OpenAI::Models::Responses::ResponseInputItem::LocalShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ShellCall, OpenAI::Models::Responses::ResponseInputItem::ShellCallOutput, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCall, OpenAI::Models::Responses::ResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Responses::ResponseInputItem::McpListTools, OpenAI::Models::Responses::ResponseInputItem::McpApprovalRequest, OpenAI::Models::Responses::ResponseInputItem::McpApprovalResponse, OpenAI::Models::Responses::ResponseInputItem::McpCall, OpenAI::Models::Responses::ResponseCustomToolCallOutput, OpenAI::Models::Responses::ResponseCustomToolCall, OpenAI::Models::Responses::ResponseInputItem::CompactionTrigger, OpenAI::Models::Responses::ResponseInputItem::ItemReference, OpenAI::Models::Responses::ResponseInputItem::Program, OpenAI::Models::Responses::ResponseInputItem::ProgramOutput>, nil]
       #   Text, image, or file inputs to the model, used to generate a response
@@ -819,7 +828,7 @@ module OpenAI
       #   request can write up to four breakpoints. For cache matching, OpenAI considers
       #   up to the latest 80 breakpoints in the conversation, without a content-block
       #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-      #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+      #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
       #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
       #   for current details.
       #

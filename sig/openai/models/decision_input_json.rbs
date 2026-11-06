@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    type decision_input_json =
+      { data: OpenAI::Models::DecisionInputJSON::data, ?type: :input_json }
+
+    class DecisionInputJSON < OpenAI::Internal::Type::BaseModel
+      attr_accessor data: OpenAI::Models::DecisionInputJSON::data
+
+      attr_accessor type: :input_json
+
+      def initialize: (
+        data: OpenAI::Models::DecisionInputJSON::data,
+        ?type: :input_json
+      ) -> void
+
+      def to_hash: -> {
+        data: OpenAI::Models::DecisionInputJSON::data,
+        ?type: :input_json
+      }
+
+      type data = ::Hash[Symbol, top] | ::Array[::Hash[Symbol, top?]]
+
+      module Data
+        extend OpenAI::Internal::Type::Union
+
+        def self?.variants: -> ::Array[OpenAI::Models::DecisionInputJSON::data]
+
+        UnionMember0Map: OpenAI::Internal::Type::Converter
+
+        UnionMember1Array: OpenAI::Internal::Type::Converter
+      end
+    end
+  end
+end

@@ -37,7 +37,12 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::ResponseUsage]
         required :usage, -> { OpenAI::Responses::ResponseUsage }
 
-        # @!method initialize(id:, created_at:, output:, usage:, object: :"response.compaction")
+        # @!attribute image
+        #
+        #   @return [OpenAI::Models::Responses::CompactedResponse::Image, nil]
+        optional :image, -> { OpenAI::Responses::CompactedResponse::Image }
+
+        # @!method initialize(id:, created_at:, output:, usage:, image: nil, object: :"response.compaction")
         #   @param id [String]
         #     The unique identifier for the compacted response.
         #
@@ -52,8 +57,39 @@ module OpenAI
         #     Token accounting for the compaction pass, including cached, reasoning, and total
         #     tokens.
         #
+        #   @param image [OpenAI::Models::Responses::CompactedResponse::Image]
+        #
         #   @param object [Symbol, :"response.compaction"]
         #     The object type. Always `response.compaction`.
+
+        # @see OpenAI::Models::Responses::CompactedResponse#image
+        class Image < OpenAI::Internal::Type::BaseModel
+          # @!attribute context_compression
+          #   Effective image context optimization policy.
+          #
+          #   @return [Symbol, OpenAI::Models::Responses::CompactedResponse::Image::ContextCompression]
+          required(
+            :context_compression,
+            enum: -> { OpenAI::Responses::CompactedResponse::Image::ContextCompression }
+          )
+
+          # @!method initialize(context_compression:)
+          #   @param context_compression [Symbol, OpenAI::Models::Responses::CompactedResponse::Image::ContextCompression]
+          #     Effective image context optimization policy.
+
+          # Effective image context optimization policy.
+          #
+          # @see OpenAI::Models::Responses::CompactedResponse::Image#context_compression
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            ENABLED = :enabled
+            DISABLED = :disabled
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
       end
     end
   end

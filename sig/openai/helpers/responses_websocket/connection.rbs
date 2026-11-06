@@ -32,8 +32,14 @@ module OpenAI
         ) -> nil
 
         # @api private
-        def encode_client_event: (
+        def send_response_create: (
           OpenAI::Models::Responses::connection_client_event event
+        ) -> nil
+
+        # @api private
+        def encode_client_event: (
+          OpenAI::Models::Responses::connection_client_event event,
+          ?response_create: bool
         ) -> ::Hash[Symbol, untyped]
 
         # @api private

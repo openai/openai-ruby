@@ -24,7 +24,7 @@ module OpenAI
       optional :data, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Image] }
 
       # @!attribute output_format
-      #   The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+      #   The output format of the generated image.
       #
       #   @return [Symbol, OpenAI::Models::ImagesResponse::OutputFormat, nil]
       optional :output_format, enum: -> { OpenAI::ImagesResponse::OutputFormat }
@@ -50,13 +50,20 @@ module OpenAI
       #   @return [String, Symbol, OpenAI::Models::ImagesResponse::Size, nil]
       optional :size, union: -> { OpenAI::ImagesResponse::Size }
 
+      # @!attribute svg_usage
+      #   Token usage for the model that authored the SVG, separate from image rendering
+      #   usage.
+      #
+      #   @return [OpenAI::Models::ImagesResponse::SvgUsage, nil]
+      optional :svg_usage, -> { OpenAI::ImagesResponse::SvgUsage }
+
       # @!attribute usage
       #   For `gpt-image-1` only, the token usage information for the image generation.
       #
       #   @return [OpenAI::Models::ImagesResponse::Usage, nil]
       optional :usage, -> { OpenAI::ImagesResponse::Usage }
 
-      # @!method initialize(created:, background: nil, data: nil, output_format: nil, quality: nil, safety_identifier: nil, size: nil, usage: nil)
+      # @!method initialize(created:, background: nil, data: nil, output_format: nil, quality: nil, safety_identifier: nil, size: nil, svg_usage: nil, usage: nil)
       #   The response from the image generation endpoint.
       #
       #   @param created [Integer]
@@ -70,7 +77,7 @@ module OpenAI
       #     The list of generated images.
       #
       #   @param output_format [Symbol, OpenAI::Models::ImagesResponse::OutputFormat]
-      #     The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+      #     The output format of the generated image.
       #
       #   @param quality [Symbol, OpenAI::Models::ImagesResponse::Quality]
       #     The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
@@ -83,6 +90,10 @@ module OpenAI
       #
       #   @param size [String, Symbol, OpenAI::Models::ImagesResponse::Size]
       #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      #
+      #   @param svg_usage [OpenAI::Models::ImagesResponse::SvgUsage]
+      #     Token usage for the model that authored the SVG, separate from image rendering
+      #     usage.
       #
       #   @param usage [OpenAI::Models::ImagesResponse::Usage]
       #     For `gpt-image-1` only, the token usage information for the image generation.
@@ -101,7 +112,7 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+      # The output format of the generated image.
       #
       # @see OpenAI::Models::ImagesResponse#output_format
       module OutputFormat
@@ -110,6 +121,8 @@ module OpenAI
         PNG = :png
         WEBP = :webp
         JPEG = :jpeg
+        GIF = :gif
+        SVG = :svg
 
         # @!method self.values
         #   @return [Array<Symbol>]
@@ -165,6 +178,44 @@ module OpenAI
         #
         # @return [Array<Symbol>]
         def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024]
+      end
+
+      # @see OpenAI::Models::ImagesResponse#svg_usage
+      class SvgUsage < OpenAI::Internal::Type::BaseModel
+        # @!attribute input_tokens
+        #
+        #   @return [Integer]
+        required :input_tokens, Integer
+
+        # @!attribute model
+        #
+        #   @return [String]
+        required :model, String
+
+        # @!attribute output_tokens
+        #
+        #   @return [Integer]
+        required :output_tokens, Integer
+
+        # @!attribute reasoning_tokens
+        #
+        #   @return [Integer]
+        required :reasoning_tokens, Integer
+
+        # @!attribute total_tokens
+        #
+        #   @return [Integer]
+        required :total_tokens, Integer
+
+        # @!method initialize(input_tokens:, model:, output_tokens:, reasoning_tokens:, total_tokens:)
+        #   Token usage for the model that authored the SVG, separate from image rendering
+        #   usage.
+        #
+        #   @param input_tokens [Integer]
+        #   @param model [String]
+        #   @param output_tokens [Integer]
+        #   @param reasoning_tokens [Integer]
+        #   @param total_tokens [Integer]
       end
 
       # @see OpenAI::Models::ImagesResponse#usage

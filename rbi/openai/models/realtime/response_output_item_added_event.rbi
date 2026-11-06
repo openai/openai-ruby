@@ -30,7 +30,8 @@ module OpenAI
               OpenAI::Realtime::RealtimeMcpApprovalResponse,
               OpenAI::Realtime::RealtimeMcpListTools,
               OpenAI::Realtime::RealtimeMcpToolCall,
-              OpenAI::Realtime::RealtimeMcpApprovalRequest
+              OpenAI::Realtime::RealtimeMcpApprovalRequest,
+              OpenAI::Realtime::ConversationItemWithReference
             )
           )
         }
@@ -63,7 +64,8 @@ module OpenAI
               OpenAI::Realtime::RealtimeMcpApprovalResponse::OrHash,
               OpenAI::Realtime::RealtimeMcpListTools::OrHash,
               OpenAI::Realtime::RealtimeMcpToolCall::OrHash,
-              OpenAI::Realtime::RealtimeMcpApprovalRequest::OrHash
+              OpenAI::Realtime::RealtimeMcpApprovalRequest::OrHash,
+              OpenAI::Realtime::ConversationItemWithReference::OrHash
             ),
 
             output_index: Integer,
@@ -107,7 +109,8 @@ module OpenAI
                 OpenAI::Realtime::RealtimeMcpApprovalResponse,
                 OpenAI::Realtime::RealtimeMcpListTools,
                 OpenAI::Realtime::RealtimeMcpToolCall,
-                OpenAI::Realtime::RealtimeMcpApprovalRequest
+                OpenAI::Realtime::RealtimeMcpApprovalRequest,
+                OpenAI::Realtime::ConversationItemWithReference
               ),
               output_index: Integer,
               response_id: String,

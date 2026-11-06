@@ -16,6 +16,19 @@ module OpenAI
 
         private_constant :ERROR_FACTORY
 
+        # The optional transport discards an empty close frame's status. Restore
+        # it only on sockets owned by automatic recovery, after native validation.
+        module RecoverNoStatusClose
+          def receive_close(frame)
+            super
+            if frame.payload.empty?
+              raise ::Protocol::WebSocket::ClosedError.new("Peer closed without a status", 1005)
+            end
+          end
+        end
+
+        private_constant :RecoverNoStatusClose
+
         # Compatibility wrapper for the socket class yielded before the shared
         # transport extraction.
         #
@@ -23,6 +36,12 @@ module OpenAI
         class Socket < OpenAI::WebSocket::AsyncWebSocketTransport::Socket
           def initialize(connection, url:)
             super(connection, url: url, error_factory: ERROR_FACTORY)
+          end
+
+          # @api private
+          def enable_no_status_recovery
+            @connection.extend(RecoverNoStatusClose) if @connection.respond_to?(:receive_close)
+            nil
           end
         end
 

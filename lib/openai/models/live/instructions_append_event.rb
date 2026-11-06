@@ -33,8 +33,11 @@ module OpenAI
         optional :event_id, String, nil?: true
 
         # @!method initialize(content:, delegation_id:, event_id: nil, type: :"session.instructions.append")
-        #   Append instructions to the Live conversation while it is running, optionally
-        #   associating them with an existing client delegation.
+        #   Append developer instructions to the Live conversation while it is running,
+        #   optionally associating them with an existing client delegation. Rejected while
+        #   an audio fixture is active. These instructions remain in conversation history
+        #   through compaction and are included in future backend delegations. For external
+        #   audio, describe content already delivered so the assistant does not repeat it.
         #
         #   @param content [String]
         #     Instruction text to append, limited to 500 tokens. This is a plain string, not

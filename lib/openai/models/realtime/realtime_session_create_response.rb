@@ -353,6 +353,14 @@ module OpenAI
 
             # @see OpenAI::Models::Realtime::RealtimeSessionCreateResponse::Audio::Input#noise_reduction
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
+              # @!attribute strength
+              #   Input noise suppression strength. Higher values apply more suppression. Defaults
+              #   to 1 when noise reduction is first enabled. Omitting strength from a session
+              #   update preserves the current strength.
+              #
+              #   @return [Float, nil]
+              optional :strength, Float
+
               # @!attribute type
               #   Type of noise reduction. `near_field` is for close-talking microphones such as
               #   headphones, `far_field` is for far-field microphones such as laptop or
@@ -361,12 +369,17 @@ module OpenAI
               #   @return [Symbol, OpenAI::Models::Realtime::NoiseReductionType, nil]
               optional :type, enum: -> { OpenAI::Realtime::NoiseReductionType }
 
-              # @!method initialize(type: nil)
+              # @!method initialize(strength: nil, type: nil)
               #   Configuration for input audio noise reduction. This can be set to `null` to turn
               #   off. Noise reduction filters audio added to the input audio buffer before it is
               #   sent to VAD and the model. Filtering the audio can improve VAD and turn
               #   detection accuracy (reducing false positives) and model performance by improving
               #   perception of the input audio.
+              #
+              #   @param strength [Float]
+              #     Input noise suppression strength. Higher values apply more suppression. Defaults
+              #     to 1 when noise reduction is first enabled. Omitting strength from a session
+              #     update preserves the current strength.
               #
               #   @param type [Symbol, OpenAI::Models::Realtime::NoiseReductionType]
               #     Type of noise reduction. `near_field` is for close-talking microphones such as
@@ -840,11 +853,17 @@ module OpenAI
 
           # @!group
 
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_REALTIME = :"gpt-realtime"
           GPT_REALTIME_1_5 = :"gpt-realtime-1.5"
           GPT_REALTIME_2 = :"gpt-realtime-2"
           GPT_REALTIME_2_1 = :"gpt-realtime-2.1"
           GPT_REALTIME_2_1_MINI = :"gpt-realtime-2.1-mini"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_REALTIME_2025_08_28 = :"gpt-realtime-2025-08-28"
           GPT_4O_REALTIME_PREVIEW = :"gpt-4o-realtime-preview"
           GPT_4O_REALTIME_PREVIEW_2024_10_01 = :"gpt-4o-realtime-preview-2024-10-01"
@@ -852,12 +871,24 @@ module OpenAI
           GPT_4O_REALTIME_PREVIEW_2025_06_03 = :"gpt-4o-realtime-preview-2025-06-03"
           GPT_4O_MINI_REALTIME_PREVIEW = :"gpt-4o-mini-realtime-preview"
           GPT_4O_MINI_REALTIME_PREVIEW_2024_12_17 = :"gpt-4o-mini-realtime-preview-2024-12-17"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_REALTIME_MINI = :"gpt-realtime-mini"
           GPT_REALTIME_MINI_2025_10_06 = :"gpt-realtime-mini-2025-10-06"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_REALTIME_MINI_2025_12_15 = :"gpt-realtime-mini-2025-12-15"
           GPT_AUDIO_1_5 = :"gpt-audio-1.5"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_AUDIO_MINI = :"gpt-audio-mini"
           GPT_AUDIO_MINI_2025_10_06 = :"gpt-audio-mini-2025-10-06"
+          # @deprecated Announced shutdown date: 2027-01-20. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_AUDIO_MINI_2025_12_15 = :"gpt-audio-mini-2025-12-15"
 
           # @!endgroup

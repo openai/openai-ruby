@@ -112,6 +112,18 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
+            # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+            # delegation. The model may still speak before this delay. Any commentary or
+            # thinking appended to the session cancels all pending acknowledgements, including
+            # those for other delegations. Defaults to 400 for Decisions sessions and 0
+            # (request immediately) for other sessions. Omission in a session update preserves
+            # the current value. Updates apply to subsequent delegations.
+            sig { returns(T.nilable(Integer)) }
+            attr_reader :acknowledgement_delay_ms
+
+            sig { params(acknowledgement_delay_ms: Integer).void }
+            attr_writer :acknowledgement_delay_ms
+
             # Responses backend settings to update. Omitted settings keep their existing
             # values.
             sig { returns(T.nilable(OpenAI::Live::ResponsesDelegationUpdateConfig)) }
@@ -125,6 +137,8 @@ module OpenAI
             sig do
               params(
 
+                acknowledgement_delay_ms: Integer,
+
                 responses: OpenAI::Live::ResponsesDelegationUpdateConfig::OrHash,
 
                 type: Symbol
@@ -132,6 +146,14 @@ module OpenAI
                 .returns(T.attached_class)
             end
             def self.new(
+
+              # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              # delegation. The model may still speak before this delay. Any commentary or
+              # thinking appended to the session cancels all pending acknowledgements, including
+              # those for other delegations. Defaults to 400 for Decisions sessions and 0
+              # (request immediately) for other sessions. Omission in a session update preserves
+              # the current value. Updates apply to subsequent delegations.
+              acknowledgement_delay_ms: nil,
 
               # Responses backend settings to update. Omitted settings keep their existing
               # values.
@@ -145,7 +167,11 @@ module OpenAI
 
             sig do
               override.returns(
-                {type: Symbol, responses: OpenAI::Live::ResponsesDelegationUpdateConfig}
+                {
+                  type: Symbol,
+                  acknowledgement_delay_ms: Integer,
+                  responses: OpenAI::Live::ResponsesDelegationUpdateConfig
+                }
               )
             end
             def to_hash
@@ -164,6 +190,18 @@ module OpenAI
             sig { returns(Symbol) }
             attr_accessor :type
 
+            # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+            # delegation. The model may still speak before this delay. Any commentary or
+            # thinking appended to the session cancels all pending acknowledgements, including
+            # those for other delegations. Defaults to 400 for Decisions sessions and 0
+            # (request immediately) for other sessions. Omission in a session update preserves
+            # the current value. Updates apply to subsequent delegations.
+            sig { returns(T.nilable(Integer)) }
+            attr_reader :acknowledgement_delay_ms
+
+            sig { params(acknowledgement_delay_ms: Integer).void }
+            attr_writer :acknowledgement_delay_ms
+
             sig { returns(T.nilable(OpenAI::Live::DecisionsDelegationUpdateConfig)) }
             attr_reader :decisions
 
@@ -173,6 +211,8 @@ module OpenAI
             sig do
               params(
 
+                acknowledgement_delay_ms: Integer,
+
                 decisions: OpenAI::Live::DecisionsDelegationUpdateConfig::OrHash,
 
                 type: Symbol
@@ -180,6 +220,14 @@ module OpenAI
                 .returns(T.attached_class)
             end
             def self.new(
+
+              # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              # delegation. The model may still speak before this delay. Any commentary or
+              # thinking appended to the session cancels all pending acknowledgements, including
+              # those for other delegations. Defaults to 400 for Decisions sessions and 0
+              # (request immediately) for other sessions. Omission in a session update preserves
+              # the current value. Updates apply to subsequent delegations.
+              acknowledgement_delay_ms: nil,
 
               decisions: nil,
 
@@ -189,7 +237,11 @@ module OpenAI
 
             sig do
               override.returns(
-                {type: Symbol, decisions: OpenAI::Live::DecisionsDelegationUpdateConfig}
+                {
+                  type: Symbol,
+                  acknowledgement_delay_ms: Integer,
+                  decisions: OpenAI::Live::DecisionsDelegationUpdateConfig
+                }
               )
             end
             def to_hash

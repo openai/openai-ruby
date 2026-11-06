@@ -74,13 +74,23 @@ module OpenAI
 
   DecisionInputImage = OpenAI::Models::DecisionInputImage
 
+  DecisionInputJSON = OpenAI::Models::DecisionInputJSON
+
   DecisionInputMessage = OpenAI::Models::DecisionInputMessage
+
+  DecisionInputMessageUnion = OpenAI::Models::DecisionInputMessageUnion
 
   DecisionInputPart = OpenAI::Models::DecisionInputPart
 
   DecisionInputText = OpenAI::Models::DecisionInputText
 
   DecisionPromptCacheBreakpoint = OpenAI::Models::DecisionPromptCacheBreakpoint
+
+  DecisionQuestionInputImage = OpenAI::Models::DecisionQuestionInputImage
+
+  DecisionQuestionInputPart = OpenAI::Models::DecisionQuestionInputPart
+
+  DecisionQuestionInputText = OpenAI::Models::DecisionQuestionInputText
 
   DeletedSkill = OpenAI::Models::DeletedSkill
 

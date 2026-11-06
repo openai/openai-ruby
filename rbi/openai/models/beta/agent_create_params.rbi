@@ -21,6 +21,20 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :model
 
+        # Context compaction settings. Omission or null enables background compaction.
+        sig { returns(T.nilable(OpenAI::Beta::AgentCreateParams::Compaction)) }
+        attr_reader :compaction
+
+        sig { params(compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction::OrHash)).void }
+        attr_writer :compaction
+
+        # Experimental agent settings. All experimental features default to disabled.
+        sig { returns(T.nilable(OpenAI::Beta::AgentCreateParams::Experimental)) }
+        attr_reader :experimental
+
+        sig { params(experimental: OpenAI::Beta::AgentCreateParams::Experimental::OrHash).void }
+        attr_writer :experimental
+
         # Additional instructions appended to the agent's default base instructions. Omit
         # or set to null to add no custom instructions.
         sig { returns(T.nilable(String)) }
@@ -74,7 +88,8 @@ module OpenAI
                   OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling,
                   OpenAI::Beta::PersistedAgentToolParam::Mcp,
                   OpenAI::Beta::PersistedAgentToolParam::WebSearch,
-                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse
+                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse,
+                  OpenAI::Beta::PersistedAgentToolParam::Automations
                 )
               ]
             )
@@ -86,6 +101,10 @@ module OpenAI
           params(
 
             model: String,
+
+            compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction::OrHash),
+
+            experimental: OpenAI::Beta::AgentCreateParams::Experimental::OrHash,
 
             instructions: T.nilable(String),
 
@@ -109,7 +128,8 @@ module OpenAI
                   OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::Mcp::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::WebSearch::OrHash,
-                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash
+                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash,
+                  OpenAI::Beta::PersistedAgentToolParam::Automations::OrHash
                 )
               ]
             ),
@@ -122,6 +142,12 @@ module OpenAI
 
           # The model to use for the agent. The requested model name is preserved.
           model:,
+
+          # Context compaction settings. Omission or null enables background compaction.
+          compaction: nil,
+
+          # Experimental agent settings. All experimental features default to disabled.
+          experimental: nil,
 
           # Additional instructions appended to the agent's default base instructions. Omit
           # or set to null to add no custom instructions.
@@ -160,6 +186,8 @@ module OpenAI
           override.returns(
             {
               model: String,
+              compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction),
+              experimental: OpenAI::Beta::AgentCreateParams::Experimental,
               instructions: T.nilable(String),
               metadata: T.nilable(T::Hash[Symbol, String]),
               multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam),
@@ -175,7 +203,8 @@ module OpenAI
                     OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling,
                     OpenAI::Beta::PersistedAgentToolParam::Mcp,
                     OpenAI::Beta::PersistedAgentToolParam::WebSearch,
-                    OpenAI::Beta::PersistedAgentToolParam::ComputerUse
+                    OpenAI::Beta::PersistedAgentToolParam::ComputerUse,
+                    OpenAI::Beta::PersistedAgentToolParam::Automations
                   )
                 ]
               ),
@@ -184,6 +213,89 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        class Compaction < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentCreateParams::Compaction,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Whether to compact context in the background. Omission or null defaults to true.
+          # Set to false to use blocking compaction. Background compaction may increase
+          # token usage.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_accessor :async
+
+          # Context compaction settings. Omission or null enables background compaction.
+          sig do
+            params(
+
+              async: T.nilable(T::Boolean)
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether to compact context in the background. Omission or null defaults to true.
+            # Set to false to use blocking compaction. Background compaction may increase
+            # token usage.
+
+            async: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {async: T.nilable(T::Boolean)}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentCreateParams::Experimental,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Whether to give the model periodic current-time reminders. Defaults to false.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :time_awareness
+
+          sig { params(time_awareness: T::Boolean).void }
+          attr_writer :time_awareness
+
+          # Experimental agent settings. All experimental features default to disabled.
+          sig do
+            params(
+
+              time_awareness: T::Boolean
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether to give the model periodic current-time reminders. Defaults to false.
+
+            time_awareness: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {time_awareness: T::Boolean}
+            )
+          end
+          def to_hash
+          end
+
         end
 
         # The service tier used for model requests. Defaults to `auto`.

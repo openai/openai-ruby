@@ -7,7 +7,7 @@ class OpenAI::Test::Resources::DecisionsTest < OpenAI::Test::ResourceTest
     response = @openai.decisions.create(
       input: "string",
       model: "model",
-      questions: [{instructions: "instructions", type: :predicate}]
+      questions: [{instructions: "string", type: :predicate}]
     )
 
     assert_pattern do

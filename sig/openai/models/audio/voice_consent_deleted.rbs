@@ -1,0 +1,31 @@
+module OpenAI
+  module Models
+    module Audio
+      type voice_consent_deleted =
+        { id: String, deleted: bool, ?object: :"audio.voice_consent" }
+
+      class VoiceConsentDeleted < OpenAI::Internal::Type::BaseModel
+        # The consent recording identifier.
+        attr_accessor id: String
+
+        attr_accessor deleted: bool
+
+        attr_accessor object: :"audio.voice_consent"
+
+        # @param id
+        #   The consent recording identifier.
+        def initialize: (
+          id: String,
+          deleted: bool,
+          ?object: :"audio.voice_consent"
+        ) -> void
+
+        def to_hash: -> {
+          id: String,
+          deleted: bool,
+          ?object: :"audio.voice_consent"
+        }
+      end
+    end
+  end
+end
