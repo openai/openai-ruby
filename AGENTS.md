@@ -19,7 +19,7 @@ Follow [Generated-file ownership](CONTRIBUTING.md#generated-file-ownership) befo
 
 ## Security requirements
 
-Apply [CONTRIBUTING's security requirements](CONTRIBUTING.md#security-requirements) for secrets/fixtures, diagnostic redaction (including tokens), dependency review, CI/publishing protections, `@openai/sdks-team` review, and focused regression/security tests. Security review includes all logging changes. Report vulnerabilities privately through [SECURITY.md](SECURITY.md).
+Apply [CONTRIBUTING's security requirements](CONTRIBUTING.md#security-requirements) for secrets/fixtures, diagnostic redaction (including tokens), dependency review, CI/publishing protections, `@openai/sdks-team` review, and focused regression/security tests. Dependency review includes `docs/Gemfile` and `docs/Gemfile.lock`; security review includes all logging changes. Report vulnerabilities privately through [SECURITY.md](SECURITY.md).
 
 ## Large-payload compatibility
 
