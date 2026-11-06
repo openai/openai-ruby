@@ -28,9 +28,15 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning, nil]
         optional :reasoning, -> { OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning }
 
-        # @!method initialize(id:, agent: nil, reasoning: nil, type: :configuration_update)
-        #   A configuration update that applies to subsequent responses until it is replaced
-        #   by another configuration update.
+        # @!attribute text
+        #   The text output configuration for subsequent responses.
+        #
+        #   @return [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Text, nil]
+        optional :text, -> { OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text }
+
+        # @!method initialize(id:, agent: nil, reasoning: nil, text: nil, type: :configuration_update)
+        #   A configuration update for subsequent responses. Each setting stays in effect
+        #   until a later update replaces that setting.
         #
         #   @param id [String]
         #     The unique ID of the configuration update item.
@@ -40,6 +46,9 @@ module OpenAI
         #
         #   @param reasoning [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Reasoning]
         #     The reasoning configuration applied by this update.
+        #
+        #   @param text [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Text]
+        #     The text output configuration for subsequent responses.
         #
         #   @param type [Symbol, :configuration_update]
         #     The item type. Always `configuration_update`.
@@ -96,6 +105,58 @@ module OpenAI
 
             # @!method self.values
             #   @return [Array<Symbol>]
+          end
+        end
+
+        # @see OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem#text
+        class Text < OpenAI::Internal::Type::BaseModel
+          # @!attribute format_
+          #   Use a JSON schema for structured output or text to return to plain text.
+          #
+          #   @return [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Text, OpenAI::Models::Beta::BetaResponseFormatTextJSONSchemaConfig]
+          required(
+            :format_,
+            union: -> { OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::Format },
+            api_name: :format
+          )
+
+          # @!method initialize(format_:)
+          #   The text output configuration for subsequent responses.
+          #
+          #   @param format_ [OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Text, OpenAI::Models::Beta::BetaResponseFormatTextJSONSchemaConfig]
+          #     Use a JSON schema for structured output or text to return to plain text.
+
+          # Use a JSON schema for structured output or text to return to plain text.
+          #
+          # @see OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Text#format_
+          module Format
+            extend OpenAI::Internal::Type::Union
+
+            discriminator :type
+
+            # Default response format. Used to generate text responses.
+            variant :text, -> { OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Text }
+
+            # JSON Schema response format. Used to generate structured JSON responses.
+            # Learn more about [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs).
+            variant :json_schema, -> { OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig }
+
+            class Text < OpenAI::Internal::Type::BaseModel
+              # @!attribute type
+              #   The type of response format being defined. Always `text`.
+              #
+              #   @return [Symbol, :text]
+              required :type, const: :text
+
+              # @!method initialize(type: :text)
+              #   Default response format. Used to generate text responses.
+              #
+              #   @param type [Symbol, :text]
+              #     The type of response format being defined. Always `text`.
+            end
+
+            # @!method self.variants
+            #   @return [Array(OpenAI::Models::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Text, OpenAI::Models::Beta::BetaResponseFormatTextJSONSchemaConfig)]
           end
         end
       end

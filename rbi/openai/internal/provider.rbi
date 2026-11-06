@@ -25,6 +25,9 @@ module OpenAI
 
         attr_accessor :prepare_request
 
+        sig { returns(T.nilable(Proc)) }
+        attr_accessor :wrap_request
+
         sig { returns(T::Array[String]) }
         attr_accessor :authentication_headers
       end

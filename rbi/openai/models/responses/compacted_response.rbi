@@ -39,6 +39,12 @@ module OpenAI
         sig { params(usage: OpenAI::Responses::ResponseUsage::OrHash).void }
         attr_writer :usage
 
+        sig { returns(T.nilable(OpenAI::Responses::CompactedResponse::Image)) }
+        attr_reader :image
+
+        sig { params(image: OpenAI::Responses::CompactedResponse::Image::OrHash).void }
+        attr_writer :image
+
         sig do
           params(
 
@@ -83,6 +89,8 @@ module OpenAI
 
             usage: OpenAI::Responses::ResponseUsage::OrHash,
 
+            image: OpenAI::Responses::CompactedResponse::Image::OrHash,
+
             object: Symbol
           )
             .returns(T.attached_class)
@@ -103,6 +111,8 @@ module OpenAI
           # tokens.
           usage:,
 
+          image: nil,
+
           # The object type. Always `response.compaction`.
 
           object: :"response.compaction"
@@ -116,11 +126,67 @@ module OpenAI
               created_at: Integer,
               object: Symbol,
               output: T::Array[OpenAI::Responses::ResponseItem::Variants],
-              usage: OpenAI::Responses::ResponseUsage
+              usage: OpenAI::Responses::ResponseUsage,
+              image: OpenAI::Responses::CompactedResponse::Image
             }
           )
         end
         def to_hash
+        end
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Responses::CompactedResponse::Image,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Effective image context optimization policy.
+          sig { returns(OpenAI::Responses::CompactedResponse::Image::ContextCompression::TaggedSymbol) }
+          attr_accessor :context_compression
+
+          sig do
+            params(
+
+              context_compression: OpenAI::Responses::CompactedResponse::Image::ContextCompression::OrSymbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Effective image context optimization policy.
+
+            context_compression:
+          )
+          end
+
+          sig do
+            override.returns(
+              {context_compression: OpenAI::Responses::CompactedResponse::Image::ContextCompression::TaggedSymbol}
+            )
+          end
+          def to_hash
+          end
+
+          # Effective image context optimization policy.
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias {
+              T.all(Symbol, OpenAI::Responses::CompactedResponse::Image::ContextCompression)
+            }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            ENABLED = T.let(:enabled, OpenAI::Responses::CompactedResponse::Image::ContextCompression::TaggedSymbol)
+            DISABLED = T.let(:disabled, OpenAI::Responses::CompactedResponse::Image::ContextCompression::TaggedSymbol)
+
+            sig {
+              override.returns(T::Array[OpenAI::Responses::CompactedResponse::Image::ContextCompression::TaggedSymbol])
+            }
+            def self.values
+            end
+          end
         end
 
       end

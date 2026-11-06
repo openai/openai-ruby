@@ -268,12 +268,31 @@ module OpenAI
             #   @return [Symbol, :responses]
             required :type, const: :responses
 
-            # @!method initialize(responses:, type: :responses)
+            # @!attribute acknowledgement_delay_ms
+            #   Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+            #   delegation. The model may still speak before this delay. Any commentary or
+            #   thinking appended to the session cancels all pending acknowledgements, including
+            #   those for other delegations. Defaults to 400 for Decisions sessions and 0
+            #   (request immediately) for other sessions. Omission in a session update preserves
+            #   the current value. Updates apply to subsequent delegations.
+            #
+            #   @return [Integer, nil]
+            optional :acknowledgement_delay_ms, Integer
+
+            # @!method initialize(responses:, acknowledgement_delay_ms: nil, type: :responses)
             #   Delegate tasks to a Responses model managed by the Live session.
             #
             #   @param responses [OpenAI::Models::Live::ResponsesDelegationConfig]
             #     Backend model, prompt, and tools used when the Live session delegates a task to
             #     Responses.
+            #
+            #   @param acknowledgement_delay_ms [Integer]
+            #     Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+            #     delegation. The model may still speak before this delay. Any commentary or
+            #     thinking appended to the session cancels all pending acknowledgements, including
+            #     those for other delegations. Defaults to 400 for Decisions sessions and 0
+            #     (request immediately) for other sessions. Omission in a session update preserves
+            #     the current value. Updates apply to subsequent delegations.
             #
             #   @param type [Symbol, :responses]
             #     The delegation owner. Always `responses` for tasks handled by the Responses API.
@@ -290,8 +309,26 @@ module OpenAI
             #   @return [Symbol, :decisions]
             required :type, const: :decisions
 
-            # @!method initialize(decisions:, type: :decisions)
+            # @!attribute acknowledgement_delay_ms
+            #   Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+            #   delegation. The model may still speak before this delay. Any commentary or
+            #   thinking appended to the session cancels all pending acknowledgements, including
+            #   those for other delegations. Defaults to 400. Updates apply to subsequent
+            #   delegations.
+            #
+            #   @return [Integer, nil]
+            optional :acknowledgement_delay_ms, Integer
+
+            # @!method initialize(decisions:, acknowledgement_delay_ms: nil, type: :decisions)
             #   @param decisions [OpenAI::Models::Live::DecisionsDelegationConfig]
+            #
+            #   @param acknowledgement_delay_ms [Integer]
+            #     Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+            #     delegation. The model may still speak before this delay. Any commentary or
+            #     thinking appended to the session cancels all pending acknowledgements, including
+            #     those for other delegations. Defaults to 400. Updates apply to subsequent
+            #     delegations.
+            #
             #   @param type [Symbol, :decisions]
           end
 

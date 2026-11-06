@@ -82,7 +82,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             output_format: OpenAI::Conversations::ConversationItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Quality | nil,
             revised_prompt: String | nil,
-            size: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Size | nil
+            size: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Size | nil,
+            svg_usage: OpenAI::Conversations::ConversationItem::ImageGenerationCall::SvgUsage | nil
           } | {
             type: :computer_call,
             id: String,
@@ -127,7 +128,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
           } | {
             type: :configuration_update,
             id: String,
-            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil,
+            text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text | nil
           } | {
             type: :reasoning,
             id: String,
@@ -305,7 +307,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
             output_format: OpenAI::Conversations::ConversationItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Quality | nil,
             revised_prompt: String | nil,
-            size: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Size | nil
+            size: OpenAI::Conversations::ConversationItem::ImageGenerationCall::Size | nil,
+            svg_usage: OpenAI::Conversations::ConversationItem::ImageGenerationCall::SvgUsage | nil
           } | {
             type: :computer_call,
             id: String,
@@ -350,7 +353,8 @@ class OpenAI::Test::Resources::Conversations::ItemsTest < OpenAI::Test::Resource
           } | {
             type: :configuration_update,
             id: String,
-            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil,
+            text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text | nil
           } | {
             type: :reasoning,
             id: String,

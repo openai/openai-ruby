@@ -41,6 +41,16 @@ module OpenAI
           sig { params(limit: Integer).void }
           attr_writer :limit
 
+          # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          # characters. New sessions and metadata updates may take time to appear in
+          # filtered results.
+          sig { returns(T.nilable(T::Hash[Symbol, String])) }
+          attr_reader :metadata
+
+          sig { params(metadata: T::Hash[Symbol, String]).void }
+          attr_writer :metadata
+
           # The order in which resources are returned. Defaults to `desc`.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionListParams::Order::OrSymbol)) }
           attr_reader :order
@@ -56,6 +66,8 @@ module OpenAI
               agent_id: String,
 
               limit: Integer,
+
+              metadata: T::Hash[Symbol, String],
 
               order: OpenAI::Beta::Agents::SessionListParams::Order::OrSymbol,
 
@@ -75,6 +87,12 @@ module OpenAI
             # The maximum number of resources to return, between 1 and 100. Defaults to 20.
             limit: nil,
 
+            # Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+            # match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+            # characters. New sessions and metadata updates may take time to appear in
+            # filtered results.
+            metadata: nil,
+
             # The order in which resources are returned. Defaults to `desc`.
             order: nil,
 
@@ -88,6 +106,7 @@ module OpenAI
                 after: String,
                 agent_id: String,
                 limit: Integer,
+                metadata: T::Hash[Symbol, String],
                 order: OpenAI::Beta::Agents::SessionListParams::Order::OrSymbol,
                 request_options: OpenAI::RequestOptions
               }

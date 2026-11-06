@@ -8,7 +8,8 @@ module OpenAI
           ?type: :configuration_update,
           ?id: String?,
           ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
-          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
+          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning,
+          ?text: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Text
         }
 
       class BetaResponseConfigurationUpdateItemParam < OpenAI::Internal::Type::BaseModel
@@ -29,18 +30,29 @@ module OpenAI
           OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
         ) -> OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
 
+        # The text output configuration for subsequent responses.
+        attr_reader text: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Text?
+
+        # The text output configuration for subsequent responses.
+        def text=: (
+          OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Text
+        ) -> OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Text
+
         # @param id
         #   The unique ID of the configuration update item.
         # @param agent
         #   The agent that produced this item.
         # @param reasoning
         #   Updates to reasoning configuration. Only effort is supported.
+        # @param text
+        #   The text output configuration for subsequent responses.
         # @param type
         #   The item type. Always `configuration_update`.
         def initialize: (
           ?id: String?,
           ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
           ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning,
+          ?text: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Text,
           ?type: :configuration_update
         ) -> void
 
@@ -48,7 +60,8 @@ module OpenAI
           ?type: :configuration_update,
           ?id: String?,
           ?agent: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Agent?,
-          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning
+          ?reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning,
+          ?text: OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Text
         }
 
         type agent = { agent_name: String }
@@ -100,6 +113,49 @@ module OpenAI
             MAX: :max
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Reasoning::effort]
+          end
+        end
+
+        type text =
+          {
+            format_: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Text::format_
+          }
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          # Use a JSON schema for structured output or text to return to plain text.
+          attr_accessor format_: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Text::format_
+
+          # @param format_
+          #   Use a JSON schema for structured output or text to return to plain text.
+          def initialize: (
+            format_: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Text::format_
+          ) -> void
+
+          def to_hash: -> {
+            format_: OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Text::format_
+          }
+
+          type format_ =
+            OpenAI::Beta::BetaResponseConfigurationUpdateItemParam::Text::Format::Text
+            | OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig
+
+          module Format
+            extend OpenAI::Internal::Type::Union
+
+            type text = { ?type: :text }
+
+            class Text < OpenAI::Internal::Type::BaseModel
+              # The type of response format being defined. Always `text`.
+              attr_accessor type: :text
+
+              # @param type
+              #   The type of response format being defined. Always `text`.
+              def initialize: (?type: :text) -> void
+
+              def to_hash: -> { ?type: :text }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam::Text::format_]
           end
         end
       end

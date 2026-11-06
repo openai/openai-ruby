@@ -39,6 +39,10 @@ module OpenAI
           state: OpenAI::Internal::Type::Converter::coerce_state
         ) -> top
 
+        def variant_for_dump: (
+          top value
+        ) -> OpenAI::Internal::Type::Converter::input?
+
         def dump: (
           top value,
           state: OpenAI::Internal::Type::Converter::dump_state

@@ -24,7 +24,9 @@ class OpenAI::Test::Resources::Beta::AgentsTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Beta::Agent::ServiceTier,
           text: OpenAI::Beta::AgentText,
           tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::PersistedAgentTool]),
-          updated_at: Integer
+          updated_at: Integer,
+          compaction: OpenAI::Beta::Agent::Compaction | nil,
+          experimental: OpenAI::Beta::Agent::Experimental | nil
         }
     end
   end
@@ -50,7 +52,9 @@ class OpenAI::Test::Resources::Beta::AgentsTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Beta::Agent::ServiceTier,
           text: OpenAI::Beta::AgentText,
           tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::PersistedAgentTool]),
-          updated_at: Integer
+          updated_at: Integer,
+          compaction: OpenAI::Beta::Agent::Compaction | nil,
+          experimental: OpenAI::Beta::Agent::Experimental | nil
         }
     end
   end
@@ -76,7 +80,9 @@ class OpenAI::Test::Resources::Beta::AgentsTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Beta::Agent::ServiceTier,
           text: OpenAI::Beta::AgentText,
           tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::PersistedAgentTool]),
-          updated_at: Integer
+          updated_at: Integer,
+          compaction: OpenAI::Beta::Agent::Compaction | nil,
+          experimental: OpenAI::Beta::Agent::Experimental | nil
         }
     end
   end
@@ -110,7 +116,9 @@ class OpenAI::Test::Resources::Beta::AgentsTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Beta::Agent::ServiceTier,
           text: OpenAI::Beta::AgentText,
           tools: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::PersistedAgentTool]),
-          updated_at: Integer
+          updated_at: Integer,
+          compaction: OpenAI::Beta::Agent::Compaction | nil,
+          experimental: OpenAI::Beta::Agent::Experimental | nil
         }
     end
   end

@@ -355,5 +355,11 @@ module OpenAI
       @connection_configurator = connection_configurator
       @pools = {}
     end
+
+    # Whether this HTTP client has the same connection policy as the SDK default.
+    # @api private
+    def default_configuration?
+      @size == DEFAULT_MAX_CONNECTIONS && @connection_configurator.nil?
+    end
   end
 end

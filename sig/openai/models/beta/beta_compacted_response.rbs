@@ -9,7 +9,8 @@ module OpenAI
           created_at: Integer,
           ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Beta::beta_response_item],
-          usage: OpenAI::Beta::BetaResponseUsage
+          usage: OpenAI::Beta::BetaResponseUsage,
+          ?image: OpenAI::Beta::BetaCompactedResponse::Image
         }
 
       class BetaCompactedResponse < OpenAI::Internal::Type::BaseModel
@@ -30,6 +31,12 @@ module OpenAI
         # tokens.
         attr_accessor usage: OpenAI::Beta::BetaResponseUsage
 
+        attr_reader image: OpenAI::Beta::BetaCompactedResponse::Image?
+
+        def image=: (
+          OpenAI::Beta::BetaCompactedResponse::Image
+        ) -> OpenAI::Beta::BetaCompactedResponse::Image
+
         # @param id
         #   The unique identifier for the compacted response.
         # @param created_at
@@ -47,6 +54,7 @@ module OpenAI
           created_at: Integer,
           output: ::Array[OpenAI::Models::Beta::beta_response_item],
           usage: OpenAI::Beta::BetaResponseUsage,
+          ?image: OpenAI::Beta::BetaCompactedResponse::Image,
           ?object: :"response.compaction"
         ) -> void
 
@@ -55,8 +63,40 @@ module OpenAI
           created_at: Integer,
           ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Beta::beta_response_item],
-          usage: OpenAI::Beta::BetaResponseUsage
+          usage: OpenAI::Beta::BetaResponseUsage,
+          ?image: OpenAI::Beta::BetaCompactedResponse::Image
         }
+
+        type image =
+          {
+            context_compression: OpenAI::Models::Beta::BetaCompactedResponse::Image::context_compression
+          }
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # Effective image context optimization policy.
+          attr_accessor context_compression: OpenAI::Models::Beta::BetaCompactedResponse::Image::context_compression
+
+          # @param context_compression
+          #   Effective image context optimization policy.
+          def initialize: (
+            context_compression: OpenAI::Models::Beta::BetaCompactedResponse::Image::context_compression
+          ) -> void
+
+          def to_hash: -> {
+            context_compression: OpenAI::Models::Beta::BetaCompactedResponse::Image::context_compression
+          }
+
+          type context_compression = :enabled | :disabled
+
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            ENABLED: :enabled
+            DISABLED: :disabled
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaCompactedResponse::Image::context_compression]
+          end
+        end
       end
     end
   end

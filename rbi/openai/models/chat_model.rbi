@@ -11,6 +11,7 @@ module OpenAI
 
       GPT_6_ASTRA = T.let(:"gpt-6-astra", OpenAI::ChatModel::TaggedSymbol)
       GPT_6_1_SOL = T.let(:"gpt-6.1-sol", OpenAI::ChatModel::TaggedSymbol)
+      GPT_6_1_TERRA = T.let(:"gpt-6.1-terra", OpenAI::ChatModel::TaggedSymbol)
       GPT_6_SOL = T.let(:"gpt-6-sol", OpenAI::ChatModel::TaggedSymbol)
       GPT_6_LUNA = T.let(:"gpt-6-luna", OpenAI::ChatModel::TaggedSymbol)
       GPT_5_6_SOL = T.let(:"gpt-5.6-sol", OpenAI::ChatModel::TaggedSymbol)

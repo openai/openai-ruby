@@ -1,0 +1,73 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module WorkloadIdentityProviders
+          type federation_rule_list_params =
+            {
+              workload_identity_provider_id: String,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleListParams::order,
+              ?service_account_id: String,
+              ?request_options: OpenAI::request_opts
+            }
+
+          class FederationRuleListParams < OpenAI::Internal::Type::BaseModel
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            attr_accessor workload_identity_provider_id: String
+
+            attr_reader after: String?
+
+            def after=: (String) -> String
+
+            attr_reader limit: Integer?
+
+            def limit=: (Integer) -> Integer
+
+            attr_reader order: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleListParams::order?
+
+            def order=: (
+              OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleListParams::order
+            ) -> OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleListParams::order
+
+            attr_reader service_account_id: String?
+
+            def service_account_id=: (String) -> String
+
+            def initialize: (
+              workload_identity_provider_id: String,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleListParams::order,
+              ?service_account_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> void
+
+            def to_hash: -> {
+              workload_identity_provider_id: String,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleListParams::order,
+              ?service_account_id: String,
+              ?request_options: OpenAI::RequestOptions
+            }
+
+            type order = :asc | :desc
+
+            module Order
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRuleListParams::order]
+
+              ASC: :asc
+              DESC: :desc
+            end
+          end
+        end
+      end
+    end
+  end
+end

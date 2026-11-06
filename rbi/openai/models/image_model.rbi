@@ -16,6 +16,8 @@ module OpenAI
       GPT_IMAGE_2_5_SUNBURST_2026_09_08 = T.let(:"gpt-image-2.5-sunburst-2026-09-08", OpenAI::ImageModel::TaggedSymbol)
       GPT_IMAGE_2_5_FLARE = T.let(:"gpt-image-2.5-flare", OpenAI::ImageModel::TaggedSymbol)
       GPT_IMAGE_2_5_FLARE_2026_09_08 = T.let(:"gpt-image-2.5-flare-2026-09-08", OpenAI::ImageModel::TaggedSymbol)
+      GPT_IMAGE_2_6_SUNBURST = T.let(:"gpt-image-2.6-sunburst", OpenAI::ImageModel::TaggedSymbol)
+      GPT_IMAGE_2_6_FLARE = T.let(:"gpt-image-2.6-flare", OpenAI::ImageModel::TaggedSymbol)
       GPT_IMAGE_1 = T.let(:"gpt-image-1", OpenAI::ImageModel::TaggedSymbol)
       GPT_IMAGE_1_MINI = T.let(:"gpt-image-1-mini", OpenAI::ImageModel::TaggedSymbol)
       CHATGPT_IMAGE_LATEST = T.let(:"chatgpt-image-latest", OpenAI::ImageModel::TaggedSymbol)

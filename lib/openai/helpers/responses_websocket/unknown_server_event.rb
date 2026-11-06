@@ -4,6 +4,8 @@ module OpenAI
   module Responses
     # A valid JSON event whose discriminator is newer than this SDK version.
     class UnknownServerEvent
+      include OpenAI::WebSocket::Protocol
+
       # @return [Symbol]
       attr_reader :type
 
@@ -35,20 +37,6 @@ module OpenAI
 
       alias to_s inspect
 
-      private def freeze_json(value)
-        case value
-        when Hash
-          value.each do |key, item|
-            freeze_json(key)
-            freeze_json(item)
-          end
-
-        when Array
-          value.each { |item| freeze_json(item) }
-        end
-
-        value.freeze
-      end
     end
   end
 end

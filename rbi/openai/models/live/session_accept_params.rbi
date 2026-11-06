@@ -436,11 +436,25 @@ module OpenAI
               sig { returns(Symbol) }
               attr_accessor :type
 
+              # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              # delegation. The model may still speak before this delay. Any commentary or
+              # thinking appended to the session cancels all pending acknowledgements, including
+              # those for other delegations. Defaults to 400 for Decisions sessions and 0
+              # (request immediately) for other sessions. Omission in a session update preserves
+              # the current value. Updates apply to subsequent delegations.
+              sig { returns(T.nilable(Integer)) }
+              attr_reader :acknowledgement_delay_ms
+
+              sig { params(acknowledgement_delay_ms: Integer).void }
+              attr_writer :acknowledgement_delay_ms
+
               # Delegate tasks to a Responses model managed by the Live session.
               sig do
                 params(
 
                   responses: OpenAI::Live::ResponsesDelegationConfig::OrHash,
+
+                  acknowledgement_delay_ms: Integer,
 
                   type: Symbol
                 )
@@ -452,6 +466,14 @@ module OpenAI
                 # Responses.
                 responses:,
 
+                # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+                # delegation. The model may still speak before this delay. Any commentary or
+                # thinking appended to the session cancels all pending acknowledgements, including
+                # those for other delegations. Defaults to 400 for Decisions sessions and 0
+                # (request immediately) for other sessions. Omission in a session update preserves
+                # the current value. Updates apply to subsequent delegations.
+                acknowledgement_delay_ms: nil,
+
                 # The delegation owner. Always `responses` for tasks handled by the Responses API.
 
                 type: :responses
@@ -460,7 +482,7 @@ module OpenAI
 
               sig do
                 override.returns(
-                  {responses: OpenAI::Live::ResponsesDelegationConfig, type: Symbol}
+                  {responses: OpenAI::Live::ResponsesDelegationConfig, type: Symbol, acknowledgement_delay_ms: Integer}
                 )
               end
               def to_hash
@@ -485,10 +507,23 @@ module OpenAI
               sig { returns(Symbol) }
               attr_accessor :type
 
+              # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+              # delegation. The model may still speak before this delay. Any commentary or
+              # thinking appended to the session cancels all pending acknowledgements, including
+              # those for other delegations. Defaults to 400. Updates apply to subsequent
+              # delegations.
+              sig { returns(T.nilable(Integer)) }
+              attr_reader :acknowledgement_delay_ms
+
+              sig { params(acknowledgement_delay_ms: Integer).void }
+              attr_writer :acknowledgement_delay_ms
+
               sig do
                 params(
 
                   decisions: OpenAI::Live::DecisionsDelegationConfig::OrHash,
+
+                  acknowledgement_delay_ms: Integer,
 
                   type: Symbol
                 )
@@ -498,13 +533,20 @@ module OpenAI
 
                 decisions:,
 
+                # Milliseconds to wait before requesting an automatic spoken acknowledgement for a
+                # delegation. The model may still speak before this delay. Any commentary or
+                # thinking appended to the session cancels all pending acknowledgements, including
+                # those for other delegations. Defaults to 400. Updates apply to subsequent
+                # delegations.
+                acknowledgement_delay_ms: nil,
+
                 type: :decisions
               )
               end
 
               sig do
                 override.returns(
-                  {decisions: OpenAI::Live::DecisionsDelegationConfig, type: Symbol}
+                  {decisions: OpenAI::Live::DecisionsDelegationConfig, type: Symbol, acknowledgement_delay_ms: Integer}
                 )
               end
               def to_hash

@@ -1,0 +1,58 @@
+module OpenAI
+  module Resources
+    class Admin
+      class Organization
+        class WorkloadIdentityProviders
+          attr_reader federation_rules: OpenAI::Resources::Admin::Organization::WorkloadIdentityProviders::FederationRules
+
+          def create: (
+            audience: String,
+            issuer: String,
+            name: String,
+            ?attribute_transformations: ::Array[OpenAI::Admin::Organization::WorkloadIdentityProviderCreateParams::AttributeTransformation],
+            ?description: String,
+            ?enabled: bool,
+            ?verification: OpenAI::Models::Admin::Organization::WorkloadIdentityProviderCreateParams::verification
+            | { discovery_url: String?, type: :discovery }
+            | { jwks: ::Hash[Symbol, top], type: :uploaded_jwks },
+            ?type: :oidc,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::WorkloadIdentityProvider
+
+          def retrieve: (
+            String workload_identity_provider_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::WorkloadIdentityProvider
+
+          def update: (
+            String workload_identity_provider_id,
+            ?attribute_transformations: ::Array[OpenAI::Admin::Organization::WorkloadIdentityProviderUpdateParams::AttributeTransformation],
+            ?audience: String,
+            ?description: String?,
+            ?enabled: bool,
+            ?issuer: String,
+            ?name: String,
+            ?verification: OpenAI::Models::Admin::Organization::WorkloadIdentityProviderUpdateParams::verification
+            | { discovery_url: String?, type: :discovery }
+            | { jwks: ::Hash[Symbol, top], type: :uploaded_jwks },
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::WorkloadIdentityProvider
+
+          def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Admin::Organization::WorkloadIdentityProviderListParams::order,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Admin::Organization::WorkloadIdentityProvider]
+
+          def delete: (
+            String workload_identity_provider_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Admin::Organization::WorkloadIdentityProviderDeleted
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

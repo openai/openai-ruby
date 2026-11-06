@@ -671,6 +671,9 @@ module OpenAI
               ?type: :image_generation,
               ?action: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::action,
               ?background: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::background,
+              ?complexity: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::complexity,
+              ?frame_count: Integer,
+              ?frame_duration_ms: Integer,
               ?input_fidelity: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::input_fidelity?,
               ?input_image_mask: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputImageMask,
               ?model: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::model,
@@ -679,7 +682,8 @@ module OpenAI
               ?output_format: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::output_format,
               ?partial_images: Integer,
               ?quality: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::quality,
-              ?size: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::size
+              ?size: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::size,
+              ?svg: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg
             }
 
           class ImageGeneration < OpenAI::Internal::Type::BaseModel
@@ -718,10 +722,40 @@ module OpenAI
               OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::background
             ) -> OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::background
 
+            # Computation spent planning the image, independently of rendering quality.
+            # Overrides the outer response's `reasoning.effort` for image generation. When
+            # omitted, inherits a supported outer reasoning effort or uses the image model's
+            # configured default. For SVG output, controls the reference image, not the SVG
+            # author's reasoning.
+            attr_reader complexity: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::complexity?
+
+            # Computation spent planning the image, independently of rendering quality.
+            # Overrides the outer response's `reasoning.effort` for image generation. When
+            # omitted, inherits a supported outer reasoning effort or uses the image model's
+            # configured default. For SVG output, controls the reference image, not the SVG
+            # author's reasoning.
+            def complexity=: (
+              OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::complexity
+            ) -> OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::complexity
+
+            # Number of GIF frames. Requires `output_format` to be `gif`. Default: 9.
+            attr_reader frame_count: Integer?
+
+            # Number of GIF frames. Requires `output_format` to be `gif`. Default: 9.
+            def frame_count=: (Integer) -> Integer
+
+            # Duration of each GIF frame in milliseconds, rounded to 10 ms. Requires
+            # `output_format` to be `gif`. Default: 200.
+            attr_reader frame_duration_ms: Integer?
+
+            # Duration of each GIF frame in milliseconds, rounded to 10 ms. Requires
+            # `output_format` to be `gif`. Default: 200.
+            def frame_duration_ms=: (Integer) -> Integer
+
             # Control how much effort the model will exert to match the style and features,
             # especially facial features, of input images. Supports `high` and `low` on
-            # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-            # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+            # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+            # this parameter. Defaults to `low` on supported models.
             attr_accessor input_fidelity: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::input_fidelity?
 
             # Optional mask for inpainting. Contains `image_url` (string, optional) and
@@ -734,18 +768,24 @@ module OpenAI
               OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputImageMask
             ) -> OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputImageMask
 
-            # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            # `chatgpt-image-latest`. Default: `gpt-image-1`.
+            # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+            # `gpt-image-2.6-flare`, or `chatgpt-image-latest`. Default: `gpt-image-2`.
+            #
+            # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            # `gpt-image-2.5-flare` instead.
             attr_reader model: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::model?
 
-            # The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            # `chatgpt-image-latest`. Default: `gpt-image-1`.
+            # The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+            # `gpt-image-2.6-flare`, or `chatgpt-image-latest`. Default: `gpt-image-2`.
+            #
+            # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            # `gpt-image-2.5-flare` instead.
             def model=: (
               OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::model
             ) -> OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::model
@@ -764,12 +804,20 @@ module OpenAI
             # Compression level for the output image. Default: 100.
             def output_compression=: (Integer) -> Integer
 
-            # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
-            # Default: `png`.
+            # The output format of the generated image. One of `png`, `webp`, `jpeg`, `gif`,
+            # or `svg`. Default: `png`. GIF and SVG output require a model that supports the
+            # selected format. GIF output does not support partial image streaming
+            # (`partial_images` greater than `0`), `input_image_mask`, or custom
+            # `output_compression`. Responses lifecycle events can still be streamed for GIF
+            # output.
             attr_reader output_format: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::output_format?
 
-            # The output format of the generated image. One of `png`, `webp`, or `jpeg`.
-            # Default: `png`.
+            # The output format of the generated image. One of `png`, `webp`, `jpeg`, `gif`,
+            # or `svg`. Default: `png`. GIF and SVG output require a model that supports the
+            # selected format. GIF output does not support partial image streaming
+            # (`partial_images` greater than `0`), `input_image_mask`, or custom
+            # `output_compression`. Responses lifecycle events can still be streamed for GIF
+            # output.
             def output_format=: (
               OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::output_format
             ) -> OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::output_format
@@ -822,6 +870,20 @@ module OpenAI
               OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::size
             ) -> OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::size
 
+            # SVG author model settings. Requires `output_format` to be `svg`. When SVG model
+            # selection is enabled, omitting this object uses the outer response model.
+            # Otherwise, the default SVG author is used and explicit model overrides are
+            # unavailable.
+            attr_reader svg: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg?
+
+            # SVG author model settings. Requires `output_format` to be `svg`. When SVG model
+            # selection is enabled, omitting this object uses the outer response model.
+            # Otherwise, the default SVG author is used and explicit model overrides are
+            # unavailable.
+            def svg=: (
+              OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg
+            ) -> OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg
+
             # @param action
             #   Whether to generate a new image or edit an existing image. Default: `auto`.
             # @param background
@@ -834,27 +896,45 @@ module OpenAI
             #   backgrounds are available for supported GPT Image models. For `gpt-image-2` and
             #   `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
             #   set the output format to `png` or `webp`.
+            # @param complexity
+            #   Computation spent planning the image, independently of rendering quality.
+            #   Overrides the outer response's `reasoning.effort` for image generation. When
+            #   omitted, inherits a supported outer reasoning effort or uses the image model's
+            #   configured default. For SVG output, controls the reference image, not the SVG
+            #   author's reasoning.
+            # @param frame_count
+            #   Number of GIF frames. Requires `output_format` to be `gif`. Default: 9.
+            # @param frame_duration_ms
+            #   Duration of each GIF frame in milliseconds, rounded to 10 ms. Requires
+            #   `output_format` to be `gif`. Default: 200.
             # @param input_fidelity
             #   Control how much effort the model will exert to match the style and features,
             #   especially facial features, of input images. Supports `high` and `low` on
-            #   `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-            #   `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+            #   `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+            #   this parameter. Defaults to `low` on supported models.
             # @param input_image_mask
             #   Optional mask for inpainting. Contains `image_url` (string, optional) and
             #   `file_id` (string, optional).
             # @param model
-            #   The image generation model to use. One of `gpt-image-1`, `gpt-image-1-mini`,
-            #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
-            #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-            #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-            #   `chatgpt-image-latest`. Default: `gpt-image-1`.
+            #   The image generation model to use. One of `gpt-image-1-mini`, `gpt-image-1.5`,
+            #   `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+            #   `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+            #   `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`,
+            #   `gpt-image-2.6-flare`, or `chatgpt-image-latest`. Default: `gpt-image-2`.
+            #
+            #   `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+            #   `gpt-image-2.5-flare` instead.
             # @param moderation
             #   Moderation level for the generated image. Default: `auto`.
             # @param output_compression
             #   Compression level for the output image. Default: 100.
             # @param output_format
-            #   The output format of the generated image. One of `png`, `webp`, or `jpeg`.
-            #   Default: `png`.
+            #   The output format of the generated image. One of `png`, `webp`, `jpeg`, `gif`,
+            #   or `svg`. Default: `png`. GIF and SVG output require a model that supports the
+            #   selected format. GIF output does not support partial image streaming
+            #   (`partial_images` greater than `0`), `input_image_mask`, or custom
+            #   `output_compression`. Responses lifecycle events can still be streamed for GIF
+            #   output.
             # @param partial_images
             #   Number of partial images to generate in streaming mode, from 0 (default value)
             #   to 3.
@@ -874,11 +954,19 @@ module OpenAI
             #   satisfy the model's current pixel and edge limits. The standard sizes
             #   `1024x1024`, `1536x1024`, and `1024x1536` are supported by the GPT image models;
             #   `auto` is supported for models that allow automatic sizing.
+            # @param svg
+            #   SVG author model settings. Requires `output_format` to be `svg`. When SVG model
+            #   selection is enabled, omitting this object uses the outer response model.
+            #   Otherwise, the default SVG author is used and explicit model overrides are
+            #   unavailable.
             # @param type
             #   The type of the image generation tool. Always `image_generation`.
             def initialize: (
               ?action: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::action,
               ?background: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::background,
+              ?complexity: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::complexity,
+              ?frame_count: Integer,
+              ?frame_duration_ms: Integer,
               ?input_fidelity: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::input_fidelity?,
               ?input_image_mask: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputImageMask,
               ?model: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::model,
@@ -888,6 +976,7 @@ module OpenAI
               ?partial_images: Integer,
               ?quality: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::quality,
               ?size: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::size,
+              ?svg: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg,
               ?type: :image_generation
             ) -> void
 
@@ -895,6 +984,9 @@ module OpenAI
               ?type: :image_generation,
               ?action: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::action,
               ?background: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::background,
+              ?complexity: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::complexity,
+              ?frame_count: Integer,
+              ?frame_duration_ms: Integer,
               ?input_fidelity: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::input_fidelity?,
               ?input_image_mask: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::InputImageMask,
               ?model: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::model,
@@ -903,7 +995,8 @@ module OpenAI
               ?output_format: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::output_format,
               ?partial_images: Integer,
               ?quality: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::quality,
-              ?size: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::size
+              ?size: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::size,
+              ?svg: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg
             }
 
             type action = :generate | :edit | :auto
@@ -928,6 +1021,18 @@ module OpenAI
               AUTO: :auto
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::background]
+            end
+
+            type complexity = :low | :medium | :high
+
+            module Complexity
+              extend OpenAI::Internal::Type::Enum
+
+              LOW: :low
+              MEDIUM: :medium
+              HIGH: :high
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::complexity]
             end
 
             type input_fidelity = :high | :low
@@ -975,6 +1080,8 @@ module OpenAI
               | :"gpt-image-2.5-sunburst-2026-09-08"
               | :"gpt-image-2.5-flare"
               | :"gpt-image-2.5-flare-2026-09-08"
+              | :"gpt-image-2.6-sunburst"
+              | :"gpt-image-2.6-flare"
               | :"gpt-image-1.5"
               | :"chatgpt-image-latest"
 
@@ -991,6 +1098,8 @@ module OpenAI
               GPT_IMAGE_2_5_SUNBURST_2026_09_08: :"gpt-image-2.5-sunburst-2026-09-08"
               GPT_IMAGE_2_5_FLARE: :"gpt-image-2.5-flare"
               GPT_IMAGE_2_5_FLARE_2026_09_08: :"gpt-image-2.5-flare-2026-09-08"
+              GPT_IMAGE_2_6_SUNBURST: :"gpt-image-2.6-sunburst"
+              GPT_IMAGE_2_6_FLARE: :"gpt-image-2.6-flare"
               GPT_IMAGE_1_5: :"gpt-image-1.5"
               CHATGPT_IMAGE_LATEST: :"chatgpt-image-latest"
             end
@@ -1006,7 +1115,7 @@ module OpenAI
               def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::moderation]
             end
 
-            type output_format = :png | :webp | :jpeg
+            type output_format = :png | :webp | :jpeg | :gif | :svg
 
             module OutputFormat
               extend OpenAI::Internal::Type::Enum
@@ -1014,6 +1123,8 @@ module OpenAI
               PNG: :png
               WEBP: :webp
               JPEG: :jpeg
+              GIF: :gif
+              SVG: :svg
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::output_format]
             end
@@ -1045,6 +1156,77 @@ module OpenAI
               SIZE_1024X1536: :"1024x1536"
               SIZE_1536X1024: :"1536x1024"
               AUTO: :auto
+            end
+
+            type svg =
+              {
+                ?model: String,
+                ?reasoning: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning?
+              }
+
+            class Svg < OpenAI::Internal::Type::BaseModel
+              attr_reader model: String?
+
+              def model=: (String) -> String
+
+              # Reasoning effort for SVG authoring. When omitted, uses the author model's
+              # default in both Images and Responses.
+              attr_accessor reasoning: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning?
+
+              # @param reasoning
+              #   Reasoning effort for SVG authoring. When omitted, uses the author model's
+              #   default in both Images and Responses.
+              def initialize: (
+                ?model: String,
+                ?reasoning: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning?
+              ) -> void
+
+              def to_hash: -> {
+                ?model: String,
+                ?reasoning: OpenAI::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning?
+              }
+
+              type reasoning =
+                {
+                  ?effort: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::effort
+                }
+
+              class Reasoning < OpenAI::Internal::Type::BaseModel
+                # Controls how much effort the model should spend on reasoning for this request.
+                attr_reader effort: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::effort?
+
+                # Controls how much effort the model should spend on reasoning for this request.
+                def effort=: (
+                  OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::effort
+                ) -> OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::effort
+
+                # @param effort
+                #   Controls how much effort the model should spend on reasoning for this request.
+                def initialize: (
+                  ?effort: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::effort
+                ) -> void
+
+                def to_hash: -> {
+                  ?effort: OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::effort
+                }
+
+                type effort =
+                  :none | :minimal | :low | :medium | :high | :xhigh | :max
+
+                module Effort
+                  extend OpenAI::Internal::Type::Enum
+
+                  NONE: :none
+                  MINIMAL: :minimal
+                  LOW: :low
+                  MEDIUM: :medium
+                  HIGH: :high
+                  XHIGH: :xhigh
+                  MAX: :max
+
+                  def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam::Tool::ImageGeneration::Svg::Reasoning::effort]
+                end
+              end
             end
           end
 

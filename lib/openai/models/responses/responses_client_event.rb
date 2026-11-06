@@ -96,6 +96,20 @@ module OpenAI
             nil?: true
           )
 
+          # @!attribute generate
+          #   Whether to generate output for this response. Defaults to true when omitted. Set
+          #   to false to prepare request state without model output; the response ID can be
+          #   used as previous_response_id on a later turn.
+          #
+          #   @return [Boolean, nil]
+          optional :generate, OpenAI::Internal::Type::Boolean
+
+          # @!attribute image
+          #   Request level image options.
+          #
+          #   @return [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Image, nil]
+          optional :image, -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image }
+
           # @!attribute include
           #   Specify additional output data to include in the model response. Currently
           #   supported values are:
@@ -232,7 +246,7 @@ module OpenAI
           #   request can write up to four breakpoints. For cache matching, OpenAI considers
           #   up to the latest 80 breakpoints in the conversation, without a content-block
           #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-          #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+          #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
           #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           #   for current details.
           #
@@ -463,7 +477,7 @@ module OpenAI
           #   @return [String, nil]
           optional :user, String
 
-          # @!method initialize(access_programs: nil, background: nil, context_management: nil, conversation: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_id: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
+          # @!method initialize(access_programs: nil, background: nil, context_management: nil, conversation: nil, generate: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_id: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
           #   Client event for creating a response over a persistent WebSocket connection.
           #   This payload uses the same top-level fields as `POST /v1/responses`, plus
           #   WebSocket-only envelope metadata.
@@ -489,6 +503,14 @@ module OpenAI
           #     prepended to `input_items` for this response request. Input items and output
           #     items from this response are automatically added to this conversation after this
           #     response completes.
+          #
+          #   @param generate [Boolean]
+          #     Whether to generate output for this response. Defaults to true when omitted. Set
+          #     to false to prepare request state without model output; the response ID can be
+          #     used as previous_response_id on a later turn.
+          #
+          #   @param image [OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Image]
+          #     Request level image options.
           #
           #   @param include [Array<Symbol, OpenAI::Models::Responses::ResponseIncludable>, nil]
           #     Specify additional output data to include in the model response. Currently
@@ -582,7 +604,7 @@ module OpenAI
           #     request can write up to four breakpoints. For cache matching, OpenAI considers
           #     up to the latest 80 breakpoints in the conversation, without a content-block
           #     lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-          #     `ttl` defaults to `30m`, which is currently the only supported value. See the
+          #     `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
           #     [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           #     for current details.
           #
@@ -839,6 +861,44 @@ module OpenAI
             #   @return [Array(String, OpenAI::Models::Responses::ResponseConversationParam)]
           end
 
+          # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate#image
+          class Image < OpenAI::Internal::Type::BaseModel
+            # @!attribute context_compression
+            #   Controls image context optimization. Defaults to `auto`, which uses the model,
+            #   transport, and input to select a policy. Use `enabled` to require compression
+            #   support or `disabled` to turn it off.
+            #
+            #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression, nil]
+            optional(
+              :context_compression,
+              enum: -> { OpenAI::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression }
+            )
+
+            # @!method initialize(context_compression: nil)
+            #   Request level image options.
+            #
+            #   @param context_compression [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Image::ContextCompression]
+            #     Controls image context optimization. Defaults to `auto`, which uses the model,
+            #     transport, and input to select a policy. Use `enabled` to require compression
+            #     support or `disabled` to turn it off.
+
+            # Controls image context optimization. Defaults to `auto`, which uses the model,
+            # transport, and input to select a policy. Use `enabled` to require compression
+            # support or `disabled` to turn it off.
+            #
+            # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::Image#context_compression
+            module ContextCompression
+              extend OpenAI::Internal::Type::Enum
+
+              AUTO = :auto
+              ENABLED = :enabled
+              DISABLED = :disabled
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+
           # Text, image, or file inputs to the model, used to generate a response.
           #
           # Learn more:
@@ -1019,8 +1079,8 @@ module OpenAI
 
             # @!attribute ttl
             #   The minimum lifetime applied to every implicit and explicit cache breakpoint
-            #   written by the request. Defaults to `30m`, which is currently the only supported
-            #   value. The backend may retain cache entries for longer.
+            #   written by the request. Supported values are `30m` (the default) and `12h`. The
+            #   backend may retain cache entries for longer.
             #
             #   @return [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl, nil]
             optional(
@@ -1035,7 +1095,7 @@ module OpenAI
             #   request can write up to four breakpoints. For cache matching, OpenAI considers
             #   up to the latest 80 breakpoints in the conversation, without a content-block
             #   lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-            #   `ttl` defaults to `30m`, which is currently the only supported value. See the
+            #   `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
             #   [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
             #   for current details.
             #
@@ -1057,8 +1117,8 @@ module OpenAI
             #
             #   @param ttl [Symbol, OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl]
             #     The minimum lifetime applied to every implicit and explicit cache breakpoint
-            #     written by the request. Defaults to `30m`, which is currently the only supported
-            #     value. The backend may retain cache entries for longer.
+            #     written by the request. Supported values are `30m` (the default) and `12h`. The
+            #     backend may retain cache entries for longer.
 
             # Controls whether OpenAI automatically creates an implicit cache breakpoint.
             # Defaults to `implicit`. With `implicit`, OpenAI creates one implicit breakpoint
@@ -1079,14 +1139,15 @@ module OpenAI
             end
 
             # The minimum lifetime applied to every implicit and explicit cache breakpoint
-            # written by the request. Defaults to `30m`, which is currently the only supported
-            # value. The backend may retain cache entries for longer.
+            # written by the request. Supported values are `30m` (the default) and `12h`. The
+            # backend may retain cache entries for longer.
             #
             # @see OpenAI::Models::Responses::ResponsesClientEvent::ResponseCreate::PromptCacheOptions#ttl
             module Ttl
               extend OpenAI::Internal::Type::Enum
 
               TTL_30M = :"30m"
+              TTL_12H = :"12h"
 
               # @!method self.values
               #   @return [Array<Symbol>]

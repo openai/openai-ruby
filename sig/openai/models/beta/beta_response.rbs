@@ -23,6 +23,7 @@ module OpenAI
           ?background: bool?,
           ?completed_at: Float?,
           ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?image: OpenAI::Beta::BetaResponse::Image,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
@@ -37,6 +38,7 @@ module OpenAI
           ?service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
           ?status: OpenAI::Models::Beta::beta_response_status,
           ?text: OpenAI::Beta::BetaResponseTextConfig,
+          ?tool_usage: OpenAI::Beta::BetaResponse::ToolUsage,
           ?top_logprobs: Integer?,
           ?truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
           ?usage: OpenAI::Beta::BetaResponseUsage,
@@ -146,6 +148,12 @@ module OpenAI
         # The conversation that this response belonged to. Input items and output items
         # from this response were automatically added to this conversation.
         attr_accessor conversation: OpenAI::Beta::BetaResponse::Conversation?
+
+        attr_reader image: OpenAI::Beta::BetaResponse::Image?
+
+        def image=: (
+          OpenAI::Beta::BetaResponse::Image
+        ) -> OpenAI::Beta::BetaResponse::Image
 
         # An upper bound for the number of tokens that can be generated for a response,
         # including visible output tokens and
@@ -279,6 +287,36 @@ module OpenAI
         def text=: (
           OpenAI::Beta::BetaResponseTextConfig
         ) -> OpenAI::Beta::BetaResponseTextConfig
+
+        # Usage reported by hosted tools, separate from base model `usage`. The field can
+        # be omitted when tool usage is unavailable. When present, tool families with no
+        # recorded usage have zero counts.
+        #
+        # `image_gen` sums available token counts across image generation calls. Calls
+        # with missing or incomplete usage records may be skipped. Output token details
+        # and cached input counts can be omitted. An omitted cache count means cache usage
+        # is unknown.
+        #
+        # `web_search.num_requests` counts billable searches. Discounted searches and
+        # actions such as opening a page are excluded. Use billing records to reconcile
+        # final charges.
+        attr_reader tool_usage: OpenAI::Beta::BetaResponse::ToolUsage?
+
+        # Usage reported by hosted tools, separate from base model `usage`. The field can
+        # be omitted when tool usage is unavailable. When present, tool families with no
+        # recorded usage have zero counts.
+        #
+        # `image_gen` sums available token counts across image generation calls. Calls
+        # with missing or incomplete usage records may be skipped. Output token details
+        # and cached input counts can be omitted. An omitted cache count means cache usage
+        # is unknown.
+        #
+        # `web_search.num_requests` counts billable searches. Discounted searches and
+        # actions such as opening a page are excluded. Use billing records to reconcile
+        # final charges.
+        def tool_usage=: (
+          OpenAI::Beta::BetaResponse::ToolUsage
+        ) -> OpenAI::Beta::BetaResponse::ToolUsage
 
         # An integer between 0 and 20 specifying the maximum number of most likely tokens
         # to return at each token position, each with an associated log probability. In
@@ -493,6 +531,19 @@ module OpenAI
         #
         #   - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
         #   - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+        # @param tool_usage
+        #   Usage reported by hosted tools, separate from base model `usage`. The field can
+        #   be omitted when tool usage is unavailable. When present, tool families with no
+        #   recorded usage have zero counts.
+        #
+        #   `image_gen` sums available token counts across image generation calls. Calls
+        #   with missing or incomplete usage records may be skipped. Output token details
+        #   and cached input counts can be omitted. An omitted cache count means cache usage
+        #   is unknown.
+        #
+        #   `web_search.num_requests` counts billable searches. Discounted searches and
+        #   actions such as opening a page are excluded. Use billing records to reconcile
+        #   final charges.
         # @param top_logprobs
         #   An integer between 0 and 20 specifying the maximum number of most likely tokens
         #   to return at each token position, each with an associated log probability. In
@@ -534,6 +585,7 @@ module OpenAI
           ?background: bool?,
           ?completed_at: Float?,
           ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?image: OpenAI::Beta::BetaResponse::Image,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
@@ -548,6 +600,7 @@ module OpenAI
           ?service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
           ?status: OpenAI::Models::Beta::beta_response_status,
           ?text: OpenAI::Beta::BetaResponseTextConfig,
+          ?tool_usage: OpenAI::Beta::BetaResponse::ToolUsage,
           ?top_logprobs: Integer?,
           ?truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
           ?usage: OpenAI::Beta::BetaResponseUsage,
@@ -574,6 +627,7 @@ module OpenAI
           ?background: bool?,
           ?completed_at: Float?,
           ?conversation: OpenAI::Beta::BetaResponse::Conversation?,
+          ?image: OpenAI::Beta::BetaResponse::Image,
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Beta::BetaResponse::Moderation?,
@@ -588,6 +642,7 @@ module OpenAI
           ?service_tier: OpenAI::Models::Beta::BetaResponse::service_tier?,
           ?status: OpenAI::Models::Beta::beta_response_status,
           ?text: OpenAI::Beta::BetaResponseTextConfig,
+          ?tool_usage: OpenAI::Beta::BetaResponse::ToolUsage,
           ?top_logprobs: Integer?,
           ?truncation: OpenAI::Models::Beta::BetaResponse::truncation?,
           ?usage: OpenAI::Beta::BetaResponseUsage,
@@ -683,6 +738,7 @@ module OpenAI
         type model =
           :"gpt-6-astra"
           | :"gpt-6.1-sol"
+          | :"gpt-6.1-terra"
           | :"gpt-6-sol"
           | :"gpt-6-luna"
           | :"gpt-5.6-sol"
@@ -789,6 +845,7 @@ module OpenAI
           | :"gpt-daybreak-blue-latest"
           | :"gpt-daybreak-red-latest"
           | :"gpt-5.6-cyber"
+          | :"gpt-6-cyber"
           | :"gpt-rosalind-research"
           | String
 
@@ -799,6 +856,7 @@ module OpenAI
 
           GPT_6_ASTRA: :"gpt-6-astra"
           GPT_6_1_SOL: :"gpt-6.1-sol"
+          GPT_6_1_TERRA: :"gpt-6.1-terra"
           GPT_6_SOL: :"gpt-6-sol"
           GPT_6_LUNA: :"gpt-6-luna"
           GPT_5_6_SOL: :"gpt-5.6-sol"
@@ -905,6 +963,7 @@ module OpenAI
           GPT_DAYBREAK_BLUE_LATEST: :"gpt-daybreak-blue-latest"
           GPT_DAYBREAK_RED_LATEST: :"gpt-daybreak-red-latest"
           GPT_5_6_CYBER: :"gpt-5.6-cyber"
+          GPT_6_CYBER: :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH: :"gpt-rosalind-research"
         end
 
@@ -950,6 +1009,37 @@ module OpenAI
           def initialize: (id: String) -> void
 
           def to_hash: -> { id: String }
+        end
+
+        type image =
+          {
+            context_compression: OpenAI::Models::Beta::BetaResponse::Image::context_compression
+          }
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # Effective image context optimization policy.
+          attr_accessor context_compression: OpenAI::Models::Beta::BetaResponse::Image::context_compression
+
+          # @param context_compression
+          #   Effective image context optimization policy.
+          def initialize: (
+            context_compression: OpenAI::Models::Beta::BetaResponse::Image::context_compression
+          ) -> void
+
+          def to_hash: -> {
+            context_compression: OpenAI::Models::Beta::BetaResponse::Image::context_compression
+          }
+
+          type context_compression = :enabled | :disabled
+
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            ENABLED: :enabled
+            DISABLED: :disabled
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::Image::context_compression]
+          end
         end
 
         type moderation =
@@ -1366,12 +1456,13 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::mode]
           end
 
-          type ttl = :"30m"
+          type ttl = :"30m" | :"12h"
 
           module Ttl
             extend OpenAI::Internal::Type::Enum
 
             TTL_30M: :"30m"
+            TTL_12H: :"12h"
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::PromptCacheOptions::ttl]
           end
@@ -1568,6 +1659,183 @@ module OpenAI
           ULTRAFAST: :ultrafast
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponse::service_tier]
+        end
+
+        type tool_usage =
+          {
+            image_gen: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen,
+            web_search: OpenAI::Beta::BetaResponse::ToolUsage::WebSearch
+          }
+
+        class ToolUsage < OpenAI::Internal::Type::BaseModel
+          # Aggregated usage statistics for image generation tool calls.
+          attr_accessor image_gen: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen
+
+          # Aggregated billable usage statistics for web search tool calls.
+          attr_accessor web_search: OpenAI::Beta::BetaResponse::ToolUsage::WebSearch
+
+          # @param image_gen
+          #   Aggregated usage statistics for image generation tool calls.
+          # @param web_search
+          #   Aggregated billable usage statistics for web search tool calls.
+          def initialize: (
+            image_gen: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen,
+            web_search: OpenAI::Beta::BetaResponse::ToolUsage::WebSearch
+          ) -> void
+
+          def to_hash: -> {
+            image_gen: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen,
+            web_search: OpenAI::Beta::BetaResponse::ToolUsage::WebSearch
+          }
+
+          type image_gen =
+            {
+              input_tokens: Integer,
+              input_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              ?cached_tokens: Integer,
+              ?cached_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails,
+              ?output_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails
+            }
+
+          class ImageGen < OpenAI::Internal::Type::BaseModel
+            # The number of tokens (images and text) in the input prompt.
+            attr_accessor input_tokens: Integer
+
+            # The input tokens detailed information for the image generation.
+            attr_accessor input_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails
+
+            # The number of output tokens generated by the model.
+            attr_accessor output_tokens: Integer
+
+            # The total number of tokens (images and text) used for the image generation.
+            attr_accessor total_tokens: Integer
+
+            attr_reader cached_tokens: Integer?
+
+            def cached_tokens=: (Integer) -> Integer
+
+            attr_reader cached_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails?
+
+            def cached_tokens_details=: (
+              OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails
+            ) -> OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails
+
+            # The output token details for the image generation.
+            attr_reader output_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails?
+
+            # The output token details for the image generation.
+            def output_tokens_details=: (
+              OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails
+            ) -> OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails
+
+            # @param input_tokens
+            #   The number of tokens (images and text) in the input prompt.
+            # @param input_tokens_details
+            #   The input tokens detailed information for the image generation.
+            # @param output_tokens
+            #   The number of output tokens generated by the model.
+            # @param total_tokens
+            #   The total number of tokens (images and text) used for the image generation.
+            # @param output_tokens_details
+            #   The output token details for the image generation.
+            def initialize: (
+              input_tokens: Integer,
+              input_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              ?cached_tokens: Integer,
+              ?cached_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails,
+              ?output_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails
+            ) -> void
+
+            def to_hash: -> {
+              input_tokens: Integer,
+              input_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails,
+              output_tokens: Integer,
+              total_tokens: Integer,
+              ?cached_tokens: Integer,
+              ?cached_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails,
+              ?output_tokens_details: OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails
+            }
+
+            type input_tokens_details =
+              { image_tokens: Integer, text_tokens: Integer }
+
+            class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+              # The number of image tokens in the input prompt.
+              attr_accessor image_tokens: Integer
+
+              # The number of text tokens in the input prompt.
+              attr_accessor text_tokens: Integer
+
+              # @param image_tokens
+              #   The number of image tokens in the input prompt.
+              # @param text_tokens
+              #   The number of text tokens in the input prompt.
+              def initialize: (
+                image_tokens: Integer,
+                text_tokens: Integer
+              ) -> void
+
+              def to_hash: -> { image_tokens: Integer, text_tokens: Integer }
+            end
+
+            type cached_tokens_details =
+              { cached_image_tokens: Integer, cached_text_tokens: Integer }
+
+            class CachedTokensDetails < OpenAI::Internal::Type::BaseModel
+              attr_accessor cached_image_tokens: Integer
+
+              attr_accessor cached_text_tokens: Integer
+
+              def initialize: (
+                cached_image_tokens: Integer,
+                cached_text_tokens: Integer
+              ) -> void
+
+              def to_hash: -> {
+                cached_image_tokens: Integer,
+                cached_text_tokens: Integer
+              }
+            end
+
+            type output_tokens_details =
+              { image_tokens: Integer, text_tokens: Integer }
+
+            class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
+              # The number of image output tokens generated by the model.
+              attr_accessor image_tokens: Integer
+
+              # The number of text output tokens generated by the model.
+              attr_accessor text_tokens: Integer
+
+              # @param image_tokens
+              #   The number of image output tokens generated by the model.
+              # @param text_tokens
+              #   The number of text output tokens generated by the model.
+              def initialize: (
+                image_tokens: Integer,
+                text_tokens: Integer
+              ) -> void
+
+              def to_hash: -> { image_tokens: Integer, text_tokens: Integer }
+            end
+          end
+
+          type web_search = { num_requests: Integer }
+
+          class WebSearch < OpenAI::Internal::Type::BaseModel
+            # The number of billable web search requests issued.
+            attr_accessor num_requests: Integer
+
+            # @param num_requests
+            #   The number of billable web search requests issued.
+            def initialize: (num_requests: Integer) -> void
+
+            def to_hash: -> { num_requests: Integer }
+          end
         end
 
         type truncation = :auto | :disabled

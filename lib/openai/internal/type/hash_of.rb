@@ -153,7 +153,7 @@ module OpenAI
         # @api private
         #
         # @return [generic<Elem>]
-        protected def item_type = @item_type_fn.call
+        def item_type = @item_type_fn.call
 
         # @api private
         #

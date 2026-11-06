@@ -58,6 +58,22 @@ module OpenAI
           sig { returns(T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam))) }
           attr_accessor :conversation
 
+          # Whether to generate output for this response. Defaults to true when omitted. Set
+          # to false to prepare request state without model output; the response ID can be
+          # used as previous_response_id on a later turn.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :generate
+
+          sig { params(generate: T::Boolean).void }
+          attr_writer :generate
+
+          # Request level image options.
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image)) }
+          attr_reader :image
+
+          sig { params(image: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::OrHash).void }
+          attr_writer :image
+
           # Specify additional output data to include in the model response. Currently
           # supported values are:
           #
@@ -190,7 +206,7 @@ module OpenAI
           # request can write up to four breakpoints. For cache matching, OpenAI considers
           # up to the latest 80 breakpoints in the conversation, without a content-block
           # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-          # `ttl` defaults to `30m`, which is currently the only supported value. See the
+          # `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
           # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
           # for current details.
           sig { returns(T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions)) }
@@ -503,6 +519,10 @@ module OpenAI
 
               conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
 
+              generate: T::Boolean,
+
+              image: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::OrHash,
+
               include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
 
               input: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants,
@@ -616,6 +636,14 @@ module OpenAI
             # response completes.
             conversation: nil,
 
+            # Whether to generate output for this response. Defaults to true when omitted. Set
+            # to false to prepare request state without model output; the response ID can be
+            # used as previous_response_id on a later turn.
+            generate: nil,
+
+            # Request level image options.
+            image: nil,
+
             # Specify additional output data to include in the model response. Currently
             # supported values are:
             #
@@ -710,7 +738,7 @@ module OpenAI
             # request can write up to four breakpoints. For cache matching, OpenAI considers
             # up to the latest 80 breakpoints in the conversation, without a content-block
             # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-            # `ttl` defaults to `30m`, which is currently the only supported value. See the
+            # `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
             # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
             # for current details.
             prompt_cache_options: nil,
@@ -882,6 +910,8 @@ module OpenAI
                   T::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]
                 ),
                 conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam)),
+                generate: T.nilable(T::Boolean),
+                image: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image),
                 include: T.nilable(T::Array[OpenAI::Beta::BetaResponseIncludable::OrSymbol]),
                 input: T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Input::Variants),
                 instructions: T.nilable(String),
@@ -1127,6 +1157,98 @@ module OpenAI
 
           end
 
+          class Image < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Controls image context optimization. Defaults to `auto`, which uses the model,
+            # transport, and input to select a policy. Use `enabled` to require compression
+            # support or `disabled` to turn it off.
+            sig {
+              returns(
+                T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression::OrSymbol)
+              )
+            }
+            attr_reader :context_compression
+
+            sig {
+              params(
+                context_compression: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression::OrSymbol
+              )
+                .void
+            }
+            attr_writer :context_compression
+
+            # Request level image options.
+            sig do
+              params(
+
+                context_compression: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression::OrSymbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Controls image context optimization. Defaults to `auto`, which uses the model,
+              # transport, and input to select a policy. Use `enabled` to require compression
+              # support or `disabled` to turn it off.
+
+              context_compression: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  context_compression: T.nilable(
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression::OrSymbol
+                  )
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # Controls image context optimization. Defaults to `auto`, which uses the model,
+            # transport, and input to select a policy. Use `enabled` to require compression
+            # support or `disabled` to turn it off.
+            module ContextCompression
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              AUTO = T.let(
+                :auto,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression::TaggedSymbol
+              )
+              ENABLED = T.let(
+                :enabled,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression::TaggedSymbol
+              )
+              DISABLED = T.let(
+                :disabled,
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Image::ContextCompression::TaggedSymbol
+                  ]
+                )
+              }
+              def self.values
+              end
+            end
+          end
+
           # Text, image, or file inputs to the model, used to generate a response.
           #
           # Learn more:
@@ -1175,6 +1297,10 @@ module OpenAI
             )
             GPT_6_1_SOL = T.let(
               :"gpt-6.1-sol",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_6_1_TERRA = T.let(
+              :"gpt-6.1-terra",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
             GPT_6_SOL = T.let(:"gpt-6-sol", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
@@ -1545,6 +1671,10 @@ module OpenAI
             )
             GPT_5_6_CYBER = T.let(
               :"gpt-5.6-cyber",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_6_CYBER = T.let(
+              :"gpt-6-cyber",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
             GPT_ROSALIND_RESEARCH = T.let(
@@ -1935,8 +2065,8 @@ module OpenAI
             attr_writer :prewarm
 
             # The minimum lifetime applied to every implicit and explicit cache breakpoint
-            # written by the request. Defaults to `30m`, which is currently the only supported
-            # value. The backend may retain cache entries for longer.
+            # written by the request. Supported values are `30m` (the default) and `12h`. The
+            # backend may retain cache entries for longer.
             sig {
               returns(
                 T.nilable(OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::OrSymbol)
@@ -1956,7 +2086,7 @@ module OpenAI
             # request can write up to four breakpoints. For cache matching, OpenAI considers
             # up to the latest 80 breakpoints in the conversation, without a content-block
             # lookback limit. Set `mode` to `explicit` to disable the implicit breakpoint. The
-            # `ttl` defaults to `30m`, which is currently the only supported value. See the
+            # `ttl` defaults to `30m`. Supported lifetimes depend on the API. See the
             # [prompt caching guide](https://developers.openai.com/api/docs/guides/prompt-caching)
             # for current details.
             sig do
@@ -1991,8 +2121,8 @@ module OpenAI
               prewarm: nil,
 
               # The minimum lifetime applied to every implicit and explicit cache breakpoint
-              # written by the request. Defaults to `30m`, which is currently the only supported
-              # value. The backend may retain cache entries for longer.
+              # written by the request. Supported values are `30m` (the default) and `12h`. The
+              # backend may retain cache entries for longer.
 
               ttl: nil
             )
@@ -2050,8 +2180,8 @@ module OpenAI
             end
 
             # The minimum lifetime applied to every implicit and explicit cache breakpoint
-            # written by the request. Defaults to `30m`, which is currently the only supported
-            # value. The backend may retain cache entries for longer.
+            # written by the request. Supported values are `30m` (the default) and `12h`. The
+            # backend may retain cache entries for longer.
             module Ttl
               extend OpenAI::Internal::Type::Enum
 
@@ -2062,6 +2192,10 @@ module OpenAI
 
               TTL_30M = T.let(
                 :"30m",
+                OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::TaggedSymbol
+              )
+              TTL_12H = T.let(
+                :"12h",
                 OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::PromptCacheOptions::Ttl::TaggedSymbol
               )
 

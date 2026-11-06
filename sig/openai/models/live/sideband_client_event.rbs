@@ -6,6 +6,7 @@ module OpenAI
         | OpenAI::Live::InputAudioMuteEvent
         | OpenAI::Live::InputAudioUnmuteEvent
         | OpenAI::Live::OutputAudioFixturePlayEvent
+        | OpenAI::Live::SidebandClientEvent::TransportDtmfSend
         | OpenAI::Live::InstructionsAppendEvent
         | OpenAI::Live::ThinkingAppendEvent
         | OpenAI::Live::CommentaryAppendEvent
@@ -18,6 +19,37 @@ module OpenAI
 
       module SidebandClientEvent
         extend OpenAI::Internal::Type::Union
+
+        type transport_dtmf_send =
+          { event: String, ?type: :"transport.dtmf.send", ?event_id: String? }
+
+        class TransportDtmfSend < OpenAI::Internal::Type::BaseModel
+          # The DTMF key to send: one of `0`–`9`, `A`–`D`, `*`, or `#`.
+          attr_accessor event: String
+
+          attr_accessor type: :"transport.dtmf.send"
+
+          # Optional client identifier for correlating this command with a server event's
+          # client_event_id or error.client_event_id.
+          attr_accessor event_id: String?
+
+          # @param event
+          #   The DTMF key to send: one of `0`–`9`, `A`–`D`, `*`, or `#`.
+          # @param event_id
+          #   Optional client identifier for correlating this command with a server event's
+          #   client_event_id or error.client_event_id.
+          def initialize: (
+            event: String,
+            ?event_id: String?,
+            ?type: :"transport.dtmf.send"
+          ) -> void
+
+          def to_hash: -> {
+            event: String,
+            ?type: :"transport.dtmf.send",
+            ?event_id: String?
+          }
+        end
 
         def self?.variants: -> ::Array[OpenAI::Models::Live::sideband_client_event]
       end

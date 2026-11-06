@@ -1,0 +1,72 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        class ProjectServiceTierSettings = Projects::ProjectServiceTierSettings
+
+        module Projects
+          type project_service_tier_settings =
+            {
+              default: OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::default,
+              enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::enabled_tiers,
+              ?object: :"project.service_tier_settings"
+            }
+
+          class ProjectServiceTierSettings < OpenAI::Internal::Type::BaseModel
+            # Default tier for requests that omit service_tier or use auto.
+            attr_accessor default: OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::default
+
+            # Additional service tiers enabled for this project. "all" includes future tiers.
+            # An empty array allows only Standard. Organization policy and eligibility still
+            # apply.
+            attr_accessor enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::enabled_tiers
+
+            attr_accessor object: :"project.service_tier_settings"
+
+            # @param default
+            #   Default tier for requests that omit service_tier or use auto.
+            # @param enabled_tiers
+            #   Additional service tiers enabled for this project. "all" includes future tiers.
+            #   An empty array allows only Standard. Organization policy and eligibility still
+            #   apply.
+            def initialize: (
+              default: OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::default,
+              enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::enabled_tiers,
+              ?object: :"project.service_tier_settings"
+            ) -> void
+
+            def to_hash: -> {
+              default: OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::default,
+              enabled_tiers: OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::enabled_tiers,
+              ?object: :"project.service_tier_settings"
+            }
+
+            type default = :standard | :fast | :scale
+
+            module Default
+              extend OpenAI::Internal::Type::Enum
+
+              STANDARD: :standard
+              FAST: :fast
+              SCALE: :scale
+
+              def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::default]
+            end
+
+            type enabled_tiers =
+              :all
+              | ::Array[OpenAI::Models::Admin::Organization::Projects::project_optional_service_tier]
+
+            module EnabledTiers
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectServiceTierSettings::enabled_tiers]
+
+              ProjectOptionalServiceTierArray: OpenAI::Internal::Type::Converter
+            end
+          end
+        end
+      end
+    end
+  end
+end

@@ -7,7 +7,8 @@ module OpenAI
           created_at: Integer,
           ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Responses::response_item],
-          usage: OpenAI::Responses::ResponseUsage
+          usage: OpenAI::Responses::ResponseUsage,
+          ?image: OpenAI::Responses::CompactedResponse::Image
         }
 
       class CompactedResponse < OpenAI::Internal::Type::BaseModel
@@ -28,6 +29,12 @@ module OpenAI
         # tokens.
         attr_accessor usage: OpenAI::Responses::ResponseUsage
 
+        attr_reader image: OpenAI::Responses::CompactedResponse::Image?
+
+        def image=: (
+          OpenAI::Responses::CompactedResponse::Image
+        ) -> OpenAI::Responses::CompactedResponse::Image
+
         # @param id
         #   The unique identifier for the compacted response.
         # @param created_at
@@ -45,6 +52,7 @@ module OpenAI
           created_at: Integer,
           output: ::Array[OpenAI::Models::Responses::response_item],
           usage: OpenAI::Responses::ResponseUsage,
+          ?image: OpenAI::Responses::CompactedResponse::Image,
           ?object: :"response.compaction"
         ) -> void
 
@@ -53,8 +61,40 @@ module OpenAI
           created_at: Integer,
           ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Responses::response_item],
-          usage: OpenAI::Responses::ResponseUsage
+          usage: OpenAI::Responses::ResponseUsage,
+          ?image: OpenAI::Responses::CompactedResponse::Image
         }
+
+        type image =
+          {
+            context_compression: OpenAI::Models::Responses::CompactedResponse::Image::context_compression
+          }
+
+        class Image < OpenAI::Internal::Type::BaseModel
+          # Effective image context optimization policy.
+          attr_accessor context_compression: OpenAI::Models::Responses::CompactedResponse::Image::context_compression
+
+          # @param context_compression
+          #   Effective image context optimization policy.
+          def initialize: (
+            context_compression: OpenAI::Models::Responses::CompactedResponse::Image::context_compression
+          ) -> void
+
+          def to_hash: -> {
+            context_compression: OpenAI::Models::Responses::CompactedResponse::Image::context_compression
+          }
+
+          type context_compression = :enabled | :disabled
+
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            ENABLED: :enabled
+            DISABLED: :disabled
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::CompactedResponse::Image::context_compression]
+          end
+        end
       end
     end
   end

@@ -1,0 +1,34 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type workload_identity_provider_deleted =
+          {
+            id: String,
+            deleted: bool,
+            ?object: :"organization.workload_identity_provider.deleted"
+          }
+
+        class WorkloadIdentityProviderDeleted < OpenAI::Internal::Type::BaseModel
+          attr_accessor id: String
+
+          attr_accessor deleted: bool
+
+          attr_accessor object: :"organization.workload_identity_provider.deleted"
+
+          def initialize: (
+            id: String,
+            deleted: bool,
+            ?object: :"organization.workload_identity_provider.deleted"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            deleted: bool,
+            ?object: :"organization.workload_identity_provider.deleted"
+          }
+        end
+      end
+    end
+  end
+end

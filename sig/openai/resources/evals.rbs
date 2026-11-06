@@ -4,7 +4,14 @@ module OpenAI
       attr_reader runs: OpenAI::Resources::Evals::Runs
 
       def create: (
-        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config,
+        data_source_config: OpenAI::Models::EvalCreateParams::data_source_config
+        | {
+          item_schema: ::Hash[Symbol, top],
+          type: :custom,
+          ?include_sample_schema: bool
+        }
+        | { type: :logs, ?metadata: ::Hash[Symbol, top] }
+        | { type: :stored_completions, ?metadata: ::Hash[Symbol, top] },
         testing_criteria: ::Array[OpenAI::Models::EvalCreateParams::testing_criterion],
         ?metadata: OpenAI::Models::metadata?,
         ?name: String,

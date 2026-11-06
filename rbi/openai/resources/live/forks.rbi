@@ -7,7 +7,14 @@ module OpenAI
 
       class Forks
 
-        include OpenAI::WebSocket::Resource
+        include OpenAI::WebSocket::TypedResource
+
+        extend T::Generic
+
+        WebSocketClientEvent = type_member { {fixed: OpenAI::Live::ForkClientEvent::Variants} }
+        WebSocketServerEvent = type_member {
+          {fixed: T.any(OpenAI::Live::ForkServerEvent::Variants, T::Hash[Symbol, T.untyped])}
+        }
 
         # @api private
         sig { params(session_id: String, query: T::Hash[T.untyped, T.untyped]).returns(T::Hash[Symbol, T.untyped]) }

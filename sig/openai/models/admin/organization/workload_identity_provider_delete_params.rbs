@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        type workload_identity_provider_delete_params =
+          {
+            workload_identity_provider_id: String,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class WorkloadIdentityProviderDeleteParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor workload_identity_provider_id: String
+
+          def initialize: (
+            workload_identity_provider_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            workload_identity_provider_id: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

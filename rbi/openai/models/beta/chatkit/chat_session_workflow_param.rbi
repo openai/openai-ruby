@@ -104,7 +104,7 @@ module OpenAI
           module StateVariable
             extend OpenAI::Internal::Type::Union
 
-            Variants = T.type_alias { T.any(String, T::Boolean, Float) }
+            Variants = T.type_alias { T.any(String, Integer, T::Boolean, Float) }
 
             sig {
               override.returns(T::Array[OpenAI::Beta::ChatKit::ChatSessionWorkflowParam::StateVariable::Variants])

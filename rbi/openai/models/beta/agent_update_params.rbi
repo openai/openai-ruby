@@ -20,6 +20,23 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :agent_id
 
+        # Context compaction settings. Omit to keep the current settings. A supplied
+        # object replaces the settings; null or an empty object enables background
+        # compaction.
+        sig { returns(T.nilable(OpenAI::Beta::AgentUpdateParams::Compaction)) }
+        attr_reader :compaction
+
+        sig { params(compaction: T.nilable(OpenAI::Beta::AgentUpdateParams::Compaction::OrHash)).void }
+        attr_writer :compaction
+
+        # Experimental settings to merge by key. Omitted settings keep their current
+        # values.
+        sig { returns(T.nilable(OpenAI::Beta::AgentUpdateParams::Experimental)) }
+        attr_reader :experimental
+
+        sig { params(experimental: OpenAI::Beta::AgentUpdateParams::Experimental::OrHash).void }
+        attr_writer :experimental
+
         # Additional instructions appended to the agent's default base instructions. Omit
         # to leave unchanged.
         sig { returns(T.nilable(String)) }
@@ -80,7 +97,8 @@ module OpenAI
                   OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling,
                   OpenAI::Beta::PersistedAgentToolParam::Mcp,
                   OpenAI::Beta::PersistedAgentToolParam::WebSearch,
-                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse
+                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse,
+                  OpenAI::Beta::PersistedAgentToolParam::Automations
                 )
               ]
             )
@@ -92,6 +110,10 @@ module OpenAI
           params(
 
             agent_id: String,
+
+            compaction: T.nilable(OpenAI::Beta::AgentUpdateParams::Compaction::OrHash),
+
+            experimental: OpenAI::Beta::AgentUpdateParams::Experimental::OrHash,
 
             instructions: T.nilable(String),
 
@@ -117,7 +139,8 @@ module OpenAI
                   OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::Mcp::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::WebSearch::OrHash,
-                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash
+                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash,
+                  OpenAI::Beta::PersistedAgentToolParam::Automations::OrHash
                 )
               ]
             ),
@@ -129,6 +152,15 @@ module OpenAI
         def self.new(
 
           agent_id:,
+
+          # Context compaction settings. Omit to keep the current settings. A supplied
+          # object replaces the settings; null or an empty object enables background
+          # compaction.
+          compaction: nil,
+
+          # Experimental settings to merge by key. Omitted settings keep their current
+          # values.
+          experimental: nil,
 
           # Additional instructions appended to the agent's default base instructions. Omit
           # to leave unchanged.
@@ -170,6 +202,8 @@ module OpenAI
           override.returns(
             {
               agent_id: String,
+              compaction: T.nilable(OpenAI::Beta::AgentUpdateParams::Compaction),
+              experimental: OpenAI::Beta::AgentUpdateParams::Experimental,
               instructions: T.nilable(String),
               metadata: T.nilable(T::Hash[Symbol, String]),
               model: String,
@@ -186,7 +220,8 @@ module OpenAI
                     OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling,
                     OpenAI::Beta::PersistedAgentToolParam::Mcp,
                     OpenAI::Beta::PersistedAgentToolParam::WebSearch,
-                    OpenAI::Beta::PersistedAgentToolParam::ComputerUse
+                    OpenAI::Beta::PersistedAgentToolParam::ComputerUse,
+                    OpenAI::Beta::PersistedAgentToolParam::Automations
                   )
                 ]
               ),
@@ -195,6 +230,94 @@ module OpenAI
           )
         end
         def to_hash
+        end
+
+        class Compaction < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentUpdateParams::Compaction,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Whether to compact context in the background. Omission or null defaults to true.
+          # Set to false to use blocking compaction. Background compaction may increase
+          # token usage.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_accessor :async
+
+          # Context compaction settings. Omit to keep the current settings. A supplied
+          # object replaces the settings; null or an empty object enables background
+          # compaction.
+          sig do
+            params(
+
+              async: T.nilable(T::Boolean)
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether to compact context in the background. Omission or null defaults to true.
+            # Set to false to use blocking compaction. Background compaction may increase
+            # token usage.
+
+            async: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {async: T.nilable(T::Boolean)}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentUpdateParams::Experimental,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Whether to give the model periodic current-time reminders. Omit to keep the
+          # current setting.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :time_awareness
+
+          sig { params(time_awareness: T::Boolean).void }
+          attr_writer :time_awareness
+
+          # Experimental settings to merge by key. Omitted settings keep their current
+          # values.
+          sig do
+            params(
+
+              time_awareness: T::Boolean
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Whether to give the model periodic current-time reminders. Omit to keep the
+            # current setting.
+
+            time_awareness: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {time_awareness: T::Boolean}
+            )
+          end
+          def to_hash
+          end
+
         end
 
         # The service tier used for model requests.

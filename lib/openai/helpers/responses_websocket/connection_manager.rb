@@ -18,6 +18,7 @@ module OpenAI
         end
 
         super(
+          client: client,
           transport: transport,
           transport_options: transport_options,
           default_transport: -> { OpenAI::Responses::Transports::AsyncWebSocket.new },

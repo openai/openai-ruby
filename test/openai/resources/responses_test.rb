@@ -30,6 +30,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Responses::Response::Conversation | nil,
+          image: OpenAI::Responses::Response::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Responses::Response::Moderation | nil,
@@ -44,6 +45,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Responses::Response::ServiceTier | nil,
           status: OpenAI::Responses::ResponseStatus | nil,
           text: OpenAI::Responses::ResponseTextConfig | nil,
+          tool_usage: OpenAI::Responses::Response::ToolUsage | nil,
           top_logprobs: Integer | nil,
           truncation: OpenAI::Responses::Response::Truncation | nil,
           usage: OpenAI::Responses::ResponseUsage | nil,
@@ -79,6 +81,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Responses::Response::Conversation | nil,
+          image: OpenAI::Responses::Response::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Responses::Response::Moderation | nil,
@@ -93,6 +96,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Responses::Response::ServiceTier | nil,
           status: OpenAI::Responses::ResponseStatus | nil,
           text: OpenAI::Responses::ResponseTextConfig | nil,
+          tool_usage: OpenAI::Responses::Response::ToolUsage | nil,
           top_logprobs: Integer | nil,
           truncation: OpenAI::Responses::Response::Truncation | nil,
           usage: OpenAI::Responses::ResponseUsage | nil,
@@ -136,6 +140,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Responses::Response::Conversation | nil,
+          image: OpenAI::Responses::Response::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Responses::Response::Moderation | nil,
@@ -150,6 +155,7 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Responses::Response::ServiceTier | nil,
           status: OpenAI::Responses::ResponseStatus | nil,
           text: OpenAI::Responses::ResponseTextConfig | nil,
+          tool_usage: OpenAI::Responses::Response::ToolUsage | nil,
           top_logprobs: Integer | nil,
           truncation: OpenAI::Responses::Response::Truncation | nil,
           usage: OpenAI::Responses::ResponseUsage | nil,
@@ -171,7 +177,8 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           created_at: Integer,
           object: Symbol,
           output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseItem]),
-          usage: OpenAI::Responses::ResponseUsage
+          usage: OpenAI::Responses::ResponseUsage,
+          image: OpenAI::Responses::CompactedResponse::Image | nil
         }
     end
   end

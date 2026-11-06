@@ -1,0 +1,67 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_developer_message =
+        {
+          content: OpenAI::Models::Live::DecisionDeveloperMessage::content,
+          ?role: :developer,
+          ?id: String?,
+          ?type: OpenAI::Models::Live::DecisionDeveloperMessage::type_
+        }
+
+      class DecisionDeveloperMessage < OpenAI::Internal::Type::BaseModel
+        # The text input to the model.
+        attr_accessor content: OpenAI::Models::Live::DecisionDeveloperMessage::content
+
+        attr_accessor role: :developer
+
+        # The unique ID of this message item.
+        attr_accessor id: String?
+
+        attr_reader type: OpenAI::Models::Live::DecisionDeveloperMessage::type_?
+
+        def type=: (
+          OpenAI::Models::Live::DecisionDeveloperMessage::type_
+        ) -> OpenAI::Models::Live::DecisionDeveloperMessage::type_
+
+        # @param content
+        #   The text input to the model.
+        # @param id
+        #   The unique ID of this message item.
+        def initialize: (
+          content: OpenAI::Models::Live::DecisionDeveloperMessage::content,
+          ?id: String?,
+          ?type: OpenAI::Models::Live::DecisionDeveloperMessage::type_,
+          ?role: :developer
+        ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::Live::DecisionDeveloperMessage::content,
+          ?role: :developer,
+          ?id: String?,
+          ?type: OpenAI::Models::Live::DecisionDeveloperMessage::type_
+        }
+
+        type content = String | ::Array[OpenAI::Live::DecisionInputText]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionDeveloperMessage::content]
+
+          DecisionInputTextArray: OpenAI::Internal::Type::Converter
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::DecisionDeveloperMessage::type_]
+        end
+      end
+    end
+  end
+end

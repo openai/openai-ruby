@@ -330,7 +330,26 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
 
   def test_workload_identity_timeout_uses_the_sdk_error_and_retry_contract
     transport = scripted_transport { flunk("request should not be sent") }
-    provider = SlowSubjectTokenProvider.new(delay: 0.1)
+    provider = SlowSubjectTokenProvider.new(delay: 60)
+    clock = {now: 0.0}
+    deadline = {active: false}
+    expire_provider = lambda do |_duration|
+      assert(deadline.fetch(:active), "the provider must run inside the SDK deadline")
+      clock[:now] = 5.0
+      raise deadline.fetch(:error), deadline.fetch(:message)
+    end
+
+    enforce_deadline = lambda do |timeout, error_class, message, &block|
+      assert_in_delta(5.0, timeout)
+      refute_equal(Timeout::Error, error_class)
+      deadline.merge!(active: true, error: error_class, message: message)
+      begin
+        block.call
+      ensure
+        deadline[:active] = false
+      end
+    end
+
     retries = []
     config = OpenAI::Auth::WorkloadIdentity.new(
       identity_provider_id: "idp-123",
@@ -349,11 +368,18 @@ class OpenAI::Test::Resources::PollingHelpersTest < Minitest::Test
       on_retry: -> (event) { retries << event }
     )
 
-    error = assert_raises(OpenAI::Errors::APITimeoutError) do
-      client.files.retrieve(
-        "file_123",
-        request_options: {timeout: 0.005, extra_query: {"signature" => "fake-sensitive-query"}}
-      )
+    # Expire the SDK's timeout at the blocking call, using its configured exception.
+    error = OpenAI::Internal::Util.stub(:monotonic_secs, -> { clock.fetch(:now) }) do
+      provider.stub(:sleep, expire_provider) do
+        Timeout.stub(:timeout, enforce_deadline) do
+          assert_raises(OpenAI::Errors::APITimeoutError) do
+            client.files.retrieve(
+              "file_123",
+              request_options: {timeout: 5, extra_query: {"signature" => "fake-sensitive-query"}}
+            )
+          end
+        end
+      end
     end
 
     assert_instance_of(Timeout::Error, error.cause)

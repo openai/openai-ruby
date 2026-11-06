@@ -1,7 +1,9 @@
 module OpenAI
   module Models
     type decision_input_part =
-      OpenAI::DecisionInputText | OpenAI::DecisionInputImage
+      OpenAI::DecisionInputText
+      | OpenAI::DecisionInputImage
+      | OpenAI::DecisionInputJSON
 
     module DecisionInputPart
       extend OpenAI::Internal::Type::Union

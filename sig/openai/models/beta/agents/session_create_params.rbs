@@ -9,6 +9,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
@@ -49,6 +50,14 @@ module OpenAI
           # characters. Omission or null defaults to an empty map.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # Action review mode. Omit to use none.
+          attr_reader review: OpenAI::Models::Beta::Agents::SessionCreateParams::review?
+
+          # Action review mode. Omit to use none.
+          def review=: (
+            OpenAI::Models::Beta::Agents::SessionCreateParams::review
+          ) -> OpenAI::Models::Beta::Agents::SessionCreateParams::review
+
           # Optional spending limit in USD cents. Omission or null creates an unlimited
           # session.
           attr_accessor spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?
@@ -72,6 +81,8 @@ module OpenAI
           # @param metadata
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters. Omission or null defaults to an empty map.
+          # @param review
+          #   Action review mode. Omit to use none.
           # @param spend_control
           #   Optional spending limit in USD cents. Omission or null creates an unlimited
           #   session.
@@ -83,6 +94,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
@@ -94,6 +106,7 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::RequestOptions
@@ -101,6 +114,8 @@ module OpenAI
 
           type agent =
             {
+              ?compaction: OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction?,
+              ?experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental,
               ?instructions: String?,
               ?model: String,
               ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
@@ -111,6 +126,21 @@ module OpenAI
             }
 
           class Agent < OpenAI::Internal::Type::BaseModel
+            # Context compaction settings. Omit to keep the current settings. A supplied
+            # object replaces the settings; null or an empty object enables background
+            # compaction.
+            attr_accessor compaction: OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction?
+
+            # Experimental settings to merge by key. Omitted settings keep their current
+            # values.
+            attr_reader experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental?
+
+            # Experimental settings to merge by key. Omitted settings keep their current
+            # values.
+            def experimental=: (
+              OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental
+            ) -> OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental
+
             # Additional instructions appended to the agent's default base instructions. Omit
             # to leave unchanged.
             attr_accessor instructions: String?
@@ -139,6 +169,13 @@ module OpenAI
             # JSON.
             attr_accessor tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
 
+            # @param compaction
+            #   Context compaction settings. Omit to keep the current settings. A supplied
+            #   object replaces the settings; null or an empty object enables background
+            #   compaction.
+            # @param experimental
+            #   Experimental settings to merge by key. Omitted settings keep their current
+            #   values.
             # @param instructions
             #   Additional instructions appended to the agent's default base instructions. Omit
             #   to leave unchanged.
@@ -158,6 +195,8 @@ module OpenAI
             #   resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
             #   JSON.
             def initialize: (
+              ?compaction: OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction?,
+              ?experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental,
               ?instructions: String?,
               ?model: String,
               ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
@@ -168,6 +207,8 @@ module OpenAI
             ) -> void
 
             def to_hash: -> {
+              ?compaction: OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction?,
+              ?experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental,
               ?instructions: String?,
               ?model: String,
               ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
@@ -176,6 +217,42 @@ module OpenAI
               ?text: OpenAI::Beta::AgentTextParam?,
               ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
             }
+
+            type compaction = { ?async: bool? }
+
+            class Compaction < OpenAI::Internal::Type::BaseModel
+              # Whether to compact context in the background. Omission or null defaults to true.
+              # Set to false to use blocking compaction. Background compaction may increase
+              # token usage.
+              attr_accessor async: bool?
+
+              # @param async
+              #   Whether to compact context in the background. Omission or null defaults to true.
+              #   Set to false to use blocking compaction. Background compaction may increase
+              #   token usage.
+              def initialize: (?async: bool?) -> void
+
+              def to_hash: -> { ?async: bool? }
+            end
+
+            type experimental = { ?time_awareness: bool }
+
+            class Experimental < OpenAI::Internal::Type::BaseModel
+              # Whether to give the model periodic current-time reminders. Omit to keep the
+              # current setting.
+              attr_reader time_awareness: bool?
+
+              # Whether to give the model periodic current-time reminders. Omit to keep the
+              # current setting.
+              def time_awareness=: (bool) -> bool
+
+              # @param time_awareness
+              #   Whether to give the model periodic current-time reminders. Omit to keep the
+              #   current setting.
+              def initialize: (?time_awareness: bool) -> void
+
+              def to_hash: -> { ?time_awareness: bool }
+            end
 
             type service_tier =
               :auto | :default | :flex | :priority | :fast | :ultrafast
@@ -214,6 +291,20 @@ module OpenAI
             def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::input]
 
             AgentSessionInputMessageParamArray: OpenAI::Internal::Type::Converter
+          end
+
+          type review = :none | :auto_review
+
+          module Review
+            extend OpenAI::Internal::Type::Enum
+
+            # Keep the existing execution behavior without automatic action review.
+            NONE: :none
+
+            # Review eligible actions automatically. Deny manual approval fallbacks.
+            AUTO_REVIEW: :auto_review
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::review]
           end
 
           type spend_control = { limit: Integer? }

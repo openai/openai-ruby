@@ -108,13 +108,26 @@ module OpenAI
           sig { returns(Integer) }
           attr_accessor :cached_tokens
 
+          sig { returns(T.nilable(OpenAI::Responses::ResponseUsage::InputTokensDetails::CacheWriteTokensDetails)) }
+          attr_reader :cache_write_tokens_details
+
+          sig {
+            params(
+              cache_write_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails::CacheWriteTokensDetails::OrHash
+            )
+              .void
+          }
+          attr_writer :cache_write_tokens_details
+
           # A detailed breakdown of the input tokens.
           sig do
             params(
 
               cache_write_tokens: Integer,
 
-              cached_tokens: Integer
+              cached_tokens: Integer,
+
+              cache_write_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails::CacheWriteTokensDetails::OrHash
             )
               .returns(T.attached_class)
           end
@@ -125,19 +138,69 @@ module OpenAI
 
             # The number of tokens that were retrieved from the cache.
             # [More on prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching).
+            cached_tokens:,
 
-            cached_tokens:
+            cache_write_tokens_details: nil
           )
           end
 
           sig do
             override.returns(
-              {cache_write_tokens: Integer, cached_tokens: Integer}
+              {
+                cache_write_tokens: Integer,
+                cached_tokens: Integer,
+                cache_write_tokens_details: OpenAI::Responses::ResponseUsage::InputTokensDetails::CacheWriteTokensDetails
+              }
             )
           end
           def to_hash
           end
 
+          class CacheWriteTokensDetails < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponseUsage::InputTokensDetails::CacheWriteTokensDetails,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The number of input tokens written with 12-hour retention.
+            sig { returns(Integer) }
+            attr_accessor :ttl_12h_tokens
+
+            # The number of input tokens written with 30-minute retention.
+            sig { returns(Integer) }
+            attr_accessor :ttl_30m_tokens
+
+            sig do
+              params(
+
+                ttl_12h_tokens: Integer,
+
+                ttl_30m_tokens: Integer
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The number of input tokens written with 12-hour retention.
+              ttl_12h_tokens:,
+
+              # The number of input tokens written with 30-minute retention.
+
+              ttl_30m_tokens:
+            )
+            end
+
+            sig do
+              override.returns(
+                {ttl_12h_tokens: Integer, ttl_30m_tokens: Integer}
+              )
+            end
+            def to_hash
+            end
+
+          end
         end
 
         class OutputTokensDetails < OpenAI::Internal::Type::BaseModel

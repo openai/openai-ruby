@@ -4,9 +4,9 @@ module OpenAI
   module Models
     class DecisionInputMessage < OpenAI::Internal::Type::BaseModel
       # @!attribute content
-      #   Text evidence or an ordered list of text and image parts.
+      #   A text string or an ordered list of text, image, and JSON parts.
       #
-      #   @return [String, Array<OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage>]
+      #   @return [String, Array<OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage, OpenAI::Models::DecisionInputJSON>]
       required :content, union: -> { OpenAI::DecisionInputMessage::Content }
 
       # @!attribute role
@@ -20,16 +20,16 @@ module OpenAI
       optional :type, enum: -> { OpenAI::DecisionInputMessage::Type }
 
       # @!method initialize(content:, type: nil, role: :user)
-      #   A user message containing text or images.
+      #   A user message containing input text, images, or JSON.
       #
-      #   @param content [String, Array<OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage>]
-      #     Text evidence or an ordered list of text and image parts.
+      #   @param content [String, Array<OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage, OpenAI::Models::DecisionInputJSON>]
+      #     A text string or an ordered list of text, image, and JSON parts.
       #
       #   @param type [Symbol, OpenAI::Models::DecisionInputMessage::Type]
       #
       #   @param role [Symbol, :user]
 
-      # Text evidence or an ordered list of text and image parts.
+      # A text string or an ordered list of text, image, and JSON parts.
       #
       # @see OpenAI::Models::DecisionInputMessage#content
       module Content
@@ -40,7 +40,7 @@ module OpenAI
         variant -> { OpenAI::Models::DecisionInputMessage::Content::DecisionInputPartArray }
 
         # @!method self.variants
-        #   @return [Array(String, Array<OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage>)]
+        #   @return [Array(String, Array<OpenAI::Models::DecisionInputText, OpenAI::Models::DecisionInputImage, OpenAI::Models::DecisionInputJSON>)]
 
         # @type [OpenAI::Internal::Type::Converter]
         DecisionInputPartArray = OpenAI::Internal::Type::ArrayOf[union: -> { OpenAI::DecisionInputPart }]

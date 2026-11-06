@@ -24,7 +24,8 @@ module OpenAI
         attr_accessor :event_id
 
         # Resume audio input to a Live model after muting it. The server acknowledges with
-        # `session.input_audio.unmuted`.
+        # `session.input_audio.unmuted`. An active audio fixture still pauses inference
+        # until playback finishes.
         sig do
           params(
 
