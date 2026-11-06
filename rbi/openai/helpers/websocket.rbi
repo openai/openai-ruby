@@ -33,7 +33,42 @@ module OpenAI
           request_options: T.untyped,
           transport: T.untyped,
           transport_options: T::Hash[T.untyped, T.untyped],
-          block: T.proc.params(connection: TypedConnection).returns(T.untyped)
+          block: T.proc.params(connection: TypedConnection[T.untyped, T.untyped]).returns(T.untyped)
+        )
+          .returns(T.untyped)
+      end
+      def connect(
+        *path_arguments,
+        query: {},
+        websocket_base_url: nil,
+        request_options: nil,
+        transport: nil,
+        transport_options: {},
+        &block
+      )
+      end
+    end
+
+    # @api private
+    module TypedResource
+      extend T::Generic
+      include Resource
+
+      WebSocketClientEvent = type_member
+      WebSocketServerEvent = type_member
+
+      sig do
+        params(
+          path_arguments: T.untyped,
+          query: T::Hash[T.untyped, T.untyped],
+          websocket_base_url: T.nilable(String),
+          request_options: T.untyped,
+          transport: T.untyped,
+          transport_options: T::Hash[T.untyped, T.untyped],
+          block: T
+            .proc
+            .params(connection: TypedConnection[WebSocketClientEvent, WebSocketServerEvent])
+            .returns(T.untyped)
         )
           .returns(T.untyped)
       end
@@ -51,23 +86,26 @@ module OpenAI
 
     # @api private
     class TypedConnection
+      extend T::Generic
       include Enumerable
-      Elem = type_member { {fixed: T.untyped} }
+
+      ClientEvent = type_member(:in)
+      Elem = type_member(:out)
 
       sig { returns(URI::Generic) }
       attr_reader :url
 
-      sig { returns(T.untyped) }
+      sig { returns(T.nilable(Elem)) }
       def receive
       end
 
-      sig { params(event: T.untyped).void }
+      sig { params(event: T.any(ClientEvent, T::Hash[T.any(String, Symbol), T.untyped])).void }
       def send_event(event)
       end
 
       sig do
-        params(block: T.nilable(T.proc.params(event: T.untyped).void)).returns(
-          T.any(TypedConnection, T::Enumerator[T.untyped])
+        params(block: T.nilable(T.proc.params(event: Elem).void)).returns(
+          T.any(TypedConnection[ClientEvent, Elem], T::Enumerator[Elem])
         )
       end
       def each(&block)

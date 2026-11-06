@@ -180,7 +180,7 @@ class WorkloadIdentityTest < Minitest::Test
   def test_azure_imds_provider_error
     stub_request(:get, "http://169.254.169.254/metadata/identity/oauth2/token")
       .with(query: hash_including("api-version" => "2018-02-01", "resource" => "https://management.azure.com/"))
-      .to_return(status: 500, body: "Internal Server Error")
+      .to_return(status: 500, body: "synthetic-private-azure-token\nforged-log-entry")
 
     provider = OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new
 
@@ -190,6 +190,9 @@ class WorkloadIdentityTest < Minitest::Test
 
     assert_equal("azure-imds", error.provider)
     assert_match(/Azure IMDS returned 500/, error.message)
+    refute_includes(error.full_message, "synthetic-private-azure-token")
+    refute_includes(error.inspect, "forged-log-entry")
+    assert_nil(error.cause)
   end
 
   def test_gcp_metadata_provider_success
@@ -209,7 +212,7 @@ class WorkloadIdentityTest < Minitest::Test
   def test_gcp_metadata_provider_error
     stub_request(:get, "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/identity")
       .with(query: hash_including("audience" => "https://api.openai.com/v1"))
-      .to_return(status: 404, body: "Not Found")
+      .to_return(status: 404, body: "synthetic-private-gcp-token\nforged-log-entry")
 
     provider = OpenAI::Auth::SubjectTokenProviders::GCPIDTokenProvider.new
 
@@ -219,6 +222,63 @@ class WorkloadIdentityTest < Minitest::Test
 
     assert_equal("gcp-metadata", error.provider)
     assert_match(/GCP Metadata Server returned 404/, error.message)
+    refute_includes(error.full_message, "synthetic-private-gcp-token")
+    refute_includes(error.inspect, "forged-log-entry")
+    assert_nil(error.cause)
+  end
+
+  def test_azure_imds_malformed_success_does_not_expose_response_body
+    stub_request(:get, "http://169.254.169.254/metadata/identity/oauth2/token")
+      .with(query: hash_including("resource" => "https://management.azure.com/"))
+      .to_return(status: 200, body: "synthetic-private-malformed-token")
+
+    provider = OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new
+    error = assert_raises(OpenAI::Errors::SubjectTokenProviderError) { provider.get_token }
+
+    assert_equal("azure-imds", error.provider)
+    assert_equal("Failed to fetch token from Azure IMDS", error.message)
+    refute_includes(error.full_message, "synthetic-private-malformed-token")
+    assert_nil(error.cause)
+  end
+
+  def test_metadata_errors_do_not_inherit_an_active_rescue_cause
+    cases = [
+      [OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new, 500, "failure"],
+      [OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new, 200, "{}"],
+      [OpenAI::Auth::SubjectTokenProviders::GCPIDTokenProvider.new, 404, "failure"]
+    ]
+    cases.each do |provider, status, body|
+      stub_request(:get, %r{http://(?:169\.254\.169\.254|metadata\.google\.internal)/})
+        .to_return(status: status, body: body)
+
+      begin
+        raise "synthetic-private-outer-exception"
+      rescue RuntimeError
+        error = assert_raises(OpenAI::Errors::SubjectTokenProviderError) { provider.get_token }
+        refute_includes(error.full_message, "synthetic-private-outer-exception")
+      end
+
+      WebMock.reset!
+    end
+  end
+
+  def test_metadata_transport_errors_do_not_expose_remote_diagnostics
+    providers = [
+      [OpenAI::Auth::SubjectTokenProviders::AzureManagedIdentityTokenProvider.new, "azure-imds"],
+      [OpenAI::Auth::SubjectTokenProviders::GCPIDTokenProvider.new, "gcp-metadata"]
+    ]
+    providers.each do |provider, name|
+      stub_request(:get, %r{http://(?:169\.254\.169\.254|metadata\.google\.internal)/})
+        .to_raise(Net::HTTPBadResponse.new("synthetic-private-protocol-token"))
+
+      error = assert_raises(OpenAI::Errors::SubjectTokenProviderError) { provider.get_token }
+
+      assert_equal(name, error.provider)
+      refute_includes(error.message, "synthetic-private-protocol-token")
+      refute_includes(error.full_message, "synthetic-private-protocol-token")
+      assert_nil(error.cause)
+      WebMock.reset!
+    end
   end
 
   def test_workload_identity_auth_token_exchange

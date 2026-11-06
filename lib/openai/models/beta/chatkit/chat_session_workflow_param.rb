@@ -15,7 +15,7 @@ module OpenAI
           #   State variables forwarded to the workflow. Keys may be up to 64 characters,
           #   values must be primitive types, and the map defaults to an empty object.
           #
-          #   @return [Hash{Symbol=>String, Boolean, Float}, nil]
+          #   @return [Hash{Symbol=>String, Integer, Boolean, Float}, nil]
           optional(
             :state_variables,
             -> {
@@ -42,7 +42,7 @@ module OpenAI
           #   @param id [String]
           #     Identifier for the workflow invoked by the session.
           #
-          #   @param state_variables [Hash{Symbol=>String, Boolean, Float}]
+          #   @param state_variables [Hash{Symbol=>String, Integer, Boolean, Float}]
           #     State variables forwarded to the workflow. Keys may be up to 64 characters,
           #     values must be primitive types, and the map defaults to an empty object.
           #
@@ -57,12 +57,14 @@ module OpenAI
 
             variant String
 
+            variant Integer
+
             variant OpenAI::Internal::Type::Boolean
 
             variant Float
 
             # @!method self.variants
-            #   @return [Array(String, Boolean, Float)]
+            #   @return [Array(String, Integer, Boolean, Float)]
           end
 
           # @see OpenAI::Models::Beta::ChatKit::ChatSessionWorkflowParam#tracing

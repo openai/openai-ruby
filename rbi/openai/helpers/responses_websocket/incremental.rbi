@@ -15,6 +15,10 @@ module OpenAI
         def output
         end
 
+        sig { returns(T.nilable(T::Hash[Symbol, T.untyped])) }
+        def detailed_snapshot
+        end
+
         sig { returns(T.nilable(Connection::ServerEvent)) }
         def terminal_event
         end

@@ -8,6 +8,7 @@ module OpenAI
           OpenAI::Internal::Transport::BaseClient::request_input
         ) -> OpenAI::Internal::Transport::BaseClient::request_input)?
         attr_accessor authentication_headers: Array[String]
+        attr_accessor wrap_request: Proc?
 
         def initialize: (
           name: String,
@@ -15,7 +16,8 @@ module OpenAI
           prepare_request: (^(
             OpenAI::Internal::Transport::BaseClient::request_input
           ) -> OpenAI::Internal::Transport::BaseClient::request_input)?,
-          authentication_headers: Array[String]
+          authentication_headers: Array[String],
+          ?wrap_request: Proc?
         ) -> void
       end
 

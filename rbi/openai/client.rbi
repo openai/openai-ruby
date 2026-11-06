@@ -16,10 +16,6 @@ module OpenAI
     sig { returns(T.nilable(String)) }
     attr_reader :admin_api_key
 
-    # @api private
-    sig { returns(T.nilable(OpenAI::Auth::WorkloadIdentityAuth)) }
-    attr_reader :workload_identity_auth
-
     sig { returns(T.nilable(String)) }
     attr_reader :organization
 
@@ -127,14 +123,7 @@ module OpenAI
 
     # @api private
     sig do
-      override
-        .params(
-          security: {
-            bearer_auth?: T::Boolean,
-            admin_api_key_auth?: T::Boolean
-          }
-        )
-        .returns(T::Hash[String, String])
+      override.params(security: T::Hash[Symbol, T::Boolean]).returns(T::Hash[String, String])
     end
     private def auth_headers(security:)
     end
@@ -156,16 +145,15 @@ module OpenAI
         api_key: T.nilable(String),
 
         admin_api_key: T.nilable(String),
-        workload_identity: T.nilable(T.any(OpenAI::Auth::WorkloadIdentity, OpenAI::Auth::X509WorkloadIdentity)),
+
         organization: T.nilable(String),
 
         project: T.nilable(String),
 
         webhook_secret: T.nilable(String),
-        provider: T.nilable(OpenAI::Provider),
+
         base_url: T.nilable(String),
         data_residency: T.nilable(T.any(Symbol, String)),
-        default_headers: T.nilable(T::Hash[String, T.nilable(String)]),
         max_retries: Integer,
         timeout: T.nilable(Float),
         initial_retry_delay: Float,
@@ -184,7 +172,7 @@ module OpenAI
 
       # Defaults to `ENV["OPENAI_ADMIN_KEY"]`
       admin_api_key: ENV["OPENAI_ADMIN_KEY"],
-      workload_identity: nil,
+
       # Defaults to `ENV["OPENAI_ORG_ID"]`
       organization: ENV["OPENAI_ORG_ID"],
 
@@ -193,14 +181,11 @@ module OpenAI
 
       # Defaults to `ENV["OPENAI_WEBHOOK_SECRET"]`
       webhook_secret: ENV["OPENAI_WEBHOOK_SECRET"],
-      provider: nil,
+
       # Override the default base URL for the API, e.g.,
       # `"https://api.example.com/v2/"`. Defaults to `ENV["OPENAI_BASE_URL"]`
       base_url: ENV["OPENAI_BASE_URL"],
       data_residency: nil,
-      # Extra headers to send with every request. Explicit values override
-      # `ENV["OPENAI_CUSTOM_HEADERS"]`.
-      default_headers: nil,
       # Max number of retries to attempt after a failed retryable request.
       max_retries: OpenAI::Client::DEFAULT_MAX_RETRIES,
       timeout: OpenAI::Client::DEFAULT_TIMEOUT_IN_SECONDS,

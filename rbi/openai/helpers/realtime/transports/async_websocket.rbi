@@ -42,6 +42,11 @@ module OpenAI
             end
 
             # @api private
+            sig { void }
+            def enable_no_status_recovery
+            end
+
+            # @api private
             sig { returns(T::Boolean) }
             def aborted?
             end

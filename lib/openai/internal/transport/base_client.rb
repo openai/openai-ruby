@@ -4,6 +4,7 @@ require "ipaddr"
 
 require_relative "../logging"
 require_relative "../type/duplicable_response_carrier"
+require_relative "request_body_merge"
 
 module OpenAI
   module Internal
@@ -1012,7 +1013,7 @@ module OpenAI
                 T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::Internal::Type::BaseModel]]
               ),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-              security: T.nilable({bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean}),
+              security: T.nilable(T::Hash[Symbol, T::Boolean]),
               options: T.nilable(OpenAI::RequestOptions::OrHash)
             }
           end

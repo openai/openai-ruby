@@ -12,8 +12,6 @@ module OpenAI
 
     attr_reader admin_api_key: String?
 
-    attr_reader workload_identity_auth: OpenAI::Auth::WorkloadIdentityAuth?
-
     attr_reader organization: String?
 
     attr_reader project: String?
@@ -75,7 +73,7 @@ module OpenAI
     attr_reader videos: OpenAI::Resources::Videos
 
     private def auth_headers: (
-      security: { :bearer_auth? => bool, :admin_api_key_auth? => bool }
+      security: { ?bearer_auth: bool, ?admin_api_key_auth: bool }
     ) -> ::Hash[String, String]
 
     private def bearer_auth: -> ::Hash[String, String]
@@ -85,15 +83,11 @@ module OpenAI
     def initialize: (
       ?api_key: String?,
       ?admin_api_key: String?,
-      ?workload_identity: (OpenAI::Auth::WorkloadIdentity
-      | OpenAI::Auth::X509WorkloadIdentity)?,
       ?organization: String?,
       ?project: String?,
       ?webhook_secret: String?,
-      ?provider: OpenAI::Provider?,
       ?base_url: String?,
       ?data_residency: (Symbol | String)?,
-      ?default_headers: ::Hash[String, String?]?,
       ?max_retries: Integer,
       ?timeout: Float?,
       ?initial_retry_delay: Float,

@@ -5,7 +5,29 @@ module OpenAI
         class ExternalStorage
           def create: (
             project_id: String,
-            provider: OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::provider,
+            provider: OpenAI::Models::Admin::Organization::ExternalStorageCreateParams::provider
+            | { bucket: String, role_arn: String, type: :aws }
+            | {
+              account_name: String,
+              container: String,
+              resource_group: String,
+              subscription_id: String,
+              tenant_id: String,
+              type: :azure
+            }
+            | {
+              bucket: String,
+              type: :gcp,
+              workload_identity_pool_id: String,
+              workload_identity_project_number: String,
+              workload_identity_provider_id: String
+            }
+            | {
+              bucket: String,
+              region: String,
+              tenancy_ocid: String,
+              type: :oci
+            },
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::ExternalStorageConfiguration
 

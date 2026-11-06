@@ -59,9 +59,10 @@ module OpenAI
           unless response.is_a?(Net::HTTPSuccess)
             raise(
               OpenAI::Errors::SubjectTokenProviderError.new(
-                message: "Azure IMDS returned #{response.code}: #{response.body}",
+                message: "Azure IMDS returned #{response.code}",
                 provider: "azure-imds"
-              )
+              ),
+              cause: nil
             )
           end
 
@@ -75,19 +76,20 @@ module OpenAI
               OpenAI::Errors::SubjectTokenProviderError.new(
                 message: "Azure IMDS response missing access_token field",
                 provider: "azure-imds"
-              )
+              ),
+              cause: nil
             )
           end
 
         rescue OpenAI::Errors::SubjectTokenProviderError
           raise
-        rescue StandardError => e
+        rescue StandardError
           raise(
             OpenAI::Errors::SubjectTokenProviderError.new(
-              message: "Failed to fetch token from Azure IMDS: #{e.message}",
-              provider: "azure-imds",
-              cause: e
-            )
+              message: "Failed to fetch token from Azure IMDS",
+              provider: "azure-imds"
+            ),
+            cause: nil
           )
         end
       end

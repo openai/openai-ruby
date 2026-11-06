@@ -63,6 +63,42 @@ class OpenAI::Test::LiveWebSocketTest < Minitest::Test
     assert_equal(2, socket.writes.size)
   end
 
+  def test_example_consumes_finalization_after_a_nonterminal_error
+    # Isolate the constructor stub from the suite's parallel tests while still
+    # running the example through the real Live connection manager.
+    script = <<~'RUBY'
+      require "minitest/mock"
+      require_relative "test/openai/responses_websocket/connection_test_support"
+      support = OpenAI::Test::ResponsesWebSocketConnectionTestSupport
+      socket = support::FakeSocket.new(
+        JSON.generate(type: "session.started", event_id: "evt_started", session: {id: "sess_1", model: "gpt-live-1", expires_at: 2000000000, status: "active"}),
+        JSON.generate(type: "error", event_id: "evt_error", error: {type: "server_error", code: "session_storage_failed", message: "private"}),
+        JSON.generate(type: "session.closed", event_id: "evt_closed", reason: "close_requested", session: {id: "sess_1", model: "gpt-live-1", expires_at: 2000000000, status: "active"}, usage: {seconds: 0})
+      )
+      client = OpenAI::Client.new(api_key: "test-key", base_url: "https://example.com/v1")
+      live = client.live
+      transport = support::FakeTransport.new(socket)
+      wrapper = Object.new
+      wrapper.define_singleton_method(:connect) { |&block| live.connect(transport: transport, &block) }
+      fake_client = Struct.new(:live).new(wrapper)
+      begin
+        OpenAI::Client.stub(:new, fake_client) { load "examples/live/websocket.rb" }
+        abort "example unexpectedly succeeded"
+      rescue RuntimeError => error
+        abort "wrong error" unless error.message == "Live reported a session error; check the event in your application."
+      end
+      abort "connection aborted" if socket.aborted?
+      abort "connection not closed" unless socket.closed?
+      puts "graceful cleanup"
+    RUBY
+
+    output, status = Open3.capture2e(RbConfig.ruby, "-Ilib", "-e", script)
+    assert(status.success?, output)
+    assert_includes(output, "Live session closed")
+    assert_includes(output, "graceful cleanup")
+    refute_includes(output, "private")
+  end
+
   def test_raw_future_events_and_nested_future_response_are_preserved
     socket = FakeSocket.new(
       JSON.generate(type: "session.future", opaque: {payload: ["private value"]}),

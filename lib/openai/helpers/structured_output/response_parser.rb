@@ -136,6 +136,7 @@ module OpenAI
           else
           end
 
+          model = parsed.text_model if parsed.is_a?(RequestWithFormatUpdate)
           [model, tool_models]
         end
 
