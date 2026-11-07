@@ -1681,6 +1681,10 @@ module OpenAI
               :"gpt-rosalind-research",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
+            GPT_6_ROSALIND = T.let(
+              :"gpt-6-rosalind",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
 
           end
 
