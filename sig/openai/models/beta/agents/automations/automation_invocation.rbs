@@ -1,0 +1,134 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        class AutomationInvocation = Automations::AutomationInvocation
+
+        module Automations
+          type automation_invocation =
+            {
+              id: String,
+              automation_id: String,
+              created_at: Integer,
+              error: OpenAI::Beta::Agents::Automations::AutomationInvocation::Error?,
+              ?object: :"agent.automation.invocation",
+              scheduled_at: Integer?,
+              session_id: String?,
+              ?skip_reason: :pending_delivery?,
+              source: OpenAI::Models::Beta::Agents::Automations::automation_invocation_source,
+              status: OpenAI::Models::Beta::Agents::Automations::AutomationInvocation::status
+            }
+
+          class AutomationInvocation < OpenAI::Internal::Type::BaseModel
+            # The invocation ID.
+            attr_accessor id: String
+
+            # The automation that owns the invocation.
+            attr_accessor automation_id: String
+
+            # The creation time as a Unix timestamp in seconds.
+            attr_accessor created_at: Integer
+
+            # The permanent delivery failure, or null when no failure occurred.
+            attr_accessor error: OpenAI::Beta::Agents::Automations::AutomationInvocation::Error?
+
+            # Always `agent.automation.invocation`.
+            attr_accessor object: :"agent.automation.invocation"
+
+            # The intended occurrence as a Unix timestamp in seconds, or null for manual runs.
+            attr_accessor scheduled_at: Integer?
+
+            # The target or newly created session ID, or null before one is available.
+            attr_accessor session_id: String?
+
+            # Why an occurrence was skipped, or null when it was not skipped.
+            attr_accessor skip_reason: :pending_delivery?
+
+            # Whether the invocation was manual or scheduled.
+            attr_accessor source: OpenAI::Models::Beta::Agents::Automations::automation_invocation_source
+
+            # Delivery status; completed does not mean the agent's work has finished.
+            attr_accessor status: OpenAI::Models::Beta::Agents::Automations::AutomationInvocation::status
+
+            # @param id
+            #   The invocation ID.
+            # @param automation_id
+            #   The automation that owns the invocation.
+            # @param created_at
+            #   The creation time as a Unix timestamp in seconds.
+            # @param error
+            #   The permanent delivery failure, or null when no failure occurred.
+            # @param scheduled_at
+            #   The intended occurrence as a Unix timestamp in seconds, or null for manual runs.
+            # @param session_id
+            #   The target or newly created session ID, or null before one is available.
+            # @param source
+            #   Whether the invocation was manual or scheduled.
+            # @param status
+            #   Delivery status; completed does not mean the agent's work has finished.
+            # @param object
+            #   Always `agent.automation.invocation`.
+            # @param skip_reason
+            #   Why an occurrence was skipped, or null when it was not skipped.
+            def initialize: (
+              id: String,
+              automation_id: String,
+              created_at: Integer,
+              error: OpenAI::Beta::Agents::Automations::AutomationInvocation::Error?,
+              scheduled_at: Integer?,
+              session_id: String?,
+              source: OpenAI::Models::Beta::Agents::Automations::automation_invocation_source,
+              status: OpenAI::Models::Beta::Agents::Automations::AutomationInvocation::status,
+              ?object: :"agent.automation.invocation",
+              ?skip_reason: :pending_delivery?
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              automation_id: String,
+              created_at: Integer,
+              error: OpenAI::Beta::Agents::Automations::AutomationInvocation::Error?,
+              ?object: :"agent.automation.invocation",
+              scheduled_at: Integer?,
+              session_id: String?,
+              ?skip_reason: :pending_delivery?,
+              source: OpenAI::Models::Beta::Agents::Automations::automation_invocation_source,
+              status: OpenAI::Models::Beta::Agents::Automations::AutomationInvocation::status
+            }
+
+            type error = { code: String, message: String }
+
+            class Error < OpenAI::Internal::Type::BaseModel
+              # A machine-readable error code.
+              attr_accessor code: String
+
+              # A public explanation of the delivery failure.
+              attr_accessor message: String
+
+              # @param code
+              #   A machine-readable error code.
+              # @param message
+              #   A public explanation of the delivery failure.
+              def initialize: (code: String, message: String) -> void
+
+              def to_hash: -> { code: String, message: String }
+            end
+
+            type status = :queued | :completed | :failed | :skipped
+
+            module Status
+              extend OpenAI::Internal::Type::Enum
+
+              QUEUED: :queued
+              COMPLETED: :completed
+              FAILED: :failed
+              SKIPPED: :skipped
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Automations::AutomationInvocation::status]
+            end
+          end
+        end
+      end
+    end
+  end
+end

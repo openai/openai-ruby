@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_retrieve_params =
+          { automation_id: String, ?request_options: OpenAI::request_opts }
+
+        class AutomationRetrieveParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor automation_id: String
+
+          def initialize: (
+            automation_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            automation_id: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_create_params =
+          {
+            create_automation_params: OpenAI::Models::Beta::Agents::automation_schedule_param,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class AutomationCreateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          # Creates an automation without invoking it immediately.
+          attr_accessor create_automation_params: OpenAI::Models::Beta::Agents::automation_schedule_param
+
+          # @param create_automation_params
+          #   Creates an automation without invoking it immediately.
+          def initialize: (
+            create_automation_params: OpenAI::Models::Beta::Agents::automation_schedule_param,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            create_automation_params: OpenAI::Models::Beta::Agents::automation_schedule_param,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

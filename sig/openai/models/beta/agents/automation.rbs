@@ -1,0 +1,17 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation =
+          OpenAI::Beta::Agents::PeriodicAutomation
+          | OpenAI::Beta::Agents::OneTimeAutomation
+
+        module Automation
+          extend OpenAI::Internal::Type::Union
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::automation]
+        end
+      end
+    end
+  end
+end

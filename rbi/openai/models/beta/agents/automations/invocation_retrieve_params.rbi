@@ -1,0 +1,68 @@
+# typed: strong
+
+module OpenAI
+  module Models
+
+    module Beta
+
+      module Agents
+
+        module Automations
+
+          class InvocationRetrieveParams < OpenAI::Internal::Type::BaseModel
+
+            extend OpenAI::Internal::Type::RequestParameters::Converter
+            include OpenAI::Internal::Type::RequestParameters
+
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Agents::Automations::InvocationRetrieveParams,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(String) }
+            attr_accessor :automation_id
+
+            sig { returns(String) }
+            attr_accessor :invocation_id
+
+            sig do
+              params(
+
+                automation_id: String,
+
+                invocation_id: String,
+
+                request_options: OpenAI::RequestOptions::OrHash
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              automation_id:,
+
+              invocation_id:,
+
+              request_options: {}
+            )
+            end
+
+            sig do
+              override.returns(
+                {automation_id: String, invocation_id: String, request_options: OpenAI::RequestOptions}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+        end
+
+      end
+
+    end
+
+  end
+end

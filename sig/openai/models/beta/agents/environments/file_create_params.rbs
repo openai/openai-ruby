@@ -4,7 +4,11 @@ module OpenAI
       module Agents
         module Environments
           type file_create_params =
-            { environment_id: String, ?request_options: OpenAI::request_opts }
+            {
+              environment_id: String,
+              hosted_environment_file_param: OpenAI::Models::Beta::hosted_environment_file_param,
+              ?request_options: OpenAI::request_opts
+            }
 
           class FileCreateParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -12,13 +16,20 @@ module OpenAI
 
             attr_accessor environment_id: String
 
+            # A file materialized in an OpenAI-hosted execution environment.
+            attr_accessor hosted_environment_file_param: OpenAI::Models::Beta::hosted_environment_file_param
+
+            # @param hosted_environment_file_param
+            #   A file materialized in an OpenAI-hosted execution environment.
             def initialize: (
               environment_id: String,
+              hosted_environment_file_param: OpenAI::Models::Beta::hosted_environment_file_param,
               ?request_options: OpenAI::request_opts
             ) -> void
 
             def to_hash: -> {
               environment_id: String,
+              hosted_environment_file_param: OpenAI::Models::Beta::hosted_environment_file_param,
               ?request_options: OpenAI::RequestOptions
             }
           end

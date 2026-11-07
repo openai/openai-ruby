@@ -1,0 +1,57 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Automations
+          attr_reader invocations: OpenAI::Resources::Beta::Agents::Automations::Invocations
+
+          def create: (
+            create_automation_params: OpenAI::Models::Beta::Agents::automation_schedule_param,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::Agents::automation
+
+          def retrieve: (
+            String automation_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::Agents::automation
+
+          def update: (
+            String automation_id,
+            ?expression: String,
+            ?metadata: ::Hash[Symbol, String],
+            ?name: String,
+            ?run_at: Integer,
+            ?target: OpenAI::Models::Beta::Agents::automation_target_param,
+            ?timezone: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::Agents::automation
+
+          def list: (
+            ?after: String,
+            ?limit: Integer,
+            ?order: OpenAI::Models::Beta::Agents::AutomationListParams::order,
+            ?session_id: String,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Internal::CursorPage[OpenAI::Models::Beta::Agents::automation]
+
+          def delete: (
+            String automation_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Beta::Agents::AutomationDeleted
+
+          def pause: (
+            String automation_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::Agents::automation
+
+          def resume: (
+            String automation_id,
+            ?request_options: OpenAI::request_opts
+          ) -> OpenAI::Models::Beta::Agents::automation
+
+          def initialize: (client: OpenAI::Client) -> void
+        end
+      end
+    end
+  end
+end

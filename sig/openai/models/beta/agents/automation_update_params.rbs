@@ -1,0 +1,97 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_update_params =
+          {
+            automation_id: String,
+            ?expression: String,
+            ?metadata: ::Hash[Symbol, String],
+            ?name: String,
+            ?run_at: Integer,
+            ?target: OpenAI::Models::Beta::Agents::automation_target_param,
+            ?timezone: String,
+            ?request_options: OpenAI::request_opts
+          }
+
+        class AutomationUpdateParams < OpenAI::Internal::Type::BaseModel
+          extend OpenAI::Internal::Type::RequestParameters::Converter
+          include OpenAI::Internal::Type::RequestParameters
+
+          attr_accessor automation_id: String
+
+          # Only accepted for periodic automations.
+          attr_reader expression: String?
+
+          # Only accepted for periodic automations.
+          def expression=: (String) -> String
+
+          # Replaces all metadata; omit to leave unchanged.
+          attr_reader metadata: ::Hash[Symbol, String]?
+
+          # Replaces all metadata; omit to leave unchanged.
+          def metadata=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
+
+          attr_reader name: String?
+
+          def name=: (String) -> String
+
+          # A future Unix timestamp in seconds; accepted only before a one-time scheduled
+          # invocation exists.
+          attr_reader run_at: Integer?
+
+          # A future Unix timestamp in seconds; accepted only before a one-time scheduled
+          # invocation exists.
+          def run_at=: (Integer) -> Integer
+
+          # Replaces the complete target, retaining its type and any creator session.
+          attr_reader target: OpenAI::Models::Beta::Agents::automation_target_param?
+
+          # Replaces the complete target, retaining its type and any creator session.
+          def target=: (
+            OpenAI::Models::Beta::Agents::automation_target_param
+          ) -> OpenAI::Models::Beta::Agents::automation_target_param
+
+          # Only accepted for periodic automations.
+          attr_reader timezone: String?
+
+          # Only accepted for periodic automations.
+          def timezone=: (String) -> String
+
+          # @param expression
+          #   Only accepted for periodic automations.
+          # @param metadata
+          #   Replaces all metadata; omit to leave unchanged.
+          # @param run_at
+          #   A future Unix timestamp in seconds; accepted only before a one-time scheduled
+          #   invocation exists.
+          # @param target
+          #   Replaces the complete target, retaining its type and any creator session.
+          # @param timezone
+          #   Only accepted for periodic automations.
+          def initialize: (
+            automation_id: String,
+            ?expression: String,
+            ?metadata: ::Hash[Symbol, String],
+            ?name: String,
+            ?run_at: Integer,
+            ?target: OpenAI::Models::Beta::Agents::automation_target_param,
+            ?timezone: String,
+            ?request_options: OpenAI::request_opts
+          ) -> void
+
+          def to_hash: -> {
+            automation_id: String,
+            ?expression: String,
+            ?metadata: ::Hash[Symbol, String],
+            ?name: String,
+            ?run_at: Integer,
+            ?target: OpenAI::Models::Beta::Agents::automation_target_param,
+            ?timezone: String,
+            ?request_options: OpenAI::RequestOptions
+          }
+        end
+      end
+    end
+  end
+end

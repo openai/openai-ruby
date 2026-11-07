@@ -1,0 +1,428 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_environment =
+          OpenAI::Beta::Agents::AutomationEnvironment::None
+          | OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted
+          | OpenAI::Beta::Agents::AutomationEnvironment::SelfHosted
+
+        module AutomationEnvironment
+          extend OpenAI::Internal::Type::Union
+
+          type none = { ?type: :none }
+
+          class None < OpenAI::Internal::Type::BaseModel
+            # The type of the object. Always `none`.
+            attr_accessor type: :none
+
+            # @param type
+            #   The type of the object. Always `none`.
+            def initialize: (?type: :none) -> void
+
+            def to_hash: -> { ?type: :none }
+          end
+
+          type openai_hosted =
+            {
+              capability_directories: ::Array[String]?,
+              container_size: OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::container_size?,
+              desktop: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Desktop?,
+              environment_id: String?,
+              environment_template_id: String?,
+              files: ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::file]?,
+              network: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network?,
+              packages: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Packages?,
+              plugins: ::Array[OpenAI::Beta::HostedPlugin]?,
+              skills: ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::skill]?,
+              ?type: :openai_hosted
+            }
+
+          class OpenAIHosted < OpenAI::Internal::Type::BaseModel
+            # Directory overrides, or null to inherit the template or creation default.
+            attr_accessor capability_directories: ::Array[String]?
+
+            # The configured container size, or null to use the creation default.
+            attr_accessor container_size: OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::container_size?
+
+            # Desktop overrides, or null to inherit the template or creation default.
+            attr_accessor desktop: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Desktop?
+
+            # An existing environment reference, or null when provisioning a new environment.
+            attr_accessor environment_id: String?
+
+            # A template reference, or null when no template is selected.
+            attr_accessor environment_template_id: String?
+
+            # File overrides, excluding contents, or null to inherit.
+            attr_accessor files: ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::file]?
+
+            # Network overrides, or null to inherit the template or creation default.
+            attr_accessor network: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network?
+
+            # Package overrides, or null to inherit the template or creation default.
+            attr_accessor packages: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Packages?
+
+            # Plugin overrides, excluding archive contents, or null to inherit.
+            attr_accessor plugins: ::Array[OpenAI::Beta::HostedPlugin]?
+
+            # Skill overrides, excluding archive contents, or null to inherit.
+            attr_accessor skills: ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::skill]?
+
+            # The type of the object. Always `openai_hosted`.
+            attr_accessor type: :openai_hosted
+
+            # @param capability_directories
+            #   Directory overrides, or null to inherit the template or creation default.
+            # @param container_size
+            #   The configured container size, or null to use the creation default.
+            # @param desktop
+            #   Desktop overrides, or null to inherit the template or creation default.
+            # @param environment_id
+            #   An existing environment reference, or null when provisioning a new environment.
+            # @param environment_template_id
+            #   A template reference, or null when no template is selected.
+            # @param files
+            #   File overrides, excluding contents, or null to inherit.
+            # @param network
+            #   Network overrides, or null to inherit the template or creation default.
+            # @param packages
+            #   Package overrides, or null to inherit the template or creation default.
+            # @param plugins
+            #   Plugin overrides, excluding archive contents, or null to inherit.
+            # @param skills
+            #   Skill overrides, excluding archive contents, or null to inherit.
+            # @param type
+            #   The type of the object. Always `openai_hosted`.
+            def initialize: (
+              capability_directories: ::Array[String]?,
+              container_size: OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::container_size?,
+              desktop: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Desktop?,
+              environment_id: String?,
+              environment_template_id: String?,
+              files: ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::file]?,
+              network: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network?,
+              packages: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Packages?,
+              plugins: ::Array[OpenAI::Beta::HostedPlugin]?,
+              skills: ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::skill]?,
+              ?type: :openai_hosted
+            ) -> void
+
+            def to_hash: -> {
+              capability_directories: ::Array[String]?,
+              container_size: OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::container_size?,
+              desktop: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Desktop?,
+              environment_id: String?,
+              environment_template_id: String?,
+              files: ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::file]?,
+              network: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network?,
+              packages: OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Packages?,
+              plugins: ::Array[OpenAI::Beta::HostedPlugin]?,
+              skills: ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::skill]?,
+              ?type: :openai_hosted
+            }
+
+            type container_size = :small | :medium | :large
+
+            module ContainerSize
+              extend OpenAI::Internal::Type::Enum
+
+              SMALL: :small
+              MEDIUM: :medium
+              LARGE: :large
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::container_size]
+            end
+
+            type desktop = { enabled: bool }
+
+            class Desktop < OpenAI::Internal::Type::BaseModel
+              # Whether the environment provisions a desktop and browser proxy.
+              attr_accessor enabled: bool
+
+              # @param enabled
+              #   Whether the environment provisions a desktop and browser proxy.
+              def initialize: (enabled: bool) -> void
+
+              def to_hash: -> { enabled: bool }
+            end
+
+            type file =
+              OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::File::FileID
+              | OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::File::Inline
+
+            module File
+              extend OpenAI::Internal::Type::Union
+
+              type file_id = { file_id: String, path: String, ?type: :file_id }
+
+              class FileID < OpenAI::Internal::Type::BaseModel
+                # The ID of the uploaded file.
+                attr_accessor file_id: String
+
+                # The file's absolute path inside the environment.
+                attr_accessor path: String
+
+                # The type of the object. Always `file_id`.
+                attr_accessor type: :file_id
+
+                # @param file_id
+                #   The ID of the uploaded file.
+                # @param path
+                #   The file's absolute path inside the environment.
+                # @param type
+                #   The type of the object. Always `file_id`.
+                def initialize: (
+                  file_id: String,
+                  path: String,
+                  ?type: :file_id
+                ) -> void
+
+                def to_hash: -> {
+                  file_id: String,
+                  path: String,
+                  ?type: :file_id
+                }
+              end
+
+              type inline =
+                { path: String, size_bytes: Integer, ?type: :inline }
+
+              class Inline < OpenAI::Internal::Type::BaseModel
+                # The file's absolute path inside the environment.
+                attr_accessor path: String
+
+                # The decoded size of the inline file in bytes.
+                attr_accessor size_bytes: Integer
+
+                # The type of the object. Always `inline`.
+                attr_accessor type: :inline
+
+                # @param path
+                #   The file's absolute path inside the environment.
+                # @param size_bytes
+                #   The decoded size of the inline file in bytes.
+                # @param type
+                #   The type of the object. Always `inline`.
+                def initialize: (
+                  path: String,
+                  size_bytes: Integer,
+                  ?type: :inline
+                ) -> void
+
+                def to_hash: -> {
+                  path: String,
+                  size_bytes: Integer,
+                  ?type: :inline
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::file]
+            end
+
+            type network =
+              {
+                access: OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network::access,
+                allowed_domains: ::Array[String]
+              }
+
+            class Network < OpenAI::Internal::Type::BaseModel
+              # The environment's network access mode.
+              attr_accessor access: OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network::access
+
+              # Domains the environment may access when network access is restricted.
+              attr_accessor allowed_domains: ::Array[String]
+
+              # @param access
+              #   The environment's network access mode.
+              # @param allowed_domains
+              #   Domains the environment may access when network access is restricted.
+              def initialize: (
+                access: OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network::access,
+                allowed_domains: ::Array[String]
+              ) -> void
+
+              def to_hash: -> {
+                access: OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network::access,
+                allowed_domains: ::Array[String]
+              }
+
+              type access = :enabled | :disabled | :restricted
+
+              module Access
+                extend OpenAI::Internal::Type::Enum
+
+                # Allows unrestricted network access.
+                ENABLED: :enabled
+
+                # Disables network access.
+                DISABLED: :disabled
+
+                # Applies the configured domain restrictions.
+                RESTRICTED: :restricted
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::Network::access]
+              end
+            end
+
+            type packages =
+              {
+                npm: ::Array[String],
+                python: ::Array[String],
+                system_: ::Array[String]
+              }
+
+            class Packages < OpenAI::Internal::Type::BaseModel
+              # npm packages installed globally in the environment.
+              attr_accessor npm: ::Array[String]
+
+              # Python packages installed in the environment.
+              attr_accessor python: ::Array[String]
+
+              # System packages installed in the environment.
+              attr_accessor system_: ::Array[String]
+
+              # @param npm
+              #   npm packages installed globally in the environment.
+              # @param python
+              #   Python packages installed in the environment.
+              # @param system_
+              #   System packages installed in the environment.
+              def initialize: (
+                npm: ::Array[String],
+                python: ::Array[String],
+                system_: ::Array[String]
+              ) -> void
+
+              def to_hash: -> {
+                npm: ::Array[String],
+                python: ::Array[String],
+                system_: ::Array[String]
+              }
+            end
+
+            type skill =
+              OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Skill::SkillReference
+              | OpenAI::Beta::Agents::AutomationEnvironment::OpenAIHosted::Skill::Inline
+
+            module Skill
+              extend OpenAI::Internal::Type::Union
+
+              type skill_reference =
+                { skill_id: String, ?type: :skill_reference, version: String? }
+
+              class SkillReference < OpenAI::Internal::Type::BaseModel
+                # The referenced skill ID.
+                attr_accessor skill_id: String
+
+                # The type of the object. Always `skill_reference`.
+                attr_accessor type: :skill_reference
+
+                # The requested version selector, including `latest`.
+                attr_accessor version: String?
+
+                # @param skill_id
+                #   The referenced skill ID.
+                # @param version
+                #   The requested version selector, including `latest`.
+                # @param type
+                #   The type of the object. Always `skill_reference`.
+                def initialize: (
+                  skill_id: String,
+                  version: String?,
+                  ?type: :skill_reference
+                ) -> void
+
+                def to_hash: -> {
+                  skill_id: String,
+                  ?type: :skill_reference,
+                  version: String?
+                }
+              end
+
+              type inline =
+                { description: String, name: String, ?type: :inline }
+
+              class Inline < OpenAI::Internal::Type::BaseModel
+                # The skill description declared in `SKILL.md`.
+                attr_accessor description: String
+
+                # The skill name declared in `SKILL.md`.
+                attr_accessor name: String
+
+                # The type of the object. Always `inline`.
+                attr_accessor type: :inline
+
+                # @param description
+                #   The skill description declared in `SKILL.md`.
+                # @param name
+                #   The skill name declared in `SKILL.md`.
+                # @param type
+                #   The type of the object. Always `inline`.
+                def initialize: (
+                  description: String,
+                  name: String,
+                  ?type: :inline
+                ) -> void
+
+                def to_hash: -> {
+                  description: String,
+                  name: String,
+                  ?type: :inline
+                }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::AutomationEnvironment::OpenAIHosted::skill]
+            end
+          end
+
+          type self_hosted =
+            {
+              capability_directories: ::Array[String],
+              environment_id: String?,
+              ?type: :self_hosted,
+              workspace_directory: String
+            }
+
+          class SelfHosted < OpenAI::Internal::Type::BaseModel
+            # Directories that expose capabilities to the agent.
+            attr_accessor capability_directories: ::Array[String]
+
+            # An existing registration, or null to create a session-owned environment.
+            attr_accessor environment_id: String?
+
+            # The type of the object. Always `self_hosted`.
+            attr_accessor type: :self_hosted
+
+            # The absolute project directory in the environment.
+            attr_accessor workspace_directory: String
+
+            # @param capability_directories
+            #   Directories that expose capabilities to the agent.
+            # @param environment_id
+            #   An existing registration, or null to create a session-owned environment.
+            # @param workspace_directory
+            #   The absolute project directory in the environment.
+            # @param type
+            #   The type of the object. Always `self_hosted`.
+            def initialize: (
+              capability_directories: ::Array[String],
+              environment_id: String?,
+              workspace_directory: String,
+              ?type: :self_hosted
+            ) -> void
+
+            def to_hash: -> {
+              capability_directories: ::Array[String],
+              environment_id: String?,
+              ?type: :self_hosted,
+              workspace_directory: String
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::automation_environment]
+        end
+      end
+    end
+  end
+end

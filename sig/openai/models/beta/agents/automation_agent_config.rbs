@@ -1,0 +1,143 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_agent_config =
+          {
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::Agents::AutomationAgentConfig::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool],
+            ?compaction: OpenAI::Beta::Agents::AutomationAgentConfig::Compaction,
+            ?experimental: OpenAI::Beta::Agents::AutomationAgentConfig::Experimental
+          }
+
+        class AutomationAgentConfig < OpenAI::Internal::Type::BaseModel
+          # Custom instructions, or null when absent.
+          attr_accessor instructions: String?
+
+          # The requested model name.
+          attr_accessor model: String
+
+          # The configuration for creating and coordinating subagents.
+          attr_accessor multi_agent: OpenAI::Beta::MultiAgentConfig
+
+          # The configured reasoning policy.
+          attr_accessor reasoning: OpenAI::Beta::AgentReasoning
+
+          # The configured service-tier policy.
+          attr_accessor service_tier: OpenAI::Models::Beta::Agents::AutomationAgentConfig::service_tier
+
+          # The configured output format and verbosity.
+          attr_accessor text: OpenAI::Beta::AgentText
+
+          # Configured tools, excluding confidential credentials.
+          attr_accessor tools: ::Array[OpenAI::Models::Beta::agent_tool]
+
+          # The effective context compaction settings.
+          attr_reader compaction: OpenAI::Beta::Agents::AutomationAgentConfig::Compaction?
+
+          # The effective context compaction settings.
+          def compaction=: (
+            OpenAI::Beta::Agents::AutomationAgentConfig::Compaction
+          ) -> OpenAI::Beta::Agents::AutomationAgentConfig::Compaction
+
+          # The effective experimental settings for the agent.
+          attr_reader experimental: OpenAI::Beta::Agents::AutomationAgentConfig::Experimental?
+
+          # The effective experimental settings for the agent.
+          def experimental=: (
+            OpenAI::Beta::Agents::AutomationAgentConfig::Experimental
+          ) -> OpenAI::Beta::Agents::AutomationAgentConfig::Experimental
+
+          # @param instructions
+          #   Custom instructions, or null when absent.
+          # @param model
+          #   The requested model name.
+          # @param multi_agent
+          #   The configuration for creating and coordinating subagents.
+          # @param reasoning
+          #   The configured reasoning policy.
+          # @param service_tier
+          #   The configured service-tier policy.
+          # @param text
+          #   The configured output format and verbosity.
+          # @param tools
+          #   Configured tools, excluding confidential credentials.
+          # @param compaction
+          #   The effective context compaction settings.
+          # @param experimental
+          #   The effective experimental settings for the agent.
+          def initialize: (
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::Agents::AutomationAgentConfig::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool],
+            ?compaction: OpenAI::Beta::Agents::AutomationAgentConfig::Compaction,
+            ?experimental: OpenAI::Beta::Agents::AutomationAgentConfig::Experimental
+          ) -> void
+
+          def to_hash: -> {
+            instructions: String?,
+            model: String,
+            multi_agent: OpenAI::Beta::MultiAgentConfig,
+            reasoning: OpenAI::Beta::AgentReasoning,
+            service_tier: OpenAI::Models::Beta::Agents::AutomationAgentConfig::service_tier,
+            text: OpenAI::Beta::AgentText,
+            tools: ::Array[OpenAI::Models::Beta::agent_tool],
+            ?compaction: OpenAI::Beta::Agents::AutomationAgentConfig::Compaction,
+            ?experimental: OpenAI::Beta::Agents::AutomationAgentConfig::Experimental
+          }
+
+          type service_tier =
+            :auto | :default | :flex | :priority | :fast | :ultrafast
+
+          module ServiceTier
+            extend OpenAI::Internal::Type::Enum
+
+            AUTO: :auto
+            DEFAULT: :default
+            FLEX: :flex
+            PRIORITY: :priority
+            FAST: :fast
+            ULTRAFAST: :ultrafast
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::AutomationAgentConfig::service_tier]
+          end
+
+          type compaction = { async: bool }
+
+          class Compaction < OpenAI::Internal::Type::BaseModel
+            # Whether context is compacted in the background. Defaults to true.
+            attr_accessor async: bool
+
+            # @param async
+            #   Whether context is compacted in the background. Defaults to true.
+            def initialize: (async: bool) -> void
+
+            def to_hash: -> { async: bool }
+          end
+
+          type experimental = { time_awareness: bool }
+
+          class Experimental < OpenAI::Internal::Type::BaseModel
+            # Whether the model receives periodic current-time reminders.
+            attr_accessor time_awareness: bool
+
+            # @param time_awareness
+            #   Whether the model receives periodic current-time reminders.
+            def initialize: (time_awareness: bool) -> void
+
+            def to_hash: -> { time_awareness: bool }
+          end
+        end
+      end
+    end
+  end
+end
