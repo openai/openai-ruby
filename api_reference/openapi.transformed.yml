@@ -106085,6 +106085,7 @@ components:
         - gpt-5.6-cyber
         - gpt-6-cyber
         - gpt-rosalind-research
+        - gpt-6-rosalind
         x-openai-enum-deprecations:
           o1-pro:
             message: 'Announced shutdown date: 2026-10-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
@@ -107940,6 +107941,68 @@ components:
                 An upper bound for the number of tokens that can be generated for a response, including visible output tokens and [reasoning tokens](https://developers.openai.com/api/docs/guides/reasoning).
               type: integer
             - type: 'null'
+          model:
+            example: gpt-6-astra
+            anyOf:
+            - $ref: '#/components/schemas/BetaModelIdsShared'
+            - type: string
+              title: ResponsesOnlyModel
+              enum:
+              - o1-pro
+              - o1-pro-2025-03-19
+              - o3-pro
+              - o3-pro-2025-06-10
+              - o3-deep-research
+              - o3-deep-research-2025-06-26
+              - o4-mini-deep-research
+              - o4-mini-deep-research-2025-06-26
+              - computer-use-preview
+              - computer-use-preview-2025-03-11
+              - gpt-5.5-pro
+              - gpt-5.5-pro-2026-04-23
+              - gpt-5-codex
+              - gpt-5-pro
+              - gpt-5-pro-2025-10-06
+              - gpt-5.1-codex-max
+              - gpt-daybreak-blue-latest
+              - gpt-daybreak-red-latest
+              - gpt-5.6-cyber
+              - gpt-6-cyber
+              - gpt-rosalind-research
+              x-openai-enum-deprecations:
+                o1-pro:
+                  message: 'Announced shutdown date: 2026-10-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                o1-pro-2025-03-19:
+                  message: 'Announced shutdown date: 2026-10-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                o3-pro-2025-06-10:
+                  message: 'Announced shutdown date: 2026-12-11. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                o3-deep-research:
+                  message: 'Announced shutdown date: 2026-07-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                o3-deep-research-2025-06-26:
+                  message: 'Announced shutdown date: 2026-07-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                o4-mini-deep-research:
+                  message: 'Announced shutdown date: 2026-07-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                o4-mini-deep-research-2025-06-26:
+                  message: 'Announced shutdown date: 2026-07-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                computer-use-preview:
+                  message: 'Announced shutdown date: 2026-07-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                computer-use-preview-2025-03-11:
+                  message: 'Announced shutdown date: 2026-07-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                gpt-5-codex:
+                  message: 'Announced shutdown date: 2026-07-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                gpt-5-pro-2025-10-06:
+                  message: 'Announced shutdown date: 2026-12-11. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                gpt-5.1-codex-max:
+                  message: 'Announced shutdown date: 2026-07-23. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                o3-pro:
+                  message: 'Announced shutdown date: 2026-12-11. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+                gpt-5-pro:
+                  message: 'Announced shutdown date: 2026-12-11. See https://developers.openai.com/api/docs/deprecations for details and recommended replacements.'
+            description: |
+              Model ID used to generate the response, like `gpt-6-astra`. OpenAI
+              offers a wide range of models with different capabilities, performance
+              characteristics, and price points. Refer to the [model guide](https://developers.openai.com/api/docs/models)
+              to browse and compare available models.
         required:
         - access_programs
         - id

@@ -282,6 +282,7 @@ module OpenAI
           | :"gpt-5.6-cyber"
           | :"gpt-6-cyber"
           | :"gpt-rosalind-research"
+          | :"gpt-6-rosalind"
           | String
 
         module Model
@@ -400,6 +401,7 @@ module OpenAI
           GPT_5_6_CYBER: :"gpt-5.6-cyber"
           GPT_6_CYBER: :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH: :"gpt-rosalind-research"
+          GPT_6_ROSALIND: :"gpt-6-rosalind"
         end
 
         type image =

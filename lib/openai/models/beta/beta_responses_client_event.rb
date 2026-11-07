@@ -1361,6 +1361,8 @@ module OpenAI
               }
             )
 
+            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_6_ROSALIND }
+
             variant String
 
             # @!method self.variants
@@ -1744,6 +1746,7 @@ module OpenAI
             GPT_5_6_CYBER = :"gpt-5.6-cyber"
             GPT_6_CYBER = :"gpt-6-cyber"
             GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
+            GPT_6_ROSALIND = :"gpt-6-rosalind"
 
             # @!endgroup
           end
