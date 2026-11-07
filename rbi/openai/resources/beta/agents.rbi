@@ -7,6 +7,9 @@ module OpenAI
 
       class Agents
 
+        sig { returns(OpenAI::Resources::Beta::Agents::Automations) }
+        attr_reader :automations
+
         sig { returns(OpenAI::Resources::Beta::Agents::Environments) }
         attr_reader :environments
 

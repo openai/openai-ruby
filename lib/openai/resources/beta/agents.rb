@@ -4,6 +4,9 @@ module OpenAI
   module Resources
     class Beta
       class Agents
+        # @return [OpenAI::Resources::Beta::Agents::Automations]
+        attr_reader :automations
+
         # @return [OpenAI::Resources::Beta::Agents::Environments]
         attr_reader :environments
 
@@ -228,6 +231,7 @@ module OpenAI
         # @param client [OpenAI::Client]
         def initialize(client:)
           @client = client
+          @automations = OpenAI::Resources::Beta::Agents::Automations.new(client: client)
           @environments = OpenAI::Resources::Beta::Agents::Environments.new(client: client)
           @vaults = OpenAI::Resources::Beta::Agents::Vaults.new(client: client)
           @sessions = OpenAI::Resources::Beta::Agents::Sessions.new(client: client)

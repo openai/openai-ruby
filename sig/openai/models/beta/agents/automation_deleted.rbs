@@ -1,0 +1,39 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_deleted =
+          { id: String, deleted: bool, ?object: :"agent.automation.deleted" }
+
+        class AutomationDeleted < OpenAI::Internal::Type::BaseModel
+          # The deleted automation ID.
+          attr_accessor id: String
+
+          # Always true.
+          attr_accessor deleted: bool
+
+          # Always `agent.automation.deleted`.
+          attr_accessor object: :"agent.automation.deleted"
+
+          # @param id
+          #   The deleted automation ID.
+          # @param deleted
+          #   Always true.
+          # @param object
+          #   Always `agent.automation.deleted`.
+          def initialize: (
+            id: String,
+            deleted: bool,
+            ?object: :"agent.automation.deleted"
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            deleted: bool,
+            ?object: :"agent.automation.deleted"
+          }
+        end
+      end
+    end
+  end
+end

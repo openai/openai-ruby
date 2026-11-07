@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_created_by =
+          OpenAI::Beta::Agents::AutomationCreatedBy::Developer
+          | OpenAI::Beta::Agents::AutomationCreatedBy::Agent
+
+        module AutomationCreatedBy
+          extend OpenAI::Internal::Type::Union
+
+          type developer = { ?type: :developer }
+
+          class Developer < OpenAI::Internal::Type::BaseModel
+            # The type of the object. Always `developer`.
+            attr_accessor type: :developer
+
+            # @param type
+            #   The type of the object. Always `developer`.
+            def initialize: (?type: :developer) -> void
+
+            def to_hash: -> { ?type: :developer }
+          end
+
+          type agent =
+            { session_id: String, tool_call_id: String, ?type: :agent }
+
+          class Agent < OpenAI::Internal::Type::BaseModel
+            # The creator session, which is also the automation's target.
+            attr_accessor session_id: String
+
+            # The tool call that created the automation.
+            attr_accessor tool_call_id: String
+
+            # The type of the object. Always `agent`.
+            attr_accessor type: :agent
+
+            # @param session_id
+            #   The creator session, which is also the automation's target.
+            # @param tool_call_id
+            #   The tool call that created the automation.
+            # @param type
+            #   The type of the object. Always `agent`.
+            def initialize: (
+              session_id: String,
+              tool_call_id: String,
+              ?type: :agent
+            ) -> void
+
+            def to_hash: -> {
+              session_id: String,
+              tool_call_id: String,
+              ?type: :agent
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::automation_created_by]
+        end
+      end
+    end
+  end
+end

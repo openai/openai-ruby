@@ -28,6 +28,9 @@ module OpenAI
       end
 
       module Agents
+        module Automations
+        end
+
         module Environments
         end
 
@@ -51,8 +54,14 @@ module OpenAI
       module Audio
       end
 
+      module Automations
+      end
+
       module Beta
         module Agents
+          module Automations
+          end
+
           module Environments
           end
 

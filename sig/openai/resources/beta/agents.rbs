@@ -2,6 +2,8 @@ module OpenAI
   module Resources
     class Beta
       class Agents
+        attr_reader automations: OpenAI::Resources::Beta::Agents::Automations
+
         attr_reader environments: OpenAI::Resources::Beta::Agents::Environments
 
         attr_reader vaults: OpenAI::Resources::Beta::Agents::Vaults

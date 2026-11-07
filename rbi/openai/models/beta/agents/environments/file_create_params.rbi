@@ -24,10 +24,26 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :environment_id
 
+            # A file materialized in an OpenAI-hosted execution environment.
+            sig {
+              returns(
+                T.any(
+                  OpenAI::Beta::HostedEnvironmentFileParam::FileID,
+                  OpenAI::Beta::HostedEnvironmentFileParam::Inline
+                )
+              )
+            }
+            attr_accessor :hosted_environment_file_param
+
             sig do
               params(
 
                 environment_id: String,
+
+                hosted_environment_file_param: T.any(
+                  OpenAI::Beta::HostedEnvironmentFileParam::FileID::OrHash,
+                  OpenAI::Beta::HostedEnvironmentFileParam::Inline::OrHash
+                ),
 
                 request_options: OpenAI::RequestOptions::OrHash
               )
@@ -37,13 +53,23 @@ module OpenAI
 
               environment_id:,
 
+              # A file materialized in an OpenAI-hosted execution environment.
+              hosted_environment_file_param:,
+
               request_options: {}
             )
             end
 
             sig do
               override.returns(
-                {environment_id: String, request_options: OpenAI::RequestOptions}
+                {
+                  environment_id: String,
+                  hosted_environment_file_param: T.any(
+                    OpenAI::Beta::HostedEnvironmentFileParam::FileID,
+                    OpenAI::Beta::HostedEnvironmentFileParam::Inline
+                  ),
+                  request_options: OpenAI::RequestOptions
+                }
               )
             end
             def to_hash

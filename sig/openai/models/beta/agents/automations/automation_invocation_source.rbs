@@ -1,0 +1,62 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        module AutomationInvocationSource = Automations::AutomationInvocationSource
+
+        module Automations
+          type automation_invocation_source =
+            OpenAI::Beta::Agents::Automations::AutomationInvocationSource::Manual
+            | OpenAI::Beta::Agents::Automations::AutomationInvocationSource::Automation
+
+          module AutomationInvocationSource
+            extend OpenAI::Internal::Type::Union
+
+            type manual = { ?type: :manual }
+
+            class Manual < OpenAI::Internal::Type::BaseModel
+              # The type of the object. Always `manual`.
+              attr_accessor type: :manual
+
+              # @param type
+              #   The type of the object. Always `manual`.
+              def initialize: (?type: :manual) -> void
+
+              def to_hash: -> { ?type: :manual }
+            end
+
+            type automation =
+              {
+                automation: OpenAI::Models::Beta::Agents::automation,
+                ?type: :automation
+              }
+
+            class Automation < OpenAI::Internal::Type::BaseModel
+              # The automation snapshot for this occurrence, excluding confidential values.
+              attr_accessor automation: OpenAI::Models::Beta::Agents::automation
+
+              # The type of the object. Always `automation`.
+              attr_accessor type: :automation
+
+              # @param automation
+              #   The automation snapshot for this occurrence, excluding confidential values.
+              # @param type
+              #   The type of the object. Always `automation`.
+              def initialize: (
+                automation: OpenAI::Models::Beta::Agents::automation,
+                ?type: :automation
+              ) -> void
+
+              def to_hash: -> {
+                automation: OpenAI::Models::Beta::Agents::automation,
+                ?type: :automation
+              }
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::Automations::automation_invocation_source]
+          end
+        end
+      end
+    end
+  end
+end

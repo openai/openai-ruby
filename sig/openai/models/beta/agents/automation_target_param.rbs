@@ -1,0 +1,299 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_target_param =
+          OpenAI::Beta::Agents::AutomationTargetParam::NewSession
+          | OpenAI::Beta::Agents::AutomationTargetParam::ExistingSession
+
+        module AutomationTargetParam
+          extend OpenAI::Internal::Type::Union
+
+          type new_session =
+            {
+              environment: OpenAI::Models::Beta::environment_param,
+              input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam],
+              ?type: :new_session,
+              ?agent: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent,
+              ?agent_id: String,
+              ?metadata: ::Hash[Symbol, String]?,
+              ?vault_ids: ::Array[String]?
+            }
+
+          class NewSession < OpenAI::Internal::Type::BaseModel
+            # The execution environment for each new session.
+            attr_accessor environment: OpenAI::Models::Beta::environment_param
+
+            # Initial user messages submitted with each new session.
+            attr_accessor input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam]
+
+            # The type of the object. Always `new_session`.
+            attr_accessor type: :new_session
+
+            # Inline agent configuration. Provide exactly one of agent and agent_id.
+            attr_reader agent: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent?
+
+            # Inline agent configuration. Provide exactly one of agent and agent_id.
+            def agent=: (
+              OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent
+            ) -> OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent
+
+            # A saved agent ID. Provide exactly one of agent and agent_id.
+            attr_reader agent_id: String?
+
+            # A saved agent ID. Provide exactly one of agent and agent_id.
+            def agent_id=: (String) -> String
+
+            # Metadata attached to each new session.
+            attr_accessor metadata: ::Hash[Symbol, String]?
+
+            # The IDs of vaults made available to each new session.
+            attr_accessor vault_ids: ::Array[String]?
+
+            # @param environment
+            #   The execution environment for each new session.
+            # @param input
+            #   Initial user messages submitted with each new session.
+            # @param agent
+            #   Inline agent configuration. Provide exactly one of agent and agent_id.
+            # @param agent_id
+            #   A saved agent ID. Provide exactly one of agent and agent_id.
+            # @param metadata
+            #   Metadata attached to each new session.
+            # @param vault_ids
+            #   The IDs of vaults made available to each new session.
+            # @param type
+            #   The type of the object. Always `new_session`.
+            def initialize: (
+              environment: OpenAI::Models::Beta::environment_param,
+              input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam],
+              ?agent: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent,
+              ?agent_id: String,
+              ?metadata: ::Hash[Symbol, String]?,
+              ?vault_ids: ::Array[String]?,
+              ?type: :new_session
+            ) -> void
+
+            def to_hash: -> {
+              environment: OpenAI::Models::Beta::environment_param,
+              input: ::Array[OpenAI::Beta::AgentSessionInputMessageParam],
+              ?type: :new_session,
+              ?agent: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent,
+              ?agent_id: String,
+              ?metadata: ::Hash[Symbol, String]?,
+              ?vault_ids: ::Array[String]?
+            }
+
+            type agent =
+              {
+                ?compaction: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Compaction?,
+                ?experimental: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Experimental,
+                ?instructions: String?,
+                ?model: String,
+                ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+                ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+                ?service_tier: OpenAI::Models::Beta::Agents::AutomationTargetParam::NewSession::Agent::service_tier?,
+                ?text: OpenAI::Beta::AgentTextParam?,
+                ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+              }
+
+            class Agent < OpenAI::Internal::Type::BaseModel
+              # Context compaction settings. Omit to keep the current settings. A supplied
+              # object replaces the settings; null or an empty object enables background
+              # compaction.
+              attr_accessor compaction: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Compaction?
+
+              # Experimental settings to merge by key. Omitted settings keep their current
+              # values.
+              attr_reader experimental: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Experimental?
+
+              # Experimental settings to merge by key. Omitted settings keep their current
+              # values.
+              def experimental=: (
+                OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Experimental
+              ) -> OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Experimental
+
+              # Additional instructions appended to the agent's default base instructions. Omit
+              # to leave unchanged.
+              attr_accessor instructions: String?
+
+              # The model to use for the agent. The requested model name is preserved.
+              attr_reader model: String?
+
+              # The model to use for the agent. The requested model name is preserved.
+              def model=: (String) -> String
+
+              # Configuration for creating and coordinating subagents.
+              attr_accessor multi_agent: OpenAI::Beta::MultiAgentConfigParam?
+
+              # Configuration for model reasoning. Omit to keep the current settings; pass
+              # `null` to reset to the model's default effort.
+              attr_accessor reasoning: OpenAI::Beta::AgentReasoningParam?
+
+              # The service tier used for model requests.
+              attr_accessor service_tier: OpenAI::Models::Beta::Agents::AutomationTargetParam::NewSession::Agent::service_tier?
+
+              # Configuration for text generated by the agent.
+              attr_accessor text: OpenAI::Beta::AgentTextParam?
+
+              # Tools available to the agent. Omit to inherit, or pass null to clear them. The
+              # resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
+              # JSON.
+              attr_accessor tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+
+              # @param compaction
+              #   Context compaction settings. Omit to keep the current settings. A supplied
+              #   object replaces the settings; null or an empty object enables background
+              #   compaction.
+              # @param experimental
+              #   Experimental settings to merge by key. Omitted settings keep their current
+              #   values.
+              # @param instructions
+              #   Additional instructions appended to the agent's default base instructions. Omit
+              #   to leave unchanged.
+              # @param model
+              #   The model to use for the agent. The requested model name is preserved.
+              # @param multi_agent
+              #   Configuration for creating and coordinating subagents.
+              # @param reasoning
+              #   Configuration for model reasoning. Omit to keep the current settings; pass
+              #   `null` to reset to the model's default effort.
+              # @param service_tier
+              #   The service tier used for model requests.
+              # @param text
+              #   Configuration for text generated by the agent.
+              # @param tools
+              #   Tools available to the agent. Omit to inherit, or pass null to clear them. The
+              #   resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
+              #   JSON.
+              def initialize: (
+                ?compaction: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Compaction?,
+                ?experimental: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Experimental,
+                ?instructions: String?,
+                ?model: String,
+                ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+                ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+                ?service_tier: OpenAI::Models::Beta::Agents::AutomationTargetParam::NewSession::Agent::service_tier?,
+                ?text: OpenAI::Beta::AgentTextParam?,
+                ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+              ) -> void
+
+              def to_hash: -> {
+                ?compaction: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Compaction?,
+                ?experimental: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Experimental,
+                ?instructions: String?,
+                ?model: String,
+                ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
+                ?reasoning: OpenAI::Beta::AgentReasoningParam?,
+                ?service_tier: OpenAI::Models::Beta::Agents::AutomationTargetParam::NewSession::Agent::service_tier?,
+                ?text: OpenAI::Beta::AgentTextParam?,
+                ?tools: ::Array[OpenAI::Models::Beta::agent_tool_param]?
+              }
+
+              type compaction = { ?async: bool? }
+
+              class Compaction < OpenAI::Internal::Type::BaseModel
+                # Whether to compact context in the background. Omission or null defaults to true.
+                # Set to false to use blocking compaction. Background compaction may increase
+                # token usage.
+                attr_accessor async: bool?
+
+                # @param async
+                #   Whether to compact context in the background. Omission or null defaults to true.
+                #   Set to false to use blocking compaction. Background compaction may increase
+                #   token usage.
+                def initialize: (?async: bool?) -> void
+
+                def to_hash: -> { ?async: bool? }
+              end
+
+              type experimental = { ?time_awareness: bool }
+
+              class Experimental < OpenAI::Internal::Type::BaseModel
+                # Whether to give the model periodic current-time reminders. Omit to keep the
+                # current setting.
+                attr_reader time_awareness: bool?
+
+                # Whether to give the model periodic current-time reminders. Omit to keep the
+                # current setting.
+                def time_awareness=: (bool) -> bool
+
+                # @param time_awareness
+                #   Whether to give the model periodic current-time reminders. Omit to keep the
+                #   current setting.
+                def initialize: (?time_awareness: bool) -> void
+
+                def to_hash: -> { ?time_awareness: bool }
+              end
+
+              type service_tier =
+                :auto | :default | :flex | :priority | :fast | :ultrafast
+
+              module ServiceTier
+                extend OpenAI::Internal::Type::Enum
+
+                # Selects the service tier automatically.
+                AUTO: :auto
+
+                # Uses the default service tier.
+                DEFAULT: :default
+
+                # Uses the flex service tier.
+                FLEX: :flex
+
+                # Uses the priority service tier.
+                PRIORITY: :priority
+
+                # Uses the fast service tier.
+                FAST: :fast
+
+                # Uses the ultrafast service tier.
+                ULTRAFAST: :ultrafast
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::AutomationTargetParam::NewSession::Agent::service_tier]
+              end
+            end
+          end
+
+          type existing_session =
+            {
+              instructions: String,
+              session_id: String,
+              ?type: :existing_session
+            }
+
+          class ExistingSession < OpenAI::Internal::Type::BaseModel
+            # Instructions delivered as an automation notification.
+            attr_accessor instructions: String
+
+            # The session receiving each invocation.
+            attr_accessor session_id: String
+
+            # The type of the object. Always `existing_session`.
+            attr_accessor type: :existing_session
+
+            # @param instructions
+            #   Instructions delivered as an automation notification.
+            # @param session_id
+            #   The session receiving each invocation.
+            # @param type
+            #   The type of the object. Always `existing_session`.
+            def initialize: (
+              instructions: String,
+              session_id: String,
+              ?type: :existing_session
+            ) -> void
+
+            def to_hash: -> {
+              instructions: String,
+              session_id: String,
+              ?type: :existing_session
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::automation_target_param]
+        end
+      end
+    end
+  end
+end
