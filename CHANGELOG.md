@@ -1,13 +1,260 @@
 # Changelog
 
-## Unreleased
+## [0.121.0](https://github.com/openai/openai-ruby/compare/v0.120.0...v0.121.0) (2026-11-07)
+
+
+### Features
+
+* **api:** add agent scheduling APIs ([#1046](https://github.com/openai/openai-ruby/issues/1046)) ([4d0e09c](https://github.com/openai/openai-ruby/commit/4d0e09ce1df41e8f6442ae489c8ee9f1237cfc74))
+* **api:** add gpt-6-rosalind to beta Responses requests ([#1047](https://github.com/openai/openai-ruby/issues/1047)) ([d6461e6](https://github.com/openai/openai-ruby/commit/d6461e646fd8b747848d590a220da3fbbcc95259))
+
+
+### Documentation
+
+* consolidate AGENTS.md guidance ([#1044](https://github.com/openai/openai-ruby/issues/1044)) ([7b2dd7a](https://github.com/openai/openai-ruby/commit/7b2dd7ac84585b73d41938d9d9a547b682429c89))
+
+## [0.120.0](https://github.com/openai/openai-ruby/compare/v0.119.0...v0.120.0) (2026-11-05)
+
+
+### Features
+
+* **api:** add a model option for Responses ([#1040](https://github.com/openai/openai-ruby/issues/1040)) ([54b9096](https://github.com/openai/openai-ruby/commit/54b9096aa813460ad5f6cd81b807386b2da7b50a))
+
+
+### Chores
+
+* **deps:** bump the codeql group with 2 updates ([#1035](https://github.com/openai/openai-ruby/issues/1035)) ([b39ac63](https://github.com/openai/openai-ruby/commit/b39ac637da1d0bf30cf119e799b523e990ecada1))
+* **deps:** bump the codeql group with 2 updates ([#1039](https://github.com/openai/openai-ruby/issues/1039)) ([402375e](https://github.com/openai/openai-ruby/commit/402375ee11d8c47a5ab5dac356d1e7017249f26c))
+
+## [0.119.0](https://github.com/openai/openai-ruby/compare/v0.118.0...v0.119.0) (2026-11-05)
+
+
+### Features
+
+* **api:** add Australia, India, and Japan residency options ([#1036](https://github.com/openai/openai-ruby/issues/1036)) ([643e5ca](https://github.com/openai/openai-ruby/commit/643e5ca4b4f80b1f6fde36e558216577df6ebfa1))
+* **api:** add GPT-6 Rosalind to the model catalog ([#1032](https://github.com/openai/openai-ruby/issues/1032)) ([8656953](https://github.com/openai/openai-ruby/commit/86569535a607f6492b990bdb3ac5fcda9202afd9))
+* **api:** add image complexity and GIF and SVG output controls ([#1037](https://github.com/openai/openai-ruby/issues/1037)) ([228e36a](https://github.com/openai/openai-ruby/commit/228e36acebfba78d722282dc1dc3afd514283c5c))
+* **api:** expand agent turn errors and image and audio options ([#1033](https://github.com/openai/openai-ruby/issues/1033)) ([2f3c069](https://github.com/openai/openai-ruby/commit/2f3c06928494d2b2ec8c5e58c7e3d7966439ab3f))
+
+## [0.118.0](https://github.com/openai/openai-ruby/compare/v0.117.0...v0.118.0) (2026-11-03)
+
+
+### Features
+
+* **api:** add 12-hour Responses caching and cache-write usage ([#1029](https://github.com/openai/openai-ruby/issues/1029)) ([32b30ff](https://github.com/openai/openai-ruby/commit/32b30ffb3ce07fad285fd2df3afef76df7e9f901))
+* **api:** add project service tier settings ([#1028](https://github.com/openai/openai-ruby/issues/1028)) ([8c8e4e8](https://github.com/openai/openai-ruby/commit/8c8e4e8e28e9f412eb32ab839b447224e6f1cd87))
+
+
+### Documentation
+
+* clarify generated-file ownership ([#1030](https://github.com/openai/openai-ruby/issues/1030)) ([51508aa](https://github.com/openai/openai-ruby/commit/51508aa5047698ed1e792003a65f84934e51b77f))
+
+## [0.117.0](https://github.com/openai/openai-ruby/compare/v0.116.0...v0.117.0) (2026-11-03)
+
+
+### Features
+
+* **api:** add workload identity providers and federation rules ([#1026](https://github.com/openai/openai-ruby/issues/1026)) ([29af0a8](https://github.com/openai/openai-ruby/commit/29af0a87b94a08fb2e0fd0c51f976c42405e17bf))
+
+## [0.116.0](https://github.com/openai/openai-ruby/compare/v0.115.1...v0.116.0) (2026-11-03)
+
+
+### Features
+
+* **api:** expand Live Responses delegation tool choices ([#1025](https://github.com/openai/openai-ruby/issues/1025)) ([385fef8](https://github.com/openai/openai-ruby/commit/385fef85fc3b56aa695b041b7574b912b5e200ea))
+* **responses:** accumulate rich and sparse WebSocket progress ([#1019](https://github.com/openai/openai-ruby/issues/1019)) ([b99f742](https://github.com/openai/openai-ruby/commit/b99f7420213a13888a180c33c78177fc06c738c6))
+* **responses:** collect MCP argument progress ([#1016](https://github.com/openai/openai-ruby/issues/1016)) ([e67a3ff](https://github.com/openai/openai-ruby/commit/e67a3ffe9cd9856c1dfb52f7ded2a19381b30152))
+
 
 ### Bug Fixes
 
-* **realtime:** abort connections after failed or canceled WebSocket writes so
-  buffered application data cannot be flushed later. On a poisoned connection,
-  `close(code:, reason:)` aborts without a close handshake; the supplied code and
-  reason are not sent. ([#914](https://github.com/openai/openai-ruby/pull/914))
+* **responses:** allow early required-input continuations ([#1018](https://github.com/openai/openai-ruby/issues/1018)) ([d1baaa8](https://github.com/openai/openai-ruby/commit/d1baaa8ff6630dca8dc89f15a46b29b0ec42fa1a))
+
+
+### Chores
+
+* **deps:** bump ruby/setup-ruby from 1.335.0 to 1.336.0 ([#1024](https://github.com/openai/openai-ruby/issues/1024)) ([022e621](https://github.com/openai/openai-ruby/commit/022e62158a263211a6b4f93b4c9d339630a5c6a3))
+
+## [0.115.1](https://github.com/openai/openai-ruby/compare/v0.115.0...v0.115.1) (2026-11-01)
+
+
+### Bug Fixes
+
+* avoid connection_pool versions incompatible with Ruby 3.3.0 ([#1014](https://github.com/openai/openai-ruby/issues/1014)) ([f1d97c2](https://github.com/openai/openai-ruby/commit/f1d97c265f9ed2bc26fe4e4188d30b6e04d804bf))
+
+## [0.115.0](https://github.com/openai/openai-ruby/compare/v0.114.0...v0.115.0) (2026-10-31)
+
+
+### Features
+
+* **api:** add agent context compaction settings ([#1003](https://github.com/openai/openai-ruby/issues/1003)) ([6f5b0a3](https://github.com/openai/openai-ruby/commit/6f5b0a3454aed204ccd8baad2ff0fb8bca1c17a5))
+* **api:** add agent session review and tool settings ([#1013](https://github.com/openai/openai-ruby/issues/1013)) ([b604fe7](https://github.com/openai/openai-ruby/commit/b604fe7ad3b252adcc3200314a46a028c9ad9a9b))
+* **api:** add experimental agent time awareness ([#1005](https://github.com/openai/openai-ruby/issues/1005)) ([25ab8e9](https://github.com/openai/openai-ruby/commit/25ab8e922a4f5f1adf74390139d08f8cb9f21db8))
+* **api:** add image edit markup overlays ([#1004](https://github.com/openai/openai-ruby/issues/1004)) ([79e7168](https://github.com/openai/openai-ruby/commit/79e7168b33bccf79d66700b0ac9820cb80d7ef36))
+* **api:** add organization external key management ([#998](https://github.com/openai/openai-ruby/issues/998)) ([e0313fc](https://github.com/openai/openai-ruby/commit/e0313fc261c816fba0628d4fc6e576b674e1d9df))
+* **api:** add SIP DTMF commands and delivery events ([#1002](https://github.com/openai/openai-ruby/issues/1002)) ([0ed1bc6](https://github.com/openai/openai-ruby/commit/0ed1bc69dd8249544631fe7335495f3807a46fd3))
+* **api:** complete request input type definitions ([#999](https://github.com/openai/openai-ruby/issues/999)) ([543fea3](https://github.com/openai/openai-ruby/commit/543fea32e06ee61b2ad5a201fe988120c646b75b))
+* **api:** expose hosted tool usage on responses ([#995](https://github.com/openai/openai-ruby/issues/995)) ([429e9ad](https://github.com/openai/openai-ruby/commit/429e9ad7b436e8c4bc85ea30f5e109f191393f93))
+* **api:** filter agent sessions by metadata ([#992](https://github.com/openai/openai-ruby/issues/992)) ([9dc8a3d](https://github.com/openai/openai-ruby/commit/9dc8a3dd0148cf6e08d18f0b1e0fca8d121311d8))
+* **api:** improve WebSocket encoding and recovery ([#1007](https://github.com/openai/openai-ruby/issues/1007)) ([d1a4b87](https://github.com/openai/openai-ruby/commit/d1a4b87292b52a5a718d7ed40ce6d68750c16ada))
+* **api:** support Responses WebSocket warmup ([#1012](https://github.com/openai/openai-ruby/issues/1012)) ([db09dba](https://github.com/openai/openai-ruby/commit/db09dba45a16e329c436df599e453be74d97b1ad))
+* **api:** support text formats on Responses configuration updates ([#1006](https://github.com/openai/openai-ruby/issues/1006)) ([c8b295c](https://github.com/openai/openai-ruby/commit/c8b295cc209fabc4e52db9bf321176c525f67cc9))
+
+
+### Bug Fixes
+
+* accept omitted nullable text in chat tool responses ([#993](https://github.com/openai/openai-ruby/issues/993)) ([b276766](https://github.com/openai/openai-ruby/commit/b2767663f881b47aae65fb1d9d452d64a2ec0cab))
+* preserve Vertex API root for stored responses ([#984](https://github.com/openai/openai-ruby/issues/984)) ([5bcd40b](https://github.com/openai/openai-ruby/commit/5bcd40b01cecb83a1e0a2bc044f7c7902ec0de7f))
+* **realtime:** allow developer messages in response input ([#978](https://github.com/openai/openai-ruby/issues/978)) ([ced5c63](https://github.com/openai/openai-ruby/commit/ced5c6315a9ad411a0d9704df9405c5a600ba55b))
+* **realtime:** reject overlapping reads on physical WebSockets ([#1011](https://github.com/openai/openai-ruby/issues/1011)) ([5317eb4](https://github.com/openai/openai-ruby/commit/5317eb42a544ddbc6ca3950d828f601edfbd0f4c))
+* reject overlapping Live WebSocket reads ([#1009](https://github.com/openai/openai-ruby/issues/1009)) ([e669431](https://github.com/openai/openai-ruby/commit/e669431961a0f14bc2c20ec83d167d701b2df3a0))
+* require explicit WebSocket transport for custom HTTP clients ([#1008](https://github.com/openai/openai-ruby/issues/1008)) ([54bb670](https://github.com/openai/openai-ruby/commit/54bb67010e46d25921f8ff33731640954f047ece))
+
+
+### Chores
+
+* **api:** document upcoming model shutdowns ([#990](https://github.com/openai/openai-ruby/issues/990)) ([ace1351](https://github.com/openai/openai-ruby/commit/ace13514e2db8f3a0f3d6b5a409d76e08e3b1bc1))
+* **api:** preserve organization external key request contracts ([#1001](https://github.com/openai/openai-ruby/issues/1001)) ([7ea9e1d](https://github.com/openai/openai-ruby/commit/7ea9e1dd9926ae5cbf692aecbedbc4f6c5f6c59a))
+* **api:** update image-model documentation ([#985](https://github.com/openai/openai-ruby/issues/985)) ([02c1d66](https://github.com/openai/openai-ruby/commit/02c1d66449a2ddda2ad64d0edf425795c1ee3f5c))
+* enforce generated-file ownership ([#979](https://github.com/openai/openai-ruby/issues/979)) ([300d5d2](https://github.com/openai/openai-ruby/commit/300d5d2889714a436dd73421f510b7b3b97f8379))
+
+## [0.114.0](https://github.com/openai/openai-ruby/compare/v0.113.0...v0.114.0) (2026-10-27)
+
+
+### Features
+
+* **api:** add prompt cache breakpoint TTL options ([#977](https://github.com/openai/openai-ruby/issues/977)) ([cc896f4](https://github.com/openai/openai-ruby/commit/cc896f44aa0ae894c9ef26e28b7700a4c521e75f))
+
+
+### Bug Fixes
+
+* sanitize cloud metadata provider errors ([#971](https://github.com/openai/openai-ruby/issues/971)) ([806f5b6](https://github.com/openai/openai-ruby/commit/806f5b67f9dc17871300862eb1107e87a52a062b))
+
+
+### Chores
+
+* **deps-dev:** bump the development-dependencies group with 2 updates ([#968](https://github.com/openai/openai-ruby/issues/968)) ([a3c5ba1](https://github.com/openai/openai-ruby/commit/a3c5ba1f0d5b936f5a631a7acabc92151c70cb14))
+* **deps:** bump ruby/setup-ruby from 1.332.0 to 1.335.0 ([#970](https://github.com/openai/openai-ruby/issues/970)) ([3c7c446](https://github.com/openai/openai-ruby/commit/3c7c4469c802184715900db771341cd2272fd547))
+
+## [0.113.0](https://github.com/openai/openai-ruby/compare/v0.112.0...v0.113.0) (2026-10-26)
+
+
+### Features
+
+* **api:** add gpt-6.1-terra model identifier ([#972](https://github.com/openai/openai-ruby/issues/972)) ([6b91123](https://github.com/openai/openai-ruby/commit/6b911234dfacea4c9e4fcc183e8b8363d3060bd3))
+
+## [0.112.0](https://github.com/openai/openai-ruby/compare/v0.111.0...v0.112.0) (2026-10-25)
+
+
+### Features
+
+* **api:** add delegation controls and prompt cache lifetimes ([#963](https://github.com/openai/openai-ruby/issues/963)) ([09f5d62](https://github.com/openai/openai-ruby/commit/09f5d62b7b5ef9b8c07ccb9a8197c6611280bb87))
+* **api:** expand Live Decision item and question types. **Breaking change in a minor release.** Live Decision item events now include messages and function/custom-tool calls and outputs. The public `OpenAI::Models::Live::DecisionItemCreateEvent::Item` and `OpenAI::Models::Live::DecisionItemCreatedEvent::Item` constants have been removed; constructing them now raises `NameError`. For user messages, replace them with `OpenAI::Models::Live::DecisionUserMessage` and `OpenAI::Models::Live::DecisionStoredUserMessage`, respectively. For example, use `OpenAI::Models::Live::DecisionUserMessage.new(content: "Hello")` for a create-event user message. Handle tool-item variants separately instead of assuming every event item has message fields. ([#967](https://github.com/openai/openai-ruby/issues/967)) ([58986a7](https://github.com/openai/openai-ruby/commit/58986a75919752ceaafc0fe2bc145f66e236f39e))
+
+## [0.111.0](https://github.com/openai/openai-ruby/compare/v0.110.0...v0.111.0) (2026-10-22)
+
+
+### Features
+
+* **api: Breaking change in a minor release.** A Live response question’s `instructions` can now be a string or an array of text, image, or JSON parts. Code like `question.instructions.strip` will fail if it receives an array. Check `question.instructions.is_a?(String)` and handle the array case. Decisions request inputs can also contain new message roles and tool-history items, so update code that assumes it knows every input type. Replace `OpenAI::DecisionInputMessage.new(content: ...)` with `OpenAI::DecisionInputMessage::User.new(content: ...)` for user-message inputs. Existing string instructions still work. ([#959](https://github.com/openai/openai-ruby/issues/959)) ([ff91bf6](https://github.com/openai/openai-ruby/commit/ff91bf63d2c8a565b155d554c70f45a0fb6efc1f))
+
+
+### Chores
+
+* **deps:** bump ruby/setup-ruby from 1.331.0 to 1.332.0 ([#958](https://github.com/openai/openai-ruby/issues/958)) ([38170d0](https://github.com/openai/openai-ruby/commit/38170d06553453c0223e317dd4eb0579bc22223f))
+
+## [0.110.0](https://github.com/openai/openai-ruby/compare/v0.109.0...v0.110.0) (2026-10-22)
+
+
+### Features
+
+* **api:** add voice deletion ([#954](https://github.com/openai/openai-ruby/issues/954)) ([a6257f2](https://github.com/openai/openai-ruby/commit/a6257f2737b1b98d6bda684a4fed8e2726052a3a))
+
+
+### Chores
+
+* **api:** clarify service-account API key deletion ([#956](https://github.com/openai/openai-ruby/issues/956)) ([fac910a](https://github.com/openai/openai-ruby/commit/fac910a671e53a7c5499e1cb323dffe23c9e247d))
+
+## [0.109.0](https://github.com/openai/openai-ruby/compare/v0.108.0...v0.109.0) (2026-10-21)
+
+
+### Features
+
+* add Vertex AI support for the Responses API ([#952](https://github.com/openai/openai-ruby/issues/952)) ([98f5359](https://github.com/openai/openai-ruby/commit/98f5359e3ad2133abc5e914610fe7bbd2a058f8d))
+
+## [0.108.0](https://github.com/openai/openai-ruby/compare/v0.107.0...v0.108.0) (2026-10-21)
+
+
+### Features
+
+* add a bounded Chat Completions tool runner ([#943](https://github.com/openai/openai-ruby/issues/943)) ([db9f85f](https://github.com/openai/openai-ruby/commit/db9f85f42ac3f3d76678db18941c46e0468267a9))
+* **api:** add custom voice consent management ([#951](https://github.com/openai/openai-ruby/issues/951)) ([fc5256c](https://github.com/openai/openai-ruby/commit/fc5256c4332a1cf5b3d9567874c1d24085b574a1))
+
+
+### Bug Fixes
+
+* preserve accepted JSON through Responses session helpers ([#939](https://github.com/openai/openai-ruby/issues/939)) ([bdea98a](https://github.com/openai/openai-ruby/commit/bdea98a74c9ea093020c82375259baa6b23468d0))
+* preserve Realtime restore errors if abort fails ([#940](https://github.com/openai/openai-ruby/issues/940)) ([3f09468](https://github.com/openai/openai-ruby/commit/3f094684e1618878a6d4936acf1c970ef426afac))
+
+
+### Chores
+
+* **api:** clarify cache-write token totals ([#948](https://github.com/openai/openai-ruby/issues/948)) ([b0cb84d](https://github.com/openai/openai-ruby/commit/b0cb84db1759785b37a49b64b3f5398a63d81b1a))
+* **api:** preserve client configuration compatibility ([#944](https://github.com/openai/openai-ruby/issues/944)) ([4d9bb59](https://github.com/openai/openai-ruby/commit/4d9bb5986fcd13b36634d4396a5745eb9ad1de77))
+* **api:** preserve embedding helper loading ([#946](https://github.com/openai/openai-ruby/issues/946)) ([2965c7f](https://github.com/openai/openai-ruby/commit/2965c7fa3a66eeeb1ef77d37d67f6b73ca4d9701))
+* **api:** preserve SDK compatibility ([#949](https://github.com/openai/openai-ruby/issues/949)) ([38cd9bd](https://github.com/openai/openai-ruby/commit/38cd9bdbdd653470c85a534a0026dac2f2f448f1))
+* enforce zero customizations in generated files ([#950](https://github.com/openai/openai-ruby/issues/950)) ([b87c892](https://github.com/openai/openai-ruby/commit/b87c8928395a12c8e608c1b682e1ba9c1a984c75))
+
+## [0.107.0](https://github.com/openai/openai-ruby/compare/v0.106.0...v0.107.0) (2026-10-20)
+
+
+### Features
+
+* **api:** add 30-minute cache-write usage counts ([#915](https://github.com/openai/openai-ruby/issues/915)) ([ea2dd66](https://github.com/openai/openai-ruby/commit/ea2dd66ed0c16e544490332fc2ea8ec4f5abd1bb))
+* **api:** add compaction trigger IDs ([#934](https://github.com/openai/openai-ruby/issues/934)) ([224e04a](https://github.com/openai/openai-ruby/commit/224e04ac2f610c793d772efafe7244d6c88039fc))
+
+
+### Bug Fixes
+
+* **api:** correct authentication security key types ([#938](https://github.com/openai/openai-ruby/issues/938)) ([4a5cc74](https://github.com/openai/openai-ruby/commit/4a5cc744b38dc39042d98ae2ff5a32fdd0247bc9))
+* decode base64 embedding vectors ([#942](https://github.com/openai/openai-ruby/issues/942)) ([d684df4](https://github.com/openai/openai-ruby/commit/d684df4dc2a633e34836a346bbbe1e7cbb3d2707))
+* drain audio diagnostics while waiting on input ([#920](https://github.com/openai/openai-ruby/issues/920)) ([8a0b876](https://github.com/openai/openai-ruby/commit/8a0b87606e55f26e86e289577cdfd2533c329ad6))
+* drain ready audio diagnostics without delay ([#918](https://github.com/openai/openai-ruby/issues/918)) ([3e87ce3](https://github.com/openai/openai-ruby/commit/3e87ce380fafe08bb4348b9b867d4006bb939e49))
+* keep Realtime diagnostic rendering payload-free ([#924](https://github.com/openai/openai-ruby/issues/924)) ([3a29026](https://github.com/openai/openai-ruby/commit/3a29026ab177704dbe30d688fddd085e737dfc6d))
+* preserve deep JSON in WebSocket event codecs ([#928](https://github.com/openai/openai-ruby/issues/928)) ([57462c9](https://github.com/openai/openai-ruby/commit/57462c938e3b7602c456b0816e8873bd67fad241))
+* preserve typed Realtime event identity ([#931](https://github.com/openai/openai-ruby/issues/931)) ([9bb5618](https://github.com/openai/openai-ruby/commit/9bb56187c7eb0d72f992c76fed68369d34972d81))
+* **realtime:** abort connections after failed or canceled WebSocket writes so buffered application data cannot be flushed later. On a poisoned connection, `close(code:, reason:)` aborts without a close handshake; the supplied code and reason are not sent. ([#914](https://github.com/openai/openai-ruby/issues/914)) ([d219f3d](https://github.com/openai/openai-ruby/commit/d219f3d0461dd96911429f1b89369eadd382f234))
+* report terminal Realtime failures before transport cleanup ([#923](https://github.com/openai/openai-ruby/issues/923)) ([0d21d75](https://github.com/openai/openai-ruby/commit/0d21d751cd89621c6a32c0048c45ef6e5b7c1af4))
+* retain Translation completion across callback exits ([#921](https://github.com/openai/openai-ruby/issues/921)) ([e6fb44e](https://github.com/openai/openai-ruby/commit/e6fb44e57d233e657d982eee4cf27c6a5d7977c7))
+* share strict WebSocket model validation ([#929](https://github.com/openai/openai-ruby/issues/929)) ([51c6f0b](https://github.com/openai/openai-ruby/commit/51c6f0b73081f0f02f981d2beb4a8b129b2ec1ba))
+* validate nested WebSocket wire field names ([#922](https://github.com/openai/openai-ruby/issues/922)) ([ae551ef](https://github.com/openai/openai-ruby/commit/ae551ef48d52d2c2f415f63c39e0c643fcfb1d75))
+* validate typed WebSocket event constants before conversion ([#925](https://github.com/openai/openai-ruby/issues/925)) ([3ae0cd3](https://github.com/openai/openai-ruby/commit/3ae0cd3070b4fcf046f8823f4cca1b7b8829effe))
+
+
+### Chores
+
+* **api:** clarify project API key update requirements ([#936](https://github.com/openai/openai-ruby/issues/936)) ([34606cc](https://github.com/openai/openai-ruby/commit/34606cc46087dae5a643256e9cae93966a106182))
+* **api:** Keep SDK maintenance checks aligned ([#917](https://github.com/openai/openai-ruby/issues/917)) ([ebe5bf4](https://github.com/openai/openai-ruby/commit/ebe5bf4dd74d87acf86e30f5c7a78350ce3f8e8d))
+* **api:** preserve audio transcription response compatibility ([#911](https://github.com/openai/openai-ruby/issues/911)) ([c93fb88](https://github.com/openai/openai-ruby/commit/c93fb88b350c80d724912351cf02d7ff51e3073a))
+* **api:** preserve JSON Schema adapter types ([#930](https://github.com/openai/openai-ruby/issues/930)) ([f1430b8](https://github.com/openai/openai-ruby/commit/f1430b8038c7f01123fbf9f2703f6eb5b7fa8c14))
+* **api:** preserve legacy Threads stream behavior ([#910](https://github.com/openai/openai-ruby/issues/910)) ([436887f](https://github.com/openai/openai-ruby/commit/436887fbe6bc3d0874cb75dca501ba1da0a9d9b4))
+* **api:** preserve optional Decisions usage filters ([#909](https://github.com/openai/openai-ruby/issues/909)) ([34f61df](https://github.com/openai/openai-ruby/commit/34f61dfc23bd1ade311e09a036ef6696af37c138))
+* **api:** preserve optional image edit safety identifiers ([#913](https://github.com/openai/openai-ruby/issues/913)) ([6bbfad1](https://github.com/openai/openai-ruby/commit/6bbfad1a6305b5efc71dbb41dce8560d2865bda2))
+* **api:** preserve standard library loading ([#935](https://github.com/openai/openai-ruby/issues/935)) ([a742640](https://github.com/openai/openai-ruby/commit/a7426400cf499f0d88c9e88e694d86369f8d9cb5))
+* **deps-dev:** bump the development-dependencies group with 3 updates ([#912](https://github.com/openai/openai-ruby/issues/912)) ([1227860](https://github.com/openai/openai-ruby/commit/1227860daec638117ce1f14dcd570cffc92c9647))
+* **deps:** bump ruby/setup-ruby from 1.329.0 to 1.331.0 ([#937](https://github.com/openai/openai-ruby/issues/937)) ([8b3ab95](https://github.com/openai/openai-ruby/commit/8b3ab95e7332a7c5325b4718d4e01246c5a54054))
+* prepare generic WebSocket binding signatures ([#941](https://github.com/openai/openai-ruby/issues/941)) ([9206c8c](https://github.com/openai/openai-ruby/commit/9206c8ceb99cc18df859d06c251fa5336c59ecdf))
+
+
+### Documentation
+
+* clarify Realtime guide scope and Translation support ([#905](https://github.com/openai/openai-ruby/issues/905)) ([efb4004](https://github.com/openai/openai-ruby/commit/efb4004aa49a8a4374833f4b07fbd373fdebb685))
+
+
+### Refactors
+
+* share Live codecs and use generated sideband commands ([#933](https://github.com/openai/openai-ruby/issues/933)) ([02861d0](https://github.com/openai/openai-ruby/commit/02861d0780eb18f493f881cfa9ed7cdf9a68abe3))
+* share Translation and binding event codecs ([#932](https://github.com/openai/openai-ruby/issues/932)) ([7dc0088](https://github.com/openai/openai-ruby/commit/7dc00884ba30a54a965fc41e8b19e1840e9faec9))
 
 ## [0.106.0](https://github.com/openai/openai-ruby/compare/v0.105.0...v0.106.0) (2026-10-17)
 

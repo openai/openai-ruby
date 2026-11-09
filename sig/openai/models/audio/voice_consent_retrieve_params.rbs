@@ -1,0 +1,25 @@
+module OpenAI
+  module Models
+    module Audio
+      type voice_consent_retrieve_params =
+        { consent_id: String, ?request_options: OpenAI::request_opts }
+
+      class VoiceConsentRetrieveParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor consent_id: String
+
+        def initialize: (
+          consent_id: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          consent_id: String,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

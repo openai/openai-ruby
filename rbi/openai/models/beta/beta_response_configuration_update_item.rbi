@@ -38,8 +38,15 @@ module OpenAI
         sig { params(reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning::OrHash).void }
         attr_writer :reasoning
 
-        # A configuration update that applies to subsequent responses until it is replaced
-        # by another configuration update.
+        # The text output configuration for subsequent responses.
+        sig { returns(T.nilable(OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text)) }
+        attr_reader :text
+
+        sig { params(text: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::OrHash).void }
+        attr_writer :text
+
+        # A configuration update for subsequent responses. Each setting stays in effect
+        # until a later update replaces that setting.
         sig do
           params(
 
@@ -48,6 +55,8 @@ module OpenAI
             agent: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Agent::OrHash,
 
             reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning::OrHash,
+
+            text: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::OrHash,
 
             type: Symbol
           )
@@ -64,6 +73,9 @@ module OpenAI
           # The reasoning configuration applied by this update.
           reasoning: nil,
 
+          # The text output configuration for subsequent responses.
+          text: nil,
+
           # The item type. Always `configuration_update`.
 
           type: :configuration_update
@@ -76,7 +88,8 @@ module OpenAI
               id: String,
               type: Symbol,
               agent: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Agent,
-              reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning
+              reasoning: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Reasoning,
+              text: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text
             }
           )
         end
@@ -189,6 +202,103 @@ module OpenAI
             }
             def self.values
             end
+          end
+        end
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Use a JSON schema for structured output or text to return to plain text.
+          sig { returns(OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Variants) }
+          attr_accessor :format_
+
+          # The text output configuration for subsequent responses.
+          sig do
+            params(
+
+              format_: T.any(
+                OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Text::OrHash,
+                OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig::OrHash
+              )
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Use a JSON schema for structured output or text to return to plain text.
+
+            format_:
+          )
+          end
+
+          sig do
+            override.returns(
+              {format_: OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Variants}
+            )
+          end
+          def to_hash
+          end
+
+          # Use a JSON schema for structured output or text to return to plain text.
+          module Format
+            extend OpenAI::Internal::Type::Union
+
+            Variants = T.type_alias {
+              T.any(
+                OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Text,
+                OpenAI::Beta::BetaResponseFormatTextJSONSchemaConfig
+              )
+            }
+
+            class Text < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Text,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The type of response format being defined. Always `text`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # Default response format. Used to generate text responses.
+              sig do
+                params(
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The type of response format being defined. Always `text`.
+
+                type: :text
+              )
+              end
+
+              sig do
+                override.returns(
+                  {type: Symbol}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            sig {
+              override.returns(T::Array[OpenAI::Beta::BetaResponseConfigurationUpdateItem::Text::Format::Variants])
+            }
+            def self.variants
+            end
+
           end
         end
 

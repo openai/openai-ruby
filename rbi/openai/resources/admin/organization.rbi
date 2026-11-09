@@ -32,6 +32,12 @@ module OpenAI
         sig { returns(OpenAI::Resources::Admin::Organization::DataRetention) }
         attr_reader :data_retention
 
+        sig { returns(OpenAI::Resources::Admin::Organization::ExternalKeys) }
+        attr_reader :external_keys
+
+        sig { returns(OpenAI::Resources::Admin::Organization::WorkloadIdentityProviders) }
+        attr_reader :workload_identity_providers
+
         sig { returns(OpenAI::Resources::Admin::Organization::ExternalStorage) }
         attr_reader :external_storage
 

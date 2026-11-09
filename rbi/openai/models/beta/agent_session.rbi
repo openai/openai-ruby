@@ -69,6 +69,14 @@ module OpenAI
         sig { returns(T::Array[String]) }
         attr_accessor :vault_ids
 
+        # Review applied to eligible actions in this session. Omitted when review is none
+        # and automatic review is not enabled. Omission means none.
+        sig { returns(T.nilable(OpenAI::Beta::AgentSession::Review::TaggedSymbol)) }
+        attr_reader :review
+
+        sig { params(review: OpenAI::Beta::AgentSession::Review::OrSymbol).void }
+        attr_writer :review
+
         # Configured spending limit and best-effort consumption, in USD cents. Unlimited
         # sessions omit this object.
         sig { returns(T.nilable(OpenAI::Beta::AgentSession::SpendControl)) }
@@ -113,6 +121,8 @@ module OpenAI
 
             vault_ids: T::Array[String],
 
+            review: OpenAI::Beta::AgentSession::Review::OrSymbol,
+
             spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash,
 
             object: Symbol
@@ -155,6 +165,10 @@ module OpenAI
           # The IDs of vaults made available to the session.
           vault_ids:,
 
+          # Review applied to eligible actions in this session. Omitted when review is none
+          # and automatic review is not enabled. Omission means none.
+          review: nil,
+
           # Configured spending limit and best-effort consumption, in USD cents. Unlimited
           # sessions omit this object.
           spend_control: nil,
@@ -180,6 +194,7 @@ module OpenAI
               status: OpenAI::Beta::AgentSession::Status::TaggedSymbol,
               usage: T.nilable(OpenAI::Beta::TokenUsage),
               vault_ids: T::Array[String],
+              review: OpenAI::Beta::AgentSession::Review::TaggedSymbol,
               spend_control: OpenAI::Beta::AgentSession::SpendControl
             }
           )
@@ -241,6 +256,20 @@ module OpenAI
           sig { returns(T::Array[OpenAI::Beta::AgentTool::Variants]) }
           attr_accessor :tools
 
+          # The effective context compaction settings.
+          sig { returns(T.nilable(OpenAI::Beta::AgentSession::Agent::Compaction)) }
+          attr_reader :compaction
+
+          sig { params(compaction: OpenAI::Beta::AgentSession::Agent::Compaction::OrHash).void }
+          attr_writer :compaction
+
+          # The effective experimental settings for the agent.
+          sig { returns(T.nilable(OpenAI::Beta::AgentSession::Agent::Experimental)) }
+          attr_reader :experimental
+
+          sig { params(experimental: OpenAI::Beta::AgentSession::Agent::Experimental::OrHash).void }
+          attr_writer :experimental
+
           # The agent running in the session.
           sig do
             params(
@@ -267,9 +296,14 @@ module OpenAI
                   OpenAI::Beta::AgentTool::ProgrammaticToolCalling::OrHash,
                   OpenAI::Beta::AgentTool::Mcp::OrHash,
                   OpenAI::Beta::AgentTool::WebSearch::OrHash,
-                  OpenAI::Beta::AgentTool::ComputerUse::OrHash
+                  OpenAI::Beta::AgentTool::ComputerUse::OrHash,
+                  OpenAI::Beta::AgentTool::Automations::OrHash
                 )
-              ]
+              ],
+
+              compaction: OpenAI::Beta::AgentSession::Agent::Compaction::OrHash,
+
+              experimental: OpenAI::Beta::AgentSession::Agent::Experimental::OrHash
             )
               .returns(T.attached_class)
           end
@@ -301,8 +335,14 @@ module OpenAI
             text:,
 
             # Tools available to the agent.
+            tools:,
 
-            tools:
+            # The effective context compaction settings.
+            compaction: nil,
+
+            # The effective experimental settings for the agent.
+
+            experimental: nil
           )
           end
 
@@ -317,7 +357,9 @@ module OpenAI
                 reasoning: OpenAI::Beta::AgentReasoning,
                 service_tier: OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol,
                 text: OpenAI::Beta::AgentText,
-                tools: T::Array[OpenAI::Beta::AgentTool::Variants]
+                tools: T::Array[OpenAI::Beta::AgentTool::Variants],
+                compaction: OpenAI::Beta::AgentSession::Agent::Compaction,
+                experimental: OpenAI::Beta::AgentSession::Agent::Experimental
               }
             )
           end
@@ -341,6 +383,82 @@ module OpenAI
             sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Agent::ServiceTier::TaggedSymbol]) }
             def self.values
             end
+          end
+
+          class Compaction < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::AgentSession::Agent::Compaction,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Whether context is compacted in the background. Defaults to true.
+            sig { returns(T::Boolean) }
+            attr_accessor :async
+
+            # The effective context compaction settings.
+            sig do
+              params(
+
+                async: T::Boolean
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Whether context is compacted in the background. Defaults to true.
+
+              async:
+            )
+            end
+
+            sig do
+              override.returns(
+                {async: T::Boolean}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Experimental < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::AgentSession::Agent::Experimental,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Whether the model receives periodic current-time reminders.
+            sig { returns(T::Boolean) }
+            attr_accessor :time_awareness
+
+            # The effective experimental settings for the agent.
+            sig do
+              params(
+
+                time_awareness: T::Boolean
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Whether the model receives periodic current-time reminders.
+
+              time_awareness:
+            )
+            end
+
+            sig do
+              override.returns(
+                {time_awareness: T::Boolean}
+              )
+            end
+            def to_hash
+            end
+
           end
         end
 
@@ -872,6 +990,22 @@ module OpenAI
           FAILED = T.let(:failed, OpenAI::Beta::AgentSession::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Status::TaggedSymbol]) }
+          def self.values
+          end
+        end
+
+        # Review applied to eligible actions in this session. Omitted when review is none
+        # and automatic review is not enabled. Omission means none.
+        module Review
+          extend OpenAI::Internal::Type::Enum
+
+          TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::AgentSession::Review) }
+          OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+          NONE = T.let(:none, OpenAI::Beta::AgentSession::Review::TaggedSymbol)
+          AUTO_REVIEW = T.let(:auto_review, OpenAI::Beta::AgentSession::Review::TaggedSymbol)
+
+          sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Review::TaggedSymbol]) }
           def self.values
           end
         end

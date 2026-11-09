@@ -21,10 +21,16 @@ module OpenAI
 
           module Users
           end
+
+          module WorkloadIdentityProviders
+          end
         end
       end
 
       module Agents
+        module Automations
+        end
+
         module Environments
         end
 
@@ -48,8 +54,14 @@ module OpenAI
       module Audio
       end
 
+      module Automations
+      end
+
       module Beta
         module Agents
+          module Automations
+          end
+
           module Environments
           end
 
@@ -152,6 +164,9 @@ module OpenAI
 
         module Users
         end
+
+        module WorkloadIdentityProviders
+        end
       end
 
       module Projects
@@ -229,6 +244,9 @@ module OpenAI
       end
 
       module Webhooks
+      end
+
+      module WorkloadIdentityProviders
       end
     end
   end

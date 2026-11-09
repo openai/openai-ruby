@@ -15,7 +15,9 @@ module OpenAI
           service_tier: OpenAI::Models::Beta::Agent::service_tier,
           text: OpenAI::Beta::AgentText,
           tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
-          updated_at: Integer
+          updated_at: Integer,
+          ?compaction: OpenAI::Beta::Agent::Compaction,
+          ?experimental: OpenAI::Beta::Agent::Experimental
         }
 
       class Agent < OpenAI::Internal::Type::BaseModel
@@ -59,6 +61,22 @@ module OpenAI
         # The Unix timestamp, in seconds, when the agent was last updated.
         attr_accessor updated_at: Integer
 
+        # The effective context compaction settings.
+        attr_reader compaction: OpenAI::Beta::Agent::Compaction?
+
+        # The effective context compaction settings.
+        def compaction=: (
+          OpenAI::Beta::Agent::Compaction
+        ) -> OpenAI::Beta::Agent::Compaction
+
+        # The effective experimental settings for the agent.
+        attr_reader experimental: OpenAI::Beta::Agent::Experimental?
+
+        # The effective experimental settings for the agent.
+        def experimental=: (
+          OpenAI::Beta::Agent::Experimental
+        ) -> OpenAI::Beta::Agent::Experimental
+
         # @param id
         #   The ID of the reusable agent.
         # @param created_at
@@ -84,6 +102,10 @@ module OpenAI
         #   Tools available to the agent.
         # @param updated_at
         #   The Unix timestamp, in seconds, when the agent was last updated.
+        # @param compaction
+        #   The effective context compaction settings.
+        # @param experimental
+        #   The effective experimental settings for the agent.
         # @param object
         #   The object type. Always `agent`.
         def initialize: (
@@ -99,6 +121,8 @@ module OpenAI
           text: OpenAI::Beta::AgentText,
           tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
           updated_at: Integer,
+          ?compaction: OpenAI::Beta::Agent::Compaction,
+          ?experimental: OpenAI::Beta::Agent::Experimental,
           ?object: :agent
         ) -> void
 
@@ -115,7 +139,9 @@ module OpenAI
           service_tier: OpenAI::Models::Beta::Agent::service_tier,
           text: OpenAI::Beta::AgentText,
           tools: ::Array[OpenAI::Models::Beta::persisted_agent_tool],
-          updated_at: Integer
+          updated_at: Integer,
+          ?compaction: OpenAI::Beta::Agent::Compaction,
+          ?experimental: OpenAI::Beta::Agent::Experimental
         }
 
         type service_tier =
@@ -132,6 +158,32 @@ module OpenAI
           ULTRAFAST: :ultrafast
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::Agent::service_tier]
+        end
+
+        type compaction = { async: bool }
+
+        class Compaction < OpenAI::Internal::Type::BaseModel
+          # Whether context is compacted in the background. Defaults to true.
+          attr_accessor async: bool
+
+          # @param async
+          #   Whether context is compacted in the background. Defaults to true.
+          def initialize: (async: bool) -> void
+
+          def to_hash: -> { async: bool }
+        end
+
+        type experimental = { time_awareness: bool }
+
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          # Whether the model receives periodic current-time reminders.
+          attr_accessor time_awareness: bool
+
+          # @param time_awareness
+          #   Whether the model receives periodic current-time reminders.
+          def initialize: (time_awareness: bool) -> void
+
+          def to_hash: -> { time_awareness: bool }
         end
       end
     end

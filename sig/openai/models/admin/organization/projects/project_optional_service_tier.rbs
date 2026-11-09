@@ -1,0 +1,23 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module ProjectOptionalServiceTier = Projects::ProjectOptionalServiceTier
+
+        module Projects
+          type project_optional_service_tier = :flex | :fast | :ultrafast
+
+          module ProjectOptionalServiceTier
+            extend OpenAI::Internal::Type::Enum
+
+            FLEX: :flex
+            FAST: :fast
+            ULTRAFAST: :ultrafast
+
+            def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::Projects::project_optional_service_tier]
+          end
+        end
+      end
+    end
+  end
+end

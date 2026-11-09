@@ -14,6 +14,18 @@ module OpenAI
         #   @return [String]
         required :model, String
 
+        # @!attribute compaction
+        #   Context compaction settings. Omission or null enables background compaction.
+        #
+        #   @return [OpenAI::Models::Beta::AgentCreateParams::Compaction, nil]
+        optional :compaction, -> { OpenAI::Beta::AgentCreateParams::Compaction }, nil?: true
+
+        # @!attribute experimental
+        #   Experimental agent settings. All experimental features default to disabled.
+        #
+        #   @return [OpenAI::Models::Beta::AgentCreateParams::Experimental, nil]
+        optional :experimental, -> { OpenAI::Beta::AgentCreateParams::Experimental }
+
         # @!attribute instructions
         #   Additional instructions appended to the agent's default base instructions. Omit
         #   or set to null to add no custom instructions.
@@ -64,16 +76,22 @@ module OpenAI
         #   Tools available to the agent. Defaults to an empty list. The tool list must fit
         #   within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         #
-        #   @return [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
+        #   @return [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse, OpenAI::Models::Beta::PersistedAgentToolParam::Automations>, nil]
         optional(
           :tools,
           -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::PersistedAgentToolParam] },
           nil?: true
         )
 
-        # @!method initialize(model:, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
+        # @!method initialize(model:, compaction: nil, experimental: nil, instructions: nil, metadata: nil, multi_agent: nil, name: nil, reasoning: nil, service_tier: nil, text: nil, tools: nil, request_options: {})
         #   @param model [String]
         #     The model to use for the agent. The requested model name is preserved.
+        #
+        #   @param compaction [OpenAI::Models::Beta::AgentCreateParams::Compaction, nil]
+        #     Context compaction settings. Omission or null enables background compaction.
+        #
+        #   @param experimental [OpenAI::Models::Beta::AgentCreateParams::Experimental]
+        #     Experimental agent settings. All experimental features default to disabled.
         #
         #   @param instructions [String, nil]
         #     Additional instructions appended to the agent's default base instructions. Omit
@@ -100,11 +118,43 @@ module OpenAI
         #     Configuration for generated text. Defaults to the `text` format and medium
         #     verbosity.
         #
-        #   @param tools [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse>, nil]
+        #   @param tools [Array<OpenAI::Models::Beta::PersistedAgentToolParam::Function, OpenAI::Models::Beta::PersistedAgentToolParam::ToolSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::PersistedAgentToolParam::Mcp, OpenAI::Models::Beta::PersistedAgentToolParam::WebSearch, OpenAI::Models::Beta::PersistedAgentToolParam::ComputerUse, OpenAI::Models::Beta::PersistedAgentToolParam::Automations>, nil]
         #     Tools available to the agent. Defaults to an empty list. The tool list must fit
         #     within 3 MiB (3,145,728 bytes) of compact UTF-8 JSON.
         #
         #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
+
+        class Compaction < OpenAI::Internal::Type::BaseModel
+          # @!attribute async
+          #   Whether to compact context in the background. Omission or null defaults to true.
+          #   Set to false to use blocking compaction. Background compaction may increase
+          #   token usage.
+          #
+          #   @return [Boolean, nil]
+          optional :async, OpenAI::Internal::Type::Boolean, nil?: true
+
+          # @!method initialize(async: nil)
+          #   Context compaction settings. Omission or null enables background compaction.
+          #
+          #   @param async [Boolean, nil]
+          #     Whether to compact context in the background. Omission or null defaults to true.
+          #     Set to false to use blocking compaction. Background compaction may increase
+          #     token usage.
+        end
+
+        class Experimental < OpenAI::Internal::Type::BaseModel
+          # @!attribute time_awareness
+          #   Whether to give the model periodic current-time reminders. Defaults to false.
+          #
+          #   @return [Boolean, nil]
+          optional :time_awareness, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(time_awareness: nil)
+          #   Experimental agent settings. All experimental features default to disabled.
+          #
+          #   @param time_awareness [Boolean]
+          #     Whether to give the model periodic current-time reminders. Defaults to false.
+        end
 
         # The service tier used for model requests. Defaults to `auto`.
         module ServiceTier

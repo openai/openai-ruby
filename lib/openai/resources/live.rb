@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "../helpers/websocket/resource"
+require_relative "../helpers/websocket/typed_resource"
 
 module OpenAI
   module Resources
     class Live
-      include OpenAI::WebSocket::Resource
+      include OpenAI::WebSocket::TypedResource
 
       # @api private
       def __websocket_request(query: {})

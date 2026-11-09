@@ -2,6 +2,8 @@ module OpenAI
   module Resources
     class Beta
       class Agents
+        attr_reader automations: OpenAI::Resources::Beta::Agents::Automations
+
         attr_reader environments: OpenAI::Resources::Beta::Agents::Environments
 
         attr_reader vaults: OpenAI::Resources::Beta::Agents::Vaults
@@ -10,6 +12,8 @@ module OpenAI
 
         def create: (
           model: String,
+          ?compaction: OpenAI::Beta::AgentCreateParams::Compaction?,
+          ?experimental: OpenAI::Beta::AgentCreateParams::Experimental,
           ?instructions: String?,
           ?metadata: ::Hash[Symbol, String]?,
           ?multi_agent: OpenAI::Beta::MultiAgentConfigParam?,
@@ -28,6 +32,8 @@ module OpenAI
 
         def update: (
           String agent_id,
+          ?compaction: OpenAI::Beta::AgentUpdateParams::Compaction?,
+          ?experimental: OpenAI::Beta::AgentUpdateParams::Experimental,
           ?instructions: String?,
           ?metadata: ::Hash[Symbol, String]?,
           ?model: String,

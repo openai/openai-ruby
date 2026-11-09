@@ -5,7 +5,15 @@ module OpenAI
     class Audio
       # Turn audio into text or text into audio.
       class Translations
+        # @deprecated
+        #
         # Translates audio into English.
+        #
+        # This endpoint supports only `whisper-1`. The endpoint and model are deprecated
+        # and scheduled to shut down on February 26, 2027. Migrate to
+        # `/v1/realtime/translations`, which requires a separate integration. See the
+        # [deprecation schedule](https://developers.openai.com/api/docs/deprecations) for
+        # details.
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or

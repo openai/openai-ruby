@@ -1,0 +1,127 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_schedule_param =
+          OpenAI::Beta::Agents::AutomationScheduleParam::Periodic
+          | OpenAI::Beta::Agents::AutomationScheduleParam::Once
+
+        module AutomationScheduleParam
+          extend OpenAI::Internal::Type::Union
+
+          type periodic =
+            {
+              expression: String,
+              name: String,
+              target: OpenAI::Models::Beta::Agents::automation_target_param,
+              timezone: String,
+              ?type: :periodic,
+              ?metadata: ::Hash[Symbol, String]
+            }
+
+          class Periodic < OpenAI::Internal::Type::BaseModel
+            # A standard five-field cron expression defining scheduled occurrences.
+            attr_accessor expression: String
+
+            # A human-readable name for the automation.
+            attr_accessor name: String
+
+            # The session an automation invocation targets.
+            attr_accessor target: OpenAI::Models::Beta::Agents::automation_target_param
+
+            # The IANA timezone used to interpret the cron expression.
+            attr_accessor timezone: String
+
+            # The type of the object. Always `periodic`.
+            attr_accessor type: :periodic
+
+            attr_reader metadata: ::Hash[Symbol, String]?
+
+            def metadata=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
+
+            # @param expression
+            #   A standard five-field cron expression defining scheduled occurrences.
+            # @param name
+            #   A human-readable name for the automation.
+            # @param target
+            #   The session an automation invocation targets.
+            # @param timezone
+            #   The IANA timezone used to interpret the cron expression.
+            # @param type
+            #   The type of the object. Always `periodic`.
+            def initialize: (
+              expression: String,
+              name: String,
+              target: OpenAI::Models::Beta::Agents::automation_target_param,
+              timezone: String,
+              ?metadata: ::Hash[Symbol, String],
+              ?type: :periodic
+            ) -> void
+
+            def to_hash: -> {
+              expression: String,
+              name: String,
+              target: OpenAI::Models::Beta::Agents::automation_target_param,
+              timezone: String,
+              ?type: :periodic,
+              ?metadata: ::Hash[Symbol, String]
+            }
+          end
+
+          type once =
+            {
+              name: String,
+              run_at: Integer,
+              target: OpenAI::Models::Beta::Agents::automation_target_param,
+              ?type: :once,
+              ?metadata: ::Hash[Symbol, String]
+            }
+
+          class Once < OpenAI::Internal::Type::BaseModel
+            # A human-readable name for the automation.
+            attr_accessor name: String
+
+            # A future Unix timestamp in seconds.
+            attr_accessor run_at: Integer
+
+            # The session an automation invocation targets.
+            attr_accessor target: OpenAI::Models::Beta::Agents::automation_target_param
+
+            # The type of the object. Always `once`.
+            attr_accessor type: :once
+
+            attr_reader metadata: ::Hash[Symbol, String]?
+
+            def metadata=: (::Hash[Symbol, String]) -> ::Hash[Symbol, String]
+
+            # @param name
+            #   A human-readable name for the automation.
+            # @param run_at
+            #   A future Unix timestamp in seconds.
+            # @param target
+            #   The session an automation invocation targets.
+            # @param type
+            #   The type of the object. Always `once`.
+            def initialize: (
+              name: String,
+              run_at: Integer,
+              target: OpenAI::Models::Beta::Agents::automation_target_param,
+              ?metadata: ::Hash[Symbol, String],
+              ?type: :once
+            ) -> void
+
+            def to_hash: -> {
+              name: String,
+              run_at: Integer,
+              target: OpenAI::Models::Beta::Agents::automation_target_param,
+              ?type: :once,
+              ?metadata: ::Hash[Symbol, String]
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::automation_schedule_param]
+        end
+      end
+    end
+  end
+end

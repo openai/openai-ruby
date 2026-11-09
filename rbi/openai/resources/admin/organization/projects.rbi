@@ -24,6 +24,9 @@ module OpenAI
           sig { returns(OpenAI::Resources::Admin::Organization::Projects::ModelPermissions) }
           attr_reader :model_permissions
 
+          sig { returns(OpenAI::Resources::Admin::Organization::Projects::ServiceTierSettings) }
+          attr_reader :service_tier_settings
+
           sig { returns(OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions) }
           attr_reader :hosted_tool_permissions
 

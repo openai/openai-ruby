@@ -5,7 +5,8 @@ module OpenAI
         def create: (
           input: String,
           model: OpenAI::Models::Audio::SpeechCreateParams::model,
-          voice: OpenAI::Models::Audio::SpeechCreateParams::voice,
+          voice: OpenAI::Models::Audio::SpeechCreateParams::voice
+          | { id: String },
           ?instructions: String,
           ?response_format: OpenAI::Models::Audio::SpeechCreateParams::response_format,
           ?speed: Float,

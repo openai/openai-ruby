@@ -31,10 +31,7 @@ module OpenAI
         attr_accessor session_id: String
 
         # Present as `incomplete` when summary generation was interrupted.
-        attr_reader status: :incomplete
-
-        # Present as `incomplete` when summary generation was interrupted.
-        def status=: (:incomplete?) -> :incomplete?
+        attr_accessor status: :incomplete?
 
         # The index of the summary part.
         attr_accessor summary_index: Integer

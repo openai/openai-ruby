@@ -55,6 +55,8 @@ module OpenAI
 
     # @api private
     class SessionAccumulator
+      include OpenAI::WebSocket::Protocol
+
       attr_reader :final_response, :error
 
       def initialize(limit)
@@ -93,10 +95,10 @@ module OpenAI
         if type == "response.output_item.done"
           # Retain wire data independently of the mutable event returned by receive.
           completed_item = OpenAI::Internal::Type::BaseModel.recursively_to_h(event.item, convert: false)
-          @items[event.output_index] = JSON.parse(JSON.generate(completed_item), symbolize_names: true)
+          @items[event.output_index] = parse_json(generate_json(completed_item))
         elsif %w[response.completed response.failed response.incomplete].include?(type)
           data = OpenAI::Internal::Type::BaseModel.recursively_to_h(event, convert: false)
-          data = JSON.parse(JSON.generate(data), symbolize_names: true)
+          data = parse_json(generate_json(data))
           response = data.fetch(:response)
           if response[:output].nil?
             response = response.merge(output: @items.sort.map { |_index, item| item.to_h })
@@ -117,7 +119,7 @@ module OpenAI
           @state.handle_event(@decoder.decode(data))
         end
 
-      rescue StandardError => error
+      rescue StandardError, SystemStackError => error
         @error = error.is_a?(SessionError) ? error : SessionError.new("Could not collect the Responses final response.")
         clear
       end
@@ -144,6 +146,7 @@ module OpenAI
         @in_flight = false
         @pending_steers = pending_steers
         @response_id = nil
+        @required_input = {}
         @changed = Async::Condition.new
         @accumulator = SessionAccumulator.new(session.limits.max_response_bytes)
       end
@@ -167,7 +170,9 @@ module OpenAI
           end
 
           pending = @pending_steers[@response_id]
-          if @in_flight || queued_response || (pending && pending[:count].positive?)
+          if @in_flight ||
+              queued_response ||
+              (pending && pending[:count].positive? && !required_input_continuation?(data))
             raise SessionError, "Consume the current response before sending another create on this lane."
           end
 
@@ -242,9 +247,15 @@ module OpenAI
                   @in_flight = true
                   @pending_steers.delete(@response_id) if @response_id != event.response.id
                   @response_id = event.response.id.dup.freeze
+                  @required_input.clear
                 elsif %w[response.completed response.failed response.incomplete error].include?(event.type.to_s)
                   @in_flight = false
-                  @response_id = event.response.id.dup.freeze unless event.type.to_s == "error"
+                  if event.type.to_s == "error"
+                    @required_input.clear
+                  else
+                    @required_input = required_input_keys(@accumulator.final_response&.output || [])
+                    @response_id = event.response.id.dup.freeze
+                  end
                 end
               end
 
@@ -258,6 +269,69 @@ module OpenAI
         ensure
           @receiving = false
         end
+      end
+
+      private def required_input_continuation?(data)
+        return false unless data[:previous_response_id] == @response_id
+
+        input = data[:input]
+        return false unless input.is_a?(Array) && !input.empty?
+
+        keys = input.map do |item|
+          return false unless item.is_a?(Hash)
+
+          required_input_key(item)
+        end
+
+        keys.uniq.length == keys.length && keys.all? { |key| @required_input.key?(key) }
+      end
+
+      private def required_input_key(data)
+        type = data[:type].to_s
+        id = case type
+        when
+            "function_call_output",
+            "custom_tool_call_output",
+            "computer_call_output",
+            "shell_call_output",
+            "apply_patch_call_output"
+          data[:call_id]
+        when "tool_search_output"
+          data[:call_id] if data[:execution].to_s == "client"
+        when "mcp_approval_response"
+          data[:approval_request_id]
+        end
+
+        [type, id] if id.is_a?(String) && !id.empty?
+      end
+
+      private def required_input_keys(items)
+        required = {}
+        items.each do |item|
+          data = item.to_h
+          type = data[:type].to_s
+          next if type != "mcp_approval_request" && data[:status] && data[:status].to_s != "completed"
+
+          result_type = case type
+          when "function_call", "custom_tool_call", "computer_call", "apply_patch_call"
+            "#{type}_output"
+          when "shell_call"
+            "shell_call_output" if data[:environment].to_h[:type].to_s == "local"
+          when "tool_search_call"
+            "tool_search_output" if data[:execution].to_s == "client"
+          when "mcp_approval_request"
+            "mcp_approval_response"
+          end
+
+          next unless result_type
+
+          id = data[type == "mcp_approval_request" ? :id : :call_id]
+          # Retain only detached IDs when get_final_response releases its collector.
+          required[[result_type, id.dup.freeze]] = true if id.is_a?(String) && !id.empty?
+        end
+
+        items.each { |item| required.delete(required_input_key(item.to_h)) }
+        required
       end
 
       def get_final_response
@@ -304,6 +378,7 @@ module OpenAI
         @queue.clear
         @bytes = 0
         @accumulator = SessionAccumulator.new(@session.limits.max_response_bytes)
+        @required_input.clear
         @changed.signal
       end
 
@@ -313,6 +388,8 @@ module OpenAI
 
     # Owns one connection and one Async reader. Use only its lanes to receive.
     class Session
+      include OpenAI::WebSocket::Protocol
+
       attr_reader :limits, :default
 
       def self.open(
@@ -531,7 +608,7 @@ module OpenAI
         value = @lanes.fetch(data[:stream_id], @lanes[nil])
         return unless value
 
-        bytes = JSON.generate(data).bytesize
+        bytes = generate_json(data).bytesize
         if @events >= @limits.max_events || @bytes + bytes > @limits.max_bytes
           raise BufferError, "The Responses session exceeded its buffered event budget."
         end
@@ -544,6 +621,9 @@ module OpenAI
           consumed(bytes)
           raise
         end
+
+      rescue SystemStackError
+        raise SessionError, "Could not buffer the Responses WebSocket event.", cause: nil
       end
 
       private def stop_reader

@@ -310,11 +310,29 @@ module OpenAI
 
           # @!group
 
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5 = :"gpt-5"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_MINI = :"gpt-5-mini"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_NANO = :"gpt-5-nano"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_2025_08_07 = :"gpt-5-2025-08-07"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_MINI_2025_08_07 = :"gpt-5-mini-2025-08-07"
+          # @deprecated Announced shutdown date: 2026-12-11. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_NANO_2025_08_07 = :"gpt-5-nano-2025-08-07"
           # @deprecated Announced shutdown date: 2027-01-14. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended

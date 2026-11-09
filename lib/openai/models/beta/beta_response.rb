@@ -164,6 +164,11 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaResponse::Conversation, nil]
         optional :conversation, -> { OpenAI::Beta::BetaResponse::Conversation }, nil?: true
 
+        # @!attribute image
+        #
+        #   @return [OpenAI::Models::Beta::BetaResponse::Image, nil]
+        optional :image, -> { OpenAI::Beta::BetaResponse::Image }
+
         # @!attribute max_output_tokens
         #   An upper bound for the number of tokens that can be generated for a response,
         #   including visible output tokens and
@@ -319,6 +324,23 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::BetaResponseTextConfig, nil]
         optional :text, -> { OpenAI::Beta::BetaResponseTextConfig }
 
+        # @!attribute tool_usage
+        #   Usage reported by hosted tools, separate from base model `usage`. The field can
+        #   be omitted when tool usage is unavailable. When present, tool families with no
+        #   recorded usage have zero counts.
+        #
+        #   `image_gen` sums available token counts across image generation calls. Calls
+        #   with missing or incomplete usage records may be skipped. Output token details
+        #   and cached input counts can be omitted. An omitted cache count means cache usage
+        #   is unknown.
+        #
+        #   `web_search.num_requests` counts billable searches. Discounted searches and
+        #   actions such as opening a page are excluded. Use billing records to reconcile
+        #   final charges.
+        #
+        #   @return [OpenAI::Models::Beta::BetaResponse::ToolUsage, nil]
+        optional :tool_usage, -> { OpenAI::Beta::BetaResponse::ToolUsage }
+
         # @!attribute top_logprobs
         #   An integer between 0 and 20 specifying the maximum number of most likely tokens
         #   to return at each token position, each with an associated log probability. In
@@ -358,7 +380,7 @@ module OpenAI
         #   @return [String, nil]
         optional :user, String
 
-        # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
+        # @!method initialize(id:, access_programs:, created_at:, error:, incomplete_details:, instructions:, metadata:, model:, output:, parallel_tool_calls:, temperature:, tool_choice:, tools:, top_p:, background: nil, completed_at: nil, conversation: nil, image: nil, max_output_tokens: nil, max_tool_calls: nil, moderation: nil, previous_response_id: nil, prompt: nil, prompt_cache_diagnostics: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, status: nil, text: nil, tool_usage: nil, top_logprobs: nil, truncation: nil, usage: nil, user: nil, object: :response)
         #   @param id [String]
         #     Unique identifier for this Response.
         #
@@ -458,6 +480,8 @@ module OpenAI
         #   @param conversation [OpenAI::Models::Beta::BetaResponse::Conversation, nil]
         #     The conversation that this response belonged to. Input items and output items
         #     from this response were automatically added to this conversation.
+        #
+        #   @param image [OpenAI::Models::Beta::BetaResponse::Image]
         #
         #   @param max_output_tokens [Integer, nil]
         #     An upper bound for the number of tokens that can be generated for a response,
@@ -565,6 +589,20 @@ module OpenAI
         #
         #     - [Text inputs and outputs](https://developers.openai.com/api/docs/guides/text)
         #     - [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+        #
+        #   @param tool_usage [OpenAI::Models::Beta::BetaResponse::ToolUsage]
+        #     Usage reported by hosted tools, separate from base model `usage`. The field can
+        #     be omitted when tool usage is unavailable. When present, tool families with no
+        #     recorded usage have zero counts.
+        #
+        #     `image_gen` sums available token counts across image generation calls. Calls
+        #     with missing or incomplete usage records may be skipped. Output token details
+        #     and cached input counts can be omitted. An omitted cache count means cache usage
+        #     is unknown.
+        #
+        #     `web_search.num_requests` counts billable searches. Discounted searches and
+        #     actions such as opening a page are excluded. Use billing records to reconcile
+        #     final charges.
         #
         #   @param top_logprobs [Integer, nil]
         #     An integer between 0 and 20 specifying the maximum number of most likely tokens
@@ -697,6 +735,8 @@ module OpenAI
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_ASTRA }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_1_SOL }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_1_TERRA }
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_SOL }
 
@@ -910,6 +950,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_5_6_CYBER }
 
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_CYBER }
+
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_ROSALIND_RESEARCH }
 
           variant String
@@ -925,6 +967,7 @@ module OpenAI
 
           GPT_6_ASTRA = :"gpt-6-astra"
           GPT_6_1_SOL = :"gpt-6.1-sol"
+          GPT_6_1_TERRA = :"gpt-6.1-terra"
           GPT_6_SOL = :"gpt-6-sol"
           GPT_6_LUNA = :"gpt-6-luna"
           GPT_5_6_SOL = :"gpt-5.6-sol"
@@ -939,6 +982,9 @@ module OpenAI
           # replacements.
           GPT_5_4_NANO = :"gpt-5.4-nano"
           GPT_5_4_MINI_2026_03_17 = :"gpt-5.4-mini-2026-03-17"
+          # @deprecated Announced shutdown date: 2027-04-01. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_4_NANO_2026_03_17 = :"gpt-5.4-nano-2026-03-17"
           # @deprecated Announced shutdown date: 2026-08-10. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
@@ -956,6 +1002,9 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           GPT_5_1 = :"gpt-5.1"
+          # @deprecated Announced shutdown date: 2027-04-01. See
+          # https://developers.openai.com/api/docs/deprecations for details and recommended
+          # replacements.
           GPT_5_1_2025_11_13 = :"gpt-5.1-2025-11-13"
           # @deprecated Announced shutdown date: 2026-07-23. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
@@ -1284,6 +1333,7 @@ module OpenAI
           GPT_DAYBREAK_BLUE_LATEST = :"gpt-daybreak-blue-latest"
           GPT_DAYBREAK_RED_LATEST = :"gpt-daybreak-red-latest"
           GPT_5_6_CYBER = :"gpt-5.6-cyber"
+          GPT_6_CYBER = :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
 
           # @!endgroup
@@ -1361,6 +1411,32 @@ module OpenAI
           #
           #   @param id [String]
           #     The unique ID of the conversation that this response was associated with.
+        end
+
+        # @see OpenAI::Models::Beta::BetaResponse#image
+        class Image < OpenAI::Internal::Type::BaseModel
+          # @!attribute context_compression
+          #   Effective image context optimization policy.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::BetaResponse::Image::ContextCompression]
+          required :context_compression, enum: -> { OpenAI::Beta::BetaResponse::Image::ContextCompression }
+
+          # @!method initialize(context_compression:)
+          #   @param context_compression [Symbol, OpenAI::Models::Beta::BetaResponse::Image::ContextCompression]
+          #     Effective image context optimization policy.
+
+          # Effective image context optimization policy.
+          #
+          # @see OpenAI::Models::Beta::BetaResponse::Image#context_compression
+          module ContextCompression
+            extend OpenAI::Internal::Type::Enum
+
+            ENABLED = :enabled
+            DISABLED = :disabled
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # @see OpenAI::Models::Beta::BetaResponse#moderation
@@ -1815,6 +1891,7 @@ module OpenAI
             extend OpenAI::Internal::Type::Enum
 
             TTL_30M = :"30m"
+            TTL_12H = :"12h"
 
             # @!method self.values
             #   @return [Array<Symbol>]
@@ -2103,6 +2180,192 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # @see OpenAI::Models::Beta::BetaResponse#tool_usage
+        class ToolUsage < OpenAI::Internal::Type::BaseModel
+          # @!attribute image_gen
+          #   Aggregated usage statistics for image generation tool calls.
+          #
+          #   @return [OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen]
+          required :image_gen, -> { OpenAI::Beta::BetaResponse::ToolUsage::ImageGen }
+
+          # @!attribute web_search
+          #   Aggregated billable usage statistics for web search tool calls.
+          #
+          #   @return [OpenAI::Models::Beta::BetaResponse::ToolUsage::WebSearch]
+          required :web_search, -> { OpenAI::Beta::BetaResponse::ToolUsage::WebSearch }
+
+          # @!method initialize(image_gen:, web_search:)
+          #   Usage reported by hosted tools, separate from base model `usage`. The field can
+          #   be omitted when tool usage is unavailable. When present, tool families with no
+          #   recorded usage have zero counts.
+          #
+          #   `image_gen` sums available token counts across image generation calls. Calls
+          #   with missing or incomplete usage records may be skipped. Output token details
+          #   and cached input counts can be omitted. An omitted cache count means cache usage
+          #   is unknown.
+          #
+          #   `web_search.num_requests` counts billable searches. Discounted searches and
+          #   actions such as opening a page are excluded. Use billing records to reconcile
+          #   final charges.
+          #
+          #   @param image_gen [OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen]
+          #     Aggregated usage statistics for image generation tool calls.
+          #
+          #   @param web_search [OpenAI::Models::Beta::BetaResponse::ToolUsage::WebSearch]
+          #     Aggregated billable usage statistics for web search tool calls.
+
+          # @see OpenAI::Models::Beta::BetaResponse::ToolUsage#image_gen
+          class ImageGen < OpenAI::Internal::Type::BaseModel
+            # @!attribute input_tokens
+            #   The number of tokens (images and text) in the input prompt.
+            #
+            #   @return [Integer]
+            required :input_tokens, Integer
+
+            # @!attribute input_tokens_details
+            #   The input tokens detailed information for the image generation.
+            #
+            #   @return [OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails]
+            required :input_tokens_details, -> { OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails }
+
+            # @!attribute output_tokens
+            #   The number of output tokens generated by the model.
+            #
+            #   @return [Integer]
+            required :output_tokens, Integer
+
+            # @!attribute total_tokens
+            #   The total number of tokens (images and text) used for the image generation.
+            #
+            #   @return [Integer]
+            required :total_tokens, Integer
+
+            # @!attribute cached_tokens
+            #
+            #   @return [Integer, nil]
+            optional :cached_tokens, Integer
+
+            # @!attribute cached_tokens_details
+            #
+            #   @return [OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails, nil]
+            optional(
+              :cached_tokens_details,
+              -> { OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails }
+            )
+
+            # @!attribute output_tokens_details
+            #   The output token details for the image generation.
+            #
+            #   @return [OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails, nil]
+            optional(
+              :output_tokens_details,
+              -> { OpenAI::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails }
+            )
+
+            # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, total_tokens:, cached_tokens: nil, cached_tokens_details: nil, output_tokens_details: nil)
+            #   Aggregated usage statistics for image generation tool calls.
+            #
+            #   @param input_tokens [Integer]
+            #     The number of tokens (images and text) in the input prompt.
+            #
+            #   @param input_tokens_details [OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen::InputTokensDetails]
+            #     The input tokens detailed information for the image generation.
+            #
+            #   @param output_tokens [Integer]
+            #     The number of output tokens generated by the model.
+            #
+            #   @param total_tokens [Integer]
+            #     The total number of tokens (images and text) used for the image generation.
+            #
+            #   @param cached_tokens [Integer]
+            #
+            #   @param cached_tokens_details [OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen::CachedTokensDetails]
+            #
+            #   @param output_tokens_details [OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen::OutputTokensDetails]
+            #     The output token details for the image generation.
+
+            # @see OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen#input_tokens_details
+            class InputTokensDetails < OpenAI::Internal::Type::BaseModel
+              # @!attribute image_tokens
+              #   The number of image tokens in the input prompt.
+              #
+              #   @return [Integer]
+              required :image_tokens, Integer
+
+              # @!attribute text_tokens
+              #   The number of text tokens in the input prompt.
+              #
+              #   @return [Integer]
+              required :text_tokens, Integer
+
+              # @!method initialize(image_tokens:, text_tokens:)
+              #   The input tokens detailed information for the image generation.
+              #
+              #   @param image_tokens [Integer]
+              #     The number of image tokens in the input prompt.
+              #
+              #   @param text_tokens [Integer]
+              #     The number of text tokens in the input prompt.
+            end
+
+            # @see OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen#cached_tokens_details
+            class CachedTokensDetails < OpenAI::Internal::Type::BaseModel
+              # @!attribute cached_image_tokens
+              #
+              #   @return [Integer]
+              required :cached_image_tokens, Integer
+
+              # @!attribute cached_text_tokens
+              #
+              #   @return [Integer]
+              required :cached_text_tokens, Integer
+
+              # @!method initialize(cached_image_tokens:, cached_text_tokens:)
+              #   @param cached_image_tokens [Integer]
+              #   @param cached_text_tokens [Integer]
+            end
+
+            # @see OpenAI::Models::Beta::BetaResponse::ToolUsage::ImageGen#output_tokens_details
+            class OutputTokensDetails < OpenAI::Internal::Type::BaseModel
+              # @!attribute image_tokens
+              #   The number of image output tokens generated by the model.
+              #
+              #   @return [Integer]
+              required :image_tokens, Integer
+
+              # @!attribute text_tokens
+              #   The number of text output tokens generated by the model.
+              #
+              #   @return [Integer]
+              required :text_tokens, Integer
+
+              # @!method initialize(image_tokens:, text_tokens:)
+              #   The output token details for the image generation.
+              #
+              #   @param image_tokens [Integer]
+              #     The number of image output tokens generated by the model.
+              #
+              #   @param text_tokens [Integer]
+              #     The number of text output tokens generated by the model.
+            end
+          end
+
+          # @see OpenAI::Models::Beta::BetaResponse::ToolUsage#web_search
+          class WebSearch < OpenAI::Internal::Type::BaseModel
+            # @!attribute num_requests
+            #   The number of billable web search requests issued.
+            #
+            #   @return [Integer]
+            required :num_requests, Integer
+
+            # @!method initialize(num_requests:)
+            #   Aggregated billable usage statistics for web search tool calls.
+            #
+            #   @param num_requests [Integer]
+            #     The number of billable web search requests issued.
+          end
         end
 
         # The truncation strategy to use for the model response.

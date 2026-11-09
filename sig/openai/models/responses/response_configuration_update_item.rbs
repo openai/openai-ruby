@@ -5,7 +5,8 @@ module OpenAI
         {
           id: String,
           ?type: :configuration_update,
-          ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
+          ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning,
+          ?text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text
         }
 
       class ResponseConfigurationUpdateItem < OpenAI::Internal::Type::BaseModel
@@ -23,22 +24,34 @@ module OpenAI
           OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
         ) -> OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
 
+        # The text output configuration for subsequent responses.
+        attr_reader text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text?
+
+        # The text output configuration for subsequent responses.
+        def text=: (
+          OpenAI::Responses::ResponseConfigurationUpdateItem::Text
+        ) -> OpenAI::Responses::ResponseConfigurationUpdateItem::Text
+
         # @param id
         #   The unique ID of the configuration update item.
         # @param reasoning
         #   The reasoning configuration applied by this update.
+        # @param text
+        #   The text output configuration for subsequent responses.
         # @param type
         #   The item type. Always `configuration_update`.
         def initialize: (
           id: String,
           ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning,
+          ?text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text,
           ?type: :configuration_update
         ) -> void
 
         def to_hash: -> {
           id: String,
           ?type: :configuration_update,
-          ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning
+          ?reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning,
+          ?text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text
         }
 
         type reasoning = { ?effort: OpenAI::Models::reasoning_effort? }
@@ -54,6 +67,36 @@ module OpenAI
           def initialize: (?effort: OpenAI::Models::reasoning_effort?) -> void
 
           def to_hash: -> { ?effort: OpenAI::Models::reasoning_effort? }
+        end
+
+        type text =
+          {
+            format_: OpenAI::Models::Responses::ResponseConfigurationUpdateItem::Text::format_
+          }
+
+        class Text < OpenAI::Internal::Type::BaseModel
+          # Use a JSON schema for structured output or text to return to plain text.
+          attr_accessor format_: OpenAI::Models::Responses::ResponseConfigurationUpdateItem::Text::format_
+
+          # @param format_
+          #   Use a JSON schema for structured output or text to return to plain text.
+          def initialize: (
+            format_: OpenAI::Models::Responses::ResponseConfigurationUpdateItem::Text::format_
+          ) -> void
+
+          def to_hash: -> {
+            format_: OpenAI::Models::Responses::ResponseConfigurationUpdateItem::Text::format_
+          }
+
+          type format_ =
+            OpenAI::ResponseFormatText
+            | OpenAI::Responses::ResponseFormatTextJSONSchemaConfig
+
+          module Format
+            extend OpenAI::Internal::Type::Union
+
+            def self?.variants: -> ::Array[OpenAI::Models::Responses::ResponseConfigurationUpdateItem::Text::format_]
+          end
         end
       end
     end

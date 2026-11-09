@@ -108,7 +108,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
           } | {
             type: :configuration_update,
             id: String,
-            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil
+            reasoning: OpenAI::Responses::ResponseConfigurationUpdateItem::Reasoning | nil,
+            text: OpenAI::Responses::ResponseConfigurationUpdateItem::Text | nil
           } | {
             type: :reasoning,
             id: String,
@@ -133,7 +134,8 @@ class OpenAI::Test::Resources::Responses::InputItemsTest < OpenAI::Test::Resourc
             output_format: OpenAI::Responses::ResponseItem::ImageGenerationCall::OutputFormat | nil,
             quality: OpenAI::Responses::ResponseItem::ImageGenerationCall::Quality | nil,
             revised_prompt: String | nil,
-            size: OpenAI::Responses::ResponseItem::ImageGenerationCall::Size | nil
+            size: OpenAI::Responses::ResponseItem::ImageGenerationCall::Size | nil,
+            svg_usage: OpenAI::Responses::ResponseItem::ImageGenerationCall::SvgUsage | nil
           } | {
             type: :code_interpreter_call,
             id: String,

@@ -8,17 +8,16 @@ module OpenAI
       #
       # @overload create(input:, model:, questions:, prompt_cache_key: nil, prompt_cache_options: nil, safety_identifier: nil, request_options: {})
       #
-      # @param input [String, Array<OpenAI::Models::DecisionInputMessage>]
-      #   The text or images to evaluate for every question. Provide a text string or user
-      #   messages containing text and images. Images can be base64 data URLs or publicly
-      #   accessible HTTP(S) URLs; at most 128 images are allowed across all messages in
-      #   one request. Files, audio, tools, and item references are not supported.
+      # @param input [String, Array<OpenAI::Models::decision_input_message, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput>]
+      #   The input to evaluate for every question. Provide a text string or an ordered
+      #   array of messages, function calls and outputs, or custom tool calls and outputs.
+      #   Each tool output must identify a matching call by call ID.
       #
       # @param model [String]
       #   The model to use. Only `gpt-6-luna` is supported.
       #
       # @param questions [Array<OpenAI::Models::DecisionCreateParams::Question::Predicate, OpenAI::Models::DecisionCreateParams::Question::Choice, OpenAI::Models::DecisionCreateParams::Question::Score>]
-      #   Ask 1–200 questions about the input. Each question can be a predicate, choice,
+      #   Ask 1–400 questions about the input. Each question can be a predicate, choice,
       #   or score. Answers come back in the same order.
       #
       # @param prompt_cache_key [String, nil]

@@ -1012,7 +1012,7 @@ module OpenAI
                 T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::Internal::Type::BaseModel]]
               ),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
-              security: T.nilable({bearer_auth?: T::Boolean, admin_api_key_auth?: T::Boolean}),
+              security: T.nilable(T::Hash[Symbol, T::Boolean]),
               options: T.nilable(OpenAI::RequestOptions::OrHash)
             }
           end

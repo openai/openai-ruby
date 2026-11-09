@@ -30,6 +30,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Beta::BetaResponse::Conversation | nil,
+          image: OpenAI::Beta::BetaResponse::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Beta::BetaResponse::Moderation | nil,
@@ -44,6 +45,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Beta::BetaResponse::ServiceTier | nil,
           status: OpenAI::Beta::BetaResponseStatus | nil,
           text: OpenAI::Beta::BetaResponseTextConfig | nil,
+          tool_usage: OpenAI::Beta::BetaResponse::ToolUsage | nil,
           top_logprobs: Integer | nil,
           truncation: OpenAI::Beta::BetaResponse::Truncation | nil,
           usage: OpenAI::Beta::BetaResponseUsage | nil,
@@ -79,6 +81,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Beta::BetaResponse::Conversation | nil,
+          image: OpenAI::Beta::BetaResponse::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Beta::BetaResponse::Moderation | nil,
@@ -93,6 +96,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Beta::BetaResponse::ServiceTier | nil,
           status: OpenAI::Beta::BetaResponseStatus | nil,
           text: OpenAI::Beta::BetaResponseTextConfig | nil,
+          tool_usage: OpenAI::Beta::BetaResponse::ToolUsage | nil,
           top_logprobs: Integer | nil,
           truncation: OpenAI::Beta::BetaResponse::Truncation | nil,
           usage: OpenAI::Beta::BetaResponseUsage | nil,
@@ -136,6 +140,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           background: OpenAI::Internal::Type::Boolean | nil,
           completed_at: Float | nil,
           conversation: OpenAI::Beta::BetaResponse::Conversation | nil,
+          image: OpenAI::Beta::BetaResponse::Image | nil,
           max_output_tokens: Integer | nil,
           max_tool_calls: Integer | nil,
           moderation: OpenAI::Beta::BetaResponse::Moderation | nil,
@@ -150,6 +155,7 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           service_tier: OpenAI::Beta::BetaResponse::ServiceTier | nil,
           status: OpenAI::Beta::BetaResponseStatus | nil,
           text: OpenAI::Beta::BetaResponseTextConfig | nil,
+          tool_usage: OpenAI::Beta::BetaResponse::ToolUsage | nil,
           top_logprobs: Integer | nil,
           truncation: OpenAI::Beta::BetaResponse::Truncation | nil,
           usage: OpenAI::Beta::BetaResponseUsage | nil,
@@ -171,7 +177,8 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           created_at: Integer,
           object: Symbol,
           output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseItem]),
-          usage: OpenAI::Beta::BetaResponseUsage
+          usage: OpenAI::Beta::BetaResponseUsage,
+          image: OpenAI::Beta::BetaCompactedResponse::Image | nil
         }
     end
   end

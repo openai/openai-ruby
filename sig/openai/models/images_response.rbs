@@ -9,6 +9,7 @@ module OpenAI
         ?quality: OpenAI::Models::ImagesResponse::quality,
         ?safety_identifier: String?,
         ?size: OpenAI::Models::ImagesResponse::size,
+        ?svg_usage: OpenAI::ImagesResponse::SvgUsage,
         ?usage: OpenAI::ImagesResponse::Usage
       }
 
@@ -32,10 +33,10 @@ module OpenAI
       # The list of generated images.
       def data=: (::Array[OpenAI::Image]) -> ::Array[OpenAI::Image]
 
-      # The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+      # The output format of the generated image.
       attr_reader output_format: OpenAI::Models::ImagesResponse::output_format?
 
-      # The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+      # The output format of the generated image.
       def output_format=: (
         OpenAI::Models::ImagesResponse::output_format
       ) -> OpenAI::Models::ImagesResponse::output_format
@@ -63,6 +64,16 @@ module OpenAI
         OpenAI::Models::ImagesResponse::size
       ) -> OpenAI::Models::ImagesResponse::size
 
+      # Token usage for the model that authored the SVG, separate from image rendering
+      # usage.
+      attr_reader svg_usage: OpenAI::ImagesResponse::SvgUsage?
+
+      # Token usage for the model that authored the SVG, separate from image rendering
+      # usage.
+      def svg_usage=: (
+        OpenAI::ImagesResponse::SvgUsage
+      ) -> OpenAI::ImagesResponse::SvgUsage
+
       # For `gpt-image-1` only, the token usage information for the image generation.
       attr_reader usage: OpenAI::ImagesResponse::Usage?
 
@@ -79,7 +90,7 @@ module OpenAI
       # @param data
       #   The list of generated images.
       # @param output_format
-      #   The output format of the image generation. Either `png`, `webp`, or `jpeg`.
+      #   The output format of the generated image.
       # @param quality
       #   The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
       #   `max`.
@@ -89,6 +100,9 @@ module OpenAI
       #   `user` value when `safety_identifier` is omitted, null, or empty.
       # @param size
       #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      # @param svg_usage
+      #   Token usage for the model that authored the SVG, separate from image rendering
+      #   usage.
       # @param usage
       #   For `gpt-image-1` only, the token usage information for the image generation.
       def initialize: (
@@ -99,6 +113,7 @@ module OpenAI
         ?quality: OpenAI::Models::ImagesResponse::quality,
         ?safety_identifier: String?,
         ?size: OpenAI::Models::ImagesResponse::size,
+        ?svg_usage: OpenAI::ImagesResponse::SvgUsage,
         ?usage: OpenAI::ImagesResponse::Usage
       ) -> void
 
@@ -110,6 +125,7 @@ module OpenAI
         ?quality: OpenAI::Models::ImagesResponse::quality,
         ?safety_identifier: String?,
         ?size: OpenAI::Models::ImagesResponse::size,
+        ?svg_usage: OpenAI::ImagesResponse::SvgUsage,
         ?usage: OpenAI::ImagesResponse::Usage
       }
 
@@ -124,7 +140,7 @@ module OpenAI
         def self?.values: -> ::Array[OpenAI::Models::ImagesResponse::background]
       end
 
-      type output_format = :png | :webp | :jpeg
+      type output_format = :png | :webp | :jpeg | :gif | :svg
 
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
@@ -132,6 +148,8 @@ module OpenAI
         PNG: :png
         WEBP: :webp
         JPEG: :jpeg
+        GIF: :gif
+        SVG: :svg
 
         def self?.values: -> ::Array[OpenAI::Models::ImagesResponse::output_format]
       end
@@ -164,6 +182,43 @@ module OpenAI
         def self?.values: -> ::Array[(:"1024x1024"
         | :"1024x1536"
         | :"1536x1024")]
+      end
+
+      type svg_usage =
+        {
+          input_tokens: Integer,
+          model: String,
+          output_tokens: Integer,
+          reasoning_tokens: Integer,
+          total_tokens: Integer
+        }
+
+      class SvgUsage < OpenAI::Internal::Type::BaseModel
+        attr_accessor input_tokens: Integer
+
+        attr_accessor model: String
+
+        attr_accessor output_tokens: Integer
+
+        attr_accessor reasoning_tokens: Integer
+
+        attr_accessor total_tokens: Integer
+
+        def initialize: (
+          input_tokens: Integer,
+          model: String,
+          output_tokens: Integer,
+          reasoning_tokens: Integer,
+          total_tokens: Integer
+        ) -> void
+
+        def to_hash: -> {
+          input_tokens: Integer,
+          model: String,
+          output_tokens: Integer,
+          reasoning_tokens: Integer,
+          total_tokens: Integer
+        }
       end
 
       type usage =

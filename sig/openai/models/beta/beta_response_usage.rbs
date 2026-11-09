@@ -55,7 +55,11 @@ module OpenAI
         }
 
         type input_tokens_details =
-          { cache_write_tokens: Integer, cached_tokens: Integer }
+          {
+            cache_write_tokens: Integer,
+            cached_tokens: Integer,
+            ?cache_write_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails::CacheWriteTokensDetails
+          }
 
         class InputTokensDetails < OpenAI::Internal::Type::BaseModel
           # The number of input tokens that were written to the cache.
@@ -65,6 +69,12 @@ module OpenAI
           # [More on prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching).
           attr_accessor cached_tokens: Integer
 
+          attr_reader cache_write_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails::CacheWriteTokensDetails?
+
+          def cache_write_tokens_details=: (
+            OpenAI::Beta::BetaResponseUsage::InputTokensDetails::CacheWriteTokensDetails
+          ) -> OpenAI::Beta::BetaResponseUsage::InputTokensDetails::CacheWriteTokensDetails
+
           # @param cache_write_tokens
           #   The number of input tokens that were written to the cache.
           # @param cached_tokens
@@ -72,13 +82,40 @@ module OpenAI
           #   [More on prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching).
           def initialize: (
             cache_write_tokens: Integer,
-            cached_tokens: Integer
+            cached_tokens: Integer,
+            ?cache_write_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails::CacheWriteTokensDetails
           ) -> void
 
           def to_hash: -> {
             cache_write_tokens: Integer,
-            cached_tokens: Integer
+            cached_tokens: Integer,
+            ?cache_write_tokens_details: OpenAI::Beta::BetaResponseUsage::InputTokensDetails::CacheWriteTokensDetails
           }
+
+          type cache_write_tokens_details =
+            { :ttl_12h_tokens => Integer, :ttl_30m_tokens => Integer }
+
+          class CacheWriteTokensDetails < OpenAI::Internal::Type::BaseModel
+            # The number of input tokens written with 12-hour retention.
+            attr_accessor ttl_12h_tokens: Integer
+
+            # The number of input tokens written with 30-minute retention.
+            attr_accessor ttl_30m_tokens: Integer
+
+            # @param ttl_12h_tokens
+            #   The number of input tokens written with 12-hour retention.
+            # @param ttl_30m_tokens
+            #   The number of input tokens written with 30-minute retention.
+            def initialize: (
+              ttl_12h_tokens: Integer,
+              ttl_30m_tokens: Integer
+            ) -> void
+
+            def to_hash: -> {
+              :ttl_12h_tokens => Integer,
+              :ttl_30m_tokens => Integer
+            }
+          end
         end
 
         type output_tokens_details = { reasoning_tokens: Integer }

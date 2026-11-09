@@ -15,7 +15,7 @@ To use this gem, install via Bundler by adding the following to your application
 <!-- x-release-please-start-version -->
 
 ```ruby
-gem "openai", "~> 0.106.0"
+gem "openai", "~> 0.121.0"
 ```
 
 <!-- x-release-please-end -->
@@ -49,6 +49,54 @@ stream.each do |event|
   puts(event.type)
 end
 ```
+
+### Automatic Chat Completions tool runner
+
+`client.chat.completions.run_tools` runs your function callbacks, sends their results
+back to the model, and returns the final `ChatCompletion`. It accepts the same
+messages, function-tool definitions (including `OpenAI::BaseModel` schemas), and
+request options as `create`:
+
+```ruby
+completion = client.chat.completions.run_tools(
+  model: "gpt-4o-mini",
+  messages: [{role: :user, content: "What is the weather in Seattle?"}],
+  tools: [WeatherArguments], # An OpenAI::BaseModel with a city field.
+  tool_handlers: {
+    "WeatherArguments" => -> (arguments) { {temperature_c: 18, city: arguments.fetch("city")} }
+  },
+  max_rounds: 10
+)
+puts(completion.choices.first.message.content)
+```
+
+Handlers receive a parsed JSON object with **string keys**; validate application
+requirements in your callback. String results are sent unchanged; other results
+are JSON encoded. Callbacks execute sequentially, including when the model requests
+multiple tools in one response. Setting `parallel_tool_calls: false` limits each
+response to one tool call; the runner rejects larger batches before callbacks run.
+Every advertised tool must have a matching handler.
+The runner validates each batch before invoking callbacks, rejects repeated call
+IDs, enforces the initial `tool_choice` before returning or invoking callbacks, and
+enforces the `tool_choice.allowed_tools.tools` subset on every round. It
+does not mutate your input messages or append the conversation to them.
+
+This helper is non-streaming and supports one completion choice and function tools.
+`max_rounds` limits API calls, including the final answer; it raises
+`OpenAI::Helpers::Chat::ToolRunner::MaxRoundsError` before executing tools in the
+last allowed round. A forced `tool_choice` applies to the first round, then switches
+to `auto` while preserving any allowed-tools list. Other invalid or incomplete tool
+responses raise `OpenAI::Helpers::Chat::ToolRunner::Error`.
+
+Callback, transport, and API errors stop the run and propagate to your application.
+Callback exception text is never submitted as a tool result, and HTTP retries do
+not rerun callbacks. Earlier callback side effects are not rolled back; starting another run
+can execute tools again. Use application-level idempotency where needed. Request
+timeouts apply per API call, not to callback execution or the entire run.
+Caller-supplied request idempotency keys are scoped to each round, so retries keep
+the same key without colliding with the next round.
+
+See [the complete example](examples/chat/tool_runner.rb).
 
 ### Agents final output (beta)
 
@@ -178,7 +226,12 @@ client.responses.connect do |connection|
 
   connection.each do |event|
     print(event.delta) if event.type == :"response.output_text.delta"
-    break if event.type == :"response.completed"
+    case event.type
+    when :"response.completed"
+      break
+    when :"response.failed", :"response.incomplete", :error
+      raise "Responses operation did not complete."
+    end
   end
 end
 ```
@@ -405,6 +458,16 @@ origin, as above, so they cannot be presented elsewhere. Use the
 Server trust remains separate from the client identity and can be customized
 with `Net::HTTP` properties such as `cert_store` or `ca_file`.
 
+An HTTP client's connection settings do not carry over to the default
+WebSocket transport. If you configure `http_client:` with a custom requester
+or customized `OpenAI::NetHTTPClient`, pass a compatible `transport:` when
+opening Responses, Realtime, Translation, or Live WebSockets. The SDK checks
+this before fetching credentials or opening a connection. The supplied
+WebSocket transport must enforce the connection settings your application
+requires; the SDK still validates its supported authentication and provider
+scope. See the [Realtime custom transport contract](realtime.md#custom-transport)
+and [Responses transport options](responses-websocket.md).
+
 Each `OpenAI::NetHTTPClient` owns its connection pool, so separate HTTP client
 instances do not share connections or credentials.
 
@@ -507,6 +570,12 @@ client = OpenAI::Client.new(
 ```
 
 See [bedrock.md](bedrock.md) for authentication precedence, static and refreshable credentials, endpoint configuration, and SigV4 request constraints.
+
+## Google Vertex AI
+
+Use `OpenAI::Providers.vertex` with the Responses API. See [vertex.md](vertex.md)
+for setup with Google Application Default Credentials, a credentials object, or
+an access-token callback.
 
 ## Workload Identity Authentication
 

@@ -1,0 +1,180 @@
+module OpenAI
+  module Models
+    module Live
+      type decision_user_message =
+        {
+          content: OpenAI::Models::Live::DecisionUserMessage::content,
+          ?role: :user,
+          ?id: String?,
+          ?type: OpenAI::Models::Live::DecisionUserMessage::type_
+        }
+
+      class DecisionUserMessage < OpenAI::Internal::Type::BaseModel
+        # The text input to the model.
+        attr_accessor content: OpenAI::Models::Live::DecisionUserMessage::content
+
+        # The message role. Always `user`.
+        attr_accessor role: :user
+
+        # The unique ID of this message item.
+        attr_accessor id: String?
+
+        attr_reader type: OpenAI::Models::Live::DecisionUserMessage::type_?
+
+        def type=: (
+          OpenAI::Models::Live::DecisionUserMessage::type_
+        ) -> OpenAI::Models::Live::DecisionUserMessage::type_
+
+        # @param content
+        #   The text input to the model.
+        # @param id
+        #   The unique ID of this message item.
+        # @param role
+        #   The message role. Always `user`.
+        def initialize: (
+          content: OpenAI::Models::Live::DecisionUserMessage::content,
+          ?id: String?,
+          ?type: OpenAI::Models::Live::DecisionUserMessage::type_,
+          ?role: :user
+        ) -> void
+
+        def to_hash: -> {
+          content: OpenAI::Models::Live::DecisionUserMessage::content,
+          ?role: :user,
+          ?id: String?,
+          ?type: OpenAI::Models::Live::DecisionUserMessage::type_
+        }
+
+        type content =
+          String
+          | ::Array[OpenAI::Models::Live::DecisionUserMessage::Content::part]
+
+        module Content
+          extend OpenAI::Internal::Type::Union
+
+          type part =
+            OpenAI::Live::DecisionUserMessage::Content::Part::InputText
+            | OpenAI::Live::DecisionUserMessage::Content::Part::InputImage
+            | OpenAI::Live::DecisionUserMessage::Content::Part::InputJSON
+
+          module Part
+            extend OpenAI::Internal::Type::Union
+
+            type input_text = { text: String, ?type: :input_text }
+
+            class InputText < OpenAI::Internal::Type::BaseModel
+              # The text input to the model.
+              attr_accessor text: String
+
+              attr_accessor type: :input_text
+
+              # @param text
+              #   The text input to the model.
+              def initialize: (text: String, ?type: :input_text) -> void
+
+              def to_hash: -> { text: String, ?type: :input_text }
+            end
+
+            type input_image =
+              {
+                image_url: String,
+                ?type: :input_image,
+                ?detail: OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputImage::detail?
+              }
+
+            class InputImage < OpenAI::Internal::Type::BaseModel
+              # A base64-encoded image data URL or a publicly accessible HTTP(S) image URL.
+              attr_accessor image_url: String
+
+              attr_accessor type: :input_image
+
+              # The detail level of the image to be sent to the model. One of `high`, `low`,
+              # `auto`, or `original`. Defaults to `auto`.
+              attr_accessor detail: OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputImage::detail?
+
+              # @param image_url
+              #   A base64-encoded image data URL or a publicly accessible HTTP(S) image URL.
+              # @param detail
+              #   The detail level of the image to be sent to the model. One of `high`, `low`,
+              #   `auto`, or `original`. Defaults to `auto`.
+              def initialize: (
+                image_url: String,
+                ?detail: OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputImage::detail?,
+                ?type: :input_image
+              ) -> void
+
+              def to_hash: -> {
+                image_url: String,
+                ?type: :input_image,
+                ?detail: OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputImage::detail?
+              }
+
+              type detail = :low | :high | :auto | :original
+
+              module Detail
+                extend OpenAI::Internal::Type::Enum
+
+                LOW: :low
+                HIGH: :high
+                AUTO: :auto
+                ORIGINAL: :original
+
+                def self?.values: -> ::Array[OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputImage::detail]
+              end
+            end
+
+            type input_json =
+              {
+                data: OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputJSON::data,
+                ?type: :input_json
+              }
+
+            class InputJSON < OpenAI::Internal::Type::BaseModel
+              attr_accessor data: OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputJSON::data
+
+              attr_accessor type: :input_json
+
+              def initialize: (
+                data: OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputJSON::data,
+                ?type: :input_json
+              ) -> void
+
+              def to_hash: -> {
+                data: OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputJSON::data,
+                ?type: :input_json
+              }
+
+              type data =
+                OpenAI::Models::Live::decision_json_object
+                | ::Array[OpenAI::Models::Live::decision_json_object]
+
+              module Data
+                extend OpenAI::Internal::Type::Union
+
+                def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionUserMessage::Content::Part::InputJSON::data]
+
+                DecisionJSONObjectArray: OpenAI::Internal::Type::Converter
+              end
+            end
+
+            def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionUserMessage::Content::part]
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Live::DecisionUserMessage::content]
+
+          PartsArray: OpenAI::Internal::Type::Converter
+        end
+
+        type type_ = :message
+
+        module Type
+          extend OpenAI::Internal::Type::Enum
+
+          MESSAGE: :message
+
+          def self?.values: -> ::Array[OpenAI::Models::Live::DecisionUserMessage::type_]
+        end
+      end
+    end
+  end
+end

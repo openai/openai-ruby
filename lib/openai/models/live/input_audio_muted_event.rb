@@ -24,8 +24,9 @@ module OpenAI
         optional :client_event_id, String
 
         # @!method initialize(event_id:, client_event_id: nil, type: :"session.input_audio.muted")
-        #   Returned when a session.input_audio.mute command is accepted. Input audio is no
-        #   longer sent to the model; sideband audio reflection continues.
+        #   Acknowledges a session.input_audio.mute command. An independent input mute sends
+        #   silence to the model and preserves sideband audio reflection. Fixture playback
+        #   does not emit this event.
         #
         #   @param event_id [String]
         #     The unique ID of the Live server event.

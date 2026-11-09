@@ -28,13 +28,22 @@ module OpenAI
           #   @return [Integer, nil]
           optional :limit, Integer
 
+          # @!attribute metadata
+          #   Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          #   match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          #   characters. New sessions and metadata updates may take time to appear in
+          #   filtered results.
+          #
+          #   @return [Hash{Symbol=>String}, nil]
+          optional :metadata, OpenAI::Internal::Type::HashOf[String]
+
           # @!attribute order
           #   The order in which resources are returned. Defaults to `desc`.
           #
           #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionListParams::Order, nil]
           optional :order, enum: -> { OpenAI::Beta::Agents::SessionListParams::Order }
 
-          # @!method initialize(after: nil, agent_id: nil, limit: nil, order: nil, request_options: {})
+          # @!method initialize(after: nil, agent_id: nil, limit: nil, metadata: nil, order: nil, request_options: {})
           #   @param after [String]
           #     Return resources after this resource ID in the selected order.
           #
@@ -44,6 +53,12 @@ module OpenAI
           #
           #   @param limit [Integer]
           #     The maximum number of resources to return, between 1 and 100. Defaults to 20.
+          #
+          #   @param metadata [Hash{Symbol=>String}]
+          #     Exact string matches supplied as `metadata[key]=value`. All supplied pairs must
+          #     match. Up to 16 pairs, with keys from 1 to 64 characters and values up to 512
+          #     characters. New sessions and metadata updates may take time to appear in
+          #     filtered results.
           #
           #   @param order [Symbol, OpenAI::Models::Beta::Agents::SessionListParams::Order]
           #     The order in which resources are returned. Defaults to `desc`.

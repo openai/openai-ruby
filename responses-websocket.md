@@ -155,6 +155,92 @@ compatible event bytes retained for collection. Choose budgets for legitimate
 large output, including images and tool results. Queue overflow closes the
 session's connection; collection overflow leaves raw events and other lanes usable.
 
+### Bound a caller-fed preview
+
+`OpenAI::Responses::IncrementalResponse` builds provisional output from events
+you feed it. Use a separate instance for each lane. It does not read, close, or
+write to the connection. Tools remain data. Its typed `output` is a truthful provisional prefix; its admitted terminal event
+stays exact, including an absent output field. Call `reset` to discard only
+the preview's state.
+
+MCP call argument deltas update an observed MCP call item. The arguments-done
+event replaces its provisional arguments. These updates preserve the item's
+other fields and do not execute the tool.
+
+Session limits govern the session's queues and final-response collector.
+They do not bound a separate `IncrementalResponse`. Choose a finite budget
+for the encoded events that you feed to each preview and a finite lifetime.
+Check the complete event before every `add`, including unknowns, errors, and
+terminal events. Stop feeding when an event would exceed the budget. Never
+report a completed preview for a terminal event that you did not admit.
+
+`output` returns a detached typed prefix during provisional progress. Sparse or
+incomplete records stop that prefix; higher wire indices never shift into lower
+positions. Use `detailed_snapshot` for sparse facts and response metadata:
+
+```ruby
+preview.add(event)
+facts = preview.detailed_snapshot
+facts&.fetch(:output)&.each do |row|
+  puts [row.fetch(:output_index), row.fetch(:item)].inspect
+end
+```
+
+The detailed Hash uses symbol keys and JSON values. Its `response` excludes the
+separately indexed output, while `stream_id`, `response_id`, `terminal_type` and
+`phase` describe the observations. Output rows retain actual `output_index`
+values. Nested `content`, `summary`, `commands` and annotation rows retain their
+actual indices. `output_text` joins only observed message text in wire-index
+order; it excludes reasoning and refusals. Missing item or part types stay missing; this view is not a
+complete `Response`. Unknown fields and absent, null and empty metadata remain
+distinct. A null annotation stays at its detailed index and stops the typed
+annotation prefix. The view is `nil` before observations and when the preview is
+unavailable. Terminal views use only the supplied terminal event, and typed
+`output` remains `nil` after a terminal.
+
+Shell output needs separate views. The item's `output` stays the last supplied
+full-item flat array. Detailed `content` rows use `command_index`: they contain
+observed stdout/stderr, or `{output: [...]}` after done. That array preserves all
+chunks for that one command, including an empty array. It does not imply a flat
+position, a missing exit code or an outcome. A later full item or terminal
+replaces provisional command facts. A missing companion call leaves command
+bounds unknown.
+
+Both views copy their results; the detailed view also sorts observed indices.
+Use raw deltas for per-event progress and take snapshots at useful boundaries.
+
+The runnable [preview example](examples/responses/websocket_workflows.rb)
+sets a decoded per-message cap, uses the session's separate limits, and applies
+a 4 MiB cumulative preview budget with a 15-second lifetime:
+
+```sh
+bundle exec ruby examples/responses/websocket_workflows.rb preview
+```
+
+`preview_lane` uses the model's `deep_to_h` for known events and the raw
+`to_h` for unknown events. It counts the UTF-8 bytes in the encoded JSON,
+including nested and unknown fields. These are encoded event bytes, not the
+original wire bytes or a bound on total heap memory. It also checks a
+monotonic deadline while draining queued events; the
+Async timeout interrupts an idle wait. Choose budgets large enough for legitimate
+image, audio, tool, or other large output in your application.
+
+The result has `outcome: :terminal`, `:budget_exceeded`, or `:timeout`.
+Only `:terminal` includes `terminal_event`, the exact admitted completion,
+failure, incomplete, or error event. Inspect that event's type and status.
+A stop after a read can include `last_received_event`. With `:budget_exceeded`,
+the event was not admitted to the preview. With `:timeout`, it may already
+have been admitted; a terminal event can cross the deadline during preview
+assembly. This field reports what was read and does not guarantee that the
+event is safe to process again. Only `outcome: :terminal` reports a completed
+preview.
+
+Raw events, lane finals and other lanes keep their normal SDK contracts.
+A preview timeout or budget stop resets the preview; it does not close the
+lane, cancel the response, or choose a continuation for you. The outer session
+still closes when its owning block exits. EOF, transport failures and other
+cancellation propagate as usual.
+
 Register lanes before sending and consume each response before creating another
 on that lane. One Async task reads the physical connection; each lane has one
 consumer, and all session operations use the owning Ruby thread. `lane.receive`
@@ -329,6 +415,11 @@ acknowledgment, and it does not guarantee that a response stopped executing.
   entry point. A nonempty `request_options.extra_query` or nonzero
   `request_options.max_retries` is rejected. Supported workload identity has a
   narrow pre-handshake 401 refresh; that is not live-session recovery.
+- If your client uses a configured HTTP transport, pass a compatible WebSocket
+  `transport:` with its own connection settings. The default WebSocket transport
+  cannot carry over HTTP connection policies. It rejects that configuration
+  before requesting credentials or opening a socket. Default HTTP clients and
+  their copies keep using the default WebSocket transport.
 - Large events are valid. Plan memory and application backpressure for your
   workload without treating a fixed payload size as a protocol maximum.
 

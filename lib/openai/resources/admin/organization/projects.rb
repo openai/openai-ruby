@@ -20,6 +20,9 @@ module OpenAI
           # @return [OpenAI::Resources::Admin::Organization::Projects::ModelPermissions]
           attr_reader :model_permissions
 
+          # @return [OpenAI::Resources::Admin::Organization::Projects::ServiceTierSettings]
+          attr_reader :service_tier_settings
+
           # @return [OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions]
           attr_reader :hosted_tool_permissions
 
@@ -209,6 +212,9 @@ module OpenAI
             @api_keys = OpenAI::Resources::Admin::Organization::Projects::APIKeys.new(client: client)
             @rate_limits = OpenAI::Resources::Admin::Organization::Projects::RateLimits.new(client: client)
             @model_permissions = OpenAI::Resources::Admin::Organization::Projects::ModelPermissions.new(client: client)
+            @service_tier_settings = OpenAI::Resources::Admin::Organization::Projects::ServiceTierSettings.new(
+              client: client
+            )
             @hosted_tool_permissions = OpenAI::Resources::Admin::Organization::Projects::HostedToolPermissions.new(
               client: client
             )

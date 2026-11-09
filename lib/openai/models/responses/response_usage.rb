@@ -68,7 +68,15 @@ module OpenAI
           #   @return [Integer]
           required :cached_tokens, Integer
 
-          # @!method initialize(cache_write_tokens:, cached_tokens:)
+          # @!attribute cache_write_tokens_details
+          #
+          #   @return [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails::CacheWriteTokensDetails, nil]
+          optional(
+            :cache_write_tokens_details,
+            -> { OpenAI::Responses::ResponseUsage::InputTokensDetails::CacheWriteTokensDetails }
+          )
+
+          # @!method initialize(cache_write_tokens:, cached_tokens:, cache_write_tokens_details: nil)
           #   A detailed breakdown of the input tokens.
           #
           #   @param cache_write_tokens [Integer]
@@ -77,6 +85,30 @@ module OpenAI
           #   @param cached_tokens [Integer]
           #     The number of tokens that were retrieved from the cache.
           #     [More on prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching).
+          #
+          #   @param cache_write_tokens_details [OpenAI::Models::Responses::ResponseUsage::InputTokensDetails::CacheWriteTokensDetails]
+
+          # @see OpenAI::Models::Responses::ResponseUsage::InputTokensDetails#cache_write_tokens_details
+          class CacheWriteTokensDetails < OpenAI::Internal::Type::BaseModel
+            # @!attribute ttl_12h_tokens
+            #   The number of input tokens written with 12-hour retention.
+            #
+            #   @return [Integer]
+            required :ttl_12h_tokens, Integer
+
+            # @!attribute ttl_30m_tokens
+            #   The number of input tokens written with 30-minute retention.
+            #
+            #   @return [Integer]
+            required :ttl_30m_tokens, Integer
+
+            # @!method initialize(ttl_12h_tokens:, ttl_30m_tokens:)
+            #   @param ttl_12h_tokens [Integer]
+            #     The number of input tokens written with 12-hour retention.
+            #
+            #   @param ttl_30m_tokens [Integer]
+            #     The number of input tokens written with 30-minute retention.
+          end
         end
 
         # @see OpenAI::Models::Responses::ResponseUsage#output_tokens_details

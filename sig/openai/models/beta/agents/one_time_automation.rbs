@@ -1,0 +1,111 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type one_time_automation =
+          {
+            id: String,
+            created_at: Integer,
+            created_by: OpenAI::Models::Beta::Agents::automation_created_by,
+            metadata: ::Hash[Symbol, String],
+            name: String,
+            ?object: :"agent.automation",
+            run_at: Integer,
+            status: OpenAI::Models::Beta::Agents::OneTimeAutomation::status,
+            target: OpenAI::Models::Beta::Agents::automation_target,
+            ?type: :once
+          }
+
+        class OneTimeAutomation < OpenAI::Internal::Type::BaseModel
+          # The automation ID.
+          attr_accessor id: String
+
+          # The creation time as a Unix timestamp in seconds.
+          attr_accessor created_at: Integer
+
+          # Service-recorded provenance; callers cannot supply this field.
+          attr_accessor created_by: OpenAI::Models::Beta::Agents::automation_created_by
+
+          # Custom string key-value pairs attached to the automation.
+          attr_accessor metadata: ::Hash[Symbol, String]
+
+          # The automation's display name.
+          attr_accessor name: String
+
+          # Always `agent.automation`.
+          attr_accessor object: :"agent.automation"
+
+          # The Unix timestamp, in seconds, of the scheduled occurrence.
+          attr_accessor run_at: Integer
+
+          # Completion means the schedule has finished, not the agent's work.
+          attr_accessor status: OpenAI::Models::Beta::Agents::OneTimeAutomation::status
+
+          # The session configuration or existing session receiving invocations.
+          attr_accessor target: OpenAI::Models::Beta::Agents::automation_target
+
+          # The type of the object. Always `once`.
+          attr_accessor type: :once
+
+          # @param id
+          #   The automation ID.
+          # @param created_at
+          #   The creation time as a Unix timestamp in seconds.
+          # @param created_by
+          #   Service-recorded provenance; callers cannot supply this field.
+          # @param metadata
+          #   Custom string key-value pairs attached to the automation.
+          # @param name
+          #   The automation's display name.
+          # @param run_at
+          #   The Unix timestamp, in seconds, of the scheduled occurrence.
+          # @param status
+          #   Completion means the schedule has finished, not the agent's work.
+          # @param target
+          #   The session configuration or existing session receiving invocations.
+          # @param object
+          #   Always `agent.automation`.
+          # @param type
+          #   The type of the object. Always `once`.
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            created_by: OpenAI::Models::Beta::Agents::automation_created_by,
+            metadata: ::Hash[Symbol, String],
+            name: String,
+            run_at: Integer,
+            status: OpenAI::Models::Beta::Agents::OneTimeAutomation::status,
+            target: OpenAI::Models::Beta::Agents::automation_target,
+            ?object: :"agent.automation",
+            ?type: :once
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            created_by: OpenAI::Models::Beta::Agents::automation_created_by,
+            metadata: ::Hash[Symbol, String],
+            name: String,
+            ?object: :"agent.automation",
+            run_at: Integer,
+            status: OpenAI::Models::Beta::Agents::OneTimeAutomation::status,
+            target: OpenAI::Models::Beta::Agents::automation_target,
+            ?type: :once
+          }
+
+          type status = :active | :paused | :completed
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            ACTIVE: :active
+            PAUSED: :paused
+            COMPLETED: :completed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::OneTimeAutomation::status]
+          end
+        end
+      end
+    end
+  end
+end

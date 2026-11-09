@@ -1,0 +1,36 @@
+module OpenAI
+  module Models
+    module Audio
+      type voice_consent_update_params =
+        {
+          consent_id: String,
+          name: String,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class VoiceConsentUpdateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        attr_accessor consent_id: String
+
+        # The updated label for this consent recording.
+        attr_accessor name: String
+
+        # @param name
+        #   The updated label for this consent recording.
+        def initialize: (
+          consent_id: String,
+          name: String,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          consent_id: String,
+          name: String,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

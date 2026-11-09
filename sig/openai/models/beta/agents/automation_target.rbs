@@ -1,0 +1,157 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type automation_target =
+          OpenAI::Beta::Agents::AutomationTarget::NewSession
+          | OpenAI::Beta::Agents::AutomationTarget::ExistingSession
+
+        module AutomationTarget
+          extend OpenAI::Internal::Type::Union
+
+          type new_session =
+            {
+              agent: OpenAI::Beta::Agents::AutomationAgentConfig?,
+              agent_id: String?,
+              environment: OpenAI::Models::Beta::Agents::automation_environment,
+              input: ::Array[OpenAI::Beta::Agents::AutomationTarget::NewSession::Input],
+              metadata: ::Hash[Symbol, String],
+              ?type: :new_session,
+              vault_ids: ::Array[String]
+            }
+
+          class NewSession < OpenAI::Internal::Type::BaseModel
+            # The inline agent configuration, or null when agent_id is configured.
+            attr_accessor agent: OpenAI::Beta::Agents::AutomationAgentConfig?
+
+            # The saved agent reference, or null when an inline agent is configured.
+            attr_accessor agent_id: String?
+
+            # Configuration or references used to select the execution environment.
+            attr_accessor environment: OpenAI::Models::Beta::Agents::automation_environment
+
+            # Initial input delivered to each new session.
+            attr_accessor input: ::Array[OpenAI::Beta::Agents::AutomationTarget::NewSession::Input]
+
+            # Metadata attached to each new session.
+            attr_accessor metadata: ::Hash[Symbol, String]
+
+            # The type of the object. Always `new_session`.
+            attr_accessor type: :new_session
+
+            # Vaults made available to each new session.
+            attr_accessor vault_ids: ::Array[String]
+
+            # @param agent
+            #   The inline agent configuration, or null when agent_id is configured.
+            # @param agent_id
+            #   The saved agent reference, or null when an inline agent is configured.
+            # @param environment
+            #   Configuration or references used to select the execution environment.
+            # @param input
+            #   Initial input delivered to each new session.
+            # @param metadata
+            #   Metadata attached to each new session.
+            # @param vault_ids
+            #   Vaults made available to each new session.
+            # @param type
+            #   The type of the object. Always `new_session`.
+            def initialize: (
+              agent: OpenAI::Beta::Agents::AutomationAgentConfig?,
+              agent_id: String?,
+              environment: OpenAI::Models::Beta::Agents::automation_environment,
+              input: ::Array[OpenAI::Beta::Agents::AutomationTarget::NewSession::Input],
+              metadata: ::Hash[Symbol, String],
+              vault_ids: ::Array[String],
+              ?type: :new_session
+            ) -> void
+
+            def to_hash: -> {
+              agent: OpenAI::Beta::Agents::AutomationAgentConfig?,
+              agent_id: String?,
+              environment: OpenAI::Models::Beta::Agents::automation_environment,
+              input: ::Array[OpenAI::Beta::Agents::AutomationTarget::NewSession::Input],
+              metadata: ::Hash[Symbol, String],
+              ?type: :new_session,
+              vault_ids: ::Array[String]
+            }
+
+            type input =
+              {
+                content: ::Array[OpenAI::Models::Beta::input_content],
+                ?role: :user,
+                ?type: :message
+              }
+
+            class Input < OpenAI::Internal::Type::BaseModel
+              # The content of the message.
+              attr_accessor content: ::Array[OpenAI::Models::Beta::input_content]
+
+              # The role of the message author. Always `user`.
+              attr_accessor role: :user
+
+              # The type of the input item. Always `message`.
+              attr_accessor type: :message
+
+              # @param content
+              #   The content of the message.
+              # @param role
+              #   The role of the message author. Always `user`.
+              # @param type
+              #   The type of the input item. Always `message`.
+              def initialize: (
+                content: ::Array[OpenAI::Models::Beta::input_content],
+                ?role: :user,
+                ?type: :message
+              ) -> void
+
+              def to_hash: -> {
+                content: ::Array[OpenAI::Models::Beta::input_content],
+                ?role: :user,
+                ?type: :message
+              }
+            end
+          end
+
+          type existing_session =
+            {
+              instructions: String,
+              session_id: String,
+              ?type: :existing_session
+            }
+
+          class ExistingSession < OpenAI::Internal::Type::BaseModel
+            # Saved instructions delivered as an automation notification.
+            attr_accessor instructions: String
+
+            # The session receiving each invocation.
+            attr_accessor session_id: String
+
+            # The type of the object. Always `existing_session`.
+            attr_accessor type: :existing_session
+
+            # @param instructions
+            #   Saved instructions delivered as an automation notification.
+            # @param session_id
+            #   The session receiving each invocation.
+            # @param type
+            #   The type of the object. Always `existing_session`.
+            def initialize: (
+              instructions: String,
+              session_id: String,
+              ?type: :existing_session
+            ) -> void
+
+            def to_hash: -> {
+              instructions: String,
+              session_id: String,
+              ?type: :existing_session
+            }
+          end
+
+          def self?.variants: -> ::Array[OpenAI::Models::Beta::Agents::automation_target]
+        end
+      end
+    end
+  end
+end

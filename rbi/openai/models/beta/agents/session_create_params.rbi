@@ -59,6 +59,13 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
+          # Action review mode. Omit to use none.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol)) }
+          attr_reader :review
+
+          sig { params(review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol).void }
+          attr_writer :review
+
           # Optional spending limit in USD cents. Omission or null creates an unlimited
           # session.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl)) }
@@ -89,6 +96,8 @@ module OpenAI
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
 
               metadata: T.nilable(T::Hash[Symbol, String]),
+
+              review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
 
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
 
@@ -121,6 +130,9 @@ module OpenAI
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
 
+            # Action review mode. Omit to use none.
+            review: nil,
+
             # Optional spending limit in USD cents. Omission or null creates an unlimited
             # session.
             spend_control: nil,
@@ -144,6 +156,7 @@ module OpenAI
                 agent_id: String,
                 input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
                 metadata: T.nilable(T::Hash[Symbol, String]),
+                review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
                 spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl),
                 vault_ids: T.nilable(T::Array[String]),
                 request_options: OpenAI::RequestOptions
@@ -160,6 +173,25 @@ module OpenAI
                 OpenAI::Internal::AnyHash
               )
             end
+
+            # Context compaction settings. Omit to keep the current settings. A supplied
+            # object replaces the settings; null or an empty object enables background
+            # compaction.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction)) }
+            attr_reader :compaction
+
+            sig {
+              params(compaction: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction::OrHash)).void
+            }
+            attr_writer :compaction
+
+            # Experimental settings to merge by key. Omitted settings keep their current
+            # values.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental)) }
+            attr_reader :experimental
+
+            sig { params(experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental::OrHash).void }
+            attr_writer :experimental
 
             # Additional instructions appended to the agent's default base instructions. Omit
             # to leave unchanged.
@@ -212,7 +244,8 @@ module OpenAI
                       OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling,
                       OpenAI::Beta::AgentToolParam::Mcp,
                       OpenAI::Beta::AgentToolParam::WebSearch,
-                      OpenAI::Beta::AgentToolParam::ComputerUse
+                      OpenAI::Beta::AgentToolParam::ComputerUse,
+                      OpenAI::Beta::AgentToolParam::Automations
                     )
                   ]
                 )
@@ -224,6 +257,10 @@ module OpenAI
             # for this session. Without `agent_id`, `model` is required.
             sig do
               params(
+
+                compaction: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction::OrHash),
+
+                experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental::OrHash,
 
                 instructions: T.nilable(String),
 
@@ -245,7 +282,8 @@ module OpenAI
                       OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling::OrHash,
                       OpenAI::Beta::AgentToolParam::Mcp::OrHash,
                       OpenAI::Beta::AgentToolParam::WebSearch::OrHash,
-                      OpenAI::Beta::AgentToolParam::ComputerUse::OrHash
+                      OpenAI::Beta::AgentToolParam::ComputerUse::OrHash,
+                      OpenAI::Beta::AgentToolParam::Automations::OrHash
                     )
                   ]
                 )
@@ -253,6 +291,15 @@ module OpenAI
                 .returns(T.attached_class)
             end
             def self.new(
+
+              # Context compaction settings. Omit to keep the current settings. A supplied
+              # object replaces the settings; null or an empty object enables background
+              # compaction.
+              compaction: nil,
+
+              # Experimental settings to merge by key. Omitted settings keep their current
+              # values.
+              experimental: nil,
 
               # Additional instructions appended to the agent's default base instructions. Omit
               # to leave unchanged.
@@ -285,6 +332,8 @@ module OpenAI
             sig do
               override.returns(
                 {
+                  compaction: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction),
+                  experimental: OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental,
                   instructions: T.nilable(String),
                   model: String,
                   multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam),
@@ -299,7 +348,8 @@ module OpenAI
                         OpenAI::Beta::AgentToolParam::ProgrammaticToolCalling,
                         OpenAI::Beta::AgentToolParam::Mcp,
                         OpenAI::Beta::AgentToolParam::WebSearch,
-                        OpenAI::Beta::AgentToolParam::ComputerUse
+                        OpenAI::Beta::AgentToolParam::ComputerUse,
+                        OpenAI::Beta::AgentToolParam::Automations
                       )
                     ]
                   )
@@ -307,6 +357,94 @@ module OpenAI
               )
             end
             def to_hash
+            end
+
+            class Compaction < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Whether to compact context in the background. Omission or null defaults to true.
+              # Set to false to use blocking compaction. Background compaction may increase
+              # token usage.
+              sig { returns(T.nilable(T::Boolean)) }
+              attr_accessor :async
+
+              # Context compaction settings. Omit to keep the current settings. A supplied
+              # object replaces the settings; null or an empty object enables background
+              # compaction.
+              sig do
+                params(
+
+                  async: T.nilable(T::Boolean)
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Whether to compact context in the background. Omission or null defaults to true.
+                # Set to false to use blocking compaction. Background compaction may increase
+                # token usage.
+
+                async: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {async: T.nilable(T::Boolean)}
+                )
+              end
+              def to_hash
+              end
+
+            end
+
+            class Experimental < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::SessionCreateParams::Agent::Experimental,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # Whether to give the model periodic current-time reminders. Omit to keep the
+              # current setting.
+              sig { returns(T.nilable(T::Boolean)) }
+              attr_reader :time_awareness
+
+              sig { params(time_awareness: T::Boolean).void }
+              attr_writer :time_awareness
+
+              # Experimental settings to merge by key. Omitted settings keep their current
+              # values.
+              sig do
+                params(
+
+                  time_awareness: T::Boolean
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # Whether to give the model periodic current-time reminders. Omit to keep the
+                # current setting.
+
+                time_awareness: nil
+              )
+              end
+
+              sig do
+                override.returns(
+                  {time_awareness: T::Boolean}
+                )
+              end
+              def to_hash
+              end
+
             end
 
             # The service tier used for model requests.
@@ -362,6 +500,24 @@ module OpenAI
               OpenAI::Internal::Type::Converter
             )
 
+          end
+
+          # Action review mode. Omit to use none.
+          module Review
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Agents::SessionCreateParams::Review) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            # Keep the existing execution behavior without automatic action review.
+            NONE = T.let(:none, OpenAI::Beta::Agents::SessionCreateParams::Review::TaggedSymbol)
+
+            # Review eligible actions automatically. Deny manual approval fallbacks.
+            AUTO_REVIEW = T.let(:auto_review, OpenAI::Beta::Agents::SessionCreateParams::Review::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::Agents::SessionCreateParams::Review::TaggedSymbol]) }
+            def self.values
+            end
           end
 
           class SpendControl < OpenAI::Internal::Type::BaseModel

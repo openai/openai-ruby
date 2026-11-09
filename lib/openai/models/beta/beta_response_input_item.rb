@@ -63,9 +63,8 @@ module OpenAI
 
         variant :additional_tools, -> { OpenAI::Beta::BetaResponseInputItem::AdditionalTools }
 
-        # An update to the conversation's response configuration. The configuration
-        # remains in effect for subsequent responses until it is replaced by another
-        # configuration update.
+        # An update to the conversation's response configuration. Supply reasoning,
+        # text, or both. Each setting stays in effect until a later update replaces it.
         variant :configuration_update, -> { OpenAI::Beta::BetaResponseConfigurationUpdateItemParam }
 
         # A description of the chain of thought used by a reasoning model while generating
@@ -1367,7 +1366,12 @@ module OpenAI
             nil?: true
           )
 
-          # @!method initialize(id:, result:, status:, action: nil, agent: nil, background: nil, error: nil, output_format: nil, quality: nil, revised_prompt: nil, size: nil, type: :image_generation_call)
+          # @!attribute svg_usage
+          #
+          #   @return [OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::SvgUsage, nil]
+          optional :svg_usage, -> { OpenAI::Beta::BetaResponseInputItem::ImageGenerationCall::SvgUsage }
+
+          # @!method initialize(id:, result:, status:, action: nil, agent: nil, background: nil, error: nil, output_format: nil, quality: nil, revised_prompt: nil, size: nil, svg_usage: nil, type: :image_generation_call)
           #   An image generation request made by the model.
           #
           #   @param id [String]
@@ -1403,6 +1407,8 @@ module OpenAI
           #
           #   @param size [String, Symbol, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::Size, nil]
           #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          #
+          #   @param svg_usage [OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall::SvgUsage]
           #
           #   @param type [Symbol, :image_generation_call]
           #     The type of the image generation call. Always `image_generation_call`.
@@ -1571,6 +1577,8 @@ module OpenAI
             PNG = :png
             WEBP = :webp
             JPEG = :jpeg
+            GIF = :gif
+            SVG = :svg
 
             # @!method self.values
             #   @return [Array<Symbol>]
@@ -1630,6 +1638,41 @@ module OpenAI
             SIZE_1536X1024 = :"1536x1024"
 
             # @!endgroup
+          end
+
+          # @see OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall#svg_usage
+          class SvgUsage < OpenAI::Internal::Type::BaseModel
+            # @!attribute input_tokens
+            #
+            #   @return [Integer]
+            required :input_tokens, Integer
+
+            # @!attribute model
+            #
+            #   @return [String]
+            required :model, String
+
+            # @!attribute output_tokens
+            #
+            #   @return [Integer]
+            required :output_tokens, Integer
+
+            # @!attribute reasoning_tokens
+            #
+            #   @return [Integer]
+            required :reasoning_tokens, Integer
+
+            # @!attribute total_tokens
+            #
+            #   @return [Integer]
+            required :total_tokens, Integer
+
+            # @!method initialize(input_tokens:, model:, output_tokens:, reasoning_tokens:, total_tokens:)
+            #   @param input_tokens [Integer]
+            #   @param model [String]
+            #   @param output_tokens [Integer]
+            #   @param reasoning_tokens [Integer]
+            #   @param total_tokens [Integer]
           end
         end
 
@@ -3082,14 +3125,23 @@ module OpenAI
           #   @return [Symbol, :compaction_trigger]
           required :type, const: :compaction_trigger
 
+          # @!attribute id
+          #   The unique ID of this compaction trigger.
+          #
+          #   @return [String, nil]
+          optional :id, String, nil?: true
+
           # @!attribute agent
           #   The agent that produced this item.
           #
           #   @return [OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger::Agent, nil]
           optional :agent, -> { OpenAI::Beta::BetaResponseInputItem::CompactionTrigger::Agent }, nil?: true
 
-          # @!method initialize(agent: nil, type: :compaction_trigger)
+          # @!method initialize(id: nil, agent: nil, type: :compaction_trigger)
           #   Compacts the current context. Must be the final input item.
+          #
+          #   @param id [String, nil]
+          #     The unique ID of this compaction trigger.
           #
           #   @param agent [OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger::Agent, nil]
           #     The agent that produced this item.

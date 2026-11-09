@@ -1,0 +1,32 @@
+module OpenAI
+  module Resources
+    class Beta
+      class Agents
+        class Automations
+          class Invocations
+            def create: (
+              String automation_id,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Automations::AutomationInvocation
+
+            def retrieve: (
+              String invocation_id,
+              automation_id: String,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Beta::Agents::Automations::AutomationInvocation
+
+            def list: (
+              String automation_id,
+              ?after: String,
+              ?limit: Integer,
+              ?order: OpenAI::Models::Beta::Agents::Automations::InvocationListParams::order,
+              ?request_options: OpenAI::request_opts
+            ) -> OpenAI::Internal::CursorPage[OpenAI::Beta::Agents::Automations::AutomationInvocation]
+
+            def initialize: (client: OpenAI::Client) -> void
+          end
+        end
+      end
+    end
+  end
+end

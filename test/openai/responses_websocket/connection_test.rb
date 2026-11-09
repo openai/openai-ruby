@@ -32,6 +32,122 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
     optional :ruby_name, String, api_name: :apiName
   end
 
+  def test_response_create_encodes_ruby_hash_fields_and_preserves_extra_fields
+    socket = FakeSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.response.create(
+        model: "gpt-5.2",
+        input: "Return JSON",
+        stream_id: "turn_1",
+        text: {format_: {type: :json_object}},
+        future_field: {future_key: "keep"}
+      )
+    end
+
+    payload = JSON.parse(socket.writes.fetch(0))
+    assert_equal({"format" => {"type" => "json_object"}}, payload.fetch("text"))
+    assert_equal("turn_1", payload.fetch("stream_id"))
+    assert_equal({"future_key" => "keep"}, payload.fetch("future_field"))
+  end
+
+  def test_response_create_accepts_wire_hashes_and_nested_models
+    socket = FakeSocket.new
+    inputs = [
+      {"format" => {"type" => "json_object"}},
+      OpenAI::Responses::ResponseTextConfig.new(format_: {type: :json_object})
+    ]
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      inputs.each { |text| connection.response.create(model: "gpt-5.2", text: text) }
+    end
+
+    socket.writes.each do |message|
+      assert_equal({"format" => {"type" => "json_object"}}, JSON.parse(message).fetch("text"))
+    end
+  end
+
+  def test_raw_send_event_keeps_hash_field_names
+    socket = FakeSocket.new
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.send_event(type: :"response.create", text: {format_: {type: :json_object}})
+    end
+
+    assert_equal(
+      {"format_" => {"type" => "json_object"}},
+      JSON.parse(socket.writes.fetch(0)).fetch("text")
+    )
+  end
+
+  def test_response_create_rejects_plain_hash_wire_alias_collisions_before_write
+    socket = FakeSocket.new
+    aliases = {:format_ => {type: :json_object}, "format" => {type: :text}}
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      [aliases, aliases.to_a.reverse.to_h].each do |text|
+        assert_raises(OpenAI::Errors::ResponsesClientEventError) do
+          connection.response.create(model: "gpt-5.2", text: text)
+        end
+
+        assert_empty(socket.writes)
+        refute_predicate(connection, :closed?)
+      end
+
+      connection.response.create(model: "gpt-5.2", text: {format_: {type: :json_object}})
+    end
+
+    assert_equal({"format" => {"type" => "json_object"}}, JSON.parse(socket.writes.fetch(0)).fetch("text"))
+  end
+
+  def test_response_create_keeps_alias_like_keys_in_unknown_hashes_and_raw_events
+    socket = FakeSocket.new
+    future = {:format_ => "ruby_extension", "format" => "wire_extension"}
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.response.create(model: "gpt-5.2", text: {future_field: future}, future_field: future)
+      connection.send_event(type: :"response.create", text: future)
+    end
+
+    typed, raw = socket.writes.map { JSON.parse(_1) }
+    expected = {"format_" => "ruby_extension", "format" => "wire_extension"}
+    assert_equal(expected, typed.fetch("future_field"))
+    assert_equal(expected, typed.dig("text", "future_field"))
+    assert_equal(expected, raw.fetch("text"))
+  end
+
+  def test_response_create_rejects_alias_collision_through_typed_array_and_union
+    socket = FakeSocket.new
+    tool = {:type => :custom, :name => "example", :format_ => {type: :text}, "format" => {type: :text}}
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      assert_raises(OpenAI::Errors::ResponsesClientEventError) { connection.response.create(tools: [tool]) }
+      assert_empty(socket.writes)
+      refute_predicate(connection, :closed?)
+    end
+  end
+
+  def test_response_create_checks_the_original_tree_and_connection_state
+    socket = FakeSocket.new
+    cyclic = {}
+    cyclic[:nested] = cyclic
+    duplicate = {:format_ => {type: :json_object}, "format_" => {type: :json_object}}
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      [cyclic, duplicate].each do |text|
+        assert_raises(OpenAI::Errors::ResponsesClientEventError) do
+          connection.response.create(text: text)
+        end
+      end
+
+      assert_empty(socket.writes)
+      connection.close
+      assert_raises(OpenAI::Errors::ResponsesConnectionError) do
+        connection.response.create(text: cyclic)
+      end
+    end
+  end
+
   def test_connect_opens_a_block_scoped_connection_and_sends_response_create
     socket = FakeSocket.new(text_delta("hello", stream_id: "turn_1"))
     transport = FakeTransport.new(socket)
@@ -260,6 +376,20 @@ class OpenAI::Test::ResponsesWebSocketConnectionTest < Minitest::Test
       {"type" => "future", "apiName" => "kept"},
       JSON.parse(socket.writes.fetch(0)).fetch("future")
     )
+  end
+
+  def test_nested_model_preserves_an_existing_private_union_override
+    socket = FakeSocket.new
+    item = {type: "message", role: "assistant", content: [{type: "output_text", text: "hello"}]}
+    nested = OpenAI::Realtime::ConversationItemCreateEvent.new(item: item)
+
+    client.responses.connect(transport: FakeTransport.new(socket)) do |connection|
+      connection.response.create(future_event: nested)
+    end
+
+    payload = JSON.parse(socket.writes.fetch(0)).fetch("future_event")
+    assert_equal("conversation.item.create", payload.fetch("type"))
+    assert_equal(JSON.parse(JSON.generate(item)), payload.fetch("item"))
   end
 
   def test_nested_generated_model_rejects_api_name_collision_before_write

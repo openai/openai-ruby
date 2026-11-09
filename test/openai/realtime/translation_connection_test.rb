@@ -490,11 +490,13 @@ class OpenAI::Test::RealtimeTranslationConnectionTest < Minitest::Test
         assert_instance_of(OpenAI::Realtime::UnknownTranslationServerEvent, event)
         refute_includes(event.inspect, "fake-private-transcript")
         current = event.data.fetch(:value)
-        12_000.times do
-          assert_predicate(current, :frozen?)
+        first_unfrozen_index = nil
+        12_000.times do |index|
+          first_unfrozen_index ||= index unless current.frozen?
           current = current.fetch(:next)
         end
 
+        assert_nil(first_unfrozen_index, "first unfrozen node index")
         assert_predicate(current, :frozen?)
         assert_equal("fake-private-transcript", current.fetch(:value))
       end

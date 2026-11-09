@@ -1,0 +1,118 @@
+module OpenAI
+  module Models
+    module Beta
+      module Agents
+        type periodic_automation =
+          {
+            id: String,
+            created_at: Integer,
+            created_by: OpenAI::Models::Beta::Agents::automation_created_by,
+            expression: String,
+            metadata: ::Hash[Symbol, String],
+            name: String,
+            ?object: :"agent.automation",
+            status: OpenAI::Models::Beta::Agents::PeriodicAutomation::status,
+            target: OpenAI::Models::Beta::Agents::automation_target,
+            timezone: String,
+            ?type: :periodic
+          }
+
+        class PeriodicAutomation < OpenAI::Internal::Type::BaseModel
+          # The automation ID.
+          attr_accessor id: String
+
+          # The creation time as a Unix timestamp in seconds.
+          attr_accessor created_at: Integer
+
+          # Service-recorded provenance; callers cannot supply this field.
+          attr_accessor created_by: OpenAI::Models::Beta::Agents::automation_created_by
+
+          # The cron expression determining scheduled occurrences.
+          attr_accessor expression: String
+
+          # Custom string key-value pairs attached to the automation.
+          attr_accessor metadata: ::Hash[Symbol, String]
+
+          # The automation's display name.
+          attr_accessor name: String
+
+          # Always `agent.automation`.
+          attr_accessor object: :"agent.automation"
+
+          # Whether scheduled delivery is active or paused.
+          attr_accessor status: OpenAI::Models::Beta::Agents::PeriodicAutomation::status
+
+          # The session configuration or existing session receiving invocations.
+          attr_accessor target: OpenAI::Models::Beta::Agents::automation_target
+
+          # The timezone used to interpret the expression.
+          attr_accessor timezone: String
+
+          # The type of the object. Always `periodic`.
+          attr_accessor type: :periodic
+
+          # @param id
+          #   The automation ID.
+          # @param created_at
+          #   The creation time as a Unix timestamp in seconds.
+          # @param created_by
+          #   Service-recorded provenance; callers cannot supply this field.
+          # @param expression
+          #   The cron expression determining scheduled occurrences.
+          # @param metadata
+          #   Custom string key-value pairs attached to the automation.
+          # @param name
+          #   The automation's display name.
+          # @param status
+          #   Whether scheduled delivery is active or paused.
+          # @param target
+          #   The session configuration or existing session receiving invocations.
+          # @param timezone
+          #   The timezone used to interpret the expression.
+          # @param object
+          #   Always `agent.automation`.
+          # @param type
+          #   The type of the object. Always `periodic`.
+          def initialize: (
+            id: String,
+            created_at: Integer,
+            created_by: OpenAI::Models::Beta::Agents::automation_created_by,
+            expression: String,
+            metadata: ::Hash[Symbol, String],
+            name: String,
+            status: OpenAI::Models::Beta::Agents::PeriodicAutomation::status,
+            target: OpenAI::Models::Beta::Agents::automation_target,
+            timezone: String,
+            ?object: :"agent.automation",
+            ?type: :periodic
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            created_at: Integer,
+            created_by: OpenAI::Models::Beta::Agents::automation_created_by,
+            expression: String,
+            metadata: ::Hash[Symbol, String],
+            name: String,
+            ?object: :"agent.automation",
+            status: OpenAI::Models::Beta::Agents::PeriodicAutomation::status,
+            target: OpenAI::Models::Beta::Agents::automation_target,
+            timezone: String,
+            ?type: :periodic
+          }
+
+          type status = :active | :paused
+
+          module Status
+            extend OpenAI::Internal::Type::Enum
+
+            ACTIVE: :active
+            PAUSED: :paused
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::PeriodicAutomation::status]
+          end
+        end
+      end
+    end
+  end
+end

@@ -335,9 +335,9 @@ module OpenAI
               sig { returns(Symbol) }
               attr_accessor :type
 
-              # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-              # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-              # token block.
+              # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+              # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+              # not rounded to a token block.
               sig {
                 returns(
                   T.nilable(
@@ -383,9 +383,9 @@ module OpenAI
                 # The URL of the screenshot image.
                 image_url:,
 
-                # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-                # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-                # token block.
+                # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+                # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+                # not rounded to a token block.
                 prompt_cache_breakpoint: nil,
 
                 # Specifies the event type. For a computer screenshot, this property is always set
@@ -459,17 +459,40 @@ module OpenAI
                 sig { returns(Symbol) }
                 attr_accessor :mode
 
-                # Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-                # from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-                # token block.
+                # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+                sig {
+                  returns(
+                    T.nilable(
+                      OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                    )
+                  )
+                }
+                attr_reader :ttl
+
+                sig {
+                  params(
+                    ttl: OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::OrSymbol
+                  )
+                    .void
+                }
+                attr_writer :ttl
+
+                # Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+                # breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+                # not rounded to a token block.
                 sig do
                   params(
+
+                    ttl: OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::OrSymbol,
 
                     mode: Symbol
                   )
                     .returns(T.attached_class)
                 end
                 def self.new(
+
+                  # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+                  ttl: nil,
 
                   # The breakpoint mode. Always `explicit`.
 
@@ -479,12 +502,46 @@ module OpenAI
 
                 sig do
                   override.returns(
-                    {mode: Symbol}
+                    {
+                      mode: Symbol,
+                      ttl: OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                    }
                   )
                 end
                 def to_hash
                 end
 
+                # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+                module Ttl
+                  extend OpenAI::Internal::Type::Enum
+
+                  TaggedSymbol = T.type_alias {
+                    T.all(
+                      Symbol,
+                      OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl
+                    )
+                  }
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                  TTL_30M = T.let(
+                    :"30m",
+                    OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                  )
+                  TTL_12H = T.let(
+                    :"12h",
+                    OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                  )
+
+                  sig {
+                    override.returns(
+                      T::Array[
+                        OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl::TaggedSymbol
+                      ]
+                    )
+                  }
+                  def self.values
+                  end
+                end
               end
             end
 
@@ -1392,6 +1449,12 @@ module OpenAI
           sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::Variants)) }
           attr_accessor :size
 
+          sig { returns(T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage)) }
+          attr_reader :svg_usage
+
+          sig { params(svg_usage: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage::OrHash).void }
+          attr_writer :svg_usage
+
           # An image generation request made by the model.
           sig do
             params(
@@ -1417,6 +1480,8 @@ module OpenAI
               revised_prompt: T.nilable(String),
 
               size: T.nilable(T.any(String, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::OrSymbol)),
+
+              svg_usage: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage::OrHash,
 
               type: Symbol
             )
@@ -1458,6 +1523,8 @@ module OpenAI
             # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
             size: nil,
 
+            svg_usage: nil,
+
             # The type of the image generation call. Always `image_generation_call`.
 
             type: :image_generation_call
@@ -1480,7 +1547,8 @@ module OpenAI
                 ),
                 quality: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Quality::TaggedSymbol),
                 revised_prompt: T.nilable(String),
-                size: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::Variants)
+                size: T.nilable(OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::Variants),
+                svg_usage: OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage
               }
             )
           end
@@ -1773,6 +1841,8 @@ module OpenAI
             PNG = T.let(:png, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
             WEBP = T.let(:webp, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
             JPEG = T.let(:jpeg, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+            GIF = T.let(:gif, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
+            SVG = T.let(:svg, OpenAI::Beta::BetaResponseItem::ImageGenerationCall::OutputFormat::TaggedSymbol)
 
             sig {
               override.returns(
@@ -1835,6 +1905,74 @@ module OpenAI
               :"1536x1024",
               OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size::TaggedSymbol
             )
+
+          end
+
+          class SvgUsage < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Integer) }
+            attr_accessor :input_tokens
+
+            sig { returns(String) }
+            attr_accessor :model
+
+            sig { returns(Integer) }
+            attr_accessor :output_tokens
+
+            sig { returns(Integer) }
+            attr_accessor :reasoning_tokens
+
+            sig { returns(Integer) }
+            attr_accessor :total_tokens
+
+            sig do
+              params(
+
+                input_tokens: Integer,
+
+                model: String,
+
+                output_tokens: Integer,
+
+                reasoning_tokens: Integer,
+
+                total_tokens: Integer
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              input_tokens:,
+
+              model:,
+
+              output_tokens:,
+
+              reasoning_tokens:,
+
+              total_tokens:
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  input_tokens: Integer,
+                  model: String,
+                  output_tokens: Integer,
+                  reasoning_tokens: Integer,
+                  total_tokens: Integer
+                }
+              )
+            end
+            def to_hash
+            end
 
           end
         end

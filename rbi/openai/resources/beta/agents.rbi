@@ -7,6 +7,9 @@ module OpenAI
 
       class Agents
 
+        sig { returns(OpenAI::Resources::Beta::Agents::Automations) }
+        attr_reader :automations
+
         sig { returns(OpenAI::Resources::Beta::Agents::Environments) }
         attr_reader :environments
 
@@ -21,6 +24,8 @@ module OpenAI
         sig {
           params(
             model: String,
+            compaction: T.nilable(OpenAI::Beta::AgentCreateParams::Compaction::OrHash),
+            experimental: OpenAI::Beta::AgentCreateParams::Experimental::OrHash,
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             multi_agent: T.nilable(OpenAI::Beta::MultiAgentConfigParam::OrHash),
@@ -36,7 +41,8 @@ module OpenAI
                   OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::Mcp::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::WebSearch::OrHash,
-                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash
+                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash,
+                  OpenAI::Beta::PersistedAgentToolParam::Automations::OrHash
                 )
               ]
             ),
@@ -47,6 +53,10 @@ module OpenAI
         def create(
           # The model to use for the agent. The requested model name is preserved.
           model:,
+          # Context compaction settings. Omission or null enables background compaction.
+          compaction: nil,
+          # Experimental agent settings. All experimental features default to disabled.
+          experimental: nil,
           # Additional instructions appended to the agent's default base instructions. Omit
           # or set to null to add no custom instructions.
           instructions: nil,
@@ -87,6 +97,8 @@ module OpenAI
         sig {
           params(
             agent_id: String,
+            compaction: T.nilable(OpenAI::Beta::AgentUpdateParams::Compaction::OrHash),
+            experimental: OpenAI::Beta::AgentUpdateParams::Experimental::OrHash,
             instructions: T.nilable(String),
             metadata: T.nilable(T::Hash[Symbol, String]),
             model: String,
@@ -103,7 +115,8 @@ module OpenAI
                   OpenAI::Beta::PersistedAgentToolParam::ProgrammaticToolCalling::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::Mcp::OrHash,
                   OpenAI::Beta::PersistedAgentToolParam::WebSearch::OrHash,
-                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash
+                  OpenAI::Beta::PersistedAgentToolParam::ComputerUse::OrHash,
+                  OpenAI::Beta::PersistedAgentToolParam::Automations::OrHash
                 )
               ]
             ),
@@ -114,6 +127,13 @@ module OpenAI
         def update(
           # The ID of the reusable agent.
           agent_id,
+          # Context compaction settings. Omit to keep the current settings. A supplied
+          # object replaces the settings; null or an empty object enables background
+          # compaction.
+          compaction: nil,
+          # Experimental settings to merge by key. Omitted settings keep their current
+          # values.
+          experimental: nil,
           # Additional instructions appended to the agent's default base instructions. Omit
           # to leave unchanged.
           instructions: nil,

@@ -86,7 +86,10 @@ module OpenAI
             }
 
             type noise_reduction =
-              { type: OpenAI::Models::Realtime::noise_reduction_type }
+              {
+                type: OpenAI::Models::Realtime::noise_reduction_type,
+                ?strength: Float
+              }
 
             class NoiseReduction < OpenAI::Internal::Type::BaseModel
               # Type of noise reduction. `near_field` is for close-talking microphones such as
@@ -94,16 +97,32 @@ module OpenAI
               # conference room microphones.
               attr_accessor type: OpenAI::Models::Realtime::noise_reduction_type
 
+              # Input noise suppression strength. Higher values apply more suppression. Defaults
+              # to 1 when noise reduction is first enabled. Omitting strength from a session
+              # update preserves the current strength.
+              attr_reader strength: Float?
+
+              # Input noise suppression strength. Higher values apply more suppression. Defaults
+              # to 1 when noise reduction is first enabled. Omitting strength from a session
+              # update preserves the current strength.
+              def strength=: (Float) -> Float
+
               # @param type
               #   Type of noise reduction. `near_field` is for close-talking microphones such as
               #   headphones, `far_field` is for far-field microphones such as laptop or
               #   conference room microphones.
+              # @param strength
+              #   Input noise suppression strength. Higher values apply more suppression. Defaults
+              #   to 1 when noise reduction is first enabled. Omitting strength from a session
+              #   update preserves the current strength.
               def initialize: (
-                type: OpenAI::Models::Realtime::noise_reduction_type
+                type: OpenAI::Models::Realtime::noise_reduction_type,
+                ?strength: Float
               ) -> void
 
               def to_hash: -> {
-                type: OpenAI::Models::Realtime::noise_reduction_type
+                type: OpenAI::Models::Realtime::noise_reduction_type,
+                ?strength: Float
               }
             end
 

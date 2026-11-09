@@ -1,0 +1,61 @@
+module OpenAI
+  module Models
+    module Audio
+      type voice_consent_create_params =
+        {
+          language: String,
+          name: String,
+          recording: OpenAI::Internal::file_input,
+          ?request_options: OpenAI::request_opts
+        }
+
+      class VoiceConsentCreateParams < OpenAI::Internal::Type::BaseModel
+        extend OpenAI::Internal::Type::RequestParameters::Converter
+        include OpenAI::Internal::Type::RequestParameters
+
+        # The BCP 47 language tag for the consent phrase (for example, `en-US`).
+        attr_accessor language: String
+
+        # The label to use for this consent recording.
+        attr_accessor name: String
+
+        # The consent audio recording file. Maximum size is 10 MiB.
+        #
+        # Supported MIME types: `audio/mpeg`, `audio/wav`, `audio/x-wav`, `audio/ogg`,
+        # `audio/aac`, `audio/flac`, `audio/webm`, `audio/mp4`.
+        #
+        # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        # metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        # content type.
+        attr_accessor recording: OpenAI::Internal::file_input
+
+        # @param language
+        #   The BCP 47 language tag for the consent phrase (for example, `en-US`).
+        # @param name
+        #   The label to use for this consent recording.
+        # @param recording
+        #   The consent audio recording file. Maximum size is 10 MiB.
+        #
+        #   Supported MIME types: `audio/mpeg`, `audio/wav`, `audio/x-wav`, `audio/ogg`,
+        #   `audio/aac`, `audio/flac`, `audio/webm`, `audio/mp4`.
+        #
+        #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+        #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+        #   content type.
+        def initialize: (
+          language: String,
+          name: String,
+          recording: OpenAI::Internal::file_input,
+          ?request_options: OpenAI::request_opts
+        ) -> void
+
+        def to_hash: -> {
+          language: String,
+          name: String,
+          recording: OpenAI::Internal::file_input,
+          ?request_options: OpenAI::RequestOptions
+        }
+      end
+    end
+  end
+end

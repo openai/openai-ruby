@@ -59,7 +59,18 @@ module OpenAI
               T.any(
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::OrSymbol,
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam,
-                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Computer,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Shell,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Custom,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam
               )
             )
           )
@@ -71,7 +82,18 @@ module OpenAI
             tool_choice: T.any(
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::OrSymbol,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam::OrHash,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam::OrHash
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Computer::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Shell::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Custom::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::OrHash
             )
           )
             .void
@@ -83,7 +105,23 @@ module OpenAI
         sig {
           returns(
             T.nilable(
-              T::Array[T.any(OpenAI::Live::FunctionTool, OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch)]
+              T::Array[
+                T.any(
+                  OpenAI::Live::FunctionTool,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::FileSearch,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Shell,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Custom,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Computer,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::ApplyPatch
+                )
+              ]
             )
           )
         }
@@ -94,7 +132,18 @@ module OpenAI
             tools: T::Array[
               T.any(
                 OpenAI::Live::FunctionTool::OrHash,
-                OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch::OrHash
+                OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::FileSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Custom::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Computer::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ApplyPatch::OrHash
               )
             ]
           )
@@ -124,13 +173,35 @@ module OpenAI
             tool_choice: T.any(
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::OrSymbol,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam::OrHash,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam::OrHash
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Computer::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Shell::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Custom::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::OrHash
             ),
 
             tools: T::Array[
               T.any(
                 OpenAI::Live::FunctionTool::OrHash,
-                OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch::OrHash
+                OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::FileSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Custom::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Computer::OrHash,
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ApplyPatch::OrHash
               )
             ]
           )
@@ -186,10 +257,35 @@ module OpenAI
               tool_choice: T.any(
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::OrSymbol,
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam,
-                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Computer,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Shell,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Custom,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam
               ),
               tools: T::Array[
-                T.any(OpenAI::Live::FunctionTool, OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch)
+                T.any(
+                  OpenAI::Live::FunctionTool,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::FileSearch,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Shell,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Custom,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Computer,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::ApplyPatch
+                )
               ]
             }
           )
@@ -378,7 +474,18 @@ module OpenAI
             T.any(
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::TaggedSymbol,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Computer,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Shell,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Custom,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam
             )
           }
 
@@ -495,6 +602,1040 @@ module OpenAI
 
           end
 
+          class FileSearch < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `file_search`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `file_search`.
+
+              type: :file_search
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class WebSearch < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `web_search`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `web_search`.
+
+              type: :web_search
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class WebSearchPreview < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `web_search_preview`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `web_search_preview`.
+
+              type: :web_search_preview
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ImageGeneration < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `image_generation`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `image_generation`.
+
+              type: :image_generation
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Computer < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Computer,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `computer`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `computer`.
+
+              type: :computer
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `code_interpreter`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `code_interpreter`.
+
+              type: :code_interpreter
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `programmatic_tool_calling`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `programmatic_tool_calling`.
+
+              type: :programmatic_tool_calling
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Shell < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Shell,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `shell`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # Forces the model to call the shell tool when a tool call is required.
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `shell`.
+
+              type: :shell
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Custom < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Custom,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The name of the custom tool to call.
+            sig { returns(String) }
+            attr_accessor :name
+
+            # The tool to call. Always `custom`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                name: String,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The name of the custom tool to call.
+              name:,
+
+              # The tool to call. Always `custom`.
+
+              type: :custom
+            )
+            end
+
+            sig do
+              override.returns(
+                {name: String, type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ApplyPatch < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tool to call. Always `apply_patch`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # Forces the model to call the apply_patch tool when executing a tool call.
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tool to call. Always `apply_patch`.
+
+              type: :apply_patch
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class LiveAllowedToolsChoiceParam < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The tools that the delegated Responses model may call.
+            sig {
+              returns(
+                T::Array[
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Function,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Mcp,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::FileSearch,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearch,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearchPreview,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ImageGeneration,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Computer,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::CodeInterpreter,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ProgrammaticToolCalling,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Shell,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Custom,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ApplyPatch
+                  )
+                ]
+              )
+            }
+            attr_accessor :tools
+
+            # The tool choice type. Always `allowed_tools`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # How to select a tool from the allowed set.
+            sig {
+              returns(
+                T.nilable(
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Mode::OrSymbol
+                )
+              )
+            }
+            attr_accessor :mode
+
+            sig do
+              params(
+
+                tools: T::Array[
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Function::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Mcp::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::FileSearch::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearch::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearchPreview::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ImageGeneration::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Computer::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::CodeInterpreter::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ProgrammaticToolCalling::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Shell::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Custom::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ApplyPatch::OrHash
+                  )
+                ],
+
+                mode: T.nilable(
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Mode::OrSymbol
+                ),
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The tools that the delegated Responses model may call.
+              tools:,
+
+              # How to select a tool from the allowed set.
+              mode: nil,
+
+              # The tool choice type. Always `allowed_tools`.
+
+              type: :allowed_tools
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  tools: T::Array[
+                    T.any(
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Function,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Mcp,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::FileSearch,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearch,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearchPreview,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ImageGeneration,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Computer,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::CodeInterpreter,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ProgrammaticToolCalling,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Shell,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Custom,
+                      OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ApplyPatch
+                    )
+                  ],
+                  type: Symbol,
+                  mode: T.nilable(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Mode::OrSymbol
+                  )
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # Forces the model to call the shell tool when a tool call is required.
+            module Tool
+              extend OpenAI::Internal::Type::Union
+
+              Variants = T.type_alias {
+                T.any(
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Function,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Mcp,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::FileSearch,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearch,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearchPreview,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ImageGeneration,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Computer,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::CodeInterpreter,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ProgrammaticToolCalling,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Shell,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Custom,
+                  OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ApplyPatch
+                )
+              }
+
+              class Function < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Function,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                sig { returns(String) }
+                attr_accessor :name
+
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    name: String,
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  name:,
+
+                  type: :function
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {name: String, type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class Mcp < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Mcp,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                sig { returns(String) }
+                attr_accessor :name
+
+                sig { returns(String) }
+                attr_accessor :server_label
+
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    name: String,
+
+                    server_label: String,
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  name:,
+
+                  server_label:,
+
+                  type: :mcp
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {name: String, server_label: String, type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class FileSearch < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::FileSearch,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `file_search`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `file_search`.
+
+                  type: :file_search
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class WebSearch < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearch,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `web_search`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `web_search`.
+
+                  type: :web_search
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class WebSearchPreview < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::WebSearchPreview,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `web_search_preview`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `web_search_preview`.
+
+                  type: :web_search_preview
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class ImageGeneration < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ImageGeneration,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `image_generation`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `image_generation`.
+
+                  type: :image_generation
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class Computer < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Computer,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `computer`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `computer`.
+
+                  type: :computer
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::CodeInterpreter,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `code_interpreter`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `code_interpreter`.
+
+                  type: :code_interpreter
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ProgrammaticToolCalling,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `programmatic_tool_calling`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `programmatic_tool_calling`.
+
+                  type: :programmatic_tool_calling
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class Shell < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Shell,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `shell`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # Forces the model to call the shell tool when a tool call is required.
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `shell`.
+
+                  type: :shell
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class Custom < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Custom,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The name of the custom tool to call.
+                sig { returns(String) }
+                attr_accessor :name
+
+                # The tool to call. Always `custom`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    name: String,
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The name of the custom tool to call.
+                  name:,
+
+                  # The tool to call. Always `custom`.
+
+                  type: :custom
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {name: String, type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class ApplyPatch < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::ApplyPatch,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The tool to call. Always `apply_patch`.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # Forces the model to call the apply_patch tool when executing a tool call.
+                sig do
+                  params(
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The tool to call. Always `apply_patch`.
+
+                  type: :apply_patch
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Variants
+                  ]
+                )
+              }
+              def self.variants
+              end
+
+            end
+
+            # How to select a tool from the allowed set.
+            module Mode
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Mode)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              NONE = T.let(
+                :none,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Mode::TaggedSymbol
+              )
+              AUTO = T.let(
+                :auto,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Mode::TaggedSymbol
+              )
+              REQUIRED = T.let(
+                :required,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Mode::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Mode::TaggedSymbol
+                  ]
+                )
+              }
+              def self.values
+              end
+            end
+          end
+
           sig { override.returns(T::Array[OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Variants]) }
           def self.variants
           end
@@ -507,7 +1648,21 @@ module OpenAI
           extend OpenAI::Internal::Type::Union
 
           Variants = T.type_alias {
-            T.any(OpenAI::Live::FunctionTool, OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch)
+            T.any(
+              OpenAI::Live::FunctionTool,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::WebSearch,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::FileSearch,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::Shell,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::Custom,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::Computer,
+              OpenAI::Live::ResponsesDelegationConfig::Tool::ApplyPatch
+            )
           }
 
           class WebSearch < OpenAI::Internal::Type::BaseModel
@@ -535,6 +1690,1080 @@ module OpenAI
               # The tool type. Always `web_search`.
 
               type: :web_search
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class FileSearch < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::FileSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :file_search
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class CodeInterpreter < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :code_interpreter
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Shell < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Shell,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig {
+              returns(
+                T.nilable(
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto,
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerReference,
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local
+                  )
+                )
+              )
+            }
+            attr_accessor :environment
+
+            # A Responses shell tool. Use a hosted container or return local shell results
+            # with response.item.create. Domain secrets are not supported.
+            sig do
+              params(
+
+                environment: T.nilable(
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerReference::OrHash,
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::OrHash
+                  )
+                ),
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              environment: nil,
+
+              type: :shell
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  type: Symbol,
+                  environment: T.nilable(
+                    T.any(
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto,
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerReference,
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local
+                    )
+                  )
+                }
+              )
+            end
+            def to_hash
+            end
+
+            module Environment
+              extend OpenAI::Internal::Type::Union
+
+              Variants = T.type_alias {
+                T.any(
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerReference,
+                  OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local
+                )
+              }
+
+              class ContainerAuto < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # Automatically creates a container for this request
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # An optional list of uploaded files to make available to your code.
+                sig { returns(T.nilable(T::Array[String])) }
+                attr_accessor :file_ids
+
+                # The memory limit for the container.
+                sig {
+                  returns(
+                    T.nilable(
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit::OrSymbol
+                    )
+                  )
+                }
+                attr_accessor :memory_limit
+
+                # Network access policy for the container.
+                sig {
+                  returns(
+                    T.nilable(
+                      T.any(
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Disabled,
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Allowlist
+                      )
+                    )
+                  )
+                }
+                attr_accessor :network_policy
+
+                # An optional list of skills referenced by id or inline data.
+                sig {
+                  returns(
+                    T.nilable(
+                      T::Array[
+                        T.any(
+                          OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::SkillReference,
+                          OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline
+                        )
+                      ]
+                    )
+                  )
+                }
+                attr_accessor :skills
+
+                sig do
+                  params(
+
+                    file_ids: T.nilable(T::Array[String]),
+
+                    memory_limit: T.nilable(
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit::OrSymbol
+                    ),
+
+                    network_policy: T.nilable(
+                      T.any(
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Disabled::OrHash,
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Allowlist::OrHash
+                      )
+                    ),
+
+                    skills: T.nilable(
+                      T::Array[
+                        T.any(
+                          OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::SkillReference::OrHash,
+                          OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::OrHash
+                        )
+                      ]
+                    ),
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # An optional list of uploaded files to make available to your code.
+                  file_ids: nil,
+
+                  # The memory limit for the container.
+                  memory_limit: nil,
+
+                  # Network access policy for the container.
+                  network_policy: nil,
+
+                  # An optional list of skills referenced by id or inline data.
+                  skills: nil,
+
+                  # Automatically creates a container for this request
+
+                  type: :container_auto
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      type: Symbol,
+                      file_ids: T.nilable(T::Array[String]),
+                      memory_limit: T.nilable(
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit::OrSymbol
+                      ),
+                      network_policy: T.nilable(
+                        T.any(
+                          OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Disabled,
+                          OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Allowlist
+                        )
+                      ),
+                      skills: T.nilable(
+                        T::Array[
+                          T.any(
+                            OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::SkillReference,
+                            OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline
+                          )
+                        ]
+                      )
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                # The memory limit for the container.
+                module MemoryLimit
+                  extend OpenAI::Internal::Type::Enum
+
+                  TaggedSymbol = T.type_alias {
+                    T.all(
+                      Symbol,
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit
+                    )
+                  }
+                  OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                  MEMORY_LIMIT_1G = T.let(
+                    :"1g",
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit::TaggedSymbol
+                  )
+                  MEMORY_LIMIT_4G = T.let(
+                    :"4g",
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit::TaggedSymbol
+                  )
+                  MEMORY_LIMIT_16G = T.let(
+                    :"16g",
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit::TaggedSymbol
+                  )
+                  MEMORY_LIMIT_64G = T.let(
+                    :"64g",
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit::TaggedSymbol
+                  )
+
+                  sig {
+                    override.returns(
+                      T::Array[
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::MemoryLimit::TaggedSymbol
+                      ]
+                    )
+                  }
+                  def self.values
+                  end
+                end
+
+                # Network access policy for the container.
+                module NetworkPolicy
+                  extend OpenAI::Internal::Type::Union
+
+                  Variants = T.type_alias {
+                    T.any(
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Disabled,
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Allowlist
+                    )
+                  }
+
+                  class Disabled < OpenAI::Internal::Type::BaseModel
+                    OrHash = T.type_alias do
+                      T.any(
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Disabled,
+                        OpenAI::Internal::AnyHash
+                      )
+                    end
+
+                    # Disable outbound network access. Always `disabled`.
+                    sig { returns(Symbol) }
+                    attr_accessor :type
+
+                    sig do
+                      params(
+
+                        type: Symbol
+                      )
+                        .returns(T.attached_class)
+                    end
+                    def self.new(
+
+                      # Disable outbound network access. Always `disabled`.
+
+                      type: :disabled
+                    )
+                    end
+
+                    sig do
+                      override.returns(
+                        {type: Symbol}
+                      )
+                    end
+                    def to_hash
+                    end
+
+                  end
+
+                  class Allowlist < OpenAI::Internal::Type::BaseModel
+                    OrHash = T.type_alias do
+                      T.any(
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Allowlist,
+                        OpenAI::Internal::AnyHash
+                      )
+                    end
+
+                    # A list of allowed domains when type is `allowlist`.
+                    sig { returns(T::Array[String]) }
+                    attr_accessor :allowed_domains
+
+                    # Allow outbound network access only to specified domains. Always `allowlist`.
+                    sig { returns(Symbol) }
+                    attr_accessor :type
+
+                    sig do
+                      params(
+
+                        allowed_domains: T::Array[String],
+
+                        type: Symbol
+                      )
+                        .returns(T.attached_class)
+                    end
+                    def self.new(
+
+                      # A list of allowed domains when type is `allowlist`.
+                      allowed_domains:,
+
+                      # Allow outbound network access only to specified domains. Always `allowlist`.
+
+                      type: :allowlist
+                    )
+                    end
+
+                    sig do
+                      override.returns(
+                        {allowed_domains: T::Array[String], type: Symbol}
+                      )
+                    end
+                    def to_hash
+                    end
+
+                  end
+
+                  sig {
+                    override.returns(
+                      T::Array[
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::NetworkPolicy::Variants
+                      ]
+                    )
+                  }
+                  def self.variants
+                  end
+
+                end
+
+                module Skill
+                  extend OpenAI::Internal::Type::Union
+
+                  Variants = T.type_alias {
+                    T.any(
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::SkillReference,
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline
+                    )
+                  }
+
+                  class SkillReference < OpenAI::Internal::Type::BaseModel
+                    OrHash = T.type_alias do
+                      T.any(
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::SkillReference,
+                        OpenAI::Internal::AnyHash
+                      )
+                    end
+
+                    # The ID of the referenced skill.
+                    sig { returns(String) }
+                    attr_accessor :skill_id
+
+                    # References a skill created with the /v1/skills endpoint.
+                    sig { returns(Symbol) }
+                    attr_accessor :type
+
+                    # Optional skill version. Use a positive integer or 'latest'. Omit for default.
+                    sig { returns(T.nilable(String)) }
+                    attr_accessor :version
+
+                    sig do
+                      params(
+
+                        skill_id: String,
+
+                        version: T.nilable(String),
+
+                        type: Symbol
+                      )
+                        .returns(T.attached_class)
+                    end
+                    def self.new(
+
+                      # The ID of the referenced skill.
+                      skill_id:,
+
+                      # Optional skill version. Use a positive integer or 'latest'. Omit for default.
+                      version: nil,
+
+                      # References a skill created with the /v1/skills endpoint.
+
+                      type: :skill_reference
+                    )
+                    end
+
+                    sig do
+                      override.returns(
+                        {skill_id: String, type: Symbol, version: T.nilable(String)}
+                      )
+                    end
+                    def to_hash
+                    end
+
+                  end
+
+                  class Inline < OpenAI::Internal::Type::BaseModel
+                    OrHash = T.type_alias do
+                      T.any(
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline,
+                        OpenAI::Internal::AnyHash
+                      )
+                    end
+
+                    # The description of the skill.
+                    sig { returns(String) }
+                    attr_accessor :description
+
+                    # The name of the skill.
+                    sig { returns(String) }
+                    attr_accessor :name
+
+                    # Inline skill payload
+                    sig {
+                      returns(
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source
+                      )
+                    }
+                    attr_reader :source
+
+                    sig {
+                      params(
+                        source: OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source::OrHash
+                      )
+                        .void
+                    }
+                    attr_writer :source
+
+                    # Defines an inline skill for this request.
+                    sig { returns(Symbol) }
+                    attr_accessor :type
+
+                    sig do
+                      params(
+
+                        description: String,
+
+                        name: String,
+
+                        source: OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source::OrHash,
+
+                        type: Symbol
+                      )
+                        .returns(T.attached_class)
+                    end
+                    def self.new(
+
+                      # The description of the skill.
+                      description:,
+
+                      # The name of the skill.
+                      name:,
+
+                      # Inline skill payload
+                      source:,
+
+                      # Defines an inline skill for this request.
+
+                      type: :inline
+                    )
+                    end
+
+                    sig do
+                      override.returns(
+                        {
+                          description: String,
+                          name: String,
+                          source: OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source,
+                          type: Symbol
+                        }
+                      )
+                    end
+                    def to_hash
+                    end
+
+                    class Source < OpenAI::Internal::Type::BaseModel
+                      OrHash = T.type_alias do
+                        T.any(
+                          OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline::Source,
+                          OpenAI::Internal::AnyHash
+                        )
+                      end
+
+                      # Base64-encoded skill zip bundle.
+                      sig { returns(String) }
+                      attr_accessor :data
+
+                      # The media type of the inline skill payload. Must be `application/zip`.
+                      sig { returns(Symbol) }
+                      attr_accessor :media_type
+
+                      # The type of the inline skill source. Must be `base64`.
+                      sig { returns(Symbol) }
+                      attr_accessor :type
+
+                      # Inline skill payload
+                      sig do
+                        params(
+
+                          data: String,
+
+                          media_type: Symbol,
+
+                          type: Symbol
+                        )
+                          .returns(T.attached_class)
+                      end
+                      def self.new(
+
+                        # Base64-encoded skill zip bundle.
+                        data:,
+
+                        # The media type of the inline skill payload. Must be `application/zip`.
+                        media_type: :"application/zip",
+
+                        # The type of the inline skill source. Must be `base64`.
+
+                        type: :base64
+                      )
+                      end
+
+                      sig do
+                        override.returns(
+                          {data: String, media_type: Symbol, type: Symbol}
+                        )
+                      end
+                      def to_hash
+                      end
+
+                    end
+                  end
+
+                  sig {
+                    override.returns(
+                      T::Array[
+                        OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::Skill::Variants
+                      ]
+                    )
+                  }
+                  def self.variants
+                  end
+
+                end
+              end
+
+              class ContainerReference < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerReference,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # The ID of the referenced container.
+                sig { returns(String) }
+                attr_accessor :container_id
+
+                # References a container created with the /v1/containers endpoint
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                sig do
+                  params(
+
+                    container_id: String,
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # The ID of the referenced container.
+                  container_id:,
+
+                  # References a container created with the /v1/containers endpoint
+
+                  type: :container_reference
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {container_id: String, type: Symbol}
+                  )
+                end
+                def to_hash
+                end
+
+              end
+
+              class Local < OpenAI::Internal::Type::BaseModel
+                OrHash = T.type_alias do
+                  T.any(
+                    OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local,
+                    OpenAI::Internal::AnyHash
+                  )
+                end
+
+                # Use a local computer environment.
+                sig { returns(Symbol) }
+                attr_accessor :type
+
+                # An optional list of skills.
+                sig {
+                  returns(
+                    T.nilable(T::Array[OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::Skill])
+                  )
+                }
+                attr_accessor :skills
+
+                sig do
+                  params(
+
+                    skills: T.nilable(
+                      T::Array[OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::Skill::OrHash]
+                    ),
+
+                    type: Symbol
+                  )
+                    .returns(T.attached_class)
+                end
+                def self.new(
+
+                  # An optional list of skills.
+                  skills: nil,
+
+                  # Use a local computer environment.
+
+                  type: :local
+                )
+                end
+
+                sig do
+                  override.returns(
+                    {
+                      type: Symbol,
+                      skills: T.nilable(
+                        T::Array[OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::Skill]
+                      )
+                    }
+                  )
+                end
+                def to_hash
+                end
+
+                class Skill < OpenAI::Internal::Type::BaseModel
+                  OrHash = T.type_alias do
+                    T.any(
+                      OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Local::Skill,
+                      OpenAI::Internal::AnyHash
+                    )
+                  end
+
+                  # The description of the skill.
+                  sig { returns(String) }
+                  attr_accessor :description
+
+                  # The name of the skill.
+                  sig { returns(String) }
+                  attr_accessor :name
+
+                  # The path to the directory containing the skill.
+                  sig { returns(String) }
+                  attr_accessor :path
+
+                  sig do
+                    params(
+
+                      description: String,
+
+                      name: String,
+
+                      path: String
+                    )
+                      .returns(T.attached_class)
+                  end
+                  def self.new(
+
+                    # The description of the skill.
+                    description:,
+
+                    # The name of the skill.
+                    name:,
+
+                    # The path to the directory containing the skill.
+
+                    path:
+                  )
+                  end
+
+                  sig do
+                    override.returns(
+                      {description: String, name: String, path: String}
+                    )
+                  end
+                  def to_hash
+                  end
+
+                end
+              end
+
+              sig {
+                override.returns(T::Array[OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::Environment::Variants])
+              }
+              def self.variants
+              end
+
+            end
+          end
+
+          class ImageGeneration < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :image_generation
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Mcp < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :mcp
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Custom < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Custom,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :custom
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Namespace < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :namespace
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ToolSearch < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :tool_search
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ProgrammaticToolCalling < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :programmatic_tool_calling
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class Computer < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::Computer,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :computer
+            )
+            end
+
+            sig do
+              override.returns(
+                {type: Symbol}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class ApplyPatch < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Live::ResponsesDelegationConfig::Tool::ApplyPatch,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            sig do
+              params(
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              type: :apply_patch
             )
             end
 

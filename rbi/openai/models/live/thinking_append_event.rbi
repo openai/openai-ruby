@@ -36,7 +36,7 @@ module OpenAI
         attr_accessor :event_id
 
         # Provide silent reasoning or progress context to the Live model, optionally for
-        # an existing client delegation.
+        # an existing client delegation. Rejected while an audio fixture is active.
         sig do
           params(
 

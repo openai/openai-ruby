@@ -31,9 +31,9 @@ module OpenAI
         required :type, const: :computer_screenshot
 
         # @!attribute prompt_cache_breakpoint
-        #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #   token block.
+        #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #   not rounded to a token block.
         #
         #   @return [OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint, nil]
         optional(
@@ -55,9 +55,9 @@ module OpenAI
         #     The URL of the screenshot image.
         #
         #   @param prompt_cache_breakpoint [OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint]
-        #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-        #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-        #     token block.
+        #     Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+        #     breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+        #     not rounded to a token block.
         #
         #   @param type [Symbol, :computer_screenshot]
         #     Specifies the event type. For a computer screenshot, this property is always set
@@ -87,13 +87,35 @@ module OpenAI
           #   @return [Symbol, :explicit]
           required :mode, const: :explicit
 
-          # @!method initialize(mode: :explicit)
-          #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-          #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-          #   token block.
+          # @!attribute ttl
+          #   The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          #
+          #   @return [Symbol, OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::Ttl, nil]
+          optional :ttl, enum: -> { OpenAI::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::Ttl }
+
+          # @!method initialize(ttl: nil, mode: :explicit)
+          #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+          #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+          #   not rounded to a token block.
+          #
+          #   @param ttl [Symbol, OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint::Ttl]
+          #     The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
           #
           #   @param mode [Symbol, :explicit]
           #     The breakpoint mode. Always `explicit`.
+
+          # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+          #
+          # @see OpenAI::Models::Conversations::ComputerScreenshotContent::PromptCacheBreakpoint#ttl
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M = :"30m"
+            TTL_12H = :"12h"
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
       end
     end

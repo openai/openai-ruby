@@ -11,7 +11,7 @@ module OpenAI
 
         # Returned when an error occurs, which could be a client problem or a server
         # problem. Most errors are recoverable and the session will stay open, we
-        # recommend to implementors to monitor and log error messages by default.
+        # recommend to implementers to monitor and log error messages by default.
         variant :error, -> { OpenAI::Realtime::RealtimeErrorEvent }
 
         # Returned when a translation session is created. Emitted automatically when a

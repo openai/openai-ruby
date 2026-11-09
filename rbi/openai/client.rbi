@@ -127,14 +127,7 @@ module OpenAI
 
     # @api private
     sig do
-      override
-        .params(
-          security: {
-            bearer_auth?: T::Boolean,
-            admin_api_key_auth?: T::Boolean
-          }
-        )
-        .returns(T::Hash[String, String])
+      override.params(security: T::Hash[Symbol, T::Boolean]).returns(T::Hash[String, String])
     end
     private def auth_headers(security:)
     end

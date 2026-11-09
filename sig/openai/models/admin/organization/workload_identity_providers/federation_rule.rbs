@@ -1,0 +1,124 @@
+module OpenAI
+  module Models
+    module Admin
+      module Organization
+        module WorkloadIdentityProviders
+          type federation_rule =
+            {
+              id: String,
+              attribute_matchers: ::Hash[Symbol, OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::attribute_matcher],
+              created_at: Integer,
+              description: String?,
+              enabled: bool,
+              name: String?,
+              ?object: :"organization.workload_identity_federation_rule",
+              permissions: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::permissions,
+              project_id: String,
+              service_account_id: String,
+              updated_at: Integer,
+              workload_identity_provider_id: String
+            }
+
+          class FederationRule < OpenAI::Internal::Type::BaseModel
+            attr_accessor id: String
+
+            attr_accessor attribute_matchers: ::Hash[Symbol, OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::attribute_matcher]
+
+            attr_accessor created_at: Integer
+
+            attr_accessor description: String?
+
+            attr_accessor enabled: bool
+
+            attr_accessor name: String?
+
+            attr_accessor object: :"organization.workload_identity_federation_rule"
+
+            attr_accessor permissions: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::permissions
+
+            attr_accessor project_id: String
+
+            attr_accessor service_account_id: String
+
+            attr_accessor updated_at: Integer
+
+            attr_accessor workload_identity_provider_id: String
+
+            def initialize: (
+              id: String,
+              attribute_matchers: ::Hash[Symbol, OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::attribute_matcher],
+              created_at: Integer,
+              description: String?,
+              enabled: bool,
+              name: String?,
+              permissions: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::permissions,
+              project_id: String,
+              service_account_id: String,
+              updated_at: Integer,
+              workload_identity_provider_id: String,
+              ?object: :"organization.workload_identity_federation_rule"
+            ) -> void
+
+            def to_hash: -> {
+              id: String,
+              attribute_matchers: ::Hash[Symbol, OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::attribute_matcher],
+              created_at: Integer,
+              description: String?,
+              enabled: bool,
+              name: String?,
+              ?object: :"organization.workload_identity_federation_rule",
+              permissions: OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::permissions,
+              project_id: String,
+              service_account_id: String,
+              updated_at: Integer,
+              workload_identity_provider_id: String
+            }
+
+            type attribute_matcher = String | bool | Integer | Float
+
+            module AttributeMatcher
+              extend OpenAI::Internal::Type::Union
+
+              def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::attribute_matcher]
+            end
+
+            type permissions =
+              OpenAI::Admin::Organization::WorkloadIdentityProviders::FederationRule::Permissions::ServiceAccountDefault
+              | OpenAI::Admin::Organization::WorkloadIdentityProviders::FederationRule::Permissions::Restricted
+
+            module Permissions
+              extend OpenAI::Internal::Type::Union
+
+              type service_account_default = { ?type: :service_account_default }
+
+              class ServiceAccountDefault < OpenAI::Internal::Type::BaseModel
+                attr_accessor type: :service_account_default
+
+                def initialize: (?type: :service_account_default) -> void
+
+                def to_hash: -> { ?type: :service_account_default }
+              end
+
+              type restricted = { scopes: ::Array[String], ?type: :restricted }
+
+              class Restricted < OpenAI::Internal::Type::BaseModel
+                attr_accessor scopes: ::Array[String]
+
+                attr_accessor type: :restricted
+
+                def initialize: (
+                  scopes: ::Array[String],
+                  ?type: :restricted
+                ) -> void
+
+                def to_hash: -> { scopes: ::Array[String], ?type: :restricted }
+              end
+
+              def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::WorkloadIdentityProviders::FederationRule::permissions]
+            end
+          end
+        end
+      end
+    end
+  end
+end

@@ -12,12 +12,12 @@ module OpenAI
       # @!attribute image
       #   The image(s) to edit. Must be a supported image file or an array of images.
       #
-      #   For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
-      #   `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-      #   `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      #   `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`), each image should
-      #   be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
-      #   images.
+      #   For the GPT image models (`gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      #   `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      #   `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+      #   `gpt-image-2.5-flare-2026-09-08`), each image should be a `png`, `webp`, or
+      #   `jpg` file less than 50MB. You can provide up to 16 images.
+      #   `chatgpt-image-latest` follows the same input constraints as GPT image models.
       #
       #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -47,14 +47,52 @@ module OpenAI
       #   @return [Symbol, OpenAI::Models::ImageEditParams::Background, nil]
       optional :background, enum: -> { OpenAI::ImageEditParams::Background }, nil?: true
 
+      # @!attribute complexity
+      #   Computation spent planning the image, independently of rendering quality. Uses
+      #   the image model's configured default when omitted. For SVG output, controls the
+      #   reference image, independently of the SVG author's reasoning.
+      #
+      #   @return [Symbol, OpenAI::Models::ImageEditParams::Complexity, nil]
+      optional :complexity, enum: -> { OpenAI::ImageEditParams::Complexity }, nil?: true
+
+      # @!attribute frame_count
+      #   Number of frames for GIF output. Accepts integers from 2 through 16. Defaults to
+      #   9 when omitted. Only supported with output_format=gif. The requested size must
+      #   satisfy the selected model's GIF size limits. GIF output does not support
+      #   streaming, partial images, masks, or custom output compression. Requires access
+      #   to the GIF preview for the selected model.
+      #
+      #   @return [Integer, nil]
+      optional :frame_count, Integer, nil?: true
+
+      # @!attribute frame_duration_ms
+      #   Requested delay per GIF frame, in milliseconds. Defaults to 200 when omitted.
+      #   GIF output rounds to the nearest 10 ms and caps the encoded delay at 655,350 ms
+      #   per frame. Only supported with output_format=gif.
+      #
+      #   @return [Integer, nil]
+      optional :frame_duration_ms, Integer, nil?: true
+
       # @!attribute input_fidelity
       #   Control how much effort the model will exert to match the style and features,
       #   especially facial features, of input images. Supports `high` and `low` on
-      #   `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-      #   `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+      #   `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+      #   this parameter. Defaults to `low` on supported models.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil]
       optional :input_fidelity, enum: -> { OpenAI::ImageEditParams::InputFidelity }, nil?: true
+
+      # @!attribute markup
+      #   A transparent PNG overlaid on the first image to guide the edit. Must match that
+      #   image's dimensions after orientation and contain transparent pixels. Supports
+      #   GPT Image 2.5. Cannot be combined with mask.
+      #
+      #   `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #   metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #   content type.
+      #
+      #   @return [Pathname, StringIO, IO, String, OpenAI::FilePart, nil]
+      optional :markup, OpenAI::Internal::Type::FileInput
 
       # @!attribute mask
       #   An additional image whose fully transparent areas (e.g. where alpha is zero)
@@ -70,11 +108,14 @@ module OpenAI
       optional :mask, OpenAI::Internal::Type::FileInput
 
       # @!attribute model
-      #   The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      #   The GPT image model to use for image editing (`gpt-image-1-mini`,
       #   `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       #   `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-      #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-      #   `chatgpt-image-latest`).
+      #   `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`,
+      #   `gpt-image-2.6-sunburst`, `gpt-image-2.6-flare`, or `chatgpt-image-latest`).
+      #
+      #   `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+      #   `gpt-image-2.5-flare` instead.
       #
       #   @return [String, Symbol, OpenAI::Models::ImageModel, nil]
       optional :model, union: -> { OpenAI::ImageEditParams::Model }, nil?: true
@@ -95,8 +136,7 @@ module OpenAI
 
       # @!attribute output_format
       #   The format in which the generated images are returned. This parameter is only
-      #   supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
-      #   default value is `png`.
+      #   supported for the GPT image models. The default value is `png`.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
       optional :output_format, enum: -> { OpenAI::ImageEditParams::OutputFormat }, nil?: true
@@ -168,16 +208,16 @@ module OpenAI
       #   @return [String, nil]
       optional :user, String
 
-      # @!method initialize(image:, prompt:, background: nil, input_fidelity: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
+      # @!method initialize(image:, prompt:, background: nil, complexity: nil, frame_count: nil, frame_duration_ms: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
       #   @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #     The image(s) to edit. Must be a supported image file or an array of images.
       #
-      #     For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
-      #     `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-      #     `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      #     `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`), each image should
-      #     be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
-      #     images.
+      #     For the GPT image models (`gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      #     `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      #     `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+      #     `gpt-image-2.5-flare-2026-09-08`), each image should be a `png`, `webp`, or
+      #     `jpg` file less than 50MB. You can provide up to 16 images.
+      #     `chatgpt-image-latest` follows the same input constraints as GPT image models.
       #
       #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -198,11 +238,37 @@ module OpenAI
       #     `gpt-image-2-2026-04-21`, this support is in preview. When using `transparent`,
       #     set the output format to `png` or `webp`.
       #
+      #   @param complexity [Symbol, OpenAI::Models::ImageEditParams::Complexity, nil]
+      #     Computation spent planning the image, independently of rendering quality. Uses
+      #     the image model's configured default when omitted. For SVG output, controls the
+      #     reference image, independently of the SVG author's reasoning.
+      #
+      #   @param frame_count [Integer, nil]
+      #     Number of frames for GIF output. Accepts integers from 2 through 16. Defaults to
+      #     9 when omitted. Only supported with output_format=gif. The requested size must
+      #     satisfy the selected model's GIF size limits. GIF output does not support
+      #     streaming, partial images, masks, or custom output compression. Requires access
+      #     to the GIF preview for the selected model.
+      #
+      #   @param frame_duration_ms [Integer, nil]
+      #     Requested delay per GIF frame, in milliseconds. Defaults to 200 when omitted.
+      #     GIF output rounds to the nearest 10 ms and caps the encoded delay at 655,350 ms
+      #     per frame. Only supported with output_format=gif.
+      #
       #   @param input_fidelity [Symbol, OpenAI::Models::ImageEditParams::InputFidelity, nil]
       #     Control how much effort the model will exert to match the style and features,
       #     especially facial features, of input images. Supports `high` and `low` on
-      #     `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-      #     `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+      #     `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+      #     this parameter. Defaults to `low` on supported models.
+      #
+      #   @param markup [Pathname, StringIO, IO, String, OpenAI::FilePart]
+      #     A transparent PNG overlaid on the first image to guide the edit. Must match that
+      #     image's dimensions after orientation and contain transparent pixels. Supports
+      #     GPT Image 2.5. Cannot be combined with mask.
+      #
+      #     `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
+      #     metadata. Use `OpenAI::FilePart` when you need to override the filename or
+      #     content type.
       #
       #   @param mask [Pathname, StringIO, IO, String, OpenAI::FilePart]
       #     An additional image whose fully transparent areas (e.g. where alpha is zero)
@@ -215,11 +281,14 @@ module OpenAI
       #     content type.
       #
       #   @param model [String, Symbol, OpenAI::Models::ImageModel, nil]
-      #     The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      #     The GPT image model to use for image editing (`gpt-image-1-mini`,
       #     `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       #     `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-      #     `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-      #     `chatgpt-image-latest`).
+      #     `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`,
+      #     `gpt-image-2.6-sunburst`, `gpt-image-2.6-flare`, or `chatgpt-image-latest`).
+      #
+      #     `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+      #     `gpt-image-2.5-flare` instead.
       #
       #   @param n [Integer, nil]
       #     The number of images to generate. Must be between 1 and 10.
@@ -231,8 +300,7 @@ module OpenAI
       #
       #   @param output_format [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
       #     The format in which the generated images are returned. This parameter is only
-      #     supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
-      #     default value is `png`.
+      #     supported for the GPT image models. The default value is `png`.
       #
       #   @param partial_images [Integer, nil]
       #     The number of partial images to generate. This parameter is used for streaming
@@ -283,12 +351,12 @@ module OpenAI
 
       # The image(s) to edit. Must be a supported image file or an array of images.
       #
-      # For the GPT image models (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`,
-      # `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
-      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
-      # `gpt-image-2.5-flare-2026-09-08`, and `chatgpt-image-latest`), each image should
-      # be a `png`, `webp`, or `jpg` file less than 50MB. You can provide up to 16
-      # images.
+      # For the GPT image models (`gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+      # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+      # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, and
+      # `gpt-image-2.5-flare-2026-09-08`), each image should be a `png`, `webp`, or
+      # `jpg` file less than 50MB. You can provide up to 16 images.
+      # `chatgpt-image-latest` follows the same input constraints as GPT image models.
       module Image
         extend OpenAI::Internal::Type::Union
 
@@ -323,10 +391,24 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
+      # Computation spent planning the image, independently of rendering quality. Uses
+      # the image model's configured default when omitted. For SVG output, controls the
+      # reference image, independently of the SVG author's reasoning.
+      module Complexity
+        extend OpenAI::Internal::Type::Enum
+
+        LOW = :low
+        MEDIUM = :medium
+        HIGH = :high
+
+        # @!method self.values
+        #   @return [Array<Symbol>]
+      end
+
       # Control how much effort the model will exert to match the style and features,
       # especially facial features, of input images. Supports `high` and `low` on
-      # `gpt-image-1` and `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For
-      # `gpt-image-2`, omit this parameter. Defaults to `low` on supported models.
+      # `gpt-image-1.5`; `gpt-image-1-mini` supports only `low`. For `gpt-image-2`, omit
+      # this parameter. Defaults to `low` on supported models.
       module InputFidelity
         extend OpenAI::Internal::Type::Enum
 
@@ -337,17 +419,28 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`,
+      # The GPT image model to use for image editing (`gpt-image-1-mini`,
       # `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`,
       # `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`,
-      # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or
-      # `chatgpt-image-latest`).
+      # `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`,
+      # `gpt-image-2.6-sunburst`, `gpt-image-2.6-flare`, or `chatgpt-image-latest`).
+      #
+      # `gpt-image-1` was shut down on October 23, 2026. Use `gpt-image-2.5-sunburst` or
+      # `gpt-image-2.5-flare` instead.
       module Model
         extend OpenAI::Internal::Type::Union
 
         variant String
 
-        # The GPT image model to use for image editing (`gpt-image-1`, `gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`, `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`, `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`, `gpt-image-2.5-flare-2026-09-08`, or `chatgpt-image-latest`).
+        # The GPT image model to use for image editing
+        # (`gpt-image-1-mini`, `gpt-image-1.5`, `gpt-image-2`,
+        # `gpt-image-2-2026-04-21`, `gpt-image-2.5-sunburst`,
+        # `gpt-image-2.5-sunburst-2026-09-08`, `gpt-image-2.5-flare`,
+        # `gpt-image-2.5-flare-2026-09-08`, `gpt-image-2.6-sunburst`, `gpt-image-2.6-flare`,
+        # or `chatgpt-image-latest`).
+        #
+        # `gpt-image-1` was shut down on October 23, 2026. Use
+        # `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` instead.
         variant enum: -> { OpenAI::ImageModel }
 
         # @!method self.variants
@@ -355,14 +448,14 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for the GPT image models. Must be one of `png`, `jpeg`, or `webp`. The
-      # default value is `png`.
+      # supported for the GPT image models. The default value is `png`.
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
 
         PNG = :png
         JPEG = :jpeg
         WEBP = :webp
+        GIF = :gif
 
         # @!method self.values
         #   @return [Array<Symbol>]

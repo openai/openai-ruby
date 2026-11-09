@@ -26,6 +26,7 @@ module OpenAI
         | OpenAI::Live::OutputAudioDeltaEvent
         | OpenAI::Live::SidebandServerEvent::TransportDtmfReceived
         | OpenAI::Live::SidebandServerEvent::TransportDtmfSend
+        | OpenAI::Live::SidebandServerEvent::TransportDtmfSent
         | OpenAI::Live::SidebandServerEvent::TransportRinging
         | OpenAI::Live::SidebandServerEvent::TransportAnswered
         | OpenAI::Live::SidebandServerEvent::TransportFailed
@@ -119,6 +120,44 @@ module OpenAI
             event: String,
             event_id: String,
             ?type: :"transport.dtmf.send",
+            ?client_event_id: String
+          }
+        end
+
+        type transport_dtmf_sent =
+          {
+            event: String,
+            event_id: String,
+            ?type: :"transport.dtmf.sent",
+            ?client_event_id: String
+          }
+
+        class TransportDtmfSent < OpenAI::Internal::Type::BaseModel
+          attr_accessor event: String
+
+          attr_accessor event_id: String
+
+          attr_accessor type: :"transport.dtmf.sent"
+
+          # The event_id of the client command, when supplied.
+          attr_reader client_event_id: String?
+
+          # The event_id of the client command, when supplied.
+          def client_event_id=: (String) -> String
+
+          # @param client_event_id
+          #   The event_id of the client command, when supplied.
+          def initialize: (
+            event: String,
+            event_id: String,
+            ?client_event_id: String,
+            ?type: :"transport.dtmf.sent"
+          ) -> void
+
+          def to_hash: -> {
+            event: String,
+            event_id: String,
+            ?type: :"transport.dtmf.sent",
             ?client_event_id: String
           }
         end

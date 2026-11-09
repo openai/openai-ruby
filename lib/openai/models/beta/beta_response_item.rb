@@ -46,8 +46,8 @@ module OpenAI
 
         variant :additional_tools, -> { OpenAI::Beta::BetaResponseItem::AdditionalTools }
 
-        # A configuration update that applies to subsequent responses until it is
-        # replaced by another configuration update.
+        # A configuration update for subsequent responses. Each setting stays in effect
+        # until a later update replaces that setting.
         variant :configuration_update, -> { OpenAI::Beta::BetaResponseConfigurationUpdateItem }
 
         # A description of the chain of thought used by a reasoning model while generating
@@ -298,9 +298,9 @@ module OpenAI
               required :type, const: :computer_screenshot
 
               # @!attribute prompt_cache_breakpoint
-              #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-              #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-              #   token block.
+              #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+              #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+              #   not rounded to a token block.
               #
               #   @return [OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint, nil]
               optional(
@@ -322,9 +322,9 @@ module OpenAI
               #     The URL of the screenshot image.
               #
               #   @param prompt_cache_breakpoint [OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint]
-              #     Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-              #     from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-              #     token block.
+              #     Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+              #     breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+              #     not rounded to a token block.
               #
               #   @param type [Symbol, :computer_screenshot]
               #     Specifies the event type. For a computer screenshot, this property is always set
@@ -354,13 +354,40 @@ module OpenAI
                 #   @return [Symbol, :explicit]
                 required :mode, const: :explicit
 
-                # @!method initialize(mode: :explicit)
-                #   Marks the exact end of a reusable prompt prefix. The breakpoint inherits its TTL
-                #   from the request's `prompt_cache_options.ttl`; the boundary is not rounded to a
-                #   token block.
+                # @!attribute ttl
+                #   The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+                #
+                #   @return [Symbol, OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl, nil]
+                optional(
+                  :ttl,
+                  enum: -> {
+                    OpenAI::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl
+                  }
+                )
+
+                # @!method initialize(ttl: nil, mode: :explicit)
+                #   Marks the exact end of a reusable prompt prefix. When `ttl` is omitted, the
+                #   breakpoint inherits the request's `prompt_cache_options.ttl`; the boundary is
+                #   not rounded to a token block.
+                #
+                #   @param ttl [Symbol, OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint::Ttl]
+                #     The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
                 #
                 #   @param mode [Symbol, :explicit]
                 #     The breakpoint mode. Always `explicit`.
+
+                # The minimum lifetime of this cache breakpoint. Defaults to the request TTL.
+                #
+                # @see OpenAI::Models::Beta::BetaResponseItem::AgentMessage::Content::ComputerScreenshot::PromptCacheBreakpoint#ttl
+                module Ttl
+                  extend OpenAI::Internal::Type::Enum
+
+                  TTL_30M = :"30m"
+                  TTL_12H = :"12h"
+
+                  # @!method self.values
+                  #   @return [Array<Symbol>]
+                end
               end
             end
 
@@ -919,7 +946,12 @@ module OpenAI
           #   @return [String, Symbol, OpenAI::Models::Beta::BetaResponseItem::ImageGenerationCall::Size, nil]
           optional :size, union: -> { OpenAI::Beta::BetaResponseItem::ImageGenerationCall::Size }, nil?: true
 
-          # @!method initialize(id:, result:, status:, action: nil, agent: nil, background: nil, error: nil, output_format: nil, quality: nil, revised_prompt: nil, size: nil, type: :image_generation_call)
+          # @!attribute svg_usage
+          #
+          #   @return [OpenAI::Models::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage, nil]
+          optional :svg_usage, -> { OpenAI::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage }
+
+          # @!method initialize(id:, result:, status:, action: nil, agent: nil, background: nil, error: nil, output_format: nil, quality: nil, revised_prompt: nil, size: nil, svg_usage: nil, type: :image_generation_call)
           #   An image generation request made by the model.
           #
           #   @param id [String]
@@ -955,6 +987,8 @@ module OpenAI
           #
           #   @param size [String, Symbol, OpenAI::Models::Beta::BetaResponseItem::ImageGenerationCall::Size, nil]
           #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+          #
+          #   @param svg_usage [OpenAI::Models::Beta::BetaResponseItem::ImageGenerationCall::SvgUsage]
           #
           #   @param type [Symbol, :image_generation_call]
           #     The type of the image generation call. Always `image_generation_call`.
@@ -1123,6 +1157,8 @@ module OpenAI
             PNG = :png
             WEBP = :webp
             JPEG = :jpeg
+            GIF = :gif
+            SVG = :svg
 
             # @!method self.values
             #   @return [Array<Symbol>]
@@ -1174,6 +1210,41 @@ module OpenAI
             SIZE_1536X1024 = :"1536x1024"
 
             # @!endgroup
+          end
+
+          # @see OpenAI::Models::Beta::BetaResponseItem::ImageGenerationCall#svg_usage
+          class SvgUsage < OpenAI::Internal::Type::BaseModel
+            # @!attribute input_tokens
+            #
+            #   @return [Integer]
+            required :input_tokens, Integer
+
+            # @!attribute model
+            #
+            #   @return [String]
+            required :model, String
+
+            # @!attribute output_tokens
+            #
+            #   @return [Integer]
+            required :output_tokens, Integer
+
+            # @!attribute reasoning_tokens
+            #
+            #   @return [Integer]
+            required :reasoning_tokens, Integer
+
+            # @!attribute total_tokens
+            #
+            #   @return [Integer]
+            required :total_tokens, Integer
+
+            # @!method initialize(input_tokens:, model:, output_tokens:, reasoning_tokens:, total_tokens:)
+            #   @param input_tokens [Integer]
+            #   @param model [String]
+            #   @param output_tokens [Integer]
+            #   @param reasoning_tokens [Integer]
+            #   @param total_tokens [Integer]
           end
         end
 
