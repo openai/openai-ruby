@@ -38,6 +38,7 @@ run_tests = lambda do |files|
   abort("No test files selected") if files.empty?
 
   rb = files.map { "require_relative(#{_1.dump});" }.join
+  rb.prepend("require_relative 'scripts/test_shard_report';") if ENV["REPORT_TEST_SHARD"] == "1"
 
   ruby(*%w[-w -e], rb, verbose: false) { fail unless _1 }
 end
