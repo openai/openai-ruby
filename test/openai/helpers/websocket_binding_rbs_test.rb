@@ -47,6 +47,7 @@ class OpenAI::Test::WebSocketBindingRBSTest < Minitest::Test
       loader.add(path: Pathname(__dir__).join("../../../sig").expand_path)
       loader.add(path: signature)
       loader.add(library: "net-http")
+      loader.add(library: "uri")
       environment = RBS::Environment.from_loader(loader).resolve_type_names
       builder = RBS::DefinitionBuilder.new(env: environment)
       resource = builder.build_instance(RBS::TypeName.parse("::WebSocketTypingFixture"))
