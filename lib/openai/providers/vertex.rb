@@ -33,7 +33,10 @@ module OpenAI
             begin
               credentials = Google::Auth.get_application_default(SCOPE)
             rescue StandardError
-              raise OpenAI::Errors::Error.new("Vertex could not load Google Application Default Credentials."), cause: nil
+              raise(
+                OpenAI::Errors::Error.new("Vertex could not load Google Application Default Credentials."),
+                cause: nil
+              )
             end
           end
 

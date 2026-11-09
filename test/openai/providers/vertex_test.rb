@@ -392,12 +392,13 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
 
   def test_adc_error_diagnostics_redact_credentials
     google_credentials
-    failure = ->(_scope) { raise "synthetic-vertex-secret" }
+    failure = -> (_scope) { raise "synthetic-vertex-secret" }
     error = Google::Auth.stub(:get_application_default, failure) do
       assert_raises(OpenAI::Errors::Error) do
         OpenAI::Client.new(provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1"))
       end
     end
+
     assert_vertex_error_redacted(error)
   end
 
