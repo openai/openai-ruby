@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.121.0](https://github.com/openai/openai-ruby/compare/v0.120.0...v0.121.0) (2026-11-07)
+
+
+### Features
+
+* **api:** add agent scheduling APIs ([#1046](https://github.com/openai/openai-ruby/issues/1046)) ([4d0e09c](https://github.com/openai/openai-ruby/commit/4d0e09ce1df41e8f6442ae489c8ee9f1237cfc74))
+* **api:** add gpt-6-rosalind to beta Responses requests ([#1047](https://github.com/openai/openai-ruby/issues/1047)) ([d6461e6](https://github.com/openai/openai-ruby/commit/d6461e646fd8b747848d590a220da3fbbcc95259))
+
+
+### Documentation
+
+* consolidate AGENTS.md guidance ([#1044](https://github.com/openai/openai-ruby/issues/1044)) ([7b2dd7a](https://github.com/openai/openai-ruby/commit/7b2dd7ac84585b73d41938d9d9a547b682429c89))
+
 ## [0.120.0](https://github.com/openai/openai-ruby/compare/v0.119.0...v0.120.0) (2026-11-05)
 
 
