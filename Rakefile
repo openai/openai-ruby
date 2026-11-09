@@ -231,10 +231,8 @@ multitask("build:gem": pkg) do
   mv(*FileList["*.gem"], pkg)
   rm_rf(ignore_file)
 
-  # Validate isolated installs in package CI once this branch includes Vertex.
-  if ENV["GITHUB_JOB"] == "package" && File.file?("lib/openai/providers/vertex.rb")
-    Bundler.with_original_env { ruby("scripts/validate-vertex-gem.rb") }
-  end
+  # Keep dependency-isolation validation in the CI package job, not local builds or releases.
+  Bundler.with_original_env { ruby("scripts/validate-vertex-gem.rb") } if ENV["GITHUB_JOB"] == "package"
 end
 
 desc("Release ruby gem")

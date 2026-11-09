@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
     "rbi/**/*.rbi",
     "sig/**/*.rbs",
     "manifest.yaml",
-    "examples/chat/tool_runner.rb",
     "SECURITY.md",
     "docs/architecture/security-model.md",
     "CHANGELOG.md",
@@ -28,6 +27,7 @@ Gem::Specification.new do |s|
   ] +
     [
       "examples/audio/record_and_play.rb",
+      "examples/chat/tool_runner.rb",
       "examples/responses/websocket_workflows.rb",
       "examples/mtls_custom_http_client.rb",
       "examples/x509_workload_identity.rb",
@@ -50,12 +50,12 @@ Gem::Specification.new do |s|
     "VERSIONING.md",
     "azure.md",
     "bedrock.md",
+    "vertex.md",
     "realtime.md",
     "local-audio.md",
     "responses-websocket.md",
     "examples/realtime/README.md"
-  ] +
-    Dir["vertex.md"]
-  s.add_dependency("connection_pool", ">= 2.2.3")
+  ]
+  s.add_dependency("connection_pool", ">= 2.2.3", "!= 3.0.0", "!= 3.0.1", "!= 3.0.2")
   s.add_dependency("logger")
 end
