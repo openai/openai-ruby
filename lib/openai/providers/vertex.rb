@@ -32,8 +32,8 @@ module OpenAI
 
             begin
               credentials = Google::Auth.get_application_default(SCOPE)
-            rescue StandardError => e
-              raise OpenAI::Errors::Error.new("Vertex could not load Google Application Default Credentials."), cause: e
+            rescue StandardError
+              raise OpenAI::Errors::Error.new("Vertex could not load Google Application Default Credentials."), cause: nil
             end
           end
 
@@ -129,13 +129,13 @@ module OpenAI
               started = OpenAI::Internal::Util.monotonic_secs
               token = begin
                 Timeout.timeout(timeout) { token_provider.call }
-              rescue Timeout::Error => e
+              rescue Timeout::Error
                 raise(
                   OpenAI::Errors::APITimeoutError.new(url: url, message: "Vertex credential lookup timed out"),
-                  cause: e
+                  cause: nil
                 )
-              rescue StandardError => e
-                raise OpenAI::Errors::Error.new("Vertex failed to resolve Google credentials."), cause: e
+              rescue StandardError
+                raise OpenAI::Errors::Error.new("Vertex failed to resolve Google credentials."), cause: nil
               end
 
               remaining = timeout && (timeout - (OpenAI::Internal::Util.monotonic_secs - started))

@@ -355,6 +355,57 @@ class OpenAI::Test::VertexProviderTest < Minitest::Test
     end
   end
 
+  def test_token_provider_error_diagnostics_redact_credentials
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(
+        base_url: "https://trusted.example/v1",
+        token_provider: -> { raise "synthetic-vertex-secret" }
+      ),
+      max_retries: 0
+    )
+    error = assert_raises(OpenAI::Errors::Error) { client.responses.create(model: "caller-model") }
+    assert_vertex_error_redacted(error)
+  end
+
+  def test_native_credential_error_diagnostics_redact_credentials
+    credentials = Object.new
+    credentials.define_singleton_method(:apply!) { |_headers| raise "synthetic-vertex-secret" }
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1", credentials: credentials),
+      max_retries: 0
+    )
+    error = assert_raises(OpenAI::Errors::Error) { client.responses.create(model: "caller-model") }
+    assert_vertex_error_redacted(error)
+  end
+
+  def test_credential_timeout_diagnostics_redact_credentials
+    client = OpenAI::Client.new(
+      provider: OpenAI::Providers.vertex(
+        base_url: "https://trusted.example/v1",
+        token_provider: -> { raise Timeout::Error, "synthetic-vertex-secret" }
+      ),
+      max_retries: 0
+    )
+    error = assert_raises(OpenAI::Errors::APITimeoutError) { client.responses.create(model: "caller-model") }
+    assert_vertex_error_redacted(error)
+  end
+
+  def test_adc_error_diagnostics_redact_credentials
+    google_credentials
+    failure = ->(_scope) { raise "synthetic-vertex-secret" }
+    error = Google::Auth.stub(:get_application_default, failure) do
+      assert_raises(OpenAI::Errors::Error) do
+        OpenAI::Client.new(provider: OpenAI::Providers.vertex(base_url: "https://trusted.example/v1"))
+      end
+    end
+    assert_vertex_error_redacted(error)
+  end
+
+  private def assert_vertex_error_redacted(error)
+    assert_nil(error.cause)
+    refute_includes(error.full_message(highlight: false), "synthetic-vertex-secret")
+  end
+
   private def google_credentials
     begin
       require "googleauth"
