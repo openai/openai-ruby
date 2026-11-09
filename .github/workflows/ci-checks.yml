@@ -7,6 +7,10 @@ on:
         description: Runner label for CI jobs
         required: true
         type: string
+      review-shards:
+        description: Whole-file Ruby test shards for PR and merge-group checks
+        type: string
+        default: '["1/2","2/2"]'
 
 permissions: {}
 
@@ -100,7 +104,7 @@ jobs:
 
   test-ruby:
     timeout-minutes: 15
-    name: test (ruby ${{ matrix.ruby-version }}, shard ${{ matrix.shard }}/1)
+    name: test (ruby ${{ matrix.ruby-version }}, shard ${{ matrix.shard }})
     permissions:
       contents: read
     runs-on: ${{ inputs.runner }}
@@ -108,9 +112,11 @@ jobs:
       fail-fast: false
       matrix:
         ruby-version: ['3.3', '3.4', '4.0']
-        shard: [1]
+        shard: >-
+          ${{ fromJSON((github.event_name == 'pull_request' || github.event_name == 'merge_group')
+              && inputs.review-shards || '["1/1"]') }}
     env:
-      TEST_SHARD: ${{ matrix.shard }}/1
+      TEST_SHARD: ${{ matrix.shard }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -123,8 +129,10 @@ jobs:
       - name: Check primary dependency bundle
         run: bundle check
       - name: Check concurrent Steady publication
+        if: startsWith(matrix.shard, '1/')
         run: node scripts/steady/publication.test.cjs
       - name: Check browser lifecycle
+        if: startsWith(matrix.shard, '1/')
         run: node --test test/openai/realtime/browser/peer_test.mjs
 
       - name: Run tests
