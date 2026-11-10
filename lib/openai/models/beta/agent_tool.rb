@@ -58,7 +58,13 @@ module OpenAI
           #   @return [Symbol, :function]
           required :type, const: :function
 
-          # @!method initialize(defer_loading:, description:, name:, parameters:, type: :function)
+          # @!attribute async
+          #   Whether the agent continues without waiting for the function result.
+          #
+          #   @return [Boolean, nil]
+          optional :async, OpenAI::Internal::Type::Boolean
+
+          # @!method initialize(defer_loading:, description:, name:, parameters:, async: nil, type: :function)
           #   A function defined by the application.
           #
           #   @param defer_loading [Boolean]
@@ -72,6 +78,9 @@ module OpenAI
           #
           #   @param parameters [Hash{Symbol=>Object}]
           #     A JSON Schema object describing the function's arguments.
+          #
+          #   @param async [Boolean]
+          #     Whether the agent continues without waiting for the function result.
           #
           #   @param type [Symbol, :function]
           #     The type of the object. Always `function`.
