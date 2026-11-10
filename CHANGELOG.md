@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.122.0](https://github.com/openai/openai-ruby/compare/v0.121.0...v0.122.0) (2026-11-10)
+
+
+### Features
+
+* **api:** typed async fields for Managed Agents function tools ([#1052](https://github.com/openai/openai-ruby/issues/1052)) ([80ebb2c](https://github.com/openai/openai-ruby/commit/80ebb2cde00f39e19fe962fd2c54380af2068116))
+
 ## [0.121.0](https://github.com/openai/openai-ruby/compare/v0.120.0...v0.121.0) (2026-11-07)
 
 
