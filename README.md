@@ -1418,6 +1418,42 @@ params = OpenAI::Chat::CompletionCreateParams.new(
 openai.chat.completions.create(**params)
 ```
 
+### Constructing nested request values
+
+When you pass a message hash to a model constructor or setter, the model keeps
+the same hash. Accessing the nested value through `[]` or `to_h`, or copying the
+params with `ResponseCreateParams.new(**params)`, shares that message. You can
+keep using hash keys and edit the message before sending the request:
+
+```ruby
+message = {role: "user", content: "Draft"}
+params = OpenAI::Responses::ResponseCreateParams.new(model: "gpt-5.2", input: [message])
+message[:content] = "Hello"
+openai.responses.create(**params) # sends "Hello"
+```
+
+If your application owns a typed model, map its fields explicitly when building
+the request. For example, a Sorbet application can send the same message using
+an SDK object with a typed `content` reader:
+
+```ruby
+require "sorbet-runtime"
+
+class UserPrompt < T::Struct
+  const :text, String
+end
+
+prompt = UserPrompt.new(text: "Hello")
+message = OpenAI::Responses::EasyInputMessage.new(role: :user, content: prompt.text)
+params = OpenAI::Responses::ResponseCreateParams.new(model: "gpt-5.2", input: [message])
+openai.responses.create(**params)
+```
+
+The generated RBI and RBS describe the fields on SDK objects. A hash you
+supply still uses hash access at runtime. This also applies when you construct
+a response model yourself. When the client parses an API response, it can
+build nested SDK objects and decode known enum values as symbols.
+
 ### Enums
 
 Since this library does not depend on `sorbet-runtime`, it cannot provide [`T::Enum`](https://sorbet.org/docs/tenum) instances. Instead, we provide "tagged symbols" instead, which is always a primitive at runtime:

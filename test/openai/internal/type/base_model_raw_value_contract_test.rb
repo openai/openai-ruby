@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "sorbet-runtime"
+
 require_relative "../../test_helper"
 
 # These tests pin the v0.78 BaseModel compatibility boundary. Request models retain
@@ -26,6 +28,10 @@ class OpenAI::Test::BaseModelRawValueContractTest < Minitest::Test
 
   class Envelope < OpenAI::Internal::Type::BaseModel
     required :message, OpenAI::Responses::ResponseOutputMessage
+  end
+
+  class UserPrompt < T::Struct
+    const :text, String
   end
 
   def test_constructor_preserves_raw_values_for_every_nested_shape
@@ -86,6 +92,46 @@ class OpenAI::Test::BaseModelRawValueContractTest < Minitest::Test
     assert_equal("message", params.to_h.fetch(:input).fetch(0).fetch(:type))
     assert_same(input, params.input)
     assert_same(input, params.to_h.fetch(:input))
+  end
+
+  def test_copying_params_shares_the_nested_message_hash
+    message = {role: "user", content: "Draft", phase: nil, future_field: "extra"}
+    params = OpenAI::Responses::ResponseCreateParams.new(input: [message], model: "gpt-5.2")
+    copy = OpenAI::Responses::ResponseCreateParams.new(**params)
+
+    assert_same(message, copy.input.fetch(0))
+    message[:content] = "Hello"
+    assert_equal(
+      {"role" => "user", "content" => "Hello", "phase" => nil, "future_field" => "extra"},
+      JSON.parse(copy.to_json).fetch("input").fetch(0)
+    )
+  end
+
+  def test_application_prompt_converts_explicitly_to_a_request_message
+    prompt = UserPrompt.new(text: "Hello")
+    message = OpenAI::Responses::EasyInputMessage.new(role: :user, content: prompt.text)
+    params = OpenAI::Responses::ResponseCreateParams.new(input: [message], model: "gpt-5.2")
+
+    assert_same(message, params.input.fetch(0))
+    assert_equal("Hello", message.content)
+    transport = OpenAI::HTTPClient.new
+    transport.stub(
+      :execute,
+      -> (request) {
+        assert_equal(
+          {"model" => "gpt-5.2", "input" => [{"role" => "user", "content" => "Hello"}]},
+          JSON.parse(request.body)
+        )
+        OpenAI::HTTPClient::Response.new(
+          status: 200,
+          headers: {"content-type" => "application/json"},
+          body: ["{\"id\":\"resp_example\",\"object\":\"response\",\"output\":[]}"]
+        )
+      }
+    ) do
+      client = OpenAI::Client.new(api_key: "synthetic-key", http_client: transport)
+      assert_equal("resp_example", client.responses.create(**params).id)
+    end
   end
 
   def test_request_dump_observes_mutations_to_shared_nested_values
