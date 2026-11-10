@@ -48,6 +48,13 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # Whether the agent continues without waiting for the function result.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :async
+
+          sig { params(async: T::Boolean).void }
+          attr_writer :async
+
           # A function defined by the application.
           sig do
             params(
@@ -59,6 +66,8 @@ module OpenAI
               name: String,
 
               parameters: T::Hash[Symbol, T.anything],
+
+              async: T::Boolean,
 
               type: Symbol
             )
@@ -78,6 +87,9 @@ module OpenAI
             # A JSON Schema object describing the function's arguments.
             parameters:,
 
+            # Whether the agent continues without waiting for the function result.
+            async: nil,
+
             # The type of the object. Always `function`.
 
             type: :function
@@ -91,7 +103,8 @@ module OpenAI
                 description: String,
                 name: String,
                 parameters: T::Hash[Symbol, T.anything],
-                type: Symbol
+                type: Symbol,
+                async: T::Boolean
               }
             )
           end

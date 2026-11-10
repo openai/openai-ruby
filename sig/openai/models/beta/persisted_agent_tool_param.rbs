@@ -19,6 +19,7 @@ module OpenAI
             name: String,
             parameters: ::Hash[Symbol, top],
             ?type: :function,
+            ?async: bool,
             ?defer_loading: bool
           }
 
@@ -35,6 +36,14 @@ module OpenAI
           # The type of the object. Always `function`.
           attr_accessor type: :function
 
+          # Whether the agent continues without waiting for the function result. Defaults to
+          # `false`.
+          attr_reader async: bool?
+
+          # Whether the agent continues without waiting for the function result. Defaults to
+          # `false`.
+          def async=: (bool) -> bool
+
           # Whether this function is deferred and discovered through tool search. Defaults
           # to `false`.
           attr_reader defer_loading: bool?
@@ -49,6 +58,9 @@ module OpenAI
           #   The name of the function.
           # @param parameters
           #   A JSON Schema object describing the function's arguments.
+          # @param async
+          #   Whether the agent continues without waiting for the function result. Defaults to
+          #   `false`.
           # @param defer_loading
           #   Whether this function is deferred and discovered through tool search. Defaults
           #   to `false`.
@@ -58,6 +70,7 @@ module OpenAI
             description: String,
             name: String,
             parameters: ::Hash[Symbol, top],
+            ?async: bool,
             ?defer_loading: bool,
             ?type: :function
           ) -> void
@@ -67,6 +80,7 @@ module OpenAI
             name: String,
             parameters: ::Hash[Symbol, top],
             ?type: :function,
+            ?async: bool,
             ?defer_loading: bool
           }
         end
