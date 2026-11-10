@@ -1410,12 +1410,12 @@ Or, equivalently:
 # Hashes work, but are not typesafe:
 openai.chat.completions.create(messages: [{role: "user", content: "Say this is a test"}], model: "gpt-5.2")
 
-# You can also splat a full Params class:
+# To submit a request model, pass its fields as keywords.
 params = OpenAI::Chat::CompletionCreateParams.new(
   messages: [OpenAI::Chat::ChatCompletionUserMessageParam.new(content: "Say this is a test")],
   model: "gpt-5.2"
 )
-openai.chat.completions.create(**params)
+openai.chat.completions.create(**params.to_hash)
 ```
 
 ### Enums
