@@ -57,7 +57,7 @@ module OpenAI
       attr_accessor safety_identifier: String?
 
       # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
-      attr_reader size: OpenAI::Models::ImagesResponse::size?
+      attr_reader size: String?
 
       # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       def size=: (
@@ -175,13 +175,11 @@ module OpenAI
 
         def self?.variants: -> ::Array[OpenAI::Models::ImagesResponse::size]
 
-        SIZE_1024X1024: :"1024x1024"
-        SIZE_1024X1536: :"1024x1536"
-        SIZE_1536X1024: :"1536x1024"
+        SIZE_1024X1024: "1024x1024"
+        SIZE_1024X1536: "1024x1536"
+        SIZE_1536X1024: "1536x1024"
 
-        def self?.values: -> ::Array[(:"1024x1024"
-        | :"1024x1536"
-        | :"1536x1024")]
+        def self?.values: -> ::Array[String]
       end
 
       type svg_usage =

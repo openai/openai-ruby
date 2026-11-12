@@ -53,7 +53,7 @@ module OpenAI
         #   Controls which tool the Responses backend uses when handling a task delegated by
         #   the Live model.
         #
-        #   @return [Symbol, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam, nil]
+        #   @return [Symbol, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Function, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Mcp, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam, nil]
         optional :tool_choice, union: -> { OpenAI::Live::ResponsesDelegationConfig::ToolChoice }
 
         # @!attribute tools
@@ -94,7 +94,7 @@ module OpenAI
         #   @param text [OpenAI::Models::Live::ResponsesDelegationConfig::Text, nil]
         #     Text generation settings passed to each delegated Responses request.
         #
-        #   @param tool_choice [Symbol, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam]
+        #   @param tool_choice [Symbol, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Function, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Mcp, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam]
         #     Controls which tool the Responses backend uses when handling a task delegated by
         #     the Live model.
         #
@@ -239,9 +239,9 @@ module OpenAI
 
           variant enum: -> { OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum }
 
-          variant -> { OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam }
+          variant -> { OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Function }
 
-          variant -> { OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam }
+          variant -> { OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Mcp }
 
           variant -> { OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch }
 
@@ -278,42 +278,55 @@ module OpenAI
             #   @return [Array<Symbol>]
           end
 
-          class LiveFunctionToolChoiceParam < OpenAI::Internal::Type::BaseModel
+          class Function < OpenAI::Internal::Type::BaseModel
             # @!attribute name
+            #   The name of the function tool to call.
             #
             #   @return [String]
             required :name, String
 
             # @!attribute type
+            #   The tool to call. Always `function`.
             #
             #   @return [Symbol, :function]
             required :type, const: :function
 
             # @!method initialize(name:, type: :function)
             #   @param name [String]
+            #     The name of the function tool to call.
+            #
             #   @param type [Symbol, :function]
+            #     The tool to call. Always `function`.
           end
 
-          class LiveMCPToolChoiceParam < OpenAI::Internal::Type::BaseModel
-            # @!attribute name
-            #
-            #   @return [String]
-            required :name, String
-
+          class Mcp < OpenAI::Internal::Type::BaseModel
             # @!attribute server_label
+            #   The label of the MCP server to call.
             #
             #   @return [String]
             required :server_label, String
 
             # @!attribute type
+            #   The tool to call. Always `mcp`.
             #
             #   @return [Symbol, :mcp]
             required :type, const: :mcp
 
-            # @!method initialize(name:, server_label:, type: :mcp)
-            #   @param name [String]
+            # @!attribute name
+            #   The name of the MCP tool to call. If omitted, the server may choose a default.
+            #
+            #   @return [String, nil]
+            optional :name, String, nil?: true
+
+            # @!method initialize(server_label:, name: nil, type: :mcp)
             #   @param server_label [String]
+            #     The label of the MCP server to call.
+            #
+            #   @param name [String, nil]
+            #     The name of the MCP tool to call. If omitted, the server may choose a default.
+            #
             #   @param type [Symbol, :mcp]
+            #     The tool to call. Always `mcp`.
           end
 
           class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -575,40 +588,53 @@ module OpenAI
 
               class Function < OpenAI::Internal::Type::BaseModel
                 # @!attribute name
+                #   The name of the function tool to call.
                 #
                 #   @return [String]
                 required :name, String
 
                 # @!attribute type
+                #   The tool to call. Always `function`.
                 #
                 #   @return [Symbol, :function]
                 required :type, const: :function
 
                 # @!method initialize(name:, type: :function)
                 #   @param name [String]
+                #     The name of the function tool to call.
+                #
                 #   @param type [Symbol, :function]
+                #     The tool to call. Always `function`.
               end
 
               class Mcp < OpenAI::Internal::Type::BaseModel
-                # @!attribute name
-                #
-                #   @return [String]
-                required :name, String
-
                 # @!attribute server_label
+                #   The label of the MCP server to call.
                 #
                 #   @return [String]
                 required :server_label, String
 
                 # @!attribute type
+                #   The tool to call. Always `mcp`.
                 #
                 #   @return [Symbol, :mcp]
                 required :type, const: :mcp
 
-                # @!method initialize(name:, server_label:, type: :mcp)
-                #   @param name [String]
+                # @!attribute name
+                #   The name of the MCP tool to call. If omitted, the server may choose a default.
+                #
+                #   @return [String, nil]
+                optional :name, String, nil?: true
+
+                # @!method initialize(server_label:, name: nil, type: :mcp)
                 #   @param server_label [String]
+                #     The label of the MCP server to call.
+                #
+                #   @param name [String, nil]
+                #     The name of the MCP tool to call. If omitted, the server may choose a default.
+                #
                 #   @param type [Symbol, :mcp]
+                #     The tool to call. Always `mcp`.
               end
 
               class FileSearch < OpenAI::Internal::Type::BaseModel
@@ -764,7 +790,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(Symbol, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam)]
+          #   @return [Array(Symbol, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Function, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Mcp, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::ApplyPatch, OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam)]
         end
 
         # A function tool available to the Responses backend when the Live model delegates

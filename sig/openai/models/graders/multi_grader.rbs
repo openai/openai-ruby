@@ -6,7 +6,7 @@ module OpenAI
       type multi_grader =
         {
           calculate_output: String,
-          graders: OpenAI::Models::Graders::MultiGrader::graders,
+          graders: ::Hash[Symbol, OpenAI::Models::Graders::MultiGrader::grader],
           name: String,
           ?type: :multi
         }
@@ -15,9 +15,7 @@ module OpenAI
         # A formula to calculate the output based on grader results.
         attr_accessor calculate_output: String
 
-        # A StringCheckGrader object that performs a string comparison between input and
-        # reference using a specified operation.
-        attr_accessor graders: OpenAI::Models::Graders::MultiGrader::graders
+        attr_accessor graders: ::Hash[Symbol, OpenAI::Models::Graders::MultiGrader::grader]
 
         # The name of the grader.
         attr_accessor name: String
@@ -27,38 +25,35 @@ module OpenAI
 
         # @param calculate_output
         #   A formula to calculate the output based on grader results.
-        # @param graders
-        #   A StringCheckGrader object that performs a string comparison between input and
-        #   reference using a specified operation.
         # @param name
         #   The name of the grader.
         # @param type
         #   The object type, which is always `multi`.
         def initialize: (
           calculate_output: String,
-          graders: OpenAI::Models::Graders::MultiGrader::graders,
+          graders: ::Hash[Symbol, OpenAI::Models::Graders::MultiGrader::grader],
           name: String,
           ?type: :multi
         ) -> void
 
         def to_hash: -> {
           calculate_output: String,
-          graders: OpenAI::Models::Graders::MultiGrader::graders,
+          graders: ::Hash[Symbol, OpenAI::Models::Graders::MultiGrader::grader],
           name: String,
           ?type: :multi
         }
 
-        type graders =
+        type grader =
           OpenAI::Graders::StringCheckGrader
           | OpenAI::Graders::TextSimilarityGrader
           | OpenAI::Graders::PythonGrader
           | OpenAI::Graders::ScoreModelGrader
           | OpenAI::Graders::LabelModelGrader
 
-        module Graders
+        module Grader
           extend OpenAI::Internal::Type::Union
 
-          def self?.variants: -> ::Array[OpenAI::Models::Graders::MultiGrader::graders]
+          def self?.variants: -> ::Array[OpenAI::Models::Graders::MultiGrader::grader]
         end
       end
     end

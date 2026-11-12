@@ -135,9 +135,6 @@ module OpenAI
     # @return [OpenAI::Resources::Skills]
     attr_reader :skills
 
-    # @return [OpenAI::Resources::Videos]
-    attr_reader :videos
-
     # @api private
     #
     # @param security [Hash{Symbol=>Boolean}]
@@ -458,7 +455,6 @@ module OpenAI
       @evals = OpenAI::Resources::Evals.new(client: self)
       @containers = OpenAI::Resources::Containers.new(client: self)
       @skills = OpenAI::Resources::Skills.new(client: self)
-      @videos = OpenAI::Resources::Videos.new(client: self)
     end
   end
 end

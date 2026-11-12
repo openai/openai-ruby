@@ -58,8 +58,8 @@ module OpenAI
             T.nilable(
               T.any(
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::OrSymbol,
-                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam,
-                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Function,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Mcp,
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch,
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch,
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview,
@@ -81,8 +81,8 @@ module OpenAI
           params(
             tool_choice: T.any(
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::OrSymbol,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam::OrHash,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Function::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Mcp::OrHash,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch::OrHash,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch::OrHash,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview::OrHash,
@@ -172,8 +172,8 @@ module OpenAI
 
             tool_choice: T.any(
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::OrSymbol,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam::OrHash,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Function::OrHash,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Mcp::OrHash,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch::OrHash,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch::OrHash,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview::OrHash,
@@ -256,8 +256,8 @@ module OpenAI
               text: T.nilable(OpenAI::Live::ResponsesDelegationConfig::Text),
               tool_choice: T.any(
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::OrSymbol,
-                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam,
-                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Function,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Mcp,
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch,
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch,
                 OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview,
@@ -473,8 +473,8 @@ module OpenAI
           Variants = T.type_alias {
             T.any(
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveToolChoiceEnum::TaggedSymbol,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam,
-              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Function,
+              OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Mcp,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::FileSearch,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearch,
               OpenAI::Live::ResponsesDelegationConfig::ToolChoice::WebSearchPreview,
@@ -513,17 +513,19 @@ module OpenAI
             end
           end
 
-          class LiveFunctionToolChoiceParam < OpenAI::Internal::Type::BaseModel
+          class Function < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
               T.any(
-                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveFunctionToolChoiceParam,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Function,
                 OpenAI::Internal::AnyHash
               )
             end
 
+            # The name of the function tool to call.
             sig { returns(String) }
             attr_accessor :name
 
+            # The tool to call. Always `function`.
             sig { returns(Symbol) }
             attr_accessor :type
 
@@ -538,7 +540,10 @@ module OpenAI
             end
             def self.new(
 
+              # The name of the function tool to call.
               name:,
+
+              # The tool to call. Always `function`.
 
               type: :function
             )
@@ -554,29 +559,32 @@ module OpenAI
 
           end
 
-          class LiveMCPToolChoiceParam < OpenAI::Internal::Type::BaseModel
+          class Mcp < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
               T.any(
-                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::LiveMCPToolChoiceParam,
+                OpenAI::Live::ResponsesDelegationConfig::ToolChoice::Mcp,
                 OpenAI::Internal::AnyHash
               )
             end
 
-            sig { returns(String) }
-            attr_accessor :name
-
+            # The label of the MCP server to call.
             sig { returns(String) }
             attr_accessor :server_label
 
+            # The tool to call. Always `mcp`.
             sig { returns(Symbol) }
             attr_accessor :type
+
+            # The name of the MCP tool to call. If omitted, the server may choose a default.
+            sig { returns(T.nilable(String)) }
+            attr_accessor :name
 
             sig do
               params(
 
-                name: String,
-
                 server_label: String,
+
+                name: T.nilable(String),
 
                 type: Symbol
               )
@@ -584,9 +592,13 @@ module OpenAI
             end
             def self.new(
 
-              name:,
-
+              # The label of the MCP server to call.
               server_label:,
+
+              # The name of the MCP tool to call. If omitted, the server may choose a default.
+              name: nil,
+
+              # The tool to call. Always `mcp`.
 
               type: :mcp
             )
@@ -594,7 +606,7 @@ module OpenAI
 
             sig do
               override.returns(
-                {name: String, server_label: String, type: Symbol}
+                {server_label: String, type: Symbol, name: T.nilable(String)}
               )
             end
             def to_hash
@@ -1128,9 +1140,11 @@ module OpenAI
                   )
                 end
 
+                # The name of the function tool to call.
                 sig { returns(String) }
                 attr_accessor :name
 
+                # The tool to call. Always `function`.
                 sig { returns(Symbol) }
                 attr_accessor :type
 
@@ -1145,7 +1159,10 @@ module OpenAI
                 end
                 def self.new(
 
+                  # The name of the function tool to call.
                   name:,
+
+                  # The tool to call. Always `function`.
 
                   type: :function
                 )
@@ -1169,21 +1186,24 @@ module OpenAI
                   )
                 end
 
-                sig { returns(String) }
-                attr_accessor :name
-
+                # The label of the MCP server to call.
                 sig { returns(String) }
                 attr_accessor :server_label
 
+                # The tool to call. Always `mcp`.
                 sig { returns(Symbol) }
                 attr_accessor :type
+
+                # The name of the MCP tool to call. If omitted, the server may choose a default.
+                sig { returns(T.nilable(String)) }
+                attr_accessor :name
 
                 sig do
                   params(
 
-                    name: String,
-
                     server_label: String,
+
+                    name: T.nilable(String),
 
                     type: Symbol
                   )
@@ -1191,9 +1211,13 @@ module OpenAI
                 end
                 def self.new(
 
-                  name:,
-
+                  # The label of the MCP server to call.
                   server_label:,
+
+                  # The name of the MCP tool to call. If omitted, the server may choose a default.
+                  name: nil,
+
+                  # The tool to call. Always `mcp`.
 
                   type: :mcp
                 )
@@ -1201,7 +1225,7 @@ module OpenAI
 
                 sig do
                   override.returns(
-                    {name: String, server_label: String, type: Symbol}
+                    {server_label: String, type: Symbol, name: T.nilable(String)}
                   )
                 end
                 def to_hash

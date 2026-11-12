@@ -132,6 +132,16 @@ class OpenAI::Test::WebhookVerificationTest < OpenAI::Test::ResourceTest
     assert_equal("resp_123", event.data.id)
   end
 
+  def test_unwrap_historical_video_events
+    secret = "fake-video-webhook-secret"
+    %w[video.completed video.failed].each do |type|
+      payload = {id: "evt_test", object: "event", created_at: 123, type: type, data: {id: "video_test"}}
+      @test_payload = JSON.generate(payload)
+
+      assert_equal(payload, @webhook_service.unwrap(@test_payload, signed_headers(secret), secret))
+    end
+  end
+
   def test_unwrap_sip_media_security
     event_types = {
       "live.call.incoming" => OpenAI::Webhooks::LiveCallIncomingWebhookEvent,

@@ -20,12 +20,8 @@ module OpenAI
       sig { returns(OpenAI::BatchCreateParams::CompletionWindow::OrSymbol) }
       attr_accessor :completion_window
 
-      # The endpoint to be used for all requests in the batch. Currently
-      # `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, `/v1/completions`,
-      # `/v1/moderations`, `/v1/images/generations`, `/v1/images/edits`, and
-      # `/v1/videos` are supported. Note that `/v1/embeddings` batches are also
-      # restricted to a maximum of 50,000 embedding inputs across all requests in the
-      # batch.
+      # The endpoint for all requests in the batch. Batches using `/v1/embeddings` can
+      # contain at most 50,000 embedding inputs across all requests.
       sig { returns(OpenAI::BatchCreateParams::Endpoint::OrSymbol) }
       attr_accessor :endpoint
 
@@ -82,12 +78,8 @@ module OpenAI
         # is supported.
         completion_window:,
 
-        # The endpoint to be used for all requests in the batch. Currently
-        # `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, `/v1/completions`,
-        # `/v1/moderations`, `/v1/images/generations`, `/v1/images/edits`, and
-        # `/v1/videos` are supported. Note that `/v1/embeddings` batches are also
-        # restricted to a maximum of 50,000 embedding inputs across all requests in the
-        # batch.
+        # The endpoint for all requests in the batch. Batches using `/v1/embeddings` can
+        # contain at most 50,000 embedding inputs across all requests.
         endpoint:,
 
         # The ID of an uploaded file that contains requests for the new batch.
@@ -148,12 +140,8 @@ module OpenAI
         end
       end
 
-      # The endpoint to be used for all requests in the batch. Currently
-      # `/v1/responses`, `/v1/chat/completions`, `/v1/embeddings`, `/v1/completions`,
-      # `/v1/moderations`, `/v1/images/generations`, `/v1/images/edits`, and
-      # `/v1/videos` are supported. Note that `/v1/embeddings` batches are also
-      # restricted to a maximum of 50,000 embedding inputs across all requests in the
-      # batch.
+      # The endpoint for all requests in the batch. Batches using `/v1/embeddings` can
+      # contain at most 50,000 embedding inputs across all requests.
       module Endpoint
         extend OpenAI::Internal::Type::Enum
 
@@ -167,7 +155,6 @@ module OpenAI
         V1_MODERATIONS = T.let(:"/v1/moderations", OpenAI::BatchCreateParams::Endpoint::TaggedSymbol)
         V1_IMAGES_GENERATIONS = T.let(:"/v1/images/generations", OpenAI::BatchCreateParams::Endpoint::TaggedSymbol)
         V1_IMAGES_EDITS = T.let(:"/v1/images/edits", OpenAI::BatchCreateParams::Endpoint::TaggedSymbol)
-        V1_VIDEOS = T.let(:"/v1/videos", OpenAI::BatchCreateParams::Endpoint::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::BatchCreateParams::Endpoint::TaggedSymbol]) }
         def self.values

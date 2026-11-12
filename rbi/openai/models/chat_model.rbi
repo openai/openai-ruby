@@ -91,7 +91,6 @@ module OpenAI
       GPT_4_0125_PREVIEW = T.let(:"gpt-4-0125-preview", OpenAI::ChatModel::TaggedSymbol)
       GPT_4_TURBO_PREVIEW = T.let(:"gpt-4-turbo-preview", OpenAI::ChatModel::TaggedSymbol)
       GPT_4_1106_PREVIEW = T.let(:"gpt-4-1106-preview", OpenAI::ChatModel::TaggedSymbol)
-      GPT_4_VISION_PREVIEW = T.let(:"gpt-4-vision-preview", OpenAI::ChatModel::TaggedSymbol)
       GPT_4 = T.let(:"gpt-4", OpenAI::ChatModel::TaggedSymbol)
       GPT_4_0314 = T.let(:"gpt-4-0314", OpenAI::ChatModel::TaggedSymbol)
       GPT_4_0613 = T.let(:"gpt-4-0613", OpenAI::ChatModel::TaggedSymbol)
@@ -101,10 +100,8 @@ module OpenAI
       GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::ChatModel::TaggedSymbol)
       GPT_3_5_TURBO_16K = T.let(:"gpt-3.5-turbo-16k", OpenAI::ChatModel::TaggedSymbol)
       GPT_3_5_TURBO_0301 = T.let(:"gpt-3.5-turbo-0301", OpenAI::ChatModel::TaggedSymbol)
-      GPT_3_5_TURBO_0613 = T.let(:"gpt-3.5-turbo-0613", OpenAI::ChatModel::TaggedSymbol)
       GPT_3_5_TURBO_1106 = T.let(:"gpt-3.5-turbo-1106", OpenAI::ChatModel::TaggedSymbol)
       GPT_3_5_TURBO_0125 = T.let(:"gpt-3.5-turbo-0125", OpenAI::ChatModel::TaggedSymbol)
-      GPT_3_5_TURBO_16K_0613 = T.let(:"gpt-3.5-turbo-16k-0613", OpenAI::ChatModel::TaggedSymbol)
 
       sig { override.returns(T::Array[OpenAI::ChatModel::TaggedSymbol]) }
       def self.values
