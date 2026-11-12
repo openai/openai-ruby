@@ -45,6 +45,14 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # Whether the agent continues without waiting for the function result. Defaults to
+          # `false`.
+          sig { returns(T.nilable(T::Boolean)) }
+          attr_reader :async
+
+          sig { params(async: T::Boolean).void }
+          attr_writer :async
+
           # Whether this function is deferred and discovered through tool search. Defaults
           # to `false`.
           sig { returns(T.nilable(T::Boolean)) }
@@ -63,6 +71,8 @@ module OpenAI
 
               parameters: T::Hash[Symbol, T.anything],
 
+              async: T::Boolean,
+
               defer_loading: T::Boolean,
 
               type: Symbol
@@ -79,6 +89,10 @@ module OpenAI
 
             # A JSON Schema object describing the function's arguments.
             parameters:,
+
+            # Whether the agent continues without waiting for the function result. Defaults to
+            # `false`.
+            async: nil,
 
             # Whether this function is deferred and discovered through tool search. Defaults
             # to `false`.
@@ -97,6 +111,7 @@ module OpenAI
                 name: String,
                 parameters: T::Hash[Symbol, T.anything],
                 type: Symbol,
+                async: T::Boolean,
                 defer_loading: T::Boolean
               }
             )
