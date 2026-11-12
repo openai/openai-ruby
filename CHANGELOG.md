@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.123.0](https://github.com/openai/openai-ruby/compare/v0.122.0...v0.123.0) (2026-11-12)
+
+
+### Features
+
+* **api:** expose reasoning input transformations on responses ([#1059](https://github.com/openai/openai-ruby/issues/1059)) ([17a24fd](https://github.com/openai/openai-ruby/commit/17a24fdca4557f9d581b50440f06bb681c8f4de9))
+
+
+### Chores
+
+* **deps:** bump ruby/setup-ruby from 1.336.0 to 1.338.0 ([#1048](https://github.com/openai/openai-ruby/issues/1048)) ([ad2c3c8](https://github.com/openai/openai-ruby/commit/ad2c3c8926768441059c7e618c9629c34327f493))
+
+
+### Documentation
+
+* simplify review handoff instructions ([#1056](https://github.com/openai/openai-ruby/issues/1056)) ([c0c7a26](https://github.com/openai/openai-ruby/commit/c0c7a26c093b5d9c290598239ec52ae31ca3dc6e))
+
 ## [0.122.0](https://github.com/openai/openai-ruby/compare/v0.121.0...v0.122.0) (2026-11-10)
 
 
