@@ -286,9 +286,7 @@ in `AGENTS.md` when the change is authorized for public handling.
 The implementation task owns its pull request until CI and review feedback are
 addressed: diagnose and fix failures, rerun the required reviews before pushing,
 push each fix, reply to its review comment explaining what changed, then resolve
-the comment. Request review once in `#sdk-reviews` after checks pass. Put
-every authorized review request directly in the root `#sdk-reviews` channel,
-never in a thread. Never use Slack for suspected vulnerabilities or private
+the comment. Never use Slack for suspected vulnerabilities or private
 security coordination. Consider an implementation task complete only after its
 authorized handoff is finished and recorded in the existing project task state.
 
