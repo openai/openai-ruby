@@ -47,6 +47,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        sig { returns(T.nilable(String)) }
+        attr_reader :obfuscation
+
+        sig { params(obfuscation: String).void }
+        attr_writer :obfuscation
+
         # Emitted when text is appended to a reasoning summary.
         sig do
           params(
@@ -64,6 +71,8 @@ module OpenAI
             summary_index: Integer,
 
             turn_id: T.nilable(String),
+
+            obfuscation: String,
 
             type: Symbol
           )
@@ -92,6 +101,9 @@ module OpenAI
           # The ID of the turn associated with the event, when applicable.
           turn_id:,
 
+          # Random alphanumeric padding. Present when stream obfuscation is enabled.
+          obfuscation: nil,
+
           # The type of the object. Always
           # `agent.session.turn.reasoning_summary_text.delta`.
 
@@ -109,7 +121,8 @@ module OpenAI
               session_id: String,
               summary_index: Integer,
               turn_id: T.nilable(String),
-              type: Symbol
+              type: Symbol,
+              obfuscation: String
             }
           )
         end

@@ -53,7 +53,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.turn.reasoning_summary_part.added"]
         required :type, const: :"agent.session.turn.reasoning_summary_part.added"
 
-        # @!method initialize(event_id:, item_id:, output_index:, part:, session_id:, summary_index:, turn_id:, type: :"agent.session.turn.reasoning_summary_part.added")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, item_id:, output_index:, part:, session_id:, summary_index:, turn_id:, obfuscation: nil, type: :"agent.session.turn.reasoning_summary_part.added")
         #   Emitted when a reasoning summary content part is added.
         #
         #   @param event_id [String]
@@ -76,6 +82,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The ID of the turn associated with the event, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.turn.reasoning_summary_part.added"]
         #     The type of the object. Always

@@ -40,7 +40,13 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::TokenUsage, nil]
         required :usage, -> { OpenAI::Beta::TokenUsage }, nil?: true
 
-        # @!method initialize(event_id:, session_id:, turn:, turn_id:, usage:, type: :"agent.session.turn.cancelled")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, session_id:, turn:, turn_id:, usage:, obfuscation: nil, type: :"agent.session.turn.cancelled")
         #   Emitted when a turn is cancelled.
         #
         #   @param event_id [String]
@@ -57,6 +63,9 @@ module OpenAI
         #
         #   @param usage [OpenAI::Models::Beta::TokenUsage, nil]
         #     Token usage by the root agent during the turn, when available.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.turn.cancelled"]
         #     The type of the object. Always `agent.session.turn.cancelled`.

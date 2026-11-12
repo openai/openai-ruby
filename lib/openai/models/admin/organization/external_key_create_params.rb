@@ -11,11 +11,11 @@ module OpenAI
 
           # @!attribute body
           #
-          #   @return [OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure]
+          #   @return [OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci]
           required :body, union: -> { OpenAI::Admin::Organization::ExternalKeyCreateParams::Body }
 
           # @!method initialize(body:, request_options: {})
-          #   @param body [OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure]
+          #   @param body [OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci]
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
           module Body
@@ -28,6 +28,8 @@ module OpenAI
             variant :gcp, -> { OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Gcp }
 
             variant :azure, -> { OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure }
+
+            variant :oci, -> { OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci }
 
             class Aws < OpenAI::Internal::Type::BaseModel
               # @!attribute external_id
@@ -301,8 +303,81 @@ module OpenAI
               end
             end
 
+            class Oci < OpenAI::Internal::Type::BaseModel
+              # @!attribute key_ocid
+              #   The OCI Vault key OCID
+              #
+              #   @return [String]
+              required :key_ocid, String
+
+              # @!attribute name
+              #   A friendly name to identify this config
+              #
+              #   @return [String]
+              required :name, String
+
+              # @!attribute region
+              #   The OCI region containing the vault
+              #
+              #   @return [String]
+              required :region, String
+
+              # @!attribute type
+              #
+              #   @return [Symbol, :oci]
+              required :type, const: :oci
+
+              # @!attribute vault_ocid
+              #   The customer OCI Vault OCID
+              #
+              #   @return [String]
+              required :vault_ocid, String
+
+              # @!attribute key_version_ocid
+              #   The exact OCI key version OCID for PSP decryption.
+              #
+              #   @return [String, nil]
+              optional :key_version_ocid, String
+
+              # @!attribute purpose
+              #
+              #   @return [Symbol, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose, nil]
+              optional :purpose, enum: -> { OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose }
+
+              # @!method initialize(key_ocid:, name:, region:, vault_ocid:, key_version_ocid: nil, purpose: nil, type: :oci)
+              #   @param key_ocid [String]
+              #     The OCI Vault key OCID
+              #
+              #   @param name [String]
+              #     A friendly name to identify this config
+              #
+              #   @param region [String]
+              #     The OCI region containing the vault
+              #
+              #   @param vault_ocid [String]
+              #     The customer OCI Vault OCID
+              #
+              #   @param key_version_ocid [String]
+              #     The exact OCI key version OCID for PSP decryption.
+              #
+              #   @param purpose [Symbol, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose]
+              #
+              #   @param type [Symbol, :oci]
+
+              # @see OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci#purpose
+              module Purpose
+                extend OpenAI::Internal::Type::Enum
+
+                EKM = :ekm
+                PSP_DECRYPTION = :psp_decryption
+
+                # @!method self.values
+                #   @return [Array<Symbol>]
+              end
+            end
+
             # @!method self.variants
-            #   @return [Array(OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure)]
+            #   @return [Array(OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci)]
           end
         end
       end

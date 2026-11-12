@@ -71,6 +71,17 @@ module OpenAI
             sig { params(usage: T.nilable(OpenAI::Beta::TokenUsage::OrHash)).void }
             attr_writer :usage
 
+            # Prompt cache lifetime selected when this turn started, including an inherited
+            # session TTL. Null when the turn used the model default or no TTL was recorded.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions)) }
+            attr_reader :prompt_cache_options
+
+            sig {
+              params(prompt_cache_options: T.nilable(OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::OrHash))
+                .void
+            }
+            attr_writer :prompt_cache_options
+
             # The canonical public representation of a session turn.
             sig do
               params(
@@ -94,6 +105,8 @@ module OpenAI
                 subagent_id: T.nilable(String),
 
                 usage: T.nilable(OpenAI::Beta::TokenUsage::OrHash),
+
+                prompt_cache_options: T.nilable(OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::OrHash),
 
                 object: Symbol
               )
@@ -134,6 +147,10 @@ module OpenAI
               # change.
               usage:,
 
+              # Prompt cache lifetime selected when this turn started, including an inherited
+              # session TTL. Null when the turn used the model default or no TTL was recorded.
+              prompt_cache_options: nil,
+
               # The object type. Always `agent.session.turn`.
 
               object: :"agent.session.turn"
@@ -153,7 +170,8 @@ module OpenAI
                   started_at: T.nilable(Integer),
                   status: OpenAI::Beta::Agents::Sessions::Turn::Status::TaggedSymbol,
                   subagent_id: T.nilable(String),
-                  usage: T.nilable(OpenAI::Beta::TokenUsage)
+                  usage: T.nilable(OpenAI::Beta::TokenUsage),
+                  prompt_cache_options: T.nilable(OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions)
                 }
               )
             end
@@ -187,6 +205,61 @@ module OpenAI
 
               sig { override.returns(T::Array[OpenAI::Beta::Agents::Sessions::Turn::Status::TaggedSymbol]) }
               def self.values
+              end
+            end
+
+            class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              sig { returns(OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl::TaggedSymbol) }
+              attr_accessor :ttl
+
+              # Prompt cache lifetime selected when this turn started, including an inherited
+              # session TTL. Null when the turn used the model default or no TTL was recorded.
+              sig do
+                params(
+
+                  ttl: OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl::OrSymbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                ttl:
+              )
+              end
+
+              sig do
+                override.returns(
+                  {ttl: OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl::TaggedSymbol}
+                )
+              end
+              def to_hash
+              end
+
+              module Ttl
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol = T.type_alias {
+                  T.all(Symbol, OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl)
+                }
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                TTL_30M = T.let(:"30m", OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl::TaggedSymbol)
+                TTL_12H = T.let(:"12h", OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl::TaggedSymbol)
+
+                sig {
+                  override.returns(
+                    T::Array[OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl::TaggedSymbol]
+                  )
+                }
+                def self.values
+                end
               end
             end
 

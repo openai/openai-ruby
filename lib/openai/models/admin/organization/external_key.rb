@@ -56,10 +56,20 @@ module OpenAI
           #   @return [String, nil]
           optional :key_name, String
 
+          # @!attribute key_ocid
+          #
+          #   @return [String, nil]
+          optional :key_ocid, String
+
           # @!attribute key_version
           #
           #   @return [String, nil]
           optional :key_version, String
+
+          # @!attribute key_version_ocid
+          #
+          #   @return [String, nil]
+          optional :key_version_ocid, String
 
           # @!attribute kms_arn
           #
@@ -96,6 +106,11 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Admin::Organization::ExternalKey::Purpose, nil]
           optional :purpose, enum: -> { OpenAI::Admin::Organization::ExternalKey::Purpose }
 
+          # @!attribute region
+          #
+          #   @return [String, nil]
+          optional :region, String
+
           # @!attribute role_arn
           #
           #   @return [String, nil]
@@ -105,6 +120,11 @@ module OpenAI
           #
           #   @return [String, nil]
           optional :tenant_id, String
+
+          # @!attribute vault_ocid
+          #
+          #   @return [String, nil]
+          optional :vault_ocid, String
 
           # @!attribute vault_uri
           #
@@ -126,7 +146,7 @@ module OpenAI
           #   @return [String, nil]
           optional :workload_identity_provider_id, String
 
-          # @!method initialize(id:, api_project_ids:, created_at:, name:, object:, type:, workspace_id:, audience: nil, external_id: nil, key_name: nil, key_version: nil, kms_arn: nil, kms_key_location: nil, kms_key_name: nil, kms_key_ring_name: nil, kms_key_version: nil, kms_project_id: nil, purpose: nil, role_arn: nil, tenant_id: nil, vault_uri: nil, workload_identity_pool_id: nil, workload_identity_project_number: nil, workload_identity_provider_id: nil)
+          # @!method initialize(id:, api_project_ids:, created_at:, name:, object:, type:, workspace_id:, audience: nil, external_id: nil, key_name: nil, key_ocid: nil, key_version: nil, key_version_ocid: nil, kms_arn: nil, kms_key_location: nil, kms_key_name: nil, kms_key_ring_name: nil, kms_key_version: nil, kms_project_id: nil, purpose: nil, region: nil, role_arn: nil, tenant_id: nil, vault_ocid: nil, vault_uri: nil, workload_identity_pool_id: nil, workload_identity_project_number: nil, workload_identity_provider_id: nil)
           #   @param id [String]
           #   @param api_project_ids [Array<String>]
           #   @param created_at [Integer]
@@ -137,7 +157,9 @@ module OpenAI
           #   @param audience [String]
           #   @param external_id [String]
           #   @param key_name [String]
+          #   @param key_ocid [String]
           #   @param key_version [String]
+          #   @param key_version_ocid [String]
           #   @param kms_arn [String]
           #   @param kms_key_location [String]
           #   @param kms_key_name [String]
@@ -145,8 +167,10 @@ module OpenAI
           #   @param kms_key_version [String]
           #   @param kms_project_id [String]
           #   @param purpose [Symbol, OpenAI::Models::Admin::Organization::ExternalKey::Purpose]
+          #   @param region [String]
           #   @param role_arn [String]
           #   @param tenant_id [String]
+          #   @param vault_ocid [String]
           #   @param vault_uri [String]
           #   @param workload_identity_pool_id [String]
           #   @param workload_identity_project_number [String]

@@ -34,7 +34,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.environment.disconnected"]
         required :type, const: :"agent.session.environment.disconnected"
 
-        # @!method initialize(environment:, event_id:, session_id:, turn_id:, type: :"agent.session.environment.disconnected")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(environment:, event_id:, session_id:, turn_id:, obfuscation: nil, type: :"agent.session.environment.disconnected")
         #   Emitted when a session environment disconnects.
         #
         #   @param environment [OpenAI::Models::Beta::AgentSessionEnvironmentState]
@@ -48,6 +54,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The ID of the turn associated with the event, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.environment.disconnected"]
         #     The type of the object. Always `agent.session.environment.disconnected`.

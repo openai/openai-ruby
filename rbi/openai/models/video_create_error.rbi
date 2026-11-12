@@ -20,8 +20,9 @@ module OpenAI
       sig { returns(String) }
       attr_accessor :message
 
-      # The Retry-After and Retry-After-Ms headers returned with the original error, if
-      # any.
+      # Headers returned with the original error. These can include Retry-After,
+      # Retry-After-Ms, and, on opted-in deployments,
+      # x-openai-inference-capacity-reason.
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
       attr_reader :headers
 
@@ -68,8 +69,9 @@ module OpenAI
         # A human-readable description of the error that was returned.
         message:,
 
-        # The Retry-After and Retry-After-Ms headers returned with the original error, if
-        # any.
+        # Headers returned with the original error. These can include Retry-After,
+        # Retry-After-Ms, and, on opted-in deployments,
+        # x-openai-inference-capacity-reason.
         headers: nil,
 
         misalignment: nil,

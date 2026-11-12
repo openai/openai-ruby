@@ -33,6 +33,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        sig { returns(T.nilable(String)) }
+        attr_reader :obfuscation
+
+        sig { params(obfuscation: String).void }
+        attr_writer :obfuscation
+
         # Emitted when a turn or session fails.
         sig do
           params(
@@ -42,6 +49,8 @@ module OpenAI
             event_id: String,
 
             session_id: String,
+
+            obfuscation: String,
 
             type: Symbol
           )
@@ -58,6 +67,9 @@ module OpenAI
           # The ID of the session associated with the event.
           session_id:,
 
+          # Random alphanumeric padding. Present when stream obfuscation is enabled.
+          obfuscation: nil,
+
           # The type of the object. Always `error`.
 
           type: :error
@@ -66,7 +78,7 @@ module OpenAI
 
         sig do
           override.returns(
-            {error: OpenAI::Beta::SessionError, event_id: String, session_id: String, type: Symbol}
+            {error: OpenAI::Beta::SessionError, event_id: String, session_id: String, type: Symbol, obfuscation: String}
           )
         end
         def to_hash

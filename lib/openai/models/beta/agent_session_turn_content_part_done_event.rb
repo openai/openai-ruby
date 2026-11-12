@@ -52,7 +52,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.turn.content_part.done"]
         required :type, const: :"agent.session.turn.content_part.done"
 
-        # @!method initialize(content_index:, event_id:, item_id:, output_index:, part:, session_id:, turn_id:, type: :"agent.session.turn.content_part.done")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(content_index:, event_id:, item_id:, output_index:, part:, session_id:, turn_id:, obfuscation: nil, type: :"agent.session.turn.content_part.done")
         #   Emitted when an output content part is complete.
         #
         #   @param content_index [Integer]
@@ -75,6 +81,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The ID of the turn associated with the event, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.turn.content_part.done"]
         #     The type of the object. Always `agent.session.turn.content_part.done`.

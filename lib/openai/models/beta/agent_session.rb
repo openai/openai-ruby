@@ -55,7 +55,7 @@ module OpenAI
         # @!attribute required_actions
         #   Actions that must be completed before the session can continue.
         #
-        #   @return [Array<OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall, OpenAI::Models::Beta::AgentSession::RequiredAction::EnvironmentConnection>]
+        #   @return [Array<OpenAI::Models::Beta::AgentSession::RequiredAction::McpApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall, OpenAI::Models::Beta::AgentSession::RequiredAction::EnvironmentConnection>]
         required(
           :required_actions,
           -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentSession::RequiredAction] }
@@ -80,6 +80,12 @@ module OpenAI
         #   @return [Array<String>]
         required :vault_ids, OpenAI::Internal::Type::ArrayOf[String]
 
+        # @!attribute prompt_cache_options
+        #   Default prompt cache lifetime for turns in this session, when configured.
+        #
+        #   @return [OpenAI::Models::Beta::AgentSession::PromptCacheOptions, nil]
+        optional :prompt_cache_options, -> { OpenAI::Beta::AgentSession::PromptCacheOptions }, nil?: true
+
         # @!attribute review
         #   Review applied to eligible actions in this session. Omitted when review is none
         #   and automatic review is not enabled. Omission means none.
@@ -94,7 +100,7 @@ module OpenAI
         #   @return [OpenAI::Models::Beta::AgentSession::SpendControl, nil]
         optional :spend_control, -> { OpenAI::Beta::AgentSession::SpendControl }
 
-        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, review: nil, spend_control: nil, object: :"agent.session")
+        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, prompt_cache_options: nil, review: nil, spend_control: nil, object: :"agent.session")
         #   A Managed Agents session.
         #
         #   @param id [String]
@@ -118,7 +124,7 @@ module OpenAI
         #   @param metadata [Hash{Symbol=>String}]
         #     Custom string key-value pairs attached to the session.
         #
-        #   @param required_actions [Array<OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall, OpenAI::Models::Beta::AgentSession::RequiredAction::EnvironmentConnection>]
+        #   @param required_actions [Array<OpenAI::Models::Beta::AgentSession::RequiredAction::McpApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall, OpenAI::Models::Beta::AgentSession::RequiredAction::EnvironmentConnection>]
         #     Actions that must be completed before the session can continue.
         #
         #   @param status [Symbol, OpenAI::Models::Beta::AgentSession::Status]
@@ -130,6 +136,9 @@ module OpenAI
         #
         #   @param vault_ids [Array<String>]
         #     The IDs of vaults made available to the session.
+        #
+        #   @param prompt_cache_options [OpenAI::Models::Beta::AgentSession::PromptCacheOptions, nil]
+        #     Default prompt cache lifetime for turns in this session, when configured.
         #
         #   @param review [Symbol, OpenAI::Models::Beta::AgentSession::Review]
         #     Review applied to eligible actions in this session. Omitted when review is none
@@ -302,6 +311,9 @@ module OpenAI
 
           discriminator :type
 
+          # Respond to an MCP tool-call approval request.
+          variant :mcp_approval_request, -> { OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest }
+
           # Respond to a computer-use request.
           variant(
             :computer_use_approval_request,
@@ -313,6 +325,94 @@ module OpenAI
 
           # Reconnect a session environment.
           variant :environment_connection, -> { OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection }
+
+          class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
+            # @!attribute request
+            #   Information for presenting an MCP approval.
+            #
+            #   @return [OpenAI::Models::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request]
+            required :request, -> { OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request }
+
+            # @!attribute request_id
+            #   The opaque approval ID to echo when responding.
+            #
+            #   @return [String]
+            required :request_id, String
+
+            # @!attribute turn_id
+            #   The turn that requested approval.
+            #
+            #   @return [String]
+            required :turn_id, String
+
+            # @!attribute type
+            #   The type of the object. Always `mcp_approval_request`.
+            #
+            #   @return [Symbol, :mcp_approval_request]
+            required :type, const: :mcp_approval_request
+
+            # @!method initialize(request:, request_id:, turn_id:, type: :mcp_approval_request)
+            #   Respond to an MCP tool-call approval request.
+            #
+            #   @param request [OpenAI::Models::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request]
+            #     Information for presenting an MCP approval.
+            #
+            #   @param request_id [String]
+            #     The opaque approval ID to echo when responding.
+            #
+            #   @param turn_id [String]
+            #     The turn that requested approval.
+            #
+            #   @param type [Symbol, :mcp_approval_request]
+            #     The type of the object. Always `mcp_approval_request`.
+
+            # @see OpenAI::Models::Beta::AgentSession::RequiredAction::McpApprovalRequest#request
+            class Request < OpenAI::Internal::Type::BaseModel
+              # @!attribute arguments
+              #   The tool arguments as JSON, or null when CCA does not provide them.
+              #
+              #   @return [Object]
+              required :arguments, OpenAI::Internal::Type::Unknown
+
+              # @!attribute message
+              #
+              #   @return [String]
+              required :message, String
+
+              # @!attribute name
+              #   The tool name, or null when CCA does not provide it.
+              #
+              #   @return [String, nil]
+              required :name, String, nil?: true
+
+              # @!attribute server_label
+              #
+              #   @return [String]
+              required :server_label, String
+
+              # @!attribute type
+              #   The type of the object. Always `mcp_tool_call`.
+              #
+              #   @return [Symbol, :mcp_tool_call]
+              required :type, const: :mcp_tool_call
+
+              # @!method initialize(arguments:, message:, name:, server_label:, type: :mcp_tool_call)
+              #   Information for presenting an MCP approval.
+              #
+              #   @param arguments [Object]
+              #     The tool arguments as JSON, or null when CCA does not provide them.
+              #
+              #   @param message [String]
+              #
+              #   @param name [String, nil]
+              #     The tool name, or null when CCA does not provide it.
+              #
+              #   @param server_label [String]
+              #
+              #   @param type [Symbol, :mcp_tool_call]
+              #     The type of the object. Always `mcp_tool_call`.
+            end
+          end
 
           class ComputerUseApprovalRequest < OpenAI::Internal::Type::BaseModel
             # @!attribute request
@@ -628,7 +728,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall, OpenAI::Models::Beta::AgentSession::RequiredAction::EnvironmentConnection)]
+          #   @return [Array(OpenAI::Models::Beta::AgentSession::RequiredAction::McpApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall, OpenAI::Models::Beta::AgentSession::RequiredAction::EnvironmentConnection)]
         end
 
         # The current status of the session.
@@ -651,6 +751,30 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
+        end
+
+        # @see OpenAI::Models::Beta::AgentSession#prompt_cache_options
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          # @!attribute ttl
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::AgentSession::PromptCacheOptions::Ttl]
+          required :ttl, enum: -> { OpenAI::Beta::AgentSession::PromptCacheOptions::Ttl }
+
+          # @!method initialize(ttl:)
+          #   Default prompt cache lifetime for turns in this session, when configured.
+          #
+          #   @param ttl [Symbol, OpenAI::Models::Beta::AgentSession::PromptCacheOptions::Ttl]
+
+          # @see OpenAI::Models::Beta::AgentSession::PromptCacheOptions#ttl
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M = :"30m"
+            TTL_12H = :"12h"
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
         end
 
         # Review applied to eligible actions in this session. Omitted when review is none

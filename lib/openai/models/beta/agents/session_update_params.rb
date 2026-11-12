@@ -28,6 +28,17 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
+          # @!attribute prompt_cache_options
+          #   Default prompt cache lifetime for future turns. Send null to clear the session
+          #   default.
+          #
+          #   @return [OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions, nil]
+          optional(
+            :prompt_cache_options,
+            -> { OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions },
+            nil?: true
+          )
+
           # @!attribute review
           #   Default action review for new root turns. Existing turns and their subagents
           #   keep their review mode.
@@ -48,7 +59,7 @@ module OpenAI
             nil?: true
           )
 
-          # @!method initialize(session_id:, agent: nil, metadata: nil, review: nil, spend_control: nil, request_options: {})
+          # @!method initialize(session_id:, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, request_options: {})
           #   @param session_id [String]
           #
           #   @param agent [OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent]
@@ -58,6 +69,10 @@ module OpenAI
           #     Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
           #     Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #     characters.
+          #
+          #   @param prompt_cache_options [OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions, nil]
+          #     Default prompt cache lifetime for future turns. Send null to clear the session
+          #     default.
           #
           #   @param review [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Review]
           #     Default action review for new root turns. Existing turns and their subagents
@@ -183,6 +198,34 @@ module OpenAI
 
               # Uses the ultrafast service tier.
               ULTRAFAST = :ultrafast
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+
+          class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            # @!attribute ttl
+            #   Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            #
+            #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl, nil]
+            optional :ttl, enum: -> { OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl }
+
+            # @!method initialize(ttl: nil)
+            #   Default prompt cache lifetime for future turns. Send null to clear the session
+            #   default.
+            #
+            #   @param ttl [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl]
+            #     Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            #
+            # @see OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions#ttl
+            module Ttl
+              extend OpenAI::Internal::Type::Enum
+
+              TTL_30M = :"30m"
+              TTL_12H = :"12h"
 
               # @!method self.values
               #   @return [Array<Symbol>]

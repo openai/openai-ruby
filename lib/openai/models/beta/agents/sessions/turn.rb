@@ -76,7 +76,18 @@ module OpenAI
             #   @return [OpenAI::Models::Beta::TokenUsage, nil]
             required :usage, -> { OpenAI::Beta::TokenUsage }, nil?: true
 
-            # @!method initialize(id:, agent_id:, completed_at:, created_at:, error:, session_id:, started_at:, status:, subagent_id:, usage:, object: :"agent.session.turn")
+            # @!attribute prompt_cache_options
+            #   Prompt cache lifetime selected when this turn started, including an inherited
+            #   session TTL. Null when the turn used the model default or no TTL was recorded.
+            #
+            #   @return [OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions, nil]
+            optional(
+              :prompt_cache_options,
+              -> { OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions },
+              nil?: true
+            )
+
+            # @!method initialize(id:, agent_id:, completed_at:, created_at:, error:, session_id:, started_at:, status:, subagent_id:, usage:, prompt_cache_options: nil, object: :"agent.session.turn")
             #   The canonical public representation of a session turn.
             #
             #   @param id [String]
@@ -112,6 +123,10 @@ module OpenAI
             #     Best-effort token usage for the turn, or null if unknown. Recorded usage may
             #     change.
             #
+            #   @param prompt_cache_options [OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions, nil]
+            #     Prompt cache lifetime selected when this turn started, including an inherited
+            #     session TTL. Null when the turn used the model default or no TTL was recorded.
+            #
             #   @param object [Symbol, :"agent.session.turn"]
             #     The object type. Always `agent.session.turn`.
 
@@ -141,6 +156,31 @@ module OpenAI
 
               # @!method self.values
               #   @return [Array<Symbol>]
+            end
+
+            # @see OpenAI::Models::Beta::Agents::Sessions::Turn#prompt_cache_options
+            class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+              # @!attribute ttl
+              #
+              #   @return [Symbol, OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl]
+              required :ttl, enum: -> { OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl }
+
+              # @!method initialize(ttl:)
+              #   Prompt cache lifetime selected when this turn started, including an inherited
+              #   session TTL. Null when the turn used the model default or no TTL was recorded.
+              #
+              #   @param ttl [Symbol, OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions::Ttl]
+
+              # @see OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions#ttl
+              module Ttl
+                extend OpenAI::Internal::Type::Enum
+
+                TTL_30M = :"30m"
+                TTL_12H = :"12h"
+
+                # @!method self.values
+                #   @return [Array<Symbol>]
+              end
             end
           end
         end

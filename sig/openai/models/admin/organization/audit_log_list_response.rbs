@@ -1449,20 +1449,35 @@ module OpenAI
               ?changes_requested: OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated::ChangesRequested
             }
 
-            type changes_requested = { ?scopes: ::Array[String] }
+            type changes_requested =
+              { ?expires_in_seconds: Integer, ?scopes: ::Array[String] }
 
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # Number of seconds from the update request until the API key expires.
+              attr_reader expires_in_seconds: Integer?
+
+              # Number of seconds from the update request until the API key expires.
+              def expires_in_seconds=: (Integer) -> Integer
+
               # A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               attr_reader scopes: ::Array[String]?
 
               # A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               def scopes=: (::Array[String]) -> ::Array[String]
 
+              # @param expires_in_seconds
+              #   Number of seconds from the update request until the API key expires.
               # @param scopes
               #   A list of scopes allowed for the API key, e.g. `["api.model.request"]`
-              def initialize: (?scopes: ::Array[String]) -> void
+              def initialize: (
+                ?expires_in_seconds: Integer,
+                ?scopes: ::Array[String]
+              ) -> void
 
-              def to_hash: -> { ?scopes: ::Array[String] }
+              def to_hash: -> {
+                ?expires_in_seconds: Integer,
+                ?scopes: ::Array[String]
+              }
             end
           end
 

@@ -22,7 +22,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.idle"]
         required :type, const: :"agent.session.idle"
 
-        # @!method initialize(event_id:, session:, type: :"agent.session.idle")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, session:, obfuscation: nil, type: :"agent.session.idle")
         #   Emitted when a session becomes idle.
         #
         #   @param event_id [String]
@@ -30,6 +36,9 @@ module OpenAI
         #
         #   @param session [OpenAI::Models::Beta::AgentSession]
         #     The session that became idle.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.idle"]
         #     The type of the object. Always `agent.session.idle`.

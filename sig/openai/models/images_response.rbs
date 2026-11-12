@@ -33,10 +33,10 @@ module OpenAI
       # The list of generated images.
       def data=: (::Array[OpenAI::Image]) -> ::Array[OpenAI::Image]
 
-      # The output format of the generated image.
+      # The output format of the generated or edited image.
       attr_reader output_format: OpenAI::Models::ImagesResponse::output_format?
 
-      # The output format of the generated image.
+      # The output format of the generated or edited image.
       def output_format=: (
         OpenAI::Models::ImagesResponse::output_format
       ) -> OpenAI::Models::ImagesResponse::output_format
@@ -64,20 +64,18 @@ module OpenAI
         OpenAI::Models::ImagesResponse::size
       ) -> OpenAI::Models::ImagesResponse::size
 
-      # Token usage for the model that authored the SVG, separate from image rendering
-      # usage.
+      # Token usage for SVG authoring, separate from image rendering usage.
       attr_reader svg_usage: OpenAI::ImagesResponse::SvgUsage?
 
-      # Token usage for the model that authored the SVG, separate from image rendering
-      # usage.
+      # Token usage for SVG authoring, separate from image rendering usage.
       def svg_usage=: (
         OpenAI::ImagesResponse::SvgUsage
       ) -> OpenAI::ImagesResponse::SvgUsage
 
-      # For `gpt-image-1` only, the token usage information for the image generation.
+      # Token usage information for image generation with GPT Image models.
       attr_reader usage: OpenAI::ImagesResponse::Usage?
 
-      # For `gpt-image-1` only, the token usage information for the image generation.
+      # Token usage information for image generation with GPT Image models.
       def usage=: (
         OpenAI::ImagesResponse::Usage
       ) -> OpenAI::ImagesResponse::Usage
@@ -90,7 +88,7 @@ module OpenAI
       # @param data
       #   The list of generated images.
       # @param output_format
-      #   The output format of the generated image.
+      #   The output format of the generated or edited image.
       # @param quality
       #   The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
       #   `max`.
@@ -101,10 +99,9 @@ module OpenAI
       # @param size
       #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       # @param svg_usage
-      #   Token usage for the model that authored the SVG, separate from image rendering
-      #   usage.
+      #   Token usage for SVG authoring, separate from image rendering usage.
       # @param usage
-      #   For `gpt-image-1` only, the token usage information for the image generation.
+      #   Token usage information for image generation with GPT Image models.
       def initialize: (
         created: Integer,
         ?background: OpenAI::Models::ImagesResponse::background,

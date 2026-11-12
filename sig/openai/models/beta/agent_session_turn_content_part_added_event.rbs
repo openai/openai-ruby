@@ -10,7 +10,8 @@ module OpenAI
           part: OpenAI::Beta::OutputText,
           session_id: String,
           turn_id: String?,
-          ?type: :"agent.session.turn.content_part.added"
+          ?type: :"agent.session.turn.content_part.added",
+          ?obfuscation: String
         }
 
       class AgentSessionTurnContentPartAddedEvent < OpenAI::Internal::Type::BaseModel
@@ -38,6 +39,12 @@ module OpenAI
         # The type of the object. Always `agent.session.turn.content_part.added`.
         attr_accessor type: :"agent.session.turn.content_part.added"
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param content_index
         #   The index of the content part in the message.
         # @param event_id
@@ -52,6 +59,8 @@ module OpenAI
         #   The ID of the session associated with the event.
         # @param turn_id
         #   The ID of the turn associated with the event, when applicable.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always `agent.session.turn.content_part.added`.
         def initialize: (
@@ -62,6 +71,7 @@ module OpenAI
           part: OpenAI::Beta::OutputText,
           session_id: String,
           turn_id: String?,
+          ?obfuscation: String,
           ?type: :"agent.session.turn.content_part.added"
         ) -> void
 
@@ -73,7 +83,8 @@ module OpenAI
           part: OpenAI::Beta::OutputText,
           session_id: String,
           turn_id: String?,
-          ?type: :"agent.session.turn.content_part.added"
+          ?type: :"agent.session.turn.content_part.added",
+          ?obfuscation: String
         }
       end
     end

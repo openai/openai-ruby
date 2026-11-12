@@ -10,7 +10,8 @@ module OpenAI
           session_id: String,
           summary_index: Integer,
           turn_id: String?,
-          ?type: :"agent.session.turn.reasoning_summary_text.delta"
+          ?type: :"agent.session.turn.reasoning_summary_text.delta",
+          ?obfuscation: String
         }
 
       class AgentSessionTurnReasoningSummaryTextDeltaEvent < OpenAI::Internal::Type::BaseModel
@@ -39,6 +40,12 @@ module OpenAI
         # `agent.session.turn.reasoning_summary_text.delta`.
         attr_accessor type: :"agent.session.turn.reasoning_summary_text.delta"
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param delta
         #   The summary text that was appended.
         # @param event_id
@@ -53,6 +60,8 @@ module OpenAI
         #   The index of the summary content part.
         # @param turn_id
         #   The ID of the turn associated with the event, when applicable.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always
         #   `agent.session.turn.reasoning_summary_text.delta`.
@@ -64,6 +73,7 @@ module OpenAI
           session_id: String,
           summary_index: Integer,
           turn_id: String?,
+          ?obfuscation: String,
           ?type: :"agent.session.turn.reasoning_summary_text.delta"
         ) -> void
 
@@ -75,7 +85,8 @@ module OpenAI
           session_id: String,
           summary_index: Integer,
           turn_id: String?,
-          ?type: :"agent.session.turn.reasoning_summary_text.delta"
+          ?type: :"agent.session.turn.reasoning_summary_text.delta",
+          ?obfuscation: String
         }
       end
     end

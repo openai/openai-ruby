@@ -136,7 +136,8 @@ module OpenAI
 
       # @!attribute output_format
       #   The format in which the generated images are returned. This parameter is only
-      #   supported for the GPT image models. The default value is `png`.
+      #   supported for the GPT image models. The default value is `png`. SVG output
+      #   requires a supported image model and project access.
       #
       #   @return [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
       optional :output_format, enum: -> { OpenAI::ImageEditParams::OutputFormat }, nil?: true
@@ -197,6 +198,15 @@ module OpenAI
       #   @return [String, Symbol, OpenAI::Models::ImageEditParams::Size, nil]
       optional :size, union: -> { OpenAI::ImageEditParams::Size }, nil?: true
 
+      # @!attribute svg
+      #   Selects the author model and reasoning effort for `output_format=svg`. Supply
+      #   `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+      #   SVG output requires `n=1` and cannot use streaming, partial images, or output
+      #   compression. Use multipart fields such as `svg[model]`.
+      #
+      #   @return [OpenAI::Models::ImageEditParams::Svg, nil]
+      optional :svg, -> { OpenAI::ImageEditParams::Svg }, nil?: true
+
       # @!attribute user
       #   @deprecated
       #
@@ -208,7 +218,7 @@ module OpenAI
       #   @return [String, nil]
       optional :user, String
 
-      # @!method initialize(image:, prompt:, background: nil, complexity: nil, frame_count: nil, frame_duration_ms: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
+      # @!method initialize(image:, prompt:, background: nil, complexity: nil, frame_count: nil, frame_duration_ms: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, svg: nil, user: nil, request_options: {})
       #   @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #     The image(s) to edit. Must be a supported image file or an array of images.
       #
@@ -300,7 +310,8 @@ module OpenAI
       #
       #   @param output_format [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
       #     The format in which the generated images are returned. This parameter is only
-      #     supported for the GPT image models. The default value is `png`.
+      #     supported for the GPT image models. The default value is `png`. SVG output
+      #     requires a supported image model and project access.
       #
       #   @param partial_images [Integer, nil]
       #     The number of partial images to generate. This parameter is used for streaming
@@ -340,6 +351,12 @@ module OpenAI
       #     current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and
       #     `1024x1536` are supported by the GPT image models; `auto` is supported for
       #     models that allow automatic sizing.
+      #
+      #   @param svg [OpenAI::Models::ImageEditParams::Svg, nil]
+      #     Selects the author model and reasoning effort for `output_format=svg`. Supply
+      #     `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+      #     SVG output requires `n=1` and cannot use streaming, partial images, or output
+      #     compression. Use multipart fields such as `svg[model]`.
       #
       #   @param user [String]
       #     Deprecated: use `safety_identifier` instead. This parameter remains accepted for
@@ -448,14 +465,16 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for the GPT image models. The default value is `png`.
+      # supported for the GPT image models. The default value is `png`. SVG output
+      # requires a supported image model and project access.
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
 
         PNG = :png
-        JPEG = :jpeg
         WEBP = :webp
+        JPEG = :jpeg
         GIF = :gif
+        SVG = :svg
 
         # @!method self.values
         #   @return [Array<Symbol>]
@@ -545,6 +564,66 @@ module OpenAI
         SIZE_512X512 = :"512x512"
 
         # @!endgroup
+      end
+
+      class Svg < OpenAI::Internal::Type::BaseModel
+        # @!attribute model
+        #
+        #   @return [String, nil]
+        optional :model, String
+
+        # @!attribute reasoning
+        #   Reasoning effort for SVG authoring. When omitted, uses the author model's
+        #   default in both Images and Responses.
+        #
+        #   @return [OpenAI::Models::ImageEditParams::Svg::Reasoning, nil]
+        optional :reasoning, -> { OpenAI::ImageEditParams::Svg::Reasoning }, nil?: true
+
+        # @!method initialize(model: nil, reasoning: nil)
+        #   Selects the author model and reasoning effort for `output_format=svg`. Supply
+        #   `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+        #   SVG output requires `n=1` and cannot use streaming, partial images, or output
+        #   compression. Use multipart fields such as `svg[model]`.
+        #
+        #   @param model [String]
+        #
+        #   @param reasoning [OpenAI::Models::ImageEditParams::Svg::Reasoning, nil]
+        #     Reasoning effort for SVG authoring. When omitted, uses the author model's
+        #     default in both Images and Responses.
+
+        # @see OpenAI::Models::ImageEditParams::Svg#reasoning
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          # @!attribute effort
+          #   Controls how much effort the model should spend on reasoning for this request.
+          #
+          #   @return [Symbol, OpenAI::Models::ImageEditParams::Svg::Reasoning::Effort, nil]
+          optional :effort, enum: -> { OpenAI::ImageEditParams::Svg::Reasoning::Effort }
+
+          # @!method initialize(effort: nil)
+          #   Reasoning effort for SVG authoring. When omitted, uses the author model's
+          #   default in both Images and Responses.
+          #
+          #   @param effort [Symbol, OpenAI::Models::ImageEditParams::Svg::Reasoning::Effort]
+          #     Controls how much effort the model should spend on reasoning for this request.
+
+          # Controls how much effort the model should spend on reasoning for this request.
+          #
+          # @see OpenAI::Models::ImageEditParams::Svg::Reasoning#effort
+          module Effort
+            extend OpenAI::Internal::Type::Enum
+
+            NONE = :none
+            MINIMAL = :minimal
+            LOW = :low
+            MEDIUM = :medium
+            HIGH = :high
+            XHIGH = :xhigh
+            MAX = :max
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+        end
       end
     end
   end

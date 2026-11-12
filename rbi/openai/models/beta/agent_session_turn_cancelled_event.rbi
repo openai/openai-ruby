@@ -44,6 +44,13 @@ module OpenAI
         sig { params(usage: T.nilable(OpenAI::Beta::TokenUsage::OrHash)).void }
         attr_writer :usage
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        sig { returns(T.nilable(String)) }
+        attr_reader :obfuscation
+
+        sig { params(obfuscation: String).void }
+        attr_writer :obfuscation
+
         # Emitted when a turn is cancelled.
         sig do
           params(
@@ -57,6 +64,8 @@ module OpenAI
             turn_id: String,
 
             usage: T.nilable(OpenAI::Beta::TokenUsage::OrHash),
+
+            obfuscation: String,
 
             type: Symbol
           )
@@ -79,6 +88,9 @@ module OpenAI
           # Token usage by the root agent during the turn, when available.
           usage:,
 
+          # Random alphanumeric padding. Present when stream obfuscation is enabled.
+          obfuscation: nil,
+
           # The type of the object. Always `agent.session.turn.cancelled`.
 
           type: :"agent.session.turn.cancelled"
@@ -93,7 +105,8 @@ module OpenAI
               turn: OpenAI::Beta::Agents::Sessions::Turn,
               turn_id: String,
               type: Symbol,
-              usage: T.nilable(OpenAI::Beta::TokenUsage)
+              usage: T.nilable(OpenAI::Beta::TokenUsage),
+              obfuscation: String
             }
           )
         end

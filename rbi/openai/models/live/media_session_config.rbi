@@ -93,6 +93,11 @@ module OpenAI
         sig { returns(T.nilable(String)) }
         attr_accessor :instructions
 
+        # A stable identifier for your end user, used for safety monitoring and abuse
+        # detection.
+        sig { returns(T.nilable(String)) }
+        attr_accessor :safety_identifier
+
         # Whether to store the session for later forking and recording download. Defaults
         # to false for new sessions.
         sig { returns(T.nilable(T::Boolean)) }
@@ -142,6 +147,8 @@ module OpenAI
 
             instructions: T.nilable(String),
 
+            safety_identifier: T.nilable(String),
+
             store: T::Boolean,
 
             triggers: T::Array[OpenAI::Live::DecisionTrigger::OrHash]
@@ -181,6 +188,10 @@ module OpenAI
           # server defaults. Immutable after startup.
           instructions: nil,
 
+          # A stable identifier for your end user, used for safety monitoring and abuse
+          # detection.
+          safety_identifier: nil,
+
           # Whether to store the session for later forking and recording download. Defaults
           # to false for new sessions.
           store: nil,
@@ -215,6 +226,7 @@ module OpenAI
                 )
               ],
               instructions: T.nilable(String),
+              safety_identifier: T.nilable(String),
               store: T::Boolean,
               triggers: T::Array[OpenAI::Live::DecisionTrigger]
             }

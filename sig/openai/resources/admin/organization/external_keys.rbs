@@ -35,6 +35,15 @@ module OpenAI
               vault_uri: String,
               ?key_version: String,
               ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
+            }
+            | {
+              key_ocid: String,
+              name: String,
+              region: String,
+              type: :oci,
+              vault_ocid: String,
+              ?key_version_ocid: String,
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose
             },
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Admin::Organization::ExternalKey

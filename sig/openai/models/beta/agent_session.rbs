@@ -15,6 +15,7 @@ module OpenAI
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
+          ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
           ?review: OpenAI::Models::Beta::AgentSession::review,
           ?spend_control: OpenAI::Beta::AgentSession::SpendControl
         }
@@ -56,6 +57,9 @@ module OpenAI
 
         # The IDs of vaults made available to the session.
         attr_accessor vault_ids: ::Array[String]
+
+        # Default prompt cache lifetime for turns in this session, when configured.
+        attr_accessor prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?
 
         # Review applied to eligible actions in this session. Omitted when review is none
         # and automatic review is not enabled. Omission means none.
@@ -100,6 +104,8 @@ module OpenAI
         #   change.
         # @param vault_ids
         #   The IDs of vaults made available to the session.
+        # @param prompt_cache_options
+        #   Default prompt cache lifetime for turns in this session, when configured.
         # @param review
         #   Review applied to eligible actions in this session. Omitted when review is none
         #   and automatic review is not enabled. Omission means none.
@@ -120,6 +126,7 @@ module OpenAI
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
+          ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
           ?review: OpenAI::Models::Beta::AgentSession::review,
           ?spend_control: OpenAI::Beta::AgentSession::SpendControl,
           ?object: :"agent.session"
@@ -138,6 +145,7 @@ module OpenAI
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
+          ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
           ?review: OpenAI::Models::Beta::AgentSession::review,
           ?spend_control: OpenAI::Beta::AgentSession::SpendControl
         }
@@ -297,12 +305,103 @@ module OpenAI
         end
 
         type required_action =
-          OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest
+          OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest
+          | OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest
           | OpenAI::Beta::AgentSession::RequiredAction::FunctionCall
           | OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection
 
         module RequiredAction
           extend OpenAI::Internal::Type::Union
+
+          type mcp_approval_request =
+            {
+              request: OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request,
+              request_id: String,
+              turn_id: String,
+              ?type: :mcp_approval_request
+            }
+
+          class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
+            # Information for presenting an MCP approval.
+            attr_accessor request: OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request
+
+            # The opaque approval ID to echo when responding.
+            attr_accessor request_id: String
+
+            # The turn that requested approval.
+            attr_accessor turn_id: String
+
+            # The type of the object. Always `mcp_approval_request`.
+            attr_accessor type: :mcp_approval_request
+
+            # @param request
+            #   Information for presenting an MCP approval.
+            # @param request_id
+            #   The opaque approval ID to echo when responding.
+            # @param turn_id
+            #   The turn that requested approval.
+            # @param type
+            #   The type of the object. Always `mcp_approval_request`.
+            def initialize: (
+              request: OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request,
+              request_id: String,
+              turn_id: String,
+              ?type: :mcp_approval_request
+            ) -> void
+
+            def to_hash: -> {
+              request: OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request,
+              request_id: String,
+              turn_id: String,
+              ?type: :mcp_approval_request
+            }
+
+            type request =
+              {
+                arguments: top,
+                message: String,
+                name: String?,
+                server_label: String,
+                ?type: :mcp_tool_call
+              }
+
+            class Request < OpenAI::Internal::Type::BaseModel
+              # The tool arguments as JSON, or null when CCA does not provide them.
+              attr_accessor arguments: top
+
+              attr_accessor message: String
+
+              # The tool name, or null when CCA does not provide it.
+              attr_accessor name: String?
+
+              attr_accessor server_label: String
+
+              # The type of the object. Always `mcp_tool_call`.
+              attr_accessor type: :mcp_tool_call
+
+              # @param arguments
+              #   The tool arguments as JSON, or null when CCA does not provide them.
+              # @param name
+              #   The tool name, or null when CCA does not provide it.
+              # @param type
+              #   The type of the object. Always `mcp_tool_call`.
+              def initialize: (
+                arguments: top,
+                message: String,
+                name: String?,
+                server_label: String,
+                ?type: :mcp_tool_call
+              ) -> void
+
+              def to_hash: -> {
+                arguments: top,
+                message: String,
+                name: String?,
+                server_label: String,
+                ?type: :mcp_tool_call
+              }
+            end
+          end
 
           type computer_use_approval_request =
             {
@@ -615,6 +714,32 @@ module OpenAI
           FAILED: :failed
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::status]
+        end
+
+        type prompt_cache_options =
+          { ttl: OpenAI::Models::Beta::AgentSession::PromptCacheOptions::ttl }
+
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          attr_accessor ttl: OpenAI::Models::Beta::AgentSession::PromptCacheOptions::ttl
+
+          def initialize: (
+            ttl: OpenAI::Models::Beta::AgentSession::PromptCacheOptions::ttl
+          ) -> void
+
+          def to_hash: -> {
+            ttl: OpenAI::Models::Beta::AgentSession::PromptCacheOptions::ttl
+          }
+
+          type ttl = :"30m" | :"12h"
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TTL_30M: :"30m"
+            TTL_12H: :"12h"
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::PromptCacheOptions::ttl]
+          end
         end
 
         type review = :none | :auto_review

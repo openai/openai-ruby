@@ -23,6 +23,7 @@ module OpenAI
                 session_id: String,
                 events: T::Array[
                   T.any(
+                    OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage::OrHash,
                     OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel::OrHash,
@@ -49,13 +50,19 @@ module OpenAI
             # Streams live events for an agent session. See
             # [session events](https://developers.openai.com/api/docs/guides/agents-api/sessions/events).
             sig {
-              params(session_id: String, request_options: OpenAI::RequestOptions::OrHash).returns(
-                OpenAI::Internal::Stream[OpenAI::Beta::AgentSessionEvent::Variants]
+              params(
+                session_id: String,
+                include_obfuscation: T::Boolean,
+                request_options: OpenAI::RequestOptions::OrHash
               )
+                .returns(OpenAI::Internal::Stream[OpenAI::Beta::AgentSessionEvent::Variants])
             }
             def stream_streaming(
               # The ID of the session.
               session_id,
+              # Whether to include obfuscation padding in events on this connection. Defaults to
+              # `true`.
+              include_obfuscation: nil,
               request_options: {}
             )
             end

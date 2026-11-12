@@ -37,6 +37,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        sig { returns(T.nilable(String)) }
+        attr_reader :obfuscation
+
+        sig { params(obfuscation: String).void }
+        attr_writer :obfuscation
+
         # Emitted when a turn is created.
         sig do
           params(
@@ -48,6 +55,8 @@ module OpenAI
             turn: OpenAI::Beta::Agents::Sessions::Turn::OrHash,
 
             turn_id: String,
+
+            obfuscation: String,
 
             type: Symbol
           )
@@ -67,6 +76,9 @@ module OpenAI
           # The ID of the turn associated with the event.
           turn_id:,
 
+          # Random alphanumeric padding. Present when stream obfuscation is enabled.
+          obfuscation: nil,
+
           # The type of the object. Always `agent.session.turn.created`.
 
           type: :"agent.session.turn.created"
@@ -80,7 +92,8 @@ module OpenAI
               session_id: String,
               turn: OpenAI::Beta::Agents::Sessions::Turn,
               turn_id: String,
-              type: Symbol
+              type: Symbol,
+              obfuscation: String
             }
           )
         end

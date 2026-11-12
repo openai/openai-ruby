@@ -72,7 +72,7 @@ module OpenAI
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
       #
-      # @overload edit(image:, prompt:, background: nil, complexity: nil, frame_count: nil, frame_duration_ms: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
+      # @overload edit(image:, prompt:, background: nil, complexity: nil, frame_count: nil, frame_duration_ms: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, svg: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #   The image(s) to edit. Must be a supported image file or an array of images.
@@ -165,7 +165,8 @@ module OpenAI
       #
       # @param output_format [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
       #   The format in which the generated images are returned. This parameter is only
-      #   supported for the GPT image models. The default value is `png`.
+      #   supported for the GPT image models. The default value is `png`. SVG output
+      #   requires a supported image model and project access.
       #
       # @param partial_images [Integer, nil]
       #   The number of partial images to generate. This parameter is used for streaming
@@ -205,6 +206,12 @@ module OpenAI
       #   current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and
       #   `1024x1536` are supported by the GPT image models; `auto` is supported for
       #   models that allow automatic sizing.
+      #
+      # @param svg [OpenAI::Models::ImageEditParams::Svg, nil]
+      #   Selects the author model and reasoning effort for `output_format=svg`. Supply
+      #   `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+      #   SVG output requires `n=1` and cannot use streaming, partial images, or output
+      #   compression. Use multipart fields such as `svg[model]`.
       #
       # @param user [String]
       #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
@@ -245,7 +252,7 @@ module OpenAI
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
       # content type.
       #
-      # @overload edit_stream_raw(image:, prompt:, background: nil, complexity: nil, frame_count: nil, frame_duration_ms: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, user: nil, request_options: {})
+      # @overload edit_stream_raw(image:, prompt:, background: nil, complexity: nil, frame_count: nil, frame_duration_ms: nil, input_fidelity: nil, markup: nil, mask: nil, model: nil, n: nil, output_compression: nil, output_format: nil, partial_images: nil, quality: nil, response_format: nil, safety_identifier: nil, size: nil, svg: nil, user: nil, request_options: {})
       #
       # @param image [Pathname, StringIO, IO, String, OpenAI::FilePart, Array<Pathname, StringIO, IO, String, OpenAI::FilePart>]
       #   The image(s) to edit. Must be a supported image file or an array of images.
@@ -338,7 +345,8 @@ module OpenAI
       #
       # @param output_format [Symbol, OpenAI::Models::ImageEditParams::OutputFormat, nil]
       #   The format in which the generated images are returned. This parameter is only
-      #   supported for the GPT image models. The default value is `png`.
+      #   supported for the GPT image models. The default value is `png`. SVG output
+      #   requires a supported image model and project access.
       #
       # @param partial_images [Integer, nil]
       #   The number of partial images to generate. This parameter is used for streaming
@@ -378,6 +386,12 @@ module OpenAI
       #   current pixel and edge limits. The standard sizes `1024x1024`, `1536x1024`, and
       #   `1024x1536` are supported by the GPT image models; `auto` is supported for
       #   models that allow automatic sizing.
+      #
+      # @param svg [OpenAI::Models::ImageEditParams::Svg, nil]
+      #   Selects the author model and reasoning effort for `output_format=svg`. Supply
+      #   `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+      #   SVG output requires `n=1` and cannot use streaming, partial images, or output
+      #   compression. Use multipart fields such as `svg[model]`.
       #
       # @param user [String]
       #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
@@ -533,7 +547,7 @@ module OpenAI
       #   enabled, supply svg.model. When model selection is disabled, omit this object.
       #   The top-level model selects the image model that creates the reference image.
       #   SVG generation requires n=1 and does not support streaming, partial images,
-      #   prompt_rewriter, or output_compression. SVG edits are not supported.
+      #   prompt_rewriter, or output_compression.
       #
       # @param user [String]
       #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for
@@ -681,7 +695,7 @@ module OpenAI
       #   enabled, supply svg.model. When model selection is disabled, omit this object.
       #   The top-level model selects the image model that creates the reference image.
       #   SVG generation requires n=1 and does not support streaming, partial images,
-      #   prompt_rewriter, or output_compression. SVG edits are not supported.
+      #   prompt_rewriter, or output_compression.
       #
       # @param user [String]
       #   Deprecated: use `safety_identifier` instead. This parameter remains accepted for

@@ -10,7 +10,8 @@ module OpenAI
           session_id: String,
           text: String,
           turn_id: String?,
-          ?type: :"agent.session.turn.output_text.done"
+          ?type: :"agent.session.turn.output_text.done",
+          ?obfuscation: String
         }
 
       class AgentSessionTurnOutputTextDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -38,6 +39,12 @@ module OpenAI
         # The type of the object. Always `agent.session.turn.output_text.done`.
         attr_accessor type: :"agent.session.turn.output_text.done"
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param content_index
         #   The index of the content part in the message.
         # @param event_id
@@ -52,6 +59,8 @@ module OpenAI
         #   The complete output text.
         # @param turn_id
         #   The ID of the turn associated with the event, when applicable.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always `agent.session.turn.output_text.done`.
         def initialize: (
@@ -62,6 +71,7 @@ module OpenAI
           session_id: String,
           text: String,
           turn_id: String?,
+          ?obfuscation: String,
           ?type: :"agent.session.turn.output_text.done"
         ) -> void
 
@@ -73,7 +83,8 @@ module OpenAI
           session_id: String,
           text: String,
           turn_id: String?,
-          ?type: :"agent.session.turn.output_text.done"
+          ?type: :"agent.session.turn.output_text.done",
+          ?obfuscation: String
         }
       end
     end

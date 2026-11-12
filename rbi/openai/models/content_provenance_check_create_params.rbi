@@ -16,6 +16,7 @@ module OpenAI
       end
 
       # The image or audio file to check for supported OpenAI provenance signals.
+      # Supported image formats are PNG, JPEG, WebP, and GIF (including animated GIFs).
       #
       # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
       # metadata. Use `OpenAI::FilePart` when you need to override the filename or
@@ -35,6 +36,7 @@ module OpenAI
       def self.new(
 
         # The image or audio file to check for supported OpenAI provenance signals.
+        # Supported image formats are PNG, JPEG, WebP, and GIF (including animated GIFs).
         #
         # `String`, `StringIO`, and pathless `IO` inputs are sent with generic upload
         # metadata. Use `OpenAI::FilePart` when you need to override the filename or
