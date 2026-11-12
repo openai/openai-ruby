@@ -22,6 +22,7 @@ module OpenAI
           ?completed_at: Float?,
           ?conversation: OpenAI::Responses::Response::Conversation?,
           ?image: OpenAI::Responses::Response::Image,
+          ?input_transformations: ::Array[OpenAI::Responses::Response::InputTransformation],
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Responses::Response::Moderation?,
@@ -152,6 +153,14 @@ module OpenAI
         def image=: (
           OpenAI::Responses::Response::Image
         ) -> OpenAI::Responses::Response::Image
+
+        # Reasoning inputs withheld from the model, in input order.
+        attr_reader input_transformations: ::Array[OpenAI::Responses::Response::InputTransformation]?
+
+        # Reasoning inputs withheld from the model, in input order.
+        def input_transformations=: (
+          ::Array[OpenAI::Responses::Response::InputTransformation]
+        ) -> ::Array[OpenAI::Responses::Response::InputTransformation]
 
         # An upper bound for the number of tokens that can be generated for a response,
         # including visible output tokens and
@@ -436,6 +445,8 @@ module OpenAI
         # @param conversation
         #   The conversation that this response belonged to. Input items and output items
         #   from this response were automatically added to this conversation.
+        # @param input_transformations
+        #   Reasoning inputs withheld from the model, in input order.
         # @param max_output_tokens
         #   An upper bound for the number of tokens that can be generated for a response,
         #   including visible output tokens and
@@ -584,6 +595,7 @@ module OpenAI
           ?completed_at: Float?,
           ?conversation: OpenAI::Responses::Response::Conversation?,
           ?image: OpenAI::Responses::Response::Image,
+          ?input_transformations: ::Array[OpenAI::Responses::Response::InputTransformation],
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Responses::Response::Moderation?,
@@ -626,6 +638,7 @@ module OpenAI
           ?completed_at: Float?,
           ?conversation: OpenAI::Responses::Response::Conversation?,
           ?image: OpenAI::Responses::Response::Image,
+          ?input_transformations: ::Array[OpenAI::Responses::Response::InputTransformation],
           ?max_output_tokens: Integer?,
           ?max_tool_calls: Integer?,
           ?moderation: OpenAI::Responses::Response::Moderation?,
@@ -805,6 +818,60 @@ module OpenAI
             DISABLED: :disabled
 
             def self?.values: -> ::Array[OpenAI::Models::Responses::Response::Image::context_compression]
+          end
+        end
+
+        type input_transformation =
+          {
+            id: String,
+            ?action: :removed,
+            reason: OpenAI::Models::Responses::Response::InputTransformation::reason,
+            ?type: :reasoning
+          }
+
+        class InputTransformation < OpenAI::Internal::Type::BaseModel
+          # The original reasoning item ID.
+          attr_accessor id: String
+
+          attr_accessor action: :removed
+
+          attr_accessor reason: OpenAI::Models::Responses::Response::InputTransformation::reason
+
+          attr_accessor type: :reasoning
+
+          # @param id
+          #   The original reasoning item ID.
+          def initialize: (
+            id: String,
+            reason: OpenAI::Models::Responses::Response::InputTransformation::reason,
+            ?action: :removed,
+            ?type: :reasoning
+          ) -> void
+
+          def to_hash: -> {
+            id: String,
+            ?action: :removed,
+            reason: OpenAI::Models::Responses::Response::InputTransformation::reason,
+            ?type: :reasoning
+          }
+
+          type reason =
+            :organization_mismatch
+            | :end_user_mismatch
+            | :model_mismatch
+            | :prefix_mismatch
+            | :turn_boundary
+
+          module Reason
+            extend OpenAI::Internal::Type::Enum
+
+            ORGANIZATION_MISMATCH: :organization_mismatch
+            END_USER_MISMATCH: :end_user_mismatch
+            MODEL_MISMATCH: :model_mismatch
+            PREFIX_MISMATCH: :prefix_mismatch
+            TURN_BOUNDARY: :turn_boundary
+
+            def self?.values: -> ::Array[OpenAI::Models::Responses::Response::InputTransformation::reason]
           end
         end
 
