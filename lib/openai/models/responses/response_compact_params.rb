@@ -342,8 +342,6 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_4_1106_PREVIEW }
 
-          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_4_VISION_PREVIEW }
-
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_4 }
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_4_0314 }
@@ -362,13 +360,9 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_3_5_TURBO_0301 }
 
-          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_3_5_TURBO_0613 }
-
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_3_5_TURBO_1106 }
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_3_5_TURBO_0125 }
-
-          variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::GPT_3_5_TURBO_16K_0613 }
 
           variant const: -> { OpenAI::Models::Responses::ResponseCompactParams::Model::O1_PRO }
 
@@ -680,10 +674,6 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           GPT_4_1106_PREVIEW = :"gpt-4-1106-preview"
-          # @deprecated Announced shutdown date: 2024-12-06. See
-          # https://developers.openai.com/api/docs/deprecations for details and recommended
-          # replacements.
-          GPT_4_VISION_PREVIEW = :"gpt-4-vision-preview"
           # @deprecated Announced shutdown date: 2026-10-23. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
@@ -720,10 +710,6 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           GPT_3_5_TURBO_0301 = :"gpt-3.5-turbo-0301"
-          # @deprecated Announced shutdown date: 2024-09-13. See
-          # https://developers.openai.com/api/docs/deprecations for details and recommended
-          # replacements.
-          GPT_3_5_TURBO_0613 = :"gpt-3.5-turbo-0613"
           # @deprecated Announced shutdown date: 2026-09-28. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
@@ -732,10 +718,6 @@ module OpenAI
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.
           GPT_3_5_TURBO_0125 = :"gpt-3.5-turbo-0125"
-          # @deprecated Announced shutdown date: 2024-09-13. See
-          # https://developers.openai.com/api/docs/deprecations for details and recommended
-          # replacements.
-          GPT_3_5_TURBO_16K_0613 = :"gpt-3.5-turbo-16k-0613"
           # @deprecated Announced shutdown date: 2026-10-23. See
           # https://developers.openai.com/api/docs/deprecations for details and recommended
           # replacements.

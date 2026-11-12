@@ -1556,10 +1556,6 @@ module OpenAI
               :"gpt-4-1106-preview",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
-            GPT_4_VISION_PREVIEW = T.let(
-              :"gpt-4-vision-preview",
-              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-            )
             GPT_4 = T.let(:"gpt-4", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)
             GPT_4_0314 = T.let(
               :"gpt-4-0314",
@@ -1590,20 +1586,12 @@ module OpenAI
               :"gpt-3.5-turbo-0301",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
-            GPT_3_5_TURBO_0613 = T.let(
-              :"gpt-3.5-turbo-0613",
-              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-            )
             GPT_3_5_TURBO_1106 = T.let(
               :"gpt-3.5-turbo-1106",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
             GPT_3_5_TURBO_0125 = T.let(
               :"gpt-3.5-turbo-0125",
-              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
-            )
-            GPT_3_5_TURBO_16K_0613 = T.let(
-              :"gpt-3.5-turbo-16k-0613",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
             O1_PRO = T.let(:"o1-pro", OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol)

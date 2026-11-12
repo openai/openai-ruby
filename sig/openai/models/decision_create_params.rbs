@@ -167,7 +167,8 @@ module OpenAI
         extend OpenAI::Internal::Type::Union
 
         type union_member1 =
-          OpenAI::Models::decision_input_message
+          OpenAI::DecisionInputMessage
+          | OpenAI::Models::decision_input_message_union
           | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage
           | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage
           | OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage
@@ -180,7 +181,7 @@ module OpenAI
         module UnionMember1
           extend OpenAI::Internal::Type::Union
 
-          type decision_input_user_message =
+          type decision_input_message =
             {
               content: OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage::content,
               ?role: :user,

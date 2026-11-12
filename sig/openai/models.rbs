@@ -73,7 +73,9 @@ module OpenAI
 
   class DecisionInputJSON = OpenAI::Models::DecisionInputJSON
 
-  module DecisionInputMessage = OpenAI::Models::DecisionInputMessage
+  class DecisionInputMessage = OpenAI::Models::DecisionInputMessage
+
+  module DecisionInputMessageUnion = OpenAI::Models::DecisionInputMessageUnion
 
   module DecisionInputPart = OpenAI::Models::DecisionInputPart
 
@@ -162,8 +164,6 @@ module OpenAI
   class ImageGenPartialImageEvent = OpenAI::Models::ImageGenPartialImageEvent
 
   module ImageGenStreamEvent = OpenAI::Models::ImageGenStreamEvent
-
-  class ImageInputReferenceParam = OpenAI::Models::ImageInputReferenceParam
 
   module ImageModel = OpenAI::Models::ImageModel
 
@@ -270,36 +270,6 @@ module OpenAI
   class VectorStoreSearchParams = OpenAI::Models::VectorStoreSearchParams
 
   class VectorStoreUpdateParams = OpenAI::Models::VectorStoreUpdateParams
-
-  class Video = OpenAI::Models::Video
-
-  class VideoCreateCharacterParams = OpenAI::Models::VideoCreateCharacterParams
-
-  class VideoCreateError = OpenAI::Models::VideoCreateError
-
-  class VideoCreateParams = OpenAI::Models::VideoCreateParams
-
-  class VideoDeleteParams = OpenAI::Models::VideoDeleteParams
-
-  class VideoDownloadContentParams = OpenAI::Models::VideoDownloadContentParams
-
-  class VideoEditParams = OpenAI::Models::VideoEditParams
-
-  class VideoExtendParams = OpenAI::Models::VideoExtendParams
-
-  class VideoGetCharacterParams = OpenAI::Models::VideoGetCharacterParams
-
-  class VideoListParams = OpenAI::Models::VideoListParams
-
-  module VideoModel = OpenAI::Models::VideoModel
-
-  class VideoRemixParams = OpenAI::Models::VideoRemixParams
-
-  class VideoRetrieveParams = OpenAI::Models::VideoRetrieveParams
-
-  module VideoSeconds = OpenAI::Models::VideoSeconds
-
-  module VideoSize = OpenAI::Models::VideoSize
 
   module Webhooks = OpenAI::Models::Webhooks
 end

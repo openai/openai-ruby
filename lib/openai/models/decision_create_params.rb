@@ -12,7 +12,7 @@ module OpenAI
       #   array of messages, function calls and outputs, or custom tool calls and outputs.
       #   Each tool output must identify a matching call by call ID.
       #
-      #   @return [String, Array<OpenAI::Models::decision_input_message, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput>]
+      #   @return [String, Array<OpenAI::Models::DecisionInputMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput>]
       required :input, union: -> { OpenAI::DecisionCreateParams::Input }
 
       # @!attribute model
@@ -56,7 +56,7 @@ module OpenAI
       optional :safety_identifier, String, nil?: true
 
       # @!method initialize(input:, model:, questions:, prompt_cache_key: nil, prompt_cache_options: nil, safety_identifier: nil, request_options: {})
-      #   @param input [String, Array<OpenAI::Models::decision_input_message, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput>]
+      #   @param input [String, Array<OpenAI::Models::DecisionInputMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput>]
       #     The input to evaluate for every question. Provide a text string or an ordered
       #     array of messages, function calls and outputs, or custom tool calls and outputs.
       #     Each tool output must identify a matching call by call ID.
@@ -806,11 +806,11 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput)]
+          #   @return [Array(OpenAI::Models::DecisionInputMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput)]
         end
 
         # @!method self.variants
-        #   @return [Array(String, Array<OpenAI::Models::decision_input_message, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput>)]
+        #   @return [Array(String, Array<OpenAI::Models::DecisionInputMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputDeveloperMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputSystemMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::DecisionInputAssistantMessage, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::FunctionCallOutput, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCall, OpenAI::Models::DecisionCreateParams::Input::UnionMember1::CustomToolCallOutput>)]
 
         # @type [OpenAI::Internal::Type::Converter]
         UnionMember1Array = OpenAI::Internal::Type::ArrayOf[

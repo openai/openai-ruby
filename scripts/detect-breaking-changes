@@ -101,7 +101,6 @@ TEST_PATHS=(
 	test/openai/resources/skills/content_test.rb
 	test/openai/resources/skills/versions_test.rb
 	test/openai/resources/skills/versions/content_test.rb
-	test/openai/resources/videos_test.rb
 	test/openai/client_test.rb
 )
 

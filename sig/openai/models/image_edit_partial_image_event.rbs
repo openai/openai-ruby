@@ -32,7 +32,12 @@ module OpenAI
       attr_accessor quality: OpenAI::Models::ImageEditPartialImageEvent::quality
 
       # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
-      attr_accessor size: OpenAI::Models::ImageEditPartialImageEvent::size
+      attr_reader size: String
+
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      def size=: (
+        OpenAI::Models::ImageEditPartialImageEvent::size
+      ) -> OpenAI::Models::ImageEditPartialImageEvent::size
 
       # The type of the event. Always `image_edit.partial_image`.
       attr_accessor type: :"image_edit.partial_image"
@@ -121,15 +126,12 @@ module OpenAI
 
         def self?.variants: -> ::Array[OpenAI::Models::ImageEditPartialImageEvent::size]
 
-        SIZE_1024X1024: :"1024x1024"
-        SIZE_1024X1536: :"1024x1536"
-        SIZE_1536X1024: :"1536x1024"
-        AUTO: :auto
+        SIZE_1024X1024: "1024x1024"
+        SIZE_1024X1536: "1024x1536"
+        SIZE_1536X1024: "1536x1024"
+        AUTO: "auto"
 
-        def self?.values: -> ::Array[(:"1024x1024"
-        | :"1024x1536"
-        | :"1536x1024"
-        | :auto)]
+        def self?.values: -> ::Array[String]
       end
     end
   end

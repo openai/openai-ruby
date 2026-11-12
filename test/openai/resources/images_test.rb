@@ -18,7 +18,7 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
           output_format: OpenAI::ImagesResponse::OutputFormat | nil,
           quality: OpenAI::ImagesResponse::Quality | nil,
           safety_identifier: String | nil,
-          size: OpenAI::ImagesResponse::Size | nil,
+          size: String | nil,
           svg_usage: OpenAI::ImagesResponse::SvgUsage | nil,
           usage: OpenAI::ImagesResponse::Usage | nil
         }
@@ -43,7 +43,7 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
           output_format: OpenAI::ImagesResponse::OutputFormat | nil,
           quality: OpenAI::ImagesResponse::Quality | nil,
           safety_identifier: String | nil,
-          size: OpenAI::ImagesResponse::Size | nil,
+          size: String | nil,
           svg_usage: OpenAI::ImagesResponse::SvgUsage | nil,
           usage: OpenAI::ImagesResponse::Usage | nil
         }
@@ -65,7 +65,7 @@ class OpenAI::Test::Resources::ImagesTest < OpenAI::Test::ResourceTest
           output_format: OpenAI::ImagesResponse::OutputFormat | nil,
           quality: OpenAI::ImagesResponse::Quality | nil,
           safety_identifier: String | nil,
-          size: OpenAI::ImagesResponse::Size | nil,
+          size: String | nil,
           svg_usage: OpenAI::ImagesResponse::SvgUsage | nil,
           usage: OpenAI::ImagesResponse::Usage | nil
         }
