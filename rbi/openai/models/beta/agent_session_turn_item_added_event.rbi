@@ -38,6 +38,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        sig { returns(T.nilable(String)) }
+        attr_reader :obfuscation
+
+        sig { params(obfuscation: String).void }
+        attr_writer :obfuscation
+
         # Emitted when an item is added to a turn.
         sig do
           params(
@@ -70,6 +77,8 @@ module OpenAI
 
             turn_id: T.nilable(String),
 
+            obfuscation: String,
+
             type: Symbol
           )
             .returns(T.attached_class)
@@ -91,6 +100,9 @@ module OpenAI
           # The ID of the turn associated with the event, when applicable.
           turn_id:,
 
+          # Random alphanumeric padding. Present when stream obfuscation is enabled.
+          obfuscation: nil,
+
           # The type of the object. Always `agent.session.turn.item.added`.
 
           type: :"agent.session.turn.item.added"
@@ -105,7 +117,8 @@ module OpenAI
               output_index: T.nilable(Integer),
               session_id: String,
               turn_id: T.nilable(String),
-              type: Symbol
+              type: Symbol,
+              obfuscation: String
             }
           )
         end

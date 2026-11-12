@@ -46,7 +46,13 @@ module OpenAI
         #   @return [Symbol, :"agent.output.command_execution_output.delta"]
         required :type, const: :"agent.output.command_execution_output.delta"
 
-        # @!method initialize(delta:, event_id:, item_id:, output_index:, session_id:, turn_id:, type: :"agent.output.command_execution_output.delta")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(delta:, event_id:, item_id:, output_index:, session_id:, turn_id:, obfuscation: nil, type: :"agent.output.command_execution_output.delta")
         #   Emitted when command execution produces an output delta.
         #
         #   @param delta [String]
@@ -66,6 +72,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The ID of the turn associated with the event, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.output.command_execution_output.delta"]
         #     The type of the object. Always `agent.output.command_execution_output.delta`.

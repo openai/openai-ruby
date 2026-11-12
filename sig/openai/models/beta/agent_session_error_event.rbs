@@ -6,7 +6,8 @@ module OpenAI
           error: OpenAI::Beta::SessionError,
           event_id: String,
           session_id: String,
-          ?type: :error
+          ?type: :error,
+          ?obfuscation: String
         }
 
       class AgentSessionErrorEvent < OpenAI::Internal::Type::BaseModel
@@ -22,18 +23,27 @@ module OpenAI
         # The type of the object. Always `error`.
         attr_accessor type: :error
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param error
         #   The error that occurred.
         # @param event_id
         #   The unique ID of the event.
         # @param session_id
         #   The ID of the session associated with the event.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always `error`.
         def initialize: (
           error: OpenAI::Beta::SessionError,
           event_id: String,
           session_id: String,
+          ?obfuscation: String,
           ?type: :error
         ) -> void
 
@@ -41,7 +51,8 @@ module OpenAI
           error: OpenAI::Beta::SessionError,
           event_id: String,
           session_id: String,
-          ?type: :error
+          ?type: :error,
+          ?obfuscation: String
         }
       end
     end

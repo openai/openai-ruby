@@ -5,7 +5,8 @@ module OpenAI
         {
           event_id: String,
           session: OpenAI::Beta::AgentSession,
-          ?type: :"agent.session.created"
+          ?type: :"agent.session.created",
+          ?obfuscation: String
         }
 
       class AgentSessionCreatedEvent < OpenAI::Internal::Type::BaseModel
@@ -18,22 +19,32 @@ module OpenAI
         # The type of the object. Always `agent.session.created`.
         attr_accessor type: :"agent.session.created"
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param event_id
         #   The unique ID of the event.
         # @param session
         #   The session that was created.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always `agent.session.created`.
         def initialize: (
           event_id: String,
           session: OpenAI::Beta::AgentSession,
+          ?obfuscation: String,
           ?type: :"agent.session.created"
         ) -> void
 
         def to_hash: -> {
           event_id: String,
           session: OpenAI::Beta::AgentSession,
-          ?type: :"agent.session.created"
+          ?type: :"agent.session.created",
+          ?obfuscation: String
         }
       end
     end

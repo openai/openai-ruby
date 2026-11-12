@@ -53,6 +53,13 @@ module OpenAI
         #   @return [String, nil]
         optional :instructions, String, nil?: true
 
+        # @!attribute safety_identifier
+        #   A stable identifier for your end user, used for safety monitoring and abuse
+        #   detection.
+        #
+        #   @return [String, nil]
+        optional :safety_identifier, String, nil?: true
+
         # @!attribute store
         #   Whether to store the session for later forking and recording download. Defaults
         #   to false for new sessions.
@@ -69,7 +76,7 @@ module OpenAI
         #   @return [Array<OpenAI::Models::Live::DecisionTrigger>, nil]
         optional :triggers, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Live::DecisionTrigger] }
 
-        # @!method initialize(model:, audio: nil, client: nil, delegation: nil, input: nil, instructions: nil, store: nil, triggers: nil)
+        # @!method initialize(model:, audio: nil, client: nil, delegation: nil, input: nil, instructions: nil, safety_identifier: nil, store: nil, triggers: nil)
         #   Startup configuration for a Live media session. Follow the
         #   [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting)
         #   when writing frontend instructions and the backend prompt under
@@ -105,6 +112,10 @@ module OpenAI
         #     [backend prompt](https://developers.openai.com/api/docs/guides/live-delegation#start-with-your-existing-backend-prompt).
         #     Limited to 16,384 client-supplied tokens. Omitted or blank instructions use
         #     server defaults. Immutable after startup.
+        #
+        #   @param safety_identifier [String, nil]
+        #     A stable identifier for your end user, used for safety monitoring and abuse
+        #     detection.
         #
         #   @param store [Boolean]
         #     Whether to store the session for later forking and recording download. Defaults

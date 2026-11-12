@@ -38,6 +38,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        sig { returns(T.nilable(String)) }
+        attr_reader :obfuscation
+
+        sig { params(obfuscation: String).void }
+        attr_writer :obfuscation
+
         # Emitted after a hosted sandbox is replaced. Conversation history survives;
         # changes to the previous sandbox's files and processes do not.
         sig do
@@ -52,6 +59,8 @@ module OpenAI
             session_id: String,
 
             turn_id: T.nilable(String),
+
+            obfuscation: String,
 
             type: Symbol
           )
@@ -74,6 +83,9 @@ module OpenAI
           # The associated turn, when applicable.
           turn_id:,
 
+          # Random alphanumeric padding. Present when stream obfuscation is enabled.
+          obfuscation: nil,
+
           # The type of the object. Always `agent.session.environment.reset`.
 
           type: :"agent.session.environment.reset"
@@ -88,7 +100,8 @@ module OpenAI
               reset_count: Integer,
               session_id: String,
               turn_id: T.nilable(String),
-              type: Symbol
+              type: Symbol,
+              obfuscation: String
             }
           )
         end

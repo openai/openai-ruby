@@ -53,6 +53,13 @@ module OpenAI
         sig { returns(Symbol) }
         attr_accessor :type
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        sig { returns(T.nilable(String)) }
+        attr_reader :obfuscation
+
+        sig { params(obfuscation: String).void }
+        attr_writer :obfuscation
+
         # Emitted when a reasoning summary part is complete.
         sig do
           params(
@@ -70,6 +77,8 @@ module OpenAI
             summary_index: Integer,
 
             turn_id: T.nilable(String),
+
+            obfuscation: String,
 
             status: T.nilable(Symbol),
 
@@ -100,6 +109,9 @@ module OpenAI
           # The ID of the turn associated with the event, when applicable.
           turn_id:,
 
+          # Random alphanumeric padding. Present when stream obfuscation is enabled.
+          obfuscation: nil,
+
           # Present as `incomplete` when summary generation was interrupted.
           status: :incomplete,
 
@@ -120,7 +132,8 @@ module OpenAI
               status: T.nilable(Symbol),
               summary_index: Integer,
               turn_id: T.nilable(String),
-              type: Symbol
+              type: Symbol,
+              obfuscation: String
             }
           )
         end

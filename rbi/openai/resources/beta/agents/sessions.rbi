@@ -44,8 +44,10 @@ module OpenAI
               agent_id: String,
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
+              prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::OrHash),
               review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
+              stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions::OrHash,
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
@@ -69,11 +71,16 @@ module OpenAI
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
+            # Default prompt cache lifetime for turns in this session. Omit to use the model
+            # default.
+            prompt_cache_options: nil,
             # Action review mode. Omit to use none.
             review: nil,
             # Optional spending limit in USD cents. Omission or null creates an unlimited
             # session.
             spend_control: nil,
+            # Options for the event stream. Only allowed when `stream` is `true`.
+            stream_options: nil,
             # The IDs of vaults made available to the session.
             vault_ids: nil,
             # There is no need to provide `stream:`. Instead, use `#create_streaming` or
@@ -102,8 +109,10 @@ module OpenAI
               output_type: T.nilable(T.class_of(OpenAI::Helpers::StructuredOutput::BaseModel)),
               input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
               metadata: T.nilable(T::Hash[Symbol, String]),
+              prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::OrHash),
               review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
+              stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions::OrHash,
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
               request_options: OpenAI::RequestOptions::OrHash
@@ -129,11 +138,16 @@ module OpenAI
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
+            # Default prompt cache lifetime for turns in this session. Omit to use the model
+            # default.
+            prompt_cache_options: nil,
             # Action review mode. Omit to use none.
             review: nil,
             # Optional spending limit in USD cents. Omission or null creates an unlimited
             # session.
             spend_control: nil,
+            # Options for the event stream. Only allowed when `stream` is `true`.
+            stream_options: nil,
             # The IDs of vaults made available to the session.
             vault_ids: nil,
             # There is no need to provide `stream:`. Instead, use `#create_streaming` or
@@ -157,14 +171,16 @@ module OpenAI
           )
           end
 
-          # Updates session tools, metadata, model, reasoning effort, or service tier. Model
-          # settings apply to subsequent turns. Omitted fields are unchanged. See
+          # Updates session tools, metadata, model, reasoning effort, service tier, or the
+          # default prompt cache lifetime. Model settings apply to subsequent turns. Omitted
+          # fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           sig {
             params(
               session_id: String,
               agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent::OrHash,
               metadata: T.nilable(T::Hash[Symbol, String]),
+              prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::OrHash),
               review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
               request_options: OpenAI::RequestOptions::OrHash
@@ -180,6 +196,9 @@ module OpenAI
             # Up to 16 string key-value pairs, with keys up to 64 and values up to 512
             # characters.
             metadata: nil,
+            # Default prompt cache lifetime for future turns. Send null to clear the session
+            # default.
+            prompt_cache_options: nil,
             # Default action review for new root turns. Existing turns and their subagents
             # keep their review mode.
             review: nil,

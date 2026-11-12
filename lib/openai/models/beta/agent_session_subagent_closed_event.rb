@@ -22,7 +22,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.subagent.closed"]
         required :type, const: :"agent.session.subagent.closed"
 
-        # @!method initialize(event_id:, subagent:, type: :"agent.session.subagent.closed")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, subagent:, obfuscation: nil, type: :"agent.session.subagent.closed")
         #   Emitted when a subagent is closed.
         #
         #   @param event_id [String]
@@ -30,6 +36,9 @@ module OpenAI
         #
         #   @param subagent [OpenAI::Models::Beta::Subagent]
         #     The subagent that was closed.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.subagent.closed"]
         #     The type of the object. Always `agent.session.subagent.closed`.

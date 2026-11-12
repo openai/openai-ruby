@@ -31,7 +31,7 @@ module OpenAI
       sig { params(data: T::Array[OpenAI::Image::OrHash]).void }
       attr_writer :data
 
-      # The output format of the generated image.
+      # The output format of the generated or edited image.
       sig { returns(T.nilable(OpenAI::ImagesResponse::OutputFormat::TaggedSymbol)) }
       attr_reader :output_format
 
@@ -59,15 +59,14 @@ module OpenAI
       sig { params(size: T.any(String, OpenAI::ImagesResponse::Size::OrSymbol)).void }
       attr_writer :size
 
-      # Token usage for the model that authored the SVG, separate from image rendering
-      # usage.
+      # Token usage for SVG authoring, separate from image rendering usage.
       sig { returns(T.nilable(OpenAI::ImagesResponse::SvgUsage)) }
       attr_reader :svg_usage
 
       sig { params(svg_usage: OpenAI::ImagesResponse::SvgUsage::OrHash).void }
       attr_writer :svg_usage
 
-      # For `gpt-image-1` only, the token usage information for the image generation.
+      # Token usage information for image generation with GPT Image models.
       sig { returns(T.nilable(OpenAI::ImagesResponse::Usage)) }
       attr_reader :usage
 
@@ -110,7 +109,7 @@ module OpenAI
         # The list of generated images.
         data: nil,
 
-        # The output format of the generated image.
+        # The output format of the generated or edited image.
         output_format: nil,
 
         # The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
@@ -125,11 +124,10 @@ module OpenAI
         # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
         size: nil,
 
-        # Token usage for the model that authored the SVG, separate from image rendering
-        # usage.
+        # Token usage for SVG authoring, separate from image rendering usage.
         svg_usage: nil,
 
-        # For `gpt-image-1` only, the token usage information for the image generation.
+        # Token usage information for image generation with GPT Image models.
 
         usage: nil
       )
@@ -169,7 +167,7 @@ module OpenAI
         end
       end
 
-      # The output format of the generated image.
+      # The output format of the generated or edited image.
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -255,8 +253,7 @@ module OpenAI
         sig { returns(Integer) }
         attr_accessor :total_tokens
 
-        # Token usage for the model that authored the SVG, separate from image rendering
-        # usage.
+        # Token usage for SVG authoring, separate from image rendering usage.
         sig do
           params(
 
@@ -336,7 +333,7 @@ module OpenAI
         sig { params(output_tokens_details: OpenAI::ImagesResponse::Usage::OutputTokensDetails::OrHash).void }
         attr_writer :output_tokens_details
 
-        # For `gpt-image-1` only, the token usage information for the image generation.
+        # Token usage information for image generation with GPT Image models.
         sig do
           params(
 

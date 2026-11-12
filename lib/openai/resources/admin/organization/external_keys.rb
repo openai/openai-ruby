@@ -9,7 +9,7 @@ module OpenAI
           #
           # @overload create(body:, request_options: {})
           #
-          # @param body [OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure]
+          # @param body [OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Aws, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Gcp, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure, OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci]
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #
           # @return [OpenAI::Models::Admin::Organization::ExternalKey]

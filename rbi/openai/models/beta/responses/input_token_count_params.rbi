@@ -139,11 +139,15 @@ module OpenAI
           }
           attr_accessor :tools
 
-          # The truncation strategy to use for the model response. - `auto`: If the input to
-          # this Response exceeds the model's context window size, the model will truncate
-          # the response to fit the context window by dropping items from the beginning of
-          # the conversation. - `disabled` (default): If the input size will exceed the
-          # context window size for a model, the request will fail with a 400 error.
+          # The truncation strategy to use for the model response.
+          #
+          # - `auto`: If the input to this Response exceeds the model's context window size,
+          #   the model will truncate the response to fit the context window by dropping
+          #   items from the beginning of the conversation. On some models, trimming can
+          #   begin earlier because the API subtracts the model's maximum output allowance
+          #   from its input limit before counting tokens.
+          # - `disabled` (default): If the input size will exceed the context window size
+          #   for a model, the request will fail with a 400 error.
           sig { returns(T.nilable(OpenAI::Beta::Responses::InputTokenCountParams::Truncation::OrSymbol)) }
           attr_reader :truncation
 
@@ -278,11 +282,15 @@ module OpenAI
             # specify which tool to use by setting the `tool_choice` parameter.
             tools: nil,
 
-            # The truncation strategy to use for the model response. - `auto`: If the input to
-            # this Response exceeds the model's context window size, the model will truncate
-            # the response to fit the context window by dropping items from the beginning of
-            # the conversation. - `disabled` (default): If the input size will exceed the
-            # context window size for a model, the request will fail with a 400 error.
+            # The truncation strategy to use for the model response.
+            #
+            # - `auto`: If the input to this Response exceeds the model's context window size,
+            #   the model will truncate the response to fit the context window by dropping
+            #   items from the beginning of the conversation. On some models, trimming can
+            #   begin earlier because the API subtracts the model's maximum output allowance
+            #   from its input limit before counting tokens.
+            # - `disabled` (default): If the input size will exceed the context window size
+            #   for a model, the request will fail with a 400 error.
             truncation: nil,
 
             betas: nil,
@@ -900,11 +908,15 @@ module OpenAI
 
           end
 
-          # The truncation strategy to use for the model response. - `auto`: If the input to
-          # this Response exceeds the model's context window size, the model will truncate
-          # the response to fit the context window by dropping items from the beginning of
-          # the conversation. - `disabled` (default): If the input size will exceed the
-          # context window size for a model, the request will fail with a 400 error.
+          # The truncation strategy to use for the model response.
+          #
+          # - `auto`: If the input to this Response exceeds the model's context window size,
+          #   the model will truncate the response to fit the context window by dropping
+          #   items from the beginning of the conversation. On some models, trimming can
+          #   begin earlier because the API subtracts the model's maximum output allowance
+          #   from its input limit before counting tokens.
+          # - `disabled` (default): If the input size will exceed the context window size
+          #   for a model, the request will fail with a 400 error.
           module Truncation
             extend OpenAI::Internal::Type::Enum
 

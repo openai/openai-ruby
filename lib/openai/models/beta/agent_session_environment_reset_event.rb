@@ -40,7 +40,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.environment.reset"]
         required :type, const: :"agent.session.environment.reset"
 
-        # @!method initialize(environment_id:, event_id:, reset_count:, session_id:, turn_id:, type: :"agent.session.environment.reset")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(environment_id:, event_id:, reset_count:, session_id:, turn_id:, obfuscation: nil, type: :"agent.session.environment.reset")
         #   Emitted after a hosted sandbox is replaced. Conversation history survives;
         #   changes to the previous sandbox's files and processes do not.
         #
@@ -58,6 +64,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The associated turn, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.environment.reset"]
         #     The type of the object. Always `agent.session.environment.reset`.

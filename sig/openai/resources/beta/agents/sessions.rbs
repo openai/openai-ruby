@@ -21,8 +21,10 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
+            ?stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Beta::AgentSession
@@ -35,8 +37,10 @@ module OpenAI
             ?output_type: singleton(OpenAI::Helpers::StructuredOutput::BaseModel)?,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
+            ?stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Helpers::Beta::Agents::CreationStream
@@ -50,6 +54,7 @@ module OpenAI
             String session_id,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts

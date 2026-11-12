@@ -32,7 +32,7 @@ module OpenAI
           # the session or streams its events when stream is true. See
           # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
           #
-          # @overload create(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, review: nil, spend_control: nil, vault_ids: nil, request_options: {})
+          # @overload create(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, stream_options: nil, vault_ids: nil, request_options: {})
           #
           # @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #   An inline execution environment or a reference to an environment template.
@@ -55,12 +55,19 @@ module OpenAI
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters. Omission or null defaults to an empty map.
           #
+          # @param prompt_cache_options [OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions, nil]
+          #   Default prompt cache lifetime for turns in this session. Omit to use the model
+          #   default.
+          #
           # @param review [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review]
           #   Action review mode. Omit to use none.
           #
           # @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
           #   Optional spending limit in USD cents. Omission or null creates an unlimited
           #   session.
+          #
+          # @param stream_options [OpenAI::Models::Beta::Agents::SessionCreateParams::StreamOptions]
+          #   Options for the event stream. Only allowed when `stream` is `true`.
           #
           # @param vault_ids [Array<String>, nil]
           #   The IDs of vaults made available to the session.
@@ -95,7 +102,7 @@ module OpenAI
           # the session or streams its events when stream is true. See
           # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
           #
-          # @overload create_streaming(environment:, agent: nil, agent_id: nil, input: nil, output_type: nil, tool_handlers: {}, metadata: nil, review: nil, spend_control: nil, vault_ids: nil, request_options: {})
+          # @overload create_streaming(environment:, agent: nil, agent_id: nil, input: nil, output_type: nil, tool_handlers: {}, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, stream_options: nil, vault_ids: nil, request_options: {})
           #
           # @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #   An inline execution environment or a reference to an environment template.
@@ -118,12 +125,19 @@ module OpenAI
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters. Omission or null defaults to an empty map.
           #
+          # @param prompt_cache_options [OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions, nil]
+          #   Default prompt cache lifetime for turns in this session. Omit to use the model
+          #   default.
+          #
           # @param review [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review]
           #   Action review mode. Omit to use none.
           #
           # @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
           #   Optional spending limit in USD cents. Omission or null creates an unlimited
           #   session.
+          #
+          # @param stream_options [OpenAI::Models::Beta::Agents::SessionCreateParams::StreamOptions]
+          #   Options for the event stream. Only allowed when `stream` is `true`.
           #
           # @param vault_ids [Array<String>, nil]
           #   The IDs of vaults made available to the session.
@@ -194,11 +208,12 @@ module OpenAI
             )
           end
 
-          # Updates session tools, metadata, model, reasoning effort, or service tier. Model
-          # settings apply to subsequent turns. Omitted fields are unchanged. See
+          # Updates session tools, metadata, model, reasoning effort, service tier, or the
+          # default prompt cache lifetime. Model settings apply to subsequent turns. Omitted
+          # fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           #
-          # @overload update(session_id, agent: nil, metadata: nil, review: nil, spend_control: nil, request_options: {})
+          # @overload update(session_id, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, request_options: {})
           #
           # @param session_id [String]
           #   The ID of the session.
@@ -210,6 +225,10 @@ module OpenAI
           #   Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters.
+          #
+          # @param prompt_cache_options [OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions, nil]
+          #   Default prompt cache lifetime for future turns. Send null to clear the session
+          #   default.
           #
           # @param review [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Review]
           #   Default action review for new root turns. Existing turns and their subagents

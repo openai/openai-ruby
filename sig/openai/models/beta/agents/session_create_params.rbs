@@ -9,8 +9,10 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
+            ?stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           }
@@ -50,6 +52,10 @@ module OpenAI
           # characters. Omission or null defaults to an empty map.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # Default prompt cache lifetime for turns in this session. Omit to use the model
+          # default.
+          attr_accessor prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?
+
           # Action review mode. Omit to use none.
           attr_reader review: OpenAI::Models::Beta::Agents::SessionCreateParams::review?
 
@@ -61,6 +67,14 @@ module OpenAI
           # Optional spending limit in USD cents. Omission or null creates an unlimited
           # session.
           attr_accessor spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?
+
+          # Options for the event stream. Only allowed when `stream` is `true`.
+          attr_reader stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions?
+
+          # Options for the event stream. Only allowed when `stream` is `true`.
+          def stream_options=: (
+            OpenAI::Beta::Agents::SessionCreateParams::StreamOptions
+          ) -> OpenAI::Beta::Agents::SessionCreateParams::StreamOptions
 
           # The IDs of vaults made available to the session.
           attr_accessor vault_ids: ::Array[String]?
@@ -81,11 +95,16 @@ module OpenAI
           # @param metadata
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters. Omission or null defaults to an empty map.
+          # @param prompt_cache_options
+          #   Default prompt cache lifetime for turns in this session. Omit to use the model
+          #   default.
           # @param review
           #   Action review mode. Omit to use none.
           # @param spend_control
           #   Optional spending limit in USD cents. Omission or null creates an unlimited
           #   session.
+          # @param stream_options
+          #   Options for the event stream. Only allowed when `stream` is `true`.
           # @param vault_ids
           #   The IDs of vaults made available to the session.
           def initialize: (
@@ -94,8 +113,10 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
+            ?stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           ) -> void
@@ -106,8 +127,10 @@ module OpenAI
             ?agent_id: String,
             ?input: OpenAI::Models::Beta::Agents::SessionCreateParams::input?,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
+            ?stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::RequestOptions
           }
@@ -293,6 +316,42 @@ module OpenAI
             AgentSessionInputMessageParamArray: OpenAI::Internal::Type::Converter
           end
 
+          type prompt_cache_options =
+            {
+              ?ttl: OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::ttl
+            }
+
+          class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            attr_reader ttl: OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::ttl?
+
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            def ttl=: (
+              OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::ttl
+            ) -> OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::ttl
+
+            # @param ttl
+            #   Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            def initialize: (
+              ?ttl: OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::ttl
+            ) -> void
+
+            def to_hash: -> {
+              ?ttl: OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::ttl
+            }
+
+            type ttl = :"30m" | :"12h"
+
+            module Ttl
+              extend OpenAI::Internal::Type::Enum
+
+              TTL_30M: :"30m"
+              TTL_12H: :"12h"
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::ttl]
+            end
+          end
+
           type review = :none | :auto_review
 
           module Review
@@ -318,6 +377,25 @@ module OpenAI
             def initialize: (limit: Integer?) -> void
 
             def to_hash: -> { limit: Integer? }
+          end
+
+          type stream_options = { ?include_obfuscation: bool }
+
+          class StreamOptions < OpenAI::Internal::Type::BaseModel
+            # Whether to include obfuscation padding in events on this connection. Defaults to
+            # `true`.
+            attr_reader include_obfuscation: bool?
+
+            # Whether to include obfuscation padding in events on this connection. Defaults to
+            # `true`.
+            def include_obfuscation=: (bool) -> bool
+
+            # @param include_obfuscation
+            #   Whether to include obfuscation padding in events on this connection. Defaults to
+            #   `true`.
+            def initialize: (?include_obfuscation: bool) -> void
+
+            def to_hash: -> { ?include_obfuscation: bool }
           end
         end
       end

@@ -16,8 +16,9 @@ module OpenAI
       required :message, String
 
       # @!attribute headers
-      #   The Retry-After and Retry-After-Ms headers returned with the original error, if
-      #   any.
+      #   Headers returned with the original error. These can include Retry-After,
+      #   Retry-After-Ms, and, on opted-in deployments,
+      #   x-openai-inference-capacity-reason.
       #
       #   @return [Hash{Symbol=>String}, nil]
       optional :headers, OpenAI::Internal::Type::HashOf[String]
@@ -49,8 +50,9 @@ module OpenAI
       #     A human-readable description of the error that was returned.
       #
       #   @param headers [Hash{Symbol=>String}]
-      #     The Retry-After and Retry-After-Ms headers returned with the original error, if
-      #     any.
+      #     Headers returned with the original error. These can include Retry-After,
+      #     Retry-After-Ms, and, on opted-in deployments,
+      #     x-openai-inference-capacity-reason.
       #
       #   @param misalignment [OpenAI::Models::VideoCreateError::Misalignment]
       #

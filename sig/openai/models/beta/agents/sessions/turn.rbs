@@ -15,7 +15,8 @@ module OpenAI
               started_at: Integer?,
               status: OpenAI::Models::Beta::Agents::Sessions::Turn::status,
               subagent_id: String?,
-              usage: OpenAI::Beta::TokenUsage?
+              usage: OpenAI::Beta::TokenUsage?,
+              ?prompt_cache_options: OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions?
             }
 
           class Turn < OpenAI::Internal::Type::BaseModel
@@ -55,6 +56,10 @@ module OpenAI
             # change.
             attr_accessor usage: OpenAI::Beta::TokenUsage?
 
+            # Prompt cache lifetime selected when this turn started, including an inherited
+            # session TTL. Null when the turn used the model default or no TTL was recorded.
+            attr_accessor prompt_cache_options: OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions?
+
             # @param id
             #   The ID of the turn.
             # @param agent_id
@@ -78,6 +83,9 @@ module OpenAI
             # @param usage
             #   Best-effort token usage for the turn, or null if unknown. Recorded usage may
             #   change.
+            # @param prompt_cache_options
+            #   Prompt cache lifetime selected when this turn started, including an inherited
+            #   session TTL. Null when the turn used the model default or no TTL was recorded.
             # @param object
             #   The object type. Always `agent.session.turn`.
             def initialize: (
@@ -91,6 +99,7 @@ module OpenAI
               status: OpenAI::Models::Beta::Agents::Sessions::Turn::status,
               subagent_id: String?,
               usage: OpenAI::Beta::TokenUsage?,
+              ?prompt_cache_options: OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions?,
               ?object: :"agent.session.turn"
             ) -> void
 
@@ -105,7 +114,8 @@ module OpenAI
               started_at: Integer?,
               status: OpenAI::Models::Beta::Agents::Sessions::Turn::status,
               subagent_id: String?,
-              usage: OpenAI::Beta::TokenUsage?
+              usage: OpenAI::Beta::TokenUsage?,
+              ?prompt_cache_options: OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions?
             }
 
             type status =
@@ -138,6 +148,34 @@ module OpenAI
               CANCELLED: :cancelled
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Sessions::Turn::status]
+            end
+
+            type prompt_cache_options =
+              {
+                ttl: OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions::ttl
+              }
+
+            class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+              attr_accessor ttl: OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions::ttl
+
+              def initialize: (
+                ttl: OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions::ttl
+              ) -> void
+
+              def to_hash: -> {
+                ttl: OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions::ttl
+              }
+
+              type ttl = :"30m" | :"12h"
+
+              module Ttl
+                extend OpenAI::Internal::Type::Enum
+
+                TTL_30M: :"30m"
+                TTL_12H: :"12h"
+
+                def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::Sessions::Turn::PromptCacheOptions::ttl]
+              end
             end
           end
         end

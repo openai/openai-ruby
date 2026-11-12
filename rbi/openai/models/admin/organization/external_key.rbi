@@ -56,10 +56,22 @@ module OpenAI
           attr_writer :key_name
 
           sig { returns(T.nilable(String)) }
+          attr_reader :key_ocid
+
+          sig { params(key_ocid: String).void }
+          attr_writer :key_ocid
+
+          sig { returns(T.nilable(String)) }
           attr_reader :key_version
 
           sig { params(key_version: String).void }
           attr_writer :key_version
+
+          sig { returns(T.nilable(String)) }
+          attr_reader :key_version_ocid
+
+          sig { params(key_version_ocid: String).void }
+          attr_writer :key_version_ocid
 
           sig { returns(T.nilable(String)) }
           attr_reader :kms_arn
@@ -104,6 +116,12 @@ module OpenAI
           attr_writer :purpose
 
           sig { returns(T.nilable(String)) }
+          attr_reader :region
+
+          sig { params(region: String).void }
+          attr_writer :region
+
+          sig { returns(T.nilable(String)) }
           attr_reader :role_arn
 
           sig { params(role_arn: String).void }
@@ -114,6 +132,12 @@ module OpenAI
 
           sig { params(tenant_id: String).void }
           attr_writer :tenant_id
+
+          sig { returns(T.nilable(String)) }
+          attr_reader :vault_ocid
+
+          sig { params(vault_ocid: String).void }
+          attr_writer :vault_ocid
 
           sig { returns(T.nilable(String)) }
           attr_reader :vault_uri
@@ -162,7 +186,11 @@ module OpenAI
 
               key_name: String,
 
+              key_ocid: String,
+
               key_version: String,
+
+              key_version_ocid: String,
 
               kms_arn: String,
 
@@ -178,9 +206,13 @@ module OpenAI
 
               purpose: OpenAI::Admin::Organization::ExternalKey::Purpose::OrSymbol,
 
+              region: String,
+
               role_arn: String,
 
               tenant_id: String,
+
+              vault_ocid: String,
 
               vault_uri: String,
 
@@ -214,7 +246,11 @@ module OpenAI
 
             key_name: nil,
 
+            key_ocid: nil,
+
             key_version: nil,
+
+            key_version_ocid: nil,
 
             kms_arn: nil,
 
@@ -230,9 +266,13 @@ module OpenAI
 
             purpose: nil,
 
+            region: nil,
+
             role_arn: nil,
 
             tenant_id: nil,
+
+            vault_ocid: nil,
 
             vault_uri: nil,
 
@@ -257,7 +297,9 @@ module OpenAI
                 audience: String,
                 external_id: String,
                 key_name: String,
+                key_ocid: String,
                 key_version: String,
+                key_version_ocid: String,
                 kms_arn: String,
                 kms_key_location: String,
                 kms_key_name: String,
@@ -265,8 +307,10 @@ module OpenAI
                 kms_key_version: String,
                 kms_project_id: String,
                 purpose: OpenAI::Admin::Organization::ExternalKey::Purpose::TaggedSymbol,
+                region: String,
                 role_arn: String,
                 tenant_id: String,
+                vault_ocid: String,
                 vault_uri: String,
                 workload_identity_pool_id: String,
                 workload_identity_project_number: String,

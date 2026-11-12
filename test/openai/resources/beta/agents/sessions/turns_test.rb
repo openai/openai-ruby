@@ -22,7 +22,8 @@ class OpenAI::Test::Resources::Beta::Agents::Sessions::TurnsTest < OpenAI::Test:
           started_at: Integer | nil,
           status: OpenAI::Beta::Agents::Sessions::Turn::Status,
           subagent_id: String | nil,
-          usage: OpenAI::Beta::TokenUsage | nil
+          usage: OpenAI::Beta::TokenUsage | nil,
+          prompt_cache_options: OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions | nil
         }
     end
   end
@@ -54,7 +55,8 @@ class OpenAI::Test::Resources::Beta::Agents::Sessions::TurnsTest < OpenAI::Test:
           started_at: Integer | nil,
           status: OpenAI::Beta::Agents::Sessions::Turn::Status,
           subagent_id: String | nil,
-          usage: OpenAI::Beta::TokenUsage | nil
+          usage: OpenAI::Beta::TokenUsage | nil,
+          prompt_cache_options: OpenAI::Beta::Agents::Sessions::Turn::PromptCacheOptions | nil
         }
     end
   end
