@@ -172,7 +172,7 @@ module OpenAI
       #   enabled, supply svg.model. When model selection is disabled, omit this object.
       #   The top-level model selects the image model that creates the reference image.
       #   SVG generation requires n=1 and does not support streaming, partial images,
-      #   prompt_rewriter, or output_compression. SVG edits are not supported.
+      #   prompt_rewriter, or output_compression.
       #
       #   @return [OpenAI::Models::ImageGenerateParams::Svg, nil]
       optional :svg, -> { OpenAI::ImageGenerateParams::Svg }, nil?: true
@@ -300,7 +300,7 @@ module OpenAI
       #     enabled, supply svg.model. When model selection is disabled, omit this object.
       #     The top-level model selects the image model that creates the reference image.
       #     SVG generation requires n=1 and does not support streaming, partial images,
-      #     prompt_rewriter, or output_compression. SVG edits are not supported.
+      #     prompt_rewriter, or output_compression.
       #
       #   @param user [String]
       #     Deprecated: use `safety_identifier` instead. This parameter remains accepted for
@@ -392,8 +392,8 @@ module OpenAI
         extend OpenAI::Internal::Type::Enum
 
         PNG = :png
-        JPEG = :jpeg
         WEBP = :webp
+        JPEG = :jpeg
         GIF = :gif
         SVG = :svg
 
@@ -537,7 +537,7 @@ module OpenAI
         #   enabled, supply svg.model. When model selection is disabled, omit this object.
         #   The top-level model selects the image model that creates the reference image.
         #   SVG generation requires n=1 and does not support streaming, partial images,
-        #   prompt_rewriter, or output_compression. SVG edits are not supported.
+        #   prompt_rewriter, or output_compression.
         #
         #   @param model [String]
         #     Model used to author the SVG. Required when SVG model selection is enabled.

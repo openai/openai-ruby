@@ -15,8 +15,20 @@ module OpenAI
             #   @return [String]
             required :session_id, String
 
-            # @!method initialize(session_id:, request_options: {})
+            # @!attribute include_obfuscation
+            #   Whether to include obfuscation padding in events on this connection. Defaults to
+            #   `true`.
+            #
+            #   @return [Boolean, nil]
+            optional :include_obfuscation, OpenAI::Internal::Type::Boolean
+
+            # @!method initialize(session_id:, include_obfuscation: nil, request_options: {})
             #   @param session_id [String]
+            #
+            #   @param include_obfuscation [Boolean]
+            #     Whether to include obfuscation padding in events on this connection. Defaults to
+            #     `true`.
+            #
             #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
           end
         end

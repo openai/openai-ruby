@@ -1229,14 +1229,23 @@ module OpenAI
 
             # @see OpenAI::Models::Admin::Organization::AuditLogListResponse::APIKeyUpdated#changes_requested
             class ChangesRequested < OpenAI::Internal::Type::BaseModel
+              # @!attribute expires_in_seconds
+              #   Number of seconds from the update request until the API key expires.
+              #
+              #   @return [Integer, nil]
+              optional :expires_in_seconds, Integer
+
               # @!attribute scopes
               #   A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               #
               #   @return [Array<String>, nil]
               optional :scopes, OpenAI::Internal::Type::ArrayOf[String]
 
-              # @!method initialize(scopes: nil)
+              # @!method initialize(expires_in_seconds: nil, scopes: nil)
               #   The payload used to update the API key.
+              #
+              #   @param expires_in_seconds [Integer]
+              #     Number of seconds from the update request until the API key expires.
               #
               #   @param scopes [Array<String>]
               #     A list of scopes allowed for the API key, e.g. `["api.model.request"]`

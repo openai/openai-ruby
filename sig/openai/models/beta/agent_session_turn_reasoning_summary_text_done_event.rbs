@@ -10,7 +10,8 @@ module OpenAI
           summary_index: Integer,
           text: String,
           turn_id: String?,
-          ?type: :"agent.session.turn.reasoning_summary_text.done"
+          ?type: :"agent.session.turn.reasoning_summary_text.done",
+          ?obfuscation: String
         }
 
       class AgentSessionTurnReasoningSummaryTextDoneEvent < OpenAI::Internal::Type::BaseModel
@@ -38,6 +39,12 @@ module OpenAI
         # The type of the object. Always `agent.session.turn.reasoning_summary_text.done`.
         attr_accessor type: :"agent.session.turn.reasoning_summary_text.done"
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param event_id
         #   The unique ID of the event.
         # @param item_id
@@ -52,6 +59,8 @@ module OpenAI
         #   The complete reasoning summary text.
         # @param turn_id
         #   The ID of the turn associated with the event, when applicable.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always `agent.session.turn.reasoning_summary_text.done`.
         def initialize: (
@@ -62,6 +71,7 @@ module OpenAI
           summary_index: Integer,
           text: String,
           turn_id: String?,
+          ?obfuscation: String,
           ?type: :"agent.session.turn.reasoning_summary_text.done"
         ) -> void
 
@@ -73,7 +83,8 @@ module OpenAI
           summary_index: Integer,
           text: String,
           turn_id: String?,
-          ?type: :"agent.session.turn.reasoning_summary_text.done"
+          ?type: :"agent.session.turn.reasoning_summary_text.done",
+          ?obfuscation: String
         }
       end
     end

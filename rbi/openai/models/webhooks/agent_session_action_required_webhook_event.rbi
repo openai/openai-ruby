@@ -192,6 +192,10 @@ module OpenAI
                 :computer_use_approval_request,
                 OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction::Type::TaggedSymbol
               )
+              MCP_APPROVAL_REQUEST = T.let(
+                :mcp_approval_request,
+                OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction::Type::TaggedSymbol
+              )
               FUNCTION_CALL = T.let(
                 :function_call,
                 OpenAI::Webhooks::AgentSessionActionRequiredWebhookEvent::Data::RequiredAction::Type::TaggedSymbol

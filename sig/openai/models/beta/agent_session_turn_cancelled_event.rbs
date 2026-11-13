@@ -8,7 +8,8 @@ module OpenAI
           turn: OpenAI::Beta::Agents::Sessions::Turn,
           turn_id: String,
           ?type: :"agent.session.turn.cancelled",
-          usage: OpenAI::Beta::TokenUsage?
+          usage: OpenAI::Beta::TokenUsage?,
+          ?obfuscation: String
         }
 
       class AgentSessionTurnCancelledEvent < OpenAI::Internal::Type::BaseModel
@@ -30,6 +31,12 @@ module OpenAI
         # Token usage by the root agent during the turn, when available.
         attr_accessor usage: OpenAI::Beta::TokenUsage?
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param event_id
         #   The unique ID of the event.
         # @param session_id
@@ -40,6 +47,8 @@ module OpenAI
         #   The ID of the turn associated with the event.
         # @param usage
         #   Token usage by the root agent during the turn, when available.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always `agent.session.turn.cancelled`.
         def initialize: (
@@ -48,6 +57,7 @@ module OpenAI
           turn: OpenAI::Beta::Agents::Sessions::Turn,
           turn_id: String,
           usage: OpenAI::Beta::TokenUsage?,
+          ?obfuscation: String,
           ?type: :"agent.session.turn.cancelled"
         ) -> void
 
@@ -57,7 +67,8 @@ module OpenAI
           turn: OpenAI::Beta::Agents::Sessions::Turn,
           turn_id: String,
           ?type: :"agent.session.turn.cancelled",
-          usage: OpenAI::Beta::TokenUsage?
+          usage: OpenAI::Beta::TokenUsage?,
+          ?obfuscation: String
         }
       end
     end

@@ -31,6 +31,8 @@ module OpenAI
         optional :input, union: -> { OpenAI::Responses::ResponseCompactParams::Input }, nil?: true
 
         # @!attribute instructions
+        #   @deprecated
+        #
         #   A system (or developer) message inserted into the model's context. When used
         #   along with `previous_response_id`, the instructions from a previous response
         #   will not be carried over to the next response. This makes it simple to swap out

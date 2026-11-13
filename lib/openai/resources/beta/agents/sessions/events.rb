@@ -19,7 +19,7 @@ module OpenAI
             # @param session_id [String]
             #   Path param: The ID of the session.
             #
-            # @param events [Array<OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult>]
+            # @param events [Array<OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult>]
             #   Body param: The input events to submit to the session.
             #
             # @param idempotency_key [String]
@@ -50,10 +50,14 @@ module OpenAI
             # Streams live events for an agent session. See
             # [session events](https://developers.openai.com/api/docs/guides/agents-api/sessions/events).
             #
-            # @overload stream_streaming(session_id, request_options: {})
+            # @overload stream_streaming(session_id, include_obfuscation: nil, request_options: {})
             #
             # @param session_id [String]
             #   The ID of the session.
+            #
+            # @param include_obfuscation [Boolean]
+            #   Whether to include obfuscation padding in events on this connection. Defaults to
+            #   `true`.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #
@@ -61,9 +65,12 @@ module OpenAI
             #
             # @see OpenAI::Models::Beta::Agents::Sessions::EventStreamParams
             def stream_streaming(session_id, params = {})
+              parsed, options = OpenAI::Beta::Agents::Sessions::EventStreamParams.dump_request(params)
+              query = OpenAI::Internal::Util.encode_query_params(parsed)
               @client.request(
                 method: :get,
                 path: ["agents/sessions/%1$s/events", session_id],
+                query: query,
                 headers: {
                   "openai-beta" => "agents=v1",
                   "accept" => "text/event-stream",
@@ -72,7 +79,7 @@ module OpenAI
                 stream: OpenAI::Internal::Stream,
                 model: OpenAI::Beta::AgentSessionEvent,
                 security: {bearer_auth: true},
-                options: params[:request_options]
+                options: options
               )
             end
 

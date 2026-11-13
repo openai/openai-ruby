@@ -24,10 +24,20 @@ module OpenAI
             sig { returns(String) }
             attr_accessor :session_id
 
+            # Whether to include obfuscation padding in events on this connection. Defaults to
+            # `true`.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :include_obfuscation
+
+            sig { params(include_obfuscation: T::Boolean).void }
+            attr_writer :include_obfuscation
+
             sig do
               params(
 
                 session_id: String,
+
+                include_obfuscation: T::Boolean,
 
                 request_options: OpenAI::RequestOptions::OrHash
               )
@@ -37,13 +47,17 @@ module OpenAI
 
               session_id:,
 
+              # Whether to include obfuscation padding in events on this connection. Defaults to
+              # `true`.
+              include_obfuscation: nil,
+
               request_options: {}
             )
             end
 
             sig do
               override.returns(
-                {session_id: String, request_options: OpenAI::RequestOptions}
+                {session_id: String, include_obfuscation: T::Boolean, request_options: OpenAI::RequestOptions}
               )
             end
             def to_hash

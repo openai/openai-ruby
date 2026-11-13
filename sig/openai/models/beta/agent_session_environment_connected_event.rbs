@@ -7,7 +7,8 @@ module OpenAI
           event_id: String,
           session_id: String,
           turn_id: String?,
-          ?type: :"agent.session.environment.connected"
+          ?type: :"agent.session.environment.connected",
+          ?obfuscation: String
         }
 
       class AgentSessionEnvironmentConnectedEvent < OpenAI::Internal::Type::BaseModel
@@ -26,6 +27,12 @@ module OpenAI
         # The type of the object. Always `agent.session.environment.connected`.
         attr_accessor type: :"agent.session.environment.connected"
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param environment
         #   The current environment state.
         # @param event_id
@@ -34,6 +41,8 @@ module OpenAI
         #   The ID of the session associated with the event.
         # @param turn_id
         #   The ID of the turn associated with the event, when applicable.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always `agent.session.environment.connected`.
         def initialize: (
@@ -41,6 +50,7 @@ module OpenAI
           event_id: String,
           session_id: String,
           turn_id: String?,
+          ?obfuscation: String,
           ?type: :"agent.session.environment.connected"
         ) -> void
 
@@ -49,7 +59,8 @@ module OpenAI
           event_id: String,
           session_id: String,
           turn_id: String?,
-          ?type: :"agent.session.environment.connected"
+          ?type: :"agent.session.environment.connected",
+          ?obfuscation: String
         }
       end
     end

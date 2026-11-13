@@ -47,6 +47,15 @@ module OpenAI
               ?key_version: String,
               ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
             }
+            | {
+              key_ocid: String,
+              name: String,
+              region: String,
+              type: :oci,
+              vault_ocid: String,
+              ?key_version_ocid: String,
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose
+            }
           ) -> (OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::body
           | {
             external_id: String,
@@ -78,6 +87,15 @@ module OpenAI
             vault_uri: String,
             ?key_version: String,
             ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
+          }
+          | {
+            key_ocid: String,
+            name: String,
+            region: String,
+            type: :oci,
+            vault_ocid: String,
+            ?key_version_ocid: String,
+            ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose
           })
 
           def initialize: (
@@ -112,6 +130,15 @@ module OpenAI
               vault_uri: String,
               ?key_version: String,
               ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose
+            }
+            | {
+              key_ocid: String,
+              name: String,
+              region: String,
+              type: :oci,
+              vault_ocid: String,
+              ?key_version_ocid: String,
+              ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose
             },
             ?request_options: OpenAI::request_opts
           ) -> void
@@ -125,6 +152,7 @@ module OpenAI
             OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Aws
             | OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Gcp
             | OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure
+            | OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci
 
           module Body
             extend OpenAI::Internal::Type::Union
@@ -411,6 +439,86 @@ module OpenAI
                 PSP_DECRYPTION: :psp_decryption
 
                 def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Azure::purpose]
+              end
+            end
+
+            type oci =
+              {
+                key_ocid: String,
+                name: String,
+                region: String,
+                ?type: :oci,
+                vault_ocid: String,
+                ?key_version_ocid: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose
+              }
+
+            class Oci < OpenAI::Internal::Type::BaseModel
+              # The OCI Vault key OCID
+              attr_accessor key_ocid: String
+
+              # A friendly name to identify this config
+              attr_accessor name: String
+
+              # The OCI region containing the vault
+              attr_accessor region: String
+
+              attr_accessor type: :oci
+
+              # The customer OCI Vault OCID
+              attr_accessor vault_ocid: String
+
+              # The exact OCI key version OCID for PSP decryption.
+              attr_reader key_version_ocid: String?
+
+              # The exact OCI key version OCID for PSP decryption.
+              def key_version_ocid=: (String) -> String
+
+              attr_reader purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose?
+
+              def purpose=: (
+                OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose
+              ) -> OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose
+
+              # @param key_ocid
+              #   The OCI Vault key OCID
+              # @param name
+              #   A friendly name to identify this config
+              # @param region
+              #   The OCI region containing the vault
+              # @param vault_ocid
+              #   The customer OCI Vault OCID
+              # @param key_version_ocid
+              #   The exact OCI key version OCID for PSP decryption.
+              def initialize: (
+                key_ocid: String,
+                name: String,
+                region: String,
+                vault_ocid: String,
+                ?key_version_ocid: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose,
+                ?type: :oci
+              ) -> void
+
+              def to_hash: -> {
+                key_ocid: String,
+                name: String,
+                region: String,
+                ?type: :oci,
+                vault_ocid: String,
+                ?key_version_ocid: String,
+                ?purpose: OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose
+              }
+
+              type purpose = :ekm | :psp_decryption
+
+              module Purpose
+                extend OpenAI::Internal::Type::Enum
+
+                EKM: :ekm
+                PSP_DECRYPTION: :psp_decryption
+
+                def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::ExternalKeyCreateParams::Body::Oci::purpose]
               end
             end
 

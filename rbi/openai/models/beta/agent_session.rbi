@@ -69,6 +69,13 @@ module OpenAI
         sig { returns(T::Array[String]) }
         attr_accessor :vault_ids
 
+        # Default prompt cache lifetime for turns in this session, when configured.
+        sig { returns(T.nilable(OpenAI::Beta::AgentSession::PromptCacheOptions)) }
+        attr_reader :prompt_cache_options
+
+        sig { params(prompt_cache_options: T.nilable(OpenAI::Beta::AgentSession::PromptCacheOptions::OrHash)).void }
+        attr_writer :prompt_cache_options
+
         # Review applied to eligible actions in this session. Omitted when review is none
         # and automatic review is not enabled. Omission means none.
         sig { returns(T.nilable(OpenAI::Beta::AgentSession::Review::TaggedSymbol)) }
@@ -109,6 +116,7 @@ module OpenAI
 
             required_actions: T::Array[
               T.any(
+                OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::OrHash,
                 OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest::OrHash,
                 OpenAI::Beta::AgentSession::RequiredAction::FunctionCall::OrHash,
                 OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection::OrHash
@@ -120,6 +128,8 @@ module OpenAI
             usage: T.nilable(OpenAI::Beta::TokenUsage::OrHash),
 
             vault_ids: T::Array[String],
+
+            prompt_cache_options: T.nilable(OpenAI::Beta::AgentSession::PromptCacheOptions::OrHash),
 
             review: OpenAI::Beta::AgentSession::Review::OrSymbol,
 
@@ -165,6 +175,9 @@ module OpenAI
           # The IDs of vaults made available to the session.
           vault_ids:,
 
+          # Default prompt cache lifetime for turns in this session, when configured.
+          prompt_cache_options: nil,
+
           # Review applied to eligible actions in this session. Omitted when review is none
           # and automatic review is not enabled. Omission means none.
           review: nil,
@@ -194,6 +207,7 @@ module OpenAI
               status: OpenAI::Beta::AgentSession::Status::TaggedSymbol,
               usage: T.nilable(OpenAI::Beta::TokenUsage),
               vault_ids: T::Array[String],
+              prompt_cache_options: T.nilable(OpenAI::Beta::AgentSession::PromptCacheOptions),
               review: OpenAI::Beta::AgentSession::Review::TaggedSymbol,
               spend_control: OpenAI::Beta::AgentSession::SpendControl
             }
@@ -468,11 +482,156 @@ module OpenAI
 
           Variants = T.type_alias {
             T.any(
+              OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest,
               OpenAI::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest,
               OpenAI::Beta::AgentSession::RequiredAction::FunctionCall,
               OpenAI::Beta::AgentSession::RequiredAction::EnvironmentConnection
             )
           }
+
+          class McpApprovalRequest < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Information for presenting an MCP approval.
+            sig { returns(OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request) }
+            attr_reader :request
+
+            sig {
+              params(request: OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request::OrHash).void
+            }
+            attr_writer :request
+
+            # The opaque approval ID to echo when responding.
+            sig { returns(String) }
+            attr_accessor :request_id
+
+            # The turn that requested approval.
+            sig { returns(String) }
+            attr_accessor :turn_id
+
+            # The type of the object. Always `mcp_approval_request`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # Respond to an MCP tool-call approval request.
+            sig do
+              params(
+
+                request: OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request::OrHash,
+
+                request_id: String,
+
+                turn_id: String,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Information for presenting an MCP approval.
+              request:,
+
+              # The opaque approval ID to echo when responding.
+              request_id:,
+
+              # The turn that requested approval.
+              turn_id:,
+
+              # The type of the object. Always `mcp_approval_request`.
+
+              type: :mcp_approval_request
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  request: OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request,
+                  request_id: String,
+                  turn_id: String,
+                  type: Symbol
+                }
+              )
+            end
+            def to_hash
+            end
+
+            class Request < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Beta::AgentSession::RequiredAction::McpApprovalRequest::Request,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The tool arguments as JSON, or null when CCA does not provide them.
+              sig { returns(T.anything) }
+              attr_accessor :arguments
+
+              sig { returns(String) }
+              attr_accessor :message
+
+              # The tool name, or null when CCA does not provide it.
+              sig { returns(T.nilable(String)) }
+              attr_accessor :name
+
+              sig { returns(String) }
+              attr_accessor :server_label
+
+              # The type of the object. Always `mcp_tool_call`.
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # Information for presenting an MCP approval.
+              sig do
+                params(
+
+                  arguments: T.anything,
+
+                  message: String,
+
+                  name: T.nilable(String),
+
+                  server_label: String,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The tool arguments as JSON, or null when CCA does not provide them.
+                arguments:,
+
+                message:,
+
+                # The tool name, or null when CCA does not provide it.
+                name:,
+
+                server_label:,
+
+                # The type of the object. Always `mcp_tool_call`.
+
+                type: :mcp_tool_call
+              )
+              end
+
+              sig do
+                override.returns(
+                  {arguments: T.anything, message: String, name: T.nilable(String), server_label: String, type: Symbol}
+                )
+              end
+              def to_hash
+              end
+
+            end
+          end
 
           class ComputerUseApprovalRequest < OpenAI::Internal::Type::BaseModel
             OrHash = T.type_alias do
@@ -991,6 +1150,54 @@ module OpenAI
 
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Status::TaggedSymbol]) }
           def self.values
+          end
+        end
+
+        class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentSession::PromptCacheOptions,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          sig { returns(OpenAI::Beta::AgentSession::PromptCacheOptions::Ttl::TaggedSymbol) }
+          attr_accessor :ttl
+
+          # Default prompt cache lifetime for turns in this session, when configured.
+          sig do
+            params(
+
+              ttl: OpenAI::Beta::AgentSession::PromptCacheOptions::Ttl::OrSymbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            ttl:
+          )
+          end
+
+          sig do
+            override.returns(
+              {ttl: OpenAI::Beta::AgentSession::PromptCacheOptions::Ttl::TaggedSymbol}
+            )
+          end
+          def to_hash
+          end
+
+          module Ttl
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::AgentSession::PromptCacheOptions::Ttl) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TTL_30M = T.let(:"30m", OpenAI::Beta::AgentSession::PromptCacheOptions::Ttl::TaggedSymbol)
+            TTL_12H = T.let(:"12h", OpenAI::Beta::AgentSession::PromptCacheOptions::Ttl::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::Beta::AgentSession::PromptCacheOptions::Ttl::TaggedSymbol]) }
+            def self.values
+            end
           end
         end
 

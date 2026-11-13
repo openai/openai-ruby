@@ -34,7 +34,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.turn.in_progress"]
         required :type, const: :"agent.session.turn.in_progress"
 
-        # @!method initialize(event_id:, session_id:, turn:, turn_id:, type: :"agent.session.turn.in_progress")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, session_id:, turn:, turn_id:, obfuscation: nil, type: :"agent.session.turn.in_progress")
         #   Emitted when a turn starts running.
         #
         #   @param event_id [String]
@@ -48,6 +54,9 @@ module OpenAI
         #
         #   @param turn_id [String]
         #     The ID of the turn associated with the event.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.turn.in_progress"]
         #     The type of the object. Always `agent.session.turn.in_progress`.

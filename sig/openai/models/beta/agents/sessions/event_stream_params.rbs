@@ -4,7 +4,11 @@ module OpenAI
       module Agents
         module Sessions
           type event_stream_params =
-            { session_id: String, ?request_options: OpenAI::request_opts }
+            {
+              session_id: String,
+              ?include_obfuscation: bool,
+              ?request_options: OpenAI::request_opts
+            }
 
           class EventStreamParams < OpenAI::Internal::Type::BaseModel
             extend OpenAI::Internal::Type::RequestParameters::Converter
@@ -12,13 +16,26 @@ module OpenAI
 
             attr_accessor session_id: String
 
+            # Whether to include obfuscation padding in events on this connection. Defaults to
+            # `true`.
+            attr_reader include_obfuscation: bool?
+
+            # Whether to include obfuscation padding in events on this connection. Defaults to
+            # `true`.
+            def include_obfuscation=: (bool) -> bool
+
+            # @param include_obfuscation
+            #   Whether to include obfuscation padding in events on this connection. Defaults to
+            #   `true`.
             def initialize: (
               session_id: String,
+              ?include_obfuscation: bool,
               ?request_options: OpenAI::request_opts
             ) -> void
 
             def to_hash: -> {
               session_id: String,
+              ?include_obfuscation: bool,
               ?request_options: OpenAI::RequestOptions
             }
           end

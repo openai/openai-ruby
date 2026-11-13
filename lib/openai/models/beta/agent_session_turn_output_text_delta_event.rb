@@ -52,7 +52,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.turn.output_text.delta"]
         required :type, const: :"agent.session.turn.output_text.delta"
 
-        # @!method initialize(content_index:, delta:, event_id:, item_id:, output_index:, session_id:, turn_id:, type: :"agent.session.turn.output_text.delta")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(content_index:, delta:, event_id:, item_id:, output_index:, session_id:, turn_id:, obfuscation: nil, type: :"agent.session.turn.output_text.delta")
         #   Emitted when text is appended to an output text content part.
         #
         #   @param content_index [Integer]
@@ -75,6 +81,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The ID of the turn associated with the event, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.turn.output_text.delta"]
         #     The type of the object. Always `agent.session.turn.output_text.delta`.

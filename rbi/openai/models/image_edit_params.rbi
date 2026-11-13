@@ -123,7 +123,8 @@ module OpenAI
       attr_accessor :output_compression
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for the GPT image models. The default value is `png`.
+      # supported for the GPT image models. The default value is `png`. SVG output
+      # requires a supported image model and project access.
       sig { returns(T.nilable(OpenAI::ImageEditParams::OutputFormat::OrSymbol)) }
       attr_accessor :output_format
 
@@ -170,6 +171,16 @@ module OpenAI
       # models that allow automatic sizing.
       sig { returns(T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol))) }
       attr_accessor :size
+
+      # Selects the author model and reasoning effort for `output_format=svg`. Supply
+      # `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+      # SVG output requires `n=1` and cannot use streaming, partial images, or output
+      # compression. Use multipart fields such as `svg[model]`.
+      sig { returns(T.nilable(OpenAI::ImageEditParams::Svg)) }
+      attr_reader :svg
+
+      sig { params(svg: T.nilable(OpenAI::ImageEditParams::Svg::OrHash)).void }
+      attr_writer :svg
 
       # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
       # backward compatibility and is used when `safety_identifier` is omitted, null, or
@@ -219,6 +230,8 @@ module OpenAI
           safety_identifier: T.nilable(String),
 
           size: T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
+
+          svg: T.nilable(OpenAI::ImageEditParams::Svg::OrHash),
 
           user: String,
 
@@ -318,7 +331,8 @@ module OpenAI
         output_compression: nil,
 
         # The format in which the generated images are returned. This parameter is only
-        # supported for the GPT image models. The default value is `png`.
+        # supported for the GPT image models. The default value is `png`. SVG output
+        # requires a supported image model and project access.
         output_format: nil,
 
         # The number of partial images to generate. This parameter is used for streaming
@@ -360,6 +374,12 @@ module OpenAI
         # models that allow automatic sizing.
         size: nil,
 
+        # Selects the author model and reasoning effort for `output_format=svg`. Supply
+        # `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+        # SVG output requires `n=1` and cannot use streaming, partial images, or output
+        # compression. Use multipart fields such as `svg[model]`.
+        svg: nil,
+
         # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
         # backward compatibility and is used when `safety_identifier` is omitted, null, or
         # empty.
@@ -391,6 +411,7 @@ module OpenAI
             response_format: T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
             safety_identifier: T.nilable(String),
             size: T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
+            svg: T.nilable(OpenAI::ImageEditParams::Svg),
             user: String,
             request_options: OpenAI::RequestOptions
           }
@@ -503,7 +524,8 @@ module OpenAI
       end
 
       # The format in which the generated images are returned. This parameter is only
-      # supported for the GPT image models. The default value is `png`.
+      # supported for the GPT image models. The default value is `png`. SVG output
+      # requires a supported image model and project access.
       module OutputFormat
         extend OpenAI::Internal::Type::Enum
 
@@ -511,9 +533,10 @@ module OpenAI
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         PNG = T.let(:png, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
-        JPEG = T.let(:jpeg, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
         WEBP = T.let(:webp, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
+        JPEG = T.let(:jpeg, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
         GIF = T.let(:gif, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
+        SVG = T.let(:svg, OpenAI::ImageEditParams::OutputFormat::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::ImageEditParams::OutputFormat::TaggedSymbol]) }
         def self.values
@@ -592,6 +615,122 @@ module OpenAI
         SIZE_256X256 = T.let(:"256x256", OpenAI::ImageEditParams::Size::TaggedSymbol)
         SIZE_512X512 = T.let(:"512x512", OpenAI::ImageEditParams::Size::TaggedSymbol)
 
+      end
+
+      class Svg < OpenAI::Internal::Type::BaseModel
+        OrHash = T.type_alias do
+          T.any(
+            OpenAI::ImageEditParams::Svg,
+            OpenAI::Internal::AnyHash
+          )
+        end
+
+        sig { returns(T.nilable(String)) }
+        attr_reader :model
+
+        sig { params(model: String).void }
+        attr_writer :model
+
+        # Reasoning effort for SVG authoring. When omitted, uses the author model's
+        # default in both Images and Responses.
+        sig { returns(T.nilable(OpenAI::ImageEditParams::Svg::Reasoning)) }
+        attr_reader :reasoning
+
+        sig { params(reasoning: T.nilable(OpenAI::ImageEditParams::Svg::Reasoning::OrHash)).void }
+        attr_writer :reasoning
+
+        # Selects the author model and reasoning effort for `output_format=svg`. Supply
+        # `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+        # SVG output requires `n=1` and cannot use streaming, partial images, or output
+        # compression. Use multipart fields such as `svg[model]`.
+        sig do
+          params(
+
+            model: String,
+
+            reasoning: T.nilable(OpenAI::ImageEditParams::Svg::Reasoning::OrHash)
+          )
+            .returns(T.attached_class)
+        end
+        def self.new(
+
+          model: nil,
+
+          # Reasoning effort for SVG authoring. When omitted, uses the author model's
+          # default in both Images and Responses.
+
+          reasoning: nil
+        )
+        end
+
+        sig do
+          override.returns(
+            {model: String, reasoning: T.nilable(OpenAI::ImageEditParams::Svg::Reasoning)}
+          )
+        end
+        def to_hash
+        end
+
+        class Reasoning < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::ImageEditParams::Svg::Reasoning,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Controls how much effort the model should spend on reasoning for this request.
+          sig { returns(T.nilable(OpenAI::ImageEditParams::Svg::Reasoning::Effort::OrSymbol)) }
+          attr_reader :effort
+
+          sig { params(effort: OpenAI::ImageEditParams::Svg::Reasoning::Effort::OrSymbol).void }
+          attr_writer :effort
+
+          # Reasoning effort for SVG authoring. When omitted, uses the author model's
+          # default in both Images and Responses.
+          sig do
+            params(
+
+              effort: OpenAI::ImageEditParams::Svg::Reasoning::Effort::OrSymbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Controls how much effort the model should spend on reasoning for this request.
+
+            effort: nil
+          )
+          end
+
+          sig do
+            override.returns(
+              {effort: OpenAI::ImageEditParams::Svg::Reasoning::Effort::OrSymbol}
+            )
+          end
+          def to_hash
+          end
+
+          # Controls how much effort the model should spend on reasoning for this request.
+          module Effort
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::ImageEditParams::Svg::Reasoning::Effort) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            NONE = T.let(:none, OpenAI::ImageEditParams::Svg::Reasoning::Effort::TaggedSymbol)
+            MINIMAL = T.let(:minimal, OpenAI::ImageEditParams::Svg::Reasoning::Effort::TaggedSymbol)
+            LOW = T.let(:low, OpenAI::ImageEditParams::Svg::Reasoning::Effort::TaggedSymbol)
+            MEDIUM = T.let(:medium, OpenAI::ImageEditParams::Svg::Reasoning::Effort::TaggedSymbol)
+            HIGH = T.let(:high, OpenAI::ImageEditParams::Svg::Reasoning::Effort::TaggedSymbol)
+            XHIGH = T.let(:xhigh, OpenAI::ImageEditParams::Svg::Reasoning::Effort::TaggedSymbol)
+            MAX = T.let(:max, OpenAI::ImageEditParams::Svg::Reasoning::Effort::TaggedSymbol)
+
+            sig { override.returns(T::Array[OpenAI::ImageEditParams::Svg::Reasoning::Effort::TaggedSymbol]) }
+            def self.values
+            end
+          end
+        end
       end
 
     end

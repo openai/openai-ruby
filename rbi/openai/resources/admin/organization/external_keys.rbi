@@ -15,7 +15,8 @@ module OpenAI
               body: T.any(
                 OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Aws::OrHash,
                 OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::OrHash,
-                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure::OrHash
+                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure::OrHash,
+                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::OrHash
               ),
               request_options: OpenAI::RequestOptions::OrHash
             )

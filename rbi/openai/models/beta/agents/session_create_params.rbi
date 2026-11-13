@@ -59,6 +59,19 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
+          # Default prompt cache lifetime for turns in this session. Omit to use the model
+          # default.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions)) }
+          attr_reader :prompt_cache_options
+
+          sig {
+            params(
+              prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::OrHash)
+            )
+              .void
+          }
+          attr_writer :prompt_cache_options
+
           # Action review mode. Omit to use none.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol)) }
           attr_reader :review
@@ -75,6 +88,13 @@ module OpenAI
             params(spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash)).void
           }
           attr_writer :spend_control
+
+          # Options for the event stream. Only allowed when `stream` is `true`.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::StreamOptions)) }
+          attr_reader :stream_options
+
+          sig { params(stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions::OrHash).void }
+          attr_writer :stream_options
 
           # The IDs of vaults made available to the session.
           sig { returns(T.nilable(T::Array[String])) }
@@ -97,9 +117,13 @@ module OpenAI
 
               metadata: T.nilable(T::Hash[Symbol, String]),
 
+              prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::OrHash),
+
               review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
 
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
+
+              stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions::OrHash,
 
               vault_ids: T.nilable(T::Array[String]),
 
@@ -130,12 +154,19 @@ module OpenAI
             # characters. Omission or null defaults to an empty map.
             metadata: nil,
 
+            # Default prompt cache lifetime for turns in this session. Omit to use the model
+            # default.
+            prompt_cache_options: nil,
+
             # Action review mode. Omit to use none.
             review: nil,
 
             # Optional spending limit in USD cents. Omission or null creates an unlimited
             # session.
             spend_control: nil,
+
+            # Options for the event stream. Only allowed when `stream` is `true`.
+            stream_options: nil,
 
             # The IDs of vaults made available to the session.
             vault_ids: nil,
@@ -156,8 +187,10 @@ module OpenAI
                 agent_id: String,
                 input: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Input::Variants),
                 metadata: T.nilable(T::Hash[Symbol, String]),
+                prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions),
                 review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
                 spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl),
+                stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
                 vault_ids: T.nilable(T::Array[String]),
                 request_options: OpenAI::RequestOptions
               }
@@ -502,6 +535,68 @@ module OpenAI
 
           end
 
+          class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl::OrSymbol)) }
+            attr_reader :ttl
+
+            sig { params(ttl: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl::OrSymbol).void }
+            attr_writer :ttl
+
+            # Default prompt cache lifetime for turns in this session. Omit to use the model
+            # default.
+            sig do
+              params(
+
+                ttl: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl::OrSymbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+
+              ttl: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {ttl: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl::OrSymbol}
+              )
+            end
+            def to_hash
+            end
+
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            module Ttl
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              TTL_30M = T.let(:"30m", OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl::TaggedSymbol)
+              TTL_12H = T.let(:"12h", OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl::TaggedSymbol)
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl::TaggedSymbol]
+                )
+              }
+              def self.values
+              end
+            end
+          end
+
           # Action review mode. Omit to use none.
           module Review
             extend OpenAI::Internal::Type::Enum
@@ -552,6 +647,49 @@ module OpenAI
             sig do
               override.returns(
                 {limit: T.nilable(Integer)}
+              )
+            end
+            def to_hash
+            end
+
+          end
+
+          class StreamOptions < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Whether to include obfuscation padding in events on this connection. Defaults to
+            # `true`.
+            sig { returns(T.nilable(T::Boolean)) }
+            attr_reader :include_obfuscation
+
+            sig { params(include_obfuscation: T::Boolean).void }
+            attr_writer :include_obfuscation
+
+            # Options for the event stream. Only allowed when `stream` is `true`.
+            sig do
+              params(
+
+                include_obfuscation: T::Boolean
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Whether to include obfuscation padding in events on this connection. Defaults to
+              # `true`.
+
+              include_obfuscation: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {include_obfuscation: T::Boolean}
               )
             end
             def to_hash
