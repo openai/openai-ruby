@@ -24,7 +24,8 @@ module OpenAI
               T.any(
                 OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Aws,
                 OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Gcp,
-                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure
+                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure,
+                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci
               )
             )
           }
@@ -36,7 +37,8 @@ module OpenAI
               body: T.any(
                 OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Aws::OrHash,
                 OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Gcp::OrHash,
-                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure::OrHash
+                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure::OrHash,
+                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::OrHash
               ),
 
               request_options: OpenAI::RequestOptions::OrHash
@@ -57,7 +59,8 @@ module OpenAI
                 body: T.any(
                   OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Aws,
                   OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Gcp,
-                  OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure
+                  OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure,
+                  OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci
                 ),
                 request_options: OpenAI::RequestOptions
               }
@@ -73,7 +76,8 @@ module OpenAI
               T.any(
                 OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Aws,
                 OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Gcp,
-                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure
+                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure,
+                OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci
               )
             }
 
@@ -509,6 +513,135 @@ module OpenAI
                 sig {
                   override.returns(
                     T::Array[OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Azure::Purpose::TaggedSymbol]
+                  )
+                }
+                def self.values
+                end
+              end
+            end
+
+            class Oci < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              # The OCI Vault key OCID
+              sig { returns(String) }
+              attr_accessor :key_ocid
+
+              # A friendly name to identify this config
+              sig { returns(String) }
+              attr_accessor :name
+
+              # The OCI region containing the vault
+              sig { returns(String) }
+              attr_accessor :region
+
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              # The customer OCI Vault OCID
+              sig { returns(String) }
+              attr_accessor :vault_ocid
+
+              # The exact OCI key version OCID for PSP decryption.
+              sig { returns(T.nilable(String)) }
+              attr_reader :key_version_ocid
+
+              sig { params(key_version_ocid: String).void }
+              attr_writer :key_version_ocid
+
+              sig {
+                returns(T.nilable(OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose::OrSymbol))
+              }
+              attr_reader :purpose
+
+              sig {
+                params(purpose: OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose::OrSymbol).void
+              }
+              attr_writer :purpose
+
+              sig do
+                params(
+
+                  key_ocid: String,
+
+                  name: String,
+
+                  region: String,
+
+                  vault_ocid: String,
+
+                  key_version_ocid: String,
+
+                  purpose: OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose::OrSymbol,
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                # The OCI Vault key OCID
+                key_ocid:,
+
+                # A friendly name to identify this config
+                name:,
+
+                # The OCI region containing the vault
+                region:,
+
+                # The customer OCI Vault OCID
+                vault_ocid:,
+
+                # The exact OCI key version OCID for PSP decryption.
+                key_version_ocid: nil,
+
+                purpose: nil,
+
+                type: :oci
+              )
+              end
+
+              sig do
+                override.returns(
+                  {
+                    key_ocid: String,
+                    name: String,
+                    region: String,
+                    type: Symbol,
+                    vault_ocid: String,
+                    key_version_ocid: String,
+                    purpose: OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose::OrSymbol
+                  }
+                )
+              end
+              def to_hash
+              end
+
+              module Purpose
+                extend OpenAI::Internal::Type::Enum
+
+                TaggedSymbol = T.type_alias {
+                  T.all(Symbol, OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose)
+                }
+                OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+                EKM = T.let(
+                  :ekm,
+                  OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose::TaggedSymbol
+                )
+                PSP_DECRYPTION = T.let(
+                  :psp_decryption,
+                  OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose::TaggedSymbol
+                )
+
+                sig {
+                  override.returns(
+                    T::Array[OpenAI::Admin::Organization::ExternalKeyCreateParams::Body::Oci::Purpose::TaggedSymbol]
                   )
                 }
                 def self.values

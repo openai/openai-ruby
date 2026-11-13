@@ -53,7 +53,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.turn.reasoning_summary_text.delta"]
         required :type, const: :"agent.session.turn.reasoning_summary_text.delta"
 
-        # @!method initialize(delta:, event_id:, item_id:, output_index:, session_id:, summary_index:, turn_id:, type: :"agent.session.turn.reasoning_summary_text.delta")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(delta:, event_id:, item_id:, output_index:, session_id:, summary_index:, turn_id:, obfuscation: nil, type: :"agent.session.turn.reasoning_summary_text.delta")
         #   Emitted when text is appended to a reasoning summary.
         #
         #   @param delta [String]
@@ -76,6 +82,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The ID of the turn associated with the event, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.turn.reasoning_summary_text.delta"]
         #     The type of the object. Always

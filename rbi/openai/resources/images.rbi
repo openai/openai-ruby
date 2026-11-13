@@ -73,6 +73,7 @@ module OpenAI
           response_format: T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
           safety_identifier: T.nilable(String),
           size: T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
+          svg: T.nilable(OpenAI::ImageEditParams::Svg::OrHash),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
@@ -158,7 +159,8 @@ module OpenAI
         # defaults to 100.
         output_compression: nil,
         # The format in which the generated images are returned. This parameter is only
-        # supported for the GPT image models. The default value is `png`.
+        # supported for the GPT image models. The default value is `png`. SVG output
+        # requires a supported image model and project access.
         output_format: nil,
         # The number of partial images to generate. This parameter is used for streaming
         # responses that return partial images. Value must be between 0 and 3. When set to
@@ -194,6 +196,11 @@ module OpenAI
         # `1024x1536` are supported by the GPT image models; `auto` is supported for
         # models that allow automatic sizing.
         size: nil,
+        # Selects the author model and reasoning effort for `output_format=svg`. Supply
+        # `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+        # SVG output requires `n=1` and cannot use streaming, partial images, or output
+        # compression. Use multipart fields such as `svg[model]`.
+        svg: nil,
         # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
         # backward compatibility and is used when `safety_identifier` is omitted, null, or
         # empty.
@@ -230,6 +237,7 @@ module OpenAI
           response_format: T.nilable(OpenAI::ImageEditParams::ResponseFormat::OrSymbol),
           safety_identifier: T.nilable(String),
           size: T.nilable(T.any(String, OpenAI::ImageEditParams::Size::OrSymbol)),
+          svg: T.nilable(OpenAI::ImageEditParams::Svg::OrHash),
           user: String,
           stream: T.noreturn,
           request_options: OpenAI::RequestOptions::OrHash
@@ -315,7 +323,8 @@ module OpenAI
         # defaults to 100.
         output_compression: nil,
         # The format in which the generated images are returned. This parameter is only
-        # supported for the GPT image models. The default value is `png`.
+        # supported for the GPT image models. The default value is `png`. SVG output
+        # requires a supported image model and project access.
         output_format: nil,
         # The number of partial images to generate. This parameter is used for streaming
         # responses that return partial images. Value must be between 0 and 3. When set to
@@ -351,6 +360,11 @@ module OpenAI
         # `1024x1536` are supported by the GPT image models; `auto` is supported for
         # models that allow automatic sizing.
         size: nil,
+        # Selects the author model and reasoning effort for `output_format=svg`. Supply
+        # `svg.model` when SVG model selection is enabled. Otherwise, omit this object.
+        # SVG output requires `n=1` and cannot use streaming, partial images, or output
+        # compression. Use multipart fields such as `svg[model]`.
+        svg: nil,
         # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
         # backward compatibility and is used when `safety_identifier` is omitted, null, or
         # empty.
@@ -487,7 +501,7 @@ module OpenAI
         # enabled, supply svg.model. When model selection is disabled, omit this object.
         # The top-level model selects the image model that creates the reference image.
         # SVG generation requires n=1 and does not support streaming, partial images,
-        # prompt_rewriter, or output_compression. SVG edits are not supported.
+        # prompt_rewriter, or output_compression.
         svg: nil,
         # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
         # backward compatibility and is used when `safety_identifier` is omitted, null, or
@@ -625,7 +639,7 @@ module OpenAI
         # enabled, supply svg.model. When model selection is disabled, omit this object.
         # The top-level model selects the image model that creates the reference image.
         # SVG generation requires n=1 and does not support streaming, partial images,
-        # prompt_rewriter, or output_compression. SVG edits are not supported.
+        # prompt_rewriter, or output_compression.
         svg: nil,
         # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
         # backward compatibility and is used when `safety_identifier` is omitted, null, or

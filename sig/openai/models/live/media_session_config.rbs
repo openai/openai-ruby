@@ -9,6 +9,7 @@ module OpenAI
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
+          ?safety_identifier: String?,
           ?store: bool,
           ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         }
@@ -62,6 +63,10 @@ module OpenAI
         # server defaults. Immutable after startup.
         attr_accessor instructions: String?
 
+        # A stable identifier for your end user, used for safety monitoring and abuse
+        # detection.
+        attr_accessor safety_identifier: String?
+
         # Whether to store the session for later forking and recording download. Defaults
         # to false for new sessions.
         attr_reader store: bool?
@@ -109,6 +114,9 @@ module OpenAI
         #   [backend prompt](https://developers.openai.com/api/docs/guides/live-delegation#start-with-your-existing-backend-prompt).
         #   Limited to 16,384 client-supplied tokens. Omitted or blank instructions use
         #   server defaults. Immutable after startup.
+        # @param safety_identifier
+        #   A stable identifier for your end user, used for safety monitoring and abuse
+        #   detection.
         # @param store
         #   Whether to store the session for later forking and recording download. Defaults
         #   to false for new sessions.
@@ -124,6 +132,7 @@ module OpenAI
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
+          ?safety_identifier: String?,
           ?store: bool,
           ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         ) -> void
@@ -135,6 +144,7 @@ module OpenAI
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
+          ?safety_identifier: String?,
           ?store: bool,
           ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         }

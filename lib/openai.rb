@@ -1461,6 +1461,7 @@ require_relative "openai/models/webhooks/fine_tuning_job_cancelled_webhook_event
 require_relative "openai/models/webhooks/fine_tuning_job_failed_webhook_event"
 require_relative "openai/models/webhooks/fine_tuning_job_succeeded_webhook_event"
 require_relative "openai/models/webhooks/live_call_incoming_webhook_event"
+require_relative "openai/models/webhooks/live_transport_connected_webhook_event"
 require_relative "openai/models/webhooks/live_transport_incoming_webhook_event"
 require_relative "openai/models/webhooks/realtime_call_incoming_webhook_event"
 require_relative "openai/models/webhooks/response_cancelled_webhook_event"

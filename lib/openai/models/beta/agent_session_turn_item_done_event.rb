@@ -40,7 +40,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.turn.item.done"]
         required :type, const: :"agent.session.turn.item.done"
 
-        # @!method initialize(event_id:, item:, output_index:, session_id:, turn_id:, type: :"agent.session.turn.item.done")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, item:, output_index:, session_id:, turn_id:, obfuscation: nil, type: :"agent.session.turn.item.done")
         #   Emitted when an output item is complete.
         #
         #   @param event_id [String]
@@ -57,6 +63,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The ID of the turn associated with the event, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.turn.item.done"]
         #     The type of the object. Always `agent.session.turn.item.done`.

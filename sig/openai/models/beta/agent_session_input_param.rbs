@@ -2,13 +2,92 @@ module OpenAI
   module Models
     module Beta
       type agent_session_input_param =
-        OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult
+        OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult
+        | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult
         | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage
         | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel
         | OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult
 
       module AgentSessionInputParam
         extend OpenAI::Internal::Type::Union
+
+        type agent_session_input_mcp_approval_request_result =
+          {
+            request_id: String,
+            response: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response,
+            ?type: :"agent.session.input.mcp_approval_request_result"
+          }
+
+        class AgentSessionInputMcpApprovalRequestResult < OpenAI::Internal::Type::BaseModel
+          # The opaque approval ID from the required action.
+          attr_accessor request_id: String
+
+          # The user's decision for a pending MCP tool call.
+          attr_accessor response: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response
+
+          # The type of the object. Always
+          # `agent.session.input.mcp_approval_request_result`.
+          attr_accessor type: :"agent.session.input.mcp_approval_request_result"
+
+          # @param request_id
+          #   The opaque approval ID from the required action.
+          # @param response
+          #   The user's decision for a pending MCP tool call.
+          # @param type
+          #   The type of the object. Always
+          #   `agent.session.input.mcp_approval_request_result`.
+          def initialize: (
+            request_id: String,
+            response: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response,
+            ?type: :"agent.session.input.mcp_approval_request_result"
+          ) -> void
+
+          def to_hash: -> {
+            request_id: String,
+            response: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response,
+            ?type: :"agent.session.input.mcp_approval_request_result"
+          }
+
+          type response =
+            {
+              decision: OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::decision,
+              ?type: :mcp_tool_call
+            }
+
+          class Response < OpenAI::Internal::Type::BaseModel
+            # Cancel dismisses this request without cancelling the session or turn.
+            attr_accessor decision: OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::decision
+
+            # The type of the object. Always `mcp_tool_call`.
+            attr_accessor type: :mcp_tool_call
+
+            # @param decision
+            #   Cancel dismisses this request without cancelling the session or turn.
+            # @param type
+            #   The type of the object. Always `mcp_tool_call`.
+            def initialize: (
+              decision: OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::decision,
+              ?type: :mcp_tool_call
+            ) -> void
+
+            def to_hash: -> {
+              decision: OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::decision,
+              ?type: :mcp_tool_call
+            }
+
+            type decision = :approve | :deny | :cancel
+
+            module Decision
+              extend OpenAI::Internal::Type::Enum
+
+              APPROVE: :approve
+              DENY: :deny
+              CANCEL: :cancel
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::decision]
+            end
+          end
+        end
 
         type agent_session_input_computer_use_approval_request_result =
           {

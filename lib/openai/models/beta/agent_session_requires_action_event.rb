@@ -22,7 +22,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.requires_action"]
         required :type, const: :"agent.session.requires_action"
 
-        # @!method initialize(event_id:, session:, type: :"agent.session.requires_action")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, session:, obfuscation: nil, type: :"agent.session.requires_action")
         #   Emitted when a session is waiting for one or more required actions.
         #
         #   @param event_id [String]
@@ -30,6 +36,9 @@ module OpenAI
         #
         #   @param session [OpenAI::Models::Beta::AgentSession]
         #     The session and its current required actions.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.requires_action"]
         #     The type of the object. Always `agent.session.requires_action`.

@@ -7,7 +7,8 @@ module OpenAI
           session_id: String,
           turn: OpenAI::Beta::Agents::Sessions::Turn,
           turn_id: String,
-          ?type: :"agent.session.turn.in_progress"
+          ?type: :"agent.session.turn.in_progress",
+          ?obfuscation: String
         }
 
       class AgentSessionTurnInProgressEvent < OpenAI::Internal::Type::BaseModel
@@ -26,6 +27,12 @@ module OpenAI
         # The type of the object. Always `agent.session.turn.in_progress`.
         attr_accessor type: :"agent.session.turn.in_progress"
 
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        attr_reader obfuscation: String?
+
+        # Random alphanumeric padding. Present when stream obfuscation is enabled.
+        def obfuscation=: (String) -> String
+
         # @param event_id
         #   The unique ID of the event.
         # @param session_id
@@ -34,6 +41,8 @@ module OpenAI
         #   The turn at the time it started running.
         # @param turn_id
         #   The ID of the turn associated with the event.
+        # @param obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
         # @param type
         #   The type of the object. Always `agent.session.turn.in_progress`.
         def initialize: (
@@ -41,6 +50,7 @@ module OpenAI
           session_id: String,
           turn: OpenAI::Beta::Agents::Sessions::Turn,
           turn_id: String,
+          ?obfuscation: String,
           ?type: :"agent.session.turn.in_progress"
         ) -> void
 
@@ -49,7 +59,8 @@ module OpenAI
           session_id: String,
           turn: OpenAI::Beta::Agents::Sessions::Turn,
           turn_id: String,
-          ?type: :"agent.session.turn.in_progress"
+          ?type: :"agent.session.turn.in_progress",
+          ?obfuscation: String
         }
       end
     end

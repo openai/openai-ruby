@@ -2359,6 +2359,13 @@ module OpenAI
                 )
               end
 
+              # Number of seconds from the update request until the API key expires.
+              sig { returns(T.nilable(Integer)) }
+              attr_reader :expires_in_seconds
+
+              sig { params(expires_in_seconds: Integer).void }
+              attr_writer :expires_in_seconds
+
               # A list of scopes allowed for the API key, e.g. `["api.model.request"]`
               sig { returns(T.nilable(T::Array[String])) }
               attr_reader :scopes
@@ -2370,11 +2377,16 @@ module OpenAI
               sig do
                 params(
 
+                  expires_in_seconds: Integer,
+
                   scopes: T::Array[String]
                 )
                   .returns(T.attached_class)
               end
               def self.new(
+
+                # Number of seconds from the update request until the API key expires.
+                expires_in_seconds: nil,
 
                 # A list of scopes allowed for the API key, e.g. `["api.model.request"]`
 
@@ -2384,7 +2396,7 @@ module OpenAI
 
               sig do
                 override.returns(
-                  {scopes: T::Array[String]}
+                  {expires_in_seconds: Integer, scopes: T::Array[String]}
                 )
               end
               def to_hash

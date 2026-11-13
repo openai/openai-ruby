@@ -24,7 +24,7 @@ module OpenAI
       optional :data, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Image] }
 
       # @!attribute output_format
-      #   The output format of the generated image.
+      #   The output format of the generated or edited image.
       #
       #   @return [Symbol, OpenAI::Models::ImagesResponse::OutputFormat, nil]
       optional :output_format, enum: -> { OpenAI::ImagesResponse::OutputFormat }
@@ -51,14 +51,13 @@ module OpenAI
       optional :size, String
 
       # @!attribute svg_usage
-      #   Token usage for the model that authored the SVG, separate from image rendering
-      #   usage.
+      #   Token usage for SVG authoring, separate from image rendering usage.
       #
       #   @return [OpenAI::Models::ImagesResponse::SvgUsage, nil]
       optional :svg_usage, -> { OpenAI::ImagesResponse::SvgUsage }
 
       # @!attribute usage
-      #   For `gpt-image-1` only, the token usage information for the image generation.
+      #   Token usage information for image generation with GPT Image models.
       #
       #   @return [OpenAI::Models::ImagesResponse::Usage, nil]
       optional :usage, -> { OpenAI::ImagesResponse::Usage }
@@ -77,7 +76,7 @@ module OpenAI
       #     The list of generated images.
       #
       #   @param output_format [Symbol, OpenAI::Models::ImagesResponse::OutputFormat]
-      #     The output format of the generated image.
+      #     The output format of the generated or edited image.
       #
       #   @param quality [Symbol, OpenAI::Models::ImagesResponse::Quality]
       #     The quality of the image generated. One of `low`, `medium`, `high`, `xhigh`, or
@@ -92,11 +91,10 @@ module OpenAI
       #     The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
       #   @param svg_usage [OpenAI::Models::ImagesResponse::SvgUsage]
-      #     Token usage for the model that authored the SVG, separate from image rendering
-      #     usage.
+      #     Token usage for SVG authoring, separate from image rendering usage.
       #
       #   @param usage [OpenAI::Models::ImagesResponse::Usage]
-      #     For `gpt-image-1` only, the token usage information for the image generation.
+      #     Token usage information for image generation with GPT Image models.
 
       # The background parameter used for the image generation. Either `transparent` or
       # `opaque`.
@@ -112,7 +110,7 @@ module OpenAI
         #   @return [Array<Symbol>]
       end
 
-      # The output format of the generated image.
+      # The output format of the generated or edited image.
       #
       # @see OpenAI::Models::ImagesResponse#output_format
       module OutputFormat
@@ -202,8 +200,7 @@ module OpenAI
         required :total_tokens, Integer
 
         # @!method initialize(input_tokens:, model:, output_tokens:, reasoning_tokens:, total_tokens:)
-        #   Token usage for the model that authored the SVG, separate from image rendering
-        #   usage.
+        #   Token usage for SVG authoring, separate from image rendering usage.
         #
         #   @param input_tokens [Integer]
         #   @param model [String]
@@ -245,7 +242,7 @@ module OpenAI
         optional :output_tokens_details, -> { OpenAI::ImagesResponse::Usage::OutputTokensDetails }
 
         # @!method initialize(input_tokens:, input_tokens_details:, output_tokens:, total_tokens:, output_tokens_details: nil)
-        #   For `gpt-image-1` only, the token usage information for the image generation.
+        #   Token usage information for image generation with GPT Image models.
         #
         #   @param input_tokens [Integer]
         #     The number of tokens (images and text) in the input prompt.

@@ -22,7 +22,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.subagent.created"]
         required :type, const: :"agent.session.subagent.created"
 
-        # @!method initialize(event_id:, subagent:, type: :"agent.session.subagent.created")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, subagent:, obfuscation: nil, type: :"agent.session.subagent.created")
         #   Emitted when a subagent is created.
         #
         #   @param event_id [String]
@@ -30,6 +36,9 @@ module OpenAI
         #
         #   @param subagent [OpenAI::Models::Beta::Subagent]
         #     The subagent that was created.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :"agent.session.subagent.created"]
         #     The type of the object. Always `agent.session.subagent.created`.

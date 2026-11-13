@@ -7,6 +7,7 @@ module OpenAI
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts
@@ -31,6 +32,10 @@ module OpenAI
           # characters.
           attr_accessor metadata: ::Hash[Symbol, String]?
 
+          # Default prompt cache lifetime for future turns. Send null to clear the session
+          # default.
+          attr_accessor prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?
+
           # Default action review for new root turns. Existing turns and their subagents
           # keep their review mode.
           attr_reader review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review?
@@ -51,6 +56,9 @@ module OpenAI
           #   Replaces all metadata. Omit to leave unchanged, or pass null or {} to clear it.
           #   Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #   characters.
+          # @param prompt_cache_options
+          #   Default prompt cache lifetime for future turns. Send null to clear the session
+          #   default.
           # @param review
           #   Default action review for new root turns. Existing turns and their subagents
           #   keep their review mode.
@@ -61,6 +69,7 @@ module OpenAI
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts
@@ -70,6 +79,7 @@ module OpenAI
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
+            ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::RequestOptions
@@ -192,6 +202,42 @@ module OpenAI
               ULTRAFAST: :ultrafast
 
               def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent::service_tier]
+            end
+          end
+
+          type prompt_cache_options =
+            {
+              ?ttl: OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::ttl
+            }
+
+          class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            attr_reader ttl: OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::ttl?
+
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            def ttl=: (
+              OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::ttl
+            ) -> OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::ttl
+
+            # @param ttl
+            #   Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            def initialize: (
+              ?ttl: OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::ttl
+            ) -> void
+
+            def to_hash: -> {
+              ?ttl: OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::ttl
+            }
+
+            type ttl = :"30m" | :"12h"
+
+            module Ttl
+              extend OpenAI::Internal::Type::Enum
+
+              TTL_30M: :"30m"
+              TTL_12H: :"12h"
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::PromptCacheOptions::ttl]
             end
           end
 

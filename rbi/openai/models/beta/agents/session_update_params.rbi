@@ -35,6 +35,19 @@ module OpenAI
           sig { returns(T.nilable(T::Hash[Symbol, String])) }
           attr_accessor :metadata
 
+          # Default prompt cache lifetime for future turns. Send null to clear the session
+          # default.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions)) }
+          attr_reader :prompt_cache_options
+
+          sig {
+            params(
+              prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::OrHash)
+            )
+              .void
+          }
+          attr_writer :prompt_cache_options
+
           # Default action review for new root turns. Existing turns and their subagents
           # keep their review mode.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol)) }
@@ -62,6 +75,8 @@ module OpenAI
 
               metadata: T.nilable(T::Hash[Symbol, String]),
 
+              prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::OrHash),
+
               review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
 
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
@@ -82,6 +97,10 @@ module OpenAI
             # characters.
             metadata: nil,
 
+            # Default prompt cache lifetime for future turns. Send null to clear the session
+            # default.
+            prompt_cache_options: nil,
+
             # Default action review for new root turns. Existing turns and their subagents
             # keep their review mode.
             review: nil,
@@ -100,6 +119,7 @@ module OpenAI
                 session_id: String,
                 agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
                 metadata: T.nilable(T::Hash[Symbol, String]),
+                prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions),
                 review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
                 spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl),
                 request_options: OpenAI::RequestOptions
@@ -325,6 +345,68 @@ module OpenAI
 
               sig {
                 override.returns(T::Array[OpenAI::Beta::Agents::SessionUpdateParams::Agent::ServiceTier::TaggedSymbol])
+              }
+              def self.values
+              end
+            end
+          end
+
+          class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            sig { returns(T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl::OrSymbol)) }
+            attr_reader :ttl
+
+            sig { params(ttl: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl::OrSymbol).void }
+            attr_writer :ttl
+
+            # Default prompt cache lifetime for future turns. Send null to clear the session
+            # default.
+            sig do
+              params(
+
+                ttl: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl::OrSymbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+
+              ttl: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {ttl: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl::OrSymbol}
+              )
+            end
+            def to_hash
+            end
+
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            module Ttl
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(Symbol, OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl)
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              TTL_30M = T.let(:"30m", OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl::TaggedSymbol)
+              TTL_12H = T.let(:"12h", OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl::TaggedSymbol)
+
+              sig {
+                override.returns(
+                  T::Array[OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::Ttl::TaggedSymbol]
+                )
               }
               def self.values
               end

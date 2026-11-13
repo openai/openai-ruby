@@ -141,7 +141,7 @@ module OpenAI
       # enabled, supply svg.model. When model selection is disabled, omit this object.
       # The top-level model selects the image model that creates the reference image.
       # SVG generation requires n=1 and does not support streaming, partial images,
-      # prompt_rewriter, or output_compression. SVG edits are not supported.
+      # prompt_rewriter, or output_compression.
       sig { returns(T.nilable(OpenAI::ImageGenerateParams::Svg)) }
       attr_reader :svg
 
@@ -313,7 +313,7 @@ module OpenAI
         # enabled, supply svg.model. When model selection is disabled, omit this object.
         # The top-level model selects the image model that creates the reference image.
         # SVG generation requires n=1 and does not support streaming, partial images,
-        # prompt_rewriter, or output_compression. SVG edits are not supported.
+        # prompt_rewriter, or output_compression.
         svg: nil,
 
         # Deprecated: use `safety_identifier` instead. This parameter remains accepted for
@@ -442,8 +442,8 @@ module OpenAI
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
         PNG = T.let(:png, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
-        JPEG = T.let(:jpeg, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
         WEBP = T.let(:webp, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
+        JPEG = T.let(:jpeg, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
         GIF = T.let(:gif, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
         SVG = T.let(:svg, OpenAI::ImageGenerateParams::OutputFormat::TaggedSymbol)
 
@@ -573,7 +573,7 @@ module OpenAI
         # enabled, supply svg.model. When model selection is disabled, omit this object.
         # The top-level model selects the image model that creates the reference image.
         # SVG generation requires n=1 and does not support streaming, partial images,
-        # prompt_rewriter, or output_compression. SVG edits are not supported.
+        # prompt_rewriter, or output_compression.
         sig do
           params(
 

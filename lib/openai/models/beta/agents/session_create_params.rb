@@ -47,6 +47,17 @@ module OpenAI
           #   @return [Hash{Symbol=>String}, nil]
           optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
+          # @!attribute prompt_cache_options
+          #   Default prompt cache lifetime for turns in this session. Omit to use the model
+          #   default.
+          #
+          #   @return [OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions, nil]
+          optional(
+            :prompt_cache_options,
+            -> { OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions },
+            nil?: true
+          )
+
           # @!attribute review
           #   Action review mode. Omit to use none.
           #
@@ -66,13 +77,19 @@ module OpenAI
             nil?: true
           )
 
+          # @!attribute stream_options
+          #   Options for the event stream. Only allowed when `stream` is `true`.
+          #
+          #   @return [OpenAI::Models::Beta::Agents::SessionCreateParams::StreamOptions, nil]
+          optional :stream_options, -> { OpenAI::Beta::Agents::SessionCreateParams::StreamOptions }
+
           # @!attribute vault_ids
           #   The IDs of vaults made available to the session.
           #
           #   @return [Array<String>, nil]
           optional :vault_ids, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
-          # @!method initialize(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, review: nil, spend_control: nil, vault_ids: nil, request_options: {})
+          # @!method initialize(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, stream_options: nil, vault_ids: nil, request_options: {})
           #   @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #     An inline execution environment or a reference to an environment template.
           #
@@ -94,12 +111,19 @@ module OpenAI
           #     Up to 16 string key-value pairs, with keys up to 64 and values up to 512
           #     characters. Omission or null defaults to an empty map.
           #
+          #   @param prompt_cache_options [OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions, nil]
+          #     Default prompt cache lifetime for turns in this session. Omit to use the model
+          #     default.
+          #
           #   @param review [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review]
           #     Action review mode. Omit to use none.
           #
           #   @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
           #     Optional spending limit in USD cents. Omission or null creates an unlimited
           #     session.
+          #
+          #   @param stream_options [OpenAI::Models::Beta::Agents::SessionCreateParams::StreamOptions]
+          #     Options for the event stream. Only allowed when `stream` is `true`.
           #
           #   @param vault_ids [Array<String>, nil]
           #     The IDs of vaults made available to the session.
@@ -310,6 +334,34 @@ module OpenAI
             ]
           end
 
+          class PromptCacheOptions < OpenAI::Internal::Type::BaseModel
+            # @!attribute ttl
+            #   Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            #
+            #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl, nil]
+            optional :ttl, enum: -> { OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl }
+
+            # @!method initialize(ttl: nil)
+            #   Default prompt cache lifetime for turns in this session. Omit to use the model
+            #   default.
+            #
+            #   @param ttl [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions::Ttl]
+            #     Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+
+            # Minimum lifetime for new prompt cache entries. Defaults to 30 minutes.
+            #
+            # @see OpenAI::Models::Beta::Agents::SessionCreateParams::PromptCacheOptions#ttl
+            module Ttl
+              extend OpenAI::Internal::Type::Enum
+
+              TTL_30M = :"30m"
+              TTL_12H = :"12h"
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+
           # Action review mode. Omit to use none.
           module Review
             extend OpenAI::Internal::Type::Enum
@@ -337,6 +389,22 @@ module OpenAI
             #
             #   @param limit [Integer, nil]
             #     Positive USD cents, or null to remove the limit.
+          end
+
+          class StreamOptions < OpenAI::Internal::Type::BaseModel
+            # @!attribute include_obfuscation
+            #   Whether to include obfuscation padding in events on this connection. Defaults to
+            #   `true`.
+            #
+            #   @return [Boolean, nil]
+            optional :include_obfuscation, OpenAI::Internal::Type::Boolean
+
+            # @!method initialize(include_obfuscation: nil)
+            #   Options for the event stream. Only allowed when `stream` is `true`.
+            #
+            #   @param include_obfuscation [Boolean]
+            #     Whether to include obfuscation padding in events on this connection. Defaults to
+            #     `true`.
           end
         end
       end

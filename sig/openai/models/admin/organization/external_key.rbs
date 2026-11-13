@@ -14,7 +14,9 @@ module OpenAI
             ?audience: String,
             ?external_id: String,
             ?key_name: String,
+            ?key_ocid: String,
             ?key_version: String,
+            ?key_version_ocid: String,
             ?kms_arn: String,
             ?kms_key_location: String,
             ?kms_key_name: String,
@@ -22,8 +24,10 @@ module OpenAI
             ?kms_key_version: String,
             ?kms_project_id: String,
             ?purpose: OpenAI::Models::Admin::Organization::ExternalKey::purpose,
+            ?region: String,
             ?role_arn: String,
             ?tenant_id: String,
+            ?vault_ocid: String,
             ?vault_uri: String,
             ?workload_identity_pool_id: String,
             ?workload_identity_project_number: String,
@@ -57,9 +61,17 @@ module OpenAI
 
           def key_name=: (String) -> String
 
+          attr_reader key_ocid: String?
+
+          def key_ocid=: (String) -> String
+
           attr_reader key_version: String?
 
           def key_version=: (String) -> String
+
+          attr_reader key_version_ocid: String?
+
+          def key_version_ocid=: (String) -> String
 
           attr_reader kms_arn: String?
 
@@ -91,6 +103,10 @@ module OpenAI
             OpenAI::Models::Admin::Organization::ExternalKey::purpose
           ) -> OpenAI::Models::Admin::Organization::ExternalKey::purpose
 
+          attr_reader region: String?
+
+          def region=: (String) -> String
+
           attr_reader role_arn: String?
 
           def role_arn=: (String) -> String
@@ -98,6 +114,10 @@ module OpenAI
           attr_reader tenant_id: String?
 
           def tenant_id=: (String) -> String
+
+          attr_reader vault_ocid: String?
+
+          def vault_ocid=: (String) -> String
 
           attr_reader vault_uri: String?
 
@@ -126,7 +146,9 @@ module OpenAI
             ?audience: String,
             ?external_id: String,
             ?key_name: String,
+            ?key_ocid: String,
             ?key_version: String,
+            ?key_version_ocid: String,
             ?kms_arn: String,
             ?kms_key_location: String,
             ?kms_key_name: String,
@@ -134,8 +156,10 @@ module OpenAI
             ?kms_key_version: String,
             ?kms_project_id: String,
             ?purpose: OpenAI::Models::Admin::Organization::ExternalKey::purpose,
+            ?region: String,
             ?role_arn: String,
             ?tenant_id: String,
+            ?vault_ocid: String,
             ?vault_uri: String,
             ?workload_identity_pool_id: String,
             ?workload_identity_project_number: String,
@@ -153,7 +177,9 @@ module OpenAI
             ?audience: String,
             ?external_id: String,
             ?key_name: String,
+            ?key_ocid: String,
             ?key_version: String,
+            ?key_version_ocid: String,
             ?kms_arn: String,
             ?kms_key_location: String,
             ?kms_key_name: String,
@@ -161,8 +187,10 @@ module OpenAI
             ?kms_key_version: String,
             ?kms_project_id: String,
             ?purpose: OpenAI::Models::Admin::Organization::ExternalKey::purpose,
+            ?region: String,
             ?role_arn: String,
             ?tenant_id: String,
+            ?vault_ocid: String,
             ?vault_uri: String,
             ?workload_identity_pool_id: String,
             ?workload_identity_project_number: String,

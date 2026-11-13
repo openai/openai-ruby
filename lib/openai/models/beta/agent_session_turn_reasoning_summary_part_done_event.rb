@@ -58,7 +58,13 @@ module OpenAI
         #   @return [Symbol, :"agent.session.turn.reasoning_summary_part.done"]
         required :type, const: :"agent.session.turn.reasoning_summary_part.done"
 
-        # @!method initialize(event_id:, item_id:, output_index:, part:, session_id:, summary_index:, turn_id:, status: :incomplete, type: :"agent.session.turn.reasoning_summary_part.done")
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(event_id:, item_id:, output_index:, part:, session_id:, summary_index:, turn_id:, obfuscation: nil, status: :incomplete, type: :"agent.session.turn.reasoning_summary_part.done")
         #   Emitted when a reasoning summary part is complete.
         #
         #   @param event_id [String]
@@ -81,6 +87,9 @@ module OpenAI
         #
         #   @param turn_id [String, nil]
         #     The ID of the turn associated with the event, when applicable.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param status [Symbol, :incomplete, nil]
         #     Present as `incomplete` when summary generation was interrupted.

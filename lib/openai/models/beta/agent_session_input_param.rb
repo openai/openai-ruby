@@ -9,6 +9,12 @@ module OpenAI
 
         discriminator :type
 
+        # Responds to a pending MCP tool-call approval request.
+        variant(
+          :"agent.session.input.mcp_approval_request_result",
+          -> { OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult }
+        )
+
         # Responds to a pending Computer Use approval request.
         variant(
           :"agent.session.input.computer_use_approval_request_result",
@@ -32,6 +38,86 @@ module OpenAI
           :"agent.session.input.tool_result",
           -> { OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult }
         )
+
+        class AgentSessionInputMcpApprovalRequestResult < OpenAI::Internal::Type::BaseModel
+          # @!attribute request_id
+          #   The opaque approval ID from the required action.
+          #
+          #   @return [String]
+          required :request_id, String
+
+          # @!attribute response
+          #   The user's decision for a pending MCP tool call.
+          #
+          #   @return [OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response]
+          required(
+            :response,
+            -> { OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response }
+          )
+
+          # @!attribute type
+          #   The type of the object. Always
+          #   `agent.session.input.mcp_approval_request_result`.
+          #
+          #   @return [Symbol, :"agent.session.input.mcp_approval_request_result"]
+          required :type, const: :"agent.session.input.mcp_approval_request_result"
+
+          # @!method initialize(request_id:, response:, type: :"agent.session.input.mcp_approval_request_result")
+          #   Responds to a pending MCP tool-call approval request.
+          #
+          #   @param request_id [String]
+          #     The opaque approval ID from the required action.
+          #
+          #   @param response [OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response]
+          #     The user's decision for a pending MCP tool call.
+          #
+          #   @param type [Symbol, :"agent.session.input.mcp_approval_request_result"]
+          #     The type of the object. Always
+          #     `agent.session.input.mcp_approval_request_result`.
+
+          # @see OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult#response
+          class Response < OpenAI::Internal::Type::BaseModel
+            # @!attribute decision
+            #   Cancel dismisses this request without cancelling the session or turn.
+            #
+            #   @return [Symbol, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision]
+            required(
+              :decision,
+              enum: -> {
+                OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision
+              }
+            )
+
+            # @!attribute type
+            #   The type of the object. Always `mcp_tool_call`.
+            #
+            #   @return [Symbol, :mcp_tool_call]
+            required :type, const: :mcp_tool_call
+
+            # @!method initialize(decision:, type: :mcp_tool_call)
+            #   The user's decision for a pending MCP tool call.
+            #
+            #   @param decision [Symbol, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision]
+            #     Cancel dismisses this request without cancelling the session or turn.
+            #
+            #   @param type [Symbol, :mcp_tool_call]
+            #     The type of the object. Always `mcp_tool_call`.
+
+            # Cancel dismisses this request without cancelling the session or turn.
+            #
+            # @see OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response#decision
+            module Decision
+              extend OpenAI::Internal::Type::Enum
+
+              APPROVE = :approve
+              DENY = :deny
+              CANCEL = :cancel
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+        end
 
         class AgentSessionInputComputerUseApprovalRequestResult < OpenAI::Internal::Type::BaseModel
           # @!attribute request_id
@@ -187,7 +273,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult)]
+        #   @return [Array(OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputMessage, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputCancel, OpenAI::Models::Beta::AgentSessionInputParam::AgentSessionInputToolResult)]
       end
     end
   end

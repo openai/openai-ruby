@@ -28,7 +28,13 @@ module OpenAI
         #   @return [Symbol, :error]
         required :type, const: :error
 
-        # @!method initialize(error:, event_id:, session_id:, type: :error)
+        # @!attribute obfuscation
+        #   Random alphanumeric padding. Present when stream obfuscation is enabled.
+        #
+        #   @return [String, nil]
+        optional :obfuscation, String
+
+        # @!method initialize(error:, event_id:, session_id:, obfuscation: nil, type: :error)
         #   Emitted when a turn or session fails.
         #
         #   @param error [OpenAI::Models::Beta::SessionError]
@@ -39,6 +45,9 @@ module OpenAI
         #
         #   @param session_id [String]
         #     The ID of the session associated with the event.
+        #
+        #   @param obfuscation [String]
+        #     Random alphanumeric padding. Present when stream obfuscation is enabled.
         #
         #   @param type [Symbol, :error]
         #     The type of the object. Always `error`.

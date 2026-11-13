@@ -11,11 +11,170 @@ module OpenAI
 
         Variants = T.type_alias do
           T.any(
+            OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult,
             OpenAI::Beta::AgentSessionInputParam::AgentSessionInputComputerUseApprovalRequestResult,
             OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMessage,
             OpenAI::Beta::AgentSessionInputParam::AgentSessionInputCancel,
             OpenAI::Beta::AgentSessionInputParam::AgentSessionInputToolResult
           )
+        end
+
+        class AgentSessionInputMcpApprovalRequestResult < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The opaque approval ID from the required action.
+          sig { returns(String) }
+          attr_accessor :request_id
+
+          # The user's decision for a pending MCP tool call.
+          sig { returns(OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response) }
+          attr_reader :response
+
+          sig {
+            params(
+              response: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::OrHash
+            )
+              .void
+          }
+          attr_writer :response
+
+          # The type of the object. Always
+          # `agent.session.input.mcp_approval_request_result`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # Responds to a pending MCP tool-call approval request.
+          sig do
+            params(
+
+              request_id: String,
+
+              response: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::OrHash,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The opaque approval ID from the required action.
+            request_id:,
+
+            # The user's decision for a pending MCP tool call.
+            response:,
+
+            # The type of the object. Always
+            # `agent.session.input.mcp_approval_request_result`.
+
+            type: :"agent.session.input.mcp_approval_request_result"
+          )
+          end
+
+          sig do
+            override.returns(
+              {
+                request_id: String,
+                response: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response,
+                type: Symbol
+              }
+            )
+          end
+          def to_hash
+          end
+
+          class Response < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # Cancel dismisses this request without cancelling the session or turn.
+            sig {
+              returns(
+                OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision::OrSymbol
+              )
+            }
+            attr_accessor :decision
+
+            # The type of the object. Always `mcp_tool_call`.
+            sig { returns(Symbol) }
+            attr_accessor :type
+
+            # The user's decision for a pending MCP tool call.
+            sig do
+              params(
+
+                decision: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision::OrSymbol,
+
+                type: Symbol
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # Cancel dismisses this request without cancelling the session or turn.
+              decision:,
+
+              # The type of the object. Always `mcp_tool_call`.
+
+              type: :mcp_tool_call
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  decision: OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision::OrSymbol,
+                  type: Symbol
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # Cancel dismisses this request without cancelling the session or turn.
+            module Decision
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(
+                  Symbol,
+                  OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision
+                )
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              APPROVE = T.let(
+                :approve,
+                OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision::TaggedSymbol
+              )
+              DENY = T.let(
+                :deny,
+                OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision::TaggedSymbol
+              )
+              CANCEL = T.let(
+                :cancel,
+                OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Beta::AgentSessionInputParam::AgentSessionInputMcpApprovalRequestResult::Response::Decision::TaggedSymbol
+                  ]
+                )
+              }
+              def self.values
+              end
+            end
+          end
         end
 
         class AgentSessionInputComputerUseApprovalRequestResult < OpenAI::Internal::Type::BaseModel

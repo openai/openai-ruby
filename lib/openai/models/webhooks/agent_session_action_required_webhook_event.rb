@@ -95,6 +95,7 @@ module OpenAI
               extend OpenAI::Internal::Type::Enum
 
               COMPUTER_USE_APPROVAL_REQUEST = :computer_use_approval_request
+              MCP_APPROVAL_REQUEST = :mcp_approval_request
               FUNCTION_CALL = :function_call
               ENVIRONMENT_CONNECTION = :environment_connection
 
