@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.124.0](https://github.com/openai/openai-ruby/compare/v0.123.0...v0.124.0) (2026-11-12)
+
+
+### Features
+
+* **api:** update Live, Agents, images, and external keys ([#1061](https://github.com/openai/openai-ruby/issues/1061)) ([05218ac](https://github.com/openai/openai-ruby/commit/05218ac6c6bc57102de3abe868425832357d3ebd))
+
 ## [0.123.0](https://github.com/openai/openai-ruby/compare/v0.122.0...v0.123.0) (2026-11-12)
 
 
