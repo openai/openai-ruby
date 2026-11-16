@@ -109,6 +109,31 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     }
   end
 
+  def test_domain_error_after_a_completed_turn_preserves_the_result_until_idle
+    [false, true].each do |creation|
+      configure(
+        [
+          turn("created"),
+          answer_event,
+          turn("completed"),
+          {
+            type: "error",
+            session_id: "session_test",
+            error: {code: "fixture_error", message: "Session reported an error."}
+          },
+          {type: "agent.session.idle", session: {id: "session_test", status: "idle"}}
+        ]
+      )
+      subject = stream(creation: creation)
+      result = subject.get_final_result
+
+      assert_equal("Answer", result.output_text)
+      assert_equal(:completed, result.turn.status)
+      assert_equal(5, @server.body.reads)
+      assert(@server.body.closed)
+    end
+  end
+
   def test_both_entrypoints_collect_the_same_result_and_cache_it
     [false, true].each do |creation|
       configure(complete)
@@ -350,12 +375,14 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
     end
   end
 
-  def test_sse_errors_preserve_cause_identity_and_available_output
+  def test_transport_errors_preserve_cause_identity_and_available_output
     [false, true].each do |creation|
-      configure([turn("created"), answer_event, {type: "error", error: {message: "fixture transport error"}}])
+      configure([turn("created"), answer_event])
+      original = OpenAI::Errors::APIConnectionError.new(url: URI("https://sdk-test.example/v1"))
+      @server.body.error = original
       error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { stream(creation: creation).get_final_result }
       assert_equal(:observation_error, error.reason)
-      assert_kind_of(OpenAI::Errors::APIStatusError, error.cause)
+      assert_same(original, error.cause)
       assert_equal("turn_root", error.turn_id)
       assert_equal("Answer", error.messages.first.output_text)
       assert(@server.body.closed)
@@ -363,9 +390,10 @@ class OpenAI::Test::AgentTurnResultTest < Minitest::Test
   end
 
   def test_raw_iteration_failure_is_retained_for_a_later_getter
-    configure([turn("created"), {type: "error", error: {message: "fixture error"}}])
+    configure([turn("created")])
+    @server.body.error = OpenAI::Errors::APIConnectionError.new(url: URI("https://sdk-test.example/v1"))
     subject = stream(creation: true).with_result_collection
-    original = assert_raises(OpenAI::Errors::APIStatusError) { subject.each { |_event| nil } }
+    original = assert_raises(OpenAI::Errors::APIConnectionError) { subject.each { |_event| nil } }
     error = assert_raises(OpenAI::Helpers::Beta::Agents::ResultError) { subject.get_final_result }
     assert_same(original, error.cause)
     assert_equal("turn_root", error.turn_id)

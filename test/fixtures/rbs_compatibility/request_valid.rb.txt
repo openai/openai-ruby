@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 client = OpenAI::Client.new(api_key: "test-key")
 client.request(
   method: :post,
@@ -18,4 +20,16 @@ client.request(
   method: :post,
   path: "/undocumented/endpoint",
   security: {admin_api_key_auth: true}
+)
+client.request(
+  method: :get,
+  path: "/undocumented/events",
+  stream: OpenAI::Internal::Stream,
+  stream_mode: :events
+)
+client.request(
+  method: :get,
+  path: "/undocumented/events",
+  stream: OpenAI::Internal::Stream,
+  stream_mode: nil
 )

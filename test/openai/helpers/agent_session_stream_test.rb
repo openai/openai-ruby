@@ -332,7 +332,7 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
     end
   end
 
-  def test_protocol_errors_preserve_raw_stream_exceptions_and_cleanup
+  def test_domain_errors_and_following_lifecycle_events_are_delivered_and_cleaned_up
     events = [
       turn("created"),
       {
@@ -344,15 +344,17 @@ class OpenAI::Test::AgentSessionStreamTest < Minitest::Test
       idle
     ]
     configure(events)
-    helper_error = assert_raises(OpenAI::Errors::APIStatusError) do
-      @sessions.stream("session_test", input: "Hi").until_done
-    end
-
+    expected = events.map { |event| event.fetch(:type).to_sym }
+    received = @sessions.stream("session_test", input: "Hi").to_a
+    assert_equal(expected, received.map(&:type))
+    assert_instance_of(OpenAI::Models::Beta::AgentSessionErrorEvent, received.fetch(1))
     assert(@server.body.closed)
-    assert_equal(2, @server.body.reads)
+    assert_equal(4, @server.body.reads)
     configure(events)
-    assert_raises(helper_error.class) { @sessions.events.stream_streaming("session_test").to_a }
+    received = @sessions.events.stream_streaming("session_test").to_a
+    assert_equal(expected, received.map(&:type))
     assert(@server.body.closed)
+    assert_equal(4, @server.body.reads)
   end
 
   def test_string_null_and_content_outputs

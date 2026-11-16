@@ -6231,7 +6231,7 @@
     },
     "lib/openai/resources/beta/agents/sessions.rb": {
       "mode": "100644",
-      "sha256": "1dd82d37386a85cd3d8bf471a01fedfecd8622cb561dc35b0cd38b2f9eeb5455"
+      "sha256": "b31eea1729287e5b0e449e98efea4a2b8b59558b24ee8afdd1626f281e3b2a1b"
     },
     "lib/openai/resources/beta/agents/sessions/artifacts.rb": {
       "mode": "100644",
@@ -6239,7 +6239,7 @@
     },
     "lib/openai/resources/beta/agents/sessions/events.rb": {
       "mode": "100644",
-      "sha256": "eeafa8c4f95088281b7f9557301f7e949c3a7cceba046228e2f36d55c18c351e"
+      "sha256": "00145f584fd4f4ff35f469e8971c5e573e9112a77e119d091c8ebb8d230afe4c"
     },
     "lib/openai/resources/beta/agents/sessions/items.rb": {
       "mode": "100644",
