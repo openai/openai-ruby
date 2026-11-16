@@ -60,6 +60,10 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
+          # Why the service paused this schedule, or null for other schedules.
+          sig { returns(T.nilable(OpenAI::Beta::Agents::PeriodicAutomation::PauseReason::TaggedSymbol)) }
+          attr_accessor :pause_reason
+
           # Fields shared by periodic and one-time automations.
           sig do
             params(
@@ -87,6 +91,8 @@ module OpenAI
               ),
 
               timezone: String,
+
+              pause_reason: T.nilable(OpenAI::Beta::Agents::PeriodicAutomation::PauseReason::OrSymbol),
 
               object: Symbol,
 
@@ -123,6 +129,9 @@ module OpenAI
             # The timezone used to interpret the expression.
             timezone:,
 
+            # Why the service paused this schedule, or null for other schedules.
+            pause_reason: nil,
+
             # Always `agent.automation`.
             object: :"agent.automation",
 
@@ -145,7 +154,8 @@ module OpenAI
                 status: OpenAI::Beta::Agents::PeriodicAutomation::Status::TaggedSymbol,
                 target: OpenAI::Beta::Agents::AutomationTarget::Variants,
                 timezone: String,
-                type: Symbol
+                type: Symbol,
+                pause_reason: T.nilable(OpenAI::Beta::Agents::PeriodicAutomation::PauseReason::TaggedSymbol)
               }
             )
           end
@@ -163,6 +173,23 @@ module OpenAI
             PAUSED = T.let(:paused, OpenAI::Beta::Agents::PeriodicAutomation::Status::TaggedSymbol)
 
             sig { override.returns(T::Array[OpenAI::Beta::Agents::PeriodicAutomation::Status::TaggedSymbol]) }
+            def self.values
+            end
+          end
+
+          # Why the service paused this schedule, or null for other schedules.
+          module PauseReason
+            extend OpenAI::Internal::Type::Enum
+
+            TaggedSymbol = T.type_alias { T.all(Symbol, OpenAI::Beta::Agents::PeriodicAutomation::PauseReason) }
+            OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+            TARGET_SESSION_FAILED = T.let(
+              :target_session_failed,
+              OpenAI::Beta::Agents::PeriodicAutomation::PauseReason::TaggedSymbol
+            )
+
+            sig { override.returns(T::Array[OpenAI::Beta::Agents::PeriodicAutomation::PauseReason::TaggedSymbol]) }
             def self.values
             end
           end

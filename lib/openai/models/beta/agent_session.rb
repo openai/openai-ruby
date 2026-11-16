@@ -277,7 +277,7 @@ module OpenAI
           # @see OpenAI::Models::Beta::AgentSession::Agent#compaction
           class Compaction < OpenAI::Internal::Type::BaseModel
             # @!attribute async
-            #   Whether context is compacted in the background. Defaults to true.
+            #   Whether context is compacted in the background. Defaults to false.
             #
             #   @return [Boolean]
             required :async, OpenAI::Internal::Type::Boolean
@@ -286,7 +286,7 @@ module OpenAI
             #   The effective context compaction settings.
             #
             #   @param async [Boolean]
-            #     Whether context is compacted in the background. Defaults to true.
+            #     Whether context is compacted in the background. Defaults to false.
           end
 
           # @see OpenAI::Models::Beta::AgentSession::Agent#experimental

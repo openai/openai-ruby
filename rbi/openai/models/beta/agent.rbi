@@ -238,7 +238,7 @@ module OpenAI
             )
           end
 
-          # Whether context is compacted in the background. Defaults to true.
+          # Whether context is compacted in the background. Defaults to false.
           sig { returns(T::Boolean) }
           attr_accessor :async
 
@@ -252,7 +252,7 @@ module OpenAI
           end
           def self.new(
 
-            # Whether context is compacted in the background. Defaults to true.
+            # Whether context is compacted in the background. Defaults to false.
 
             async:
           )

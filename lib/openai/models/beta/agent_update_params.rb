@@ -15,8 +15,7 @@ module OpenAI
 
         # @!attribute compaction
         #   Context compaction settings. Omit to keep the current settings. A supplied
-        #   object replaces the settings; null or an empty object enables background
-        #   compaction.
+        #   object replaces the settings; null or an empty object uses blocking compaction.
         #
         #   @return [OpenAI::Models::Beta::AgentUpdateParams::Compaction, nil]
         optional :compaction, -> { OpenAI::Beta::AgentUpdateParams::Compaction }, nil?: true
@@ -96,8 +95,7 @@ module OpenAI
         #
         #   @param compaction [OpenAI::Models::Beta::AgentUpdateParams::Compaction, nil]
         #     Context compaction settings. Omit to keep the current settings. A supplied
-        #     object replaces the settings; null or an empty object enables background
-        #     compaction.
+        #     object replaces the settings; null or an empty object uses blocking compaction.
         #
         #   @param experimental [OpenAI::Models::Beta::AgentUpdateParams::Experimental]
         #     Experimental settings to merge by key. Omitted settings keep their current
@@ -139,22 +137,21 @@ module OpenAI
 
         class Compaction < OpenAI::Internal::Type::BaseModel
           # @!attribute async
-          #   Whether to compact context in the background. Omission or null defaults to true.
-          #   Set to false to use blocking compaction. Background compaction may increase
-          #   token usage.
+          #   Whether to compact context in the background. Omission or null defaults to
+          #   false. Set to true to enable background compaction. Background compaction may
+          #   increase token usage.
           #
           #   @return [Boolean, nil]
           optional :async, OpenAI::Internal::Type::Boolean, nil?: true
 
           # @!method initialize(async: nil)
           #   Context compaction settings. Omit to keep the current settings. A supplied
-          #   object replaces the settings; null or an empty object enables background
-          #   compaction.
+          #   object replaces the settings; null or an empty object uses blocking compaction.
           #
           #   @param async [Boolean, nil]
-          #     Whether to compact context in the background. Omission or null defaults to true.
-          #     Set to false to use blocking compaction. Background compaction may increase
-          #     token usage.
+          #     Whether to compact context in the background. Omission or null defaults to
+          #     false. Set to true to enable background compaction. Background compaction may
+          #     increase token usage.
         end
 
         class Experimental < OpenAI::Internal::Type::BaseModel

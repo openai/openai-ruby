@@ -65,7 +65,19 @@ module OpenAI
           #   @return [Symbol, :once]
           required :type, const: :once
 
-          # @!method initialize(id:, created_at:, created_by:, metadata:, name:, run_at:, status:, target:, object: :"agent.automation", type: :once)
+          # @!attribute pause_reason
+          #   Why the service paused this schedule, or null for other schedules.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::Agents::OneTimeAutomation::PauseReason, nil]
+          optional(
+            :pause_reason,
+            enum: -> {
+              OpenAI::Beta::Agents::OneTimeAutomation::PauseReason
+            },
+            nil?: true
+          )
+
+          # @!method initialize(id:, created_at:, created_by:, metadata:, name:, run_at:, status:, target:, pause_reason: nil, object: :"agent.automation", type: :once)
           #   Fields shared by periodic and one-time automations.
           #
           #   @param id [String]
@@ -92,6 +104,9 @@ module OpenAI
           #   @param target [OpenAI::Models::Beta::Agents::AutomationTarget::NewSession, OpenAI::Models::Beta::Agents::AutomationTarget::ExistingSession]
           #     The session configuration or existing session receiving invocations.
           #
+          #   @param pause_reason [Symbol, OpenAI::Models::Beta::Agents::OneTimeAutomation::PauseReason, nil]
+          #     Why the service paused this schedule, or null for other schedules.
+          #
           #   @param object [Symbol, :"agent.automation"]
           #     Always `agent.automation`.
           #
@@ -107,6 +122,18 @@ module OpenAI
             ACTIVE = :active
             PAUSED = :paused
             COMPLETED = :completed
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+
+          # Why the service paused this schedule, or null for other schedules.
+          #
+          # @see OpenAI::Models::Beta::Agents::OneTimeAutomation#pause_reason
+          module PauseReason
+            extend OpenAI::Internal::Type::Enum
+
+            TARGET_SESSION_FAILED = :target_session_failed
 
             # @!method self.values
             #   @return [Array<Symbol>]

@@ -71,7 +71,19 @@ module OpenAI
           #   @return [Symbol, :periodic]
           required :type, const: :periodic
 
-          # @!method initialize(id:, created_at:, created_by:, expression:, metadata:, name:, status:, target:, timezone:, object: :"agent.automation", type: :periodic)
+          # @!attribute pause_reason
+          #   Why the service paused this schedule, or null for other schedules.
+          #
+          #   @return [Symbol, OpenAI::Models::Beta::Agents::PeriodicAutomation::PauseReason, nil]
+          optional(
+            :pause_reason,
+            enum: -> {
+              OpenAI::Beta::Agents::PeriodicAutomation::PauseReason
+            },
+            nil?: true
+          )
+
+          # @!method initialize(id:, created_at:, created_by:, expression:, metadata:, name:, status:, target:, timezone:, pause_reason: nil, object: :"agent.automation", type: :periodic)
           #   Fields shared by periodic and one-time automations.
           #
           #   @param id [String]
@@ -101,6 +113,9 @@ module OpenAI
           #   @param timezone [String]
           #     The timezone used to interpret the expression.
           #
+          #   @param pause_reason [Symbol, OpenAI::Models::Beta::Agents::PeriodicAutomation::PauseReason, nil]
+          #     Why the service paused this schedule, or null for other schedules.
+          #
           #   @param object [Symbol, :"agent.automation"]
           #     Always `agent.automation`.
           #
@@ -115,6 +130,18 @@ module OpenAI
 
             ACTIVE = :active
             PAUSED = :paused
+
+            # @!method self.values
+            #   @return [Array<Symbol>]
+          end
+
+          # Why the service paused this schedule, or null for other schedules.
+          #
+          # @see OpenAI::Models::Beta::Agents::PeriodicAutomation#pause_reason
+          module PauseReason
+            extend OpenAI::Internal::Type::Enum
+
+            TARGET_SESSION_FAILED = :target_session_failed
 
             # @!method self.values
             #   @return [Array<Symbol>]
