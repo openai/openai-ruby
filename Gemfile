@@ -27,5 +27,7 @@ group :development, :test do
   gem "minitest-proveit"
   gem "rbi", "~> 0.5.0"
   gem "sorbet-runtime"
+  # Required directly by realtime network invariant tests.
+  gem "traces"
   gem "webmock"
 end
