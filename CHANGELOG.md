@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.125.0](https://github.com/openai/openai-ruby/compare/v0.124.0...v0.125.0) (2026-11-16)
+
+
+### Features
+
+* **api:** add schedule pause reasons ([#1068](https://github.com/openai/openai-ruby/issues/1068)) ([59b49f1](https://github.com/openai/openai-ruby/commit/59b49f1238b5515d9ce27991cc3f20c414689b27))
+* **api:** deliver beta Agents session errors as stream events ([#1071](https://github.com/openai/openai-ruby/issues/1071)) ([372cde2](https://github.com/openai/openai-ruby/commit/372cde20c488904df4cd8d0ecc0159e86eab85af))
+
 ## [0.124.0](https://github.com/openai/openai-ruby/compare/v0.123.0...v0.124.0) (2026-11-12)
 
 
