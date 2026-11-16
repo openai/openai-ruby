@@ -21,11 +21,11 @@ group :development, :test do
   gem "cgi"
   # JSON 3 rejects options passed by protocol-websocket and legacy JSON test fixtures.
   gem "json", "< 3"
-  gem "minitest", "~> 6.0"
+  gem "minitest", "~> 6.1"
   gem "minitest-hooks", ">= 1.5.4"
   gem "minitest-mock", "~> 5.27"
   gem "minitest-proveit"
-  gem "rbi", "~> 0.4.3"
+  gem "rbi", "~> 0.5.0"
   gem "sorbet-runtime"
   gem "webmock"
 end
