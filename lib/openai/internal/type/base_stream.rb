@@ -39,6 +39,16 @@ module OpenAI
         # @return [void]
         def close = OpenAI::Internal::Util.close_fused!(@iterator)
 
+        # Configure event delivery without changing custom stream initializers.
+        #
+        # @api private
+        # @param mode [Symbol, :legacy, :events]
+        # @return [self]
+        def set_stream_mode(mode)
+          @stream_mode = mode
+          self
+        end
+
         # Attach request lifecycle logging without changing the stream's identity.
         #
         # @api private

@@ -30,6 +30,11 @@ module OpenAI
         end
 
         # @api private
+        sig { params(mode: Symbol).returns(T.self_type) }
+        def set_stream_mode(mode)
+        end
+
+        # @api private
         sig do
           params(
             context: OpenAI::Internal::Logging::Context,

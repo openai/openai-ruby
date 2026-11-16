@@ -172,6 +172,7 @@ module OpenAI
                 "accept-encoding" => "identity"
               },
               body: parsed,
+              stream_mode: :events,
               stream: OpenAI::Helpers::Beta::Agents::CreationStream,
               model: OpenAI::Beta::AgentSessionEvent,
               security: {bearer_auth: true},

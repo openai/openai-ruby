@@ -19,6 +19,7 @@ module OpenAI
             | (^(top arg0) -> top))?,
             page: Class?,
             stream: Class?,
+            ?stream_mode: (:legacy | :events)?,
             model: OpenAI::Internal::Type::Converter::input?,
             security: ::Hash[(:bearer_auth | :admin_api_key_auth), bool]?,
             options: OpenAI::request_opts?

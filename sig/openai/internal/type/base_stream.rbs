@@ -14,6 +14,8 @@ module OpenAI
 
         def close: -> void
 
+        def set_stream_mode: (:legacy | :events mode) -> self
+
         def observe: (
           context: OpenAI::Internal::Logging::Context,
           response: OpenAI::HTTPClient::Response
