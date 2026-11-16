@@ -14,7 +14,8 @@ module OpenAI
             status: OpenAI::Models::Beta::Agents::PeriodicAutomation::status,
             target: OpenAI::Models::Beta::Agents::automation_target,
             timezone: String,
-            ?type: :periodic
+            ?type: :periodic,
+            ?pause_reason: OpenAI::Models::Beta::Agents::PeriodicAutomation::pause_reason?
           }
 
         class PeriodicAutomation < OpenAI::Internal::Type::BaseModel
@@ -51,6 +52,9 @@ module OpenAI
           # The type of the object. Always `periodic`.
           attr_accessor type: :periodic
 
+          # Why the service paused this schedule, or null for other schedules.
+          attr_accessor pause_reason: OpenAI::Models::Beta::Agents::PeriodicAutomation::pause_reason?
+
           # @param id
           #   The automation ID.
           # @param created_at
@@ -69,6 +73,8 @@ module OpenAI
           #   The session configuration or existing session receiving invocations.
           # @param timezone
           #   The timezone used to interpret the expression.
+          # @param pause_reason
+          #   Why the service paused this schedule, or null for other schedules.
           # @param object
           #   Always `agent.automation`.
           # @param type
@@ -83,6 +89,7 @@ module OpenAI
             status: OpenAI::Models::Beta::Agents::PeriodicAutomation::status,
             target: OpenAI::Models::Beta::Agents::automation_target,
             timezone: String,
+            ?pause_reason: OpenAI::Models::Beta::Agents::PeriodicAutomation::pause_reason?,
             ?object: :"agent.automation",
             ?type: :periodic
           ) -> void
@@ -98,7 +105,8 @@ module OpenAI
             status: OpenAI::Models::Beta::Agents::PeriodicAutomation::status,
             target: OpenAI::Models::Beta::Agents::automation_target,
             timezone: String,
-            ?type: :periodic
+            ?type: :periodic,
+            ?pause_reason: OpenAI::Models::Beta::Agents::PeriodicAutomation::pause_reason?
           }
 
           type status = :active | :paused
@@ -110,6 +118,16 @@ module OpenAI
             PAUSED: :paused
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::PeriodicAutomation::status]
+          end
+
+          type pause_reason = :target_session_failed
+
+          module PauseReason
+            extend OpenAI::Internal::Type::Enum
+
+            TARGET_SESSION_FAILED: :target_session_failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::PeriodicAutomation::pause_reason]
           end
         end
       end

@@ -21,7 +21,7 @@ module OpenAI
         sig { returns(String) }
         attr_accessor :model
 
-        # Context compaction settings. Omission or null enables background compaction.
+        # Context compaction settings. Omission or null uses blocking compaction.
         sig { returns(T.nilable(OpenAI::Beta::AgentCreateParams::Compaction)) }
         attr_reader :compaction
 
@@ -143,7 +143,7 @@ module OpenAI
           # The model to use for the agent. The requested model name is preserved.
           model:,
 
-          # Context compaction settings. Omission or null enables background compaction.
+          # Context compaction settings. Omission or null uses blocking compaction.
           compaction: nil,
 
           # Experimental agent settings. All experimental features default to disabled.
@@ -223,13 +223,13 @@ module OpenAI
             )
           end
 
-          # Whether to compact context in the background. Omission or null defaults to true.
-          # Set to false to use blocking compaction. Background compaction may increase
-          # token usage.
+          # Whether to compact context in the background. Omission or null defaults to
+          # false. Set to true to enable background compaction. Background compaction may
+          # increase token usage.
           sig { returns(T.nilable(T::Boolean)) }
           attr_accessor :async
 
-          # Context compaction settings. Omission or null enables background compaction.
+          # Context compaction settings. Omission or null uses blocking compaction.
           sig do
             params(
 
@@ -239,9 +239,9 @@ module OpenAI
           end
           def self.new(
 
-            # Whether to compact context in the background. Omission or null defaults to true.
-            # Set to false to use blocking compaction. Background compaction may increase
-            # token usage.
+            # Whether to compact context in the background. Omission or null defaults to
+            # false. Set to true to enable background compaction. Background compaction may
+            # increase token usage.
 
             async: nil
           )

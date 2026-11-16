@@ -25,7 +25,7 @@ module OpenAI
         #   The model to use for the agent. The requested model name is preserved.
         #
         # @param compaction [OpenAI::Models::Beta::AgentCreateParams::Compaction, nil]
-        #   Context compaction settings. Omission or null enables background compaction.
+        #   Context compaction settings. Omission or null uses blocking compaction.
         #
         # @param experimental [OpenAI::Models::Beta::AgentCreateParams::Experimental]
         #   Experimental agent settings. All experimental features default to disabled.
@@ -111,8 +111,7 @@ module OpenAI
         #
         # @param compaction [OpenAI::Models::Beta::AgentUpdateParams::Compaction, nil]
         #   Context compaction settings. Omit to keep the current settings. A supplied
-        #   object replaces the settings; null or an empty object enables background
-        #   compaction.
+        #   object replaces the settings; null or an empty object uses blocking compaction.
         #
         # @param experimental [OpenAI::Models::Beta::AgentUpdateParams::Experimental]
         #   Experimental settings to merge by key. Omitted settings keep their current

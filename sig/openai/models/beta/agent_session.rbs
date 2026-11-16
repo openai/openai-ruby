@@ -280,11 +280,11 @@ module OpenAI
           type compaction = { async: bool }
 
           class Compaction < OpenAI::Internal::Type::BaseModel
-            # Whether context is compacted in the background. Defaults to true.
+            # Whether context is compacted in the background. Defaults to false.
             attr_accessor async: bool
 
             # @param async
-            #   Whether context is compacted in the background. Defaults to true.
+            #   Whether context is compacted in the background. Defaults to false.
             def initialize: (async: bool) -> void
 
             def to_hash: -> { async: bool }
