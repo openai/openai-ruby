@@ -16,6 +16,7 @@ module OpenAI
             ?type: :"response.create",
             ?access_programs: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::AccessPrograms,
             ?background: bool?,
+            ?background_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions,
             ?context_management: ::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::conversation?,
             ?generate: bool,
@@ -67,6 +68,18 @@ module OpenAI
           # Whether to run the model response in the background.
           # [Learn more](https://developers.openai.com/api/docs/guides/background).
           attr_accessor background: bool?
+
+          # Options for background execution on HTTP requests. The `2h` and `8h` completion
+          # windows require `background: true`, Standard processing, and `stream: false` or
+          # omitted.
+          attr_reader background_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions?
+
+          # Options for background execution on HTTP requests. The `2h` and `8h` completion
+          # windows require `background: true`, Standard processing, and `stream: false` or
+          # omitted.
+          def background_options=: (
+            OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions
+          ) -> OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions
 
           # Context management configuration for this request.
           attr_accessor context_management: ::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]?
@@ -441,6 +454,10 @@ module OpenAI
           # @param background
           #   Whether to run the model response in the background.
           #   [Learn more](https://developers.openai.com/api/docs/guides/background).
+          # @param background_options
+          #   Options for background execution on HTTP requests. The `2h` and `8h` completion
+          #   windows require `background: true`, Standard processing, and `stream: false` or
+          #   omitted.
           # @param context_management
           #   Context management configuration for this request.
           # @param conversation
@@ -681,6 +698,7 @@ module OpenAI
           def initialize: (
             ?access_programs: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::AccessPrograms,
             ?background: bool?,
+            ?background_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions,
             ?context_management: ::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::conversation?,
             ?generate: bool,
@@ -722,6 +740,7 @@ module OpenAI
             ?type: :"response.create",
             ?access_programs: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::AccessPrograms,
             ?background: bool?,
+            ?background_options: OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions,
             ?context_management: ::Array[OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement]?,
             ?conversation: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::conversation?,
             ?generate: bool,
@@ -822,6 +841,60 @@ module OpenAI
             end
           end
 
+          type background_options =
+            {
+              ?completion_window: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::completion_window,
+              ?continuation_id: String
+            }
+
+          class BackgroundOptions < OpenAI::Internal::Type::BaseModel
+            # The completion window for background execution. Defaults to `soonest`; `2h` and
+            # `8h` select discounted background execution.
+            attr_reader completion_window: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::completion_window?
+
+            # The completion window for background execution. Defaults to `soonest`; `2h` and
+            # `8h` select discounted background execution.
+            def completion_window=: (
+              OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::completion_window
+            ) -> OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::completion_window
+
+            # A customer-provided opaque identifier used to prioritize related background
+            # requests. It does not add prior history to the input.
+            attr_reader continuation_id: String?
+
+            # A customer-provided opaque identifier used to prioritize related background
+            # requests. It does not add prior history to the input.
+            def continuation_id=: (String) -> String
+
+            # @param completion_window
+            #   The completion window for background execution. Defaults to `soonest`; `2h` and
+            #   `8h` select discounted background execution.
+            # @param continuation_id
+            #   A customer-provided opaque identifier used to prioritize related background
+            #   requests. It does not add prior history to the input.
+            def initialize: (
+              ?completion_window: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::completion_window,
+              ?continuation_id: String
+            ) -> void
+
+            def to_hash: -> {
+              ?completion_window: OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::completion_window,
+              ?continuation_id: String
+            }
+
+            type completion_window = :soonest | :"2h" | :"8h"
+
+            module CompletionWindow
+              extend OpenAI::Internal::Type::Enum
+
+              SOONEST: :soonest
+              COMPLETION_WINDOW_2H: :"2h"
+              COMPLETION_WINDOW_8H: :"8h"
+
+              def self?.values: -> ::Array[OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::completion_window]
+            end
+          end
+
           type context_management =
             { type: String, ?compact_threshold: Integer? }
 
@@ -903,7 +976,9 @@ module OpenAI
 
           type model =
             :"gpt-6-astra"
+            | :"gpt-6.2-astra"
             | :"gpt-6.1-sol"
+            | :"gpt-6.2-sol"
             | :"gpt-6.1-terra"
             | :"gpt-6-sol"
             | :"gpt-6-luna"
@@ -1014,6 +1089,7 @@ module OpenAI
             | :"gpt-6-cyber"
             | :"gpt-rosalind-research"
             | :"gpt-6-rosalind"
+            | :"gpt-6.2-astra-law"
             | String
 
           module Model
@@ -1022,7 +1098,9 @@ module OpenAI
             def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::model]
 
             GPT_6_ASTRA: :"gpt-6-astra"
+            GPT_6_2_ASTRA: :"gpt-6.2-astra"
             GPT_6_1_SOL: :"gpt-6.1-sol"
+            GPT_6_2_SOL: :"gpt-6.2-sol"
             GPT_6_1_TERRA: :"gpt-6.1-terra"
             GPT_6_SOL: :"gpt-6-sol"
             GPT_6_LUNA: :"gpt-6-luna"
@@ -1133,6 +1211,7 @@ module OpenAI
             GPT_6_CYBER: :"gpt-6-cyber"
             GPT_ROSALIND_RESEARCH: :"gpt-rosalind-research"
             GPT_6_ROSALIND: :"gpt-6-rosalind"
+            GPT_6_2_ASTRA_LAW: :"gpt-6.2-astra-law"
           end
 
           type moderation =

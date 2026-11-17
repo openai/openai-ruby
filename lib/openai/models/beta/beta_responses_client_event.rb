@@ -74,6 +74,17 @@ module OpenAI
           #   @return [Boolean, nil]
           optional :background, OpenAI::Internal::Type::Boolean, nil?: true
 
+          # @!attribute background_options
+          #   Options for background execution on HTTP requests. The `2h` and `8h` completion
+          #   windows require `background: true`, Standard processing, and `stream: false` or
+          #   omitted.
+          #
+          #   @return [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions, nil]
+          optional(
+            :background_options,
+            -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions }
+          )
+
           # @!attribute context_management
           #   Context management configuration for this request.
           #
@@ -498,7 +509,7 @@ module OpenAI
           #   @return [String, nil]
           optional :user, String
 
-          # @!method initialize(access_programs: nil, background: nil, context_management: nil, conversation: nil, generate: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_id: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
+          # @!method initialize(access_programs: nil, background: nil, background_options: nil, context_management: nil, conversation: nil, generate: nil, image: nil, include: nil, input: nil, instructions: nil, max_output_tokens: nil, max_tool_calls: nil, metadata: nil, model: nil, moderation: nil, multi_agent: nil, parallel_tool_calls: nil, previous_response_id: nil, prompt: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, reasoning: nil, safety_identifier: nil, service_tier: nil, store: nil, stream: nil, stream_id: nil, stream_options: nil, temperature: nil, text: nil, tool_choice: nil, tools: nil, top_logprobs: nil, top_p: nil, truncation: nil, user: nil, type: :"response.create")
           #   Client event for creating a response over a persistent WebSocket connection.
           #   This payload uses the same top-level fields as `POST /v1/responses`, plus
           #   WebSocket-only envelope metadata.
@@ -515,6 +526,11 @@ module OpenAI
           #   @param background [Boolean, nil]
           #     Whether to run the model response in the background.
           #     [Learn more](https://developers.openai.com/api/docs/guides/background).
+          #
+          #   @param background_options [OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions]
+          #     Options for background execution on HTTP requests. The `2h` and `8h` completion
+          #     windows require `background: true`, Standard processing, and `stream: false` or
+          #     omitted.
           #
           #   @param context_management [Array<OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::ContextManagement>, nil]
           #     Context management configuration for this request.
@@ -847,6 +863,54 @@ module OpenAI
             end
           end
 
+          # @see OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate#background_options
+          class BackgroundOptions < OpenAI::Internal::Type::BaseModel
+            # @!attribute completion_window
+            #   The completion window for background execution. Defaults to `soonest`; `2h` and
+            #   `8h` select discounted background execution.
+            #
+            #   @return [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow, nil]
+            optional(
+              :completion_window,
+              enum: -> { OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow }
+            )
+
+            # @!attribute continuation_id
+            #   A customer-provided opaque identifier used to prioritize related background
+            #   requests. It does not add prior history to the input.
+            #
+            #   @return [String, nil]
+            optional :continuation_id, String
+
+            # @!method initialize(completion_window: nil, continuation_id: nil)
+            #   Options for background execution on HTTP requests. The `2h` and `8h` completion
+            #   windows require `background: true`, Standard processing, and `stream: false` or
+            #   omitted.
+            #
+            #   @param completion_window [Symbol, OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow]
+            #     The completion window for background execution. Defaults to `soonest`; `2h` and
+            #     `8h` select discounted background execution.
+            #
+            #   @param continuation_id [String]
+            #     A customer-provided opaque identifier used to prioritize related background
+            #     requests. It does not add prior history to the input.
+
+            # The completion window for background execution. Defaults to `soonest`; `2h` and
+            # `8h` select discounted background execution.
+            #
+            # @see OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::BackgroundOptions#completion_window
+            module CompletionWindow
+              extend OpenAI::Internal::Type::Enum
+
+              SOONEST = :soonest
+              COMPLETION_WINDOW_2H = :"2h"
+              COMPLETION_WINDOW_8H = :"8h"
+
+              # @!method self.values
+              #   @return [Array<Symbol>]
+            end
+          end
+
           class ContextManagement < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #   The context management entry type. Currently only 'compaction' is supported.
@@ -963,7 +1027,11 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_6_ASTRA }
 
+            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_6_2_ASTRA }
+
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_6_1_SOL }
+
+            variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_6_2_SOL }
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_6_1_TERRA }
 
@@ -1367,6 +1435,10 @@ module OpenAI
 
             variant const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_6_ROSALIND }
 
+            variant(
+              const: -> { OpenAI::Models::Beta::BetaResponsesClientEvent::ResponseCreate::Model::GPT_6_2_ASTRA_LAW }
+            )
+
             variant String
 
             # @!method self.variants
@@ -1381,7 +1453,9 @@ module OpenAI
             # @!group
 
             GPT_6_ASTRA = :"gpt-6-astra"
+            GPT_6_2_ASTRA = :"gpt-6.2-astra"
             GPT_6_1_SOL = :"gpt-6.1-sol"
+            GPT_6_2_SOL = :"gpt-6.2-sol"
             GPT_6_1_TERRA = :"gpt-6.1-terra"
             GPT_6_SOL = :"gpt-6-sol"
             GPT_6_LUNA = :"gpt-6-luna"
@@ -1751,6 +1825,7 @@ module OpenAI
             GPT_6_CYBER = :"gpt-6-cyber"
             GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
             GPT_6_ROSALIND = :"gpt-6-rosalind"
+            GPT_6_2_ASTRA_LAW = :"gpt-6.2-astra-law"
 
             # @!endgroup
           end

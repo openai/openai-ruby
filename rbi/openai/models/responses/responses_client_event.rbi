@@ -43,6 +43,20 @@ module OpenAI
           sig { returns(T.nilable(T::Boolean)) }
           attr_accessor :background
 
+          # Options for background execution on HTTP requests. The `2h` and `8h` completion
+          # windows require `background: true`, Standard processing, and `stream: false` or
+          # omitted.
+          sig { returns(T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions)) }
+          attr_reader :background_options
+
+          sig {
+            params(
+              background_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::OrHash
+            )
+              .void
+          }
+          attr_writer :background_options
+
           # Context management configuration for this request.
           sig {
             returns(T.nilable(T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]))
@@ -508,6 +522,8 @@ module OpenAI
 
               background: T.nilable(T::Boolean),
 
+              background_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::OrHash,
+
               context_management: T.nilable(
                 T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement::OrHash]
               ),
@@ -619,6 +635,11 @@ module OpenAI
             # Whether to run the model response in the background.
             # [Learn more](https://developers.openai.com/api/docs/guides/background).
             background: nil,
+
+            # Options for background execution on HTTP requests. The `2h` and `8h` completion
+            # windows require `background: true`, Standard processing, and `stream: false` or
+            # omitted.
+            background_options: nil,
 
             # Context management configuration for this request.
             context_management: nil,
@@ -898,6 +919,9 @@ module OpenAI
                 type: Symbol,
                 access_programs: T.nilable(OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms),
                 background: T.nilable(T::Boolean),
+                background_options: T.nilable(
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions
+                ),
                 context_management: T.nilable(
                   T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement]
                 ),
@@ -1080,6 +1104,117 @@ module OpenAI
               sig {
                 override.returns(
                   T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::Cyber::TaggedSymbol]
+                )
+              }
+              def self.values
+              end
+            end
+          end
+
+          class BackgroundOptions < OpenAI::Internal::Type::BaseModel
+            OrHash = T.type_alias do
+              T.any(
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions,
+                OpenAI::Internal::AnyHash
+              )
+            end
+
+            # The completion window for background execution. Defaults to `soonest`; `2h` and
+            # `8h` select discounted background execution.
+            sig {
+              returns(
+                T.nilable(
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow::OrSymbol
+                )
+              )
+            }
+            attr_reader :completion_window
+
+            sig {
+              params(
+                completion_window: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow::OrSymbol
+              )
+                .void
+            }
+            attr_writer :completion_window
+
+            # A customer-provided opaque identifier used to prioritize related background
+            # requests. It does not add prior history to the input.
+            sig { returns(T.nilable(String)) }
+            attr_reader :continuation_id
+
+            sig { params(continuation_id: String).void }
+            attr_writer :continuation_id
+
+            # Options for background execution on HTTP requests. The `2h` and `8h` completion
+            # windows require `background: true`, Standard processing, and `stream: false` or
+            # omitted.
+            sig do
+              params(
+
+                completion_window: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow::OrSymbol,
+
+                continuation_id: String
+              )
+                .returns(T.attached_class)
+            end
+            def self.new(
+
+              # The completion window for background execution. Defaults to `soonest`; `2h` and
+              # `8h` select discounted background execution.
+              completion_window: nil,
+
+              # A customer-provided opaque identifier used to prioritize related background
+              # requests. It does not add prior history to the input.
+
+              continuation_id: nil
+            )
+            end
+
+            sig do
+              override.returns(
+                {
+                  completion_window: T.nilable(
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow::OrSymbol
+                  ),
+                  continuation_id: T.nilable(String)
+                }
+              )
+            end
+            def to_hash
+            end
+
+            # The completion window for background execution. Defaults to `soonest`; `2h` and
+            # `8h` select discounted background execution.
+            module CompletionWindow
+              extend OpenAI::Internal::Type::Enum
+
+              TaggedSymbol = T.type_alias {
+                T.all(
+                  Symbol,
+                  OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow
+                )
+              }
+              OrSymbol = T.type_alias { T.any(Symbol, String) }
+
+              SOONEST = T.let(
+                :soonest,
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow::TaggedSymbol
+              )
+              COMPLETION_WINDOW_2H = T.let(
+                :"2h",
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow::TaggedSymbol
+              )
+              COMPLETION_WINDOW_8H = T.let(
+                :"8h",
+                OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow::TaggedSymbol
+              )
+
+              sig {
+                override.returns(
+                  T::Array[
+                    OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::CompletionWindow::TaggedSymbol
+                  ]
                 )
               }
               def self.values
