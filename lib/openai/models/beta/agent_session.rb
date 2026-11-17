@@ -94,8 +94,9 @@ module OpenAI
         optional :review, enum: -> { OpenAI::Beta::AgentSession::Review }
 
         # @!attribute spend_control
-        #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        #   sessions omit this object.
+        #   Spending limit and best-effort consumption, in USD cents. Present when
+        #   spending-control visibility is enabled; limit is null without a cap. Older
+        #   server responses may omit this object.
         #
         #   @return [OpenAI::Models::Beta::AgentSession::SpendControl, nil]
         optional :spend_control, -> { OpenAI::Beta::AgentSession::SpendControl }
@@ -145,8 +146,9 @@ module OpenAI
         #     and automatic review is not enabled. Omission means none.
         #
         #   @param spend_control [OpenAI::Models::Beta::AgentSession::SpendControl]
-        #     Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        #     sessions omit this object.
+        #     Spending limit and best-effort consumption, in USD cents. Present when
+        #     spending-control visibility is enabled; limit is null without a cap. Older
+        #     server responses may omit this object.
         #
         #   @param object [Symbol, :"agent.session"]
         #     The object type. Always `agent.session`.
@@ -749,6 +751,9 @@ module OpenAI
           # The session failed.
           FAILED = :failed
 
+          # The session is paused because its spending limit was reached.
+          BUDGET_REACHED = :budget_reached
+
           # @!method self.values
           #   @return [Array<Symbol>]
         end
@@ -800,20 +805,21 @@ module OpenAI
           required :consumed, Integer, nil?: true
 
           # @!attribute limit
-          #   The configured positive limit in USD cents.
+          #   The configured positive limit in USD cents, or null when unlimited.
           #
-          #   @return [Integer]
-          required :limit, Integer
+          #   @return [Integer, nil]
+          required :limit, Integer, nil?: true
 
           # @!method initialize(consumed:, limit:)
-          #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
-          #   sessions omit this object.
+          #   Spending limit and best-effort consumption, in USD cents. Present when
+          #   spending-control visibility is enabled; limit is null without a cap. Older
+          #   server responses may omit this object.
           #
           #   @param consumed [Integer, nil]
           #     Best-effort recorded spend floored to whole USD cents, or null when unavailable.
           #
-          #   @param limit [Integer]
-          #     The configured positive limit in USD cents.
+          #   @param limit [Integer, nil]
+          #     The configured positive limit in USD cents, or null when unlimited.
         end
       end
     end
