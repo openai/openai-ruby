@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.126.0](https://github.com/openai/openai-ruby/compare/v0.125.0...v0.126.0) (2026-11-17)
+
+
+### Features
+
+* **api:** add 2-hour and 8-hour Responses background windows ([bf79adf](https://github.com/openai/openai-ruby/commit/bf79adf60b8fb1a529fc261fa7c23dcc50673ff0))
+* **api:** add the GPT-6.2 Astra Law Responses model identifier ([bf79adf](https://github.com/openai/openai-ruby/commit/bf79adf60b8fb1a529fc261fa7c23dcc50673ff0))
+* **api:** add the GPT-6.2 Astra model identifier ([bf79adf](https://github.com/openai/openai-ruby/commit/bf79adf60b8fb1a529fc261fa7c23dcc50673ff0))
+* **api:** add the GPT-6.2 Sol model identifier ([bf79adf](https://github.com/openai/openai-ruby/commit/bf79adf60b8fb1a529fc261fa7c23dcc50673ff0))
+
 ## [0.125.0](https://github.com/openai/openai-ruby/compare/v0.124.0...v0.125.0) (2026-11-16)
 
 
