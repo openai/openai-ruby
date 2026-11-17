@@ -754,7 +754,9 @@ module OpenAI
 
         type model =
           :"gpt-6-astra"
+          | :"gpt-6.2-astra"
           | :"gpt-6.1-sol"
+          | :"gpt-6.2-sol"
           | :"gpt-6.1-terra"
           | :"gpt-6-sol"
           | :"gpt-6-luna"
@@ -864,6 +866,7 @@ module OpenAI
           | :"gpt-5.6-cyber"
           | :"gpt-6-cyber"
           | :"gpt-rosalind-research"
+          | :"gpt-6.2-astra-law"
           | String
 
         module Model
@@ -872,7 +875,9 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Beta::BetaResponse::model]
 
           GPT_6_ASTRA: :"gpt-6-astra"
+          GPT_6_2_ASTRA: :"gpt-6.2-astra"
           GPT_6_1_SOL: :"gpt-6.1-sol"
+          GPT_6_2_SOL: :"gpt-6.2-sol"
           GPT_6_1_TERRA: :"gpt-6.1-terra"
           GPT_6_SOL: :"gpt-6-sol"
           GPT_6_LUNA: :"gpt-6-luna"
@@ -982,6 +987,7 @@ module OpenAI
           GPT_5_6_CYBER: :"gpt-5.6-cyber"
           GPT_6_CYBER: :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH: :"gpt-rosalind-research"
+          GPT_6_2_ASTRA_LAW: :"gpt-6.2-astra-law"
         end
 
         type tool_choice =

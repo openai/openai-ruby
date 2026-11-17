@@ -55,6 +55,7 @@ module OpenAI
         params(
           access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms::OrHash,
           background: T.nilable(T::Boolean),
+          background_options: OpenAI::Responses::ResponseCreateParams::BackgroundOptions::OrHash,
           context_management: T.nilable(T::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash]),
           conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
           image: OpenAI::Responses::ResponseCreateParams::Image::OrHash,
@@ -125,6 +126,10 @@ module OpenAI
         # Whether to run the model response in the background.
         # [Learn more](https://developers.openai.com/api/docs/guides/background).
         background: nil,
+        # Options for background execution on HTTP requests. The `2h` and `8h` completion
+        # windows require `background: true`, Standard processing, and `stream: false` or
+        # omitted.
+        background_options: nil,
         # Context management configuration for this request.
         context_management: nil,
         # The conversation that this response belongs to. Items from this conversation are
@@ -365,6 +370,7 @@ module OpenAI
         params(
           access_programs: OpenAI::Responses::ResponseCreateParams::AccessPrograms::OrHash,
           background: T.nilable(T::Boolean),
+          background_options: OpenAI::Responses::ResponseCreateParams::BackgroundOptions::OrHash,
           context_management: T.nilable(T::Array[OpenAI::Responses::ResponseCreateParams::ContextManagement::OrHash]),
           conversation: T.nilable(T.any(String, OpenAI::Responses::ResponseConversationParam::OrHash)),
           image: OpenAI::Responses::ResponseCreateParams::Image::OrHash,
@@ -441,6 +447,10 @@ module OpenAI
         # Whether to run the model response in the background.
         # [Learn more](https://developers.openai.com/api/docs/guides/background).
         background: nil,
+        # Options for background execution on HTTP requests. The `2h` and `8h` completion
+        # windows require `background: true`, Standard processing, and `stream: false` or
+        # omitted.
+        background_options: nil,
         # Context management configuration for this request.
         context_management: nil,
         # The conversation that this response belongs to. Items from this conversation are
@@ -873,6 +883,7 @@ module OpenAI
             params(
               access_programs: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::AccessPrograms::OrHash,
               background: T.nilable(T::Boolean),
+              background_options: OpenAI::Responses::ResponsesClientEvent::ResponseCreate::BackgroundOptions::OrHash,
               context_management: T.nilable(
                 T::Array[OpenAI::Responses::ResponsesClientEvent::ResponseCreate::ContextManagement::OrHash]
               ),
@@ -946,6 +957,7 @@ module OpenAI
           def create(
             access_programs: nil,
             background: nil,
+            background_options: nil,
             context_management: nil,
             conversation: nil,
             generate: nil,

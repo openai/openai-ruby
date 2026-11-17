@@ -57,6 +57,7 @@ module OpenAI
           params(
             access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms::OrHash,
             background: T.nilable(T::Boolean),
+            background_options: OpenAI::Beta::ResponseCreateParams::BackgroundOptions::OrHash,
             context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
             conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
             image: OpenAI::Beta::ResponseCreateParams::Image::OrHash,
@@ -129,6 +130,10 @@ module OpenAI
           # Body param: Whether to run the model response in the background.
           # [Learn more](https://developers.openai.com/api/docs/guides/background).
           background: nil,
+          # Body param: Options for background execution on HTTP requests. The `2h` and `8h`
+          # completion windows require `background: true`, Standard processing, and
+          # `stream: false` or omitted.
+          background_options: nil,
           # Body param: Context management configuration for this request.
           context_management: nil,
           # Body param: The conversation that this response belongs to. Items from this
@@ -380,6 +385,7 @@ module OpenAI
           params(
             access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms::OrHash,
             background: T.nilable(T::Boolean),
+            background_options: OpenAI::Beta::ResponseCreateParams::BackgroundOptions::OrHash,
             context_management: T.nilable(T::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement::OrHash]),
             conversation: T.nilable(T.any(String, OpenAI::Beta::BetaResponseConversationParam::OrHash)),
             image: OpenAI::Beta::ResponseCreateParams::Image::OrHash,
@@ -456,6 +462,10 @@ module OpenAI
           # Body param: Whether to run the model response in the background.
           # [Learn more](https://developers.openai.com/api/docs/guides/background).
           background: nil,
+          # Body param: Options for background execution on HTTP requests. The `2h` and `8h`
+          # completion windows require `background: true`, Standard processing, and
+          # `stream: false` or omitted.
+          background_options: nil,
           # Body param: Context management configuration for this request.
           context_management: nil,
           # Body param: The conversation that this response belongs to. Items from this
