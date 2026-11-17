@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.127.0](https://github.com/openai/openai-ruby/compare/v0.126.0...v0.127.0) (2026-11-17)
+
+
+### Features
+
+* **api:** type Managed Agents budget events ([#1074](https://github.com/openai/openai-ruby/issues/1074)) ([a8eaf26](https://github.com/openai/openai-ruby/commit/a8eaf268613fa16e351b3dc1afce98a3e34b4e73))
+
 ## [0.126.0](https://github.com/openai/openai-ruby/compare/v0.125.0...v0.126.0) (2026-11-17)
 
 
