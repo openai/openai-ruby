@@ -1,0 +1,27 @@
+module OpenAI
+  module Models
+    module Live
+      type mcp_tool_filter =
+        { ?read_only: bool?, ?tool_names: ::Array[String]? }
+
+      class McpToolFilter < OpenAI::Internal::Type::BaseModel
+        # Whether to allow only read-only tools for matching entries.
+        attr_accessor read_only: bool?
+
+        # A list of tool names to match against.
+        attr_accessor tool_names: ::Array[String]?
+
+        # @param read_only
+        #   Whether to allow only read-only tools for matching entries.
+        # @param tool_names
+        #   A list of tool names to match against.
+        def initialize: (
+          ?read_only: bool?,
+          ?tool_names: ::Array[String]?
+        ) -> void
+
+        def to_hash: -> { ?read_only: bool?, ?tool_names: ::Array[String]? }
+      end
+    end
+  end
+end

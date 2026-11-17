@@ -117,7 +117,7 @@ module OpenAI
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration,
-                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Mcp,
+                  OpenAI::Live::McpTool,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Custom,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Namespace,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ToolSearch,
@@ -141,7 +141,7 @@ module OpenAI
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration::OrHash,
-                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Mcp::OrHash,
+                OpenAI::Live::McpTool::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Custom::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Namespace::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ToolSearch::OrHash,
@@ -199,7 +199,7 @@ module OpenAI
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration::OrHash,
-                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Mcp::OrHash,
+                OpenAI::Live::McpTool::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Custom::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Namespace::OrHash,
                 OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ToolSearch::OrHash,
@@ -283,7 +283,7 @@ module OpenAI
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration,
-                  OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Mcp,
+                  OpenAI::Live::McpTool,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Custom,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Namespace,
                   OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ToolSearch,
@@ -1671,6 +1671,8 @@ module OpenAI
         module Tool
           extend OpenAI::Internal::Type::Union
 
+          Mcp = ::OpenAI::Models::Live::McpTool
+
           Variants = T.type_alias {
             T.any(
               OpenAI::Live::FunctionTool,
@@ -1679,7 +1681,7 @@ module OpenAI
               OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter,
               OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell,
               OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration,
-              OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Mcp,
+              OpenAI::Live::McpTool,
               OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Custom,
               OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Namespace,
               OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ToolSearch,
@@ -2623,40 +2625,6 @@ module OpenAI
             def self.new(
 
               type: :image_generation
-            )
-            end
-
-            sig do
-              override.returns(
-                {type: Symbol}
-              )
-            end
-            def to_hash
-            end
-
-          end
-
-          class Mcp < OpenAI::Internal::Type::BaseModel
-            OrHash = T.type_alias do
-              T.any(
-                OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Mcp,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-            sig { returns(Symbol) }
-            attr_accessor :type
-
-            sig do
-              params(
-
-                type: Symbol
-              )
-                .returns(T.attached_class)
-            end
-            def self.new(
-
-              type: :mcp
             )
             end
 

@@ -113,7 +113,7 @@ module OpenAI
                   OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::Shell,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration,
-                  OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp,
+                  OpenAI::Live::McpTool,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::Custom,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch,
@@ -137,7 +137,7 @@ module OpenAI
                 OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration::OrHash,
-                OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp::OrHash,
+                OpenAI::Live::McpTool::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::Custom::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch::OrHash,
@@ -195,7 +195,7 @@ module OpenAI
                 OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::Shell::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration::OrHash,
-                OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp::OrHash,
+                OpenAI::Live::McpTool::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::Custom::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace::OrHash,
                 OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch::OrHash,
@@ -278,7 +278,7 @@ module OpenAI
                   OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::Shell,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration,
-                  OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp,
+                  OpenAI::Live::McpTool,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::Custom,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace,
                   OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch,
@@ -1647,6 +1647,8 @@ module OpenAI
         module Tool
           extend OpenAI::Internal::Type::Union
 
+          Mcp = ::OpenAI::Models::Live::McpTool
+
           Variants = T.type_alias {
             T.any(
               OpenAI::Live::FunctionTool,
@@ -1655,7 +1657,7 @@ module OpenAI
               OpenAI::Live::ResponsesDelegationConfig::Tool::CodeInterpreter,
               OpenAI::Live::ResponsesDelegationConfig::Tool::Shell,
               OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration,
-              OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp,
+              OpenAI::Live::McpTool,
               OpenAI::Live::ResponsesDelegationConfig::Tool::Custom,
               OpenAI::Live::ResponsesDelegationConfig::Tool::Namespace,
               OpenAI::Live::ResponsesDelegationConfig::Tool::ToolSearch,
@@ -2526,40 +2528,6 @@ module OpenAI
             def self.new(
 
               type: :image_generation
-            )
-            end
-
-            sig do
-              override.returns(
-                {type: Symbol}
-              )
-            end
-            def to_hash
-            end
-
-          end
-
-          class Mcp < OpenAI::Internal::Type::BaseModel
-            OrHash = T.type_alias do
-              T.any(
-                OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-            sig { returns(Symbol) }
-            attr_accessor :type
-
-            sig do
-              params(
-
-                type: Symbol
-              )
-                .returns(T.attached_class)
-            end
-            def self.new(
-
-              type: :mcp
             )
             end
 

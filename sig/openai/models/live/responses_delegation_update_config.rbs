@@ -672,7 +672,7 @@ module OpenAI
           | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::CodeInterpreter
           | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Shell
           | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ImageGeneration
-          | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Mcp
+          | OpenAI::Live::McpTool
           | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Custom
           | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::Namespace
           | OpenAI::Live::ResponsesDelegationUpdateConfig::Tool::ToolSearch
@@ -682,6 +682,10 @@ module OpenAI
 
         module Tool
           extend OpenAI::Internal::Type::Union
+
+          type mcp = ::OpenAI::Models::Live::mcp_tool
+
+          class Mcp = ::OpenAI::Models::Live::McpTool
 
           type web_search = { ?type: :web_search }
 
@@ -1100,16 +1104,6 @@ module OpenAI
             def initialize: (?type: :image_generation) -> void
 
             def to_hash: -> { ?type: :image_generation }
-          end
-
-          type mcp = { ?type: :mcp }
-
-          class Mcp < OpenAI::Internal::Type::BaseModel
-            attr_accessor type: :mcp
-
-            def initialize: (?type: :mcp) -> void
-
-            def to_hash: -> { ?type: :mcp }
           end
 
           type custom = { ?type: :custom }
