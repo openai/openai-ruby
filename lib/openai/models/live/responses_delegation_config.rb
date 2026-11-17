@@ -60,7 +60,7 @@ module OpenAI
         #   Tools available to the Responses backend while it handles tasks delegated by the
         #   Live model.
         #
-        #   @return [Array<OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Mcp, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Namespace, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ToolSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ApplyPatch>, nil]
+        #   @return [Array<OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration, OpenAI::Models::Live::McpTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Namespace, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ToolSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ApplyPatch>, nil]
         optional(
           :tools,
           -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Live::ResponsesDelegationConfig::Tool] }
@@ -98,7 +98,7 @@ module OpenAI
         #     Controls which tool the Responses backend uses when handling a task delegated by
         #     the Live model.
         #
-        #   @param tools [Array<OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Mcp, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Namespace, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ToolSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ApplyPatch>]
+        #   @param tools [Array<OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration, OpenAI::Models::Live::McpTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Namespace, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ToolSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ApplyPatch>]
         #     Tools available to the Responses backend while it handles tasks delegated by the
         #     Live model.
 
@@ -772,6 +772,9 @@ module OpenAI
         module Tool
           extend OpenAI::Internal::Type::Union
 
+          require_relative "mcp_tool"
+          Mcp = ::OpenAI::Models::Live::McpTool
+
           discriminator :type
 
           # A function tool available to the Responses backend when the Live model delegates a task.
@@ -789,7 +792,7 @@ module OpenAI
 
           variant :image_generation, -> { OpenAI::Live::ResponsesDelegationConfig::Tool::ImageGeneration }
 
-          variant :mcp, -> { OpenAI::Live::ResponsesDelegationConfig::Tool::Mcp }
+          variant :mcp, -> { OpenAI::Live::McpTool }
 
           variant :custom, -> { OpenAI::Live::ResponsesDelegationConfig::Tool::Custom }
 
@@ -1246,16 +1249,6 @@ module OpenAI
             #   @param type [Symbol, :image_generation]
           end
 
-          class Mcp < OpenAI::Internal::Type::BaseModel
-            # @!attribute type
-            #
-            #   @return [Symbol, :mcp]
-            required :type, const: :mcp
-
-            # @!method initialize(type: :mcp)
-            #   @param type [Symbol, :mcp]
-          end
-
           class Custom < OpenAI::Internal::Type::BaseModel
             # @!attribute type
             #
@@ -1317,7 +1310,7 @@ module OpenAI
           end
 
           # @!method self.variants
-          #   @return [Array(OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Mcp, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Namespace, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ToolSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ApplyPatch)]
+          #   @return [Array(OpenAI::Models::Live::FunctionTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::WebSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::FileSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::CodeInterpreter, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ImageGeneration, OpenAI::Models::Live::McpTool, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Custom, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Namespace, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ToolSearch, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ProgrammaticToolCalling, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Computer, OpenAI::Models::Live::ResponsesDelegationConfig::Tool::ApplyPatch)]
         end
       end
     end
