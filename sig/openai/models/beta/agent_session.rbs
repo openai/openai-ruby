@@ -71,12 +71,14 @@ module OpenAI
           OpenAI::Models::Beta::AgentSession::review
         ) -> OpenAI::Models::Beta::AgentSession::review
 
-        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        # sessions omit this object.
+        # Spending limit and best-effort consumption, in USD cents. Present when
+        # spending-control visibility is enabled; limit is null without a cap. Older
+        # server responses may omit this object.
         attr_reader spend_control: OpenAI::Beta::AgentSession::SpendControl?
 
-        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        # sessions omit this object.
+        # Spending limit and best-effort consumption, in USD cents. Present when
+        # spending-control visibility is enabled; limit is null without a cap. Older
+        # server responses may omit this object.
         def spend_control=: (
           OpenAI::Beta::AgentSession::SpendControl
         ) -> OpenAI::Beta::AgentSession::SpendControl
@@ -110,8 +112,9 @@ module OpenAI
         #   Review applied to eligible actions in this session. Omitted when review is none
         #   and automatic review is not enabled. Omission means none.
         # @param spend_control
-        #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        #   sessions omit this object.
+        #   Spending limit and best-effort consumption, in USD cents. Present when
+        #   spending-control visibility is enabled; limit is null without a cap. Older
+        #   server responses may omit this object.
         # @param object
         #   The object type. Always `agent.session`.
         def initialize: (
@@ -696,7 +699,8 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Beta::AgentSession::required_action]
         end
 
-        type status = :idle | :in_progress | :requires_action | :failed
+        type status =
+          :idle | :in_progress | :requires_action | :failed | :budget_reached
 
         module Status
           extend OpenAI::Internal::Type::Enum
@@ -712,6 +716,9 @@ module OpenAI
 
           # The session failed.
           FAILED: :failed
+
+          # The session is paused because its spending limit was reached.
+          BUDGET_REACHED: :budget_reached
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::status]
         end
@@ -753,22 +760,22 @@ module OpenAI
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::review]
         end
 
-        type spend_control = { consumed: Integer?, limit: Integer }
+        type spend_control = { consumed: Integer?, limit: Integer? }
 
         class SpendControl < OpenAI::Internal::Type::BaseModel
           # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
           attr_accessor consumed: Integer?
 
-          # The configured positive limit in USD cents.
-          attr_accessor limit: Integer
+          # The configured positive limit in USD cents, or null when unlimited.
+          attr_accessor limit: Integer?
 
           # @param consumed
           #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
           # @param limit
-          #   The configured positive limit in USD cents.
-          def initialize: (consumed: Integer?, limit: Integer) -> void
+          #   The configured positive limit in USD cents, or null when unlimited.
+          def initialize: (consumed: Integer?, limit: Integer?) -> void
 
-          def to_hash: -> { consumed: Integer?, limit: Integer }
+          def to_hash: -> { consumed: Integer?, limit: Integer? }
         end
       end
     end

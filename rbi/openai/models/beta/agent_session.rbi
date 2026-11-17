@@ -84,8 +84,9 @@ module OpenAI
         sig { params(review: OpenAI::Beta::AgentSession::Review::OrSymbol).void }
         attr_writer :review
 
-        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        # sessions omit this object.
+        # Spending limit and best-effort consumption, in USD cents. Present when
+        # spending-control visibility is enabled; limit is null without a cap. Older
+        # server responses may omit this object.
         sig { returns(T.nilable(OpenAI::Beta::AgentSession::SpendControl)) }
         attr_reader :spend_control
 
@@ -182,8 +183,9 @@ module OpenAI
           # and automatic review is not enabled. Omission means none.
           review: nil,
 
-          # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-          # sessions omit this object.
+          # Spending limit and best-effort consumption, in USD cents. Present when
+          # spending-control visibility is enabled; limit is null without a cap. Older
+          # server responses may omit this object.
           spend_control: nil,
 
           # The object type. Always `agent.session`.
@@ -1148,6 +1150,9 @@ module OpenAI
           # The session failed.
           FAILED = T.let(:failed, OpenAI::Beta::AgentSession::Status::TaggedSymbol)
 
+          # The session is paused because its spending limit was reached.
+          BUDGET_REACHED = T.let(:budget_reached, OpenAI::Beta::AgentSession::Status::TaggedSymbol)
+
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Status::TaggedSymbol]) }
           def self.values
           end
@@ -1229,18 +1234,19 @@ module OpenAI
           sig { returns(T.nilable(Integer)) }
           attr_accessor :consumed
 
-          # The configured positive limit in USD cents.
-          sig { returns(Integer) }
+          # The configured positive limit in USD cents, or null when unlimited.
+          sig { returns(T.nilable(Integer)) }
           attr_accessor :limit
 
-          # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-          # sessions omit this object.
+          # Spending limit and best-effort consumption, in USD cents. Present when
+          # spending-control visibility is enabled; limit is null without a cap. Older
+          # server responses may omit this object.
           sig do
             params(
 
               consumed: T.nilable(Integer),
 
-              limit: Integer
+              limit: T.nilable(Integer)
             )
               .returns(T.attached_class)
           end
@@ -1249,7 +1255,7 @@ module OpenAI
             # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
             consumed:,
 
-            # The configured positive limit in USD cents.
+            # The configured positive limit in USD cents, or null when unlimited.
 
             limit:
           )
@@ -1257,7 +1263,7 @@ module OpenAI
 
           sig do
             override.returns(
-              {consumed: T.nilable(Integer), limit: Integer}
+              {consumed: T.nilable(Integer), limit: T.nilable(Integer)}
             )
           end
           def to_hash

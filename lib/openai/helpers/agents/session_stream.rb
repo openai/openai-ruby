@@ -160,6 +160,9 @@ module OpenAI
                 end
 
                 terminal = event.type == :"agent.session.failed" ||
+                  (event.type == :"agent.session.budget_reached" &&
+                    event.session.id == @session_id &&
+                    (@turn_id.nil? || @turn_ended)) ||
                   (event.type == :"agent.session.idle" && @turn_ended)
                 invocation = @dispatcher.prepare_call(event) unless terminal
                 close if terminal

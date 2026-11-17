@@ -74,6 +74,8 @@ module OpenAI
             case event.type
             when :"agent.session.created"
               @session_id ||= event.session.id.dup
+            when :error
+              @session_id ||= event.session_id.dup
             when :"agent.session.turn.created"
               if @turn.nil? && event.turn.subagent_id.nil? && (@session_id.nil? || event.session_id == @session_id)
                 @turn = copy(event.turn)
@@ -112,6 +114,9 @@ module OpenAI
               @required_actions = [] if event.session.id == @session_id
             when :"agent.session.idle"
               @finished = true if @terminal && event.session.id == @session_id
+            when :"agent.session.budget_reached"
+              @session_id ||= event.session.id.dup
+              @finished = true if (@turn.nil? || @terminal) && event.session.id == @session_id
             when :"agent.session.failed"
               @session_id ||= event.session.id.dup
               @failure = :failed
