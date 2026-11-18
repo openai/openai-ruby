@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.128.1](https://github.com/openai/openai-ruby/compare/v0.128.0...v0.128.1) (2026-11-18)
+
+
+### Bug Fixes
+
+* ignore replayed budget events in agent session streams ([#1080](https://github.com/openai/openai-ruby/issues/1080)) ([a543acf](https://github.com/openai/openai-ruby/commit/a543acfa4b4d588b1e4c6b54ac7a1c17458b32e6))
+
 ## [0.128.0](https://github.com/openai/openai-ruby/compare/v0.127.0...v0.128.0) (2026-11-18)
 
 
