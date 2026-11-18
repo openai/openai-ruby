@@ -69,7 +69,18 @@ module OpenAI
           def observe(event)
             @started = true
             return unless @enabled
-            return if @finished || !event.is_a?(OpenAI::Internal::Type::BaseModel)
+            return if @finished
+            unless event.is_a?(OpenAI::Internal::Type::BaseModel)
+              if event.is_a?(Hash) && event[:type] == "agent.session.budget_reached" && event[:session].is_a?(Hash)
+                session_id = event[:session][:id]
+                if session_id.is_a?(String)
+                  @session_id ||= session_id.dup
+                  @finished = true if (@turn.nil? || @terminal) && session_id == @session_id
+                end
+              end
+
+              return
+            end
 
             case event.type
             when :"agent.session.created"
@@ -114,9 +125,6 @@ module OpenAI
               @required_actions = [] if event.session.id == @session_id
             when :"agent.session.idle"
               @finished = true if @terminal && event.session.id == @session_id
-            when :"agent.session.budget_reached"
-              @session_id ||= event.session.id.dup
-              @finished = true if (@turn.nil? || @terminal) && event.session.id == @session_id
             when :"agent.session.failed"
               @session_id ||= event.session.id.dup
               @failure = :failed

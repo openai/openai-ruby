@@ -47,6 +47,10 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
     }
   end
 
+  def event_data(event)
+    JSON.parse(JSON.generate(event), symbolize_names: true)
+  end
+
   def budget(session_id = "session_test")
     {type: "agent.session.budget_reached", session: {id: session_id, status: "budget_reached"}}
   end
@@ -61,7 +65,7 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
     }
   end
 
-  def test_both_raw_endpoints_deliver_a_typed_budget_event_without_a_preceding_error
+  def test_both_raw_endpoints_deliver_a_budget_frame_without_a_preceding_error
     [false, true].each do |creation|
       configure([budget])
       subject = if creation
@@ -73,21 +77,16 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
       events = subject.to_a
 
       assert_equal(1, events.size)
-      assert_instance_of(OpenAI::Models::Beta::AgentSessionBudgetReachedEvent, events.first)
-      assert_equal(:"agent.session.budget_reached", events.first.type)
-      assert_equal(:budget_reached, events.first.session.status)
-      assert_nil(events.first.session.spend_control)
-      refute(events.first.session.to_h.key?(:spend_control))
+      assert_equal("agent.session.budget_reached", event_data(events.first).fetch(:type))
+      assert_equal("budget_reached", event_data(events.first).fetch(:session).fetch(:status))
       subject.close
       assert(@server.body.closed)
     end
   end
 
-  def test_both_raw_endpoints_preserve_an_error_before_a_typed_budget_event
-    [false, true].product([250, nil]).each do |creation, limit|
-      budget_event = budget
-      budget_event[:session][:spend_control] = {limit: limit, consumed: 135}
-      configure([budget_error, budget_event, idle])
+  def test_both_raw_endpoints_preserve_an_error_before_a_budget_frame
+    [false, true].each do |creation|
+      configure([budget_error, budget, idle])
       subject = if creation
         stream(creation: true)
       else
@@ -96,7 +95,10 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
 
       events = subject.to_a
 
-      assert_equal([:error, :"agent.session.budget_reached", :"agent.session.idle"], events.map(&:type))
+      assert_equal(
+        ["error", "agent.session.budget_reached", "agent.session.idle"],
+        events.map { event_data(_1).fetch(:type) }
+      )
       assert_instance_of(OpenAI::Models::Beta::AgentSessionErrorEvent, events.first)
       assert_equal("0", events.first.event_id)
       assert_equal("session_test", events.first.session_id)
@@ -104,15 +106,9 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
       assert_equal("budget_reached", events.first.error.code)
       assert_equal("Budget reached", events.first.error.message)
       assert_nil(events.first.error.param)
-      assert_instance_of(OpenAI::Models::Beta::AgentSessionBudgetReachedEvent, events[1])
-      assert_equal("1", events[1].event_id)
-      assert_equal("session_test", events[1].session.id)
-      assert_equal(:budget_reached, events[1].session.status)
-      spending = events[1].session.spend_control
-      assert_instance_of(OpenAI::Models::Beta::AgentSession::SpendControl, spending)
-      assert(spending.to_h.key?(:limit))
-      limit.nil? ? assert_nil(spending.limit) : assert_equal(limit, spending.limit)
-      assert_equal(135, spending.consumed)
+      assert_equal("1", event_data(events[1]).fetch(:event_id))
+      assert_equal("session_test", event_data(events[1]).fetch(:session).fetch(:id))
+      assert_equal("budget_reached", event_data(events[1]).fetch(:session).fetch(:status))
       subject.close
       assert(@server.body.closed)
     end
@@ -126,7 +122,7 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
       received = stream(creation: false).to_a
 
       assert_equal(events.size, received.size)
-      assert_instance_of(OpenAI::Models::Beta::AgentSessionBudgetReachedEvent, received.last)
+      assert_equal("agent.session.budget_reached", event_data(received.last).fetch(:type))
       assert_equal(events.size, @server.body.reads)
       assert(@server.body.closed)
     end
@@ -174,6 +170,18 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
       assert_equal(creation ? :incomplete : :observation_error, error.reason)
       assert_equal("turn_root", error.turn.id)
       assert_equal("Answer", error.messages.first.output_text)
+      assert(@server.body.closed)
+    end
+  end
+
+  def test_malformed_budget_snapshot_does_not_stop_creation_result
+    [nil, {}, {id: nil}, {id: 123}].each do |session|
+      malformed = {type: "agent.session.budget_reached", session: session}
+      configure([malformed, turn("created"), answer, turn("completed"), budget])
+      result = stream(creation: true).get_final_result
+
+      assert_equal("Answer", result.output_text)
+      assert_equal(:completed, result.turn.status)
       assert(@server.body.closed)
     end
   end

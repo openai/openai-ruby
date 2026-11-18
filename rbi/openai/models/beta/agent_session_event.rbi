@@ -25,7 +25,6 @@ module OpenAI
             OpenAI::Beta::AgentSessionTurnCancelledEvent,
             OpenAI::Beta::AgentSessionTurnItemAddedEvent,
             OpenAI::Beta::AgentSessionIdleEvent,
-            OpenAI::Beta::AgentSessionBudgetReachedEvent,
             OpenAI::Beta::AgentSessionInProgressEvent,
             OpenAI::Beta::AgentSessionRequiresActionEvent,
             OpenAI::Beta::AgentSessionFailedEvent,

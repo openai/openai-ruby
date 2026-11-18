@@ -16,8 +16,7 @@ module OpenAI
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
           ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
-          ?review: OpenAI::Models::Beta::AgentSession::review,
-          ?spend_control: OpenAI::Beta::AgentSession::SpendControl
+          ?review: OpenAI::Models::Beta::AgentSession::review
         }
 
       class AgentSession < OpenAI::Internal::Type::BaseModel
@@ -71,18 +70,6 @@ module OpenAI
           OpenAI::Models::Beta::AgentSession::review
         ) -> OpenAI::Models::Beta::AgentSession::review
 
-        # Spending limit and best-effort consumption, in USD cents. Present when
-        # spending-control visibility is enabled; limit is null without a cap. Older
-        # server responses may omit this object.
-        attr_reader spend_control: OpenAI::Beta::AgentSession::SpendControl?
-
-        # Spending limit and best-effort consumption, in USD cents. Present when
-        # spending-control visibility is enabled; limit is null without a cap. Older
-        # server responses may omit this object.
-        def spend_control=: (
-          OpenAI::Beta::AgentSession::SpendControl
-        ) -> OpenAI::Beta::AgentSession::SpendControl
-
         # @param id
         #   The ID of the session.
         # @param agent
@@ -111,10 +98,6 @@ module OpenAI
         # @param review
         #   Review applied to eligible actions in this session. Omitted when review is none
         #   and automatic review is not enabled. Omission means none.
-        # @param spend_control
-        #   Spending limit and best-effort consumption, in USD cents. Present when
-        #   spending-control visibility is enabled; limit is null without a cap. Older
-        #   server responses may omit this object.
         # @param object
         #   The object type. Always `agent.session`.
         def initialize: (
@@ -131,7 +114,6 @@ module OpenAI
           vault_ids: ::Array[String],
           ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
           ?review: OpenAI::Models::Beta::AgentSession::review,
-          ?spend_control: OpenAI::Beta::AgentSession::SpendControl,
           ?object: :"agent.session"
         ) -> void
 
@@ -149,8 +131,7 @@ module OpenAI
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
           ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
-          ?review: OpenAI::Models::Beta::AgentSession::review,
-          ?spend_control: OpenAI::Beta::AgentSession::SpendControl
+          ?review: OpenAI::Models::Beta::AgentSession::review
         }
 
         type agent =
@@ -699,8 +680,7 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Beta::AgentSession::required_action]
         end
 
-        type status =
-          :idle | :in_progress | :requires_action | :failed | :budget_reached
+        type status = :idle | :in_progress | :requires_action | :failed
 
         module Status
           extend OpenAI::Internal::Type::Enum
@@ -716,9 +696,6 @@ module OpenAI
 
           # The session failed.
           FAILED: :failed
-
-          # The session is paused because its spending limit was reached.
-          BUDGET_REACHED: :budget_reached
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::status]
         end
@@ -758,24 +735,6 @@ module OpenAI
           AUTO_REVIEW: :auto_review
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::review]
-        end
-
-        type spend_control = { consumed: Integer?, limit: Integer? }
-
-        class SpendControl < OpenAI::Internal::Type::BaseModel
-          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          attr_accessor consumed: Integer?
-
-          # The configured positive limit in USD cents, or null when unlimited.
-          attr_accessor limit: Integer?
-
-          # @param consumed
-          #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          # @param limit
-          #   The configured positive limit in USD cents, or null when unlimited.
-          def initialize: (consumed: Integer?, limit: Integer?) -> void
-
-          def to_hash: -> { consumed: Integer?, limit: Integer? }
         end
       end
     end

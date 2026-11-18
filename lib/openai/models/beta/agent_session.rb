@@ -93,15 +93,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Beta::AgentSession::Review, nil]
         optional :review, enum: -> { OpenAI::Beta::AgentSession::Review }
 
-        # @!attribute spend_control
-        #   Spending limit and best-effort consumption, in USD cents. Present when
-        #   spending-control visibility is enabled; limit is null without a cap. Older
-        #   server responses may omit this object.
-        #
-        #   @return [OpenAI::Models::Beta::AgentSession::SpendControl, nil]
-        optional :spend_control, -> { OpenAI::Beta::AgentSession::SpendControl }
-
-        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, prompt_cache_options: nil, review: nil, spend_control: nil, object: :"agent.session")
+        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, prompt_cache_options: nil, review: nil, object: :"agent.session")
         #   A Managed Agents session.
         #
         #   @param id [String]
@@ -144,11 +136,6 @@ module OpenAI
         #   @param review [Symbol, OpenAI::Models::Beta::AgentSession::Review]
         #     Review applied to eligible actions in this session. Omitted when review is none
         #     and automatic review is not enabled. Omission means none.
-        #
-        #   @param spend_control [OpenAI::Models::Beta::AgentSession::SpendControl]
-        #     Spending limit and best-effort consumption, in USD cents. Present when
-        #     spending-control visibility is enabled; limit is null without a cap. Older
-        #     server responses may omit this object.
         #
         #   @param object [Symbol, :"agent.session"]
         #     The object type. Always `agent.session`.
@@ -751,9 +738,6 @@ module OpenAI
           # The session failed.
           FAILED = :failed
 
-          # The session is paused because its spending limit was reached.
-          BUDGET_REACHED = :budget_reached
-
           # @!method self.values
           #   @return [Array<Symbol>]
         end
@@ -794,32 +778,6 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
-        end
-
-        # @see OpenAI::Models::Beta::AgentSession#spend_control
-        class SpendControl < OpenAI::Internal::Type::BaseModel
-          # @!attribute consumed
-          #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          #
-          #   @return [Integer, nil]
-          required :consumed, Integer, nil?: true
-
-          # @!attribute limit
-          #   The configured positive limit in USD cents, or null when unlimited.
-          #
-          #   @return [Integer, nil]
-          required :limit, Integer, nil?: true
-
-          # @!method initialize(consumed:, limit:)
-          #   Spending limit and best-effort consumption, in USD cents. Present when
-          #   spending-control visibility is enabled; limit is null without a cap. Older
-          #   server responses may omit this object.
-          #
-          #   @param consumed [Integer, nil]
-          #     Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          #
-          #   @param limit [Integer, nil]
-          #     The configured positive limit in USD cents, or null when unlimited.
         end
       end
     end

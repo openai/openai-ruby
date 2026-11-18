@@ -64,9 +64,6 @@ module OpenAI
           # The model reached its output token limit before finishing the response.
           MAX_OUTPUT_TOKENS = T.let(:max_output_tokens, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 
-          # The session has reached its usage budget.
-          SESSION_BUDGET_EXCEEDED = T.let(:session_budget_exceeded, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
-
           # The organization has reached a usage, plan, or billing limit.
           USAGE_LIMIT_EXCEEDED = T.let(:usage_limit_exceeded, OpenAI::Beta::SessionTurnError::Code::TaggedSymbol)
 

@@ -25,8 +25,7 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           usage: OpenAI::Beta::TokenUsage | nil,
           vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
           prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions | nil,
-          review: OpenAI::Beta::AgentSession::Review | nil,
-          spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
+          review: OpenAI::Beta::AgentSession::Review | nil
         }
     end
   end
@@ -53,8 +52,7 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           usage: OpenAI::Beta::TokenUsage | nil,
           vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
           prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions | nil,
-          review: OpenAI::Beta::AgentSession::Review | nil,
-          spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
+          review: OpenAI::Beta::AgentSession::Review | nil
         }
     end
   end
@@ -81,8 +79,7 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           usage: OpenAI::Beta::TokenUsage | nil,
           vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
           prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions | nil,
-          review: OpenAI::Beta::AgentSession::Review | nil,
-          spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
+          review: OpenAI::Beta::AgentSession::Review | nil
         }
     end
   end
@@ -117,8 +114,7 @@ class OpenAI::Test::Resources::Beta::Agents::SessionsTest < OpenAI::Test::Resour
           usage: OpenAI::Beta::TokenUsage | nil,
           vault_ids: ^(OpenAI::Internal::Type::ArrayOf[String]),
           prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions | nil,
-          review: OpenAI::Beta::AgentSession::Review | nil,
-          spend_control: OpenAI::Beta::AgentSession::SpendControl | nil
+          review: OpenAI::Beta::AgentSession::Review | nil
         }
     end
   end
