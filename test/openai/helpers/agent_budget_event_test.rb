@@ -186,6 +186,29 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
     end
   end
 
+  def test_replayed_active_budget_snapshot_does_not_end_the_completed_turn
+    replayed = budget.merge(event_id: "budget_replayed")
+    future = {type: "agent.session.future", payload: {example: "future event"}}
+    configure([turn("created"), replayed, answer, turn("completed"), replayed, future, idle])
+    subject = stream(creation: false).with_result_collection
+    received = subject.to_a
+
+    assert_equal(
+      [
+        "agent.session.turn.created",
+        "agent.session.budget_reached",
+        "agent.session.turn.item.done",
+        "agent.session.turn.completed",
+        "agent.session.future",
+        "agent.session.idle"
+      ],
+      received.map { event_data(_1).fetch(:type) }
+    )
+    assert_equal("Answer", subject.get_final_result.output_text)
+    assert_equal(7, @server.body.reads)
+    assert(@server.body.closed)
+  end
+
   def test_early_budget_snapshot_preserves_the_later_authoritative_result
     [false, true].each do |creation|
       configure([turn("created"), budget, answer, turn("completed"), budget, idle])
