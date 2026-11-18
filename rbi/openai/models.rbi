@@ -66,6 +66,10 @@ module OpenAI
 
   CreateEmbeddingResponse = OpenAI::Models::CreateEmbeddingResponse
 
+  CsamModeration = OpenAI::Models::CsamModeration
+
+  CsamModerationResponse = OpenAI::Models::CsamModerationResponse
+
   CustomToolInputFormat = OpenAI::Models::CustomToolInputFormat
 
   Decision = OpenAI::Models::Decision

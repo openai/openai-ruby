@@ -1,0 +1,30 @@
+module OpenAI
+  module Models
+    type csam_moderation_response =
+      {
+        id: String,
+        ?model: :"omni-moderation-csam-latest",
+        results: ::Array[OpenAI::CsamModeration]
+      }
+
+    class CsamModerationResponse < OpenAI::Internal::Type::BaseModel
+      attr_accessor id: String
+
+      attr_accessor model: :"omni-moderation-csam-latest"
+
+      attr_accessor results: ::Array[OpenAI::CsamModeration]
+
+      def initialize: (
+        id: String,
+        results: ::Array[OpenAI::CsamModeration],
+        ?model: :"omni-moderation-csam-latest"
+      ) -> void
+
+      def to_hash: -> {
+        id: String,
+        ?model: :"omni-moderation-csam-latest",
+        results: ::Array[OpenAI::CsamModeration]
+      }
+    end
+  end
+end
