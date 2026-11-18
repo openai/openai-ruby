@@ -37,9 +37,6 @@ module OpenAI
           # The model reached its output token limit before finishing the response.
           MAX_OUTPUT_TOKENS = :max_output_tokens
 
-          # The session has reached its usage budget.
-          SESSION_BUDGET_EXCEEDED = :session_budget_exceeded
-
           # The organization has reached a usage, plan, or billing limit.
           USAGE_LIMIT_EXCEEDED = :usage_limit_exceeded
 

@@ -84,15 +84,6 @@ module OpenAI
         sig { params(review: OpenAI::Beta::AgentSession::Review::OrSymbol).void }
         attr_writer :review
 
-        # Spending limit and best-effort consumption, in USD cents. Present when
-        # spending-control visibility is enabled; limit is null without a cap. Older
-        # server responses may omit this object.
-        sig { returns(T.nilable(OpenAI::Beta::AgentSession::SpendControl)) }
-        attr_reader :spend_control
-
-        sig { params(spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash).void }
-        attr_writer :spend_control
-
         # A Managed Agents session.
         sig do
           params(
@@ -133,8 +124,6 @@ module OpenAI
             prompt_cache_options: T.nilable(OpenAI::Beta::AgentSession::PromptCacheOptions::OrHash),
 
             review: OpenAI::Beta::AgentSession::Review::OrSymbol,
-
-            spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash,
 
             object: Symbol
           )
@@ -183,11 +172,6 @@ module OpenAI
           # and automatic review is not enabled. Omission means none.
           review: nil,
 
-          # Spending limit and best-effort consumption, in USD cents. Present when
-          # spending-control visibility is enabled; limit is null without a cap. Older
-          # server responses may omit this object.
-          spend_control: nil,
-
           # The object type. Always `agent.session`.
 
           object: :"agent.session"
@@ -210,8 +194,7 @@ module OpenAI
               usage: T.nilable(OpenAI::Beta::TokenUsage),
               vault_ids: T::Array[String],
               prompt_cache_options: T.nilable(OpenAI::Beta::AgentSession::PromptCacheOptions),
-              review: OpenAI::Beta::AgentSession::Review::TaggedSymbol,
-              spend_control: OpenAI::Beta::AgentSession::SpendControl
+              review: OpenAI::Beta::AgentSession::Review::TaggedSymbol
             }
           )
         end
@@ -1150,9 +1133,6 @@ module OpenAI
           # The session failed.
           FAILED = T.let(:failed, OpenAI::Beta::AgentSession::Status::TaggedSymbol)
 
-          # The session is paused because its spending limit was reached.
-          BUDGET_REACHED = T.let(:budget_reached, OpenAI::Beta::AgentSession::Status::TaggedSymbol)
-
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Status::TaggedSymbol]) }
           def self.values
           end
@@ -1220,55 +1200,6 @@ module OpenAI
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Review::TaggedSymbol]) }
           def self.values
           end
-        end
-
-        class SpendControl < OpenAI::Internal::Type::BaseModel
-          OrHash = T.type_alias do
-            T.any(
-              OpenAI::Beta::AgentSession::SpendControl,
-              OpenAI::Internal::AnyHash
-            )
-          end
-
-          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          sig { returns(T.nilable(Integer)) }
-          attr_accessor :consumed
-
-          # The configured positive limit in USD cents, or null when unlimited.
-          sig { returns(T.nilable(Integer)) }
-          attr_accessor :limit
-
-          # Spending limit and best-effort consumption, in USD cents. Present when
-          # spending-control visibility is enabled; limit is null without a cap. Older
-          # server responses may omit this object.
-          sig do
-            params(
-
-              consumed: T.nilable(Integer),
-
-              limit: T.nilable(Integer)
-            )
-              .returns(T.attached_class)
-          end
-          def self.new(
-
-            # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-            consumed:,
-
-            # The configured positive limit in USD cents, or null when unlimited.
-
-            limit:
-          )
-          end
-
-          sig do
-            override.returns(
-              {consumed: T.nilable(Integer), limit: T.nilable(Integer)}
-            )
-          end
-          def to_hash
-          end
-
         end
 
       end

@@ -64,19 +64,6 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review, nil]
           optional :review, enum: -> { OpenAI::Beta::Agents::SessionCreateParams::Review }
 
-          # @!attribute spend_control
-          #   Optional spending limit in USD cents. Omission or null creates an unlimited
-          #   session.
-          #
-          #   @return [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
-          optional(
-            :spend_control,
-            -> {
-              OpenAI::Beta::Agents::SessionCreateParams::SpendControl
-            },
-            nil?: true
-          )
-
           # @!attribute stream_options
           #   Options for the event stream. Only allowed when `stream` is `true`.
           #
@@ -89,7 +76,7 @@ module OpenAI
           #   @return [Array<String>, nil]
           optional :vault_ids, OpenAI::Internal::Type::ArrayOf[String], nil?: true
 
-          # @!method initialize(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, stream_options: nil, vault_ids: nil, request_options: {})
+          # @!method initialize(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, prompt_cache_options: nil, review: nil, stream_options: nil, vault_ids: nil, request_options: {})
           #   @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #     An inline execution environment or a reference to an environment template.
           #
@@ -117,10 +104,6 @@ module OpenAI
           #
           #   @param review [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review]
           #     Action review mode. Omit to use none.
-          #
-          #   @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
-          #     Optional spending limit in USD cents. Omission or null creates an unlimited
-          #     session.
           #
           #   @param stream_options [OpenAI::Models::Beta::Agents::SessionCreateParams::StreamOptions]
           #     Options for the event stream. Only allowed when `stream` is `true`.
@@ -371,21 +354,6 @@ module OpenAI
 
             # @!method self.values
             #   @return [Array<Symbol>]
-          end
-
-          class SpendControl < OpenAI::Internal::Type::BaseModel
-            # @!attribute limit
-            #   Positive USD cents, or null to remove the limit.
-            #
-            #   @return [Integer, nil]
-            required :limit, Integer, nil?: true
-
-            # @!method initialize(limit:)
-            #   Optional spending limit in USD cents. Omission or null creates an unlimited
-            #   session.
-            #
-            #   @param limit [Integer, nil]
-            #     Positive USD cents, or null to remove the limit.
           end
 
           class StreamOptions < OpenAI::Internal::Type::BaseModel
