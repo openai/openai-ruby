@@ -152,11 +152,14 @@ module OpenAI
               @raw_stream.each do |event|
                 known = event.is_a?(OpenAI::Internal::Type::BaseModel)
                 next if known && !accept?(event)
+                budget = event.is_a?(Hash) && event[:type] == "agent.session.budget_reached"
+                if budget && event[:event_id].is_a?(String) && !event[:event_id].empty?
+                  next unless remember_event_id(event[:event_id])
+                end
 
                 @collector.observe(event)
                 unless known
-                  terminal = event.is_a?(Hash) &&
-                    event[:type] == "agent.session.budget_reached" &&
+                  terminal = budget &&
                     event[:session].is_a?(Hash) &&
                     event[:session][:id].is_a?(String) &&
                     event[:session][:id] == @session_id &&
@@ -187,11 +190,16 @@ module OpenAI
           end
         end
 
-        def accept?(event)
-          return false if @recent_events.key?(event.event_id)
+        def remember_event_id(id)
+          return false if @recent_events.key?(id)
 
           @recent_events.shift if @recent_events.size == 1024
-          @recent_events[event.event_id] = true
+          @recent_events[id] = true
+        end
+
+        def accept?(event)
+          return false unless remember_event_id(event.event_id)
+
           case event.type
           when :"agent.session.turn.created"
             @turn_id ||= event.turn_id.dup if event.turn.subagent_id.nil?
