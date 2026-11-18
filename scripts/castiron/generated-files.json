@@ -2787,7 +2787,7 @@
     },
     "lib/openai/models/beta/session_turn_error.rb": {
       "mode": "100644",
-      "sha256": "c4a929173ad2a43244b0e1fd783491ebf3d40066200cec2b435f45d09a5e257d"
+      "sha256": "d02c7c78ad99e0f3f187130af39578d970041976248cb3bb35f01d8a7b0c2b3f"
     },
     "lib/openai/models/beta/setup_command_param.rb": {
       "mode": "100644",
@@ -9347,7 +9347,7 @@
     },
     "rbi/openai/models/beta/session_turn_error.rbi": {
       "mode": "100644",
-      "sha256": "08678212b491e0be9d5a77c6744df187dbf2d6acfe0f4d40f454903879e21d89"
+      "sha256": "b7cf15ebd0b4a03be11ae7bc8cff41e0e9b2a6465105a1e0ad9593902bfa3f93"
     },
     "rbi/openai/models/beta/setup_command_param.rbi": {
       "mode": "100644",
@@ -15907,7 +15907,7 @@
     },
     "sig/openai/models/beta/session_turn_error.rbs": {
       "mode": "100644",
-      "sha256": "be1f056273c663dd22dc4c35064087120f202f858b85875b69f010ca5a647bae"
+      "sha256": "842606195c730cfa62beeee4e39741a3c5ae69f2a0c8898f23af9eafdfbe725b"
     },
     "sig/openai/models/beta/setup_command_param.rbs": {
       "mode": "100644",
