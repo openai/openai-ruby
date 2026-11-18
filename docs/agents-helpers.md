@@ -37,9 +37,11 @@ end
 ```
 
 Input accepts a string or an array of input messages. The stream yields the
-original typed events, including turn failures and cancellations. Protocol errors
-with an `error` payload retain the raw event stream's API-exception behavior and
-close the connection. Initial idle events
+original typed events, including turn failures and cancellations. Raw session
+creation and event subscriptions yield `type: :error` events as values. Handle
+them in your loop to receive later lifecycle events. HTTP failures, connection
+failures, and malformed JSON still raise exceptions. Final-result collection
+still raises if it cannot collect a completed turn. Initial idle events
 and subagent completions do not end iteration. The stream ends after the selected
 coordinator turn completes, fails, or is cancelled and the session becomes idle,
 or when the session fails. An unexpected connection end raises `RuntimeError`.

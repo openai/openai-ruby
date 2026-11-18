@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.128.0](https://github.com/openai/openai-ruby/compare/v0.127.0...v0.128.0) (2026-11-18)
+
+
+### Features
+
+* **api:** add Live MCP server configuration ([#1070](https://github.com/openai/openai-ruby/issues/1070)) ([57eb631](https://github.com/openai/openai-ruby/commit/57eb631064d53686f179750a16f4d792b91d3e49))
+* **api:** add standalone CSAM moderation models ([#1079](https://github.com/openai/openai-ruby/issues/1079)) ([40f8422](https://github.com/openai/openai-ruby/commit/40f84227a8bfea555ff3b17ed2d2233cf6a7f1b2))
+* **api:** hide Managed Agents session budget controls and events ([#1078](https://github.com/openai/openai-ruby/issues/1078)) ([7c181cf](https://github.com/openai/openai-ruby/commit/7c181cfcb3d00fd287ba03e69ae0f390aa238d6f))
+
+
+### Chores
+
+* **deps-dev:** bump addressable from 2.9.0 to 2.9.1 ([#1065](https://github.com/openai/openai-ruby/issues/1065)) ([ebd877e](https://github.com/openai/openai-ruby/commit/ebd877e4541e217c5d91a907b0f3d707da5722bd))
+* **deps-dev:** bump the development-dependencies group across 1 directory with 5 updates ([#1066](https://github.com/openai/openai-ruby/issues/1066)) ([a2e764a](https://github.com/openai/openai-ruby/commit/a2e764a8c08394e2709cc3b753866fd41fdc6201))
+* **deps:** bump ruby/setup-ruby from 1.338.0 to 1.341.0 ([#1081](https://github.com/openai/openai-ruby/issues/1081)) ([ea3baea](https://github.com/openai/openai-ruby/commit/ea3baeac1ef6afee38191697fba8b02848823098))
+* **deps:** bump rubygems/release-gem from 1.4.1 to 1.4.2 ([#1067](https://github.com/openai/openai-ruby/issues/1067)) ([6890aed](https://github.com/openai/openai-ruby/commit/6890aeda0ecc09d7df9d3781f91c19c35bc5f93f))
+
+## [0.127.0](https://github.com/openai/openai-ruby/compare/v0.126.0...v0.127.0) (2026-11-17)
+
+
+### Features
+
+* **api:** type Managed Agents budget events ([#1074](https://github.com/openai/openai-ruby/issues/1074)) ([a8eaf26](https://github.com/openai/openai-ruby/commit/a8eaf268613fa16e351b3dc1afce98a3e34b4e73))
+
+## [0.126.0](https://github.com/openai/openai-ruby/compare/v0.125.0...v0.126.0) (2026-11-17)
+
+
+### Features
+
+* **api:** add 2-hour and 8-hour Responses background windows ([bf79adf](https://github.com/openai/openai-ruby/commit/bf79adf60b8fb1a529fc261fa7c23dcc50673ff0))
+* **api:** add the GPT-6.2 Astra Law Responses model identifier ([bf79adf](https://github.com/openai/openai-ruby/commit/bf79adf60b8fb1a529fc261fa7c23dcc50673ff0))
+* **api:** add the GPT-6.2 Astra model identifier ([bf79adf](https://github.com/openai/openai-ruby/commit/bf79adf60b8fb1a529fc261fa7c23dcc50673ff0))
+* **api:** add the GPT-6.2 Sol model identifier ([bf79adf](https://github.com/openai/openai-ruby/commit/bf79adf60b8fb1a529fc261fa7c23dcc50673ff0))
+
+## [0.125.0](https://github.com/openai/openai-ruby/compare/v0.124.0...v0.125.0) (2026-11-16)
+
+
+### Features
+
+* **api:** add schedule pause reasons ([#1068](https://github.com/openai/openai-ruby/issues/1068)) ([59b49f1](https://github.com/openai/openai-ruby/commit/59b49f1238b5515d9ce27991cc3f20c414689b27))
+* **api:** deliver beta Agents session errors as stream events ([#1071](https://github.com/openai/openai-ruby/issues/1071)) ([372cde2](https://github.com/openai/openai-ruby/commit/372cde20c488904df4cd8d0ecc0159e86eab85af))
+
 ## [0.124.0](https://github.com/openai/openai-ruby/compare/v0.123.0...v0.124.0) (2026-11-12)
 
 

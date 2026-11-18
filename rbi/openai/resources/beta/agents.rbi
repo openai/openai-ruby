@@ -53,7 +53,7 @@ module OpenAI
         def create(
           # The model to use for the agent. The requested model name is preserved.
           model:,
-          # Context compaction settings. Omission or null enables background compaction.
+          # Context compaction settings. Omission or null uses blocking compaction.
           compaction: nil,
           # Experimental agent settings. All experimental features default to disabled.
           experimental: nil,
@@ -128,8 +128,7 @@ module OpenAI
           # The ID of the reusable agent.
           agent_id,
           # Context compaction settings. Omit to keep the current settings. A supplied
-          # object replaces the settings; null or an empty object enables background
-          # compaction.
+          # object replaces the settings; null or an empty object uses blocking compaction.
           compaction: nil,
           # Experimental settings to merge by key. Omitted settings keep their current
           # values.

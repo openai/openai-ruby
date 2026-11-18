@@ -16,8 +16,7 @@ module OpenAI
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
           ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
-          ?review: OpenAI::Models::Beta::AgentSession::review,
-          ?spend_control: OpenAI::Beta::AgentSession::SpendControl
+          ?review: OpenAI::Models::Beta::AgentSession::review
         }
 
       class AgentSession < OpenAI::Internal::Type::BaseModel
@@ -71,16 +70,6 @@ module OpenAI
           OpenAI::Models::Beta::AgentSession::review
         ) -> OpenAI::Models::Beta::AgentSession::review
 
-        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        # sessions omit this object.
-        attr_reader spend_control: OpenAI::Beta::AgentSession::SpendControl?
-
-        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        # sessions omit this object.
-        def spend_control=: (
-          OpenAI::Beta::AgentSession::SpendControl
-        ) -> OpenAI::Beta::AgentSession::SpendControl
-
         # @param id
         #   The ID of the session.
         # @param agent
@@ -109,9 +98,6 @@ module OpenAI
         # @param review
         #   Review applied to eligible actions in this session. Omitted when review is none
         #   and automatic review is not enabled. Omission means none.
-        # @param spend_control
-        #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        #   sessions omit this object.
         # @param object
         #   The object type. Always `agent.session`.
         def initialize: (
@@ -128,7 +114,6 @@ module OpenAI
           vault_ids: ::Array[String],
           ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
           ?review: OpenAI::Models::Beta::AgentSession::review,
-          ?spend_control: OpenAI::Beta::AgentSession::SpendControl,
           ?object: :"agent.session"
         ) -> void
 
@@ -146,8 +131,7 @@ module OpenAI
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
           ?prompt_cache_options: OpenAI::Beta::AgentSession::PromptCacheOptions?,
-          ?review: OpenAI::Models::Beta::AgentSession::review,
-          ?spend_control: OpenAI::Beta::AgentSession::SpendControl
+          ?review: OpenAI::Models::Beta::AgentSession::review
         }
 
         type agent =
@@ -280,11 +264,11 @@ module OpenAI
           type compaction = { async: bool }
 
           class Compaction < OpenAI::Internal::Type::BaseModel
-            # Whether context is compacted in the background. Defaults to true.
+            # Whether context is compacted in the background. Defaults to false.
             attr_accessor async: bool
 
             # @param async
-            #   Whether context is compacted in the background. Defaults to true.
+            #   Whether context is compacted in the background. Defaults to false.
             def initialize: (async: bool) -> void
 
             def to_hash: -> { async: bool }
@@ -751,24 +735,6 @@ module OpenAI
           AUTO_REVIEW: :auto_review
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::review]
-        end
-
-        type spend_control = { consumed: Integer?, limit: Integer }
-
-        class SpendControl < OpenAI::Internal::Type::BaseModel
-          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          attr_accessor consumed: Integer?
-
-          # The configured positive limit in USD cents.
-          attr_accessor limit: Integer
-
-          # @param consumed
-          #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          # @param limit
-          #   The configured positive limit in USD cents.
-          def initialize: (consumed: Integer?, limit: Integer) -> void
-
-          def to_hash: -> { consumed: Integer?, limit: Integer }
         end
       end
     end

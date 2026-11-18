@@ -84,14 +84,6 @@ module OpenAI
         sig { params(review: OpenAI::Beta::AgentSession::Review::OrSymbol).void }
         attr_writer :review
 
-        # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        # sessions omit this object.
-        sig { returns(T.nilable(OpenAI::Beta::AgentSession::SpendControl)) }
-        attr_reader :spend_control
-
-        sig { params(spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash).void }
-        attr_writer :spend_control
-
         # A Managed Agents session.
         sig do
           params(
@@ -132,8 +124,6 @@ module OpenAI
             prompt_cache_options: T.nilable(OpenAI::Beta::AgentSession::PromptCacheOptions::OrHash),
 
             review: OpenAI::Beta::AgentSession::Review::OrSymbol,
-
-            spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash,
 
             object: Symbol
           )
@@ -182,10 +172,6 @@ module OpenAI
           # and automatic review is not enabled. Omission means none.
           review: nil,
 
-          # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-          # sessions omit this object.
-          spend_control: nil,
-
           # The object type. Always `agent.session`.
 
           object: :"agent.session"
@@ -208,8 +194,7 @@ module OpenAI
               usage: T.nilable(OpenAI::Beta::TokenUsage),
               vault_ids: T::Array[String],
               prompt_cache_options: T.nilable(OpenAI::Beta::AgentSession::PromptCacheOptions),
-              review: OpenAI::Beta::AgentSession::Review::TaggedSymbol,
-              spend_control: OpenAI::Beta::AgentSession::SpendControl
+              review: OpenAI::Beta::AgentSession::Review::TaggedSymbol
             }
           )
         end
@@ -407,7 +392,7 @@ module OpenAI
               )
             end
 
-            # Whether context is compacted in the background. Defaults to true.
+            # Whether context is compacted in the background. Defaults to false.
             sig { returns(T::Boolean) }
             attr_accessor :async
 
@@ -421,7 +406,7 @@ module OpenAI
             end
             def self.new(
 
-              # Whether context is compacted in the background. Defaults to true.
+              # Whether context is compacted in the background. Defaults to false.
 
               async:
             )
@@ -1215,54 +1200,6 @@ module OpenAI
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Review::TaggedSymbol]) }
           def self.values
           end
-        end
-
-        class SpendControl < OpenAI::Internal::Type::BaseModel
-          OrHash = T.type_alias do
-            T.any(
-              OpenAI::Beta::AgentSession::SpendControl,
-              OpenAI::Internal::AnyHash
-            )
-          end
-
-          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          sig { returns(T.nilable(Integer)) }
-          attr_accessor :consumed
-
-          # The configured positive limit in USD cents.
-          sig { returns(Integer) }
-          attr_accessor :limit
-
-          # Configured spending limit and best-effort consumption, in USD cents. Unlimited
-          # sessions omit this object.
-          sig do
-            params(
-
-              consumed: T.nilable(Integer),
-
-              limit: Integer
-            )
-              .returns(T.attached_class)
-          end
-          def self.new(
-
-            # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-            consumed:,
-
-            # The configured positive limit in USD cents.
-
-            limit:
-          )
-          end
-
-          sig do
-            override.returns(
-              {consumed: T.nilable(Integer), limit: Integer}
-            )
-          end
-          def to_hash
-          end
-
         end
 
       end

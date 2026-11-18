@@ -54,6 +54,7 @@ module OpenAI
         GPT_6_CYBER = T.let(:"gpt-6-cyber", OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol)
         GPT_ROSALIND_RESEARCH = T.let(:"gpt-rosalind-research", OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol)
         GPT_6_ROSALIND = T.let(:"gpt-6-rosalind", OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol)
+        GPT_6_2_ASTRA_LAW = T.let(:"gpt-6.2-astra-law", OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol)
 
         sig { override.returns(T::Array[OpenAI::AllModels::ResponsesOnlyModel::TaggedSymbol]) }
         def self.values

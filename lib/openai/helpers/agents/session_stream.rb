@@ -155,7 +155,15 @@ module OpenAI
 
                 @collector.observe(event)
                 unless known
+                  terminal = event.is_a?(Hash) &&
+                    event[:type] == "agent.session.budget_reached" &&
+                    event[:session].is_a?(Hash) &&
+                    event[:session][:id].is_a?(String) &&
+                    event[:session][:id] == @session_id &&
+                    (@turn_id.nil? || @turn_ended)
+                  close if terminal
                   yielder << event
+                  break if terminal || @closed
                   next
                 end
 

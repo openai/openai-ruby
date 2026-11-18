@@ -54,6 +54,7 @@ module OpenAI
               :unwrap,
               :page,
               :stream,
+              :stream_mode,
               :model,
               :security,
               :options
@@ -389,6 +390,8 @@ module OpenAI
         #   @option req [Class<OpenAI::Internal::Type::BasePage>, nil] :page
         #
         #   @option req [Class<OpenAI::Internal::Type::BaseStream>, nil] :stream
+        #
+        #   @option req [Symbol, :legacy, :events, nil] :stream_mode
         #
         #   @option req [OpenAI::Internal::Type::Converter, Class, nil] :model
         #
@@ -776,7 +779,7 @@ module OpenAI
         # Execute the request specified by `req`. This is the method that all resource
         # methods call into.
         #
-        # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, model: OpenAI::Internal::Type::Unknown, security: {bearer_auth: true, admin_api_key_auth: true}, options: {})
+        # @overload request(method, path, query: {}, headers: {}, body: nil, unwrap: nil, page: nil, stream: nil, stream_mode: nil, model: OpenAI::Internal::Type::Unknown, security: {bearer_auth: true, admin_api_key_auth: true}, options: {})
         #
         # @param method [Symbol]
         #
@@ -793,6 +796,9 @@ module OpenAI
         # @param page [Class<OpenAI::Internal::Type::BasePage>, nil]
         #
         # @param stream [Class<OpenAI::Internal::Type::BaseStream>, nil]
+        #
+        # @param stream_mode [Symbol, :legacy, :events, nil]
+        #   Deliver domain error events instead of raising when set to `:events`.
         #
         # @param model [OpenAI::Internal::Type::Converter, Class, nil]
         #
@@ -948,7 +954,7 @@ module OpenAI
 
           case req
           in {stream: Class => st}
-            st.new(
+            stream = st.new(
               model: model,
               url: url,
               response_metadata: response_metadata,
@@ -956,6 +962,8 @@ module OpenAI
               unwrap: unwrap,
               stream: decoded
             )
+            stream.set_stream_mode(req[:stream_mode]) if req[:stream_mode]
+            stream
           in {page: Class => page}
             page.new(client: self, req: req, response_metadata: response_metadata, page_data: decoded)
           else
@@ -1011,6 +1019,7 @@ module OpenAI
               stream: T.nilable(
                 T::Class[OpenAI::Internal::Type::BaseStream[T.anything, OpenAI::Internal::Type::BaseModel]]
               ),
+              stream_mode: T.nilable(Symbol),
               model: T.nilable(OpenAI::Internal::Type::Converter::Input),
               security: T.nilable(T::Hash[Symbol, T::Boolean]),
               options: T.nilable(OpenAI::RequestOptions::OrHash)

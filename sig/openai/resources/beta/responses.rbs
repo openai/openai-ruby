@@ -17,6 +17,7 @@ module OpenAI
         def create: (
           ?access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms,
           ?background: bool?,
+          ?background_options: OpenAI::Beta::ResponseCreateParams::BackgroundOptions,
           ?context_management: ::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]?,
           ?conversation: OpenAI::Models::Beta::ResponseCreateParams::conversation?,
           ?image: OpenAI::Beta::ResponseCreateParams::Image,
@@ -56,6 +57,7 @@ module OpenAI
         def stream_raw: (
           ?access_programs: OpenAI::Beta::ResponseCreateParams::AccessPrograms,
           ?background: bool?,
+          ?background_options: OpenAI::Beta::ResponseCreateParams::BackgroundOptions,
           ?context_management: ::Array[OpenAI::Beta::ResponseCreateParams::ContextManagement]?,
           ?conversation: OpenAI::Models::Beta::ResponseCreateParams::conversation?,
           ?image: OpenAI::Beta::ResponseCreateParams::Image,

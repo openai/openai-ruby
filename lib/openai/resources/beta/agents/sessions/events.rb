@@ -76,6 +76,7 @@ module OpenAI
                   "accept" => "text/event-stream",
                   "accept-encoding" => "identity"
                 },
+                stream_mode: :events,
                 stream: OpenAI::Internal::Stream,
                 model: OpenAI::Beta::AgentSessionEvent,
                 security: {bearer_auth: true},

@@ -13,7 +13,8 @@ module OpenAI
             run_at: Integer,
             status: OpenAI::Models::Beta::Agents::OneTimeAutomation::status,
             target: OpenAI::Models::Beta::Agents::automation_target,
-            ?type: :once
+            ?type: :once,
+            ?pause_reason: OpenAI::Models::Beta::Agents::OneTimeAutomation::pause_reason?
           }
 
         class OneTimeAutomation < OpenAI::Internal::Type::BaseModel
@@ -47,6 +48,9 @@ module OpenAI
           # The type of the object. Always `once`.
           attr_accessor type: :once
 
+          # Why the service paused this schedule, or null for other schedules.
+          attr_accessor pause_reason: OpenAI::Models::Beta::Agents::OneTimeAutomation::pause_reason?
+
           # @param id
           #   The automation ID.
           # @param created_at
@@ -63,6 +67,8 @@ module OpenAI
           #   Completion means the schedule has finished, not the agent's work.
           # @param target
           #   The session configuration or existing session receiving invocations.
+          # @param pause_reason
+          #   Why the service paused this schedule, or null for other schedules.
           # @param object
           #   Always `agent.automation`.
           # @param type
@@ -76,6 +82,7 @@ module OpenAI
             run_at: Integer,
             status: OpenAI::Models::Beta::Agents::OneTimeAutomation::status,
             target: OpenAI::Models::Beta::Agents::automation_target,
+            ?pause_reason: OpenAI::Models::Beta::Agents::OneTimeAutomation::pause_reason?,
             ?object: :"agent.automation",
             ?type: :once
           ) -> void
@@ -90,7 +97,8 @@ module OpenAI
             run_at: Integer,
             status: OpenAI::Models::Beta::Agents::OneTimeAutomation::status,
             target: OpenAI::Models::Beta::Agents::automation_target,
-            ?type: :once
+            ?type: :once,
+            ?pause_reason: OpenAI::Models::Beta::Agents::OneTimeAutomation::pause_reason?
           }
 
           type status = :active | :paused | :completed
@@ -103,6 +111,16 @@ module OpenAI
             COMPLETED: :completed
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::OneTimeAutomation::status]
+          end
+
+          type pause_reason = :target_session_failed
+
+          module PauseReason
+            extend OpenAI::Internal::Type::Enum
+
+            TARGET_SESSION_FAILED: :target_session_failed
+
+            def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::OneTimeAutomation::pause_reason]
           end
         end
       end

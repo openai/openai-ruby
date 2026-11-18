@@ -79,16 +79,6 @@ module OpenAI
           sig { params(review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol).void }
           attr_writer :review
 
-          # Optional spending limit in USD cents. Omission or null creates an unlimited
-          # session.
-          sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl)) }
-          attr_reader :spend_control
-
-          sig {
-            params(spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash)).void
-          }
-          attr_writer :spend_control
-
           # Options for the event stream. Only allowed when `stream` is `true`.
           sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::StreamOptions)) }
           attr_reader :stream_options
@@ -120,8 +110,6 @@ module OpenAI
               prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::OrHash),
 
               review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
-
-              spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
 
               stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions::OrHash,
 
@@ -161,10 +149,6 @@ module OpenAI
             # Action review mode. Omit to use none.
             review: nil,
 
-            # Optional spending limit in USD cents. Omission or null creates an unlimited
-            # session.
-            spend_control: nil,
-
             # Options for the event stream. Only allowed when `stream` is `true`.
             stream_options: nil,
 
@@ -189,7 +173,6 @@ module OpenAI
                 metadata: T.nilable(T::Hash[Symbol, String]),
                 prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions),
                 review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
-                spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl),
                 stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
                 vault_ids: T.nilable(T::Array[String]),
                 request_options: OpenAI::RequestOptions
@@ -208,8 +191,7 @@ module OpenAI
             end
 
             # Context compaction settings. Omit to keep the current settings. A supplied
-            # object replaces the settings; null or an empty object enables background
-            # compaction.
+            # object replaces the settings; null or an empty object uses blocking compaction.
             sig { returns(T.nilable(OpenAI::Beta::Agents::SessionCreateParams::Agent::Compaction)) }
             attr_reader :compaction
 
@@ -326,8 +308,7 @@ module OpenAI
             def self.new(
 
               # Context compaction settings. Omit to keep the current settings. A supplied
-              # object replaces the settings; null or an empty object enables background
-              # compaction.
+              # object replaces the settings; null or an empty object uses blocking compaction.
               compaction: nil,
 
               # Experimental settings to merge by key. Omitted settings keep their current
@@ -400,15 +381,14 @@ module OpenAI
                 )
               end
 
-              # Whether to compact context in the background. Omission or null defaults to true.
-              # Set to false to use blocking compaction. Background compaction may increase
-              # token usage.
+              # Whether to compact context in the background. Omission or null defaults to
+              # false. Set to true to enable background compaction. Background compaction may
+              # increase token usage.
               sig { returns(T.nilable(T::Boolean)) }
               attr_accessor :async
 
               # Context compaction settings. Omit to keep the current settings. A supplied
-              # object replaces the settings; null or an empty object enables background
-              # compaction.
+              # object replaces the settings; null or an empty object uses blocking compaction.
               sig do
                 params(
 
@@ -418,9 +398,9 @@ module OpenAI
               end
               def self.new(
 
-                # Whether to compact context in the background. Omission or null defaults to true.
-                # Set to false to use blocking compaction. Background compaction may increase
-                # token usage.
+                # Whether to compact context in the background. Omission or null defaults to
+                # false. Set to true to enable background compaction. Background compaction may
+                # increase token usage.
 
                 async: nil
               )
@@ -613,45 +593,6 @@ module OpenAI
             sig { override.returns(T::Array[OpenAI::Beta::Agents::SessionCreateParams::Review::TaggedSymbol]) }
             def self.values
             end
-          end
-
-          class SpendControl < OpenAI::Internal::Type::BaseModel
-            OrHash = T.type_alias do
-              T.any(
-                OpenAI::Beta::Agents::SessionCreateParams::SpendControl,
-                OpenAI::Internal::AnyHash
-              )
-            end
-
-            # Positive USD cents, or null to remove the limit.
-            sig { returns(T.nilable(Integer)) }
-            attr_accessor :limit
-
-            # Optional spending limit in USD cents. Omission or null creates an unlimited
-            # session.
-            sig do
-              params(
-
-                limit: T.nilable(Integer)
-              )
-                .returns(T.attached_class)
-            end
-            def self.new(
-
-              # Positive USD cents, or null to remove the limit.
-
-              limit:
-            )
-            end
-
-            sig do
-              override.returns(
-                {limit: T.nilable(Integer)}
-              )
-            end
-            def to_hash
-            end
-
           end
 
           class StreamOptions < OpenAI::Internal::Type::BaseModel

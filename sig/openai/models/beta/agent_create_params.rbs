@@ -24,7 +24,7 @@ module OpenAI
         # The model to use for the agent. The requested model name is preserved.
         attr_accessor model: String
 
-        # Context compaction settings. Omission or null enables background compaction.
+        # Context compaction settings. Omission or null uses blocking compaction.
         attr_accessor compaction: OpenAI::Beta::AgentCreateParams::Compaction?
 
         # Experimental agent settings. All experimental features default to disabled.
@@ -67,7 +67,7 @@ module OpenAI
         # @param model
         #   The model to use for the agent. The requested model name is preserved.
         # @param compaction
-        #   Context compaction settings. Omission or null enables background compaction.
+        #   Context compaction settings. Omission or null uses blocking compaction.
         # @param experimental
         #   Experimental agent settings. All experimental features default to disabled.
         # @param instructions
@@ -124,15 +124,15 @@ module OpenAI
         type compaction = { ?async: bool? }
 
         class Compaction < OpenAI::Internal::Type::BaseModel
-          # Whether to compact context in the background. Omission or null defaults to true.
-          # Set to false to use blocking compaction. Background compaction may increase
-          # token usage.
+          # Whether to compact context in the background. Omission or null defaults to
+          # false. Set to true to enable background compaction. Background compaction may
+          # increase token usage.
           attr_accessor async: bool?
 
           # @param async
-          #   Whether to compact context in the background. Omission or null defaults to true.
-          #   Set to false to use blocking compaction. Background compaction may increase
-          #   token usage.
+          #   Whether to compact context in the background. Omission or null defaults to
+          #   false. Set to true to enable background compaction. Background compaction may
+          #   increase token usage.
           def initialize: (?async: bool?) -> void
 
           def to_hash: -> { ?async: bool? }

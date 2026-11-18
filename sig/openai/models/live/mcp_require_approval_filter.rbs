@@ -1,0 +1,33 @@
+module OpenAI
+  module Models
+    module Live
+      type mcp_require_approval_filter =
+        {
+          ?always: OpenAI::Live::McpToolFilter?,
+          ?never: OpenAI::Live::McpToolFilter?
+        }
+
+      class McpRequireApprovalFilter < OpenAI::Internal::Type::BaseModel
+        # A filter that forces approval for matching tools.
+        attr_accessor always: OpenAI::Live::McpToolFilter?
+
+        # A filter that skips approval for matching tools.
+        attr_accessor never: OpenAI::Live::McpToolFilter?
+
+        # @param always
+        #   A filter that forces approval for matching tools.
+        # @param never
+        #   A filter that skips approval for matching tools.
+        def initialize: (
+          ?always: OpenAI::Live::McpToolFilter?,
+          ?never: OpenAI::Live::McpToolFilter?
+        ) -> void
+
+        def to_hash: -> {
+          ?always: OpenAI::Live::McpToolFilter?,
+          ?never: OpenAI::Live::McpToolFilter?
+        }
+      end
+    end
+  end
+end

@@ -45,7 +45,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             status: OpenAI::Beta::Agents::PeriodicAutomation::Status,
             target: OpenAI::Beta::Agents::AutomationTarget,
-            timezone: String
+            timezone: String,
+            pause_reason: OpenAI::Beta::Agents::PeriodicAutomation::PauseReason | nil
           } | {
             type: :once,
             id: String,
@@ -56,7 +57,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             run_at: Integer,
             status: OpenAI::Beta::Agents::OneTimeAutomation::Status,
-            target: OpenAI::Beta::Agents::AutomationTarget
+            target: OpenAI::Beta::Agents::AutomationTarget,
+            pause_reason: OpenAI::Beta::Agents::OneTimeAutomation::PauseReason | nil
           }
       )
         nil
@@ -94,7 +96,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             status: OpenAI::Beta::Agents::PeriodicAutomation::Status,
             target: OpenAI::Beta::Agents::AutomationTarget,
-            timezone: String
+            timezone: String,
+            pause_reason: OpenAI::Beta::Agents::PeriodicAutomation::PauseReason | nil
           } | {
             type: :once,
             id: String,
@@ -105,7 +108,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             run_at: Integer,
             status: OpenAI::Beta::Agents::OneTimeAutomation::Status,
-            target: OpenAI::Beta::Agents::AutomationTarget
+            target: OpenAI::Beta::Agents::AutomationTarget,
+            pause_reason: OpenAI::Beta::Agents::OneTimeAutomation::PauseReason | nil
           }
       )
         nil
@@ -143,7 +147,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             status: OpenAI::Beta::Agents::PeriodicAutomation::Status,
             target: OpenAI::Beta::Agents::AutomationTarget,
-            timezone: String
+            timezone: String,
+            pause_reason: OpenAI::Beta::Agents::PeriodicAutomation::PauseReason | nil
           } | {
             type: :once,
             id: String,
@@ -154,7 +159,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             run_at: Integer,
             status: OpenAI::Beta::Agents::OneTimeAutomation::Status,
-            target: OpenAI::Beta::Agents::AutomationTarget
+            target: OpenAI::Beta::Agents::AutomationTarget,
+            pause_reason: OpenAI::Beta::Agents::OneTimeAutomation::PauseReason | nil
           }
       )
         nil
@@ -200,7 +206,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             status: OpenAI::Beta::Agents::PeriodicAutomation::Status,
             target: OpenAI::Beta::Agents::AutomationTarget,
-            timezone: String
+            timezone: String,
+            pause_reason: OpenAI::Beta::Agents::PeriodicAutomation::PauseReason | nil
           } | {
             type: :once,
             id: String,
@@ -211,7 +218,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             run_at: Integer,
             status: OpenAI::Beta::Agents::OneTimeAutomation::Status,
-            target: OpenAI::Beta::Agents::AutomationTarget
+            target: OpenAI::Beta::Agents::AutomationTarget,
+            pause_reason: OpenAI::Beta::Agents::OneTimeAutomation::PauseReason | nil
           }
       )
         nil
@@ -265,7 +273,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             status: OpenAI::Beta::Agents::PeriodicAutomation::Status,
             target: OpenAI::Beta::Agents::AutomationTarget,
-            timezone: String
+            timezone: String,
+            pause_reason: OpenAI::Beta::Agents::PeriodicAutomation::PauseReason | nil
           } | {
             type: :once,
             id: String,
@@ -276,7 +285,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             run_at: Integer,
             status: OpenAI::Beta::Agents::OneTimeAutomation::Status,
-            target: OpenAI::Beta::Agents::AutomationTarget
+            target: OpenAI::Beta::Agents::AutomationTarget,
+            pause_reason: OpenAI::Beta::Agents::OneTimeAutomation::PauseReason | nil
           }
       )
         nil
@@ -314,7 +324,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             status: OpenAI::Beta::Agents::PeriodicAutomation::Status,
             target: OpenAI::Beta::Agents::AutomationTarget,
-            timezone: String
+            timezone: String,
+            pause_reason: OpenAI::Beta::Agents::PeriodicAutomation::PauseReason | nil
           } | {
             type: :once,
             id: String,
@@ -325,7 +336,8 @@ class OpenAI::Test::Resources::Beta::Agents::AutomationsTest < OpenAI::Test::Res
             object: Symbol,
             run_at: Integer,
             status: OpenAI::Beta::Agents::OneTimeAutomation::Status,
-            target: OpenAI::Beta::Agents::AutomationTarget
+            target: OpenAI::Beta::Agents::AutomationTarget,
+            pause_reason: OpenAI::Beta::Agents::OneTimeAutomation::PauseReason | nil
           }
       )
         nil

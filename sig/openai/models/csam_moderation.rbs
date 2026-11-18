@@ -1,0 +1,113 @@
+module OpenAI
+  module Models
+    type csam_moderation =
+      {
+        categories: OpenAI::CsamModeration::Categories,
+        category_applied_input_types: OpenAI::CsamModeration::CategoryAppliedInputTypes,
+        category_scores: OpenAI::CsamModeration::CategoryScores,
+        flagged: bool
+      }
+
+    class CsamModeration < OpenAI::Internal::Type::BaseModel
+      # Whether the image was flagged in each category.
+      attr_accessor categories: OpenAI::CsamModeration::Categories
+
+      # The input types evaluated for each category.
+      attr_accessor category_applied_input_types: OpenAI::CsamModeration::CategoryAppliedInputTypes
+
+      # The classifier score for each category.
+      attr_accessor category_scores: OpenAI::CsamModeration::CategoryScores
+
+      # Whether either CSAM category was flagged.
+      attr_accessor flagged: bool
+
+      # @param categories
+      #   Whether the image was flagged in each category.
+      # @param category_applied_input_types
+      #   The input types evaluated for each category.
+      # @param category_scores
+      #   The classifier score for each category.
+      # @param flagged
+      #   Whether either CSAM category was flagged.
+      def initialize: (
+        categories: OpenAI::CsamModeration::Categories,
+        category_applied_input_types: OpenAI::CsamModeration::CategoryAppliedInputTypes,
+        category_scores: OpenAI::CsamModeration::CategoryScores,
+        flagged: bool
+      ) -> void
+
+      def to_hash: -> {
+        categories: OpenAI::CsamModeration::Categories,
+        category_applied_input_types: OpenAI::CsamModeration::CategoryAppliedInputTypes,
+        category_scores: OpenAI::CsamModeration::CategoryScores,
+        flagged: bool
+      }
+
+      type categories = { likely_csam: bool, likely_csam_gen_ai: bool }
+
+      class Categories < OpenAI::Internal::Type::BaseModel
+        attr_accessor likely_csam: bool
+
+        attr_accessor likely_csam_gen_ai: bool
+
+        def initialize: (likely_csam: bool, likely_csam_gen_ai: bool) -> void
+
+        def to_hash: -> { likely_csam: bool, likely_csam_gen_ai: bool }
+      end
+
+      type category_applied_input_types =
+        {
+          likely_csam: ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam],
+          likely_csam_gen_ai: ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam_gen_ai]
+        }
+
+      class CategoryAppliedInputTypes < OpenAI::Internal::Type::BaseModel
+        attr_accessor likely_csam: ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam]
+
+        attr_accessor likely_csam_gen_ai: ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam_gen_ai]
+
+        def initialize: (
+          likely_csam: ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam],
+          likely_csam_gen_ai: ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam_gen_ai]
+        ) -> void
+
+        def to_hash: -> {
+          likely_csam: ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam],
+          likely_csam_gen_ai: ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam_gen_ai]
+        }
+
+        type likely_csam = :image
+
+        module LikelyCsam
+          extend OpenAI::Internal::Type::Enum
+
+          IMAGE: :image
+
+          def self?.values: -> ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam]
+        end
+
+        type likely_csam_gen_ai = :image
+
+        module LikelyCsamGenAi
+          extend OpenAI::Internal::Type::Enum
+
+          IMAGE: :image
+
+          def self?.values: -> ::Array[OpenAI::Models::CsamModeration::CategoryAppliedInputTypes::likely_csam_gen_ai]
+        end
+      end
+
+      type category_scores = { likely_csam: Float, likely_csam_gen_ai: Float }
+
+      class CategoryScores < OpenAI::Internal::Type::BaseModel
+        attr_accessor likely_csam: Float
+
+        attr_accessor likely_csam_gen_ai: Float
+
+        def initialize: (likely_csam: Float, likely_csam_gen_ai: Float) -> void
+
+        def to_hash: -> { likely_csam: Float, likely_csam_gen_ai: Float }
+      end
+    end
+  end
+end

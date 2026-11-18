@@ -99,8 +99,7 @@ module OpenAI
 
             class Agent < OpenAI::Internal::Type::BaseModel
               # Context compaction settings. Omit to keep the current settings. A supplied
-              # object replaces the settings; null or an empty object enables background
-              # compaction.
+              # object replaces the settings; null or an empty object uses blocking compaction.
               attr_accessor compaction: OpenAI::Beta::Agents::AutomationTargetParam::NewSession::Agent::Compaction?
 
               # Experimental settings to merge by key. Omitted settings keep their current
@@ -143,8 +142,7 @@ module OpenAI
 
               # @param compaction
               #   Context compaction settings. Omit to keep the current settings. A supplied
-              #   object replaces the settings; null or an empty object enables background
-              #   compaction.
+              #   object replaces the settings; null or an empty object uses blocking compaction.
               # @param experimental
               #   Experimental settings to merge by key. Omitted settings keep their current
               #   values.
@@ -193,15 +191,15 @@ module OpenAI
               type compaction = { ?async: bool? }
 
               class Compaction < OpenAI::Internal::Type::BaseModel
-                # Whether to compact context in the background. Omission or null defaults to true.
-                # Set to false to use blocking compaction. Background compaction may increase
-                # token usage.
+                # Whether to compact context in the background. Omission or null defaults to
+                # false. Set to true to enable background compaction. Background compaction may
+                # increase token usage.
                 attr_accessor async: bool?
 
                 # @param async
-                #   Whether to compact context in the background. Omission or null defaults to true.
-                #   Set to false to use blocking compaction. Background compaction may increase
-                #   token usage.
+                #   Whether to compact context in the background. Omission or null defaults to
+                #   false. Set to true to enable background compaction. Background compaction may
+                #   increase token usage.
                 def initialize: (?async: bool?) -> void
 
                 def to_hash: -> { ?async: bool? }

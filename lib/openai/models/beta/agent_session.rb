@@ -93,14 +93,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Beta::AgentSession::Review, nil]
         optional :review, enum: -> { OpenAI::Beta::AgentSession::Review }
 
-        # @!attribute spend_control
-        #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        #   sessions omit this object.
-        #
-        #   @return [OpenAI::Models::Beta::AgentSession::SpendControl, nil]
-        optional :spend_control, -> { OpenAI::Beta::AgentSession::SpendControl }
-
-        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, prompt_cache_options: nil, review: nil, spend_control: nil, object: :"agent.session")
+        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, prompt_cache_options: nil, review: nil, object: :"agent.session")
         #   A Managed Agents session.
         #
         #   @param id [String]
@@ -143,10 +136,6 @@ module OpenAI
         #   @param review [Symbol, OpenAI::Models::Beta::AgentSession::Review]
         #     Review applied to eligible actions in this session. Omitted when review is none
         #     and automatic review is not enabled. Omission means none.
-        #
-        #   @param spend_control [OpenAI::Models::Beta::AgentSession::SpendControl]
-        #     Configured spending limit and best-effort consumption, in USD cents. Unlimited
-        #     sessions omit this object.
         #
         #   @param object [Symbol, :"agent.session"]
         #     The object type. Always `agent.session`.
@@ -277,7 +266,7 @@ module OpenAI
           # @see OpenAI::Models::Beta::AgentSession::Agent#compaction
           class Compaction < OpenAI::Internal::Type::BaseModel
             # @!attribute async
-            #   Whether context is compacted in the background. Defaults to true.
+            #   Whether context is compacted in the background. Defaults to false.
             #
             #   @return [Boolean]
             required :async, OpenAI::Internal::Type::Boolean
@@ -286,7 +275,7 @@ module OpenAI
             #   The effective context compaction settings.
             #
             #   @param async [Boolean]
-            #     Whether context is compacted in the background. Defaults to true.
+            #     Whether context is compacted in the background. Defaults to false.
           end
 
           # @see OpenAI::Models::Beta::AgentSession::Agent#experimental
@@ -789,31 +778,6 @@ module OpenAI
 
           # @!method self.values
           #   @return [Array<Symbol>]
-        end
-
-        # @see OpenAI::Models::Beta::AgentSession#spend_control
-        class SpendControl < OpenAI::Internal::Type::BaseModel
-          # @!attribute consumed
-          #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          #
-          #   @return [Integer, nil]
-          required :consumed, Integer, nil?: true
-
-          # @!attribute limit
-          #   The configured positive limit in USD cents.
-          #
-          #   @return [Integer]
-          required :limit, Integer
-
-          # @!method initialize(consumed:, limit:)
-          #   Configured spending limit and best-effort consumption, in USD cents. Unlimited
-          #   sessions omit this object.
-          #
-          #   @param consumed [Integer, nil]
-          #     Best-effort recorded spend floored to whole USD cents, or null when unavailable.
-          #
-          #   @param limit [Integer]
-          #     The configured positive limit in USD cents.
         end
       end
     end

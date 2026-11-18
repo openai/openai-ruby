@@ -30,7 +30,7 @@ module OpenAI
               next
             in {data: String => data}
               case JSON.parse(data, symbolize_names: true)
-              in {error: error}
+              in {error: error} if @stream_mode != :events
                 message = case error
                 in String
                   error

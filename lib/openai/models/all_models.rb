@@ -78,6 +78,7 @@ module OpenAI
         GPT_6_CYBER = :"gpt-6-cyber"
         GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
         GPT_6_ROSALIND = :"gpt-6-rosalind"
+        GPT_6_2_ASTRA_LAW = :"gpt-6.2-astra-law"
 
         # @!method self.values
         #   @return [Array<Symbol>]
