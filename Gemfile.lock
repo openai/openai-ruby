@@ -38,7 +38,7 @@ GEM
       traces (~> 0.10)
     async-pool (0.11.2)
       async (>= 2.0)
-    async-websocket (0.30.1)
+    async-websocket (0.30.2)
       async-http (~> 0.76)
       protocol-http (~> 0.34)
       protocol-rack (~> 0.7)
@@ -81,9 +81,9 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
     metrics (0.15.0)
-    minitest (6.0.6)
+    minitest (6.1.0)
       drb (~> 2.0)
-      prism (~> 1.5)
+      prism (>= 1.5, < 3)
     minitest-hooks (1.5.4)
       minitest (> 5.3)
     minitest-mock (5.27.0)
@@ -112,13 +112,13 @@ GEM
       protocol-http (~> 0.2)
     public_suffix (7.0.5)
     racc (1.8.1)
-    rack (3.2.6)
+    rack (3.2.8)
     rainbow (3.1.1)
     rake (13.4.2)
     rb-fsevent (0.11.2)
     rb-inotify (0.11.1)
       ffi (~> 1.0)
-    rbi (0.4.3)
+    rbi (0.5.0)
       prism (~> 1.0)
       rbs (>= 4.0.1)
     rbs (4.2.0)
@@ -127,7 +127,7 @@ GEM
       tsort
     regexp_parser (2.13.1)
     rexml (3.4.4)
-    rubocop (1.92.0)
+    rubocop (1.92.2)
       json (>= 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -145,7 +145,7 @@ GEM
     securerandom (0.4.1)
     sorbet (0.6.12753)
       sorbet-static (= 0.6.12753)
-    sorbet-runtime (0.6.13573)
+    sorbet-runtime (0.6.13646)
     sorbet-static (0.6.12753-aarch64-linux)
     sorbet-static (0.6.12753-universal-darwin)
     sorbet-static (0.6.12753-x86_64-linux)
@@ -196,13 +196,13 @@ DEPENDENCIES
   async-websocket
   cgi
   json (< 3)
-  minitest (~> 6.0)
+  minitest (~> 6.1)
   minitest-hooks (>= 1.5.4)
   minitest-mock (~> 5.27)
   minitest-proveit
   openai!
   rake
-  rbi (~> 0.4.3)
+  rbi (~> 0.5.0)
   rbs
   rubocop
   sorbet (< 0.6.12760)
@@ -210,6 +210,7 @@ DEPENDENCIES
   steep
   syntax_tree
   syntax_tree-rbs!
+  traces
   webmock
 
 BUNDLED WITH
