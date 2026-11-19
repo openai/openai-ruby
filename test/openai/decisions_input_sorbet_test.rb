@@ -8,12 +8,12 @@ require_relative "test_helper"
 class OpenAI::Test::DecisionsInputSorbetTest < Minitest::Test
   extend Minitest::Serial
 
-  def test_documented_message_migration_accepts_all_roles
+  def test_decisions_input_accepts_all_message_roles
     root = File.expand_path("../..", __dir__)
     source = File.read(File.join(root, "test/fixtures/rbs_compatibility/decisions_message_migration_valid.rb.txt"))
-    Tempfile.create(["decisions-message-migration", ".rb"]) do |file|
+    Tempfile.create(["decisions-message-constructors", ".rb"]) do |file|
       file.write(source)
-      file.puts("T.assert_type!(messages, T::Array[OpenAI::DecisionInputMessageUnion::Variants])")
+      file.puts("T.assert_type!(messages, T::Array[OpenAI::DecisionInputMessage::Variants])")
       file.flush
       stdout, stderr, status = Open3.capture3(
         {"SRB_SKIP_GEM_RBIS" => "1"},

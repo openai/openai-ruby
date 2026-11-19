@@ -77,9 +77,7 @@ module OpenAI
 
   class DecisionInputJSON = OpenAI::Models::DecisionInputJSON
 
-  class DecisionInputMessage = OpenAI::Models::DecisionInputMessage
-
-  module DecisionInputMessageUnion = OpenAI::Models::DecisionInputMessageUnion
+  module DecisionInputMessage = OpenAI::Models::DecisionInputMessage
 
   module DecisionInputPart = OpenAI::Models::DecisionInputPart
 

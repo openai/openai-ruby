@@ -42,36 +42,6 @@ choice = DelegationToolChoice::Mcp.new(server_label: "docs", name: "search")
 
 A function choice still requires a string `name`. An MCP choice requires a string `server_label`. Omit `name` to leave the key out, pass `name: nil` to send JSON null, or pass a string to select a named tool. Handle `nil` when reading an MCP choice in a returned session. The same field contract applies to MCP entries inside `ToolChoice::LiveAllowedToolsChoiceParam::Tool::Mcp`. Their class name stays the same. In Sorbet the MCP name reader is `T.nilable(String)`. Its RBS record field is `?name: String?`.
 
-## Decisions messages
-
-Update explicit message constructors to the new names. The constructors still
-supply their own `role`.
-
-| Previous constructor | Constructor in `next` |
-| --- | --- |
-| `OpenAI::DecisionInputMessage::User.new(content: "hello")` | `OpenAI::DecisionInputMessage.new(content: "hello")` |
-| `OpenAI::DecisionInputMessage::Developer.new(content: "hello")` | `OpenAI::DecisionInputMessageUnion::Developer.new(content: "hello")` |
-| `OpenAI::DecisionInputMessage::System.new(content: "hello")` | `OpenAI::DecisionInputMessageUnion::System.new(content: "hello")` |
-| `OpenAI::DecisionInputMessage::Assistant.new(content: "hello")` | `OpenAI::DecisionInputMessageUnion::Assistant.new(content: "hello")` |
-
-Assistant content classes move under `DecisionInputMessageUnion::Assistant`.
-
-```ruby
-AssistantMessage = OpenAI::DecisionInputMessageUnion::Assistant
-
-message = AssistantMessage.new(
-  phase: :final_answer,
-  content: [AssistantMessage::Content::Part::OutputText.new(text: "Done")]
-)
-```
-
-For Sorbet, replace `OpenAI::DecisionInputMessage::Variants` with
-`OpenAI::DecisionInputMessageUnion::Variants`. In RBS, replace
-`OpenAI::Models::decision_input_message` with
-`OpenAI::Models::decision_input_message_union` in annotations for all roles.
-Replace `OpenAI::Models::DecisionInputMessage::user` with
-`OpenAI::Models::decision_input_message` in user-message hash annotations.
-
 ## Named graders
 
 Pass a hash of named graders as `graders:` when you construct a `MultiGrader`.
