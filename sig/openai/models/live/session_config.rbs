@@ -152,7 +152,7 @@ module OpenAI
           ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
         }
 
-        type model = String | :"gpt-live-1"
+        type model = String | :"gpt-live-1" | :"gpt-live-1.1"
 
         module Model
           extend OpenAI::Internal::Type::Union
@@ -160,6 +160,7 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Live::SessionConfig::model]
 
           GPT_LIVE_1: :"gpt-live-1"
+          GPT_LIVE_1_1: :"gpt-live-1.1"
         end
 
         type audio =

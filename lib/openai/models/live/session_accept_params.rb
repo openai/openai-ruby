@@ -163,8 +163,9 @@ module OpenAI
 
             variant String
 
-            # The Live model. Required in the session configuration for every transport; do not pass it as a URL query parameter.
             variant const: -> { OpenAI::Models::Live::SessionAcceptParams::Session::Model::GPT_LIVE_1 }
+
+            variant const: -> { OpenAI::Models::Live::SessionAcceptParams::Session::Model::GPT_LIVE_1_1 }
 
             # @!method self.variants
             #   @return [Array(String, Symbol)]
@@ -176,6 +177,7 @@ module OpenAI
             # @!group
 
             GPT_LIVE_1 = :"gpt-live-1"
+            GPT_LIVE_1_1 = :"gpt-live-1.1"
 
             # @!endgroup
           end

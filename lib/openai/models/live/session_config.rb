@@ -138,6 +138,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Live::SessionConfig::Model::GPT_LIVE_1 }
 
+          variant const: -> { OpenAI::Models::Live::SessionConfig::Model::GPT_LIVE_1_1 }
+
           # @!method self.variants
           #   @return [Array(String, Symbol)]
 
@@ -148,6 +150,7 @@ module OpenAI
           # @!group
 
           GPT_LIVE_1 = :"gpt-live-1"
+          GPT_LIVE_1_1 = :"gpt-live-1.1"
 
           # @!endgroup
         end

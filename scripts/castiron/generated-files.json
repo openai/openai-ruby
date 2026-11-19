@@ -4123,7 +4123,7 @@
     },
     "lib/openai/models/live/media_session_config.rb": {
       "mode": "100644",
-      "sha256": "a2fc3611b100851b9d07856f8a0dfa1a4371aa38b956b7178eb6a6bb991b546a"
+      "sha256": "e46ff7a0a540e3d1a4afe27c2f46d8fc290b0897ed37d27b585dfbfa7d03f174"
     },
     "lib/openai/models/live/media_session_fork_config.rb": {
       "mode": "100644",
@@ -4179,7 +4179,7 @@
     },
     "lib/openai/models/live/session_accept_params.rb": {
       "mode": "100644",
-      "sha256": "3a276b8f089e1d88bb4ba536fa86a575383f444963b502dcaceb94f366f533c3"
+      "sha256": "325e8399ca03c3881d1f48bb1d48bf9aadb9e423a6fe12c92beb8a51b9ac01bb"
     },
     "lib/openai/models/live/session_close_event.rb": {
       "mode": "100644",
@@ -4191,7 +4191,7 @@
     },
     "lib/openai/models/live/session_config.rb": {
       "mode": "100644",
-      "sha256": "588129459875df3d96e15ca75e5a3e30a6e27bb0b030f74080eb050dda3fef1e"
+      "sha256": "6a94ff090c5240ef541bd6b2507c9d8ffb3b7baecd9e0ca389df27581e08a646"
     },
     "lib/openai/models/live/session_download_recording_params.rb": {
       "mode": "100644",
@@ -4219,7 +4219,7 @@
     },
     "lib/openai/models/live/session_resource.rb": {
       "mode": "100644",
-      "sha256": "e3d014481fcd4f3498c36802c8174ef64dda551e4fc4df52dcce737da4aef49f"
+      "sha256": "0573c6a6e653b53ed1f7c5b8b8961fa3ab9d8e74956486d532ef90ec14d30d3a"
     },
     "lib/openai/models/live/session_start_event.rb": {
       "mode": "100644",
@@ -10687,7 +10687,7 @@
     },
     "rbi/openai/models/live/media_session_config.rbi": {
       "mode": "100644",
-      "sha256": "67f91056d8caf2b0d135a46b20027fe320f818f2abfd09180b2a2de84551ff67"
+      "sha256": "d43599415b1b2bbb2a82f7b2b4e3af8a2321f217f88b35d634bfbd5957cba8bb"
     },
     "rbi/openai/models/live/media_session_fork_config.rbi": {
       "mode": "100644",
@@ -10743,7 +10743,7 @@
     },
     "rbi/openai/models/live/session_accept_params.rbi": {
       "mode": "100644",
-      "sha256": "c6a9ef052a2c69d8397f0529e09990bd8df5f2d54a0e4cac8703eed0abd9226c"
+      "sha256": "c8f792a7fc9fecf63141041fb5718f99730cd28e327d2d64913572059a90f603"
     },
     "rbi/openai/models/live/session_close_event.rbi": {
       "mode": "100644",
@@ -10755,7 +10755,7 @@
     },
     "rbi/openai/models/live/session_config.rbi": {
       "mode": "100644",
-      "sha256": "081cec29e0fb053a820ab528d22aa153eafefc2f55e8016d1699d7a603a7e855"
+      "sha256": "2d1f5af55f5e10cbe996c965c5804c66674088f45439925e851366be239e269f"
     },
     "rbi/openai/models/live/session_download_recording_params.rbi": {
       "mode": "100644",
@@ -10783,7 +10783,7 @@
     },
     "rbi/openai/models/live/session_resource.rbi": {
       "mode": "100644",
-      "sha256": "ac6b697e61c9bc548bbcfe148b6c6fd8884675b21f0a8104f315dd59ac916aac"
+      "sha256": "a3de5c20af25dfe42175bd280d7ab9585633aee6059db72792d88ae7c8156e16"
     },
     "rbi/openai/models/live/session_start_event.rbi": {
       "mode": "100644",
@@ -17251,7 +17251,7 @@
     },
     "sig/openai/models/live/media_session_config.rbs": {
       "mode": "100644",
-      "sha256": "9a4fd6c8120e21fb653727f2347aa17214ce887c942fcc89b441c2ba49a1646b"
+      "sha256": "ca7c20d945ec3c7d8f74cd51f6b5f6abc96ad72d207509effbae849191b04be9"
     },
     "sig/openai/models/live/media_session_fork_config.rbs": {
       "mode": "100644",
@@ -17307,7 +17307,7 @@
     },
     "sig/openai/models/live/session_accept_params.rbs": {
       "mode": "100644",
-      "sha256": "7c45b4a220efbf6db05623acc66b9b9f90620c634cc9b442a352d046c1c3a3a6"
+      "sha256": "0f227b8325e655b88b837dd732ba2e87b6b26fc6b2e246c647e0f130862020d2"
     },
     "sig/openai/models/live/session_close_event.rbs": {
       "mode": "100644",
@@ -17319,7 +17319,7 @@
     },
     "sig/openai/models/live/session_config.rbs": {
       "mode": "100644",
-      "sha256": "3fb1a76f3a247465d3f3f191cb5d7afd4adcc20701181c71b67f02abfbf3ec0d"
+      "sha256": "77b8dadda7ffc85cf639bdf3b6c26a77bf5d239f4e58510de8703e41ac0bac71"
     },
     "sig/openai/models/live/session_download_recording_params.rbs": {
       "mode": "100644",
@@ -17347,7 +17347,7 @@
     },
     "sig/openai/models/live/session_resource.rbs": {
       "mode": "100644",
-      "sha256": "8d0562abfb8e2158a6b588ce137c0fbd64174f9e4099dd35acbebb70c2187dd2"
+      "sha256": "be555dd7573f1e2312dee35d7941b2413b746a7fdde97dc58945cae8678583f4"
     },
     "sig/openai/models/live/session_start_event.rbs": {
       "mode": "100644",
@@ -20123,7 +20123,7 @@
     },
     "test/openai/resources/live/sessions_test.rb": {
       "mode": "100644",
-      "sha256": "b3f01e2303629ea169d851efe5a51c155a65de4db575ab4db6e9faf0e092f4ac"
+      "sha256": "16d3e22c38aba919ca99c3874746f4eb0c2f9d7affc967c227325d1b7e8aeeaf"
     },
     "test/openai/resources/live/sideband_test.rb": {
       "mode": "100644",
@@ -20131,7 +20131,7 @@
     },
     "test/openai/resources/live_test.rb": {
       "mode": "100644",
-      "sha256": "ce7f22a9f9fbbe83bd1d0b13a01d94704eab372e5757726851701dfeb79194c4"
+      "sha256": "6a847626b0f1f8f3286841473cf93b995bc838e4baa803b586a2ca33551a3e51"
     },
     "test/openai/resources/models_test.rb": {
       "mode": "100644",
