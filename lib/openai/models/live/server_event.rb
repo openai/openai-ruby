@@ -19,6 +19,12 @@ module OpenAI
         # Returned when a Live session update is accepted. Contains the resolved session configuration after the update.
         variant :"session.updated", -> { OpenAI::Live::SessionUpdatedEvent }
 
+        # Sent when speech resumes paused inference and it is ready for audio in a Live WebRTC session. Delivered to the sideband and, when permitted by its event settings, the data channel.
+        variant :"session.resumed", -> { OpenAI::Live::ServerEvent::SessionResumed }
+
+        # Sent when the idle timeout pauses inference in a Live WebRTC session. The WebRTC connection, sideband, and session ID persist. Delivered to the sideband and, when permitted by its event settings, the data channel.
+        variant :"session.paused", -> { OpenAI::Live::ServerEvent::SessionPaused }
+
         # Acknowledges a session.input_audio.mute command. An independent input mute sends silence to the model and preserves sideband audio reflection. Fixture playback does not emit this event.
         variant :"session.input_audio.muted", -> { OpenAI::Live::InputAudioMutedEvent }
 
@@ -96,6 +102,74 @@ module OpenAI
 
         # An asynchronous outbound SIP setup failure. Delivered only to sideband observers.
         variant :"transport.failed", -> { OpenAI::Live::ServerEvent::TransportFailed }
+
+        class SessionResumed < OpenAI::Internal::Type::BaseModel
+          # @!attribute event_id
+          #   The unique ID of the Live server event.
+          #
+          #   @return [String]
+          required :event_id, String
+
+          # @!attribute type
+          #
+          #   @return [Symbol, :"session.resumed"]
+          required :type, const: :"session.resumed"
+
+          # @!attribute client_event_id
+          #   The event_id of the client command associated with this server event, when
+          #   supplied.
+          #
+          #   @return [String, nil]
+          optional :client_event_id, String
+
+          # @!method initialize(event_id:, client_event_id: nil, type: :"session.resumed")
+          #   Sent when speech resumes paused inference and it is ready for audio in a Live
+          #   WebRTC session. Delivered to the sideband and, when permitted by its event
+          #   settings, the data channel.
+          #
+          #   @param event_id [String]
+          #     The unique ID of the Live server event.
+          #
+          #   @param client_event_id [String]
+          #     The event_id of the client command associated with this server event, when
+          #     supplied.
+          #
+          #   @param type [Symbol, :"session.resumed"]
+        end
+
+        class SessionPaused < OpenAI::Internal::Type::BaseModel
+          # @!attribute event_id
+          #   The unique ID of the Live server event.
+          #
+          #   @return [String]
+          required :event_id, String
+
+          # @!attribute type
+          #
+          #   @return [Symbol, :"session.paused"]
+          required :type, const: :"session.paused"
+
+          # @!attribute client_event_id
+          #   The event_id of the client command associated with this server event, when
+          #   supplied.
+          #
+          #   @return [String, nil]
+          optional :client_event_id, String
+
+          # @!method initialize(event_id:, client_event_id: nil, type: :"session.paused")
+          #   Sent when the idle timeout pauses inference in a Live WebRTC session. The WebRTC
+          #   connection, sideband, and session ID persist. Delivered to the sideband and,
+          #   when permitted by its event settings, the data channel.
+          #
+          #   @param event_id [String]
+          #     The unique ID of the Live server event.
+          #
+          #   @param client_event_id [String]
+          #     The event_id of the client command associated with this server event, when
+          #     supplied.
+          #
+          #   @param type [Symbol, :"session.paused"]
+        end
 
         class SessionInputAudioAppend < OpenAI::Internal::Type::BaseModel
           # @!attribute audio
@@ -354,7 +428,7 @@ module OpenAI
         end
 
         # @!method self.variants
-        #   @return [Array(OpenAI::Models::Live::SessionStartedEvent, OpenAI::Models::Live::SessionUpdatedEvent, OpenAI::Models::Live::InputAudioMutedEvent, OpenAI::Models::Live::InputAudioUnmutedEvent, OpenAI::Models::Live::OutputAudioFixturePlayingEvent, OpenAI::Models::Live::OutputAudioFixturePlayedEvent, OpenAI::Models::Live::InstructionsAppendedEvent, OpenAI::Models::Live::ThinkingAppendedEvent, OpenAI::Models::Live::CommentaryAppendedEvent, OpenAI::Models::Live::ServerEvent::SessionInputAudioAppend, OpenAI::Models::Live::OutputAudioDeltaEvent, OpenAI::Models::Live::InputTranscriptDeltaEvent, OpenAI::Models::Live::OutputTranscriptDeltaEvent, OpenAI::Models::Live::DelegationCreatedEvent, OpenAI::Models::Live::DecisionEvent, OpenAI::Models::Live::DecisionItemCreatedEvent, OpenAI::Models::Live::DecisionItemDeletedEvent, OpenAI::Models::Live::ResponseEvent, OpenAI::Models::Live::SessionUsageUpdatedEvent, OpenAI::Models::Live::SessionClosedEvent, OpenAI::Models::Live::ErrorEvent, OpenAI::Models::Live::InfoEvent, OpenAI::Models::Live::ServerEvent::TransportDtmfReceived, OpenAI::Models::Live::ServerEvent::TransportDtmfSend, OpenAI::Models::Live::ServerEvent::TransportDtmfSent, OpenAI::Models::Live::ServerEvent::TransportRinging, OpenAI::Models::Live::ServerEvent::TransportAnswered, OpenAI::Models::Live::ServerEvent::TransportFailed)]
+        #   @return [Array(OpenAI::Models::Live::SessionStartedEvent, OpenAI::Models::Live::SessionUpdatedEvent, OpenAI::Models::Live::ServerEvent::SessionResumed, OpenAI::Models::Live::ServerEvent::SessionPaused, OpenAI::Models::Live::InputAudioMutedEvent, OpenAI::Models::Live::InputAudioUnmutedEvent, OpenAI::Models::Live::OutputAudioFixturePlayingEvent, OpenAI::Models::Live::OutputAudioFixturePlayedEvent, OpenAI::Models::Live::InstructionsAppendedEvent, OpenAI::Models::Live::ThinkingAppendedEvent, OpenAI::Models::Live::CommentaryAppendedEvent, OpenAI::Models::Live::ServerEvent::SessionInputAudioAppend, OpenAI::Models::Live::OutputAudioDeltaEvent, OpenAI::Models::Live::InputTranscriptDeltaEvent, OpenAI::Models::Live::OutputTranscriptDeltaEvent, OpenAI::Models::Live::DelegationCreatedEvent, OpenAI::Models::Live::DecisionEvent, OpenAI::Models::Live::DecisionItemCreatedEvent, OpenAI::Models::Live::DecisionItemDeletedEvent, OpenAI::Models::Live::ResponseEvent, OpenAI::Models::Live::SessionUsageUpdatedEvent, OpenAI::Models::Live::SessionClosedEvent, OpenAI::Models::Live::ErrorEvent, OpenAI::Models::Live::InfoEvent, OpenAI::Models::Live::ServerEvent::TransportDtmfReceived, OpenAI::Models::Live::ServerEvent::TransportDtmfSend, OpenAI::Models::Live::ServerEvent::TransportDtmfSent, OpenAI::Models::Live::ServerEvent::TransportRinging, OpenAI::Models::Live::ServerEvent::TransportAnswered, OpenAI::Models::Live::ServerEvent::TransportFailed)]
       end
     end
   end
