@@ -1,19 +1,50 @@
 module OpenAI
   module Models
     module Live
-      type session_usage = { seconds: Float }
+      type session_usage =
+        { seconds: Float, ?active_seconds: Integer, ?paused_seconds: Integer }
 
       class SessionUsage < OpenAI::Internal::Type::BaseModel
-        # The cumulative Live audio duration in seconds. Do not sum this value across
-        # usage events.
+        # The cumulative billable duration in whole seconds. When present, the active and
+        # paused breakdown adds up to this total.
         attr_accessor seconds: Float
 
-        # @param seconds
-        #   The cumulative Live audio duration in seconds. Do not sum this value across
-        #   usage events.
-        def initialize: (seconds: Float) -> void
+        # The remaining billable seconds attributed to active audio and any unused prepaid
+        # duration.
+        attr_reader active_seconds: Integer?
 
-        def to_hash: -> { seconds: Float }
+        # The remaining billable seconds attributed to active audio and any unused prepaid
+        # duration.
+        def active_seconds=: (Integer) -> Integer
+
+        # Billable time attributed to paused inference at the configured rate, rounded
+        # down to whole seconds.
+        attr_reader paused_seconds: Integer?
+
+        # Billable time attributed to paused inference at the configured rate, rounded
+        # down to whole seconds.
+        def paused_seconds=: (Integer) -> Integer
+
+        # @param seconds
+        #   The cumulative billable duration in whole seconds. When present, the active and
+        #   paused breakdown adds up to this total.
+        # @param active_seconds
+        #   The remaining billable seconds attributed to active audio and any unused prepaid
+        #   duration.
+        # @param paused_seconds
+        #   Billable time attributed to paused inference at the configured rate, rounded
+        #   down to whole seconds.
+        def initialize: (
+          seconds: Float,
+          ?active_seconds: Integer,
+          ?paused_seconds: Integer
+        ) -> void
+
+        def to_hash: -> {
+          seconds: Float,
+          ?active_seconds: Integer,
+          ?paused_seconds: Integer
+        }
       end
     end
   end
