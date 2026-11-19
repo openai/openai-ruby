@@ -21,19 +21,13 @@ class OpenAI::Test::DecisionMessageConstructorTest < Minitest::Test
     super
   end
 
-  def test_previous_role_names_are_removed
-    %i[User Developer System Assistant].each do |role|
-      refute(OpenAI::DecisionInputMessage.const_defined?(role, false))
-    end
-  end
-
   def test_configured_and_local_constructors_preserve_request_content
     constructors = [
-      [OpenAI::DecisionInputMessage, "user"],
+      [OpenAI::DecisionInputMessage::User, "user"],
       [OpenAI::DecisionCreateParams::Input::UnionMember1::DecisionInputUserMessage, "user"],
-      [OpenAI::DecisionInputMessageUnion::Developer, "developer"],
-      [OpenAI::DecisionInputMessageUnion::System, "system"],
-      [OpenAI::DecisionInputMessageUnion::Assistant, "assistant"]
+      [OpenAI::DecisionInputMessage::Developer, "developer"],
+      [OpenAI::DecisionInputMessage::System, "system"],
+      [OpenAI::DecisionInputMessage::Assistant, "assistant"]
     ]
     contents = [
       "synthetic text",

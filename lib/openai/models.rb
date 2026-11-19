@@ -127,8 +127,6 @@ module OpenAI
 
   DecisionInputMessage = OpenAI::Models::DecisionInputMessage
 
-  DecisionInputMessageUnion = OpenAI::Models::DecisionInputMessageUnion
-
   DecisionInputPart = OpenAI::Models::DecisionInputPart
 
   DecisionInputText = OpenAI::Models::DecisionInputText
