@@ -1,6 +1,6 @@
-# Ruby next migration
+# Ruby SDK 1.0 migration guide
 
-## Compaction output in the next major
+## Compaction output
 
 GA and beta compaction output now uses the broader `ResponseItem` union. A compacted history may contain retained user, system or developer messages as well as output items and compaction records. Ordinary Responses output types are unchanged.
 
@@ -15,7 +15,7 @@ compacted = client.responses.compact(model: model, input: history)
 response = client.responses.create(model: model, input: compacted.deep_to_h.fetch(:output))
 ```
 
-The same pattern applies to `client.beta.responses`. Treat unknown future item types conservatively and retain their fields when forwarding the history. This change does not publish a new package or change the server's wire format.
+The same pattern applies to `client.beta.responses`. Treat unknown future item types conservatively and retain their fields when forwarding the history. The wire format is compatible with both SDK versions.
 
 ## Live Responses delegation tool choices
 
