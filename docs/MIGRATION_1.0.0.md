@@ -15,7 +15,7 @@ compacted = client.responses.compact(model: model, input: history)
 response = client.responses.create(model: model, input: compacted.deep_to_h.fetch(:output))
 ```
 
-The same pattern applies to `client.beta.responses`. Treat unknown future item types conservatively and retain their fields when forwarding the history. The wire format is compatible with both SDK versions.
+The same pattern applies to `client.beta.responses`. Treat unknown future item types conservatively and retain their fields when forwarding the history. The server uses the same wire format for both SDK versions.
 
 ## Live Responses delegation tool choices
 
