@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.130.0](https://github.com/openai/openai-ruby/compare/v0.129.0...v0.130.0) (2026-11-19)
+
+
+### Features
+
+* **api:** support Live WebRTC standby ([#1090](https://github.com/openai/openai-ruby/issues/1090)) ([ac0997c](https://github.com/openai/openai-ruby/commit/ac0997ca949572dbc6840ef1be4a0e989f4a5b13))
+
 ## [0.129.0](https://github.com/openai/openai-ruby/compare/v0.128.1...v0.129.0) (2026-11-19)
 
 
