@@ -91,7 +91,8 @@ module OpenAI
       sig { returns(T.nilable(Integer)) }
       attr_accessor :max_tokens
 
-      # How many completions to generate for each prompt.
+      # How many completions to generate for each prompt. Omit `n` to generate one
+      # completion per prompt.
       #
       # **Note:** Because this parameter generates many completions, it can quickly
       # consume your token quota. Use carefully and ensure that you have reasonable
@@ -272,7 +273,8 @@ module OpenAI
         # for counting tokens.
         max_tokens: nil,
 
-        # How many completions to generate for each prompt.
+        # How many completions to generate for each prompt. Omit `n` to generate one
+        # completion per prompt.
         #
         # **Note:** Because this parameter generates many completions, it can quickly
         # consume your token quota. Use carefully and ensure that you have reasonable
