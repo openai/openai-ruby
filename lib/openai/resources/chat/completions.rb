@@ -138,9 +138,10 @@ module OpenAI
         #   Configuration for running moderation on the request input and generated output.
         #
         # @param n [Integer, nil]
-        #   How many chat completion choices to generate for each input message. Note that
-        #   you will be charged based on the number of generated tokens across all of the
-        #   choices. Keep `n` as `1` to minimize costs.
+        #   How many chat completion choices to generate for each input message. Omit `n` to
+        #   generate one choice. Newer models reject an explicit `n`, even `n=1`. When
+        #   requesting multiple choices, you are billed for generated tokens across all
+        #   choices.
         #
         # @param parallel_tool_calls [Boolean]
         #   Whether to enable
@@ -475,9 +476,10 @@ module OpenAI
         #   Configuration for running moderation on the request input and generated output.
         #
         # @param n [Integer, nil]
-        #   How many chat completion choices to generate for each input message. Note that
-        #   you will be charged based on the number of generated tokens across all of the
-        #   choices. Keep `n` as `1` to minimize costs.
+        #   How many chat completion choices to generate for each input message. Omit `n` to
+        #   generate one choice. Newer models reject an explicit `n`, even `n=1`. When
+        #   requesting multiple choices, you are billed for generated tokens across all
+        #   choices.
         #
         # @param parallel_tool_calls [Boolean]
         #   Whether to enable

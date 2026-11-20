@@ -83,7 +83,8 @@ module OpenAI
       #   for counting tokens.
       #
       # @param n [Integer, nil]
-      #   How many completions to generate for each prompt.
+      #   How many completions to generate for each prompt. Omit `n` to generate one
+      #   completion per prompt.
       #
       #   **Note:** Because this parameter generates many completions, it can quickly
       #   consume your token quota. Use carefully and ensure that you have reasonable
@@ -237,7 +238,8 @@ module OpenAI
       #   for counting tokens.
       #
       # @param n [Integer, nil]
-      #   How many completions to generate for each prompt.
+      #   How many completions to generate for each prompt. Omit `n` to generate one
+      #   completion per prompt.
       #
       #   **Note:** Because this parameter generates many completions, it can quickly
       #   consume your token quota. Use carefully and ensure that you have reasonable
