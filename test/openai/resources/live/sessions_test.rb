@@ -4,7 +4,7 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Live::SessionsTest < OpenAI::Test::ResourceTest
   def test_accept_required_params
-    response = @openai.live.sessions.accept("session_id", session: {model: "gpt-live-1", type: :live})
+    response = @openai.live.sessions.accept("session_id", session: {model: "gpt-live-1.1", type: :live})
 
     assert_pattern do
       response => nil

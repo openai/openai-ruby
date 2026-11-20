@@ -33,6 +33,14 @@ module OpenAI
         #   @return [OpenAI::Models::Live::ClientDelegation, OpenAI::Models::Live::MediaSessionConfig::Delegation::Responses, OpenAI::Models::Live::MediaSessionConfig::Delegation::Decisions, nil]
         optional :delegation, union: -> { OpenAI::Live::MediaSessionConfig::Delegation }, nil?: true
 
+        # @!attribute idle_timeout_s
+        #   Whole seconds of inactivity after which a Live WebRTC session with a speech wake
+        #   policy pauses inference. The connection and conversation history are retained.
+        #   Omit to keep inference active until the session ends.
+        #
+        #   @return [Integer, nil]
+        optional :idle_timeout_s, Integer
+
         # @!attribute input
         #   Ordered text-only history supplied before startup. Supports developer, user, and
         #   assistant messages with one text part each; at most 128 messages and a
@@ -76,7 +84,14 @@ module OpenAI
         #   @return [Array<OpenAI::Models::Live::DecisionTrigger>, nil]
         optional :triggers, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Live::DecisionTrigger] }
 
-        # @!method initialize(model:, audio: nil, client: nil, delegation: nil, input: nil, instructions: nil, safety_identifier: nil, store: nil, triggers: nil)
+        # @!attribute wake_policy
+        #   Inference starts when the Live WebRTC session connects. After an idle pause,
+        #   microphone speech resumes inference.
+        #
+        #   @return [OpenAI::Models::Live::MediaSessionConfig::WakePolicy, nil]
+        optional :wake_policy, -> { OpenAI::Live::MediaSessionConfig::WakePolicy }
+
+        # @!method initialize(model:, audio: nil, client: nil, delegation: nil, idle_timeout_s: nil, input: nil, instructions: nil, safety_identifier: nil, store: nil, triggers: nil, wake_policy: nil)
         #   Startup configuration for a Live media session. Follow the
         #   [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting)
         #   when writing frontend instructions and the backend prompt under
@@ -98,6 +113,11 @@ module OpenAI
         #     Who handles tasks delegated by the Live model. Omitted or null selects your
         #     application; use `responses` or `decisions` to delegate to the corresponding
         #     API.
+        #
+        #   @param idle_timeout_s [Integer]
+        #     Whole seconds of inactivity after which a Live WebRTC session with a speech wake
+        #     policy pauses inference. The connection and conversation history are retained.
+        #     Omit to keep inference active until the session ends.
         #
         #   @param input [Array<OpenAI::Models::Live::InitialItem::Developer, OpenAI::Models::Live::InitialItem::User, OpenAI::Models::Live::InitialItem::Assistant>]
         #     Ordered text-only history supplied before startup. Supports developer, user, and
@@ -126,6 +146,10 @@ module OpenAI
         #     independently of delegation. On update, omit triggers to keep the current
         #     configuration, send a list to replace it, or send an empty list to disable
         #     triggers.
+        #
+        #   @param wake_policy [OpenAI::Models::Live::MediaSessionConfig::WakePolicy]
+        #     Inference starts when the Live WebRTC session connects. After an idle pause,
+        #     microphone speech resumes inference.
 
         # The Live model. Required in the session configuration for every transport; do
         # not pass it as a URL query parameter.
@@ -138,6 +162,8 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Live::MediaSessionConfig::Model::GPT_LIVE_1 }
 
+          variant const: -> { OpenAI::Models::Live::MediaSessionConfig::Model::GPT_LIVE_1_1 }
+
           # @!method self.variants
           #   @return [Array(String, Symbol)]
 
@@ -148,6 +174,7 @@ module OpenAI
           # @!group
 
           GPT_LIVE_1 = :"gpt-live-1"
+          GPT_LIVE_1_1 = :"gpt-live-1.1"
 
           # @!endgroup
         end
@@ -304,6 +331,35 @@ module OpenAI
 
           # @!method self.variants
           #   @return [Array(OpenAI::Models::Live::ClientDelegation, OpenAI::Models::Live::MediaSessionConfig::Delegation::Responses, OpenAI::Models::Live::MediaSessionConfig::Delegation::Decisions)]
+        end
+
+        # @see OpenAI::Models::Live::MediaSessionConfig#wake_policy
+        class WakePolicy < OpenAI::Internal::Type::BaseModel
+          # @!attribute type
+          #   The wake policy type, always `speech`.
+          #
+          #   @return [Symbol, :speech]
+          required :type, const: :speech
+
+          # @!attribute vad_threshold
+          #   The speech detection threshold for resuming paused inference, from 0 to 1
+          #   inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          #   This setting is independent of active turn detection.
+          #
+          #   @return [Float, nil]
+          optional :vad_threshold, Float
+
+          # @!method initialize(vad_threshold: nil, type: :speech)
+          #   Inference starts when the Live WebRTC session connects. After an idle pause,
+          #   microphone speech resumes inference.
+          #
+          #   @param vad_threshold [Float]
+          #     The speech detection threshold for resuming paused inference, from 0 to 1
+          #     inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          #     This setting is independent of active turn detection.
+          #
+          #   @param type [Symbol, :speech]
+          #     The wake policy type, always `speech`.
         end
       end
     end
