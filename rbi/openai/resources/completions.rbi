@@ -98,7 +98,8 @@ module OpenAI
         # [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
         # for counting tokens.
         max_tokens: nil,
-        # How many completions to generate for each prompt.
+        # How many completions to generate for each prompt. Omit `n` to generate one
+        # completion per prompt.
         #
         # **Note:** Because this parameter generates many completions, it can quickly
         # consume your token quota. Use carefully and ensure that you have reasonable
@@ -242,7 +243,8 @@ module OpenAI
         # [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken)
         # for counting tokens.
         max_tokens: nil,
-        # How many completions to generate for each prompt.
+        # How many completions to generate for each prompt. Omit `n` to generate one
+        # completion per prompt.
         #
         # **Note:** Because this parameter generates many completions, it can quickly
         # consume your token quota. Use carefully and ensure that you have reasonable
