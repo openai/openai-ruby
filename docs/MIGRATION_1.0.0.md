@@ -65,10 +65,9 @@ grader.graders.fetch(:exact)
 ## Image sizes
 
 Read image response sizes and generation/edit stream event sizes as strings.
-Use `image.size == "1024x1024"` for a string comparison or
-`image.size&.to_s == "1024x1024"` to support both SDK versions. Existing
-dimension constants and event `Size::AUTO` are strings. `Size.values` returns
-an array of strings. Custom sizes remain valid.
+Use `image.size == "1024x1024"` to compare the size. Existing dimension constants
+and event `Size::AUTO` are strings. `Size.values` returns an array of strings.
+Custom sizes remain valid.
 
 If you assign a symbol, the accessor returns its string form. `to_hash` retains
 the supplied symbol and JSON serialization sends a string.
