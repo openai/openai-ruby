@@ -7,11 +7,13 @@ module OpenAI
           ?audio: OpenAI::Live::MediaSessionConfig::Audio,
           ?client: OpenAI::Live::ClientConfig,
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
+          ?idle_timeout_s: Integer,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
           ?safety_identifier: String?,
           ?store: bool,
-          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger],
+          ?wake_policy: OpenAI::Live::MediaSessionConfig::WakePolicy
         }
 
       class MediaSessionConfig < OpenAI::Internal::Type::BaseModel
@@ -41,6 +43,16 @@ module OpenAI
         # application; use `responses` or `decisions` to delegate to the corresponding
         # API.
         attr_accessor delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?
+
+        # Whole seconds of inactivity after which a Live WebRTC session with a speech wake
+        # policy pauses inference. The connection and conversation history are retained.
+        # Omit to keep inference active until the session ends.
+        attr_reader idle_timeout_s: Integer?
+
+        # Whole seconds of inactivity after which a Live WebRTC session with a speech wake
+        # policy pauses inference. The connection and conversation history are retained.
+        # Omit to keep inference active until the session ends.
+        def idle_timeout_s=: (Integer) -> Integer
 
         # Ordered text-only history supplied before startup. Supports developer, user, and
         # assistant messages with one text part each; at most 128 messages and a
@@ -89,6 +101,16 @@ module OpenAI
           ::Array[OpenAI::Live::DecisionTrigger]
         ) -> ::Array[OpenAI::Live::DecisionTrigger]
 
+        # Inference starts when the Live WebRTC session connects. After an idle pause,
+        # microphone speech resumes inference.
+        attr_reader wake_policy: OpenAI::Live::MediaSessionConfig::WakePolicy?
+
+        # Inference starts when the Live WebRTC session connects. After an idle pause,
+        # microphone speech resumes inference.
+        def wake_policy=: (
+          OpenAI::Live::MediaSessionConfig::WakePolicy
+        ) -> OpenAI::Live::MediaSessionConfig::WakePolicy
+
         # @param model
         #   The Live model. Required in the session configuration for every transport; do
         #   not pass it as a URL query parameter.
@@ -102,6 +124,10 @@ module OpenAI
         #   Who handles tasks delegated by the Live model. Omitted or null selects your
         #   application; use `responses` or `decisions` to delegate to the corresponding
         #   API.
+        # @param idle_timeout_s
+        #   Whole seconds of inactivity after which a Live WebRTC session with a speech wake
+        #   policy pauses inference. The connection and conversation history are retained.
+        #   Omit to keep inference active until the session ends.
         # @param input
         #   Ordered text-only history supplied before startup. Supports developer, user, and
         #   assistant messages with one text part each; at most 128 messages and a
@@ -125,16 +151,21 @@ module OpenAI
         #   independently of delegation. On update, omit triggers to keep the current
         #   configuration, send a list to replace it, or send an empty list to disable
         #   triggers.
+        # @param wake_policy
+        #   Inference starts when the Live WebRTC session connects. After an idle pause,
+        #   microphone speech resumes inference.
         def initialize: (
           model: OpenAI::Models::Live::MediaSessionConfig::model,
           ?audio: OpenAI::Live::MediaSessionConfig::Audio,
           ?client: OpenAI::Live::ClientConfig,
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
+          ?idle_timeout_s: Integer,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
           ?safety_identifier: String?,
           ?store: bool,
-          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger],
+          ?wake_policy: OpenAI::Live::MediaSessionConfig::WakePolicy
         ) -> void
 
         def to_hash: -> {
@@ -142,14 +173,16 @@ module OpenAI
           ?audio: OpenAI::Live::MediaSessionConfig::Audio,
           ?client: OpenAI::Live::ClientConfig,
           ?delegation: OpenAI::Models::Live::MediaSessionConfig::delegation?,
+          ?idle_timeout_s: Integer,
           ?input: ::Array[OpenAI::Models::Live::initial_item],
           ?instructions: String?,
           ?safety_identifier: String?,
           ?store: bool,
-          ?triggers: ::Array[OpenAI::Live::DecisionTrigger]
+          ?triggers: ::Array[OpenAI::Live::DecisionTrigger],
+          ?wake_policy: OpenAI::Live::MediaSessionConfig::WakePolicy
         }
 
-        type model = String | :"gpt-live-1"
+        type model = String | :"gpt-live-1" | :"gpt-live-1.1"
 
         module Model
           extend OpenAI::Internal::Type::Union
@@ -157,6 +190,7 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Live::MediaSessionConfig::model]
 
           GPT_LIVE_1: :"gpt-live-1"
+          GPT_LIVE_1_1: :"gpt-live-1.1"
         end
 
         type audio =
@@ -334,6 +368,33 @@ module OpenAI
           end
 
           def self?.variants: -> ::Array[OpenAI::Models::Live::MediaSessionConfig::delegation]
+        end
+
+        type wake_policy = { ?type: :speech, ?vad_threshold: Float }
+
+        class WakePolicy < OpenAI::Internal::Type::BaseModel
+          # The wake policy type, always `speech`.
+          attr_accessor type: :speech
+
+          # The speech detection threshold for resuming paused inference, from 0 to 1
+          # inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          # This setting is independent of active turn detection.
+          attr_reader vad_threshold: Float?
+
+          # The speech detection threshold for resuming paused inference, from 0 to 1
+          # inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          # This setting is independent of active turn detection.
+          def vad_threshold=: (Float) -> Float
+
+          # @param vad_threshold
+          #   The speech detection threshold for resuming paused inference, from 0 to 1
+          #   inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          #   This setting is independent of active turn detection.
+          # @param type
+          #   The wake policy type, always `speech`.
+          def initialize: (?vad_threshold: Float, ?type: :speech) -> void
+
+          def to_hash: -> { ?type: :speech, ?vad_threshold: Float }
         end
       end
     end

@@ -22,7 +22,7 @@ jobs:
           persist-credentials: false
           ref: ${{ github.sha }}
       - name: Set up Ruby
-        uses: ruby/setup-ruby@20eb24b0d509e2b9ed9b6d42ddfeb992915e0564 # v1
+        uses: ruby/setup-ruby@be3c7df29b3349ec6bcfc6b4792f1cf9f5237d18 # v1
         with:
           ruby-version: "4.0"
           bundler-cache: true

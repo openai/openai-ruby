@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.130.0](https://github.com/openai/openai-ruby/compare/v0.129.0...v0.130.0) (2026-11-19)
+
+
+### Features
+
+* **api:** support Live WebRTC standby ([#1090](https://github.com/openai/openai-ruby/issues/1090)) ([ac0997c](https://github.com/openai/openai-ruby/commit/ac0997ca949572dbc6840ef1be4a0e989f4a5b13))
+
+## [0.129.0](https://github.com/openai/openai-ruby/compare/v0.128.1...v0.129.0) (2026-11-19)
+
+
+### Features
+
+* **api:** add gpt-live-1.1 to Live model choices ([#1089](https://github.com/openai/openai-ruby/issues/1089)) ([b54cfb3](https://github.com/openai/openai-ruby/commit/b54cfb3d8d272121012e29955e25ebf044f88545))
+
+
+### Chores
+
+* **deps:** bump actions/create-github-app-token from 3.3.0 to 3.4.0 ([#1086](https://github.com/openai/openai-ruby/issues/1086)) ([0692e5e](https://github.com/openai/openai-ruby/commit/0692e5e2a41d953b0c4af3cf7b690335660aff9b))
+* **deps:** bump ruby/setup-ruby from 1.341.0 to 1.342.0 ([#1085](https://github.com/openai/openai-ruby/issues/1085)) ([241a4fe](https://github.com/openai/openai-ruby/commit/241a4fe8eb1eaf30661543f4616dba84c2905030))
+
 ## [0.128.1](https://github.com/openai/openai-ruby/compare/v0.128.0...v0.128.1) (2026-11-18)
 
 

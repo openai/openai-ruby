@@ -36,6 +36,13 @@ jobs:
           - javascript-typescript
           - python
           - ruby
+        # The next branch still requires the Python check by name.
+        exclude: >-
+          ${{ fromJSON(
+            (github.base_ref == 'next' || github.ref == 'refs/heads/next' ||
+             github.event.merge_group.base_ref == 'refs/heads/next') &&
+            '[]' || '[{"language":"python"}]'
+          ) }}
 
     steps:
       - name: Check out repository

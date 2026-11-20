@@ -272,6 +272,7 @@ module OpenAI
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           GPT_LIVE_1 = T.let(:"gpt-live-1", OpenAI::Live::SessionResource::Model::TaggedSymbol)
+          GPT_LIVE_1_1 = T.let(:"gpt-live-1.1", OpenAI::Live::SessionResource::Model::TaggedSymbol)
 
         end
 

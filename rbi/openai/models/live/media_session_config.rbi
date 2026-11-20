@@ -51,6 +51,15 @@ module OpenAI
         }
         attr_accessor :delegation
 
+        # Whole seconds of inactivity after which a Live WebRTC session with a speech wake
+        # policy pauses inference. The connection and conversation history are retained.
+        # Omit to keep inference active until the session ends.
+        sig { returns(T.nilable(Integer)) }
+        attr_reader :idle_timeout_s
+
+        sig { params(idle_timeout_s: Integer).void }
+        attr_writer :idle_timeout_s
+
         # Ordered text-only history supplied before startup. Supports developer, user, and
         # assistant messages with one text part each; at most 128 messages and a
         # configured rendered-token limit (8,192 by default).
@@ -116,6 +125,14 @@ module OpenAI
         sig { params(triggers: T::Array[OpenAI::Live::DecisionTrigger::OrHash]).void }
         attr_writer :triggers
 
+        # Inference starts when the Live WebRTC session connects. After an idle pause,
+        # microphone speech resumes inference.
+        sig { returns(T.nilable(OpenAI::Live::MediaSessionConfig::WakePolicy)) }
+        attr_reader :wake_policy
+
+        sig { params(wake_policy: OpenAI::Live::MediaSessionConfig::WakePolicy::OrHash).void }
+        attr_writer :wake_policy
+
         # Startup configuration for a Live media session. Follow the
         # [Live prompting guide](https://developers.openai.com/api/docs/guides/live-prompting)
         # when writing frontend instructions and the backend prompt under
@@ -137,6 +154,8 @@ module OpenAI
               )
             ),
 
+            idle_timeout_s: Integer,
+
             input: T::Array[
               T.any(
                 OpenAI::Live::InitialItem::Developer::OrHash,
@@ -151,7 +170,9 @@ module OpenAI
 
             store: T::Boolean,
 
-            triggers: T::Array[OpenAI::Live::DecisionTrigger::OrHash]
+            triggers: T::Array[OpenAI::Live::DecisionTrigger::OrHash],
+
+            wake_policy: OpenAI::Live::MediaSessionConfig::WakePolicy::OrHash
           )
             .returns(T.attached_class)
         end
@@ -173,6 +194,11 @@ module OpenAI
           # application; use `responses` or `decisions` to delegate to the corresponding
           # API.
           delegation: nil,
+
+          # Whole seconds of inactivity after which a Live WebRTC session with a speech wake
+          # policy pauses inference. The connection and conversation history are retained.
+          # Omit to keep inference active until the session ends.
+          idle_timeout_s: nil,
 
           # Ordered text-only history supplied before startup. Supports developer, user, and
           # assistant messages with one text part each; at most 128 messages and a
@@ -200,8 +226,12 @@ module OpenAI
           # independently of delegation. On update, omit triggers to keep the current
           # configuration, send a list to replace it, or send an empty list to disable
           # triggers.
+          triggers: nil,
 
-          triggers: nil
+          # Inference starts when the Live WebRTC session connects. After an idle pause,
+          # microphone speech resumes inference.
+
+          wake_policy: nil
         )
         end
 
@@ -218,6 +248,7 @@ module OpenAI
                   OpenAI::Live::MediaSessionConfig::Delegation::Decisions
                 )
               ),
+              idle_timeout_s: Integer,
               input: T::Array[
                 T.any(
                   OpenAI::Live::InitialItem::Developer,
@@ -228,7 +259,8 @@ module OpenAI
               instructions: T.nilable(String),
               safety_identifier: T.nilable(String),
               store: T::Boolean,
-              triggers: T::Array[OpenAI::Live::DecisionTrigger]
+              triggers: T::Array[OpenAI::Live::DecisionTrigger],
+              wake_policy: OpenAI::Live::MediaSessionConfig::WakePolicy
             }
           )
         end
@@ -253,6 +285,7 @@ module OpenAI
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
           GPT_LIVE_1 = T.let(:"gpt-live-1", OpenAI::Live::MediaSessionConfig::Model::TaggedSymbol)
+          GPT_LIVE_1_1 = T.let(:"gpt-live-1.1", OpenAI::Live::MediaSessionConfig::Model::TaggedSymbol)
 
         end
 
@@ -513,6 +546,61 @@ module OpenAI
 
           sig { override.returns(T::Array[OpenAI::Live::MediaSessionConfig::Delegation::Variants]) }
           def self.variants
+          end
+
+        end
+
+        class WakePolicy < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Live::MediaSessionConfig::WakePolicy,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The wake policy type, always `speech`.
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The speech detection threshold for resuming paused inference, from 0 to 1
+          # inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          # This setting is independent of active turn detection.
+          sig { returns(T.nilable(Float)) }
+          attr_reader :vad_threshold
+
+          sig { params(vad_threshold: Float).void }
+          attr_writer :vad_threshold
+
+          # Inference starts when the Live WebRTC session connects. After an idle pause,
+          # microphone speech resumes inference.
+          sig do
+            params(
+
+              vad_threshold: Float,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The speech detection threshold for resuming paused inference, from 0 to 1
+            # inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+            # This setting is independent of active turn detection.
+            vad_threshold: nil,
+
+            # The wake policy type, always `speech`.
+
+            type: :speech
+          )
+          end
+
+          sig do
+            override.returns(
+              {type: Symbol, vad_threshold: Float}
+            )
+          end
+          def to_hash
           end
 
         end

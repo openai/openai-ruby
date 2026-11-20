@@ -17,6 +17,8 @@ module OpenAI
           T.any(
             OpenAI::Live::SessionStartedEvent,
             OpenAI::Live::SessionUpdatedEvent,
+            OpenAI::Live::ForkServerEvent::SessionResumed,
+            OpenAI::Live::ForkServerEvent::SessionPaused,
             OpenAI::Live::InputAudioMutedEvent,
             OpenAI::Live::InputAudioUnmutedEvent,
             OpenAI::Live::OutputAudioFixturePlayingEvent,
@@ -44,6 +46,126 @@ module OpenAI
             OpenAI::Live::ForkServerEvent::TransportAnswered,
             OpenAI::Live::ForkServerEvent::TransportFailed
           )
+        end
+
+        class SessionResumed < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Live::ForkServerEvent::SessionResumed,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The unique ID of the Live server event.
+          sig { returns(String) }
+          attr_accessor :event_id
+
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The event_id of the client command associated with this server event, when
+          # supplied.
+          sig { returns(T.nilable(String)) }
+          attr_reader :client_event_id
+
+          sig { params(client_event_id: String).void }
+          attr_writer :client_event_id
+
+          # Sent when speech resumes paused inference and it is ready for audio in a Live
+          # WebRTC session. Delivered to the sideband and, when permitted by its event
+          # settings, the data channel.
+          sig do
+            params(
+
+              event_id: String,
+
+              client_event_id: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The unique ID of the Live server event.
+            event_id:,
+
+            # The event_id of the client command associated with this server event, when
+            # supplied.
+            client_event_id: nil,
+
+            type: :"session.resumed"
+          )
+          end
+
+          sig do
+            override.returns(
+              {event_id: String, type: Symbol, client_event_id: T.nilable(String)}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
+        class SessionPaused < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Live::ForkServerEvent::SessionPaused,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # The unique ID of the Live server event.
+          sig { returns(String) }
+          attr_accessor :event_id
+
+          sig { returns(Symbol) }
+          attr_accessor :type
+
+          # The event_id of the client command associated with this server event, when
+          # supplied.
+          sig { returns(T.nilable(String)) }
+          attr_reader :client_event_id
+
+          sig { params(client_event_id: String).void }
+          attr_writer :client_event_id
+
+          # Sent when the idle timeout pauses inference in a Live WebRTC session. The WebRTC
+          # connection, sideband, and session ID persist. Delivered to the sideband and,
+          # when permitted by its event settings, the data channel.
+          sig do
+            params(
+
+              event_id: String,
+
+              client_event_id: String,
+
+              type: Symbol
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # The unique ID of the Live server event.
+            event_id:,
+
+            # The event_id of the client command associated with this server event, when
+            # supplied.
+            client_event_id: nil,
+
+            type: :"session.paused"
+          )
+          end
+
+          sig do
+            override.returns(
+              {event_id: String, type: Symbol, client_event_id: T.nilable(String)}
+            )
+          end
+          def to_hash
+          end
+
         end
 
         class SessionInputAudioAppend < OpenAI::Internal::Type::BaseModel
