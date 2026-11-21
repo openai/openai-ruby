@@ -34,7 +34,10 @@ module OpenAI
 
       # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       sig { returns(OpenAI::ImageGenCompletedEvent::Size::Variants) }
-      attr_accessor :size
+      attr_reader :size
+
+      sig { params(size: T.any(String, OpenAI::ImageGenCompletedEvent::Size::OrSymbol)).void }
+      attr_writer :size
 
       # The type of the event. Always `image_generation.completed`.
       sig { returns(Symbol) }
@@ -121,7 +124,7 @@ module OpenAI
             created_at: Integer,
             output_format: OpenAI::ImageGenCompletedEvent::OutputFormat::TaggedSymbol,
             quality: OpenAI::ImageGenCompletedEvent::Quality::TaggedSymbol,
-            size: OpenAI::ImageGenCompletedEvent::Size::Variants,
+            size: T.any(String, OpenAI::ImageGenCompletedEvent::Size::OrSymbol),
             type: Symbol,
             usage: OpenAI::ImageGenCompletedEvent::Usage,
             safety_identifier: T.nilable(String)
@@ -186,7 +189,7 @@ module OpenAI
       module Size
         extend OpenAI::Internal::Type::Union
 
-        Variants = T.type_alias { T.any(String, OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol) }
+        Variants = T.type_alias { String }
 
         sig { override.returns(T::Array[OpenAI::ImageGenCompletedEvent::Size::Variants]) }
         def self.variants
@@ -198,12 +201,12 @@ module OpenAI
 
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
-        SIZE_1024X1536 = T.let(:"1024x1536", OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
-        SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
-        AUTO = T.let(:auto, OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol)
+        SIZE_1024X1024 = T.let("1024x1024", String)
+        SIZE_1024X1536 = T.let("1024x1536", String)
+        SIZE_1536X1024 = T.let("1536x1024", String)
+        AUTO = T.let("auto", String)
 
-        sig { returns(T::Array[OpenAI::ImageGenCompletedEvent::Size::TaggedSymbol]) }
+        sig { returns(T::Array[String]) }
         def self.values
         end
 

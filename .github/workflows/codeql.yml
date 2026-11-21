@@ -34,7 +34,15 @@ jobs:
         language:
           - actions
           - javascript-typescript
+          - python
           - ruby
+        # The next branch still requires the Python check by name.
+        exclude: >-
+          ${{ fromJSON(
+            (github.base_ref == 'next' || github.ref == 'refs/heads/next' ||
+             github.event.merge_group.base_ref == 'refs/heads/next') &&
+            '[]' || '[{"language":"python"}]'
+          ) }}
 
     steps:
       - name: Check out repository
@@ -42,13 +50,28 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Check for Python sources
+        id: python-source
+        if: matrix.language == 'python'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "$(git ls-files -- '*.py')" ]]; then
+            echo 'present=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'present=false' >> "$GITHUB_OUTPUT"
+            echo 'No tracked Python sources; Python analysis is not applicable.'
+          fi
+
       - name: Initialize CodeQL
+        if: matrix.language != 'python' || steps.python-source.outputs.present == 'true'
         uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           languages: ${{ matrix.language }}
           build-mode: none
 
       - name: Perform CodeQL analysis
+        if: matrix.language != 'python' || steps.python-source.outputs.present == 'true'
         id: analyze
         uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
@@ -56,6 +79,7 @@ jobs:
           output: ${{ runner.temp }}/codeql-results/${{ matrix.language }}
 
       - name: Reject CodeQL findings
+        if: matrix.language != 'python' || steps.python-source.outputs.present == 'true'
         env:
           CODEQL_LANGUAGE: ${{ matrix.language }}
           SARIF_DIRECTORY: ${{ steps.analyze.outputs.sarif-output }}

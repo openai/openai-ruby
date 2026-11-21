@@ -88,6 +88,19 @@ class OpenAI::Test::BaseModelRawValueContractTest < Minitest::Test
     assert_same(input, params.to_h.fetch(:input))
   end
 
+  def test_copying_params_shares_the_nested_message_hash
+    message = {role: "user", content: "Draft", phase: nil, future_field: "extra"}
+    params = OpenAI::Responses::ResponseCreateParams.new(input: [message], model: "gpt-5.2")
+    copy = OpenAI::Responses::ResponseCreateParams.new(**params)
+
+    assert_same(message, copy.input.fetch(0))
+    message[:content] = "Hello"
+    assert_equal(
+      {"role" => "user", "content" => "Hello", "phase" => nil, "future_field" => "extra"},
+      JSON.parse(copy.to_json).fetch("input").fetch(0)
+    )
+  end
+
   def test_request_dump_observes_mutations_to_shared_nested_values
     input = [{content: "before", role: "user", type: "message"}]
     params = OpenAI::Responses::ResponseCreateParams.new(input: input, model: "gpt-4o")

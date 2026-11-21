@@ -30,7 +30,12 @@ module OpenAI
       attr_accessor quality: OpenAI::Models::ImageGenCompletedEvent::quality
 
       # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
-      attr_accessor size: OpenAI::Models::ImageGenCompletedEvent::size
+      attr_reader size: String
+
+      # The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
+      def size=: (
+        OpenAI::Models::ImageGenCompletedEvent::size
+      ) -> OpenAI::Models::ImageGenCompletedEvent::size
 
       # The type of the event. Always `image_generation.completed`.
       attr_accessor type: :"image_generation.completed"
@@ -135,15 +140,12 @@ module OpenAI
 
         def self?.variants: -> ::Array[OpenAI::Models::ImageGenCompletedEvent::size]
 
-        SIZE_1024X1024: :"1024x1024"
-        SIZE_1024X1536: :"1024x1536"
-        SIZE_1536X1024: :"1536x1024"
-        AUTO: :auto
+        SIZE_1024X1024: "1024x1024"
+        SIZE_1024X1536: "1024x1536"
+        SIZE_1536X1024: "1536x1024"
+        AUTO: "auto"
 
-        def self?.values: -> ::Array[(:"1024x1024"
-        | :"1024x1536"
-        | :"1536x1024"
-        | :auto)]
+        def self?.values: -> ::Array[String]
       end
 
       type usage =

@@ -84,11 +84,6 @@ module OpenAI
 
         module Responses
         end
-
-        module Threads
-          module Runs
-          end
-        end
       end
 
       module Chat
@@ -214,11 +209,6 @@ module OpenAI
 
       module Subagents
         module Turns
-        end
-      end
-
-      module Threads
-        module Runs
         end
       end
 

@@ -1,0 +1,19 @@
+# @type var start_function: OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::function
+start_function = {name: "lookup"}
+# @type var start_mcp: OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::mcp
+start_mcp = {server_label: "docs", name: nil}
+OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Function.new(name: start_function[:name])
+OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Mcp.new(server_label: start_mcp[:server_label], name: start_mcp[:name])
+OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Mcp.new(server_label: "docs")
+OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::Mcp.new(server_label: "docs", name: "lookup")
+OpenAI::Models::Live::ResponsesDelegationConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Mcp.new(server_label: "docs", name: nil)
+
+# @type var update_function: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::function
+update_function = {name: "lookup"}
+# @type var update_mcp: OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::mcp
+update_mcp = {server_label: "docs", name: nil}
+OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::Function.new(name: update_function[:name])
+OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::Mcp.new(server_label: update_mcp[:server_label], name: update_mcp[:name])
+OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::Mcp.new(server_label: "docs")
+OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::Mcp.new(server_label: "docs", name: "lookup")
+OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::LiveAllowedToolsChoiceParam::Tool::Mcp.new(server_label: "docs", name: nil)

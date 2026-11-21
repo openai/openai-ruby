@@ -155,6 +155,10 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
       end
     end
 
+    class UserPrompt < T::Struct
+      const :text, String
+    end
+
     class Participant < T::Struct
       const :display_name, String, name: "displayName"
       const :email, T.nilable(String)
@@ -241,6 +245,20 @@ if ENV.fetch("OPENAI_SORBET_STRUCTURED_OUTPUT_CHILD", "0") == "1"
     def teardown
       WebMock.reset!
       super
+    end
+
+    def test_application_prompt_converts_explicitly_to_a_request_message
+      prompt = UserPrompt.new(text: "Hello")
+      message = OpenAI::Responses::EasyInputMessage.new(role: :user, content: prompt.text)
+      params = OpenAI::Responses::ResponseCreateParams.new(input: [message], model: "gpt-5.2")
+      request = stub_request(:post, "http://localhost/responses")
+        .with(body: {model: "gpt-5.2", input: [{role: "user", content: "Hello"}]})
+        .to_return_json(body: {id: "resp_example", object: "response", output: []})
+
+      assert_same(message, params.input.fetch(0))
+      assert_equal("Hello", message.content)
+      @client.responses.create(**params)
+      assert_requested(request, times: 1)
     end
 
     def test_strict_schema_preserves_nested_types_aliases_nullability_and_enums

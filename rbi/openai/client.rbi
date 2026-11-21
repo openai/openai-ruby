@@ -122,9 +122,6 @@ module OpenAI
     sig { returns(OpenAI::Resources::Skills) }
     attr_reader :skills
 
-    sig { returns(OpenAI::Resources::Videos) }
-    attr_reader :videos
-
     # @api private
     sig do
       override.params(security: T::Hash[Symbol, T::Boolean]).returns(T::Hash[String, String])

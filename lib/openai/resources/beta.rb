@@ -13,14 +13,6 @@ module OpenAI
       # @return [OpenAI::Resources::Beta::ChatKit]
       attr_reader :chatkit
 
-      # Build Assistants that can call models and use tools.
-      # @return [OpenAI::Resources::Beta::Assistants]
-      attr_reader :assistants
-
-      # Build Assistants that can call models and use tools.
-      # @return [OpenAI::Resources::Beta::Threads]
-      attr_reader :threads
-
       # @api private
       #
       # @param client [OpenAI::Client]
@@ -29,8 +21,6 @@ module OpenAI
         @agents = OpenAI::Resources::Beta::Agents.new(client: client)
         @responses = OpenAI::Resources::Beta::Responses.new(client: client)
         @chatkit = OpenAI::Resources::Beta::ChatKit.new(client: client)
-        @assistants = OpenAI::Resources::Beta::Assistants.new(client: client)
-        @threads = OpenAI::Resources::Beta::Threads.new(client: client)
       end
     end
   end

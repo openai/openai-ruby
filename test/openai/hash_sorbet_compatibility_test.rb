@@ -49,6 +49,32 @@ class OpenAI::Test::HashSorbetCompatibilityTest < Minitest::Test
     assert_includes("#{stdout}\n#{stderr}", "argument `id`")
   end
 
+  def test_image_size_reader_and_raw_hash_support_different_operations
+    source = <<~RUBY
+      # typed: strict
+      class ImageSizeConsumer
+        extend T::Sig
+        sig { params(size: T.any(String, Symbol), fields: T.untyped).returns(Integer) }
+        def self.raw_length(size:, **fields)
+          size.to_s.bytesize
+        end
+
+        sig { params(event: OpenAI::ImageGenCompletedEvent).returns(Integer) }
+        def self.length(event)
+          event.size = :auto
+          event.size.bytesize + raw_length(**event.to_hash)
+        end
+      end
+    RUBY
+    stdout, stderr, status = typecheck(source)
+    assert_predicate(status, :success?, "#{stdout}\n#{stderr}")
+
+    stdout, stderr, status = typecheck(source.sub("T.any(String, Symbol)", "String"))
+    refute_predicate(status, :success?, "#{stdout}\n#{stderr}")
+    assert_includes("#{stdout}\n#{stderr}", "argument `size`")
+    assert_includes("#{stdout}\n#{stderr}", "Symbol")
+  end
+
   private def typecheck(source)
     root = File.expand_path("../..", __dir__)
     Tempfile.create(["hash-sorbet-compatibility", ".rb"]) do |file|

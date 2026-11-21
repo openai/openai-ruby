@@ -100,7 +100,11 @@ module OpenAI
             return nil if key == OpenAI::Internal::OMIT
 
             key = key.to_sym if key.is_a?(String)
-            _, found = known_variants.find { |k,| !k.nil? && k == key }
+            matches = known_variants.select { |k,| !k.nil? && k == key }
+            # A shared tag does not identify a variant; use the normal field matching.
+            return nil if matches.length > 1
+
+            _, found = matches.first
             return OpenAI::Internal::Type::Converter.resolve_type(found, state: state) if found
 
             known_variants.each do |variant_key, variant_fn|

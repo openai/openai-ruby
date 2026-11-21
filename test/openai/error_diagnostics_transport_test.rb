@@ -22,7 +22,7 @@ class OpenAI::Test::ErrorDiagnosticsTransportTest < Minitest::Test
     super
   end
 
-  [:responses, :beta, :videos].each do |route|
+  [:responses, :beta].each do |route|
     [:values, :nulls, :omitted].each do |shape|
       define_method("test_#{route}_#{shape}") do
         error = {code: "server_error", message: "Synthetic failure"}
@@ -31,19 +31,12 @@ class OpenAI::Test::ErrorDiagnosticsTransportTest < Minitest::Test
           error[:param] = shape == :values ? "input[0]" : nil
         end
 
-        video = route == :videos
-        identifier = video ? "video_synthetic" : "resp_synthetic"
-        url = "http://localhost/#{video ? "videos" : "responses"}/#{identifier}#{route == :beta ? "?beta=true" : ""}"
+        identifier = "resp_synthetic"
+        url = "http://localhost/responses/#{identifier}#{route == :beta ? "?beta=true" : ""}"
         stub_request(:get, url).to_return_json(body: {id: identifier, error: error})
         client = OpenAI::Client.new(base_url: "http://localhost", api_key: "synthetic-key", max_retries: 0)
-        result = case route
-        when :responses
-          client.responses.retrieve(identifier)
-        when :beta
-          client.beta.responses.retrieve(identifier)
-        when :videos
-          client.videos.retrieve(identifier)
-        end
+        resource = route == :beta ? client.beta.responses : client.responses
+        result = resource.retrieve(identifier)
 
         assert_requested(:get, url, times: 1)
         if shape == :values

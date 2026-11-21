@@ -179,39 +179,32 @@ class OpenAI::Test::PathParameterQueryTest < Minitest::Test
     assert_requested(request)
   end
 
-  def test_run_step_retrieve_excludes_all_path_parameters
-    include_value = "step_details.tool_calls[*].file_search.results[*].content"
+  def test_chatkit_thread_items_list_excludes_thread_id
     request = stub_get(
-      "/threads/thread_123/runs/run_123/steps/step_123",
-      query: {"include" => [include_value]}
+      "/chatkit/threads/cthr_123/items",
+      query: {"after" => "item_123", "limit" => "5"}
     )
 
-    response = @client.beta.threads.runs.steps.retrieve(
-      "step_123",
-      thread_id: "thread_123",
-      run_id: "run_123",
-      include: [include_value.to_sym]
-    )
+    response = @client.beta.chatkit.threads.list_items("cthr_123", after: "item_123", limit: 5)
 
-    assert_instance_of(OpenAI::Beta::Threads::Runs::RunStep, response)
+    assert_instance_of(OpenAI::Internal::ConversationCursorPage, response)
     assert_requested(request)
   end
 
-  def test_run_steps_list_excludes_thread_id
+  def test_agent_turn_items_list_excludes_session_and_turn_ids
     request = stub_get(
-      "/threads/thread_123/runs/run_123/steps",
-      query: {"after" => "step_123", "limit" => "5", "order" => "asc"}
+      "/agents/sessions/session_123/turns/turn_123/items",
+      query: {"after" => "item_123", "order" => "asc"}
     )
 
-    response = @client.beta.threads.runs.steps.list(
-      "run_123",
-      thread_id: "thread_123",
-      after: "step_123",
-      limit: 5,
+    response = @client.beta.agents.sessions.turns.items.list(
+      "turn_123",
+      session_id: "session_123",
+      after: "item_123",
       order: :asc
     )
 
-    assert_instance_of(OpenAI::Internal::CursorPage, response)
+    assert_instance_of(OpenAI::Internal::ConversationCursorPage, response)
     assert_requested(request)
   end
 

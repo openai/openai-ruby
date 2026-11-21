@@ -72,8 +72,6 @@ module OpenAI
 
     attr_reader skills: OpenAI::Resources::Skills
 
-    attr_reader videos: OpenAI::Resources::Videos
-
     private def auth_headers: (
       security: { ?bearer_auth: bool, ?admin_api_key_auth: bool }
     ) -> ::Hash[String, String]

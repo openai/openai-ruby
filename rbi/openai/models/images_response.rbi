@@ -142,7 +142,7 @@ module OpenAI
             output_format: OpenAI::ImagesResponse::OutputFormat::TaggedSymbol,
             quality: OpenAI::ImagesResponse::Quality::TaggedSymbol,
             safety_identifier: T.nilable(String),
-            size: OpenAI::ImagesResponse::Size::Variants,
+            size: T.any(String, OpenAI::ImagesResponse::Size::OrSymbol),
             svg_usage: OpenAI::ImagesResponse::SvgUsage,
             usage: OpenAI::ImagesResponse::Usage
           }
@@ -208,7 +208,7 @@ module OpenAI
       module Size
         extend OpenAI::Internal::Type::Union
 
-        Variants = T.type_alias { T.any(String, OpenAI::ImagesResponse::Size::TaggedSymbol) }
+        Variants = T.type_alias { String }
 
         sig { override.returns(T::Array[OpenAI::ImagesResponse::Size::Variants]) }
         def self.variants
@@ -220,11 +220,11 @@ module OpenAI
 
         OrSymbol = T.type_alias { T.any(Symbol, String) }
 
-        SIZE_1024X1024 = T.let(:"1024x1024", OpenAI::ImagesResponse::Size::TaggedSymbol)
-        SIZE_1024X1536 = T.let(:"1024x1536", OpenAI::ImagesResponse::Size::TaggedSymbol)
-        SIZE_1536X1024 = T.let(:"1536x1024", OpenAI::ImagesResponse::Size::TaggedSymbol)
+        SIZE_1024X1024 = T.let("1024x1024", String)
+        SIZE_1024X1536 = T.let("1024x1536", String)
+        SIZE_1536X1024 = T.let("1536x1024", String)
 
-        sig { returns(T::Array[OpenAI::ImagesResponse::Size::TaggedSymbol]) }
+        sig { returns(T::Array[String]) }
         def self.values
         end
 

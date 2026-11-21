@@ -228,8 +228,8 @@ module OpenAI
 
         type tool_choice =
           OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::live_tool_choice_enum
-          | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::LiveFunctionToolChoiceParam
-          | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::LiveMCPToolChoiceParam
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::Function
+          | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::Mcp
           | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::FileSearch
           | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::WebSearch
           | OpenAI::Live::ResponsesDelegationUpdateConfig::ToolChoice::WebSearchPreview
@@ -257,36 +257,53 @@ module OpenAI
             def self?.values: -> ::Array[OpenAI::Models::Live::ResponsesDelegationUpdateConfig::ToolChoice::live_tool_choice_enum]
           end
 
-          type live_function_tool_choice_param =
-            { name: String, ?type: :function }
+          type function = { name: String, ?type: :function }
 
-          class LiveFunctionToolChoiceParam < OpenAI::Internal::Type::BaseModel
+          class Function < OpenAI::Internal::Type::BaseModel
+            # The name of the function tool to call.
             attr_accessor name: String
 
+            # The tool to call. Always `function`.
             attr_accessor type: :function
 
+            # @param name
+            #   The name of the function tool to call.
+            # @param type
+            #   The tool to call. Always `function`.
             def initialize: (name: String, ?type: :function) -> void
 
             def to_hash: -> { name: String, ?type: :function }
           end
 
-          type live_mcp_tool_choice_param =
-            { name: String, server_label: String, ?type: :mcp }
+          type mcp = { server_label: String, ?type: :mcp, ?name: String? }
 
-          class LiveMCPToolChoiceParam < OpenAI::Internal::Type::BaseModel
-            attr_accessor name: String
-
+          class Mcp < OpenAI::Internal::Type::BaseModel
+            # The label of the MCP server to call.
             attr_accessor server_label: String
 
+            # The tool to call. Always `mcp`.
             attr_accessor type: :mcp
 
+            # The name of the MCP tool to call. If omitted, the server may choose a default.
+            attr_accessor name: String?
+
+            # @param server_label
+            #   The label of the MCP server to call.
+            # @param name
+            #   The name of the MCP tool to call. If omitted, the server may choose a default.
+            # @param type
+            #   The tool to call. Always `mcp`.
             def initialize: (
-              name: String,
               server_label: String,
+              ?name: String?,
               ?type: :mcp
             ) -> void
 
-            def to_hash: -> { name: String, server_label: String, ?type: :mcp }
+            def to_hash: -> {
+              server_label: String,
+              ?type: :mcp,
+              ?name: String?
+            }
           end
 
           type file_search = { ?type: :file_search }
@@ -479,34 +496,49 @@ module OpenAI
               type function = { name: String, ?type: :function }
 
               class Function < OpenAI::Internal::Type::BaseModel
+                # The name of the function tool to call.
                 attr_accessor name: String
 
+                # The tool to call. Always `function`.
                 attr_accessor type: :function
 
+                # @param name
+                #   The name of the function tool to call.
+                # @param type
+                #   The tool to call. Always `function`.
                 def initialize: (name: String, ?type: :function) -> void
 
                 def to_hash: -> { name: String, ?type: :function }
               end
 
-              type mcp = { name: String, server_label: String, ?type: :mcp }
+              type mcp = { server_label: String, ?type: :mcp, ?name: String? }
 
               class Mcp < OpenAI::Internal::Type::BaseModel
-                attr_accessor name: String
-
+                # The label of the MCP server to call.
                 attr_accessor server_label: String
 
+                # The tool to call. Always `mcp`.
                 attr_accessor type: :mcp
 
+                # The name of the MCP tool to call. If omitted, the server may choose a default.
+                attr_accessor name: String?
+
+                # @param server_label
+                #   The label of the MCP server to call.
+                # @param name
+                #   The name of the MCP tool to call. If omitted, the server may choose a default.
+                # @param type
+                #   The tool to call. Always `mcp`.
                 def initialize: (
-                  name: String,
                   server_label: String,
+                  ?name: String?,
                   ?type: :mcp
                 ) -> void
 
                 def to_hash: -> {
-                  name: String,
                   server_label: String,
-                  ?type: :mcp
+                  ?type: :mcp,
+                  ?name: String?
                 }
               end
 

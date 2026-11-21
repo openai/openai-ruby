@@ -42,8 +42,8 @@ module OpenAI
       # @!attribute size
       #   The image dimensions as a `WIDTHxHEIGHT` string, for example `1536x864`.
       #
-      #   @return [String, Symbol, OpenAI::Models::ImageEditPartialImageEvent::Size]
-      required :size, union: -> { OpenAI::ImageEditPartialImageEvent::Size }
+      #   @return [String]
+      required :size, String
 
       # @!attribute type
       #   The type of the event. Always `image_edit.partial_image`.
@@ -129,35 +129,27 @@ module OpenAI
       module Size
         extend OpenAI::Internal::Type::Union
 
-        variant const: -> { OpenAI::Models::ImageEditPartialImageEvent::Size::SIZE_1024X1024 }
-
-        variant const: -> { OpenAI::Models::ImageEditPartialImageEvent::Size::SIZE_1024X1536 }
-
-        variant const: -> { OpenAI::Models::ImageEditPartialImageEvent::Size::SIZE_1536X1024 }
-
-        variant const: -> { OpenAI::Models::ImageEditPartialImageEvent::Size::AUTO }
-
         variant String
 
         # @!method self.variants
-        #   @return [Array(String, Symbol)]
+        #   @return [Array(String)]
 
         define_sorbet_constant!(:Variants) do
-          T.type_alias { T.any(String, OpenAI::ImageEditPartialImageEvent::Size::TaggedSymbol) }
+          T.type_alias { String }
         end
 
         # @!group
 
-        SIZE_1024X1024 = :"1024x1024"
-        SIZE_1024X1536 = :"1024x1536"
-        SIZE_1536X1024 = :"1536x1024"
-        AUTO = :auto
+        SIZE_1024X1024 = "1024x1024"
+        SIZE_1024X1536 = "1024x1536"
+        SIZE_1536X1024 = "1536x1024"
+        AUTO = "auto"
 
         # @!endgroup
 
         # Preserve the enum helper available before arbitrary strings were supported.
         #
-        # @return [Array<Symbol>]
+        # @return [Array<String>]
         def self.values = [SIZE_1024X1024, SIZE_1024X1536, SIZE_1536X1024, AUTO]
       end
     end
