@@ -957,7 +957,10 @@ module OpenAI
                 )
 
                 # @!attribute skills
-                #   An optional list of skills referenced by id or inline data.
+                #   An optional list of skills referenced by id or inline data. Across all inline
+                #   skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+                #   must total at most 70,254,592 characters, including line breaks. Skill
+                #   references do not count toward these limits.
                 #
                 #   @return [Array<OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Tool::Shell::Environment::ContainerAuto::Skill::SkillReference, OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline>, nil]
                 optional(
@@ -981,7 +984,10 @@ module OpenAI
                 #     Network access policy for the container.
                 #
                 #   @param skills [Array<OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Tool::Shell::Environment::ContainerAuto::Skill::SkillReference, OpenAI::Models::Live::ResponsesDelegationUpdateConfig::Tool::Shell::Environment::ContainerAuto::Skill::Inline>, nil]
-                #     An optional list of skills referenced by id or inline data.
+                #     An optional list of skills referenced by id or inline data. Across all inline
+                #     skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+                #     must total at most 70,254,592 characters, including line breaks. Skill
+                #     references do not count toward these limits.
                 #
                 #   @param type [Symbol, :container_auto]
                 #     Automatically creates a container for this request

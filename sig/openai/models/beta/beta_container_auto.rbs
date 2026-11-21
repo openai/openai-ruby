@@ -33,10 +33,16 @@ module OpenAI
           OpenAI::Models::Beta::BetaContainerAuto::network_policy
         ) -> OpenAI::Models::Beta::BetaContainerAuto::network_policy
 
-        # An optional list of skills referenced by id or inline data.
+        # An optional list of skills referenced by id or inline data. Across all inline
+        # skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+        # must total at most 70,254,592 characters, including line breaks. Skill
+        # references do not count toward these limits.
         attr_reader skills: ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]?
 
-        # An optional list of skills referenced by id or inline data.
+        # An optional list of skills referenced by id or inline data. Across all inline
+        # skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+        # must total at most 70,254,592 characters, including line breaks. Skill
+        # references do not count toward these limits.
         def skills=: (
           ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]
         ) -> ::Array[OpenAI::Models::Beta::BetaContainerAuto::skill]
@@ -48,7 +54,10 @@ module OpenAI
         # @param network_policy
         #   Network access policy for the container.
         # @param skills
-        #   An optional list of skills referenced by id or inline data.
+        #   An optional list of skills referenced by id or inline data. Across all inline
+        #   skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+        #   must total at most 70,254,592 characters, including line breaks. Skill
+        #   references do not count toward these limits.
         # @param type
         #   Automatically creates a container for this request
         def initialize: (
