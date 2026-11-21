@@ -782,7 +782,7 @@ For more information about webhooks, see [the API docs](https://platform.openai.
 
 For most use cases, you will likely want to verify the webhook and parse the payload at the same time. To achieve this, we provide the method `client.webhooks.unwrap`, which parses a webhook request and verifies that it was sent by OpenAI. This method will raise an error if the signature is invalid.
 
-Note that the `body` parameter must be the raw JSON string sent from the server (do not parse it first). The `unwrap` method will parse this JSON for you into an event object after verifying the webhook was sent from OpenAI.
+Note that the `body` parameter must be the raw JSON string sent from the server (do not parse it first). The `unwrap` method verifies the signature before parsing the JSON. It returns a typed event for recognized event types and a hash for unrecognized events.
 
 ```ruby
 require 'sinatra'
@@ -800,13 +800,13 @@ post '/webhook' do
   begin
     event = client.webhooks.unwrap(request_body, request.env)
     
-    case event.type
+    case event[:type]
     when :'response.completed'
       puts "Response completed: #{event.data}"
     when :'response.failed'
       puts "Response failed: #{event.data}"
     else
-      puts "Unhandled event type: #{event.type}"
+      puts "Unhandled event type: #{event[:type]}"
     end
     
     status 200

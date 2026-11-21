@@ -10,7 +10,7 @@ This directory contains runnable examples for the Realtime WebSocket surface:
 - `websocket_voice_turn.rb` uploads one raw 24 kHz mono PCM16 turn, explicitly
   commits it, streams the assistant's PCM response to standard output, returns
   its transcript to embedded callers, verifies a completed response, and exits.
-- [`sip_webhook.rb`](SIP.md) verifies signed SIP incoming calls, applies a fixed
+- [`sip_webhook.rb`](https://github.com/openai/openai-ruby/blob/main/examples/realtime/SIP.md) verifies signed SIP incoming calls, applies a fixed
   tenant/admission policy, deduplicates attempts, and owns accepted-call cleanup.
 - `sideband.rb` attaches to an existing, application-authorized WebRTC or SIP
   call, updates its session policy, verifies the typed update event, and exits.
