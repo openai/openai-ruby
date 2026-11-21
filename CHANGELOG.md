@@ -1,5 +1,41 @@
 # Changelog
 
+## [1.0.0](https://github.com/openai/openai-ruby/compare/v0.130.0...v1.0.0) (2026-11-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Ruby 1.0 requires Ruby 3.3.0 or later. See the [Ruby SDK 1.0 migration guide](https://github.com/openai/openai-ruby/blob/v1.0.0/docs/MIGRATION_1.0.0.md) for code and type changes.
+    - **Assistants and Threads.** Removed `client.beta.assistants`, `client.beta.threads`, and their SDK types. Use Responses and Conversations.
+    - **Videos.** Removed `client.videos`, its SDK types, the Sora 2 model constants, and `/v1/videos` as a Batch endpoint.
+    - **Retired Chat Completions models.** Replace `GPT_4_VISION_PREVIEW`, `GPT_3_5_TURBO_0613`, and `GPT_3_5_TURBO_16K_0613` with a supported model ID.
+    - **Responses compaction.** GA output uses `ResponseItem` and beta output uses `BetaResponseItem`. Both can contain retained user, system, and developer messages alongside assistant output and compaction records. Update collection annotations and use `ResponseFunctionToolCallItem` or `BetaResponseFunctionToolCallItem` for compacted function calls.
+    - **Live Responses delegation.** Use `ToolChoice::Function` and `ToolChoice::Mcp` in delegation and update configs. MCP choices require `server_label` and allow `name` to be omitted or set to `nil`.
+    - **Named graders.** Pass a `graders:` hash keyed by grader name to `MultiGrader`, and use those names in `calculate_output`. Replace the `MultiGrader::Graders` type with `MultiGrader::Grader`.
+    - **Image sizes.** Read `size` as a string in image responses and generation or edit stream events. Compare it with a string such as `"1024x1024"`. The named size constants and `Size.values` use strings.
+
+### Features
+
+* **api:** release the Ruby SDK 1.0 API ([#1083](https://github.com/openai/openai-ruby/issues/1083)) ([6670181](https://github.com/openai/openai-ruby/commit/66701816f00c4b547ddbe70888342268a41b53e6))
+
+
+### Bug Fixes
+
+* **api:** decode assistant messages from `responses.input_items.list` as `ResponseOutputMessage` ([#883](https://github.com/openai/openai-ruby/issues/883)) ([6670181](https://github.com/openai/openai-ruby/commit/66701816f00c4b547ddbe70888342268a41b53e6))
+* **vertex:** omit underlying exceptions from credential lookup and timeout errors ([#1051](https://github.com/openai/openai-ruby/issues/1051)) ([6670181](https://github.com/openai/openai-ruby/commit/66701816f00c4b547ddbe70888342268a41b53e6))
+
+
+### Chores
+
+* **deps:** bump ruby/setup-ruby from 1.342.0 to 1.343.0 ([#1096](https://github.com/openai/openai-ruby/issues/1096)) ([b5e3080](https://github.com/openai/openai-ruby/commit/b5e3080c777c878595447197932f466130a9dfc5))
+* finalize Ruby 1.0 generation checkpoint ([#1099](https://github.com/openai/openai-ruby/issues/1099)) ([681e6a9](https://github.com/openai/openai-ruby/commit/681e6a990fd7b1714edbc007d9f7103be6fc7027))
+
+
+### Documentation
+
+* **api:** clarify when to omit completion choice count ([#1093](https://github.com/openai/openai-ruby/issues/1093)) ([f0f2c99](https://github.com/openai/openai-ruby/commit/f0f2c9988eeedeb8f6f575e06e24f961d5107500))
+* explain nested request values and passing request models with `**params.to_hash` ([6670181](https://github.com/openai/openai-ruby/commit/66701816f00c4b547ddbe70888342268a41b53e6))
+
 ## [0.130.0](https://github.com/openai/openai-ruby/compare/v0.129.0...v0.130.0) (2026-11-19)
 
 
