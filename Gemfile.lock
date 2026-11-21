@@ -56,6 +56,7 @@ GEM
       rexml
     csv (3.3.6)
     drb (2.2.3)
+    ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-aarch64-linux-musl)
     ffi (1.17.4-arm64-darwin)
@@ -72,7 +73,7 @@ GEM
     io-event (1.22.0)
     io-stream (0.14.0)
       openssl (>= 3.3)
-    json (2.21.2)
+    json (3.1.0)
     language_server-protocol (3.17.0.6)
     lint_roller (1.1.0)
     listen (3.10.0)
@@ -195,7 +196,7 @@ DEPENDENCIES
   async
   async-websocket
   cgi
-  json (< 3)
+  json (< 4)
   minitest (~> 6.1)
   minitest-hooks (>= 1.5.4)
   minitest-mock (~> 5.27)
