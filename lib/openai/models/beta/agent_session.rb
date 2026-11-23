@@ -61,6 +61,13 @@ module OpenAI
           -> { OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::AgentSession::RequiredAction] }
         )
 
+        # @!attribute spend_control
+        #   Spending limit and best-effort consumption, in USD cents. The limit is null for
+        #   an unlimited session. Consumption is null when unavailable.
+        #
+        #   @return [OpenAI::Models::Beta::AgentSession::SpendControl]
+        required :spend_control, -> { OpenAI::Beta::AgentSession::SpendControl }
+
         # @!attribute status
         #   The current status of the session.
         #
@@ -93,7 +100,7 @@ module OpenAI
         #   @return [Symbol, OpenAI::Models::Beta::AgentSession::Review, nil]
         optional :review, enum: -> { OpenAI::Beta::AgentSession::Review }
 
-        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, status:, usage:, vault_ids:, prompt_cache_options: nil, review: nil, object: :"agent.session")
+        # @!method initialize(id:, agent:, created_at:, environment:, error:, last_active_at:, metadata:, required_actions:, spend_control:, status:, usage:, vault_ids:, prompt_cache_options: nil, review: nil, object: :"agent.session")
         #   A Managed Agents session.
         #
         #   @param id [String]
@@ -119,6 +126,10 @@ module OpenAI
         #
         #   @param required_actions [Array<OpenAI::Models::Beta::AgentSession::RequiredAction::McpApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall, OpenAI::Models::Beta::AgentSession::RequiredAction::EnvironmentConnection>]
         #     Actions that must be completed before the session can continue.
+        #
+        #   @param spend_control [OpenAI::Models::Beta::AgentSession::SpendControl]
+        #     Spending limit and best-effort consumption, in USD cents. The limit is null for
+        #     an unlimited session. Consumption is null when unavailable.
         #
         #   @param status [Symbol, OpenAI::Models::Beta::AgentSession::Status]
         #     The current status of the session.
@@ -720,6 +731,31 @@ module OpenAI
           #   @return [Array(OpenAI::Models::Beta::AgentSession::RequiredAction::McpApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::ComputerUseApprovalRequest, OpenAI::Models::Beta::AgentSession::RequiredAction::FunctionCall, OpenAI::Models::Beta::AgentSession::RequiredAction::EnvironmentConnection)]
         end
 
+        # @see OpenAI::Models::Beta::AgentSession#spend_control
+        class SpendControl < OpenAI::Internal::Type::BaseModel
+          # @!attribute consumed
+          #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          #
+          #   @return [Integer, nil]
+          required :consumed, Integer, nil?: true
+
+          # @!attribute limit
+          #   The configured positive limit in USD cents, or null when unlimited.
+          #
+          #   @return [Integer, nil]
+          required :limit, Integer, nil?: true
+
+          # @!method initialize(consumed:, limit:)
+          #   Spending limit and best-effort consumption, in USD cents. The limit is null for
+          #   an unlimited session. Consumption is null when unavailable.
+          #
+          #   @param consumed [Integer, nil]
+          #     Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          #
+          #   @param limit [Integer, nil]
+          #     The configured positive limit in USD cents, or null when unlimited.
+        end
+
         # The current status of the session.
         #
         # @see OpenAI::Models::Beta::AgentSession#status
@@ -737,6 +773,9 @@ module OpenAI
 
           # The session failed.
           FAILED = :failed
+
+          # The session is paused because its spending limit was reached.
+          BUDGET_REACHED = :budget_reached
 
           # @!method self.values
           #   @return [Array<Symbol>]

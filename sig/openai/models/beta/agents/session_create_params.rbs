@@ -11,6 +11,7 @@ module OpenAI
             ?metadata: ::Hash[Symbol, String]?,
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
+            ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
@@ -63,6 +64,10 @@ module OpenAI
             OpenAI::Models::Beta::Agents::SessionCreateParams::review
           ) -> OpenAI::Models::Beta::Agents::SessionCreateParams::review
 
+          # Optional spending limit in USD cents. Omission or null creates an unlimited
+          # session.
+          attr_accessor spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?
+
           # Options for the event stream. Only allowed when `stream` is `true`.
           attr_reader stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions?
 
@@ -95,6 +100,9 @@ module OpenAI
           #   default.
           # @param review
           #   Action review mode. Omit to use none.
+          # @param spend_control
+          #   Optional spending limit in USD cents. Omission or null creates an unlimited
+          #   session.
           # @param stream_options
           #   Options for the event stream. Only allowed when `stream` is `true`.
           # @param vault_ids
@@ -107,6 +115,7 @@ module OpenAI
             ?metadata: ::Hash[Symbol, String]?,
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
+            ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
@@ -120,6 +129,7 @@ module OpenAI
             ?metadata: ::Hash[Symbol, String]?,
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionCreateParams::review,
+            ?spend_control: OpenAI::Beta::Agents::SessionCreateParams::SpendControl?,
             ?stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions,
             ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::RequestOptions
@@ -352,6 +362,19 @@ module OpenAI
             AUTO_REVIEW: :auto_review
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionCreateParams::review]
+          end
+
+          type spend_control = { limit: Integer? }
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            # Positive USD cents, or null to remove the limit.
+            attr_accessor limit: Integer?
+
+            # @param limit
+            #   Positive USD cents, or null to remove the limit.
+            def initialize: (limit: Integer?) -> void
+
+            def to_hash: -> { limit: Integer? }
           end
 
           type stream_options = { ?include_obfuscation: bool }
