@@ -56,6 +56,7 @@ GEM
       rexml
     csv (3.3.6)
     drb (2.2.3)
+    ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-aarch64-linux-musl)
     ffi (1.17.4-arm64-darwin)
@@ -145,7 +146,7 @@ GEM
     securerandom (0.4.1)
     sorbet (0.6.12753)
       sorbet-static (= 0.6.12753)
-    sorbet-runtime (0.6.13646)
+    sorbet-runtime (0.6.13681)
     sorbet-static (0.6.12753-aarch64-linux)
     sorbet-static (0.6.12753-universal-darwin)
     sorbet-static (0.6.12753-x86_64-linux)
