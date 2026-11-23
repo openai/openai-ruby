@@ -56,7 +56,6 @@ GEM
       rexml
     csv (3.3.6)
     drb (2.2.3)
-    ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-aarch64-linux-musl)
     ffi (1.17.4-arm64-darwin)
