@@ -8,7 +8,7 @@ Two **ordinary Realtime API** examples share a small, single-operator local app:
    `client.realtime.calls.create`. Ruby retains the known call, returns the
    answer, optionally confirms trusted sideband policy, and explicitly hangs up.
 
-These do not use the distinct [Live API example](https://github.com/openai/openai-ruby/blob/main/examples/live/webrtc.rb).
+These do not use the distinct [Live API example](../../live/webrtc.rb).
 `RTCPeerConnection`, `getUserMedia`, browser data channels and browser audio own
 all negotiation, ICE, DTLS, RTP, codecs, echo cancellation and device permissions.
 Ruby implements only application authentication, signaling and call ownership.
