@@ -52,7 +52,10 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
   end
 
   def budget(session_id = "session_test")
-    {type: "agent.session.budget_reached", session: {id: session_id, status: "budget_reached"}}
+    {
+      type: "agent.session.budget_reached",
+      session: {id: session_id, status: "budget_reached", spend_control: {limit: 12345, consumed: 12367}}
+    }
   end
 
   def idle = {type: "agent.session.idle", session: {id: "session_test", status: "idle"}}
@@ -77,7 +80,11 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
       events = subject.to_a
 
       assert_equal(1, events.size)
-      assert_equal("agent.session.budget_reached", event_data(events.first).fetch(:type))
+      assert_instance_of(OpenAI::Models::Beta::AgentSessionBudgetReachedEvent, events.first)
+      assert_equal(:"agent.session.budget_reached", events.first.type)
+      assert_equal(:budget_reached, events.first.session.status)
+      assert_equal(12345, events.first.session.spend_control.limit)
+      assert_equal(12367, events.first.session.spend_control.consumed)
       assert_equal("budget_reached", event_data(events.first).fetch(:session).fetch(:status))
       subject.close
       assert(@server.body.closed)
@@ -174,15 +181,17 @@ class OpenAI::Test::AgentBudgetEventTest < Minitest::Test
     end
   end
 
-  def test_malformed_budget_snapshot_does_not_stop_creation_result
-    [nil, {}, {id: nil}, {id: 123}].each do |session|
-      malformed = {type: "agent.session.budget_reached", session: session}
-      configure([malformed, turn("created"), answer, turn("completed"), budget])
-      result = stream(creation: true).get_final_result
+  def test_malformed_budget_snapshot_does_not_stop_result_collection
+    [false, true].each do |creation|
+      [nil, {}, {id: nil}, {id: 123}].each do |session|
+        malformed = {type: "agent.session.budget_reached", session: session}
+        configure([malformed, turn("created"), answer, turn("completed"), budget])
+        result = stream(creation: creation).get_final_result
 
-      assert_equal("Answer", result.output_text)
-      assert_equal(:completed, result.turn.status)
-      assert(@server.body.closed)
+        assert_equal("Answer", result.output_text)
+        assert_equal(:completed, result.turn.status)
+        assert(@server.body.closed)
+      end
     end
   end
 

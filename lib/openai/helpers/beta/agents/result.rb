@@ -123,6 +123,14 @@ module OpenAI
 
             when :"agent.session.in_progress"
               @required_actions = [] if event.session.id == @session_id
+            when :"agent.session.budget_reached"
+              session = event[:session]
+              if (session.is_a?(Hash) || session.is_a?(OpenAI::Internal::Type::BaseModel)) &&
+                  session[:id].is_a?(String)
+                @session_id ||= session[:id].dup
+                @finished = true if (@turn.nil? || @terminal) && session[:id] == @session_id
+              end
+
             when :"agent.session.idle"
               @finished = true if @terminal && event.session.id == @session_id
             when :"agent.session.failed"

@@ -46,6 +46,7 @@ module OpenAI
               metadata: T.nilable(T::Hash[Symbol, String]),
               prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::OrHash),
               review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
               stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions::OrHash,
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
@@ -75,6 +76,9 @@ module OpenAI
             prompt_cache_options: nil,
             # Action review mode. Omit to use none.
             review: nil,
+            # Optional spending limit in USD cents. Omission or null creates an unlimited
+            # session.
+            spend_control: nil,
             # Options for the event stream. Only allowed when `stream` is `true`.
             stream_options: nil,
             # The IDs of vaults made available to the session.
@@ -107,6 +111,7 @@ module OpenAI
               metadata: T.nilable(T::Hash[Symbol, String]),
               prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::PromptCacheOptions::OrHash),
               review: OpenAI::Beta::Agents::SessionCreateParams::Review::OrSymbol,
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionCreateParams::SpendControl::OrHash),
               stream_options: OpenAI::Beta::Agents::SessionCreateParams::StreamOptions::OrHash,
               vault_ids: T.nilable(T::Array[String]),
               stream: T.noreturn,
@@ -138,6 +143,9 @@ module OpenAI
             prompt_cache_options: nil,
             # Action review mode. Omit to use none.
             review: nil,
+            # Optional spending limit in USD cents. Omission or null creates an unlimited
+            # session.
+            spend_control: nil,
             # Options for the event stream. Only allowed when `stream` is `true`.
             stream_options: nil,
             # The IDs of vaults made available to the session.
@@ -174,6 +182,7 @@ module OpenAI
               metadata: T.nilable(T::Hash[Symbol, String]),
               prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::OrHash),
               review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
+              spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
               request_options: OpenAI::RequestOptions::OrHash
             )
               .returns(OpenAI::Beta::AgentSession)
@@ -193,6 +202,9 @@ module OpenAI
             # Default action review for new root turns. Existing turns and their subagents
             # keep their review mode.
             review: nil,
+            # Omit to retain the limit; null or a null limit removes it without resetting
+            # spend.
+            spend_control: nil,
             request_options: {}
           )
           end

@@ -32,7 +32,7 @@ module OpenAI
           # the session or streams its events when stream is true. See
           # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
           #
-          # @overload create(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, prompt_cache_options: nil, review: nil, stream_options: nil, vault_ids: nil, request_options: {})
+          # @overload create(environment:, agent: nil, agent_id: nil, input: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, stream_options: nil, vault_ids: nil, request_options: {})
           #
           # @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #   An inline execution environment or a reference to an environment template.
@@ -61,6 +61,10 @@ module OpenAI
           #
           # @param review [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review]
           #   Action review mode. Omit to use none.
+          #
+          # @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
+          #   Optional spending limit in USD cents. Omission or null creates an unlimited
+          #   session.
           #
           # @param stream_options [OpenAI::Models::Beta::Agents::SessionCreateParams::StreamOptions]
           #   Options for the event stream. Only allowed when `stream` is `true`.
@@ -98,7 +102,7 @@ module OpenAI
           # the session or streams its events when stream is true. See
           # [running sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions).
           #
-          # @overload create_streaming(environment:, agent: nil, agent_id: nil, input: nil, output_type: nil, tool_handlers: {}, metadata: nil, prompt_cache_options: nil, review: nil, stream_options: nil, vault_ids: nil, request_options: {})
+          # @overload create_streaming(environment:, agent: nil, agent_id: nil, input: nil, output_type: nil, tool_handlers: {}, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, stream_options: nil, vault_ids: nil, request_options: {})
           #
           # @param environment [OpenAI::Models::Beta::EnvironmentParam::None, OpenAI::Models::Beta::EnvironmentParam::OpenAIHosted, OpenAI::Models::Beta::EnvironmentParam::SelfHosted]
           #   An inline execution environment or a reference to an environment template.
@@ -127,6 +131,10 @@ module OpenAI
           #
           # @param review [Symbol, OpenAI::Models::Beta::Agents::SessionCreateParams::Review]
           #   Action review mode. Omit to use none.
+          #
+          # @param spend_control [OpenAI::Models::Beta::Agents::SessionCreateParams::SpendControl, nil]
+          #   Optional spending limit in USD cents. Omission or null creates an unlimited
+          #   session.
           #
           # @param stream_options [OpenAI::Models::Beta::Agents::SessionCreateParams::StreamOptions]
           #   Options for the event stream. Only allowed when `stream` is `true`.
@@ -206,7 +214,7 @@ module OpenAI
           # fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           #
-          # @overload update(session_id, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, request_options: {})
+          # @overload update(session_id, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, request_options: {})
           #
           # @param session_id [String]
           #   The ID of the session.
@@ -226,6 +234,10 @@ module OpenAI
           # @param review [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Review]
           #   Default action review for new root turns. Existing turns and their subagents
           #   keep their review mode.
+          #
+          # @param spend_control [OpenAI::Models::Beta::Agents::SessionUpdateParams::SpendControl, nil]
+          #   Omit to retain the limit; null or a null limit removes it without resetting
+          #   spend.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

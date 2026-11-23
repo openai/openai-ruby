@@ -46,7 +46,20 @@ module OpenAI
           #   @return [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Review, nil]
           optional :review, enum: -> { OpenAI::Beta::Agents::SessionUpdateParams::Review }
 
-          # @!method initialize(session_id:, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, request_options: {})
+          # @!attribute spend_control
+          #   Omit to retain the limit; null or a null limit removes it without resetting
+          #   spend.
+          #
+          #   @return [OpenAI::Models::Beta::Agents::SessionUpdateParams::SpendControl, nil]
+          optional(
+            :spend_control,
+            -> {
+              OpenAI::Beta::Agents::SessionUpdateParams::SpendControl
+            },
+            nil?: true
+          )
+
+          # @!method initialize(session_id:, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, request_options: {})
           #   @param session_id [String]
           #
           #   @param agent [OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent]
@@ -64,6 +77,10 @@ module OpenAI
           #   @param review [Symbol, OpenAI::Models::Beta::Agents::SessionUpdateParams::Review]
           #     Default action review for new root turns. Existing turns and their subagents
           #     keep their review mode.
+          #
+          #   @param spend_control [OpenAI::Models::Beta::Agents::SessionUpdateParams::SpendControl, nil]
+          #     Omit to retain the limit; null or a null limit removes it without resetting
+          #     spend.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 
@@ -228,6 +245,21 @@ module OpenAI
 
             # @!method self.values
             #   @return [Array<Symbol>]
+          end
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            # @!attribute limit
+            #   Positive USD cents, or null to remove the limit.
+            #
+            #   @return [Integer, nil]
+            required :limit, Integer, nil?: true
+
+            # @!method initialize(limit:)
+            #   Omit to retain the limit; null or a null limit removes it without resetting
+            #   spend.
+            #
+            #   @param limit [Integer, nil]
+            #     Positive USD cents, or null to remove the limit.
           end
         end
       end

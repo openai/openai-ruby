@@ -53,6 +53,14 @@ module OpenAI
         sig { returns(T::Array[OpenAI::Beta::AgentSession::RequiredAction::Variants]) }
         attr_accessor :required_actions
 
+        # Spending limit and best-effort consumption, in USD cents. The limit is null for
+        # an unlimited session. Consumption is null when unavailable.
+        sig { returns(OpenAI::Beta::AgentSession::SpendControl) }
+        attr_reader :spend_control
+
+        sig { params(spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash).void }
+        attr_writer :spend_control
+
         # The current status of the session.
         sig { returns(OpenAI::Beta::AgentSession::Status::TaggedSymbol) }
         attr_accessor :status
@@ -115,6 +123,8 @@ module OpenAI
               )
             ],
 
+            spend_control: OpenAI::Beta::AgentSession::SpendControl::OrHash,
+
             status: OpenAI::Beta::AgentSession::Status::OrSymbol,
 
             usage: T.nilable(OpenAI::Beta::TokenUsage::OrHash),
@@ -155,6 +165,10 @@ module OpenAI
           # Actions that must be completed before the session can continue.
           required_actions:,
 
+          # Spending limit and best-effort consumption, in USD cents. The limit is null for
+          # an unlimited session. Consumption is null when unavailable.
+          spend_control:,
+
           # The current status of the session.
           status:,
 
@@ -190,6 +204,7 @@ module OpenAI
               metadata: T::Hash[Symbol, String],
               object: Symbol,
               required_actions: T::Array[OpenAI::Beta::AgentSession::RequiredAction::Variants],
+              spend_control: OpenAI::Beta::AgentSession::SpendControl,
               status: OpenAI::Beta::AgentSession::Status::TaggedSymbol,
               usage: T.nilable(OpenAI::Beta::TokenUsage),
               vault_ids: T::Array[String],
@@ -1114,6 +1129,54 @@ module OpenAI
 
         end
 
+        class SpendControl < OpenAI::Internal::Type::BaseModel
+          OrHash = T.type_alias do
+            T.any(
+              OpenAI::Beta::AgentSession::SpendControl,
+              OpenAI::Internal::AnyHash
+            )
+          end
+
+          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :consumed
+
+          # The configured positive limit in USD cents, or null when unlimited.
+          sig { returns(T.nilable(Integer)) }
+          attr_accessor :limit
+
+          # Spending limit and best-effort consumption, in USD cents. The limit is null for
+          # an unlimited session. Consumption is null when unavailable.
+          sig do
+            params(
+
+              consumed: T.nilable(Integer),
+
+              limit: T.nilable(Integer)
+            )
+              .returns(T.attached_class)
+          end
+          def self.new(
+
+            # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+            consumed:,
+
+            # The configured positive limit in USD cents, or null when unlimited.
+
+            limit:
+          )
+          end
+
+          sig do
+            override.returns(
+              {consumed: T.nilable(Integer), limit: T.nilable(Integer)}
+            )
+          end
+          def to_hash
+          end
+
+        end
+
         # The current status of the session.
         module Status
           extend OpenAI::Internal::Type::Enum
@@ -1132,6 +1195,9 @@ module OpenAI
 
           # The session failed.
           FAILED = T.let(:failed, OpenAI::Beta::AgentSession::Status::TaggedSymbol)
+
+          # The session is paused because its spending limit was reached.
+          BUDGET_REACHED = T.let(:budget_reached, OpenAI::Beta::AgentSession::Status::TaggedSymbol)
 
           sig { override.returns(T::Array[OpenAI::Beta::AgentSession::Status::TaggedSymbol]) }
           def self.values

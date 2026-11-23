@@ -9,6 +9,7 @@ module OpenAI
             ?metadata: ::Hash[Symbol, String]?,
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts
           }
 
@@ -45,6 +46,10 @@ module OpenAI
             OpenAI::Models::Beta::Agents::SessionUpdateParams::review
           ) -> OpenAI::Models::Beta::Agents::SessionUpdateParams::review
 
+          # Omit to retain the limit; null or a null limit removes it without resetting
+          # spend.
+          attr_accessor spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?
+
           # @param agent
           #   Agent settings to update on this session. Omitted fields stay unchanged.
           # @param metadata
@@ -57,12 +62,16 @@ module OpenAI
           # @param review
           #   Default action review for new root turns. Existing turns and their subagents
           #   keep their review mode.
+          # @param spend_control
+          #   Omit to retain the limit; null or a null limit removes it without resetting
+          #   spend.
           def initialize: (
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
             ?metadata: ::Hash[Symbol, String]?,
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
@@ -72,6 +81,7 @@ module OpenAI
             ?metadata: ::Hash[Symbol, String]?,
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
+            ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
             ?request_options: OpenAI::RequestOptions
           }
 
@@ -243,6 +253,19 @@ module OpenAI
             AUTO_REVIEW: :auto_review
 
             def self?.values: -> ::Array[OpenAI::Models::Beta::Agents::SessionUpdateParams::review]
+          end
+
+          type spend_control = { limit: Integer? }
+
+          class SpendControl < OpenAI::Internal::Type::BaseModel
+            # Positive USD cents, or null to remove the limit.
+            attr_accessor limit: Integer?
+
+            # @param limit
+            #   Positive USD cents, or null to remove the limit.
+            def initialize: (limit: Integer?) -> void
+
+            def to_hash: -> { limit: Integer? }
           end
         end
       end

@@ -12,6 +12,7 @@ module OpenAI
           metadata: ::Hash[Symbol, String],
           ?object: :"agent.session",
           required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          spend_control: OpenAI::Beta::AgentSession::SpendControl,
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
@@ -46,6 +47,10 @@ module OpenAI
 
         # Actions that must be completed before the session can continue.
         attr_accessor required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action]
+
+        # Spending limit and best-effort consumption, in USD cents. The limit is null for
+        # an unlimited session. Consumption is null when unavailable.
+        attr_accessor spend_control: OpenAI::Beta::AgentSession::SpendControl
 
         # The current status of the session.
         attr_accessor status: OpenAI::Models::Beta::AgentSession::status
@@ -86,6 +91,9 @@ module OpenAI
         #   Custom string key-value pairs attached to the session.
         # @param required_actions
         #   Actions that must be completed before the session can continue.
+        # @param spend_control
+        #   Spending limit and best-effort consumption, in USD cents. The limit is null for
+        #   an unlimited session. Consumption is null when unavailable.
         # @param status
         #   The current status of the session.
         # @param usage
@@ -109,6 +117,7 @@ module OpenAI
           last_active_at: Integer,
           metadata: ::Hash[Symbol, String],
           required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          spend_control: OpenAI::Beta::AgentSession::SpendControl,
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
@@ -127,6 +136,7 @@ module OpenAI
           metadata: ::Hash[Symbol, String],
           ?object: :"agent.session",
           required_actions: ::Array[OpenAI::Models::Beta::AgentSession::required_action],
+          spend_control: OpenAI::Beta::AgentSession::SpendControl,
           status: OpenAI::Models::Beta::AgentSession::status,
           usage: OpenAI::Beta::TokenUsage?,
           vault_ids: ::Array[String],
@@ -680,7 +690,26 @@ module OpenAI
           def self?.variants: -> ::Array[OpenAI::Models::Beta::AgentSession::required_action]
         end
 
-        type status = :idle | :in_progress | :requires_action | :failed
+        type spend_control = { consumed: Integer?, limit: Integer? }
+
+        class SpendControl < OpenAI::Internal::Type::BaseModel
+          # Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          attr_accessor consumed: Integer?
+
+          # The configured positive limit in USD cents, or null when unlimited.
+          attr_accessor limit: Integer?
+
+          # @param consumed
+          #   Best-effort recorded spend floored to whole USD cents, or null when unavailable.
+          # @param limit
+          #   The configured positive limit in USD cents, or null when unlimited.
+          def initialize: (consumed: Integer?, limit: Integer?) -> void
+
+          def to_hash: -> { consumed: Integer?, limit: Integer? }
+        end
+
+        type status =
+          :idle | :in_progress | :requires_action | :failed | :budget_reached
 
         module Status
           extend OpenAI::Internal::Type::Enum
@@ -696,6 +725,9 @@ module OpenAI
 
           # The session failed.
           FAILED: :failed
+
+          # The session is paused because its spending limit was reached.
+          BUDGET_REACHED: :budget_reached
 
           def self?.values: -> ::Array[OpenAI::Models::Beta::AgentSession::status]
         end
