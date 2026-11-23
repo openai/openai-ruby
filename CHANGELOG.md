@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/openai/openai-ruby/compare/v1.0.0...v1.1.0) (2026-11-23)
+
+
+### Features
+
+* **api:** support agent session spending limits and budget events ([#1104](https://github.com/openai/openai-ruby/issues/1104)) ([a4b50e8](https://github.com/openai/openai-ruby/commit/a4b50e8c0e417ac88fbc926d19d12dba617ce823))
+
+
+### Chores
+
+* **deps-dev:** bump sorbet-runtime from 0.6.13646 to 0.6.13681 in the development-dependencies group ([#1101](https://github.com/openai/openai-ruby/issues/1101)) ([195fa16](https://github.com/openai/openai-ruby/commit/195fa16767a3781967bfd15d8bfd4fddad639fd3))
+* **deps:** bump the codeql group with 2 updates ([#1102](https://github.com/openai/openai-ruby/issues/1102)) ([93b5c80](https://github.com/openai/openai-ruby/commit/93b5c80e48544f5f1855b822a4727b69a2856fa4))
+
 ## [1.0.0](https://github.com/openai/openai-ruby/compare/v0.130.0...v1.0.0) (2026-11-21)
 
 
