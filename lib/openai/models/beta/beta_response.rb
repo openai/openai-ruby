@@ -970,6 +970,14 @@ module OpenAI
 
           variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_2_ASTRA_LAW }
 
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_ASTRA_HEALTHCARE }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_1_SOL_HEALTHCARE }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_2_ASTRA_HEALTHCARE }
+
+          variant const: -> { OpenAI::Models::Beta::BetaResponse::Model::GPT_6_2_SOL_HEALTHCARE }
+
           variant String
 
           # @!method self.variants
@@ -1342,6 +1350,10 @@ module OpenAI
           GPT_6_CYBER = :"gpt-6-cyber"
           GPT_ROSALIND_RESEARCH = :"gpt-rosalind-research"
           GPT_6_2_ASTRA_LAW = :"gpt-6.2-astra-law"
+          GPT_6_ASTRA_HEALTHCARE = :"gpt-6-astra-healthcare"
+          GPT_6_1_SOL_HEALTHCARE = :"gpt-6.1-sol-healthcare"
+          GPT_6_2_ASTRA_HEALTHCARE = :"gpt-6.2-astra-healthcare"
+          GPT_6_2_SOL_HEALTHCARE = :"gpt-6.2-sol-healthcare"
 
           # @!endgroup
         end
