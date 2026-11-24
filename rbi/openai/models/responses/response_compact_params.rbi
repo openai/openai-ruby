@@ -480,6 +480,22 @@ module OpenAI
           )
           GPT_6_ROSALIND = T.let(:"gpt-6-rosalind", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
           GPT_6_2_ASTRA_LAW = T.let(:"gpt-6.2-astra-law", OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol)
+          GPT_6_ASTRA_HEALTHCARE = T.let(
+            :"gpt-6-astra-healthcare",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_6_1_SOL_HEALTHCARE = T.let(
+            :"gpt-6.1-sol-healthcare",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_6_2_ASTRA_HEALTHCARE = T.let(
+            :"gpt-6.2-astra-healthcare",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
+          GPT_6_2_SOL_HEALTHCARE = T.let(
+            :"gpt-6.2-sol-healthcare",
+            OpenAI::Responses::ResponseCompactParams::Model::TaggedSymbol
+          )
 
         end
 

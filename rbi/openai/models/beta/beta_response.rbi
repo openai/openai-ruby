@@ -1135,6 +1135,10 @@ module OpenAI
           GPT_6_CYBER = T.let(:"gpt-6-cyber", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_ROSALIND_RESEARCH = T.let(:"gpt-rosalind-research", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
           GPT_6_2_ASTRA_LAW = T.let(:"gpt-6.2-astra-law", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
+          GPT_6_ASTRA_HEALTHCARE = T.let(:"gpt-6-astra-healthcare", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
+          GPT_6_1_SOL_HEALTHCARE = T.let(:"gpt-6.1-sol-healthcare", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
+          GPT_6_2_ASTRA_HEALTHCARE = T.let(:"gpt-6.2-astra-healthcare", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
+          GPT_6_2_SOL_HEALTHCARE = T.let(:"gpt-6.2-sol-healthcare", OpenAI::Beta::BetaResponse::Model::TaggedSymbol)
 
         end
 

@@ -1822,6 +1822,22 @@ module OpenAI
               :"gpt-6.2-astra-law",
               OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
             )
+            GPT_6_ASTRA_HEALTHCARE = T.let(
+              :"gpt-6-astra-healthcare",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_6_1_SOL_HEALTHCARE = T.let(
+              :"gpt-6.1-sol-healthcare",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_6_2_ASTRA_HEALTHCARE = T.let(
+              :"gpt-6.2-astra-healthcare",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
+            GPT_6_2_SOL_HEALTHCARE = T.let(
+              :"gpt-6.2-sol-healthcare",
+              OpenAI::Beta::BetaResponsesClientEvent::ResponseCreate::Model::TaggedSymbol
+            )
 
           end
 
