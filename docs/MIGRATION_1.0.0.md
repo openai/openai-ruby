@@ -2,9 +2,16 @@
 
 ## Compaction output
 
-GA and beta compaction output now uses the broader `ResponseItem` union. A compacted history may contain retained user, system or developer messages as well as output items and compaction records. Ordinary Responses output types are unchanged.
+GA compaction output now uses `OpenAI::Responses::ResponseItem`. Beta compaction output now uses `OpenAI::Beta::BetaResponseItem`. A compacted history may contain retained user, system or developer messages as well as output items and compaction records. Ordinary Responses output types are unchanged.
 
-Code that annotates compaction output as `ResponseOutputItem` or assumes every message is assistant output must accept the broader union. Check the concrete message class and role before reading content: input messages contain input content, while assistant output messages contain output content. Update Ruby, RBI and RBS collection annotations accordingly.
+If you annotate compaction output as `ResponseOutputItem` for GA or `BetaResponseOutputItem` for beta, update the collection annotation:
+
+| Endpoint | Sorbet element type | RBS element type |
+| --- | --- | --- |
+| `client.responses.compact` | `OpenAI::Responses::ResponseItem::Variants` | `OpenAI::Models::Responses::response_item` |
+| `client.beta.responses.compact` | `OpenAI::Beta::BetaResponseItem::Variants` | `OpenAI::Models::Beta::beta_response_item` |
+
+Check the concrete message class and role before reading content. Input messages contain input content, while assistant output messages contain output content.
 
 Some concrete item classes also change: function calls in compacted output use `ResponseFunctionToolCallItem` (and `BetaResponseFunctionToolCallItem` for beta). Update class-based branches accordingly. Audio content is not added to the existing input-content union by this change; unrecognized content retains its raw fields.
 

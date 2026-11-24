@@ -21,6 +21,8 @@ class OpenAI::Test::WebhookReadmeDispatchTest < Minitest::Test
     assert_match(/\AResponse completed:/, completed)
     assert_match(/\AResponse failed:/, failed)
     assert_equal("Unhandled event type: response.cancelled\n", fallback)
+    assert_equal("Unhandled event type: video.completed\n", dispatch("video.completed"))
+    assert_equal("Unhandled event type: video.failed\n", dispatch("video.failed"))
   end
 
   private
@@ -68,7 +70,7 @@ class OpenAI::Test::WebhookReadmeDispatchTest < Minitest::Test
     readme = File.read(README_PATH)
     section = readme.split("### Parsing webhook payloads\n", 2).fetch(1).split(/^###? /, 2).first
     example = section.match(/```ruby\n(.*?)\n```/m)[1]
-    example.match(/^    case event\.type\n(?:.*\n)*?^    end$/)[0]
+    example.match(/^    case [^\n]+\n(?:.*\n)*?^    end$/)[0]
   end
 
   def signed_headers(payload, timestamp)
