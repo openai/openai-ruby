@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/openai/openai-ruby/compare/v1.1.0...v1.2.0) (2026-11-24)
+
+
+### Features
+
+* **api:** add healthcare model IDs for Responses ([#1108](https://github.com/openai/openai-ruby/issues/1108)) ([976671f](https://github.com/openai/openai-ruby/commit/976671fa7fc4b214915509f9441c9610108b78bb))
+
+
+### Chores
+
+* **deps:** bump ruby/setup-ruby from 1.343.0 to 1.344.0 ([#1106](https://github.com/openai/openai-ruby/issues/1106)) ([6c3c103](https://github.com/openai/openai-ruby/commit/6c3c1033990cbc0efc2b6123b503a8cfa6309db5))
+
+
+### Documentation
+
+* correct Ruby 1.0 migration guidance and examples ([#1100](https://github.com/openai/openai-ruby/issues/1100)) ([caa7317](https://github.com/openai/openai-ruby/commit/caa731792004db258fcd44191661f60571a42e6e))
+
 ## [1.1.0](https://github.com/openai/openai-ruby/compare/v1.0.0...v1.1.0) (2026-11-23)
 
 
