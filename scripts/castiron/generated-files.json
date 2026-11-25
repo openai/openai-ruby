@@ -4135,7 +4135,7 @@
     },
     "lib/openai/models/realtime/realtime_audio_config_input.rb": {
       "mode": "100644",
-      "sha256": "d1a3eff766267f6c36d47df176095e6a3232b95ac9e3c17d49bd6ecc768ee74b"
+      "sha256": "912f59bb32f14065219d979edadbee39625ab96e4e0e5417f713551876bb78d9"
     },
     "lib/openai/models/realtime/realtime_audio_config_output.rb": {
       "mode": "100644",
@@ -10247,7 +10247,7 @@
     },
     "rbi/openai/models/realtime/realtime_audio_config_input.rbi": {
       "mode": "100644",
-      "sha256": "b696c32c4023fe3bfc47462d5162c28a7527ef396cb89ff1ec3f8877c1350103"
+      "sha256": "f6593d1868511a208a1ffcbdd950581b35a5f7979360b14588320639d5b5f45c"
     },
     "rbi/openai/models/realtime/realtime_audio_config_output.rbi": {
       "mode": "100644",
@@ -16359,7 +16359,7 @@
     },
     "sig/openai/models/realtime/realtime_audio_config_input.rbs": {
       "mode": "100644",
-      "sha256": "adc1b665883fdf874874285ba7b3c6a29a61c0c8994ce0840b848407474f4a25"
+      "sha256": "b2fc937616403c62476e156a9291808d4daafecaa245a03948b9b328ad3ef8b4"
     },
     "sig/openai/models/realtime/realtime_audio_config_output.rbs": {
       "mode": "100644",
