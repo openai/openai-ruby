@@ -40,9 +40,10 @@ module OpenAI
         }
         attr_writer :format_
 
-        # Configuration for input audio noise reduction. This can be set to `null` to turn
-        # off. Noise reduction filters audio added to the input audio buffer before it is
-        # sent to VAD and the model. Filtering the audio can improve VAD and turn
+        # When you supply a `noise_reduction` object, you must set `type` to `near_field`
+        # or `far_field`. Set `noise_reduction` to `null` to turn off input audio noise
+        # reduction. Noise reduction filters audio added to the input audio buffer before
+        # it is sent to VAD and the model. Filtering the audio can improve VAD and turn
         # detection accuracy (reducing false positives) and model performance by improving
         # perception of the input audio.
         sig { returns(T.nilable(OpenAI::Realtime::RealtimeAudioConfigInput::NoiseReduction)) }
@@ -120,9 +121,10 @@ module OpenAI
           # The format of the input audio.
           format_: nil,
 
-          # Configuration for input audio noise reduction. This can be set to `null` to turn
-          # off. Noise reduction filters audio added to the input audio buffer before it is
-          # sent to VAD and the model. Filtering the audio can improve VAD and turn
+          # When you supply a `noise_reduction` object, you must set `type` to `near_field`
+          # or `far_field`. Set `noise_reduction` to `null` to turn off input audio noise
+          # reduction. Noise reduction filters audio added to the input audio buffer before
+          # it is sent to VAD and the model. Filtering the audio can improve VAD and turn
           # detection accuracy (reducing false positives) and model performance by improving
           # perception of the input audio.
           noise_reduction: nil,
@@ -206,9 +208,10 @@ module OpenAI
           sig { params(type: OpenAI::Realtime::NoiseReductionType::OrSymbol).void }
           attr_writer :type
 
-          # Configuration for input audio noise reduction. This can be set to `null` to turn
-          # off. Noise reduction filters audio added to the input audio buffer before it is
-          # sent to VAD and the model. Filtering the audio can improve VAD and turn
+          # When you supply a `noise_reduction` object, you must set `type` to `near_field`
+          # or `far_field`. Set `noise_reduction` to `null` to turn off input audio noise
+          # reduction. Noise reduction filters audio added to the input audio buffer before
+          # it is sent to VAD and the model. Filtering the audio can improve VAD and turn
           # detection accuracy (reducing false positives) and model performance by improving
           # perception of the input audio.
           sig do
