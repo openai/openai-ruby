@@ -797,7 +797,10 @@ module OpenAI
                 # Network access policy for the container.
                 attr_accessor network_policy: OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::network_policy?
 
-                # An optional list of skills referenced by id or inline data.
+                # An optional list of skills referenced by id or inline data. Across all inline
+                # skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+                # must total at most 70,254,592 characters, including line breaks. Skill
+                # references do not count toward these limits.
                 attr_accessor skills: ::Array[OpenAI::Models::Live::ResponsesDelegationConfig::Tool::Shell::Environment::ContainerAuto::skill]?
 
                 # @param file_ids
@@ -807,7 +810,10 @@ module OpenAI
                 # @param network_policy
                 #   Network access policy for the container.
                 # @param skills
-                #   An optional list of skills referenced by id or inline data.
+                #   An optional list of skills referenced by id or inline data. Across all inline
+                #   skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+                #   must total at most 70,254,592 characters, including line breaks. Skill
+                #   references do not count toward these limits.
                 # @param type
                 #   Automatically creates a container for this request
                 def initialize: (
