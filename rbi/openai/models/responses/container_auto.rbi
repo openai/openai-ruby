@@ -53,7 +53,10 @@ module OpenAI
         }
         attr_writer :network_policy
 
-        # An optional list of skills referenced by id or inline data.
+        # An optional list of skills referenced by id or inline data. Across all inline
+        # skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+        # must total at most 70,254,592 characters, including line breaks. Skill
+        # references do not count toward these limits.
         sig { returns(T.nilable(T::Array[T.any(OpenAI::Responses::SkillReference, OpenAI::Responses::InlineSkill)])) }
         attr_reader :skills
 
@@ -94,7 +97,10 @@ module OpenAI
           # Network access policy for the container.
           network_policy: nil,
 
-          # An optional list of skills referenced by id or inline data.
+          # An optional list of skills referenced by id or inline data. Across all inline
+          # skills in this list, decoded ZIP data must total at most 50 MiB and Base64 text
+          # must total at most 70,254,592 characters, including line breaks. Skill
+          # references do not count toward these limits.
           skills: nil,
 
           # Automatically creates a container for this request
