@@ -59,7 +59,14 @@ module OpenAI
             nil?: true
           )
 
-          # @!method initialize(session_id:, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, request_options: {})
+          # @!attribute vault_ids
+          #   Replaces the session's referenced vaults. Omit to retain them; null or [] clears
+          #   them.
+          #
+          #   @return [Array<String>, nil]
+          optional :vault_ids, OpenAI::Internal::Type::ArrayOf[String], nil?: true
+
+          # @!method initialize(session_id:, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, vault_ids: nil, request_options: {})
           #   @param session_id [String]
           #
           #   @param agent [OpenAI::Models::Beta::Agents::SessionUpdateParams::Agent]
@@ -81,6 +88,10 @@ module OpenAI
           #   @param spend_control [OpenAI::Models::Beta::Agents::SessionUpdateParams::SpendControl, nil]
           #     Omit to retain the limit; null or a null limit removes it without resetting
           #     spend.
+          #
+          #   @param vault_ids [Array<String>, nil]
+          #     Replaces the session's referenced vaults. Omit to retain them; null or [] clears
+          #     them.
           #
           #   @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}]
 

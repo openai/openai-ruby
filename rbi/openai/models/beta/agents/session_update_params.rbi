@@ -66,6 +66,11 @@ module OpenAI
           }
           attr_writer :spend_control
 
+          # Replaces the session's referenced vaults. Omit to retain them; null or [] clears
+          # them.
+          sig { returns(T.nilable(T::Array[String])) }
+          attr_accessor :vault_ids
+
           sig do
             params(
 
@@ -80,6 +85,8 @@ module OpenAI
               review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
 
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
+
+              vault_ids: T.nilable(T::Array[String]),
 
               request_options: OpenAI::RequestOptions::OrHash
             )
@@ -109,6 +116,10 @@ module OpenAI
             # spend.
             spend_control: nil,
 
+            # Replaces the session's referenced vaults. Omit to retain them; null or [] clears
+            # them.
+            vault_ids: nil,
+
             request_options: {}
           )
           end
@@ -122,6 +133,7 @@ module OpenAI
                 prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions),
                 review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
                 spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl),
+                vault_ids: T.nilable(T::Array[String]),
                 request_options: OpenAI::RequestOptions
               }
             )

@@ -57,6 +57,7 @@ module OpenAI
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
+            ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           ) -> OpenAI::Beta::AgentSession
 

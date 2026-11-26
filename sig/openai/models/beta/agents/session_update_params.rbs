@@ -10,6 +10,7 @@ module OpenAI
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
+            ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           }
 
@@ -50,6 +51,10 @@ module OpenAI
           # spend.
           attr_accessor spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?
 
+          # Replaces the session's referenced vaults. Omit to retain them; null or [] clears
+          # them.
+          attr_accessor vault_ids: ::Array[String]?
+
           # @param agent
           #   Agent settings to update on this session. Omitted fields stay unchanged.
           # @param metadata
@@ -65,6 +70,9 @@ module OpenAI
           # @param spend_control
           #   Omit to retain the limit; null or a null limit removes it without resetting
           #   spend.
+          # @param vault_ids
+          #   Replaces the session's referenced vaults. Omit to retain them; null or [] clears
+          #   them.
           def initialize: (
             session_id: String,
             ?agent: OpenAI::Beta::Agents::SessionUpdateParams::Agent,
@@ -72,6 +80,7 @@ module OpenAI
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
+            ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
@@ -82,6 +91,7 @@ module OpenAI
             ?prompt_cache_options: OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions?,
             ?review: OpenAI::Models::Beta::Agents::SessionUpdateParams::review,
             ?spend_control: OpenAI::Beta::Agents::SessionUpdateParams::SpendControl?,
+            ?vault_ids: ::Array[String]?,
             ?request_options: OpenAI::RequestOptions
           }
 
