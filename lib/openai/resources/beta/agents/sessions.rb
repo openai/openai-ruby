@@ -209,12 +209,12 @@ module OpenAI
             )
           end
 
-          # Updates session tools, metadata, model, reasoning effort, service tier, or the
-          # default prompt cache lifetime. Model settings apply to subsequent turns. Omitted
-          # fields are unchanged. See
+          # Updates session tools, vaults, metadata, model, reasoning effort, service tier,
+          # or the default prompt cache lifetime. Model settings apply to subsequent turns.
+          # Omitted fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           #
-          # @overload update(session_id, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, request_options: {})
+          # @overload update(session_id, agent: nil, metadata: nil, prompt_cache_options: nil, review: nil, spend_control: nil, vault_ids: nil, request_options: {})
           #
           # @param session_id [String]
           #   The ID of the session.
@@ -238,6 +238,10 @@ module OpenAI
           # @param spend_control [OpenAI::Models::Beta::Agents::SessionUpdateParams::SpendControl, nil]
           #   Omit to retain the limit; null or a null limit removes it without resetting
           #   spend.
+          #
+          # @param vault_ids [Array<String>, nil]
+          #   Replaces the session's referenced vaults. Omit to retain them; null or [] clears
+          #   them.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

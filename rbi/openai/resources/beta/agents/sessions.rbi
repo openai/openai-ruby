@@ -171,9 +171,9 @@ module OpenAI
           )
           end
 
-          # Updates session tools, metadata, model, reasoning effort, service tier, or the
-          # default prompt cache lifetime. Model settings apply to subsequent turns. Omitted
-          # fields are unchanged. See
+          # Updates session tools, vaults, metadata, model, reasoning effort, service tier,
+          # or the default prompt cache lifetime. Model settings apply to subsequent turns.
+          # Omitted fields are unchanged. See
           # [managing sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage).
           sig {
             params(
@@ -183,6 +183,7 @@ module OpenAI
               prompt_cache_options: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::PromptCacheOptions::OrHash),
               review: OpenAI::Beta::Agents::SessionUpdateParams::Review::OrSymbol,
               spend_control: T.nilable(OpenAI::Beta::Agents::SessionUpdateParams::SpendControl::OrHash),
+              vault_ids: T.nilable(T::Array[String]),
               request_options: OpenAI::RequestOptions::OrHash
             )
               .returns(OpenAI::Beta::AgentSession)
@@ -205,6 +206,9 @@ module OpenAI
             # Omit to retain the limit; null or a null limit removes it without resetting
             # spend.
             spend_control: nil,
+            # Replaces the session's referenced vaults. Omit to retain them; null or [] clears
+            # them.
+            vault_ids: nil,
             request_options: {}
           )
           end
