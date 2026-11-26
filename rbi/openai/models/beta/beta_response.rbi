@@ -60,9 +60,9 @@ module OpenAI
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 
-        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-        # range of models with different capabilities, performance characteristics, and
-        # price points. Refer to the
+        # Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
         # [model guide](https://developers.openai.com/api/docs/models) to browse and
         # compare available models.
         sig { returns(OpenAI::Beta::BetaResponse::Model::Variants) }
@@ -549,9 +549,9 @@ module OpenAI
           # a maximum length of 512 characters.
           metadata:,
 
-          # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-          # range of models with different capabilities, performance characteristics, and
-          # price points. Refer to the
+          # Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+          # wide range of models with different capabilities, performance characteristics,
+          # and price points. Refer to the
           # [model guide](https://developers.openai.com/api/docs/models) to browse and
           # compare available models.
           model:,
@@ -966,9 +966,9 @@ module OpenAI
 
         end
 
-        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-        # range of models with different capabilities, performance characteristics, and
-        # price points. Refer to the
+        # Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
         # [model guide](https://developers.openai.com/api/docs/models) to browse and
         # compare available models.
         module Model

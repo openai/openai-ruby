@@ -42,7 +42,19 @@ module OpenAI
         #   @return [OpenAI::Models::Responses::CompactedResponse::Image, nil]
         optional :image, -> { OpenAI::Responses::CompactedResponse::Image }
 
-        # @!method initialize(id:, created_at:, output:, usage:, image: nil, object: :"response.compaction")
+        # @!attribute safety_identifier
+        #   A stable identifier that was used for safety monitoring and abuse detection.
+        #
+        #   @return [String, nil]
+        optional :safety_identifier, String, nil?: true
+
+        # @!attribute service_tier
+        #   The service tier used for compaction, when reported.
+        #
+        #   @return [String, nil]
+        optional :service_tier, String
+
+        # @!method initialize(id:, created_at:, output:, usage:, image: nil, safety_identifier: nil, service_tier: nil, object: :"response.compaction")
         #   @param id [String]
         #     The unique identifier for the compacted response.
         #
@@ -58,6 +70,12 @@ module OpenAI
         #     tokens.
         #
         #   @param image [OpenAI::Models::Responses::CompactedResponse::Image]
+        #
+        #   @param safety_identifier [String, nil]
+        #     A stable identifier that was used for safety monitoring and abuse detection.
+        #
+        #   @param service_tier [String]
+        #     The service tier used for compaction, when reported.
         #
         #   @param object [Symbol, :"response.compaction"]
         #     The object type. Always `response.compaction`.

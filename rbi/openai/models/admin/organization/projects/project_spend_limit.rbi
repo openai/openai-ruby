@@ -46,6 +46,18 @@ module OpenAI
             sig { returns(Integer) }
             attr_accessor :threshold_amount
 
+            # Email notifications sent when the hard spend limit is reached.
+            sig { returns(T.nilable(OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel)) }
+            attr_reader :notification_channel
+
+            sig {
+              params(
+                notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel::OrHash
+              )
+                .void
+            }
+            attr_writer :notification_channel
+
             # Represents a hard spend limit configured at the project level.
             sig do
               params(
@@ -57,6 +69,8 @@ module OpenAI
                 interval: T.any(String, OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval::OrSymbol),
 
                 threshold_amount: Integer,
+
+                notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel::OrHash,
 
                 object: Symbol
               )
@@ -77,6 +91,9 @@ module OpenAI
               # The hard spend limit amount, in cents.
               threshold_amount:,
 
+              # Email notifications sent when the hard spend limit is reached.
+              notification_channel: nil,
+
               # The object type, which is always `project.spend_limit`.
 
               object: :"project.spend_limit"
@@ -90,7 +107,8 @@ module OpenAI
                   enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
                   interval: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval::Variants,
                   object: Symbol,
-                  threshold_amount: Integer
+                  threshold_amount: Integer,
+                  notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel
                 }
               )
             end
@@ -219,6 +237,55 @@ module OpenAI
               OrSymbol = T.type_alias { T.any(Symbol, String) }
 
               MONTH = T.let(:month, OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval::TaggedSymbol)
+
+            end
+
+            class NotificationChannel < OpenAI::Internal::Type::BaseModel
+              OrHash = T.type_alias do
+                T.any(
+                  OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel,
+                  OpenAI::Internal::AnyHash
+                )
+              end
+
+              sig { returns(T::Array[String]) }
+              attr_accessor :recipients
+
+              sig { returns(Symbol) }
+              attr_accessor :type
+
+              sig { returns(T.nilable(String)) }
+              attr_accessor :subject_prefix
+
+              # Email notifications sent when the hard spend limit is reached.
+              sig do
+                params(
+
+                  recipients: T::Array[String],
+
+                  subject_prefix: T.nilable(String),
+
+                  type: Symbol
+                )
+                  .returns(T.attached_class)
+              end
+              def self.new(
+
+                recipients:,
+
+                subject_prefix: nil,
+
+                type: :email
+              )
+              end
+
+              sig do
+                override.returns(
+                  {recipients: T::Array[String], type: Symbol, subject_prefix: T.nilable(String)}
+                )
+              end
+              def to_hash
+              end
 
             end
 

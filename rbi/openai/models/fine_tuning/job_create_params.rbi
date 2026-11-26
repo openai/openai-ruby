@@ -81,7 +81,7 @@ module OpenAI
         # name.
         #
         # For example, a `suffix` of "custom-model-name" would produce a model name like
-        # `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
+        # `ft:gpt-4.1-mini-2025-04-14:openai:custom-model-name:7p4lURel`.
         sig { returns(T.nilable(String)) }
         attr_accessor :suffix
 
@@ -179,7 +179,7 @@ module OpenAI
           # name.
           #
           # For example, a `suffix` of "custom-model-name" would produce a model name like
-          # `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
+          # `ft:gpt-4.1-mini-2025-04-14:openai:custom-model-name:7p4lURel`.
           suffix: nil,
 
           # The ID of an uploaded file that contains validation data.
@@ -237,6 +237,10 @@ module OpenAI
 
           OrSymbol = T.type_alias { T.any(Symbol, String) }
 
+          GPT_4_1_MINI_2025_04_14 = T.let(
+            :"gpt-4.1-mini-2025-04-14",
+            OpenAI::FineTuning::JobCreateParams::Model::TaggedSymbol
+          )
           BABBAGE_002 = T.let(:"babbage-002", OpenAI::FineTuning::JobCreateParams::Model::TaggedSymbol)
           DAVINCI_002 = T.let(:"davinci-002", OpenAI::FineTuning::JobCreateParams::Model::TaggedSymbol)
           GPT_3_5_TURBO = T.let(:"gpt-3.5-turbo", OpenAI::FineTuning::JobCreateParams::Model::TaggedSymbol)

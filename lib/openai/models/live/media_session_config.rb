@@ -34,9 +34,10 @@ module OpenAI
         optional :delegation, union: -> { OpenAI::Live::MediaSessionConfig::Delegation }, nil?: true
 
         # @!attribute idle_timeout_s
-        #   Whole seconds of inactivity after which a Live WebRTC session with a speech wake
-        #   policy pauses inference. The connection and conversation history are retained.
-        #   Omit to keep inference active until the session ends.
+        #   Whole seconds of inactivity after which a Live WebRTC or SIP session with a
+        #   speech wake policy pauses inference. The connection and conversation history are
+        #   retained. Omit to keep inference active after the first wake until the session
+        #   ends.
         #
         #   @return [Integer, nil]
         optional :idle_timeout_s, Integer
@@ -85,8 +86,7 @@ module OpenAI
         optional :triggers, -> { OpenAI::Internal::Type::ArrayOf[OpenAI::Live::DecisionTrigger] }
 
         # @!attribute wake_policy
-        #   Inference starts when the Live WebRTC session connects. After an idle pause,
-        #   microphone speech resumes inference.
+        #   Starts inference when microphone speech is detected.
         #
         #   @return [OpenAI::Models::Live::MediaSessionConfig::WakePolicy, nil]
         optional :wake_policy, -> { OpenAI::Live::MediaSessionConfig::WakePolicy }
@@ -115,9 +115,10 @@ module OpenAI
         #     API.
         #
         #   @param idle_timeout_s [Integer]
-        #     Whole seconds of inactivity after which a Live WebRTC session with a speech wake
-        #     policy pauses inference. The connection and conversation history are retained.
-        #     Omit to keep inference active until the session ends.
+        #     Whole seconds of inactivity after which a Live WebRTC or SIP session with a
+        #     speech wake policy pauses inference. The connection and conversation history are
+        #     retained. Omit to keep inference active after the first wake until the session
+        #     ends.
         #
         #   @param input [Array<OpenAI::Models::Live::InitialItem::Developer, OpenAI::Models::Live::InitialItem::User, OpenAI::Models::Live::InitialItem::Assistant>]
         #     Ordered text-only history supplied before startup. Supports developer, user, and
@@ -148,8 +149,7 @@ module OpenAI
         #     triggers.
         #
         #   @param wake_policy [OpenAI::Models::Live::MediaSessionConfig::WakePolicy]
-        #     Inference starts when the Live WebRTC session connects. After an idle pause,
-        #     microphone speech resumes inference.
+        #     Starts inference when microphone speech is detected.
 
         # The Live model. Required in the session configuration for every transport; do
         # not pass it as a URL query parameter.
@@ -342,20 +342,19 @@ module OpenAI
           required :type, const: :speech
 
           # @!attribute vad_threshold
-          #   The speech detection threshold for resuming paused inference, from 0 to 1
-          #   inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          #   The speech detection threshold for the first wake and each later wake, from 0 to
+          #   1 inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
           #   This setting is independent of active turn detection.
           #
           #   @return [Float, nil]
           optional :vad_threshold, Float
 
           # @!method initialize(vad_threshold: nil, type: :speech)
-          #   Inference starts when the Live WebRTC session connects. After an idle pause,
-          #   microphone speech resumes inference.
+          #   Starts inference when microphone speech is detected.
           #
           #   @param vad_threshold [Float]
-          #     The speech detection threshold for resuming paused inference, from 0 to 1
-          #     inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          #     The speech detection threshold for the first wake and each later wake, from 0 to
+          #     1 inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
           #     This setting is independent of active turn detection.
           #
           #   @param type [Symbol, :speech]

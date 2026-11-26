@@ -8,7 +8,9 @@ module OpenAI
           ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Responses::response_item],
           usage: OpenAI::Responses::ResponseUsage,
-          ?image: OpenAI::Responses::CompactedResponse::Image
+          ?image: OpenAI::Responses::CompactedResponse::Image,
+          ?safety_identifier: String?,
+          ?service_tier: String
         }
 
       class CompactedResponse < OpenAI::Internal::Type::BaseModel
@@ -35,6 +37,15 @@ module OpenAI
           OpenAI::Responses::CompactedResponse::Image
         ) -> OpenAI::Responses::CompactedResponse::Image
 
+        # A stable identifier that was used for safety monitoring and abuse detection.
+        attr_accessor safety_identifier: String?
+
+        # The service tier used for compaction, when reported.
+        attr_reader service_tier: String?
+
+        # The service tier used for compaction, when reported.
+        def service_tier=: (String) -> String
+
         # @param id
         #   The unique identifier for the compacted response.
         # @param created_at
@@ -45,6 +56,10 @@ module OpenAI
         # @param usage
         #   Token accounting for the compaction pass, including cached, reasoning, and total
         #   tokens.
+        # @param safety_identifier
+        #   A stable identifier that was used for safety monitoring and abuse detection.
+        # @param service_tier
+        #   The service tier used for compaction, when reported.
         # @param object
         #   The object type. Always `response.compaction`.
         def initialize: (
@@ -53,6 +68,8 @@ module OpenAI
           output: ::Array[OpenAI::Models::Responses::response_item],
           usage: OpenAI::Responses::ResponseUsage,
           ?image: OpenAI::Responses::CompactedResponse::Image,
+          ?safety_identifier: String?,
+          ?service_tier: String,
           ?object: :"response.compaction"
         ) -> void
 
@@ -62,7 +79,9 @@ module OpenAI
           ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Responses::response_item],
           usage: OpenAI::Responses::ResponseUsage,
-          ?image: OpenAI::Responses::CompactedResponse::Image
+          ?image: OpenAI::Responses::CompactedResponse::Image,
+          ?safety_identifier: String?,
+          ?service_tier: String
         }
 
         type image =

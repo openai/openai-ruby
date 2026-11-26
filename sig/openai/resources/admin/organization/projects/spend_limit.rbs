@@ -14,6 +14,7 @@ module OpenAI
               currency: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::currency,
               interval: OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::interval,
               threshold_amount: Integer,
+              ?notification_channel: OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::NotificationChannel?,
               ?request_options: OpenAI::request_opts
             ) -> OpenAI::Admin::Organization::Projects::ProjectSpendLimit
 

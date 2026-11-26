@@ -271,7 +271,7 @@ module OpenAI
           #
           # @param line_items [Array<String>]
           #   Return only costs for these exact line item names. Each value must match the
-          #   complete `line_item` value, for example `gpt-6-astra, input_tokens`.
+          #   complete `line_item` value, for example `gpt-6.2-astra, input_tokens`.
           #
           # @param page [String]
           #   A cursor for use in pagination. Corresponding to the `next_page` field from the

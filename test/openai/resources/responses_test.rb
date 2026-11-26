@@ -4,7 +4,7 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
   def test_create
-    response = @openai.responses.create
+    response = @openai.responses.create(input: "Write a one-sentence bedtime story about a unicorn.")
 
     assert_pattern do
       response => OpenAI::Responses::Response
@@ -181,7 +181,9 @@ class OpenAI::Test::Resources::ResponsesTest < OpenAI::Test::ResourceTest
           object: Symbol,
           output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Responses::ResponseItem]),
           usage: OpenAI::Responses::ResponseUsage,
-          image: OpenAI::Responses::CompactedResponse::Image | nil
+          image: OpenAI::Responses::CompactedResponse::Image | nil,
+          safety_identifier: String | nil,
+          service_tier: String | nil
         }
     end
   end

@@ -72,6 +72,10 @@ module OpenAI
         sig { returns(T.nilable(T::Hash[Symbol, String])) }
         attr_accessor :metadata
 
+        # A stable identifier used for safety monitoring and abuse detection.
+        sig { returns(T.nilable(String)) }
+        attr_accessor :safety_identifier
+
         sig do
           params(
 
@@ -117,6 +121,8 @@ module OpenAI
 
             metadata: T.nilable(T::Hash[Symbol, String]),
 
+            safety_identifier: T.nilable(String),
+
             request_options: OpenAI::RequestOptions::OrHash
           )
             .returns(T.attached_class)
@@ -133,6 +139,9 @@ module OpenAI
           # Keys are strings with a maximum length of 64 characters. Values are strings with
           # a maximum length of 512 characters.
           metadata: nil,
+
+          # A stable identifier used for safety monitoring and abuse detection.
+          safety_identifier: nil,
 
           request_options: {}
         )
@@ -181,6 +190,7 @@ module OpenAI
                 ]
               ),
               metadata: T.nilable(T::Hash[Symbol, String]),
+              safety_identifier: T.nilable(String),
               request_options: OpenAI::RequestOptions
             }
           )

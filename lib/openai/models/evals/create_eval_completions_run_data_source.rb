@@ -26,7 +26,7 @@ module OpenAI
         optional :input_messages, union: -> { OpenAI::Evals::CreateEvalCompletionsRunDataSource::InputMessages }
 
         # @!attribute model
-        #   The name of the model to use for generating completions (e.g. "o3-mini").
+        #   The model to use to sample outputs with the Chat Completions API.
         #
         #   @return [String, nil]
         optional :model, String
@@ -52,7 +52,7 @@ module OpenAI
         #     namespace.
         #
         #   @param model [String]
-        #     The name of the model to use for generating completions (e.g. "o3-mini").
+        #     The model to use to sample outputs with the Chat Completions API.
         #
         #   @param sampling_params [OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::SamplingParams]
 
@@ -174,7 +174,7 @@ module OpenAI
             optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
             # @!attribute model
-            #   An optional model to filter by (e.g., 'gpt-6-astra').
+            #   An optional model to filter by (e.g., 'gpt-4.1-mini-2025-04-14').
             #
             #   @return [String, nil]
             optional :model, String, nil?: true
@@ -199,7 +199,7 @@ module OpenAI
             #     a maximum length of 512 characters.
             #
             #   @param model [String, nil]
-            #     An optional model to filter by (e.g., 'gpt-6-astra').
+            #     An optional model to filter by (e.g., 'gpt-4.1-mini-2025-04-14').
             #
             #   @param type [Symbol, :stored_completions]
             #     The type of source. Always `stored_completions`.

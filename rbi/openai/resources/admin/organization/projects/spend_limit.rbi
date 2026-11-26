@@ -31,6 +31,9 @@ module OpenAI
                 currency: OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::Currency::OrSymbol,
                 interval: OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::Interval::OrSymbol,
                 threshold_amount: Integer,
+                notification_channel: T.nilable(
+                  OpenAI::Admin::Organization::Projects::SpendLimitUpdateParams::NotificationChannel::OrHash
+                ),
                 request_options: OpenAI::RequestOptions::OrHash
               )
                 .returns(OpenAI::Admin::Organization::Projects::ProjectSpendLimit)
@@ -45,6 +48,9 @@ module OpenAI
               interval:,
               # The hard spend limit amount, in cents.
               threshold_amount:,
+              # Configure email notifications when the spend limit is reached. Leave this out to
+              # keep the current settings, or send null to reset to owner-only notifications.
+              notification_channel: nil,
               request_options: {}
             )
             end

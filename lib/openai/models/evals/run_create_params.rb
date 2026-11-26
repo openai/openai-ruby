@@ -98,7 +98,7 @@ module OpenAI
             )
 
             # @!attribute model
-            #   The name of the model to use for generating completions (e.g. "o3-mini").
+            #   The model to use to sample outputs with the Responses API.
             #
             #   @return [String, nil]
             optional :model, String
@@ -127,7 +127,7 @@ module OpenAI
             #     namespace.
             #
             #   @param model [String]
-            #     The name of the model to use for generating completions (e.g. "o3-mini").
+            #     The model to use to sample outputs with the Responses API.
             #
             #   @param sampling_params [OpenAI::Models::Evals::RunCreateParams::DataSource::CreateEvalResponsesRunDataSource::SamplingParams]
 

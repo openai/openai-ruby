@@ -130,9 +130,9 @@ module OpenAI
       #   a maximum length of 512 characters.
       #
       # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel]
-      #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-      #   range of models with different capabilities, performance characteristics, and
-      #   price points. Refer to the
+      #   Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+      #   wide range of models with different capabilities, performance characteristics,
+      #   and price points. Refer to the
       #   [model guide](https://developers.openai.com/api/docs/models) to browse and
       #   compare available models.
       #
@@ -432,9 +432,9 @@ module OpenAI
       #   a maximum length of 512 characters.
       #
       # @param model [String, Symbol, OpenAI::Models::ChatModel, OpenAI::Models::ResponsesModel::ResponsesOnlyModel]
-      #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-      #   range of models with different capabilities, performance characteristics, and
-      #   price points. Refer to the
+      #   Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+      #   wide range of models with different capabilities, performance characteristics,
+      #   and price points. Refer to the
       #   [model guide](https://developers.openai.com/api/docs/models) to browse and
       #   compare available models.
       #
@@ -803,12 +803,12 @@ module OpenAI
       # For ZDR-compatible compaction details, see
       # [Compaction (advanced)](https://developers.openai.com/api/docs/guides/conversation-state#compaction-advanced).
       #
-      # @overload compact(model:, image: nil, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, service_tier: nil, request_options: {})
+      # @overload compact(model:, image: nil, input: nil, instructions: nil, previous_response_id: nil, prompt_cache_key: nil, prompt_cache_options: nil, prompt_cache_retention: nil, safety_identifier: nil, service_tier: nil, request_options: {})
       #
       # @param model [Symbol, String, OpenAI::Models::Responses::ResponseCompactParams::Model, nil]
-      #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-      #   range of models with different capabilities, performance characteristics, and
-      #   price points. Refer to the
+      #   Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+      #   wide range of models with different capabilities, performance characteristics,
+      #   and price points. Refer to the
       #   [model guide](https://developers.openai.com/api/docs/models) to browse and
       #   compare available models.
       #
@@ -846,6 +846,9 @@ module OpenAI
       #
       # @param prompt_cache_retention [Symbol, OpenAI::Models::Responses::ResponseCompactParams::PromptCacheRetention, nil]
       #   How long to retain a prompt cache entry created by this request.
+      #
+      # @param safety_identifier [String, nil]
+      #   A stable identifier used for safety monitoring and abuse detection.
       #
       # @param service_tier [Symbol, OpenAI::Models::Responses::ResponseCompactParams::ServiceTier, nil]
       #   Specifies the processing type used for serving the request. - If set to 'auto',

@@ -6,6 +6,7 @@ module OpenAI
       def create: (
         ?items: ::Array[OpenAI::Models::Responses::response_input_item]?,
         ?metadata: OpenAI::Models::metadata?,
+        ?safety_identifier: String?,
         ?request_options: OpenAI::request_opts
       ) -> OpenAI::Conversations::Conversation
 

@@ -106,7 +106,7 @@ module OpenAI
       #   response parameter to monitor changes in the backend.
       #
       # @param stop [String, Array<String>, nil]
-      #   Not supported with latest reasoning models `o3` and `o4-mini`.
+      #   Not supported with reasoning models `o3` and `o4-mini`.
       #
       #   Up to 4 sequences where the API will stop generating further tokens. The
       #   returned text will not contain the stop sequence.
@@ -261,7 +261,7 @@ module OpenAI
       #   response parameter to monitor changes in the backend.
       #
       # @param stop [String, Array<String>, nil]
-      #   Not supported with latest reasoning models `o3` and `o4-mini`.
+      #   Not supported with reasoning models `o3` and `o4-mini`.
       #
       #   Up to 4 sequences where the API will stop generating further tokens. The
       #   returned text will not contain the stop sequence.

@@ -11,7 +11,8 @@ module OpenAI
               enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
               interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval,
               ?object: :"project.spend_limit",
-              threshold_amount: Integer
+              threshold_amount: Integer,
+              ?notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel
             }
 
           class ProjectSpendLimit < OpenAI::Internal::Type::BaseModel
@@ -31,6 +32,14 @@ module OpenAI
             # The hard spend limit amount, in cents.
             attr_accessor threshold_amount: Integer
 
+            # Email notifications sent when the hard spend limit is reached.
+            attr_reader notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel?
+
+            # Email notifications sent when the hard spend limit is reached.
+            def notification_channel=: (
+              OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel
+            ) -> OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel
+
             # @param currency
             #   The currency for the threshold amount. Currently, only `USD` is supported.
             # @param enforcement
@@ -40,6 +49,8 @@ module OpenAI
             #   `month` is supported.
             # @param threshold_amount
             #   The hard spend limit amount, in cents.
+            # @param notification_channel
+            #   Email notifications sent when the hard spend limit is reached.
             # @param object
             #   The object type, which is always `project.spend_limit`.
             def initialize: (
@@ -47,6 +58,7 @@ module OpenAI
               enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
               interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval,
               threshold_amount: Integer,
+              ?notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel,
               ?object: :"project.spend_limit"
             ) -> void
 
@@ -55,7 +67,8 @@ module OpenAI
               enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
               interval: OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval,
               ?object: :"project.spend_limit",
-              threshold_amount: Integer
+              threshold_amount: Integer,
+              ?notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel
             }
 
             type currency = String | :USD
@@ -107,6 +120,33 @@ module OpenAI
               def self?.variants: -> ::Array[OpenAI::Models::Admin::Organization::Projects::ProjectSpendLimit::interval]
 
               MONTH: :month
+            end
+
+            type notification_channel =
+              {
+                recipients: ::Array[String],
+                ?type: :email,
+                ?subject_prefix: String?
+              }
+
+            class NotificationChannel < OpenAI::Internal::Type::BaseModel
+              attr_accessor recipients: ::Array[String]
+
+              attr_accessor type: :email
+
+              attr_accessor subject_prefix: String?
+
+              def initialize: (
+                recipients: ::Array[String],
+                ?subject_prefix: String?,
+                ?type: :email
+              ) -> void
+
+              def to_hash: -> {
+                recipients: ::Array[String],
+                ?type: :email,
+                ?subject_prefix: String?
+              }
             end
           end
         end

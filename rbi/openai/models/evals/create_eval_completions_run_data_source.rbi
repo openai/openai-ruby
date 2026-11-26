@@ -57,7 +57,7 @@ module OpenAI
         }
         attr_writer :input_messages
 
-        # The name of the model to use for generating completions (e.g. "o3-mini").
+        # The model to use to sample outputs with the Chat Completions API.
         sig { returns(T.nilable(String)) }
         attr_reader :model
 
@@ -107,7 +107,7 @@ module OpenAI
           # namespace.
           input_messages: nil,
 
-          # The name of the model to use for generating completions (e.g. "o3-mini").
+          # The model to use to sample outputs with the Chat Completions API.
           model: nil,
 
           sampling_params: nil
@@ -319,7 +319,7 @@ module OpenAI
             sig { returns(T.nilable(T::Hash[Symbol, String])) }
             attr_accessor :metadata
 
-            # An optional model to filter by (e.g., 'gpt-6-astra').
+            # An optional model to filter by (e.g., 'gpt-4.1-mini-2025-04-14').
             sig { returns(T.nilable(String)) }
             attr_accessor :model
 
@@ -359,7 +359,7 @@ module OpenAI
               # a maximum length of 512 characters.
               metadata: nil,
 
-              # An optional model to filter by (e.g., 'gpt-6-astra').
+              # An optional model to filter by (e.g., 'gpt-4.1-mini-2025-04-14').
               model: nil,
 
               # The type of source. Always `stored_completions`.

@@ -26,7 +26,7 @@ module OpenAI
 
           # Create or replace the organization's hard spend limit.
           #
-          # @overload update(currency:, interval:, threshold_amount:, request_options: {})
+          # @overload update(currency:, interval:, threshold_amount:, notification_channel: nil, request_options: {})
           #
           # @param currency [Symbol, OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::Currency]
           #   The currency for the threshold amount. Currently, only `USD` is supported.
@@ -37,6 +37,10 @@ module OpenAI
           #
           # @param threshold_amount [Integer]
           #   The hard spend limit amount, in cents.
+          #
+          # @param notification_channel [OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::NotificationChannel, nil]
+          #   Configure email notifications when the spend limit is reached. Leave this out to
+          #   keep the current settings, or send null to reset to owner-only notifications.
           #
           # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
           #

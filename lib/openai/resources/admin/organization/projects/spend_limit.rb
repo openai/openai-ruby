@@ -30,7 +30,7 @@ module OpenAI
 
             # Create or replace a project's hard spend limit.
             #
-            # @overload update(project_id, currency:, interval:, threshold_amount:, request_options: {})
+            # @overload update(project_id, currency:, interval:, threshold_amount:, notification_channel: nil, request_options: {})
             #
             # @param project_id [String]
             #   The ID of the project whose hard spend limit is being managed.
@@ -44,6 +44,10 @@ module OpenAI
             #
             # @param threshold_amount [Integer]
             #   The hard spend limit amount, in cents.
+            #
+            # @param notification_channel [OpenAI::Models::Admin::Organization::Projects::SpendLimitUpdateParams::NotificationChannel, nil]
+            #   Configure email notifications when the spend limit is reached. Leave this out to
+            #   keep the current settings, or send null to reset to owner-only notifications.
             #
             # @param request_options [OpenAI::RequestOptions, Hash{Symbol=>Object}, nil]
             #

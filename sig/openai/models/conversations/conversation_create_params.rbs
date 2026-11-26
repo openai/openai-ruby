@@ -5,6 +5,7 @@ module OpenAI
         {
           ?items: ::Array[OpenAI::Models::Responses::response_input_item]?,
           ?metadata: OpenAI::Models::metadata?,
+          ?safety_identifier: String?,
           ?request_options: OpenAI::request_opts
         }
 
@@ -23,6 +24,9 @@ module OpenAI
         # a maximum length of 512 characters.
         attr_accessor metadata: OpenAI::Models::metadata?
 
+        # A stable identifier used for safety monitoring and abuse detection.
+        attr_accessor safety_identifier: String?
+
         # @param items
         #   Initial items to include in the conversation context. You may add up to 20 items
         #   at a time.
@@ -32,15 +36,19 @@ module OpenAI
         #
         #   Keys are strings with a maximum length of 64 characters. Values are strings with
         #   a maximum length of 512 characters.
+        # @param safety_identifier
+        #   A stable identifier used for safety monitoring and abuse detection.
         def initialize: (
           ?items: ::Array[OpenAI::Models::Responses::response_input_item]?,
           ?metadata: OpenAI::Models::metadata?,
+          ?safety_identifier: String?,
           ?request_options: OpenAI::request_opts
         ) -> void
 
         def to_hash: -> {
           ?items: ::Array[OpenAI::Models::Responses::response_input_item]?,
           ?metadata: OpenAI::Models::metadata?,
+          ?safety_identifier: String?,
           ?request_options: OpenAI::RequestOptions
         }
       end
