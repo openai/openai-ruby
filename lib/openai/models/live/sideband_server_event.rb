@@ -16,7 +16,7 @@ module OpenAI
         # Returned when a Live session update is accepted. Contains the resolved session configuration after the update.
         variant :"session.updated", -> { OpenAI::Live::SessionUpdatedEvent }
 
-        # Sent when speech resumes paused inference and it is ready for audio in a Live WebRTC session. Delivered to the sideband and, when permitted by its event settings, the data channel.
+        # Sent when speech wakes inference and it is ready for audio in a Live WebRTC session. This occurs on the first wake and after each later wake. Delivered to the sideband and, when permitted by its event settings, the data channel.
         variant :"session.resumed", -> { OpenAI::Live::SidebandServerEvent::SessionResumed }
 
         # Sent when the idle timeout pauses inference in a Live WebRTC session. The WebRTC connection, sideband, and session ID persist. Delivered to the sideband and, when permitted by its event settings, the data channel.
@@ -120,9 +120,9 @@ module OpenAI
           optional :client_event_id, String
 
           # @!method initialize(event_id:, client_event_id: nil, type: :"session.resumed")
-          #   Sent when speech resumes paused inference and it is ready for audio in a Live
-          #   WebRTC session. Delivered to the sideband and, when permitted by its event
-          #   settings, the data channel.
+          #   Sent when speech wakes inference and it is ready for audio in a Live WebRTC
+          #   session. This occurs on the first wake and after each later wake. Delivered to
+          #   the sideband and, when permitted by its event settings, the data channel.
           #
           #   @param event_id [String]
           #     The unique ID of the Live server event.

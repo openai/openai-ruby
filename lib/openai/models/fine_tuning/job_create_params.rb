@@ -87,7 +87,7 @@ module OpenAI
         #   name.
         #
         #   For example, a `suffix` of "custom-model-name" would produce a model name like
-        #   `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
+        #   `ft:gpt-4.1-mini-2025-04-14:openai:custom-model-name:7p4lURel`.
         #
         #   @return [String, nil]
         optional :suffix, String, nil?: true
@@ -163,7 +163,7 @@ module OpenAI
         #     name.
         #
         #     For example, a `suffix` of "custom-model-name" would produce a model name like
-        #     `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
+        #     `ft:gpt-4.1-mini-2025-04-14:openai:custom-model-name:7p4lURel`.
         #
         #   @param validation_file [String, nil]
         #     The ID of an uploaded file that contains validation data.
@@ -189,6 +189,8 @@ module OpenAI
 
           variant String
 
+          variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::GPT_4_1_MINI_2025_04_14 }
+
           variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::BABBAGE_002 }
 
           variant const: -> { OpenAI::Models::FineTuning::JobCreateParams::Model::DAVINCI_002 }
@@ -206,6 +208,7 @@ module OpenAI
 
           # @!group
 
+          GPT_4_1_MINI_2025_04_14 = :"gpt-4.1-mini-2025-04-14"
           BABBAGE_002 = :"babbage-002"
           DAVINCI_002 = :"davinci-002"
           GPT_3_5_TURBO = :"gpt-3.5-turbo"

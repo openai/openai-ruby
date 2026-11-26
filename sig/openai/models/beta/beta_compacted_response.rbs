@@ -10,7 +10,9 @@ module OpenAI
           ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Beta::beta_response_item],
           usage: OpenAI::Beta::BetaResponseUsage,
-          ?image: OpenAI::Beta::BetaCompactedResponse::Image
+          ?image: OpenAI::Beta::BetaCompactedResponse::Image,
+          ?safety_identifier: String?,
+          ?service_tier: String
         }
 
       class BetaCompactedResponse < OpenAI::Internal::Type::BaseModel
@@ -37,6 +39,15 @@ module OpenAI
           OpenAI::Beta::BetaCompactedResponse::Image
         ) -> OpenAI::Beta::BetaCompactedResponse::Image
 
+        # A stable identifier that was used for safety monitoring and abuse detection.
+        attr_accessor safety_identifier: String?
+
+        # The service tier used for compaction, when reported.
+        attr_reader service_tier: String?
+
+        # The service tier used for compaction, when reported.
+        def service_tier=: (String) -> String
+
         # @param id
         #   The unique identifier for the compacted response.
         # @param created_at
@@ -47,6 +58,10 @@ module OpenAI
         # @param usage
         #   Token accounting for the compaction pass, including cached, reasoning, and total
         #   tokens.
+        # @param safety_identifier
+        #   A stable identifier that was used for safety monitoring and abuse detection.
+        # @param service_tier
+        #   The service tier used for compaction, when reported.
         # @param object
         #   The object type. Always `response.compaction`.
         def initialize: (
@@ -55,6 +70,8 @@ module OpenAI
           output: ::Array[OpenAI::Models::Beta::beta_response_item],
           usage: OpenAI::Beta::BetaResponseUsage,
           ?image: OpenAI::Beta::BetaCompactedResponse::Image,
+          ?safety_identifier: String?,
+          ?service_tier: String,
           ?object: :"response.compaction"
         ) -> void
 
@@ -64,7 +81,9 @@ module OpenAI
           ?object: :"response.compaction",
           output: ::Array[OpenAI::Models::Beta::beta_response_item],
           usage: OpenAI::Beta::BetaResponseUsage,
-          ?image: OpenAI::Beta::BetaCompactedResponse::Image
+          ?image: OpenAI::Beta::BetaCompactedResponse::Image,
+          ?safety_identifier: String?,
+          ?service_tier: String
         }
 
         type image =

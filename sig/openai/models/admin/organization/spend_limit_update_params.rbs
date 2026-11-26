@@ -7,6 +7,7 @@ module OpenAI
             currency: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::currency,
             interval: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval,
             threshold_amount: Integer,
+            ?notification_channel: OpenAI::Admin::Organization::SpendLimitUpdateParams::NotificationChannel?,
             ?request_options: OpenAI::request_opts
           }
 
@@ -24,6 +25,10 @@ module OpenAI
           # The hard spend limit amount, in cents.
           attr_accessor threshold_amount: Integer
 
+          # Configure email notifications when the spend limit is reached. Leave this out to
+          # keep the current settings, or send null to reset to owner-only notifications.
+          attr_accessor notification_channel: OpenAI::Admin::Organization::SpendLimitUpdateParams::NotificationChannel?
+
           # @param currency
           #   The currency for the threshold amount. Currently, only `USD` is supported.
           # @param interval
@@ -31,10 +36,14 @@ module OpenAI
           #   `month` is supported.
           # @param threshold_amount
           #   The hard spend limit amount, in cents.
+          # @param notification_channel
+          #   Configure email notifications when the spend limit is reached. Leave this out to
+          #   keep the current settings, or send null to reset to owner-only notifications.
           def initialize: (
             currency: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::currency,
             interval: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval,
             threshold_amount: Integer,
+            ?notification_channel: OpenAI::Admin::Organization::SpendLimitUpdateParams::NotificationChannel?,
             ?request_options: OpenAI::request_opts
           ) -> void
 
@@ -42,6 +51,7 @@ module OpenAI
             currency: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::currency,
             interval: OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval,
             threshold_amount: Integer,
+            ?notification_channel: OpenAI::Admin::Organization::SpendLimitUpdateParams::NotificationChannel?,
             ?request_options: OpenAI::RequestOptions
           }
 
@@ -63,6 +73,44 @@ module OpenAI
             MONTH: :month
 
             def self?.values: -> ::Array[OpenAI::Models::Admin::Organization::SpendLimitUpdateParams::interval]
+          end
+
+          type notification_channel =
+            {
+              ?type: :email,
+              ?recipients: ::Array[String],
+              ?subject_prefix: String?
+            }
+
+          class NotificationChannel < OpenAI::Internal::Type::BaseModel
+            attr_accessor type: :email
+
+            # Additional email recipients. Omit to keep them unchanged; send [] to clear them.
+            attr_reader recipients: ::Array[String]?
+
+            # Additional email recipients. Omit to keep them unchanged; send [] to clear them.
+            def recipients=: (::Array[String]) -> ::Array[String]
+
+            # Email subject prefix. Omit to keep it unchanged; send null or an empty string to
+            # clear it.
+            attr_accessor subject_prefix: String?
+
+            # @param recipients
+            #   Additional email recipients. Omit to keep them unchanged; send [] to clear them.
+            # @param subject_prefix
+            #   Email subject prefix. Omit to keep it unchanged; send null or an empty string to
+            #   clear it.
+            def initialize: (
+              ?recipients: ::Array[String],
+              ?subject_prefix: String?,
+              ?type: :email
+            ) -> void
+
+            def to_hash: -> {
+              ?type: :email,
+              ?recipients: ::Array[String],
+              ?subject_prefix: String?
+            }
           end
         end
       end

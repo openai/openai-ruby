@@ -116,7 +116,7 @@ module OpenAI
       sig { returns(T.nilable(T::Hash[Symbol, String])) }
       attr_accessor :metadata
 
-      # Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
+      # Model ID used to process the batch, like `gpt-6.2-astra`. OpenAI offers a wide
       # range of models with different capabilities, performance characteristics, and
       # price points. Refer to the
       # [model guide](https://developers.openai.com/api/docs/models) to browse and
@@ -254,7 +254,7 @@ module OpenAI
         # a maximum length of 512 characters.
         metadata: nil,
 
-        # Model ID used to process the batch, like `gpt-6-astra`. OpenAI offers a wide
+        # Model ID used to process the batch, like `gpt-6.2-astra`. OpenAI offers a wide
         # range of models with different capabilities, performance characteristics, and
         # price points. Refer to the
         # [model guide](https://developers.openai.com/api/docs/models) to browse and

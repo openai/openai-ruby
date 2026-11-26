@@ -5,7 +5,7 @@ require_relative "../../../test_helper"
 class OpenAI::Test::Resources::FineTuning::Checkpoints::PermissionsTest < OpenAI::Test::ResourceTest
   def test_create_required_params
     response = @openai.fine_tuning.checkpoints.permissions.create(
-      "ft:gpt-4o-mini-2024-07-18:org:weather:B7R9VjQd",
+      "ft:gpt-4.1-mini-2025-04-14:org:weather:B7R9VjQd",
       project_ids: ["string"]
     )
 
@@ -79,7 +79,7 @@ class OpenAI::Test::Resources::FineTuning::Checkpoints::PermissionsTest < OpenAI
   def test_delete_required_params
     response = @openai.fine_tuning.checkpoints.permissions.delete(
       "cp_zc4Q7MP6XxulcVzj4MZdwsAB",
-      fine_tuned_model_checkpoint: "ft:gpt-4o-mini-2024-07-18:org:weather:B7R9VjQd"
+      fine_tuned_model_checkpoint: "ft:gpt-4.1-mini-2025-04-14:org:weather:B7R9VjQd"
     )
 
     assert_pattern do

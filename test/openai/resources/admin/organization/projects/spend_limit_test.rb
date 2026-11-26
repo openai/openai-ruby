@@ -16,7 +16,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::SpendLimitTest < O
           enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
           interval: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval,
           object: Symbol,
-          threshold_amount: Integer
+          threshold_amount: Integer,
+          notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel | nil
         }
     end
   end
@@ -39,7 +40,8 @@ class OpenAI::Test::Resources::Admin::Organization::Projects::SpendLimitTest < O
           enforcement: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Enforcement,
           interval: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::Interval,
           object: Symbol,
-          threshold_amount: Integer
+          threshold_amount: Integer,
+          notification_channel: OpenAI::Admin::Organization::Projects::ProjectSpendLimit::NotificationChannel | nil
         }
     end
   end

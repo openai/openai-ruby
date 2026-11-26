@@ -195,7 +195,7 @@ module OpenAI
 
             # @!attribute tools
             #   Tools available to the agent. Omit to inherit, or pass null to clear them. The
-            #   resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
+            #   resolved tool list must fit within 8 MiB (8,388,608 bytes) of compact UTF-8
             #   JSON.
             #
             #   @return [Array<OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse, OpenAI::Models::Beta::AgentToolParam::Automations>, nil]
@@ -241,7 +241,7 @@ module OpenAI
             #
             #   @param tools [Array<OpenAI::Models::Beta::AgentToolParam::Function, OpenAI::Models::Beta::AgentToolParam::ToolSearch, OpenAI::Models::Beta::AgentToolParam::ProgrammaticToolCalling, OpenAI::Models::Beta::AgentToolParam::Mcp, OpenAI::Models::Beta::AgentToolParam::WebSearch, OpenAI::Models::Beta::AgentToolParam::ComputerUse, OpenAI::Models::Beta::AgentToolParam::Automations>, nil]
             #     Tools available to the agent. Omit to inherit, or pass null to clear them. The
-            #     resolved tool list must fit within 3 MiB (3,145,728 bytes) of compact UTF-8
+            #     resolved tool list must fit within 8 MiB (8,388,608 bytes) of compact UTF-8
             #     JSON.
 
             # @see OpenAI::Models::Beta::Agents::SessionCreateParams::Agent#compaction

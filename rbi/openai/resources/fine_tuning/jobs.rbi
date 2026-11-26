@@ -79,7 +79,7 @@ module OpenAI
           # name.
           #
           # For example, a `suffix` of "custom-model-name" would produce a model name like
-          # `ft:gpt-4o-mini:openai:custom-model-name:7p4lURel`.
+          # `ft:gpt-4.1-mini-2025-04-14:openai:custom-model-name:7p4lURel`.
           suffix: nil,
           # The ID of an uploaded file that contains validation data.
           #

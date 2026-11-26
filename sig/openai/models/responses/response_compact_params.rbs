@@ -11,6 +11,7 @@ module OpenAI
           ?prompt_cache_key: String?,
           ?prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
           ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+          ?safety_identifier: String?,
           ?service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
           ?request_options: OpenAI::request_opts
         }
@@ -19,9 +20,9 @@ module OpenAI
         extend OpenAI::Internal::Type::RequestParameters::Converter
         include OpenAI::Internal::Type::RequestParameters
 
-        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-        # range of models with different capabilities, performance characteristics, and
-        # price points. Refer to the
+        # Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
         # [model guide](https://developers.openai.com/api/docs/models) to browse and
         # compare available models.
         attr_accessor model: OpenAI::Models::Responses::ResponseCompactParams::model?
@@ -66,6 +67,9 @@ module OpenAI
         # How long to retain a prompt cache entry created by this request.
         attr_accessor prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?
 
+        # A stable identifier used for safety monitoring and abuse detection.
+        attr_accessor safety_identifier: String?
+
         # Specifies the processing type used for serving the request. - If set to 'auto',
         # then the request will be processed with the service tier configured in the
         # Project settings. Unless otherwise configured, the Project will use 'default'. -
@@ -85,9 +89,9 @@ module OpenAI
         attr_accessor service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?
 
         # @param model
-        #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-        #   range of models with different capabilities, performance characteristics, and
-        #   price points. Refer to the
+        #   Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+        #   wide range of models with different capabilities, performance characteristics,
+        #   and price points. Refer to the
         #   [model guide](https://developers.openai.com/api/docs/models) to browse and
         #   compare available models.
         # @param image
@@ -118,6 +122,8 @@ module OpenAI
         #   for current details.
         # @param prompt_cache_retention
         #   How long to retain a prompt cache entry created by this request.
+        # @param safety_identifier
+        #   A stable identifier used for safety monitoring and abuse detection.
         # @param service_tier
         #   Specifies the processing type used for serving the request. - If set to 'auto',
         #   then the request will be processed with the service tier configured in the
@@ -144,6 +150,7 @@ module OpenAI
           ?prompt_cache_key: String?,
           ?prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
           ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+          ?safety_identifier: String?,
           ?service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
           ?request_options: OpenAI::request_opts
         ) -> void
@@ -157,6 +164,7 @@ module OpenAI
           ?prompt_cache_key: String?,
           ?prompt_cache_options: OpenAI::Responses::ResponseCompactParams::PromptCacheOptions?,
           ?prompt_cache_retention: OpenAI::Models::Responses::ResponseCompactParams::prompt_cache_retention?,
+          ?safety_identifier: String?,
           ?service_tier: OpenAI::Models::Responses::ResponseCompactParams::service_tier?,
           ?request_options: OpenAI::RequestOptions
         }

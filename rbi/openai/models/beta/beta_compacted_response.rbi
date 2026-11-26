@@ -47,6 +47,17 @@ module OpenAI
         sig { params(image: OpenAI::Beta::BetaCompactedResponse::Image::OrHash).void }
         attr_writer :image
 
+        # A stable identifier that was used for safety monitoring and abuse detection.
+        sig { returns(T.nilable(String)) }
+        attr_accessor :safety_identifier
+
+        # The service tier used for compaction, when reported.
+        sig { returns(T.nilable(String)) }
+        attr_reader :service_tier
+
+        sig { params(service_tier: String).void }
+        attr_writer :service_tier
+
         sig do
           params(
 
@@ -96,6 +107,10 @@ module OpenAI
 
             image: OpenAI::Beta::BetaCompactedResponse::Image::OrHash,
 
+            safety_identifier: T.nilable(String),
+
+            service_tier: String,
+
             object: Symbol
           )
             .returns(T.attached_class)
@@ -118,6 +133,12 @@ module OpenAI
 
           image: nil,
 
+          # A stable identifier that was used for safety monitoring and abuse detection.
+          safety_identifier: nil,
+
+          # The service tier used for compaction, when reported.
+          service_tier: nil,
+
           # The object type. Always `response.compaction`.
 
           object: :"response.compaction"
@@ -132,7 +153,9 @@ module OpenAI
               object: Symbol,
               output: T::Array[OpenAI::Beta::BetaResponseItem::Variants],
               usage: OpenAI::Beta::BetaResponseUsage,
-              image: OpenAI::Beta::BetaCompactedResponse::Image
+              image: OpenAI::Beta::BetaCompactedResponse::Image,
+              safety_identifier: T.nilable(String),
+              service_tier: String
             }
           )
         end

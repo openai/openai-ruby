@@ -4,7 +4,7 @@ require_relative "../test_helper"
 
 class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
   def test_retrieve
-    response = @openai.models.retrieve("gpt-6-astra")
+    response = @openai.models.retrieve("gpt-6.2-astra")
 
     assert_pattern do
       response => OpenAI::Model
@@ -48,7 +48,7 @@ class OpenAI::Test::Resources::ModelsTest < OpenAI::Test::ResourceTest
   end
 
   def test_delete
-    response = @openai.models.delete("ft:gpt-4o-mini:acemeco:suffix:abc123")
+    response = @openai.models.delete("ft:gpt-4.1-mini-2025-04-14:acemeco:suffix:abc123")
 
     assert_pattern do
       response => OpenAI::ModelDeleted

@@ -244,7 +244,7 @@ module OpenAI
             }
             attr_writer :input_messages
 
-            # The name of the model to use for generating completions (e.g. "o3-mini").
+            # The model to use to sample outputs with the Responses API.
             sig { returns(T.nilable(String)) }
             attr_reader :model
 
@@ -296,7 +296,7 @@ module OpenAI
               # namespace.
               input_messages: nil,
 
-              # The name of the model to use for generating completions (e.g. "o3-mini").
+              # The model to use to sample outputs with the Responses API.
               model: nil,
 
               sampling_params: nil,

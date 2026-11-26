@@ -4,7 +4,10 @@ require_relative "../../test_helper"
 
 class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
   def test_create
-    response = @openai.beta.responses.create
+    response = @openai.beta.responses.create(
+      input: "Write a one-sentence bedtime story about a unicorn.",
+      model: "gpt-6.2-astra"
+    )
 
     assert_pattern do
       response => OpenAI::Beta::BetaResponse
@@ -181,7 +184,9 @@ class OpenAI::Test::Resources::Beta::ResponsesTest < OpenAI::Test::ResourceTest
           object: Symbol,
           output: ^(OpenAI::Internal::Type::ArrayOf[union: OpenAI::Beta::BetaResponseItem]),
           usage: OpenAI::Beta::BetaResponseUsage,
-          image: OpenAI::Beta::BetaCompactedResponse::Image | nil
+          image: OpenAI::Beta::BetaCompactedResponse::Image | nil,
+          safety_identifier: String | nil,
+          service_tier: String | nil
         }
     end
   end

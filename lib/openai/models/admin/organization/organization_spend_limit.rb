@@ -37,7 +37,16 @@ module OpenAI
           #   @return [Integer]
           required :threshold_amount, Integer
 
-          # @!method initialize(currency:, enforcement:, interval:, threshold_amount:, object: :"organization.spend_limit")
+          # @!attribute notification_channel
+          #   Email notifications sent when the hard spend limit is reached.
+          #
+          #   @return [OpenAI::Models::Admin::Organization::OrganizationSpendLimit::NotificationChannel, nil]
+          optional(
+            :notification_channel,
+            -> { OpenAI::Admin::Organization::OrganizationSpendLimit::NotificationChannel }
+          )
+
+          # @!method initialize(currency:, enforcement:, interval:, threshold_amount:, notification_channel: nil, object: :"organization.spend_limit")
           #   Represents a hard spend limit configured at the organization level.
           #
           #   @param currency [String, Symbol, OpenAI::Models::Admin::Organization::OrganizationSpendLimit::Currency]
@@ -52,6 +61,9 @@ module OpenAI
           #
           #   @param threshold_amount [Integer]
           #     The hard spend limit amount, in cents.
+          #
+          #   @param notification_channel [OpenAI::Models::Admin::Organization::OrganizationSpendLimit::NotificationChannel]
+          #     Email notifications sent when the hard spend limit is reached.
           #
           #   @param object [Symbol, :"organization.spend_limit"]
           #     The object type, which is always `organization.spend_limit`.
@@ -159,6 +171,31 @@ module OpenAI
             MONTH = :month
 
             # @!endgroup
+          end
+
+          # @see OpenAI::Models::Admin::Organization::OrganizationSpendLimit#notification_channel
+          class NotificationChannel < OpenAI::Internal::Type::BaseModel
+            # @!attribute recipients
+            #
+            #   @return [Array<String>]
+            required :recipients, OpenAI::Internal::Type::ArrayOf[String]
+
+            # @!attribute type
+            #
+            #   @return [Symbol, :email]
+            required :type, const: :email
+
+            # @!attribute subject_prefix
+            #
+            #   @return [String, nil]
+            optional :subject_prefix, String, nil?: true
+
+            # @!method initialize(recipients:, subject_prefix: nil, type: :email)
+            #   Email notifications sent when the hard spend limit is reached.
+            #
+            #   @param recipients [Array<String>]
+            #   @param subject_prefix [String, nil]
+            #   @param type [Symbol, :email]
           end
         end
       end

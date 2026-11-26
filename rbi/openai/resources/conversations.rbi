@@ -53,6 +53,7 @@ module OpenAI
             ]
           ),
           metadata: T.nilable(T::Hash[Symbol, String]),
+          safety_identifier: T.nilable(String),
           request_options: OpenAI::RequestOptions::OrHash
         )
           .returns(OpenAI::Conversations::Conversation)
@@ -67,6 +68,8 @@ module OpenAI
         # Keys are strings with a maximum length of 64 characters. Values are strings with
         # a maximum length of 512 characters.
         metadata: nil,
+        # A stable identifier used for safety monitoring and abuse detection.
+        safety_identifier: nil,
         request_options: {}
       )
       end

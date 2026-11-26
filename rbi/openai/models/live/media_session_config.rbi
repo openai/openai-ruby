@@ -51,9 +51,10 @@ module OpenAI
         }
         attr_accessor :delegation
 
-        # Whole seconds of inactivity after which a Live WebRTC session with a speech wake
-        # policy pauses inference. The connection and conversation history are retained.
-        # Omit to keep inference active until the session ends.
+        # Whole seconds of inactivity after which a Live WebRTC or SIP session with a
+        # speech wake policy pauses inference. The connection and conversation history are
+        # retained. Omit to keep inference active after the first wake until the session
+        # ends.
         sig { returns(T.nilable(Integer)) }
         attr_reader :idle_timeout_s
 
@@ -125,8 +126,7 @@ module OpenAI
         sig { params(triggers: T::Array[OpenAI::Live::DecisionTrigger::OrHash]).void }
         attr_writer :triggers
 
-        # Inference starts when the Live WebRTC session connects. After an idle pause,
-        # microphone speech resumes inference.
+        # Starts inference when microphone speech is detected.
         sig { returns(T.nilable(OpenAI::Live::MediaSessionConfig::WakePolicy)) }
         attr_reader :wake_policy
 
@@ -195,9 +195,10 @@ module OpenAI
           # API.
           delegation: nil,
 
-          # Whole seconds of inactivity after which a Live WebRTC session with a speech wake
-          # policy pauses inference. The connection and conversation history are retained.
-          # Omit to keep inference active until the session ends.
+          # Whole seconds of inactivity after which a Live WebRTC or SIP session with a
+          # speech wake policy pauses inference. The connection and conversation history are
+          # retained. Omit to keep inference active after the first wake until the session
+          # ends.
           idle_timeout_s: nil,
 
           # Ordered text-only history supplied before startup. Supports developer, user, and
@@ -228,8 +229,7 @@ module OpenAI
           # triggers.
           triggers: nil,
 
-          # Inference starts when the Live WebRTC session connects. After an idle pause,
-          # microphone speech resumes inference.
+          # Starts inference when microphone speech is detected.
 
           wake_policy: nil
         )
@@ -562,8 +562,8 @@ module OpenAI
           sig { returns(Symbol) }
           attr_accessor :type
 
-          # The speech detection threshold for resuming paused inference, from 0 to 1
-          # inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+          # The speech detection threshold for the first wake and each later wake, from 0 to
+          # 1 inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
           # This setting is independent of active turn detection.
           sig { returns(T.nilable(Float)) }
           attr_reader :vad_threshold
@@ -571,8 +571,7 @@ module OpenAI
           sig { params(vad_threshold: Float).void }
           attr_writer :vad_threshold
 
-          # Inference starts when the Live WebRTC session connects. After an idle pause,
-          # microphone speech resumes inference.
+          # Starts inference when microphone speech is detected.
           sig do
             params(
 
@@ -584,8 +583,8 @@ module OpenAI
           end
           def self.new(
 
-            # The speech detection threshold for resuming paused inference, from 0 to 1
-            # inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
+            # The speech detection threshold for the first wake and each later wake, from 0 to
+            # 1 inclusive. Defaults to 0.5. Higher values require stronger evidence of speech.
             # This setting is independent of active turn detection.
             vad_threshold: nil,
 

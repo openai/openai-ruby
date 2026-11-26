@@ -137,9 +137,9 @@ module OpenAI
         optional :metadata, OpenAI::Internal::Type::HashOf[String], nil?: true
 
         # @!attribute model
-        #   Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-        #   range of models with different capabilities, performance characteristics, and
-        #   price points. Refer to the
+        #   Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+        #   wide range of models with different capabilities, performance characteristics,
+        #   and price points. Refer to the
         #   [model guide](https://developers.openai.com/api/docs/models) to browse and
         #   compare available models.
         #
@@ -479,9 +479,9 @@ module OpenAI
         #     a maximum length of 512 characters.
         #
         #   @param model [Symbol, String, OpenAI::Models::Beta::ResponseCreateParams::Model]
-        #     Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-        #     range of models with different capabilities, performance characteristics, and
-        #     price points. Refer to the
+        #     Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+        #     wide range of models with different capabilities, performance characteristics,
+        #     and price points. Refer to the
         #     [model guide](https://developers.openai.com/api/docs/models) to browse and
         #     compare available models.
         #
@@ -860,9 +860,9 @@ module OpenAI
           #   @return [Array(String, Array<OpenAI::Models::Beta::BetaEasyInputMessage, OpenAI::Models::Beta::BetaResponseInputItem::Message, OpenAI::Models::Beta::BetaResponseOutputMessage, OpenAI::Models::Beta::BetaResponseFileSearchToolCall, OpenAI::Models::Beta::BetaResponseComputerToolCall, OpenAI::Models::Beta::BetaResponseInputItem::ComputerCallOutput, OpenAI::Models::Beta::BetaResponseFunctionWebSearch, OpenAI::Models::Beta::BetaResponseFunctionToolCall, OpenAI::Models::Beta::BetaResponseInputItem::FunctionCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::AgentMessage, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCall, OpenAI::Models::Beta::BetaResponseInputItem::MultiAgentCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ToolSearchCall, OpenAI::Models::Beta::BetaResponseToolSearchOutputItemParam, OpenAI::Models::Beta::BetaResponseInputItem::AdditionalTools, OpenAI::Models::Beta::BetaResponseConfigurationUpdateItemParam, OpenAI::Models::Beta::BetaResponseReasoningItem, OpenAI::Models::Beta::BetaResponseCompactionItemParam, OpenAI::Models::Beta::BetaResponseInputItem::ImageGenerationCall, OpenAI::Models::Beta::BetaResponseCodeInterpreterToolCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCall, OpenAI::Models::Beta::BetaResponseInputItem::LocalShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ShellCall, OpenAI::Models::Beta::BetaResponseInputItem::ShellCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCall, OpenAI::Models::Beta::BetaResponseInputItem::ApplyPatchCallOutput, OpenAI::Models::Beta::BetaResponseInputItem::McpListTools, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalRequest, OpenAI::Models::Beta::BetaResponseInputItem::McpApprovalResponse, OpenAI::Models::Beta::BetaResponseInputItem::McpCall, OpenAI::Models::Beta::BetaResponseCustomToolCallOutput, OpenAI::Models::Beta::BetaResponseCustomToolCall, OpenAI::Models::Beta::BetaResponseInputItem::CompactionTrigger, OpenAI::Models::Beta::BetaResponseInputItem::ItemReference, OpenAI::Models::Beta::BetaResponseInputItem::Program, OpenAI::Models::Beta::BetaResponseInputItem::ProgramOutput>)]
         end
 
-        # Model ID used to generate the response, like `gpt-6-astra`. OpenAI offers a wide
-        # range of models with different capabilities, performance characteristics, and
-        # price points. Refer to the
+        # Model ID used to generate the response, like `gpt-6.2-astra`. OpenAI offers a
+        # wide range of models with different capabilities, performance characteristics,
+        # and price points. Refer to the
         # [model guide](https://developers.openai.com/api/docs/models) to browse and
         # compare available models.
         module Model

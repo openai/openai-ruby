@@ -31,10 +31,10 @@ module OpenAI
           OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::input_messages
         ) -> OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::input_messages
 
-        # The name of the model to use for generating completions (e.g. "o3-mini").
+        # The model to use to sample outputs with the Chat Completions API.
         attr_reader model: String?
 
-        # The name of the model to use for generating completions (e.g. "o3-mini").
+        # The model to use to sample outputs with the Chat Completions API.
         def model=: (String) -> String
 
         attr_reader sampling_params: OpenAI::Evals::CreateEvalCompletionsRunDataSource::SamplingParams?
@@ -53,7 +53,7 @@ module OpenAI
         #   `item.input_trajectory`), or a template with variable references to the `item`
         #   namespace.
         # @param model
-        #   The name of the model to use for generating completions (e.g. "o3-mini").
+        #   The model to use to sample outputs with the Chat Completions API.
         def initialize: (
           source: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::source,
           type: OpenAI::Models::Evals::CreateEvalCompletionsRunDataSource::type_,
@@ -175,7 +175,7 @@ module OpenAI
             # a maximum length of 512 characters.
             attr_accessor metadata: OpenAI::Models::metadata?
 
-            # An optional model to filter by (e.g., 'gpt-6-astra').
+            # An optional model to filter by (e.g., 'gpt-4.1-mini-2025-04-14').
             attr_accessor model: String?
 
             # @param created_after
@@ -191,7 +191,7 @@ module OpenAI
             #   Keys are strings with a maximum length of 64 characters. Values are strings with
             #   a maximum length of 512 characters.
             # @param model
-            #   An optional model to filter by (e.g., 'gpt-6-astra').
+            #   An optional model to filter by (e.g., 'gpt-4.1-mini-2025-04-14').
             # @param type
             #   The type of source. Always `stored_completions`.
             def initialize: (

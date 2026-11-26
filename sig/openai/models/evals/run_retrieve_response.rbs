@@ -170,10 +170,10 @@ module OpenAI
               OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages
             ) -> OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::input_messages
 
-            # The name of the model to use for generating completions (e.g. "o3-mini").
+            # The model to use to sample outputs with the Responses API.
             attr_reader model: String?
 
-            # The name of the model to use for generating completions (e.g. "o3-mini").
+            # The model to use to sample outputs with the Responses API.
             def model=: (String) -> String
 
             attr_reader sampling_params: OpenAI::Models::Evals::RunRetrieveResponse::DataSource::Responses::SamplingParams?
@@ -190,7 +190,7 @@ module OpenAI
             #   `item.input_trajectory`), or a template with variable references to the `item`
             #   namespace.
             # @param model
-            #   The name of the model to use for generating completions (e.g. "o3-mini").
+            #   The model to use to sample outputs with the Responses API.
             # @param type
             #   The type of run data source. Always `responses`.
             def initialize: (
