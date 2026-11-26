@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.3.0](https://github.com/openai/openai-ruby/compare/v1.2.0...v1.3.0) (2026-11-26)
+
+
+### Features
+
+* **api:** add spend alerts and response compaction fields ([#1115](https://github.com/openai/openai-ruby/issues/1115)) ([364d2bb](https://github.com/openai/openai-ruby/commit/364d2bb638ce541e86e8df2ff42438bb53ef72cb))
+* **api:** support updating session vaults ([#1114](https://github.com/openai/openai-ruby/issues/1114)) ([eb69e40](https://github.com/openai/openai-ruby/commit/eb69e40a7cc4ed46ee8fa7733f7c796922060f01))
+
+
+### Chores
+
+* **api:** clarify message retries ([#1113](https://github.com/openai/openai-ruby/issues/1113)) ([84cebab](https://github.com/openai/openai-ruby/commit/84cebab1ba1265f8284a7248e062af02d952ebd8))
+* **api:** clarify Realtime audio noise reduction ([#1112](https://github.com/openai/openai-ruby/issues/1112)) ([4110d90](https://github.com/openai/openai-ruby/commit/4110d90f8ce18e64f987889ff3c64bc40ed3b0be))
+* **api:** correct metadata documentation ([#1110](https://github.com/openai/openai-ruby/issues/1110)) ([487326b](https://github.com/openai/openai-ruby/commit/487326b1d2fd96c5ac0b12a2472e6518fad650ca))
+* **api:** document inline skill upload limits ([#1095](https://github.com/openai/openai-ruby/issues/1095)) ([782b979](https://github.com/openai/openai-ruby/commit/782b979316cf82d71ce9c547c01edd7e94781b56))
+* **deps:** bump connection_pool from 2.5.5 to 3.0.3 ([#1023](https://github.com/openai/openai-ruby/issues/1023)) ([578c5be](https://github.com/openai/openai-ruby/commit/578c5becfc5de8769d71982b6910f9c88f771026))
+* **deps:** bump the codeql group with 2 updates ([#1111](https://github.com/openai/openai-ruby/issues/1111)) ([98c41a3](https://github.com/openai/openai-ruby/commit/98c41a3e91e1bb4cd70bcfab90cde675a2ee96c9))
+
 ## [1.2.0](https://github.com/openai/openai-ruby/compare/v1.1.0...v1.2.0) (2026-11-24)
 
 
